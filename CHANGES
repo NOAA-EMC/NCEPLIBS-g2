@@ -124,3 +124,10 @@ g2lib-1.4.0 - MAY 2012      - Added new parameters conversion entries
                             - Declared the variable rmin4 in routine misspack.f
                             - Modified to change voidp to png_voidp in routines dec_png.c 
                               and enc_png.c
+
+g2lib-2.5.0 - AUG 2013      - Added new parameters conversion entries
+                            - Modified GETIDEX to allow users to open same unit file 
+                            - Added new Grid Definition Template numbers 3.4,3.5,.3.12,
+                              3.101, and 3.140
+                            - Added new Product Definition Template numbers 4.33, 4.34, 4.53,4.54
+

@@ -1,0 +1,3 @@
+if you cannot compile it,  you have to mkdir for /nwprod/lib/incmod/g2_4 and g2_d.
+make -f makefile_4 for g2_4
+make -f makefile_d for g2_d

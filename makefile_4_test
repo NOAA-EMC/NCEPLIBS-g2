@@ -19,7 +19,8 @@ FDEFS=-DUSE_PNG -DUSE_JPEG2000
 
 INCDIR= -I/nwprod/lib/include
 
-LIB=/nwprod/lib/libg2_d.a
+#LIB=/nwprod/lib/libg2_4.a
+LIB=../../libg2_4.a
 
 #-------------------------------------------
 # The following was used for Intel on WCOSS
@@ -27,9 +28,10 @@ DEFS=-DLINUX
 FC=ifort
 CC=icc
 CPP=cpp -P
-MODDIR=/nwprod/lib/incmod/g2_d
+#MODDIR=/nwprod/lib/incmod/g2_4
+MODDIR=../../incmod/g2_4
 
-FFLAGS=-O3 -g -assume noold_ldout_format -r8 -module $(MODDIR)
+FFLAGS=-O3 -g  -assume noold_ldout_format -module $(MODDIR)
 CFLAGS=-O3 -g $(DEFS) $(INCDIR) -D__64BIT__
 ARFLAGS=
 
@@ -111,4 +113,3 @@ $(LIB):	$(LIB)(gridtemplates.o) \
 	$(CC) -c $(CFLAGS) $<
 	ar $(ARFLAGS) -ruv $@ $*.o
 	rm -f $*.o
-~                           

@@ -17,38 +17,23 @@ SHELL=/bin/sh
 #  mentioned include files can be found.
 FDEFS=-DUSE_PNG -DUSE_JPEG2000
 
-INCDIR= -I/usrx/local/64bit.cirrus/include
+INCDIR= -I/nwprod/lib/include
 
-# INCDIR=-I/usrx/local/64bit/jasper-1.700.2/src/libjasper/include \
-#       -I/usrx/local/64bit/libpng-1.2.5 \
-#       -I/usrx/local/64bit/zlib-1.1.4
+LIB=/nwprod/lib/libg2_4.a
 
-LIB=libg2_4.a
-
-#--------------------------------------
-# The following was used for XLF on AIX
-DEFS=-DAIX -DHAVE_SYS_TYPES_H=1
-FC=ncepxlf
-CC=ncepxlc
-CPP=/usr/ccs/lib/cpp -P
+#-------------------------------------------
+# The following was used for Intel on WCOSS
+DEFS=-DLINUX
+FC=ifort
+CC=icc
+CPP=cpp -P
 MODDIR=/nwprod/lib/incmod/g2_4
-FFLAGS=-O3 -g -qnosave -qarch=auto -qmoddir=$(MODDIR) -I $(MODDIR)
-CFLAGS=-O3 -q64 -g -qcpluscmt -qarch=auto $(DEFS) $(INCDIR)
-ARFLAGS=-X64
-#--------------------------------------
-# The following was used for G95 on LINUX
-#
-#DEFS=-DLINUXG95
-#FC=g95
-#CC=cc
-#CPP=cpp -P -C
-#MODDIR=.
-#FFLAGS=-O3 -I $(MODDIR)
-#CFLAGS=-O3 $(DEFS) $(INCDIR)
-#ARFLAGS=
-#--------------------------------------
 
-.SUFFIXES: .a .f .F .c
+FFLAGS=-O3 -g  -assume noold_ldout_format -module $(MODDIR)
+CFLAGS=-O3 -g $(DEFS) $(INCDIR) -D__64BIT__
+ARFLAGS=
+
+.SUFFIXES: .a .f .c
 
 $(LIB):	$(LIB)(gridtemplates.o) \
 	$(LIB)(pdstemplates.o) \
@@ -114,8 +99,8 @@ $(LIB):	$(LIB)(gridtemplates.o) \
 	$(LIB)(params.o) \
 	$(LIB)(params_ecmwf.o)
 
-.F.f:
-	$(CPP) $(FDEFS) $*.F $*.f
+.f:
+	$(CPP) $(FDEFS) $*.f
 
 .f.a:
 	$(FC) -c $(FFLAGS) $<
@@ -126,4 +111,3 @@ $(LIB):	$(LIB)(gridtemplates.o) \
 	$(CC) -c $(CFLAGS) $<
 	ar $(ARFLAGS) -ruv $@ $*.o
 	rm -f $*.o
-
