@@ -176,7 +176,7 @@ if [ $target = wcoss ]  ; then
    module list 2>compile-g2-$target.log
    module list
    echo " "
-   echo " PLEASE WAIT FOR WRITTING to LOG file "
+   echo " PLEASE WAIT FOR WRITING to LOG file "
    echo " "
    echo " "
    ./makeg2lib_$target.sh &>>compile-g2-$target.log
@@ -194,7 +194,7 @@ elif [ $target = intel ] ; then
    module list 2>compile-g2-$target.log
    module list
    echo " "
-   echo " PLEASE WAIT FOR WRITTING to LOG file "
+   echo " PLEASE WAIT FOR WRITING to LOG file "
    echo " "
    echo " "
    ./makeg2lib_$target.sh &>>compile-g2-$target.log
@@ -213,7 +213,7 @@ elif [ $target = cray ] ; then
    module list 2>compile-g2-$target.log
    module list
    echo " "
-   echo " PLEASE WAIT FOR WRITTING to LOG file "
+   echo " PLEASE WAIT FOR WRITING to LOG file "
    echo " "
    echo " "
    ./makeg2lib_$target.sh &>>compile-g2-$target.log
