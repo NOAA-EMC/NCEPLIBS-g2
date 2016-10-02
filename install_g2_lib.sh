@@ -174,6 +174,10 @@ if [ $target = wcoss ]  ; then
    module load ics
    echo " "
    module list 2>compile-g2-$target.log
+   module list
+   echo " "
+   echo " PLEASE WAIT FOR WRITTING to LOG file "
+   echo " "
    echo " "
    ./makeg2lib_$target.sh &>>compile-g2-$target.log
 
@@ -188,23 +192,31 @@ elif [ $target = intel ] ; then
    module load w3nco-intel/2.0.6
    echo " "
    module list 2>compile-g2-$target.log
+   module list
+   echo " "
+   echo " PLEASE WAIT FOR WRITTING to LOG file "
+   echo " "
    echo " "
    ./makeg2lib_$target.sh &>>compile-g2-$target.log
 
 elif [ $target = cray ] ; then
-    module use /gpfs/hps/nco/ops/nwprod/lib/modulefiles
-    module unload PrgEnv-intel
-    module load   PrgEnv-cray
-    module unload craype-sandybridge
-    module load craype-haswell
-    module swap jasper-gnu-sandybridge jasper-gnu-haswell/1.900.1
-    module swap png-intel-sandybridge png-intel-haswell/1.2.49
-    module swap zlib-intel-sandybridge zlib-cray-sandybridge/1.2.7
-    module load w3nco-cray-haswell/2.0.6
-    echo " "
-    module list 2>compile-g2-$target.log
-    echo " "
-    ./makeg2lib_$target.sh &>>compile-g2-$target.log
+   module use /gpfs/hps/nco/ops/nwprod/lib/modulefiles
+   module unload PrgEnv-intel
+   module load   PrgEnv-cray
+   module unload craype-sandybridge
+   module load craype-haswell
+   module swap jasper-gnu-sandybridge jasper-gnu-haswell/1.900.1
+   module swap png-intel-sandybridge png-intel-haswell/1.2.49
+   module swap zlib-intel-sandybridge zlib-cray-sandybridge/1.2.7
+   module load w3nco-cray-haswell/2.0.6
+   echo " "
+   module list 2>compile-g2-$target.log
+   module list
+   echo " "
+   echo " PLEASE WAIT FOR WRITTING to LOG file "
+   echo " "
+   echo " "
+   ./makeg2lib_$target.sh &>>compile-g2-$target.log
 
 else
    set +x
@@ -227,3 +239,8 @@ else
    echo "  "
    exit
 fi
+
+echo " "
+echo " Installation completed. Please refer to log file for details."
+echo " "
+echo " "
