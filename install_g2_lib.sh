@@ -205,9 +205,12 @@ elif [ $target = cray ] ; then
    module load   PrgEnv-cray
    module unload craype-sandybridge
    module load craype-haswell
-   module swap jasper-gnu-sandybridge jasper-gnu-haswell/1.900.1
-   module swap png-intel-sandybridge png-intel-haswell/1.2.49
-   module swap zlib-intel-sandybridge zlib-cray-sandybridge/1.2.7
+   module unload jasper-gnu-sandybridge/1.900.1
+   module load  jasper-gnu-haswell/1.900.1
+   module unload png-intel-sandybridge/1.2.49
+   module load   png-intel-haswell/1.2.49
+   module unload zlib-intel-sandybridge/1.2.7
+   module load  zlib-intel-haswell/1.2.7
    module load w3nco-cray-haswell/2.0.6
    echo " "
    module list 2>compile-g2-$target.log
