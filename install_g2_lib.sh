@@ -189,6 +189,7 @@ elif [ $target = intel ] ; then
    module load png-intel-sandybridge/1.2.49
    module load zlib-intel-sandybridge/1.2.7
    module load PrgEnv-intel
+   module load g2-intel
    module load w3nco-intel/2.0.6
    echo " "
    module list 2>compile-g2-$target.log
@@ -211,6 +212,9 @@ elif [ $target = cray ] ; then
    module load   png-intel-haswell/1.2.49
    module unload zlib-intel-sandybridge/1.2.7
    module load  zlib-intel-haswell/1.2.7
+   module unload  g2-intel
+   module load   g2-cray-haswell
+   module unload w3nco-intel/2.0.6
    module load w3nco-cray-haswell/2.0.6
    echo " "
    module list 2>compile-g2-$target.log

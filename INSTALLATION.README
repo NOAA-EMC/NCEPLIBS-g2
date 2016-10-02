@@ -48,18 +48,18 @@ cp 3.0.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-intel
 
 B. CRAY -  craype-haswell with CRAY Fortran Compiler 
 
--  module unload PrgEnv-intel
--  module load   PrgEnv-cray
--  module unload craype-sandybridge
--  module load craype-haswell
--  module unload jasper-gnu-sandybridge/1.900.1
--  module load  jasper-gnu-haswell/1.900.1
--  module unload png-intel-sandybridge/1.2.49
--  module load   png-intel-haswell/1.2.49
--  module unload zlib-intel-sandybridge/1.2.7
--  module load  zlib-intel-haswell/1.2.7
--  module unload  g2-intel
--  module load   g2-cray-haswell
+- module unload PrgEnv-intel
+- module load   PrgEnv-cray
+- module unload craype-sandybridge
+- module load craype-haswell
+- module unload jasper-gnu-sandybridge/1.900.1
+- module load  jasper-gnu-haswell/1.900.1
+- module unload png-intel-sandybridge/1.2.49
+- module load   png-intel-haswell/1.2.49
+- module unload zlib-intel-sandybridge/1.2.7
+- module load  zlib-intel-haswell/1.2.7
+- module unload  g2-intel
+- module load   g2-cray-haswell
 - module load w3nco-cray-haswell/2.0.6
 - module list 2>compile-g2-cray.log
 
