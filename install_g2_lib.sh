@@ -173,9 +173,9 @@ if [ $target = wcoss ]  ; then
    module load w3nco/v2.0.6
    module load ics
    echo " "
-   module list 2>compile-$target.log
+   module list 2>compile-g2-$target.log
    echo " "
-   ./makeg2lib_$target.sh &>>compile-$target.log
+   ./makeg2lib_$target.sh &>>compile-g2-$target.log
 
 elif [ $target = intel ] ; then
    module use /gpfs/hps/nco/ops/nwprod/lib/modulefiles
@@ -187,9 +187,9 @@ elif [ $target = intel ] ; then
    module load PrgEnv-intel
    module load w3nco-intel/2.0.6
    echo " "
-   module list 2>compile-$target.log
+   module list 2>compile-g2-$target.log
    echo " "
-   ./makeg2lib_$target.sh &>>compile-$target.log
+   ./makeg2lib_$target.sh &>>compile-g2-$target.log
 
 elif [ $target = cray ] ; then
     module use /gpfs/hps/nco/ops/nwprod/lib/modulefiles
@@ -202,9 +202,9 @@ elif [ $target = cray ] ; then
     module swap zlib-intel-sandybridge zlib-cray-sandybridge/1.2.7
     module load w3nco-cray-haswell/2.0.6
     echo " "
-    module list 2>compile-$target.log
+    module list 2>compile-g2-$target.log
     echo " "
-    ./makeg2lib_$target.sh &>>compile-$target.log
+    ./makeg2lib_$target.sh &>>compile-g2-$target.log
 
 else
    set +x

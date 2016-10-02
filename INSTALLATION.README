@@ -35,10 +35,11 @@ A. Intel - craype-sandybridge with INTEL Fortran Compiler
 - cd src folder 
 - module load jasper-gnu-sandybridge/1.900.1 png-intel-sandybridge/1.2.44 zlib-intel-sandybridge/1.2.7
 - module load PrgEnv-intel g2-intel craype-sandybridge
-- module list 2>compile-intel.log
+- module load w3nco-intel/2.0.6
+- module list 2>compile-g2-intel.log
 
 ##   Build G2 Library with Intel Fortran Compiler  ##
-- ./makeg2lib_cray.sh &>>compile-intel.log
+- ./makeg2lib_cray.sh &>>compile-g2-intel.log
 
 ##   Module file g2-intel/3.0.0 -CRAY (INTEL Fortran compiler - craype-sandybridge)   ##
 cd ./modulefiles/g2-intel
@@ -53,10 +54,11 @@ B. CRAY -  craype-haswell with CRAY Fortran Compiler
 - module switch zlib-intel-sandybridge zlib-cray-sandybridge/1.2.7
 - module switch g2-intel g2-cray-haswell
 - module switch craype-sandybridge craype-haswell
-- module list 2>compile-cray.log
+- module load w3nco-cray-haswell/2.0.6
+- module list 2>compile-g2-cray.log
 
 ##   Build G2 Library with CRAY Fortran compiler  ##
-- ./makeg2lib_cray.sh &>>compile-intel.log
+- ./makeg2lib_cray.sh &>>compile-g2-cray.log
 
 ##   Module file g2-cray-haswell/3.0.0 (CRAY Fortran compiler - craype-haswell)   ##
 cd ./modulefiles/g2-cray-haswell
@@ -70,6 +72,7 @@ C. WCOSS (Tide or Gyre)
 - module load png/v1.2.44
 - module load z/v1.2.6
 - module load ics
+- module load w3nco/v2.0.6
 - module list 2>compile-g2lib.log
 
 ##   Build G2 Library with Intel Fortran compiler   ##
