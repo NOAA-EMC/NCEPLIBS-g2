@@ -17,9 +17,10 @@ SHELL=/bin/sh
 #  mentioned include files can be found.
 FDEFS=-DUSE_PNG -DUSE_JPEG2000
 
-INCDIR= -I/nwprod/lib/include
+#XXW INCDIR= -I/nwprod/lib/include
 
-LIB=/nwprod/lib/libg2_4.a
+#XXW LIB=/nwprod/lib/libg2_4.a
+LIB=../../libg2_v2.5.0_4.a
 
 #-------------------------------------------
 # The following was used for Intel on WCOSS
@@ -27,10 +28,12 @@ DEFS=-DLINUX
 FC=ifort
 CC=icc
 CPP=cpp -P
-MODDIR=/nwprod/lib/incmod/g2_4
+#XXW MODDIR=/nwprod/lib/incmod/g2_4
+MODDIR=../../incmod/g2_v2.5.0_4
 
 FFLAGS=-O3 -g  -assume noold_ldout_format -module $(MODDIR)
-CFLAGS=-O3 -g $(DEFS) $(INCDIR) -D__64BIT__
+#XXW CFLAGS=-O3 -g $(DEFS) $(INCDIR) -D__64BIT__
+CFLAGS=-O3 -g $(DEFS) -I${JASPER_INC} -I${PNG_INC} -I${Z_INC} -D__64BIT__
 ARFLAGS=
 
 .SUFFIXES: .a .f .c

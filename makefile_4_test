@@ -1,5 +1,7 @@
 SHELL=/bin/sh
 
+include ../version.inc
+
 #  Make sure one of the following options appears in your CFLAGS
 #  variable to indicate which system you are on.  Used to call
 #  "C" routines from Fortran.
@@ -87,6 +89,7 @@ $(LIB):	$(LIB)(gridtemplates.o) \
 	$(LIB)(skgb.o) \
 	$(LIB)(ixgb2.o) \
 	$(LIB)(getidx.o) \
+	$(LIB)(getidxes.o) \
 	$(LIB)(getg2i.o) \
 	$(LIB)(getg2ir.o) \
 	$(LIB)(getgb2s.o) \
@@ -99,7 +102,12 @@ $(LIB):	$(LIB)(gridtemplates.o) \
 	$(LIB)(g2grids.o) \
 	$(LIB)(gdt2gds.o) \
 	$(LIB)(params.o) \
+	$(LIB)(intmath.o) \
 	$(LIB)(params_ecmwf.o)
+
+$(LIB)(compack.o): $(LIB)(intmath.o)
+$(LIB)(simpack.o): $(LIB)(intmath.o)
+$(LIB)(misspack.o): $(LIB)(intmath.o)
 
 .f:
 	$(CPP) $(FDEFS) $*.f
