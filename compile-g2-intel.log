@@ -1,0 +1,592 @@
+Currently Loaded Modulefiles:
+  1) craype-network-aries
+  2) craype-sandybridge
+  3) craype/2.3.0
+  4) intel/15.0.3.187
+  5) cray-libsci/13.0.3
+  6) udreg/2.3.2-1.0502.9889.2.20.ari
+  7) ugni/6.0-1.0502.10245.9.9.ari
+  8) pmi/5.0.6-1.0000.10439.140.2.ari
+  9) dmapp/7.0.1-1.0502.10246.8.47.ari
+ 10) gni-headers/4.0-1.0502.10317.9.2.ari
+ 11) xpmem/0.1-2.0502.57015.1.15.ari
+ 12) dvs/2.5_0.9.0-1.0502.1958.2.55.ari
+ 13) alps/5.2.3-2.0502.9295.14.14.ari
+ 14) rca/1.0.0-2.0502.57212.2.56.ari
+ 15) atp/1.8.1
+ 16) PrgEnv-intel/5.2.56
+ 17) jasper-gnu-sandybridge/1.900.1
+ 18) png-intel-sandybridge/1.2.49
+ 19) zlib-intel-sandybridge/1.2.7
+ 20) w3nco-intel/2.0.6
+ 21) modulefile_g2v3.1.0-intel-sandybridge
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gridtemplates.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gridtemplates.o
+ar: creating ../intel/libg2_v3.1.0_4.a
+a - gridtemplates.o
+rm -f gridtemplates.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 pdstemplates.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a pdstemplates.o
+a - pdstemplates.o
+rm -f pdstemplates.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 drstemplates.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a drstemplates.o
+a - drstemplates.o
+rm -f drstemplates.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gribmod.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gribmod.o
+a - gribmod.o
+rm -f gribmod.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 realloc.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a realloc.o
+a - realloc.o
+rm -f realloc.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 addfield.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a addfield.o
+a - addfield.o
+rm -f addfield.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 addgrid.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a addgrid.o
+a - addgrid.o
+rm -f addgrid.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 addlocal.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a addlocal.o
+a - addlocal.o
+rm -f addlocal.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getfield.f
+getfield.f(1): (col. 18) remark: getfield_ has been targeted for automatic cpu dispatch
+getfield.f(755): (col. 18) remark: unpack6_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a getfield.o
+a - getfield.o
+rm -f getfield.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gb_info.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gb_info.o
+a - gb_info.o
+rm -f gb_info.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_getfld.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_getfld.o
+a - gf_getfld.o
+rm -f gf_getfld.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_free.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_free.o
+a - gf_free.o
+rm -f gf_free.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_unpack1.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_unpack1.o
+a - gf_unpack1.o
+rm -f gf_unpack1.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_unpack2.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_unpack2.o
+a - gf_unpack2.o
+rm -f gf_unpack2.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_unpack3.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_unpack3.o
+a - gf_unpack3.o
+rm -f gf_unpack3.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_unpack4.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_unpack4.o
+a - gf_unpack4.o
+rm -f gf_unpack4.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_unpack5.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_unpack5.o
+a - gf_unpack5.o
+rm -f gf_unpack5.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_unpack6.f
+gf_unpack6.f(1): (col. 18) remark: gf_unpack6_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_unpack6.o
+a - gf_unpack6.o
+rm -f gf_unpack6.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gf_unpack7.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gf_unpack7.o
+a - gf_unpack7.o
+rm -f gf_unpack7.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gettemplates.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gettemplates.o
+a - gettemplates.o
+rm -f gettemplates.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getlocal.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getlocal.o
+a - getlocal.o
+rm -f getlocal.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getdim.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getdim.o
+a - getdim.o
+rm -f getdim.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getpoly.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getpoly.o
+a - getpoly.o
+rm -f getpoly.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gribcreate.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gribcreate.o
+a - gribcreate.o
+rm -f gribcreate.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gribend.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gribend.o
+a - gribend.o
+rm -f gribend.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gribinfo.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gribinfo.o
+a - gribinfo.o
+rm -f gribinfo.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 mkieee.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a mkieee.o
+a - mkieee.o
+rm -f mkieee.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 rdieee.f
+rdieee.f(1): (col. 18) remark: rdieee_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a rdieee.o
+a - rdieee.o
+rm -f rdieee.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 intmath.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a intmath.o
+a - intmath.o
+rm -f intmath.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 simpack.f
+simpack.f(1): (col. 18) remark: simpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a simpack.o
+a - simpack.o
+rm -f simpack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 simunpack.f
+simunpack.f(1): (col. 18) remark: simunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a simunpack.o
+a - simunpack.o
+rm -f simunpack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 cmplxpack.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a cmplxpack.o
+a - cmplxpack.o
+rm -f cmplxpack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 compack.f
+compack.f(1): (col. 18) remark: compack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a compack.o
+a - compack.o
+rm -f compack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 misspack.f
+misspack.f(1): (col. 18) remark: misspack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a misspack.o
+a - misspack.o
+rm -f misspack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 pack_gp.f
+pack_gp.f(1): (col. 18) remark: pack_gp_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a pack_gp.o
+a - pack_gp.o
+rm -f pack_gp.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 reduce.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a reduce.o
+a - reduce.o
+rm -f reduce.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 comunpack.f
+comunpack.f(1): (col. 18) remark: comunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a comunpack.o
+a - comunpack.o
+rm -f comunpack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 specpack.f
+specpack.f(1): (col. 18) remark: specpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a specpack.o
+a - specpack.o
+rm -f specpack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 specunpack.f
+specunpack.f(1): (col. 18) remark: specunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a specunpack.o
+a - specunpack.o
+rm -f specunpack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 jpcpack.f
+jpcpack.f(1): (col. 18) remark: jpcpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a jpcpack.o
+a - jpcpack.o
+rm -f jpcpack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 jpcunpack.f
+jpcunpack.f(1): (col. 18) remark: jpcunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a jpcunpack.o
+a - jpcunpack.o
+rm -f jpcunpack.o
+cc -c -O3 -axCore-AVX2 -g -g -DLINUX -I/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/include -I/usrx/local/prod//png/1.2.49/intel/sandybridge/include -I/usrx/local/prod/zlib/1.2.7/intel/sandybridge/include -D__64BIT__ enc_jpeg2000.c
+ar  -ruv ../intel/libg2_v3.1.0_4.a enc_jpeg2000.o
+a - enc_jpeg2000.o
+rm -f enc_jpeg2000.o
+cc -c -O3 -axCore-AVX2 -g -g -DLINUX -I/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/include -I/usrx/local/prod//png/1.2.49/intel/sandybridge/include -I/usrx/local/prod/zlib/1.2.7/intel/sandybridge/include -D__64BIT__ dec_jpeg2000.c
+dec_jpeg2000.c(67): (col. 1) remark: dec_jpeg2000_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a dec_jpeg2000.o
+a - dec_jpeg2000.o
+rm -f dec_jpeg2000.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 pngpack.f
+pngpack.f(1): (col. 18) remark: pngpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a pngpack.o
+a - pngpack.o
+rm -f pngpack.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 pngunpack.f
+pngunpack.f(1): (col. 18) remark: pngunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a pngunpack.o
+a - pngunpack.o
+rm -f pngunpack.o
+cc -c -O3 -axCore-AVX2 -g -g -DLINUX -I/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/include -I/usrx/local/prod//png/1.2.49/intel/sandybridge/include -I/usrx/local/prod/zlib/1.2.7/intel/sandybridge/include -D__64BIT__ enc_png.c
+enc_png.c(64): (col. 1) remark: enc_png_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a enc_png.o
+a - enc_png.o
+rm -f enc_png.o
+cc -c -O3 -axCore-AVX2 -g -g -DLINUX -I/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/include -I/usrx/local/prod//png/1.2.49/intel/sandybridge/include -I/usrx/local/prod/zlib/1.2.7/intel/sandybridge/include -D__64BIT__ dec_png.c
+ar  -ruv ../intel/libg2_v3.1.0_4.a dec_png.o
+a - dec_png.o
+rm -f dec_png.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gbytesc.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a gbytesc.o
+a - gbytesc.o
+rm -f gbytesc.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 skgb.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a skgb.o
+a - skgb.o
+rm -f skgb.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 ixgb2.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a ixgb2.o
+a - ixgb2.o
+rm -f ixgb2.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getidx.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getidx.o
+a - getidx.o
+rm -f getidx.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getidxes.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getidxes.o
+a - getidxes.o
+rm -f getidxes.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getg2i.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getg2i.o
+a - getg2i.o
+rm -f getg2i.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getg2ir.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getg2ir.o
+a - getg2ir.o
+rm -f getg2ir.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getgb2s.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getgb2s.o
+a - getgb2s.o
+rm -f getgb2s.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getgb2r.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getgb2r.o
+a - getgb2r.o
+rm -f getgb2r.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getgb2l.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getgb2l.o
+a - getgb2l.o
+rm -f getgb2l.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getgb2.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getgb2.o
+a - getgb2.o
+rm -f getgb2.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getgb2p.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getgb2p.o
+a - getgb2p.o
+rm -f getgb2p.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 getgb2rp.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a getgb2rp.o
+a - getgb2rp.o
+rm -f getgb2rp.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 putgb2.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a putgb2.o
+a - putgb2.o
+rm -f putgb2.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 g2grids.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a g2grids.o
+a - g2grids.o
+rm -f g2grids.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 gdt2gds.f
+gdt2gds.f(1): (col. 20) remark: gdt2gds_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_4.a gdt2gds.o
+a - gdt2gds.o
+rm -f gdt2gds.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 params.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a params.o
+a - params.o
+rm -f params.o
+ftn -c -O3 -axCore-AVX2 -g -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_4 params_ecmwf.f
+ar  -ruv ../intel/libg2_v3.1.0_4.a params_ecmwf.o
+a - params_ecmwf.o
+rm -f params_ecmwf.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gridtemplates.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gridtemplates.o
+ar: creating ../intel/libg2_v3.1.0_d.a
+a - gridtemplates.o
+rm -f gridtemplates.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d pdstemplates.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a pdstemplates.o
+a - pdstemplates.o
+rm -f pdstemplates.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d drstemplates.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a drstemplates.o
+a - drstemplates.o
+rm -f drstemplates.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gribmod.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gribmod.o
+a - gribmod.o
+rm -f gribmod.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d realloc.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a realloc.o
+a - realloc.o
+rm -f realloc.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d addfield.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a addfield.o
+a - addfield.o
+rm -f addfield.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d addgrid.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a addgrid.o
+a - addgrid.o
+rm -f addgrid.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d addlocal.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a addlocal.o
+a - addlocal.o
+rm -f addlocal.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getfield.f
+getfield.f(1): (col. 18) remark: getfield_ has been targeted for automatic cpu dispatch
+getfield.f(755): (col. 18) remark: unpack6_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a getfield.o
+a - getfield.o
+rm -f getfield.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gb_info.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gb_info.o
+a - gb_info.o
+rm -f gb_info.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_getfld.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_getfld.o
+a - gf_getfld.o
+rm -f gf_getfld.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_free.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_free.o
+a - gf_free.o
+rm -f gf_free.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_unpack1.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_unpack1.o
+a - gf_unpack1.o
+rm -f gf_unpack1.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_unpack2.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_unpack2.o
+a - gf_unpack2.o
+rm -f gf_unpack2.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_unpack3.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_unpack3.o
+a - gf_unpack3.o
+rm -f gf_unpack3.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_unpack4.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_unpack4.o
+a - gf_unpack4.o
+rm -f gf_unpack4.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_unpack5.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_unpack5.o
+a - gf_unpack5.o
+rm -f gf_unpack5.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_unpack6.f
+gf_unpack6.f(1): (col. 18) remark: gf_unpack6_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_unpack6.o
+a - gf_unpack6.o
+rm -f gf_unpack6.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gf_unpack7.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gf_unpack7.o
+a - gf_unpack7.o
+rm -f gf_unpack7.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gettemplates.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gettemplates.o
+a - gettemplates.o
+rm -f gettemplates.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getlocal.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getlocal.o
+a - getlocal.o
+rm -f getlocal.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getdim.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getdim.o
+a - getdim.o
+rm -f getdim.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getpoly.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getpoly.o
+a - getpoly.o
+rm -f getpoly.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gribcreate.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gribcreate.o
+a - gribcreate.o
+rm -f gribcreate.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gribend.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gribend.o
+a - gribend.o
+rm -f gribend.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gribinfo.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gribinfo.o
+a - gribinfo.o
+rm -f gribinfo.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d mkieee.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a mkieee.o
+a - mkieee.o
+rm -f mkieee.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d rdieee.f
+rdieee.f(1): (col. 18) remark: rdieee_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a rdieee.o
+a - rdieee.o
+rm -f rdieee.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d intmath.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a intmath.o
+a - intmath.o
+rm -f intmath.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d simpack.f
+simpack.f(1): (col. 18) remark: simpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a simpack.o
+a - simpack.o
+rm -f simpack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d simunpack.f
+simunpack.f(1): (col. 18) remark: simunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a simunpack.o
+a - simunpack.o
+rm -f simunpack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d cmplxpack.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a cmplxpack.o
+a - cmplxpack.o
+rm -f cmplxpack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d compack.f
+compack.f(1): (col. 18) remark: compack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a compack.o
+a - compack.o
+rm -f compack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d misspack.f
+misspack.f(1): (col. 18) remark: misspack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a misspack.o
+a - misspack.o
+rm -f misspack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d pack_gp.f
+pack_gp.f(1): (col. 18) remark: pack_gp_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a pack_gp.o
+a - pack_gp.o
+rm -f pack_gp.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d reduce.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a reduce.o
+a - reduce.o
+rm -f reduce.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d comunpack.f
+comunpack.f(1): (col. 18) remark: comunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a comunpack.o
+a - comunpack.o
+rm -f comunpack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d specpack.f
+specpack.f(1): (col. 18) remark: specpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a specpack.o
+a - specpack.o
+rm -f specpack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d specunpack.f
+specunpack.f(1): (col. 18) remark: specunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a specunpack.o
+a - specunpack.o
+rm -f specunpack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d jpcpack.f
+jpcpack.f(1): (col. 18) remark: jpcpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a jpcpack.o
+a - jpcpack.o
+rm -f jpcpack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d jpcunpack.f
+jpcunpack.f(1): (col. 18) remark: jpcunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a jpcunpack.o
+a - jpcunpack.o
+rm -f jpcunpack.o
+cc -c -O3 -axCore-AVX2 -g -g -DLINUX -I/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/include -I/usrx/local/prod//png/1.2.49/intel/sandybridge/include -I/usrx/local/prod/zlib/1.2.7/intel/sandybridge/include -D__64BIT__ enc_jpeg2000.c
+ar  -ruv ../intel/libg2_v3.1.0_d.a enc_jpeg2000.o
+a - enc_jpeg2000.o
+rm -f enc_jpeg2000.o
+cc -c -O3 -axCore-AVX2 -g -g -DLINUX -I/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/include -I/usrx/local/prod//png/1.2.49/intel/sandybridge/include -I/usrx/local/prod/zlib/1.2.7/intel/sandybridge/include -D__64BIT__ dec_jpeg2000.c
+dec_jpeg2000.c(67): (col. 1) remark: dec_jpeg2000_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a dec_jpeg2000.o
+a - dec_jpeg2000.o
+rm -f dec_jpeg2000.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d pngpack.f
+pngpack.f(1): (col. 18) remark: pngpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a pngpack.o
+a - pngpack.o
+rm -f pngpack.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d pngunpack.f
+pngunpack.f(1): (col. 18) remark: pngunpack_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a pngunpack.o
+a - pngunpack.o
+rm -f pngunpack.o
+cc -c -O3 -axCore-AVX2 -g -g -DLINUX -I/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/include -I/usrx/local/prod//png/1.2.49/intel/sandybridge/include -I/usrx/local/prod/zlib/1.2.7/intel/sandybridge/include -D__64BIT__ enc_png.c
+enc_png.c(64): (col. 1) remark: enc_png_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a enc_png.o
+a - enc_png.o
+rm -f enc_png.o
+cc -c -O3 -axCore-AVX2 -g -g -DLINUX -I/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/include -I/usrx/local/prod//png/1.2.49/intel/sandybridge/include -I/usrx/local/prod/zlib/1.2.7/intel/sandybridge/include -D__64BIT__ dec_png.c
+ar  -ruv ../intel/libg2_v3.1.0_d.a dec_png.o
+a - dec_png.o
+rm -f dec_png.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gbytesc.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a gbytesc.o
+a - gbytesc.o
+rm -f gbytesc.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d skgb.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a skgb.o
+a - skgb.o
+rm -f skgb.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d ixgb2.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a ixgb2.o
+a - ixgb2.o
+rm -f ixgb2.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getidx.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getidx.o
+a - getidx.o
+rm -f getidx.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getg2i.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getg2i.o
+a - getg2i.o
+rm -f getg2i.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getg2ir.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getg2ir.o
+a - getg2ir.o
+rm -f getg2ir.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getgb2s.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getgb2s.o
+a - getgb2s.o
+rm -f getgb2s.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getgb2r.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getgb2r.o
+a - getgb2r.o
+rm -f getgb2r.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getgb2l.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getgb2l.o
+a - getgb2l.o
+rm -f getgb2l.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getgb2.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getgb2.o
+a - getgb2.o
+rm -f getgb2.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getgb2p.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getgb2p.o
+a - getgb2p.o
+rm -f getgb2p.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d getgb2rp.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a getgb2rp.o
+a - getgb2rp.o
+rm -f getgb2rp.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d putgb2.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a putgb2.o
+a - putgb2.o
+rm -f putgb2.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d g2grids.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a g2grids.o
+a - g2grids.o
+rm -f g2grids.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d gdt2gds.f
+gdt2gds.f(1): (col. 20) remark: gdt2gds_ has been targeted for automatic cpu dispatch
+ar  -ruv ../intel/libg2_v3.1.0_d.a gdt2gds.o
+a - gdt2gds.o
+rm -f gdt2gds.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d params.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a params.o
+a - params.o
+rm -f params.o
+ftn -c -O3 -axCore-AVX2 -g -r8 -assume noold_ldout_format -module ../intel/include/g2_v3.1.0_d params_ecmwf.f
+ar  -ruv ../intel/libg2_v3.1.0_d.a params_ecmwf.o
+a - params_ecmwf.o
+rm -f params_ecmwf.o
+ 
+ 
+ftn -o ../exec/g2_unit_test_4 -O0 -check all -debug all -traceback test_g2.f90 -L ../intel/ -lg2_v3.1.0_4 /usrx/local/prod//png/1.2.49/intel/sandybridge/lib/libpng.a /usrx/local/prod//jasper/1.900.1/gnu/sandybridge/lib/libjasper.a /gpfs/hps/nco/ops/nwprod/lib/w3nco/v2.0.6/intel/libw3nco_v2.0.6_4.a /usrx/local/prod/zlib/1.2.7/intel/sandybridge/lib/libz.a
+/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/lib/libjasper.a(jas_stream.o): In function `jas_stream_tmpfile':
+/usrx/local/prod/jasper/1.900.1/gnu/sandybridge/sorc/jasper-1.900.1/src/libjasper/base/jas_stream.c:368: warning: the use of `tmpnam' is dangerous, better use `mkstemp'
+ftn -o ../exec/g2_unit_test_d -O0 -check all -debug all -traceback -r8 -i4 test_g2.f90 -L ../intel/ -lg2_v3.1.0_d /usrx/local/prod//png/1.2.49/intel/sandybridge/lib/libpng.a /usrx/local/prod//jasper/1.900.1/gnu/sandybridge/lib/libjasper.a /gpfs/hps/nco/ops/nwprod/lib/w3nco/v2.0.6/intel/libw3nco_v2.0.6_d.a /usrx/local/prod/zlib/1.2.7/intel/sandybridge/lib/libz.a
+/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/lib/libjasper.a(jas_stream.o): In function `jas_stream_tmpfile':
+/usrx/local/prod/jasper/1.900.1/gnu/sandybridge/sorc/jasper-1.900.1/src/libjasper/base/jas_stream.c:368: warning: the use of `tmpnam' is dangerous, better use `mkstemp'
+ftn -o ../exec/g2_dump_values_4 -O0 -check all -debug all -traceback dump_values.f90 -L ../intel/ -lg2_v3.1.0_4 /usrx/local/prod//png/1.2.49/intel/sandybridge/lib/libpng.a /usrx/local/prod//jasper/1.900.1/gnu/sandybridge/lib/libjasper.a /gpfs/hps/nco/ops/nwprod/lib/w3nco/v2.0.6/intel/libw3nco_v2.0.6_4.a /usrx/local/prod/zlib/1.2.7/intel/sandybridge/lib/libz.a
+/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/lib/libjasper.a(jas_stream.o): In function `jas_stream_tmpfile':
+/usrx/local/prod/jasper/1.900.1/gnu/sandybridge/sorc/jasper-1.900.1/src/libjasper/base/jas_stream.c:368: warning: the use of `tmpnam' is dangerous, better use `mkstemp'
+ftn -o ../exec/g2_dump_values_d -O0 -check all -debug all -traceback -r8 -i4 dump_values.f90 -L ../intel/ -lg2_v3.1.0_d /usrx/local/prod//png/1.2.49/intel/sandybridge/lib/libpng.a /usrx/local/prod//jasper/1.900.1/gnu/sandybridge/lib/libjasper.a /gpfs/hps/nco/ops/nwprod/lib/w3nco/v2.0.6/intel/libw3nco_v2.0.6_d.a /usrx/local/prod/zlib/1.2.7/intel/sandybridge/lib/libz.a
+/usrx/local/prod//jasper/1.900.1/gnu/sandybridge/lib/libjasper.a(jas_stream.o): In function `jas_stream_tmpfile':
+/usrx/local/prod/jasper/1.900.1/gnu/sandybridge/sorc/jasper-1.900.1/src/libjasper/base/jas_stream.c:368: warning: the use of `tmpnam' is dangerous, better use `mkstemp'
