@@ -1,0 +1,91 @@
+Installation instructions:
+
+1. Check out source code from subversion
+2. cd  g2
+3. cd v3.1.0
+4. Run the script install_g2_lib.sh with argument: wcoss, intel or cray.
+   Usage:
+         install_g2_lib.sh   cray or intel or wcoss
+
+         where:
+               cray  is craype-haswell with CRAY (ftn) Fortran Compiler
+               intel is craype-sandybridge with  CRAY (ftn) Fortran Compiler
+               wcoss is IBM (Tide or Gyre) with INTEL Fortran Compiler
+5. Building Modulefile G2 on the following:
+   -WCOSS (Tide or Gyre)
+    ##   Module file v3.1.0 ##
+    cd  g2/v3.1.0/modulefiles
+    cp v3.1.0  /nwprod2/lib/modulefiles/g2
+
+   -CRAY (CRAY (ftn) Fortran compiler - craype-sandybridge)
+    ##   Module file v3.1.0 ##
+    cd g2/v3.1.0/modulefiles/g2-intel
+    cp 3.1.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-intel
+
+   -CRAY (CRAY (ftn) Fortran compiler - craype-haswell)
+    ##   Module file 3.1.0 ##
+    cd g2/v3.1.0/modulefiles/g2-cray-haswell
+    cp 3.1.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-intel
+
+
+The following are installation instructions (manual) in interative mode
+On the CRAY (SURGE or LUNA) and WCOSS (Tide or Gyre) system.
+
+A. Intel - craype-sandybridge with INTEL Fortran Compiler
+- cd src folder 
+- module load jasper-gnu-sandybridge/1.900.1 png-intel-sandybridge/1.2.44 zlib-intel-sandybridge/1.2.7
+- module load PrgEnv-intel g2-intel craype-sandybridge
+- module load w3nco-intel/2.0.6
+- module list 2>compile-g2-intel.log
+
+##   Build G2 Library with Intel Fortran Compiler  ##
+- ./makeg2lib_cray.sh &>>compile-g2-intel.log
+
+##   Module file g2-intel/3.1.0 -CRAY (INTEL Fortran compiler - craype-sandybridge)   ##
+cd ./modulefiles/g2-intel
+cp 3.0.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-intel
+
+
+B. CRAY -  craype-haswell with CRAY Fortran Compiler 
+
+- module unload PrgEnv-intel
+- module load   PrgEnv-cray
+- module unload craype-sandybridge
+- module load craype-haswell
+- module unload jasper-gnu-sandybridge/1.900.1
+- module load  jasper-gnu-haswell/1.900.1
+- module unload png-intel-sandybridge/1.2.49
+- module load   png-intel-haswell/1.2.49
+- module unload zlib-intel-sandybridge/1.2.7
+- module load  zlib-intel-haswell/1.2.7
+- module unload  g2-intel
+- module load   g2-cray-haswell
+- module load w3nco-cray-haswell/2.0.6
+- module list 2>compile-g2-cray.log
+
+##   Build G2 Library with CRAY Fortran compiler  ##
+- ./makeg2lib_cray.sh &>>compile-g2-cray.log
+
+##   Module file g2-cray-haswell/3.1.0 (CRAY Fortran compiler - craype-haswell)   ##
+cd ./modulefiles/g2-cray-haswell
+cp 3.1.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-cray-haswell
+
+C. WCOSS (Tide or Gyre)
+##########  INTEL FORTRAN COMPILER   ###############
+- cd src folder 
+- module use -a /nwprod/lib/modulefiles
+- module load jasper/v1.900.1
+- module load png/v1.2.44
+- module load z/v1.2.6
+- module load ics
+- module load w3nco/v2.0.6
+- module list 2>compile-g2lib.log
+
+##   Build G2 Library with Intel Fortran compiler   ##
+- ./makeg2lib_wcoss.sh 2>compile-g2lib.log
+
+##   Module file g2/v3.1.0 ##
+cd into ./modulefiles
+cp v3.1.0  /nwprod2/lib/modulefiles/g2
+
+#######################################################################

@@ -1,0 +1,12 @@
+#%Module ######
+#
+# E.Mirvis  EMC/NCEP, NCWCP, 2016
+# for IBM iDataPlex modulefiles and applications
+#
+module load ics/14.0.2
+
+# for g2 3.1.0:
+module load jasper/v1.900.1
+module load png/v1.2.44
+module load z/v1.2.6
+module load w3nco/v2.0.6
