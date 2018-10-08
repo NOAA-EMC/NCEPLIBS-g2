@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export version=3.0.0
+export version=3.1.0
 
 mkdir -p ../include/g2_v${version}_4
 mkdir -p ../include/g2_v${version}_d

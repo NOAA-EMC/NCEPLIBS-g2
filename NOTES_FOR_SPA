@@ -1,6 +1,6 @@
 NOTES_to_SPA:
 
-The G2 version 3.0.0 included fixed for array overflows in getgb2r.f and reduce.f
+The G2 version 3.1.0 included fixed for array overflows in getgb2r.f and reduce.f
 for copygb2 and fixed for gfs_gempak. 
 
 The comunpack.f routine will be fixed for RAP POST failure in next implementation of G2.

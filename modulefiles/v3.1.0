@@ -2,7 +2,7 @@
 ## Eugene Mirvis RAL/NCAR-EMC/NOAA
 ## Xiaoxue Wang NCO-PMB/NOAA modified to vertical structure
 ## Kit Menlove NCO-PMB/NOAA modified for phase 2
-##    g2 v3.0.0
+##    g2 v3.1.0
 
 proc ModulesHelp { } {
   puts "Set environment variables for g2 library, including G2_SRC, G2_INC4, G2_INCd, G2_LIB4, and G2_LIBd"

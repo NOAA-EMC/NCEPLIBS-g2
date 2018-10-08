@@ -39,7 +39,7 @@
 !
 !$$$
 
-      integer,parameter :: MAXPARAM=777
+      integer,parameter :: MAXPARAM=776
 
       type gribparam
           integer :: g1tblver
@@ -838,9 +838,7 @@
        data paramlist(774) /gribparam(131,137,0,17,0,'LTNGSD')/
        data paramlist(775) /gribparam(131,194,0,1,39,'CPOFP')/
 ! Added 03/30/2016
-       data paramlist(776) /gribparam(128,144,10,3,2,'CH')/
-! Added 09/30/2016
-       data paramlist(777) /gribparam(128,144,10,3,203,'LCH')/
+       data paramlist(776) /gribparam(128,144,10,3,203,'CH')/
 
       contains
 

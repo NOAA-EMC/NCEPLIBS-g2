@@ -2,7 +2,7 @@ Installation instructions:
 
 1. Check out source code from subversion
 2. cd  g2
-3. cd v$version    i.e, version is 3.0.0
+3. cd v$version    i.e, version is 3.1.0
 4. Run the script install_g2_lib.sh with argument: wcoss, intel or cray.
    Usage:
          install_g2_lib.sh   cray or intel or wcoss

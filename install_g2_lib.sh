@@ -8,7 +8,7 @@
 ######################################################################
 
 target=$1
-export version=v3.0.0
+export version=v3.1.0
 export COMP=$1
 export dir=` pwd `
 export machine_type=$(hostname | cut -c1-1)
