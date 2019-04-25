@@ -1,6 +1,0 @@
-echo MAX
-wgrib $1 -s | grep ":HGT:800 mb:" | wgrib -i -V $1 \
-         -o /dev/null | grep max | awk '{print $4}'
-echo MIN
-wgrib $1 -s | grep ":HGT:800 mb:" | wgrib -i -V $1 \
-         -o /dev/null | grep max | awk '{print $3}'

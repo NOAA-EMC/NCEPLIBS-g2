@@ -1,8 +1,0 @@
-v2.5.1
-2.5.1 differs from 2.5.0 by fixing array overflows in getgb2r.f and reduce.f
-It is used ONLY to build gfs.vX.Y.Z/exec/copygb2 (from gfs version 12.0.8 onward)
-to prevent failures in gfs_gempak
-
-v3.1.0
-The G2 version 3.1.0 included fixed for array overflows in getgb2r.f and reduce.f
-for copygb2 and fixed for gfs_gempak and The comunpack.f routine added to G2 v3.1.0.
