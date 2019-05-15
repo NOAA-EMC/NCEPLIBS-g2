@@ -31,6 +31,11 @@
    [[ ${3,,} == installonly ]] && { inst=true; skip=true; }
    [[ ${3,,} == localinstallonly ]] && { local=true; inst=true; skip=true; }
  }
+
+ source ./Conf/Collect_info.sh
+ source ./Conf/Gen_cfunction.sh
+ source ./Conf/Reset_version.sh
+
  if [[ ${sys} == "intel_general" ]]; then
    sys6=${sys:6}
    source ./Conf/G2_${sys:0:5}_${sys6^}.sh
@@ -44,9 +49,6 @@
    echo "??? G2: module/environment not set."
    exit 1
  }
-
- source ./Conf/Collect_info.sh
- source ./Conf/Gen_cfunction.sh
 
 set -x
  g2Lib4=$(basename $G2_LIB4)
@@ -94,19 +96,24 @@ set -x
    $local && {
               LIB_DIR4=..
               LIB_DIRd=..
+              INCP_DIR4=..
+              INCP_DIRd=..
+              SRC_DIR=
              } || {
-                   LIB_DIR4=$(dirname ${G2_LIB4})
-                   LIB_DIRd=$(dirname ${G2_LIBd})
-                  }
-   [ -d $LIB_DIR4 ] || mkdir -p $LIB_DIR4
-   [ -d $LIB_DIRd ] || mkdir -p $LIB_DIRd
-   INCP_DIR4=$(dirname $G2_INC4)
-   [ -d $G2_INC4 ] && rm -rf $G2_INC4 || mkdir -p $INCP_DIR4
-   INCP_DIRd=$(dirname $G2_INCd)
-   [ -d $G2_INCd ] && rm -rf $G2_INCd || mkdir -p $INCP_DIRd
-   SRC_DIR=$G2_SRC
-   $local && SRC_DIR=
-   [ -d $SRC_DIR ] || mkdir -p $SRC_DIR
+              LIB_DIR4=$(dirname ${G2_LIB4})
+              LIB_DIRd=$(dirname ${G2_LIBd})
+              INCP_DIR4=$(dirname $G2_INC4)
+              INCP_DIRd=$(dirname $G2_INCd)
+              SRC_DIR=$G2_SRC
+              [ -d $LIB_DIR4 ] || mkdir -p $LIB_DIR4
+              [ -d $LIB_DIRd ] || mkdir -p $LIB_DIRd
+              [ -d $G2_INC4 ] && { rm -rf $G2_INC4; } \
+                              || { mkdir -p $INCP_DIR4; }
+              [ -d $G2_INCd ] && { rm -rf $G2_INCd; } \
+                              || { mkdir -p $INCP_DIRd; }
+              [ -z $SRC_DIR ] || { [ -d $SRC_DIR ] || mkdir -p $SRC_DIR; }
+             }
+
    make clean LIB=
    make install LIB=$g2Lib4 MOD=$g2Inc4 \
                 LIB_DIR=$LIB_DIR4 INC_DIR=$INCP_DIR4 SRC_DIR=
