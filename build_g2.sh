@@ -96,8 +96,9 @@ set -x
    $local && {
               LIB_DIR4=..
               LIB_DIRd=..
-              INCP_DIR4=..
-              INCP_DIRd=..
+              INCP_DIR=../include
+              INCP_DIR4=$INCP_DIR
+              INCP_DIRd=$INCP_DIR
               SRC_DIR=
              } || {
               LIB_DIR4=$(dirname ${G2_LIB4})
