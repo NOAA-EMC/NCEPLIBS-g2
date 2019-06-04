@@ -1,14 +1,14 @@
 #!/bin/bash
 
  (( $# == 0 )) && {
-   echo "*** Usage: $0 wcoss|dell|cray|theia|intel_general|gnu_general [debug|build] [[local]install[only]]"
+   echo "*** Usage: $0 wcoss|dell|cray|theia|intel_general|gnu_general [debug|build] [[local]install[only]]" >&2
    exit 1
  }
 
  sys=${1,,}
  [[ $sys == wcoss || $sys == dell || $sys == cray ||\
     $sys == theia || $sys == intel_general || $sys == gnu_general ]] || {
-   echo "*** Usage: $0 wcoss|dell|cray|theia|intel_general|gnu_general [debug|build] [[local]install[only]]"
+   echo "*** Usage: $0 wcoss|dell|cray|theia|intel_general|gnu_general [debug|build] [[local]install[only]]" >&2
    exit 1
  }
  debg=false
@@ -45,8 +45,12 @@
  else
    source ./Conf/G2_intel_${sys^}.sh
  fi
+ $CC --version &> /dev/null || {
+   echo "??? G2: compilers not set." >&2
+   exit 1
+ }
  [[ -z $G2_VER || -z $G2_LIB4 ]] && {
-   echo "??? G2: module/environment not set."
+   echo "??? G2: module/environment not set." >&2
    exit 1
  }
 
@@ -97,6 +101,7 @@ set -x
               LIB_DIR4=..
               LIB_DIRd=..
               INCP_DIR=../include
+              [ -d $INCP_DIR ] || { mkdir -p $INCP_DIR; }
               INCP_DIR4=$INCP_DIR
               INCP_DIRd=$INCP_DIR
               SRC_DIR=
