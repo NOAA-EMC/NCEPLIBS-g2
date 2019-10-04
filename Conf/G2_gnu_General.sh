@@ -5,25 +5,8 @@
  ${USERMODE} && {
     echo "Environment set by user"
 # On theia/cray, user can load environment
-#   module load gcc/6.2.0
-# Or set environment on specific platform
-    gcc_version=6.2.0
-    gcc_topdir=/apps/gcc/$gcc_version
-    export PATH=$gcc_topdir/bin:$PATH
-    export LIBRARY_PATH=$gcc_topdir/lib64:$LIBRARY_PATH
-    export LD_LIBRARY_PATH=$gcc_topdir/lib64:$LD_LIBRARY_PATH
-    export INCLUDE=$gcc_topdir/include:$INCLUDE
-    export MANPATH=$gcc_topdir/share/man:$MANPATH
+    module load gcc/6.2.0
  }
-
- ANCHORDIR=..
- export COMP=gnu
- export G2_VER=v3.1.0
- export G2_SRC=
- export G2_INC4=$ANCHORDIR/include/g2_${G2_VER}_4
- export G2_INCd=$ANCHORDIR/include/g2_${G2_VER}_d
- export G2_LIB4=$ANCHORDIR/libg2_${G2_VER}_4.a
- export G2_LIBd=$ANCHORDIR/libg2_${G2_VER}_d.a
 
 #  JASPER, PNG and Z LIB in default system include *
 #  *** set nothing ***
