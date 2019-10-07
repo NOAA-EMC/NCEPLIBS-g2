@@ -1,1 +1,5 @@
 build
+*.swp
+*.mod
+*.o
+*.a
