@@ -11,9 +11,11 @@
  if [[ ${sys} == "intel_general" ]]; then
    sys6=${sys:6}
    source ./Conf/G2_${sys:0:5}_${sys6^}.sh
+   rinst=false
  elif [[ ${sys} == "gnu_general" ]]; then
    sys4=${sys:4}
    source ./Conf/G2_${sys:0:3}_${sys4^}.sh
+   rinst=false
  else
    source ./Conf/G2_intel_${sys^}.sh
  fi
@@ -21,9 +23,16 @@
    echo "??? G2: compilers not set." >&2
    exit 1
  }
- [[ -z $G2_VER || -z $G2_LIB4 ]] && {
-   echo "??? G2: module/environment not set." >&2
-   exit 1
+ [[ -z ${G2_VER+x} || -z ${G2_LIB4+x} ]] && {
+   [[ -z ${libver+x} || -z ${libver} ]] && {
+     echo "??? G2: \"libver\" not set." >&2
+     exit
+   }
+   G2_INC4=${libver}_4
+   G2_INCd=${libver}_d
+   G2_LIB4=lib${libver}_4.a
+   G2_LIBd=lib${libver}_d.a
+   G2_VER=v${libver##*_v}
  }
 
 set -x
@@ -36,7 +45,6 @@ set -x
  cd src
 #################
 
- $skip || {
 #-------------------------------------------------------------------
 # Start building libraries
 #
@@ -63,7 +71,6 @@ set -x
    $debg && make debug FFLAGS="$FFLAGSd" LIB=$g2Libd &> $g2Infod \
          || make build FFLAGS="$FFLAGSd" LIB=$g2Libd &> $g2Infod
    make message MSGSRC="$(gen_cfunction $g2Infod OneLined LibInfod)" LIB=$g2Libd
- }
 
  $inst && {
 #
@@ -71,35 +78,44 @@ set -x
 #
    $local && {
      instloc=..
-     LIB_DIR4=$instloc
-     LIB_DIRd=$instloc
+     LIB_DIR=$instloc/lib
      INCP_DIR=$instloc/include
+     [ -d $LIB_DIR ] || { mkdir -p $LIB_DIR; }
      [ -d $INCP_DIR ] || { mkdir -p $INCP_DIR; }
+     LIB_DIR4=$LIB_DIR
+     LIB_DIRd=$LIB_DIR
      INCP_DIR4=$INCP_DIR
      INCP_DIRd=$INCP_DIR
      SRC_DIR=
    } || {
-     [[ $instloc == --- ]] && {
+     $rinst && {
        LIB_DIR4=$(dirname ${G2_LIB4})
        LIB_DIRd=$(dirname ${G2_LIBd})
        INCP_DIR4=$(dirname $G2_INC4)
        INCP_DIRd=$(dirname $G2_INCd)
+       [ -d $G2_INC4 ] && { rm -rf $G2_INC4; } \
+                       || { mkdir -p $INCP_DIR4; }
+       [ -d $G2_INCd ] && { rm -rf $G2_INCd; } \
+                       || { mkdir -p $INCP_DIRd; }
        SRC_DIR=$G2_SRC
      } || {
-       LIB_DIR4=$instloc
-       LIB_DIRd=$instloc
+       LIB_DIR=$instloc/lib
+       LIB_DIR4=$LIB_DIR
+       LIB_DIRd=$LIB_DIR
        INCP_DIR=$instloc/include
        INCP_DIR4=$INCP_DIR
        INCP_DIRd=$INCP_DIR
-       SRC_DIR=$instloc/src
+       G2_INC4=$INCP_DIR4/$G2_INC4
+       G2_INCd=$INCP_DIRd/$G2_INCd
+       [ -d $G2_INC4 ] && { rm -rf $G2_INC4; } \
+                       || { mkdir -p $INCP_DIR4; }
+       [ -d $G2_INCd ] && { rm -rf $G2_INCd; } \
+                       || { mkdir -p $INCP_DIRd; }
+       SRC_DIR=$instloc/src/${libver}
        [[ $instloc == .. ]] && SRC_DIR=
      }
      [ -d $LIB_DIR4 ] || mkdir -p $LIB_DIR4
      [ -d $LIB_DIRd ] || mkdir -p $LIB_DIRd
-     [ -d $G2_INC4 ] && { rm -rf $G2_INC4; } \
-                     || { mkdir -p $INCP_DIR4; }
-     [ -d $G2_INCd ] && { rm -rf $G2_INCd; } \
-                     || { mkdir -p $INCP_DIRd; }
      [ -z $SRC_DIR ] || { [ -d $SRC_DIR ] || mkdir -p $SRC_DIR; }
    }
 

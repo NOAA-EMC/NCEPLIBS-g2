@@ -5,21 +5,8 @@
  ${USERMODE} && {
     echo "Environment set by user"
 # On theia/cray, user can load environment
-#   module load intel/18.0.1.163
-# Or set environment on specific platform
-    intel_version=2018.1.163
-    intel_topdir=/apps/intel/compilers_and_libraries_$intel_version
-    source $intel_topdir/linux/bin/compilervars.sh intel64
+    module load intel/18.0.1.163
  }
-
- ANCHORDIR=..
- export COMP=ips
- export G2_VER=v3.1.0
- export G2_SRC=
- export G2_INC4=$ANCHORDIR/include/g2_${G2_VER}_4
- export G2_INCd=$ANCHORDIR/include/g2_${G2_VER}_d
- export G2_LIB4=$ANCHORDIR/libg2_${G2_VER}_4.a
- export G2_LIBd=$ANCHORDIR/libg2_${G2_VER}_d.a
 
 #  JASPER, PNG and Z LIB in default system include *
 #  *** set nothing ***
