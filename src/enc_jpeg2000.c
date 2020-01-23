@@ -139,7 +139,7 @@ int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
     image.clrspc_=JAS_CLRSPC_SGRAY;         /* grayscale Image */
     image.cmprof_=0; 
 #endif
-    image.inmem_=1;
+    //    image.inmem_=1;
 
     cmpt.tlx_=0;
     cmpt.tly_=0;
