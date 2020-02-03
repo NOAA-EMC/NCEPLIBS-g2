@@ -60,26 +60,38 @@ endif()
 
 file(GLOB fortran_src ${CMAKE_CURRENT_SOURCE_DIR}/src/*.f)
 file(GLOB c_src ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
-set_source_files_properties(${c_src} PROPERTIES COMPILE_OPTIONS "${c_flags}")
-set_source_files_properties(${c_src} PROPERTIES COMPILE_DEFINITIONS "${c_definitions}")
 
 set(kinds "4" "d")
 foreach(kind ${kinds})
   set(lib_name ${PROJECT_NAME}_${kind})
   set(versioned_lib_name ${PROJECT_NAME}_v${PROJECT_VERSION}_${kind})
-  add_library(${lib_name} STATIC ${fortran_src} ${c_src})
+
+
+  add_library(${lib_name}_f OBJECT ${fortran_src})
+  set_target_properties(${lib_name}_f PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  set_target_properties(${lib_name}_f PROPERTIES
+    COMPILE_OPTIONS "${shared_fortran_flags};${fortran_${kind}_flags}")
+
+  add_library(${lib_name}_c OBJECT ${c_src})
+  set_target_properties(${lib_name}_c PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  set_target_properties(${lib_name}_c PROPERTIES
+    COMPILE_OPTIONS "${c_flags}")
+  set_target_properties(${lib_name}_c PROPERTIES
+    COMPILE_DEFINITIONS "${c_definitions}")
+
+  target_include_directories(${lib_name}_f PRIVATE
+    ${ZLIB_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${JASPER_INCLUDE_DIR})
+  target_include_directories(${lib_name}_c PRIVATE
+    ${ZLIB_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${JASPER_INCLUDE_DIR})
+
+  set(module_dir "${CMAKE_CURRENT_BINARY_DIR}/include_${kind}")
+  set_target_properties(${lib_name}_f PROPERTIES Fortran_MODULE_DIRECTORY "${module_dir}")
+  set_target_properties(${lib_name}_c PROPERTIES Fortran_MODULE_DIRECTORY "${module_dir}")
+
+  add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
 
   set_target_properties(${lib_name} PROPERTIES OUTPUT_NAME "${versioned_lib_name}")
-  
-  set_source_files_properties(${fortran_src} PROPERTIES
-    COMPILE_OPTIONS "${shared_fortran_flags};${fortran_${kind}_flags}")
-  
-  set(module_dir "${CMAKE_CURRENT_BINARY_DIR}/include_${kind}")
-  set_target_properties(${lib_name} PROPERTIES Fortran_MODULE_DIRECTORY "${module_dir}")
 
-  target_include_directories(${lib_name} PRIVATE
-    ${ZLIB_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${JASPER_INCLUDE_DIR})
-  
   target_include_directories(${lib_name} PUBLIC
     $<BUILD_INTERFACE:${module_dir}>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include_${kind}>)
