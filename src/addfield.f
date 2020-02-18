@@ -140,7 +140,7 @@
 !
 ! Get current length of GRIB message
 !
-      call gbyte(cgrib,lencurr,96,32)
+      call g2_gbyte(cgrib,lencurr,96,32)
 !
 ! Check to see if GRIB message is already complete
 !
@@ -162,9 +162,9 @@
       do
       ! Get number and length of next section
         iofst=len*8
-        call gbyte(cgrib,ilen,iofst,32)
+        call g2_gbyte(cgrib,ilen,iofst,32)
         iofst=iofst+32
-        call gbyte(cgrib,isecnum,iofst,8)
+        call g2_gbyte(cgrib,isecnum,iofst,8)
         iofst=iofst+8
       ! Check if previous Section 3 exists and save location of
       ! the section 3 in case needed later.
@@ -175,7 +175,7 @@
         endif
       ! Check if a previous defined bitmap exists
         if (isecnum.eq.6) then
-          call gbyte(cgrib,ibmprev,iofst,8)
+          call g2_gbyte(cgrib,ibmprev,iofst,8)
           iofst=iofst+8
           if ((ibmprev.ge.0).and.(ibmprev.le.253)) isprevbmap=.true.
         endif
@@ -220,11 +220,11 @@
 !
       ibeg=lencurr*8 ! Calculate offset for beginning of section 4
       iofst=ibeg+32 ! leave space for length of section
-      call sbyte(cgrib,four,iofst,8) ! Store section number ( 4 )
+      call g2_sbyte(cgrib,four,iofst,8) ! Store section number ( 4 )
       iofst=iofst+8
-      call sbyte(cgrib,numcoord,iofst,16) ! Store num of coordinate values
+      call g2_sbyte(cgrib,numcoord,iofst,16) ! Store num of coordinate values
       iofst=iofst+16
-      call sbyte(cgrib,ipdsnum,iofst,16) ! Store Prod Def Template num.
+      call g2_sbyte(cgrib,ipdsnum,iofst,16) ! Store Prod Def Template num.
       iofst=iofst+16
       !
       ! Get Product Definition Template
@@ -251,10 +251,10 @@
       do i=1,mappdslen
         nbits=iabs(mappds(i))*8
         if ( (mappds(i).ge.0).or.(ipdstmpl(i).ge.0) ) then
-          call sbyte(cgrib,ipdstmpl(i),iofst,nbits)
+          call g2_sbyte(cgrib,ipdstmpl(i),iofst,nbits)
         else
-          call sbyte(cgrib,one,iofst,1)
-          call sbyte(cgrib,iabs(ipdstmpl(i)),iofst+1,nbits-1)
+          call g2_sbyte(cgrib,one,iofst,1)
+          call g2_sbyte(cgrib,iabs(ipdstmpl(i)),iofst+1,nbits-1)
         endif
         iofst=iofst+nbits
       enddo
@@ -264,7 +264,7 @@
       !
       if ( numcoord .ne. 0 ) then
         call mkieee(coordlist,coordieee,numcoord)
-        call sbytes(cgrib,coordieee,iofst,32,0,numcoord)
+        call g2_sbytes(cgrib,coordieee,iofst,32,0,numcoord)
         iofst=iofst+(32*numcoord)
       endif
       !
@@ -272,7 +272,7 @@
       ! 1-4 of section 4.
       !
       lensec4=(iofst-ibeg)/8
-      call sbyte(cgrib,lensec4,ibeg,32)
+      call g2_sbyte(cgrib,lensec4,ibeg,32)
 !
 ! Pack Data using appropriate algorithm
 !
@@ -317,7 +317,7 @@
       elseif (idrsnum.eq.50) then ! Sperical Harmonic Simple Packing
         call simpack(pfld(2),ndpts-1,idrstmpl,cpack,lcpack)
         call mkieee(real(pfld(1)),re00,1) ! ensure RE(0,0) value is IEEE format
-        !call gbyte(re00,idrstmpl(5),0,32)
+        !call g2_gbyte(re00,idrstmpl(5),0,32)
         ire00=transfer(re00,ire00)
         idrstmpl(5)=ire00
       elseif (idrsnum.eq.51) then ! Sperical Harmonic Complex Packing
@@ -401,11 +401,11 @@
 !
       ibeg=iofst ! Calculate offset for beginning of section 5
       iofst=ibeg+32 ! leave space for length of section
-      call sbyte(cgrib,five,iofst,8) ! Store section number ( 5 )
+      call g2_sbyte(cgrib,five,iofst,8) ! Store section number ( 5 )
       iofst=iofst+8
-      call sbyte(cgrib,ndpts,iofst,32) ! Store num of actual data points
+      call g2_sbyte(cgrib,ndpts,iofst,32) ! Store num of actual data points
       iofst=iofst+32
-      call sbyte(cgrib,idrsnum,iofst,16) ! Store Data Repr. Template num.
+      call g2_sbyte(cgrib,idrsnum,iofst,16) ! Store Data Repr. Template num.
       iofst=iofst+16
       !
       ! Pack up each input value in array idrstmpl into the
@@ -415,10 +415,10 @@
       do i=1,mapdrslen
         nbits=iabs(mapdrs(i))*8
         if ( (mapdrs(i).ge.0).or.(idrstmpl(i).ge.0) ) then
-          call sbyte(cgrib,idrstmpl(i),iofst,nbits)
+          call g2_sbyte(cgrib,idrstmpl(i),iofst,nbits)
         else
-          call sbyte(cgrib,one,iofst,1)
-          call sbyte(cgrib,iabs(idrstmpl(i)),iofst+1,nbits-1)
+          call g2_sbyte(cgrib,one,iofst,1)
+          call g2_sbyte(cgrib,iabs(idrstmpl(i)),iofst+1,nbits-1)
         endif
         iofst=iofst+nbits
       enddo
@@ -427,22 +427,22 @@
       ! 1-4 of section 5.
       !
       lensec5=(iofst-ibeg)/8
-      call sbyte(cgrib,lensec5,ibeg,32)
+      call g2_sbyte(cgrib,lensec5,ibeg,32)
 
 !
 ! Add Section 6 - Bit-Map Section
 !
       ibeg=iofst ! Calculate offset for beginning of section 6
       iofst=ibeg+32 ! leave space for length of section
-      call sbyte(cgrib,six,iofst,8) ! Store section number ( 6 )
+      call g2_sbyte(cgrib,six,iofst,8) ! Store section number ( 6 )
       iofst=iofst+8
-      call sbyte(cgrib,ibmap,iofst,8) ! Store Bit Map indicator
+      call g2_sbyte(cgrib,ibmap,iofst,8) ! Store Bit Map indicator
       iofst=iofst+8
       !
       ! Store bitmap, if supplied
       !
       if (ibmap.eq.0) then
-        call sbytes(cgrib,intbmap,iofst,1,0,ngrdpts) ! Store BitMap
+        call g2_sbytes(cgrib,intbmap,iofst,1,0,ngrdpts) ! Store BitMap
         iofst=iofst+ngrdpts
       endif
       !
@@ -461,18 +461,18 @@
       !
       left=8-mod(iofst,8)
       if (left.ne.8) then
-        call sbyte(cgrib,zero,iofst,left) ! Pad with zeros to fill Octet
+        call g2_sbyte(cgrib,zero,iofst,left) ! Pad with zeros to fill Octet
         iofst=iofst+left
       endif
       lensec6=(iofst-ibeg)/8
-      call sbyte(cgrib,lensec6,ibeg,32)
+      call g2_sbyte(cgrib,lensec6,ibeg,32)
 
 !
 ! Add Section 7 - Data Section
 !
       ibeg=iofst ! Calculate offset for beginning of section 7
       iofst=ibeg+32 ! leave space for length of section
-      call sbyte(cgrib,seven,iofst,8) ! Store section number ( 7 )
+      call g2_sbyte(cgrib,seven,iofst,8) ! Store section number ( 7 )
       iofst=iofst+8
       ! Store Packed Binary Data values, if non-constant field
       if (lcpack.ne.0) then
@@ -485,14 +485,14 @@
       ! 1-4 of section 7.
       !
       lensec7=(iofst-ibeg)/8
-      call sbyte(cgrib,lensec7,ibeg,32)
+      call g2_sbyte(cgrib,lensec7,ibeg,32)
 
       if( allocated(cpack) )deallocate(cpack)
 !
 ! Update current byte total of message in Section 0
 !
       newlen=lencurr+lensec4+lensec5+lensec6+lensec7
-      call sbyte(cgrib,newlen,96,32)
+      call g2_sbyte(cgrib,newlen,96,32)
 
       return
       end

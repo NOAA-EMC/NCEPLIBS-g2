@@ -64,38 +64,38 @@ C  EXTRACT GRIB MESSAGE FROM FILE
       IF ( EXTRACT ) THEN
          LEN0=16
          LEN8=4
-         CALL GBYTE(CINDEX,ISKIP,4*8,4*8)    ! BYTES TO SKIP IN FILE
-         CALL GBYTE(CINDEX,ISKP2,8*8,4*8)    ! BYTES TO SKIP FOR section 2
+         CALL G2_GBYTE(CINDEX,ISKIP,4*8,4*8)    ! BYTES TO SKIP IN FILE
+         CALL G2_GBYTE(CINDEX,ISKP2,8*8,4*8)    ! BYTES TO SKIP FOR section 2
          if ( iskp2 .gt. 0 ) then
             CALL BAREAD(LUGB,ISKIP+ISKP2,4,LREAD,ctemp)
-            CALL GBYTE(Ctemp,LEN2,0,4*8)      ! LENGTH OF SECTION 2
+            CALL G2_GBYTE(Ctemp,LEN2,0,4*8)      ! LENGTH OF SECTION 2
             ALLOCATE(csec2(len2))
             CALL BAREAD(LUGB,ISKIP+ISKP2,LEN2,LREAD,csec2)
          else
             LEN2=0
          endif
-         CALL GBYTE(CINDEX,LEN1,44*8,4*8)      ! LENGTH OF SECTION 1
+         CALL G2_GBYTE(CINDEX,LEN1,44*8,4*8)      ! LENGTH OF SECTION 1
          IPOS=44+LEN1
-         CALL GBYTE(CINDEX,LEN3,IPOS*8,4*8)      ! LENGTH OF SECTION 3
+         CALL G2_GBYTE(CINDEX,LEN3,IPOS*8,4*8)      ! LENGTH OF SECTION 3
          IPOS=IPOS+LEN3
-         CALL GBYTE(CINDEX,LEN4,IPOS*8,4*8)      ! LENGTH OF SECTION 4
+         CALL G2_GBYTE(CINDEX,LEN4,IPOS*8,4*8)      ! LENGTH OF SECTION 4
          IPOS=IPOS+LEN4
-         CALL GBYTE(CINDEX,LEN5,IPOS*8,4*8)      ! LENGTH OF SECTION 5
+         CALL G2_GBYTE(CINDEX,LEN5,IPOS*8,4*8)      ! LENGTH OF SECTION 5
          IPOS=IPOS+LEN5
-         CALL GBYTE(CINDEX,LEN6,IPOS*8,4*8)      ! LENGTH OF SECTION 6
+         CALL G2_GBYTE(CINDEX,LEN6,IPOS*8,4*8)      ! LENGTH OF SECTION 6
          IPOS=IPOS+5
-         CALL GBYTE(CINDEX,IBMAP,IPOS*8,1*8)      ! Bitmap indicator
+         CALL G2_GBYTE(CINDEX,IBMAP,IPOS*8,1*8)      ! Bitmap indicator
          IF ( IBMAP .eq. 254 ) THEN
-            CALL GBYTE(CINDEX,ISKP6,24*8,4*8)    ! BYTES TO SKIP FOR section 6
+            CALL G2_GBYTE(CINDEX,ISKP6,24*8,4*8)    ! BYTES TO SKIP FOR section 6
             CALL BAREAD(LUGB,ISKIP+ISKP6,4,LREAD,ctemp)
-            CALL GBYTE(Ctemp,LEN6,0,4*8)      ! LENGTH OF SECTION 6
+            CALL G2_GBYTE(Ctemp,LEN6,0,4*8)      ! LENGTH OF SECTION 6
          ENDIF
          !
          !  READ IN SECTION 7 from file
          !
-         CALL GBYTE(CINDEX,ISKP7,28*8,4*8)    ! BYTES TO SKIP FOR section 7
+         CALL G2_GBYTE(CINDEX,ISKP7,28*8,4*8)    ! BYTES TO SKIP FOR section 7
          CALL BAREAD(LUGB,ISKIP+ISKP7,4,LREAD,ctemp)
-         CALL GBYTE(Ctemp,LEN7,0,4*8)      ! LENGTH OF SECTION 7
+         CALL G2_GBYTE(Ctemp,LEN7,0,4*8)      ! LENGTH OF SECTION 7
          ALLOCATE(csec7(len7))
          CALL BAREAD(LUGB,ISKIP+ISKP7,LEN7,LREAD,csec7)
 
@@ -116,7 +116,7 @@ C  EXTRACT GRIB MESSAGE FROM FILE
          GRIBM(10)=CHAR(0)
          GRIBM(11)=CHAR(0)
          GRIBM(12)=CHAR(0)
-         CALL SBYTE(GRIBM,LENG,12*8,4*8)
+         CALL G2_SBYTE(GRIBM,LENG,12*8,4*8)
          !
          ! Copy Section 1
          !
@@ -144,9 +144,9 @@ C  EXTRACT GRIB MESSAGE FROM FILE
             GRIBM(lencur+1:lencur+LEN6)=CINDEX(ipos+1:ipos+LEN6)
             lencur=lencur+LEN6
          else
-            CALL GBYTE(CINDEX,ISKP6,24*8,4*8)    ! BYTES TO SKIP FOR section 6
+            CALL G2_GBYTE(CINDEX,ISKP6,24*8,4*8)    ! BYTES TO SKIP FOR section 6
             CALL BAREAD(LUGB,ISKIP+ISKP6,4,LREAD,ctemp)
-            CALL GBYTE(Ctemp,LEN6,0,4*8)      ! LENGTH OF SECTION 6
+            CALL G2_GBYTE(Ctemp,LEN6,0,4*8)      ! LENGTH OF SECTION 6
             ALLOCATE(csec6(len6))
             CALL BAREAD(LUGB,ISKIP+ISKP6,LEN6,LREAD,csec6)
             GRIBM(lencur+1:lencur+LEN6)=csec6(1:LEN6)
@@ -173,8 +173,8 @@ C  EXTRACT GRIB MESSAGE FROM FILE
 
       ELSE    ! DO NOT extract field from message :  Get entire message
 
-         CALL GBYTE(CINDEX,ISKIP,4*8,4*8)    ! BYTES TO SKIP IN FILE
-         CALL GBYTE(CINDEX,LENG,36*8,4*8)      ! LENGTH OF GRIB MESSAGE
+         CALL G2_GBYTE(CINDEX,ISKIP,4*8,4*8)    ! BYTES TO SKIP IN FILE
+         CALL G2_GBYTE(CINDEX,LENG,36*8,4*8)      ! LENGTH OF GRIB MESSAGE
          IF (.NOT. ASSOCIATED(GRIBM)) ALLOCATE(GRIBM(LENG))
          CALL BAREAD(LUGB,ISKIP,LENG,LREAD,GRIBM)
          IF ( LENG .NE. LREAD ) THEN

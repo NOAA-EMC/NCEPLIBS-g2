@@ -127,12 +127,12 @@
 !  Unpack Section 0 - Indicator Section 
 !
       iofst=8*(istart+5)
-      call gbyte(cgrib,listsec0(1),iofst,8)     ! Discipline
+      call g2_gbyte(cgrib,listsec0(1),iofst,8)     ! Discipline
       iofst=iofst+8
-      call gbyte(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
+      call g2_gbyte(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
       iofst=iofst+8
       iofst=iofst+32
-      call gbyte(cgrib,lengrib,iofst,32)        ! Length of GRIB message
+      call g2_gbyte(cgrib,lengrib,iofst,32)        ! Length of GRIB message
       iofst=iofst+32
       listsec0(3)=lengrib
       lensec0=16
@@ -148,9 +148,9 @@
 !
 !  Unpack Section 1 - Identification Section
 !
-      call gbyte(cgrib,lensec1,iofst,32)        ! Length of Section 1
+      call g2_gbyte(cgrib,lensec1,iofst,32)        ! Length of Section 1
       iofst=iofst+32
-      call gbyte(cgrib,isecnum,iofst,8)         ! Section number ( 1 )
+      call g2_gbyte(cgrib,isecnum,iofst,8)         ! Section number ( 1 )
       iofst=iofst+8
       if (isecnum.ne.1) then
         print *,'gribinfo: Could not find section 1.'
@@ -164,7 +164,7 @@
       !
       do i=1,mapsec1len
         nbits=mapsec1(i)*8
-        call gbyte(cgrib,listsec1(i),iofst,nbits)
+        call g2_gbyte(cgrib,listsec1(i),iofst,nbits)
         iofst=iofst+nbits
       enddo
       ipos=ipos+lensec1
@@ -185,9 +185,9 @@
           exit
         endif
         iofst=(ipos-1)*8
-        call gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+        call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
         iofst=iofst+32
-        call gbyte(cgrib,isecnum,iofst,8)         ! Get Section number
+        call g2_gbyte(cgrib,isecnum,iofst,8)         ! Get Section number
         iofst=iofst+8
         ipos=ipos+lensec                 ! Update beginning of section pointer
         if (ipos.gt.(istart+lengrib)) then
@@ -203,9 +203,9 @@
            if ( lenposs.gt.maxsec2len ) maxsec2len=lenposs
         elseif (isecnum.eq.3) then
            iofst=iofst+8                      ! skip source of grid def.
-           call gbyte(cgrib,ngdpts,iofst,32)         ! Get Num of Grid Points
+           call g2_gbyte(cgrib,ngdpts,iofst,32)         ! Get Num of Grid Points
            iofst=iofst+32
-           call gbyte(cgrib,nbyte,iofst,8)      ! Get Num octets for opt. list
+           call g2_gbyte(cgrib,nbyte,iofst,8)      ! Get Num octets for opt. list
            iofst=iofst+8
            if (ngdpts.gt.maxgridpts) maxgridpts=ngdpts
            lenposs=lensec-14
@@ -216,7 +216,7 @@
            endif
         elseif (isecnum.eq.4) then
           numfields=numfields+1
-           call gbyte(cgrib,numcoord,iofst,16)      ! Get Num of Coord Values
+           call g2_gbyte(cgrib,numcoord,iofst,16)      ! Get Num of Coord Values
            iofst=iofst+16
            if (numcoord.ne.0) then
               if (numcoord.gt.maxcoordlist) maxcoordlist=numcoord

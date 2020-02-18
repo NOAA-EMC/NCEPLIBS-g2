@@ -66,7 +66,7 @@
 !
 !  Get current length of GRIB message
 !  
-      call gbyte(cgrib,lencurr,96,32)
+      call g2_gbyte(cgrib,lencurr,96,32)
 !
 !  Check to see if GRIB message is already complete
 !  
@@ -86,9 +86,9 @@
       do 
       !    Get section number and length of next section
         iofst=len*8
-        call gbyte(cgrib,ilen,iofst,32)
+        call g2_gbyte(cgrib,ilen,iofst,32)
         iofst=iofst+32
-        call gbyte(cgrib,isecnum,iofst,8)
+        call g2_gbyte(cgrib,isecnum,iofst,8)
         len=len+ilen
       !    Exit loop if last section reached
         if ( len.eq.lencurr ) exit
@@ -118,7 +118,7 @@
 !
       ibeg=lencurr*8        !   Calculate offset for beginning of section 2
       iofst=ibeg+32         !   leave space for length of section
-      call sbyte(cgrib,two,iofst,8)     ! Store section number ( 2 )
+      call g2_sbyte(cgrib,two,iofst,8)     ! Store section number ( 2 )
       istart=lencurr+5
       cgrib(istart+1:istart+lcsec2)=csec2(1:lcsec2)
       !
@@ -126,12 +126,12 @@
       !   1-4 of section 2.
       !
       lensec2=lcsec2+5      ! bytes
-      call sbyte(cgrib,lensec2,ibeg,32)
+      call g2_sbyte(cgrib,lensec2,ibeg,32)
 
 !
 !  Update current byte total of message in Section 0
 !
-      call sbyte(cgrib,lencurr+lensec2,96,32)
+      call g2_sbyte(cgrib,lencurr+lensec2,96,32)
 
       return
       end

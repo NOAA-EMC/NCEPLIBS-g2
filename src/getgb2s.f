@@ -266,7 +266,7 @@ C   needed, by an explicit call to subroutine gf_free.
 C   ( i.e.   CALL GF_FREE(GFLD) )
 C
 C SUBPROGRAMS CALLED:
-C   GBYTE            UNPACK BYTES
+C   G2_GBYTE            UNPACK BYTES
 C   GF_UNPACK1          UNPACK IDS
 C   GF_UNPACK4          UNPACK PDS
 C   GF_UNPACK3          UNPACK GDS
@@ -341,7 +341,7 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  SEARCH FOR REQUEST
       DOWHILE(IRET.NE.0.AND.K.LT.NNUM)
         K=K+1
-        CALL GBYTE(CBUF,INLEN,IPOS*8,4*8)    ! GET LENGTH OF CURRENT
+        CALL G2_GBYTE(CBUF,INLEN,IPOS*8,4*8)    ! GET LENGTH OF CURRENT
                                               ! INDEX RECORD
         IF ( K.LE.J ) THEN           ! SKIP THIS INDEX
            IPOS=IPOS+INLEN
@@ -349,7 +349,7 @@ C  SEARCH FOR REQUEST
         ENDIF
 C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  CHECK IF GRIB2 DISCIPLINE IS A MATCH
-        CALL GBYTE(CBUF,GFLD%DISCIPLINE,(IPOS+41)*8,1*8)
+        CALL G2_GBYTE(CBUF,GFLD%DISCIPLINE,(IPOS+41)*8,1*8)
         IF ( (JDISC.NE.-1).AND.(JDISC.NE.GFLD%DISCIPLINE) ) THEN
            IPOS=IPOS+INLEN
            CYCLE
@@ -357,7 +357,7 @@ C  CHECK IF GRIB2 DISCIPLINE IS A MATCH
 C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  CHECK IF IDENTIFICATION SECTION IS A MATCH
         MATCH1=.FALSE.
-        CALL GBYTE(CBUF,LSEC1,(IPOS+44)*8,4*8)  ! GET LENGTH OF IDS 
+        CALL G2_GBYTE(CBUF,LSEC1,(IPOS+44)*8,4*8)  ! GET LENGTH OF IDS 
         IOF=0
         CALL GF_UNPACK1(CBUF(IPOS+45),LSEC1,IOF,GFLD%IDSECT,
      &                  GFLD%IDSECTLEN,ICND)
@@ -380,11 +380,11 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  CHECK IF GRID DEFINITION TEMPLATE IS A MATCH
         JPOS=IPOS+44+LSEC1
         MATCH3=.FALSE.
-        CALL GBYTE(CBUF,LSEC3,JPOS*8,4*8)  ! GET LENGTH OF GDS 
+        CALL G2_GBYTE(CBUF,LSEC3,JPOS*8,4*8)  ! GET LENGTH OF GDS 
         IF ( JGDTN.EQ.-1 ) THEN
            MATCH3=.TRUE.
         ELSE
-           CALL GBYTE(CBUF,NUMGDT,(JPOS+12)*8,2*8)  ! GET GDT TEMPLATE NO.
+           CALL G2_GBYTE(CBUF,NUMGDT,(JPOS+12)*8,2*8)  ! GET GDT TEMPLATE NO.
            IF ( JGDTN.EQ.NUMGDT ) THEN
               IOF=0
               CALL GF_UNPACK3(CBUF(JPOS+1),LSEC3,IOF,KGDS,GFLD%IGDTMPL,
@@ -419,11 +419,11 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  CHECK IF PRODUCT DEFINITION TEMPLATE IS A MATCH
         JPOS=JPOS+LSEC3
         MATCH4=.FALSE.
-        CALL GBYTE(CBUF,LSEC4,JPOS*8,4*8)  ! GET LENGTH OF PDS 
+        CALL G2_GBYTE(CBUF,LSEC4,JPOS*8,4*8)  ! GET LENGTH OF PDS 
         IF ( JPDTN.EQ.-1 ) THEN
            MATCH4=.TRUE.
         ELSE
-           CALL GBYTE(CBUF,NUMPDT,(JPOS+7)*8,2*8)  ! GET PDT TEMPLATE NO.
+           CALL G2_GBYTE(CBUF,NUMPDT,(JPOS+7)*8,2*8)  ! GET PDT TEMPLATE NO.
            IF ( JPDTN.EQ.NUMPDT ) THEN
               IOF=0
               CALL GF_UNPACK4(CBUF(JPOS+1),LSEC4,IOF,GFLD%IPDTNUM,
@@ -452,8 +452,8 @@ C  IF REQUEST IS FOUND
 C  SET VALUES FOR DERIVED TYPE GFLD AND RETURN
         IF(MATCH1.AND.MATCH3.AND.MATCH4) THEN
            LPOS=IPOS+1
-           CALL GBYTE(CBUF,GFLD%VERSION,(IPOS+40)*8,1*8)
-           CALL GBYTE(CBUF,GFLD%IFLDNUM,(IPOS+42)*8,2*8)
+           CALL G2_GBYTE(CBUF,GFLD%VERSION,(IPOS+40)*8,1*8)
+           CALL G2_GBYTE(CBUF,GFLD%IFLDNUM,(IPOS+42)*8,2*8)
            GFLD%UNPACKED=.FALSE.
            JPOS=IPOS+44+LSEC1
            IF ( JGDTN.EQ.-1 ) THEN     ! UNPACK GDS, IF NOT DONE BEFORE
@@ -474,13 +474,13 @@ C  SET VALUES FOR DERIVED TYPE GFLD AND RETURN
      &                        GFLD%COORD_LIST,GFLD%NUM_COORD,ICND)
            ENDIF
            JPOS=JPOS+LSEC4
-           CALL GBYTE(CBUF,LSEC5,JPOS*8,4*8)  ! GET LENGTH OF DRS 
+           CALL G2_GBYTE(CBUF,LSEC5,JPOS*8,4*8)  ! GET LENGTH OF DRS 
            IOF=0
            CALL GF_UNPACK5(CBUF(JPOS+1),LSEC5,IOF,GFLD%NDPTS,
      &                     GFLD%IDRTNUM,GFLD%IDRTMPL,
      &                     GFLD%IDRTLEN,ICND)
            JPOS=JPOS+LSEC5
-           CALL GBYTE(CBUF,GFLD%IBMAP,(JPOS+5)*8,1*8)  ! GET IBMAP
+           CALL G2_GBYTE(CBUF,GFLD%IBMAP,(JPOS+5)*8,1*8)  ! GET IBMAP
            IRET=0
         ELSE      ! PDT DID NOT MATCH
            IPOS=IPOS+INLEN

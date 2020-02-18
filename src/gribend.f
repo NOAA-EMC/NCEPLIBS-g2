@@ -62,7 +62,7 @@
 !
 !  Get current length of GRIB message
 !  
-      call gbyte(cgrib,lencurr,96,32)
+      call g2_gbyte(cgrib,lencurr,96,32)
 !
 !  Check to see if GRIB message is already complete
 !
@@ -81,9 +81,9 @@
       do 
       !    Get number and length of next section
         iofst=len*8
-        call gbyte(cgrib,ilen,iofst,32)
+        call g2_gbyte(cgrib,ilen,iofst,32)
         iofst=iofst+32
-        call gbyte(cgrib,isecnum,iofst,8)
+        call g2_gbyte(cgrib,isecnum,iofst,8)
         len=len+ilen
       !    Exit loop if last section reached
         if ( len.eq.lencurr ) exit
@@ -116,7 +116,7 @@
 !  Update current byte total of message in Section 0
 !
       lengrib=lencurr+4
-      call sbyte(cgrib,lengrib,96,32)
+      call g2_sbyte(cgrib,lengrib,96,32)
 
       return
       end

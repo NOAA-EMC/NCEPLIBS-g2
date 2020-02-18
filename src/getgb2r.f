@@ -228,16 +228,16 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  GET INFO
       NULLIFY(gfld%bmap,gfld%fld)
       IRET=0
-      CALL GBYTE(CINDEX,LSKIP,4*8,4*8)
-      CALL GBYTE(CINDEX,SKIP6,24*8,4*8)
-      CALL GBYTE(CINDEX,SKIP7,28*8,4*8)
+      CALL G2_GBYTE(CINDEX,LSKIP,4*8,4*8)
+      CALL G2_GBYTE(CINDEX,SKIP6,24*8,4*8)
+      CALL G2_GBYTE(CINDEX,SKIP7,28*8,4*8)
 
 C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  READ AND UNPACK BIT_MAP, IF PRESENT
       IF ( gfld%ibmap.eq.0.OR.gfld%ibmap.eq.254 ) THEN
          ISKIP=LSKIP+SKIP6
          CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
-         CALL GBYTE(CSIZE,ILEN,0,32)
+         CALL G2_GBYTE(CSIZE,ILEN,0,32)
          ALLOCATE(CTEMP(ILEN))
          CALL BAREAD(LUGB,ISKIP,ILEN,LREAD,CTEMP)  ! READ IN SECTION
          IF (ILEN.NE.LREAD) THEN
@@ -259,7 +259,7 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  READ AND UNPACK DATA FIELD 
       ISKIP=LSKIP+SKIP7
       CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
-      CALL GBYTE(CSIZE,ILEN,0,32)
+      CALL G2_GBYTE(CSIZE,ILEN,0,32)
       if (ilen.lt.6) ilen=6
       ALLOCATE(CTEMP(ILEN))
       CALL BAREAD(LUGB,ISKIP,ILEN,LREAD,CTEMP)  ! READ IN SECTION

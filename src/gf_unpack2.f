@@ -44,10 +44,10 @@
       lencsec2=0
       nullify(csec2)
 
-      call gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+      call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32    
       lencsec2=lensec-5
-      call gbyte(cgrib,isecnum,iofst,8)         ! Get Section Number
+      call g2_gbyte(cgrib,isecnum,iofst,8)         ! Get Section Number
       iofst=iofst+8     
       ipos=(iofst/8)+1
 

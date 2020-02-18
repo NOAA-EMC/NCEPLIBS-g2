@@ -191,34 +191,34 @@
            if (nbitsd.ne.0) then
               !   pack first original value
               if (ival1.ge.0) then
-                 call sbyte(cpack,ival1,iofst,nbitsd)
+                 call g2_sbyte(cpack,ival1,iofst,nbitsd)
                  iofst=iofst+nbitsd
               else
-                 call sbyte(cpack,1,iofst,1)
+                 call g2_sbyte(cpack,1,iofst,1)
                  iofst=iofst+1
-                 call sbyte(cpack,iabs(ival1),iofst,nbitsd-1)
+                 call g2_sbyte(cpack,iabs(ival1),iofst,nbitsd-1)
                  iofst=iofst+nbitsd-1
               endif
               if (idrstmpl(17).eq.2) then
                !  pack second original value
                  if (ival2.ge.0) then
-                    call sbyte(cpack,ival2,iofst,nbitsd)
+                    call g2_sbyte(cpack,ival2,iofst,nbitsd)
                     iofst=iofst+nbitsd
                  else
-                    call sbyte(cpack,1,iofst,1)
+                    call g2_sbyte(cpack,1,iofst,1)
                     iofst=iofst+1
-                    call sbyte(cpack,iabs(ival2),iofst,nbitsd-1)
+                    call g2_sbyte(cpack,iabs(ival2),iofst,nbitsd-1)
                     iofst=iofst+nbitsd-1
                  endif
               endif
               !  pack overall min of spatial differences
               if (minsd.ge.0) then
-                 call sbyte(cpack,minsd,iofst,nbitsd)
+                 call g2_sbyte(cpack,minsd,iofst,nbitsd)
                  iofst=iofst+nbitsd
               else
-                 call sbyte(cpack,1,iofst,1)
+                 call g2_sbyte(cpack,1,iofst,1)
                  iofst=iofst+1
-                 call sbyte(cpack,iabs(minsd),iofst,nbitsd-1)
+                 call g2_sbyte(cpack,iabs(minsd),iofst,nbitsd-1)
                  iofst=iofst+nbitsd-1
               endif
            endif
@@ -323,12 +323,12 @@
         igmax=maxval(gref(1:ngroups))
         if (igmax.ne.0) then
            nbitsgref=i1log2(igmax)
-           call sbytes(cpack,gref,iofst,nbitsgref,0,ngroups)
+           call g2_sbytes(cpack,gref,iofst,nbitsgref,0,ngroups)
            itemp=nbitsgref*ngroups
            iofst=iofst+itemp
            if (mod(itemp,8).ne.0) then
               left=8-mod(itemp,8)
-              call sbyte(cpack,zero,iofst,left)
+              call g2_sbyte(cpack,zero,iofst,left)
               iofst=iofst+left
            endif
         else
@@ -351,13 +351,13 @@
                  stop 9
               endif
            enddo
-           call sbytes(cpack,gwidth,iofst,nbitsgwidth,0,ngroups)
+           call g2_sbytes(cpack,gwidth,iofst,nbitsgwidth,0,ngroups)
            itemp=nbitsgwidth*ngroups
            iofst=iofst+itemp
            !         Pad last octet with Zeros, if necessary,
            if (mod(itemp,8).ne.0) then
               left=8-mod(itemp,8)
-              call sbyte(cpack,zero,iofst,left)
+              call g2_sbyte(cpack,zero,iofst,left)
               iofst=iofst+left
            endif
         else
@@ -382,13 +382,13 @@
                  stop 23
               endif
            enddo
-           call sbytes(cpack,glen,iofst,nbitsglen,0,ngroups)
+           call g2_sbytes(cpack,glen,iofst,nbitsglen,0,ngroups)
            itemp=nbitsglen*ngroups
            iofst=iofst+itemp
            !         Pad last octet with Zeros, if necessary,
            if (mod(itemp,8).ne.0) then
               left=8-mod(itemp,8)
-              call sbyte(cpack,zero,iofst,left)
+              call g2_sbyte(cpack,zero,iofst,left)
               iofst=iofst+left
            endif
         else
@@ -407,7 +407,7 @@
            grpwidth=gwidth(ng)+ngwidthref
        !write(77,*)'NGP ',ng,grpwidth,glength,gref(ng)
            if ( grpwidth.ne.0 ) then
-              call sbytes(cpack,ifld(n),iofst,grpwidth,0,glength)
+              call g2_sbytes(cpack,ifld(n),iofst,grpwidth,0,glength)
               iofst=iofst+(grpwidth*glength)
            endif
            do kk=1,glength
@@ -419,7 +419,7 @@
         !         Pad last octet with Zeros, if necessary,
         if (mod(iofst,8).ne.0) then
            left=8-mod(iofst,8)
-           call sbyte(cpack,zero,iofst,left)
+           call g2_sbyte(cpack,zero,iofst,left)
            iofst=iofst+left
         endif
         lcpack=iofst/8
@@ -445,7 +445,7 @@
 !
       rmin4 = rmin
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
-!      call gbyte(ref,idrstmpl(1),0,32)
+!      call g2_gbyte(ref,idrstmpl(1),0,32)
       iref=transfer(ref,iref)
       idrstmpl(1)=iref
       idrstmpl(4)=nbitsgref

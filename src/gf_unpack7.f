@@ -66,7 +66,7 @@
       ierr=0
       nullify(fld)
 
-      call gbyte(cgrib,lensec,iofst,32) ! Get Length of Section
+      call g2_gbyte(cgrib,lensec,iofst,32) ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8 ! skip section number
 

@@ -135,7 +135,7 @@
         endif
         nbytes=(nbits/8)*ndpts
         allocate(ctemp(nbytes))
-        call sbytes(ctemp,ifld,0,nbits,0,ndpts)
+        call g2_sbytes(ctemp,ifld,0,nbits,0,ndpts)
         !
         !  Encode data into PNG Format.
         !
@@ -155,7 +155,7 @@
 !
       rmin4=rmin
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
-!      call gbyte(ref,idrstmpl(1),0,32)
+!      call g2_gbyte(ref,idrstmpl(1),0,32)
       iref=transfer(ref,iref)
       idrstmpl(1)=iref
       idrstmpl(4)=nbits

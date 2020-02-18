@@ -1,18 +1,18 @@
-      SUBROUTINE GBYTE(IN,IOUT,ISKIP,NBYTE)
+      SUBROUTINE G2_GBYTE(IN,IOUT,ISKIP,NBYTE)
       character*1 in(*)
       integer iout(*)
-      CALL GBYTES(IN,IOUT,ISKIP,NBYTE,0,1)
+      CALL G2_GBYTES(IN,IOUT,ISKIP,NBYTE,0,1)
       RETURN
       END
 
-      SUBROUTINE SBYTE(OUT,IN,ISKIP,NBYTE)
+      SUBROUTINE G2_SBYTE(OUT,IN,ISKIP,NBYTE)
       character*1 out(*)
       integer in(*)
-      CALL SBYTES(OUT,IN,ISKIP,NBYTE,0,1)
+      CALL G2_SBYTES(OUT,IN,ISKIP,NBYTE,0,1)
       RETURN
       END
 
-      SUBROUTINE GBYTES(IN,IOUT,ISKIP,NBYTE,NSKIP,N)
+      SUBROUTINE G2_GBYTES(IN,IOUT,ISKIP,NBYTE,NSKIP,N)
 C          Get bytes - unpack bits:  Extract arbitrary size values from a
 C          packed bit string, right justifying each value in the unpacked
 C          array.
@@ -63,7 +63,7 @@ c        get data from last byte
       RETURN
       END                                                                  
 
-      SUBROUTINE SBYTES(OUT,IN,ISKIP,NBYTE,NSKIP,N)
+      SUBROUTINE G2_SBYTES(OUT,IN,ISKIP,NBYTE,NSKIP,N)
 C          Store bytes - pack bits:  Put arbitrary size values into a
 C          packed bit string, taking the low order bits from each value
 C          in the unpacked array.

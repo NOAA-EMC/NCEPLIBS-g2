@@ -63,14 +63,14 @@
       ierr=0
       nullify(idrstmpl)
 
-      call gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+      call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8     ! skip section number
       allocate(mapdrs(lensec))
 
-      call gbyte(cgrib,ndpts,iofst,32)    ! Get num of data points
+      call g2_gbyte(cgrib,ndpts,iofst,32)    ! Get num of data points
       iofst=iofst+32
-      call gbyte(cgrib,idrsnum,iofst,16)     ! Get Data Rep Template Num.
+      call g2_gbyte(cgrib,idrsnum,iofst,16)     ! Get Data Rep Template Num.
       iofst=iofst+16
       !   Gen Data Representation Template
       call getdrstemplate(idrsnum,mapdrslen,mapdrs,needext,iret)
@@ -95,10 +95,10 @@
       do i=1,mapdrslen
         nbits=iabs(mapdrs(i))*8
         if ( mapdrs(i).ge.0 ) then
-          call gbyte(cgrib,idrstmpl(i),iofst,nbits)
+          call g2_gbyte(cgrib,idrstmpl(i),iofst,nbits)
         else
-          call gbyte(cgrib,isign,iofst,1)
-          call gbyte(cgrib,idrstmpl(i),iofst+1,nbits-1)
+          call g2_gbyte(cgrib,isign,iofst,1)
+          call g2_gbyte(cgrib,idrstmpl(i),iofst+1,nbits-1)
           if (isign.eq.1) idrstmpl(i)=-idrstmpl(i)
         endif
         iofst=iofst+nbits
@@ -117,10 +117,10 @@
         do i=mapdrslen+1,newmapdrslen
           nbits=iabs(mapdrs(i))*8
           if ( mapdrs(i).ge.0 ) then
-            call gbyte(cgrib,idrstmpl(i),iofst,nbits)
+            call g2_gbyte(cgrib,idrstmpl(i),iofst,nbits)
           else
-            call gbyte(cgrib,isign,iofst,1)
-            call gbyte(cgrib,idrstmpl(i),iofst+1,nbits-1)
+            call g2_gbyte(cgrib,isign,iofst,1)
+            call g2_gbyte(cgrib,idrstmpl(i),iofst+1,nbits-1)
             if (isign.eq.1) idrstmpl(i)=-idrstmpl(i)
           endif
           iofst=iofst+nbits

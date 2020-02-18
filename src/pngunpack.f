@@ -54,7 +54,7 @@
       if (nbits.ne.0) then
          allocate(ctemp(ndpts*4))
          iret=dec_png(cpack,width,height,ctemp)
-         call gbytes(ctemp,ifld,0,nbits,0,ndpts)
+         call g2_gbytes(ctemp,ifld,0,nbits,0,ndpts)
          deallocate(ctemp)
          do j=1,ndpts
            fld(j)=((real(ifld(j))*bscale)+ref)*dscale
