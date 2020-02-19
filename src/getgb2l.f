@@ -201,15 +201,15 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  GET INFO
       NULLIFY(gfld%local)
       IRET=0
-      CALL G2_GBYTE(CINDEX,LSKIP,4*8,4*8)
-      CALL G2_GBYTE(CINDEX,SKIP2,8*8,4*8)
+      CALL G2_GBYTEC(CINDEX,LSKIP,4*8,4*8)
+      CALL G2_GBYTEC(CINDEX,SKIP2,8*8,4*8)
 
 C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  READ AND UNPACK LOCAL USE SECTION, IF PRESENT
       IF ( SKIP2.NE.0 ) THEN
          ISKIP=LSKIP+SKIP2
          CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
-         CALL G2_GBYTE(CSIZE,ILEN,0,32)
+         CALL G2_GBYTEC(CSIZE,ILEN,0,32)
          ALLOCATE(CTEMP(ILEN))
          CALL BAREAD(LUGB,ISKIP,ILEN,LREAD,CTEMP)  ! READ IN SECTION
          IF (ILEN.NE.LREAD) THEN

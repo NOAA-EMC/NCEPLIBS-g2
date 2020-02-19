@@ -57,7 +57,7 @@
       iofst=iofst+32    ! skip Length of Section
       iofst=iofst+8     ! skip section number
 
-      call g2_gbyte(cgrib,ibmap,iofst,8)    ! Get bit-map indicator
+      call g2_gbytec(cgrib,ibmap,iofst,8)    ! Get bit-map indicator
       iofst=iofst+8
 
       if (ibmap.eq.0) then               ! Unpack bitmap
@@ -68,7 +68,7 @@
             nullify(bmap)
             return
          endif
-         call g2_gbytes(cgrib,intbmap,iofst,1,0,ngpts)
+         call g2_gbytesc(cgrib,intbmap,iofst,1,0,ngpts)
          iofst=iofst+ngpts
          do j=1,ngpts
            bmap(j)=.true.

@@ -85,12 +85,12 @@
 !  Unpack Section 0 - Indicator Section 
 !
       iofst=8*(istart+5)
-      call g2_gbyte(cgrib,listsec0(1),iofst,8)     ! Discipline
+      call g2_gbytec(cgrib,listsec0(1),iofst,8)     ! Discipline
       iofst=iofst+8
-      call g2_gbyte(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
+      call g2_gbytec(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
       iofst=iofst+8
       iofst=iofst+32
-      call g2_gbyte(cgrib,lengrib,iofst,32)        ! Length of GRIB message
+      call g2_gbytec(cgrib,lengrib,iofst,32)        ! Length of GRIB message
       iofst=iofst+32
       lensec0=16
       ipos=istart+lensec0
@@ -122,9 +122,9 @@
         endif
         !     Get length of Section and Section number
         iofst=(ipos-1)*8
-        call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+        call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
         iofst=iofst+32
-        call g2_gbyte(cgrib,isecnum,iofst,8)         ! Get Section number
+        call g2_gbytec(cgrib,isecnum,iofst,8)         ! Get Section number
         iofst=iofst+8
         !   If found the requested occurrence of Section 2,
         !   return the section contents.

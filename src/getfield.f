@@ -169,12 +169,12 @@
 !  Unpack Section 0 - Indicator Section 
 !
       iofst=8*(istart+5)
-      call g2_gbyte(cgrib,listsec0(1),iofst,8)     ! Discipline
+      call g2_gbytec(cgrib,listsec0(1),iofst,8)     ! Discipline
       iofst=iofst+8
-      call g2_gbyte(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
+      call g2_gbytec(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
       iofst=iofst+8
       iofst=iofst+32
-      call g2_gbyte(cgrib,lengrib,iofst,32)        ! Length of GRIB message
+      call g2_gbytec(cgrib,lengrib,iofst,32)        ! Length of GRIB message
       iofst=iofst+32
       lensec0=16
       ipos=istart+lensec0
@@ -206,9 +206,9 @@
         endif
         !     Get length of Section and Section number
         iofst=(ipos-1)*8
-        call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+        call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
         iofst=iofst+32
-        call g2_gbyte(cgrib,isecnum,iofst,8)         ! Get Section number
+        call g2_gbytec(cgrib,isecnum,iofst,8)         ! Get Section number
         iofst=iofst+8
         !print *,' lensec= ',lensec,'    secnum= ',isecnum
         !
@@ -414,19 +414,19 @@
 
       ierr=0
 
-      call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8     ! skip section number
 
-      call g2_gbyte(cgrib,igds(1),iofst,8)     ! Get source of Grid def.
+      call g2_gbytec(cgrib,igds(1),iofst,8)     ! Get source of Grid def.
       iofst=iofst+8
-      call g2_gbyte(cgrib,igds(2),iofst,32)    ! Get number of grid pts.
+      call g2_gbytec(cgrib,igds(2),iofst,32)    ! Get number of grid pts.
       iofst=iofst+32
-      call g2_gbyte(cgrib,igds(3),iofst,8)     ! Get num octets for opt. list
+      call g2_gbytec(cgrib,igds(3),iofst,8)     ! Get num octets for opt. list
       iofst=iofst+8
-      call g2_gbyte(cgrib,igds(4),iofst,8)     ! Get interpret. for opt. list
+      call g2_gbytec(cgrib,igds(4),iofst,8)     ! Get interpret. for opt. list
       iofst=iofst+8
-      call g2_gbyte(cgrib,igds(5),iofst,16)    ! Get Grid Def Template num.
+      call g2_gbytec(cgrib,igds(5),iofst,16)    ! Get Grid Def Template num.
       iofst=iofst+16
       if (igds(1).eq.0) then
 !      if (igds(1).eq.0.OR.igds(1).eq.255) then  ! FOR ECMWF TEST ONLY
@@ -452,10 +452,10 @@
       do i=1,mapgridlen
         nbits=iabs(mapgrid(i))*8
         if ( mapgrid(i).ge.0 ) then
-          call g2_gbyte(cgrib,igdstmpl(i),iofst,nbits)
+          call g2_gbytec(cgrib,igdstmpl(i),iofst,nbits)
         else
-          call g2_gbyte(cgrib,isign,iofst,1)
-          call g2_gbyte(cgrib,igdstmpl(i),iofst+1,nbits-1)
+          call g2_gbytec(cgrib,isign,iofst,1)
+          call g2_gbytec(cgrib,igdstmpl(i),iofst+1,nbits-1)
           if (isign.eq.1) igdstmpl(i)=-igdstmpl(i)
         endif
         iofst=iofst+nbits
@@ -474,10 +474,10 @@
         do i=mapgridlen+1,newmapgridlen
           nbits=iabs(mapgrid(i))*8
           if ( mapgrid(i).ge.0 ) then
-            call g2_gbyte(cgrib,igdstmpl(i),iofst,nbits)
+            call g2_gbytec(cgrib,igdstmpl(i),iofst,nbits)
           else
-            call g2_gbyte(cgrib,isign,iofst,1)
-            call g2_gbyte(cgrib,igdstmpl(i),iofst+1,nbits-1)
+            call g2_gbytec(cgrib,isign,iofst,1)
+            call g2_gbytec(cgrib,igdstmpl(i),iofst+1,nbits-1)
             if (isign.eq.1) igdstmpl(i)=-igdstmpl(i)
           endif
           iofst=iofst+nbits
@@ -493,7 +493,7 @@
       if ( igds(3).ne.0 ) then
          nbits=igds(3)*8
          idefnum=(lensec-14-ibyttem)/igds(3)
-         call g2_gbytes(cgrib,ideflist,iofst,nbits,0,idefnum)
+         call g2_gbytesc(cgrib,ideflist,iofst,nbits,0,idefnum)
          iofst=iofst+(nbits*idefnum)
       else
          idefnum=0
@@ -565,14 +565,14 @@
 
       ierr=0
 
-      call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8     ! skip section number
       allocate(mappds(lensec))
 
-      call g2_gbyte(cgrib,numcoord,iofst,16)    ! Get num of coordinate values
+      call g2_gbytec(cgrib,numcoord,iofst,16)    ! Get num of coordinate values
       iofst=iofst+16
-      call g2_gbyte(cgrib,ipdsnum,iofst,16)    ! Get Prod. Def Template num.
+      call g2_gbytec(cgrib,ipdsnum,iofst,16)    ! Get Prod. Def Template num.
       iofst=iofst+16
       !   Get Product Definition Template
       call getpdstemplate(ipdsnum,mappdslen,mappds,needext,iret)
@@ -588,10 +588,10 @@
       do i=1,mappdslen
         nbits=iabs(mappds(i))*8
         if ( mappds(i).ge.0 ) then
-          call g2_gbyte(cgrib,ipdstmpl(i),iofst,nbits)
+          call g2_gbytec(cgrib,ipdstmpl(i),iofst,nbits)
         else
-          call g2_gbyte(cgrib,isign,iofst,1)
-          call g2_gbyte(cgrib,ipdstmpl(i),iofst+1,nbits-1)
+          call g2_gbytec(cgrib,isign,iofst,1)
+          call g2_gbytec(cgrib,ipdstmpl(i),iofst+1,nbits-1)
           if (isign.eq.1) ipdstmpl(i)=-ipdstmpl(i)
         endif
         iofst=iofst+nbits
@@ -609,10 +609,10 @@
         do i=mappdslen+1,newmappdslen
           nbits=iabs(mappds(i))*8
           if ( mappds(i).ge.0 ) then
-            call g2_gbyte(cgrib,ipdstmpl(i),iofst,nbits)
+            call g2_gbytec(cgrib,ipdstmpl(i),iofst,nbits)
           else
-            call g2_gbyte(cgrib,isign,iofst,1)
-            call g2_gbyte(cgrib,ipdstmpl(i),iofst+1,nbits-1)
+            call g2_gbytec(cgrib,isign,iofst,1)
+            call g2_gbytec(cgrib,ipdstmpl(i),iofst+1,nbits-1)
             if (isign.eq.1) ipdstmpl(i)=-ipdstmpl(i)
           endif
           iofst=iofst+nbits
@@ -625,7 +625,7 @@
       !
       if ( numcoord .ne. 0 ) then
         allocate (coordieee(numcoord))
-        call g2_gbytes(cgrib,coordieee,iofst,32,0,numcoord)
+        call g2_gbytesc(cgrib,coordieee,iofst,32,0,numcoord)
         call rdieee(coordieee,coordlist,numcoord)
         deallocate (coordieee)
         iofst=iofst+(32*numcoord)
@@ -693,14 +693,14 @@ C      integer,allocatable :: mapdrs(:)
 
       ierr=0
 
-      call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8     ! skip section number
       allocate(mapdrs(lensec))
 
-      call g2_gbyte(cgrib,ndpts,iofst,32)    ! Get num of data points
+      call g2_gbytec(cgrib,ndpts,iofst,32)    ! Get num of data points
       iofst=iofst+32
-      call g2_gbyte(cgrib,idrsnum,iofst,16)     ! Get Data Rep Template Num.
+      call g2_gbytec(cgrib,idrsnum,iofst,16)     ! Get Data Rep Template Num.
       iofst=iofst+16
       !   Gen Data Representation Template
       call getdrstemplate(idrsnum,mapdrslen,mapdrs,needext,iret)
@@ -716,10 +716,10 @@ C      integer,allocatable :: mapdrs(:)
       do i=1,mapdrslen
         nbits=iabs(mapdrs(i))*8
         if ( mapdrs(i).ge.0 ) then
-          call g2_gbyte(cgrib,idrstmpl(i),iofst,nbits)
+          call g2_gbytec(cgrib,idrstmpl(i),iofst,nbits)
         else
-          call g2_gbyte(cgrib,isign,iofst,1)
-          call g2_gbyte(cgrib,idrstmpl(i),iofst+1,nbits-1)
+          call g2_gbytec(cgrib,isign,iofst,1)
+          call g2_gbytec(cgrib,idrstmpl(i),iofst+1,nbits-1)
           if (isign.eq.1) idrstmpl(i)=-idrstmpl(i)
         endif
         iofst=iofst+nbits
@@ -737,10 +737,10 @@ C      integer,allocatable :: mapdrs(:)
         do i=mapdrslen+1,newmapdrslen
           nbits=iabs(mapdrs(i))*8
           if ( mapdrs(i).ge.0 ) then
-            call g2_gbyte(cgrib,idrstmpl(i),iofst,nbits)
+            call g2_gbytec(cgrib,idrstmpl(i),iofst,nbits)
           else
-            call g2_gbyte(cgrib,isign,iofst,1)
-            call g2_gbyte(cgrib,idrstmpl(i),iofst+1,nbits-1)
+            call g2_gbytec(cgrib,isign,iofst,1)
+            call g2_gbytec(cgrib,idrstmpl(i),iofst+1,nbits-1)
             if (isign.eq.1) idrstmpl(i)=-idrstmpl(i)
           endif
           iofst=iofst+nbits
@@ -805,11 +805,11 @@ C      integer,allocatable :: mapdrs(:)
       iofst=iofst+32    ! skip Length of Section
       iofst=iofst+8     ! skip section number
 
-      call g2_gbyte(cgrib,ibmap,iofst,8)    ! Get bit-map indicator
+      call g2_gbytec(cgrib,ibmap,iofst,8)    ! Get bit-map indicator
       iofst=iofst+8
 
       if (ibmap.eq.0) then               ! Unpack bitmap
-        call g2_gbytes(cgrib,intbmap,iofst,1,0,ngpts)
+        call g2_gbytesc(cgrib,intbmap,iofst,1,0,ngpts)
         iofst=iofst+ngpts
         do j=1,ngpts
           bmap(j)=.true.

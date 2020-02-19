@@ -53,15 +53,15 @@ C  READ PARTIAL SECTION
         K=0
 C  LOOK FOR 'GRIB...1' IN PARTIAL SECTION
         DOWHILE(LGRIB.EQ.0.AND.K.LT.KM)
-          CALL G2_GBYTE(Z,I4,(K+0)*8,4*8)
-          CALL G2_GBYTE(Z,I1,(K+7)*8,1*8)
+          CALL G2_GBYTEC(Z,I4,(K+0)*8,4*8)
+          CALL G2_GBYTEC(Z,I1,(K+7)*8,1*8)
           IF(I4.EQ.1196575042.AND.(I1.EQ.1.OR.I1.EQ.2)) THEN
 C  LOOK FOR '7777' AT END OF GRIB MESSAGE
-            IF (I1.EQ.1) CALL G2_GBYTE(Z,KG,(K+4)*8,3*8)
-            IF (I1.EQ.2) CALL G2_GBYTE(Z,KG,(K+12)*8,4*8)
+            IF (I1.EQ.1) CALL G2_GBYTEC(Z,KG,(K+4)*8,3*8)
+            IF (I1.EQ.2) CALL G2_GBYTEC(Z,KG,(K+12)*8,4*8)
             CALL BAREAD(LUGB,KS+K+KG-4,4,K4,Z4)
             IF(K4.EQ.4) THEN
-              CALL G2_GBYTE(Z4,I4,0,4*8)
+              CALL G2_GBYTEC(Z4,I4,0,4*8)
               IF(I4.EQ.926365495) THEN
 C  GRIB MESSAGE FOUND
                 LSKIP=KS+K

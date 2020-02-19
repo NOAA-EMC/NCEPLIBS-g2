@@ -67,7 +67,7 @@
       idslen=13
       nullify(ids)
 
-      call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8     ! skip section number
       !
@@ -85,7 +85,7 @@
       
       do i=1,idslen
         nbits=mapid(i)*8
-        call g2_gbyte(cgrib,ids(i),iofst,nbits)
+        call g2_gbytec(cgrib,ids(i),iofst,nbits)
         iofst=iofst+nbits
       enddo
       

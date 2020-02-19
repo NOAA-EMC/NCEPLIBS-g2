@@ -86,16 +86,16 @@
       cgrib(2)=grib(2:2)   
       cgrib(3)=grib(3:3)   
       cgrib(4)=grib(4:4)
-      call g2_sbyte(cgrib,zero,32,16)           ! reserved for future use
-      call g2_sbyte(cgrib,listsec0(1),48,8)     ! Discipline
-      call g2_sbyte(cgrib,listsec0(2),56,8)     ! GRIB edition number
+      call g2_sbytec(cgrib,zero,32,16)           ! reserved for future use
+      call g2_sbytec(cgrib,listsec0(1),48,8)     ! Discipline
+      call g2_sbytec(cgrib,listsec0(2),56,8)     ! GRIB edition number
       lensec0=16      ! bytes (octets)
 !
 !  Pack Section 1 - Identification Section
 !
       ibeg=lensec0*8        !   Calculate offset for beginning of section 1
       iofst=ibeg+32         !   leave space for length of section
-      call g2_sbyte(cgrib,one,iofst,8)     ! Store section number ( 1 )
+      call g2_sbytec(cgrib,one,iofst,8)     ! Store section number ( 1 )
       iofst=iofst+8
       !
       !   Pack up each input value in array listsec1 into the
@@ -104,7 +104,7 @@
       !
       do i=1,mapsec1len
         nbits=mapsec1(i)*8
-        call g2_sbyte(cgrib,listsec1(i),iofst,nbits)
+        call g2_sbytec(cgrib,listsec1(i),iofst,nbits)
         iofst=iofst+nbits
       enddo
       !
@@ -112,12 +112,12 @@
       !   1-4 of section 1.
       !
       lensec1=(iofst-ibeg)/8
-      call g2_sbyte(cgrib,lensec1,ibeg,32)
+      call g2_sbytec(cgrib,lensec1,ibeg,32)
 !
 !  Put current byte total of message into Section 0
 !
-      call g2_sbyte(cgrib,zero,64,32)
-      call g2_sbyte(cgrib,lensec0+lensec1,96,32)
+      call g2_sbytec(cgrib,zero,64,32)
+      call g2_sbytec(cgrib,lensec0+lensec1,96,32)
 
       return
       end

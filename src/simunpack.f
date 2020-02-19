@@ -50,7 +50,7 @@
 !  is the data value at each gridpoint
 !
       if (nbits.ne.0) then
-         call g2_gbytes(cpack,ifld,0,nbits,0,ndpts)
+         call g2_gbytesc(cpack,ifld,0,nbits,0,ndpts)
          do j=1,ndpts
            fld(j)=((real(ifld(j))*bscale)+ref)*dscale
          enddo

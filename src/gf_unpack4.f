@@ -69,14 +69,14 @@
       ierr=0
       nullify(ipdstmpl,coordlist)
 
-      call g2_gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8     ! skip section number
       allocate(mappds(lensec))
 
-      call g2_gbyte(cgrib,numcoord,iofst,16)    ! Get num of coordinate values
+      call g2_gbytec(cgrib,numcoord,iofst,16)    ! Get num of coordinate values
       iofst=iofst+16
-      call g2_gbyte(cgrib,ipdsnum,iofst,16)    ! Get Prod. Def Template num.
+      call g2_gbytec(cgrib,ipdsnum,iofst,16)    ! Get Prod. Def Template num.
       iofst=iofst+16
       !   Get Product Definition Template
       call getpdstemplate(ipdsnum,mappdslen,mappds,needext,iret)
@@ -101,10 +101,10 @@
       do i=1,mappdslen
         nbits=iabs(mappds(i))*8
         if ( mappds(i).ge.0 ) then
-          call g2_gbyte(cgrib,ipdstmpl(i),iofst,nbits)
+          call g2_gbytec(cgrib,ipdstmpl(i),iofst,nbits)
         else
-          call g2_gbyte(cgrib,isign,iofst,1)
-          call g2_gbyte(cgrib,ipdstmpl(i),iofst+1,nbits-1)
+          call g2_gbytec(cgrib,isign,iofst,1)
+          call g2_gbytec(cgrib,ipdstmpl(i),iofst+1,nbits-1)
           if (isign.eq.1) ipdstmpl(i)=-ipdstmpl(i)
         endif
         iofst=iofst+nbits
@@ -123,10 +123,10 @@
         do i=mappdslen+1,newmappdslen
           nbits=iabs(mappds(i))*8
           if ( mappds(i).ge.0 ) then
-            call g2_gbyte(cgrib,ipdstmpl(i),iofst,nbits)
+            call g2_gbytec(cgrib,ipdstmpl(i),iofst,nbits)
           else
-            call g2_gbyte(cgrib,isign,iofst,1)
-            call g2_gbyte(cgrib,ipdstmpl(i),iofst+1,nbits-1)
+            call g2_gbytec(cgrib,isign,iofst,1)
+            call g2_gbytec(cgrib,ipdstmpl(i),iofst+1,nbits-1)
             if (isign.eq.1) ipdstmpl(i)=-ipdstmpl(i)
           endif
           iofst=iofst+nbits
@@ -148,7 +148,7 @@
             if( allocated(coordieee) ) deallocate(coordieee)
             return
          endif
-        call g2_gbytes(cgrib,coordieee,iofst,32,0,numcoord)
+        call g2_gbytesc(cgrib,coordieee,iofst,32,0,numcoord)
         call rdieee(coordieee,coordlist,numcoord)
         deallocate (coordieee)
         iofst=iofst+(32*numcoord)
