@@ -160,11 +160,11 @@ C     real(8) :: rmin,rmax
         !  Pack data, Pad last octet with Zeros, if necessary,
         !  and calculate the length of the packed data in bytes
         !
-        call sbytes(cpack,ifld,0,nbits,0,ndpts)
+        call g2_sbytesc(cpack,ifld,0,nbits,0,ndpts)
         nbittot=nbits*ndpts
         left=8-mod(nbittot,8)
         if (left.ne.8) then
-          call sbyte(cpack,zero,nbittot,left)    ! Pad with zeros to fill Octet
+          call g2_sbytec(cpack,zero,nbittot,left)    ! Pad with zeros to fill Octet
           nbittot=nbittot+left
         endif
         lcpack=nbittot/8
@@ -181,7 +181,7 @@ C     real(8) :: rmin,rmax
       rmin4 = rmin
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
       !print *,'SAGref = ',rmin,ref
-!      call gbyte(ref,idrstmpl(1),0,32)
+!      call g2_gbytec(ref,idrstmpl(1),0,32)
       iref=transfer(ref,iref)
       idrstmpl(1)=iref
       idrstmpl(4)=nbits

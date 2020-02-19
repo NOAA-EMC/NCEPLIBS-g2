@@ -232,34 +232,34 @@ c     rmin=huge(rmin)
            if (nbitsd.ne.0) then
               !   pack first original value
               if (ival1.ge.0) then
-                 call sbyte(cpack,ival1,iofst,nbitsd)
+                 call g2_sbytec(cpack,ival1,iofst,nbitsd)
                  iofst=iofst+nbitsd
               else
-                 call sbyte(cpack,1,iofst,1)
+                 call g2_sbytec(cpack,1,iofst,1)
                  iofst=iofst+1
-                 call sbyte(cpack,iabs(ival1),iofst,nbitsd-1)
+                 call g2_sbytec(cpack,iabs(ival1),iofst,nbitsd-1)
                  iofst=iofst+nbitsd-1
               endif
               if (idrstmpl(17).eq.2) then
                !  pack second original value
                  if (ival2.ge.0) then
-                    call sbyte(cpack,ival2,iofst,nbitsd)
+                    call g2_sbytec(cpack,ival2,iofst,nbitsd)
                     iofst=iofst+nbitsd
                  else
-                    call sbyte(cpack,1,iofst,1)
+                    call g2_sbytec(cpack,1,iofst,1)
                     iofst=iofst+1
-                    call sbyte(cpack,iabs(ival2),iofst,nbitsd-1)
+                    call g2_sbytec(cpack,iabs(ival2),iofst,nbitsd-1)
                     iofst=iofst+nbitsd-1
                  endif
               endif
               !  pack overall min of spatial differences
               if (minsd.ge.0) then
-                 call sbyte(cpack,minsd,iofst,nbitsd)
+                 call g2_sbytec(cpack,minsd,iofst,nbitsd)
                  iofst=iofst+nbitsd
               else
-                 call sbyte(cpack,1,iofst,1)
+                 call g2_sbytec(cpack,1,iofst,1)
                  iofst=iofst+1
-                 call sbyte(cpack,iabs(minsd),iofst,nbitsd-1)
+                 call g2_sbytec(cpack,iabs(minsd),iofst,nbitsd-1)
                  iofst=iofst+nbitsd-1
               endif
            endif
@@ -393,13 +393,13 @@ c     rmin=huge(rmin)
                if (gref(j).eq.-1) gref(j)=mtemp-1
                if (gref(j).eq.-2) gref(j)=mtemp-2
            enddo
-           call sbytes(cpack,gref,iofst,nbitsgref,0,ngroups)
+           call g2_sbytesc(cpack,gref,iofst,nbitsgref,0,ngroups)
            itemp=nbitsgref*ngroups
            iofst=iofst+itemp
            !         Pad last octet with Zeros, if necessary,
            if (mod(itemp,8).ne.0) then
               left=8-mod(itemp,8)
-              call sbyte(cpack,zero,iofst,left)
+              call g2_sbytec(cpack,zero,iofst,left)
               iofst=iofst+left
            endif
         else
@@ -419,13 +419,13 @@ c     rmin=huge(rmin)
            do i=1,ngroups
               gwidth(i)=gwidth(i)-ngwidthref
            enddo
-           call sbytes(cpack,gwidth,iofst,nbitsgwidth,0,ngroups)
+           call g2_sbytesc(cpack,gwidth,iofst,nbitsgwidth,0,ngroups)
            itemp=nbitsgwidth*ngroups
            iofst=iofst+itemp
            !         Pad last octet with Zeros, if necessary,
            if (mod(itemp,8).ne.0) then
               left=8-mod(itemp,8)
-              call sbyte(cpack,zero,iofst,left)
+              call g2_sbytec(cpack,zero,iofst,left)
               iofst=iofst+left
            endif
         else
@@ -451,13 +451,13 @@ c     rmin=huge(rmin)
            do i=1,ngroups-1
               glen(i)=glen(i)-nglenref
            enddo
-           call sbytes(cpack,glen,iofst,nbitsglen,0,ngroups)
+           call g2_sbytesc(cpack,glen,iofst,nbitsglen,0,ngroups)
            itemp=nbitsglen*ngroups
            iofst=iofst+itemp
            !         Pad last octet with Zeros, if necessary,
            if (mod(itemp,8).ne.0) then
               left=8-mod(itemp,8)
-              call sbyte(cpack,zero,iofst,left)
+              call g2_sbytec(cpack,zero,iofst,left)
               iofst=iofst+left
            endif
         else
@@ -476,7 +476,7 @@ c     rmin=huge(rmin)
            grpwidth=gwidth(ng)+ngwidthref
        !write(77,*)'NGP ',ng,grpwidth,glength,gref(ng)
            if ( grpwidth.ne.0 ) then
-              call sbytes(cpack,ifld(n),iofst,grpwidth,0,glength)
+              call g2_sbytesc(cpack,ifld(n),iofst,grpwidth,0,glength)
               iofst=iofst+(grpwidth*glength)
            endif
            do kk=1,glength
@@ -488,7 +488,7 @@ c     rmin=huge(rmin)
         !         Pad last octet with Zeros, if necessary,
         if (mod(iofst,8).ne.0) then
            left=8-mod(iofst,8)
-           call sbyte(cpack,zero,iofst,left)
+           call g2_sbytec(cpack,zero,iofst,left)
            iofst=iofst+left
         endif
         lcpack=iofst/8
@@ -511,7 +511,7 @@ c     rmin=huge(rmin)
 !
       rmin4 = rmin
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
-!      call gbyte(ref,idrstmpl(1),0,32)
+!      call g2_gbytec(ref,idrstmpl(1),0,32)
       iref=transfer(ref,iref)
       idrstmpl(1)=iref
       idrstmpl(4)=nbitsgref
