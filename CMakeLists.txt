@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-files(STRING "VERSION" pVersion)
+file(STRINGS "VERSION" pVersion)
 
 project(
   g2
