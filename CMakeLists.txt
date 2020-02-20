@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
+
+files(STRING "VERSION" pVersion)
+
 project(
   g2
-  VERSION 3.1.0
+  VERSION ${pVersion}
   LANGUAGES C Fortran)
 
 if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
@@ -13,7 +16,7 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
                                                "MinSizeRel" "RelWithDebInfo")
 endif()
 
-if(NOT CMAKE_C_COMPILER_ID MATCHES "^(Intel|GNU|Clang|AppleClang|PGI)$")
+if(NOT CMAKE_C_COMPILER_ID MATCHES "^(Intel|GNU|Clang|AppleClang)$")
   message(WARNING "Compiler not officially supported: ${CMAKE_C_COMPILER_ID}")
 endif()
 
@@ -30,18 +33,15 @@ endif()
 
 if(CMAKE_C_COMPILER_ID MATCHES "^(Intel)$")
   set(CMAKE_C_FLAGS "-g -O3")
+  set(CMAKE_C_FLAGS_RELEASE "-O3")
   set(CMAKE_Fortran_FLAGS "-g -assume noold_ldout_format")
   set(fortran_d_flags "-r8")
 elseif(CMAKE_C_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
-  set(CMAKE_C_FLAGS "-ggdb -Wall")
-  set(CMAKE_Fortran_FLAGS "-ggdb -Wall -fno-range-check -funroll-loops")
-  set(CMAKE_Fortran_FLAGS_DEBUG "-g")
+  set(CMAKE_C_FLAGS "-g")
+  set(CMAKE_C_FLAGS_DEBUG "-ggdb -Wall")
+  set(CMAKE_Fortran_FLAGS "-g -fno-range-check -funroll-loops")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-ggdb -Wall")
   set(fortran_d_flags "-fdefault-real-8")
-elseif(CMAKE_C_COMPILER_ID MATCHES "^(PGI)$")
-  set(CMAKE_C_FLAGS "-g -fast")
-  set(CMAKE_Fortran_FLAGS "-g -fast")
-  set(fortran_d_flags "-i8 -r8")
-  set(c_definitions ${c_definitions} "UNDERSCORE")
 endif()
 
 add_subdirectory(src)
@@ -74,6 +74,8 @@ foreach(kind ${kinds})
                                  $<TARGET_OBJECTS:${lib_name}_c>)
   set_target_properties(${lib_name} PROPERTIES OUTPUT_NAME
                                                ${versioned_lib_name})
+  set_target_properties(${lib_name} PROPERTIES INTERFACE_LINK_LIBRARIES
+                                               ${lib_name})
   target_include_directories(
     ${lib_name}
     PUBLIC $<BUILD_INTERFACE:${module_dir}>
