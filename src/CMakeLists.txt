@@ -6,9 +6,9 @@ set(fortran_src
   ${CMAKE_CURRENT_SOURCE_DIR}/compack.f
   ${CMAKE_CURRENT_SOURCE_DIR}/comunpack.f
   ${CMAKE_CURRENT_SOURCE_DIR}/drstemplates.f
+  ${CMAKE_CURRENT_SOURCE_DIR}/g2_gbytesc.f
   ${CMAKE_CURRENT_SOURCE_DIR}/g2grids.f
   ${CMAKE_CURRENT_SOURCE_DIR}/gb_info.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gbytesc.f
   ${CMAKE_CURRENT_SOURCE_DIR}/gdt2gds.f
   ${CMAKE_CURRENT_SOURCE_DIR}/getdim.f
   ${CMAKE_CURRENT_SOURCE_DIR}/getfield.f
