@@ -143,7 +143,7 @@
         nbytes=(nbits+7)/8
         nsize=lcpack      ! needed for input to enc_jpeg2000
         allocate(ctemp(nbytes*ndpts))
-        call sbytes(ctemp,ifld,0,nbytes*8,0,ndpts)
+        call g2_sbytesc(ctemp,ifld,0,nbytes*8,0,ndpts)
         lcpack=enc_jpeg2000(ctemp,width,height,nbits,idrstmpl(6),
      &                      idrstmpl(7),retry,cpack,nsize)
         if (lcpack.le.0) then
@@ -172,7 +172,7 @@
 !
       rmin4 = rmin
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
-!      call gbyte(ref,idrstmpl(1),0,32)
+!      call g2_gbytec(ref,idrstmpl(1),0,32)
       iref=transfer(ref,iref)
       idrstmpl(1)=iref
       idrstmpl(4)=nbits
