@@ -53,7 +53,6 @@ foreach(kind ${kinds})
   set(module_dir ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
 
   add_library(${lib_name}_f OBJECT ${fortran_src})
-  set_target_properties(${lib_name}_f PROPERTIES POSITION_INDEPENDENT_CODE ON)
   set_target_properties(${lib_name}_f PROPERTIES COMPILE_FLAGS
                                                  "${fortran_${kind}_flags}")
   target_include_directories(
@@ -63,9 +62,6 @@ foreach(kind ${kinds})
                                                  ${module_dir})
 
   add_library(${lib_name}_c OBJECT ${c_src})
-  set_target_properties(${lib_name}_c PROPERTIES POSITION_INDEPENDENT_CODE ON)
-  set_target_properties(${lib_name}_c PROPERTIES COMPILE_DEFINITIONS
-                                                 "${c_definitions}")
   target_include_directories(
     ${lib_name}_c PRIVATE ${ZLIB_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS}
                           ${JASPER_INCLUDE_DIR})
