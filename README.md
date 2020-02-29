@@ -1,11 +1,13 @@
 # G2
 
-Does something!
+Grib2 utilities
+
+Code Manager : Boi Vuong
 
 
 ### Prerequisites
 
-Compilers: GNU | Intel | Clang | AppleClang | PGI
+Compilers: GNU | Intel | Clang | AppleClang 
 
 
 ### Installing
@@ -20,7 +22,7 @@ make install
 
 
 ### Version
-3.1.0
+3.2.0
 
 
 ### Authors
