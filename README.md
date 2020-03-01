@@ -1,6 +1,6 @@
 # G2
 
-Utilities for coding/decoding GRIB2 messages. For more detailed documentation see [grib2.doc] (here)
+Utilities for coding/decoding GRIB2 messages. For more detailed documentation see [here](grib2.doc)
 
 Code Manager : Boi Vuong
 
