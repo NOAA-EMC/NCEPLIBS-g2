@@ -96,7 +96,7 @@
 !
 !  Get current length of GRIB message
 !  
-      call gbyte(cgrib,lencurr,96,32)
+      call g2_gbytec(cgrib,lencurr,96,32)
 !
 !  Check to see if GRIB message is already complete
 !  
@@ -116,9 +116,9 @@
       do 
       !    Get section number and length of next section
         iofst=len*8
-        call gbyte(cgrib,ilen,iofst,32)
+        call g2_gbytec(cgrib,ilen,iofst,32)
         iofst=iofst+32
-        call gbyte(cgrib,isecnum,iofst,8)
+        call g2_gbytec(cgrib,isecnum,iofst,8)
         len=len+ilen
       !    Exit loop if last section reached
         if ( len.eq.lencurr ) exit
@@ -149,22 +149,22 @@
 !
       ibeg=lencurr*8        !   Calculate offset for beginning of section 3
       iofst=ibeg+32         !   leave space for length of section
-      call sbyte(cgrib,three,iofst,8)     ! Store section number ( 3 )
+      call g2_sbytec(cgrib,three,iofst,8)     ! Store section number ( 3 )
       iofst=iofst+8
-      call sbyte(cgrib,igds(1),iofst,8)     ! Store source of Grid def.
+      call g2_sbytec(cgrib,igds(1),iofst,8)     ! Store source of Grid def.
       iofst=iofst+8
-      call sbyte(cgrib,igds(2),iofst,32)    ! Store number of data pts.
+      call g2_sbytec(cgrib,igds(2),iofst,32)    ! Store number of data pts.
       iofst=iofst+32
-      call sbyte(cgrib,igds(3),iofst,8)     ! Store number of extra octets.
+      call g2_sbytec(cgrib,igds(3),iofst,8)     ! Store number of extra octets.
       iofst=iofst+8
-      call sbyte(cgrib,igds(4),iofst,8)     ! Store interp. of extra octets.
+      call g2_sbytec(cgrib,igds(4),iofst,8)     ! Store interp. of extra octets.
       iofst=iofst+8
       !   if Octet 6 is not equal to zero, Grid Definition Template may
       !   not be supplied.
       if ( igds(1).eq.0 ) then
-        call sbyte(cgrib,igds(5),iofst,16)  ! Store Grid Def Template num.
+        call g2_sbytec(cgrib,igds(5),iofst,16)  ! Store Grid Def Template num.
       else
-        call sbyte(cgrib,65535,iofst,16)   ! Store missing value as Grid Def Template num.
+        call g2_sbytec(cgrib,65535,iofst,16)   ! Store missing value as Grid Def Template num.
       endif
       iofst=iofst+16
       !
@@ -197,10 +197,10 @@
       do i=1,mapgridlen
         nbits=iabs(mapgrid(i))*8
         if ( (mapgrid(i).ge.0).or.(igdstmpl(i).ge.0) ) then
-          call sbyte(cgrib,igdstmpl(i),iofst,nbits)
+          call g2_sbytec(cgrib,igdstmpl(i),iofst,nbits)
         else
-          call sbyte(cgrib,one,iofst,1)
-          call sbyte(cgrib,iabs(igdstmpl(i)),iofst+1,nbits-1)
+          call g2_sbytec(cgrib,one,iofst,1)
+          call g2_sbytec(cgrib,iabs(igdstmpl(i)),iofst+1,nbits-1)
         endif
         iofst=iofst+nbits
       enddo
@@ -212,7 +212,7 @@
       !
       if ( igds(3).ne.0 ) then
          nbits=igds(3)*8
-         call sbytes(cgrib,ideflist,iofst,nbits,0,idefnum)
+         call g2_sbytesc(cgrib,ideflist,iofst,nbits,0,idefnum)
          iofst=iofst+(nbits*idefnum)
       endif
       !
@@ -220,12 +220,12 @@
       !   1-4 of section 3.
       !
       lensec3=(iofst-ibeg)/8
-      call sbyte(cgrib,lensec3,ibeg,32)
+      call g2_sbytec(cgrib,lensec3,ibeg,32)
 
 !
 !  Update current byte total of message in Section 0
 !
-      call sbyte(cgrib,lencurr+lensec3,96,32)
+      call g2_sbytec(cgrib,lencurr+lensec3,96,32)
 
       return
       end
