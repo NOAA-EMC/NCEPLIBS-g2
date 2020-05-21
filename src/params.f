@@ -29,8 +29,8 @@
 !                         to 1
 ! 2013-07-24  Vuong    -  Added more parameters and Removed
 !                         sapces in abbreviation
-!
 ! 2016-03-30  Vuong    -  Added parameter Heat Exchange Coefficient (CH)
+! 2020-05-20  Vuong    -  Added parameters 
 ! USAGE:    use params
 !
 ! ATTRIBUTES:
@@ -1079,6 +1079,10 @@
        data paramlist(1013) /gribparam(255,255,10,4,19,'WATPDEN')/
        data paramlist(1014) /gribparam(255,255,10,4,20,'WATPDENA')/
        data paramlist(1015) /gribparam(255,255,10,4,21,'PRTSAL')/
+! Added 05/21/2020
+       data paramlist(1016) /gribparam(129,240,0,16,3,'RETOP')/
+       data paramlist(1017) /gribparam(2,234,1,0,5,'BGRUN')/
+       data paramlist(1018) /gribparam(2,235,1,0,6,'SSRUN')/
 
       contains
 
