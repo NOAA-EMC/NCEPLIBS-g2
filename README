@@ -1,97 +1,50 @@
-Code manager:Boi Vuong
+# NCEPLIBS G2 Library
 
-libver=g2_v3.1.1
+Utilities for coding/decoding GRIB2 messages. For more detailed documentation see [here](grib2.doc)
 
-=======================================================================================
-For previous versions
-Installation instructions:
+Code Manager : Boi Vuong
 
-1. Check out source code from subversion
-2. cd  g2
-3. cd v$version    i.e, version is 3.1.0
-4. Run the script install_g2_lib.sh with argument: wcoss, intel or cray.
-   Usage:
-         install_g2_lib.sh   cray or intel or wcoss
+How to build and install G2 library
+===================================
 
-         where:
-               cray is craype-haswell with CRAY Fortran Compiler
-               intel is craype-sandybridge with INTEL Fortran Compiler
-               wcoss is IBM (Tide or Gyre) with INTEL Fortran Compiler
-5. Building Modulefile G2 on the following:
-   -WCOSS (Tide or Gyre)
-    ##   Module file v3.0.0 ##
-    cd  g2/v3.0.0/modulefiles
-    cp v3.0.0  /nwprod2/lib/modulefiles/g2
+Installation using CMake
+------------------------
+This is the recommended method of installation.
 
-   -CRAY (INTEL Fortran compiler - craype-sandybridge)
-    ##   Module file 3.0.0 ##
-    cd g2/v3.0.0/modulefiles/g2-intel
-    cp 3.0.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-intel
+### Prerequisites
 
-   -CRAY (CRAY Fortran compiler - craype-haswell)
-    ##   Module file 3.0.0 ##
-    cd g2/v3.0.0/modulefiles/g2-cray-haswell
-    cp 3.0.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-intel
+Compilers: GNU | Intel | Clang | AppleClang 
 
+### Installing
 
-The following are installation instructions (manual) in interative mode
-On the CRAY (SURGE or LUNA) and WCOSS (Tide or Gyre) system.
+1. Download G2 Code from GitHub
+git clone https://github.com/NOAA-EMC/NCEPLIBS-g2.git
+cd NCEPLIBS-g2
+git  checkout   g2_v3.2.0
 
-A. Intel - craype-sandybridge with INTEL Fortran Compiler
-- cd src folder 
-- module load jasper-gnu-sandybridge/1.900.1 png-intel-sandybridge/1.2.44 zlib-intel-sandybridge/1.2.7
-- module load PrgEnv-intel g2-intel craype-sandybridge
-- module load w3nco-intel/2.0.6
-- module list 2>compile-g2-intel.log
+2. Create a directory where to buiild G2 library
 
-##   Build G2 Library with Intel Fortran Compiler  ##
-- ./makeg2lib_cray.sh &>>compile-g2-intel.log
+mkdir build
+cd build
 
-##   Module file g2-intel/3.0.0 -CRAY (INTEL Fortran compiler - craype-sandybridge)   ##
-cd ./modulefiles/g2-intel
-cp 3.0.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-intel
+3. Load the following modules 
+module purge
+module load intel/18.0.5.274                  
+module load impi/2018.0.4
+module load cmake/3.16.3
+module load jasper/1.900.1
+module load libpng/1.2.44  zlib/1.2.11
 
+export CC=icc
+export CXX=icpc
+export FC=ifort
 
-B. CRAY -  craype-haswell with CRAY Fortran Compiler 
+4. Run cmake
+cmake .. -DCMAKE_INSTALL_PREFIX=path_to_install   -DCMAKE_PREFIX_PATH="${PNG_LIBDIR};${PNG_INC};${JASPER_LIBDIR};${JASPER_INC}
 
-- module unload PrgEnv-intel
-- module load   PrgEnv-cray
-- module unload craype-sandybridge
-- module load craype-haswell
-- module unload jasper-gnu-sandybridge/1.900.1
-- module load  jasper-gnu-haswell/1.900.1
-- module unload png-intel-sandybridge/1.2.49
-- module load   png-intel-haswell/1.2.49
-- module unload zlib-intel-sandybridge/1.2.7
-- module load  zlib-intel-haswell/1.2.7
-- module unload  g2-intel
-- module load   g2-cray-haswell
-- module load w3nco-cray-haswell/2.0.6
-- module list 2>compile-g2-cray.log
+make 
+make install
 
-##   Build G2 Library with CRAY Fortran compiler  ##
-- ./makeg2lib_cray.sh &>>compile-g2-cray.log
+### Authors
 
-##   Module file g2-cray-haswell/3.0.0 (CRAY Fortran compiler - craype-haswell)   ##
-cd ./modulefiles/g2-cray-haswell
-cp 3.0.0 /gpfs/hps/nco/ops/nwprod/lib/modulefiles/g2-cray-haswell
-
-C. WCOSS (Tide or Gyre)
-##########  INTEL FORTRAN COMPILER   ###############
-- cd src folder 
-- module use -a /nwprod/lib/modulefiles
-- module load jasper/v1.900.1
-- module load png/v1.2.44
-- module load z/v1.2.6
-- module load ics
-- module load w3nco/v2.0.6
-- module list 2>compile-g2lib.log
-
-##   Build G2 Library with Intel Fortran compiler   ##
-- ./makeg2lib_wcoss.sh 2>compile-g2lib.log
-
-##   Module file g2/v3.0.0 ##
-cd into ./modulefiles
-cp v3.0.0  /nwprod2/lib/modulefiles/g2
-
-#######################################################################
+**[NCEP/EMC](mailto:NCEP.List.EMC.nceplibs.Developers@noaa.gov)** 
