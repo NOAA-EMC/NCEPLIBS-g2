@@ -841,7 +841,7 @@
        data paramlist(776) /gribparam(128,144,10,3,203,'LCH')/
 ! Added 03/04/2020
        data paramlist(777) /gribparam(255,255,0,20,101,'ATMTK')/
-       data paramlist(778) /gribparam(255,255,0,1,37,'CPRAT')/
+       data paramlist(778) /gribparam(131,214,0,1,37,'CPRAT')/
        data paramlist(779) /gribparam(255,255,10,2,8,'ICETMP')/
        data paramlist(780) /gribparam(255,255,0,0,28,'UCTMP')/
        data paramlist(781) /gribparam(255,255,0,0,29,'TMPADV')/
