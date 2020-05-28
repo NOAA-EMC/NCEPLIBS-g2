@@ -31,7 +31,6 @@ cd build
 ```
 #### Load the following modules 
 ```
-module purge
 module load intel/18.0.5.274
 module load impi/2018.0.4
 module load cmake/3.16.3
