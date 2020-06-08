@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ### NCEPLIBS G2 Library
 
 Utilities for coding/decoding GRIB2 messages. This library
