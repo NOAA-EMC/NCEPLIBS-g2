@@ -35,14 +35,14 @@ jobs:
         cd jasper
         mkdir cmake_build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
         make -j2
         make install
 
     - name: checkout-pfunit
       uses: actions/checkout@v2
       with:
-        repository: Goddard-Fortran-Ecosystem/pFUnitlw
+        repository: Goddard-Fortran-Ecosystem/pFUnit
         path: pfunit
 
     - name: cache-pfunit
@@ -73,7 +73,7 @@ jobs:
         cd g2
         mkdir build 
         cd build
-        cmake .. -DENABLE_TESTS=ON -DCMAKE_PREFIX_PATH="~/pfunit;~/"
+        cmake .. -DENABLE_TESTS=ON -DCMAKE_PREFIX_PATH="~/pfunit;~/" -DJasper_ROOT=~/Jasper
         make -j2
     
     - name: test
