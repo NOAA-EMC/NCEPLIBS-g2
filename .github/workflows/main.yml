@@ -33,7 +33,7 @@ jobs:
       if: steps.cache-jasper.outputs.cache-hit != 'true'
       run: |
         cd jasper
-        mkdir build
+        mkdir cmake_build
         cd build
         cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
         make -j2
