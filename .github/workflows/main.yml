@@ -26,7 +26,7 @@ jobs:
       id: cache-jasper
       uses: actions/cache@v2
       with:
-        path: ~/jasper
+        path: ~/Jasper
         key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
 
     - name: build-jasper
