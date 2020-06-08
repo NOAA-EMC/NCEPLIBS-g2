@@ -4,5 +4,6 @@ install/
 *.[ao]
 *.mod
 *.so
+.DS_Store
 
 *.swp

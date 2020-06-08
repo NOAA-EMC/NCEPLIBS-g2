@@ -1,71 +1,86 @@
-set(fortran_src
-  ${CMAKE_CURRENT_SOURCE_DIR}/addfield.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/addgrid.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/addlocal.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmplxpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/compack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/comunpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/drstemplates.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/g2_gbytesc.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/g2grids.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gb_info.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gdt2gds.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getdim.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getfield.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getg2i.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getg2ir.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getgb2.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getgb2l.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getgb2p.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getgb2r.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getgb2rp.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getgb2s.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getidxes.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getidx.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getlocal.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/getpoly.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gettemplates.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_free.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_getfld.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_unpack1.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_unpack2.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_unpack3.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_unpack4.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_unpack5.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_unpack6.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gf_unpack7.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gribcreate.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gribend.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gribinfo.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gribmod.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/gridtemplates.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/intmath.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/ixgb2.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/jpcpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/jpcunpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/misspack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/mkieee.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/pack_gp.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/params_ecmwf.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/params.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/pdstemplates.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/pngpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/pngunpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/putgb2.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/rdieee.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/realloc.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/reduce.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/simpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/simunpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/skgb.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/specpack.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/specunpack.f
-  PARENT_SCOPE)
 
-set(c_src
-  ${CMAKE_CURRENT_SOURCE_DIR}/dec_jpeg2000.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/dec_png.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/enc_jpeg2000.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/enc_png.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/mova2i.c
-  PARENT_SCOPE)
+include("list_of_files.cmake")
+
+add_compile_definitions(__64BIT__)
+if(APPLE)
+  add_compile_definitions(APPLE)
+elseif(UNIX)
+  add_compile_definitions(LINUX)
+endif()
+
+if(CMAKE_C_COMPILER_ID MATCHES "^(Intel)$")
+  set(CMAKE_C_FLAGS "-g -O3")
+  set(CMAKE_C_FLAGS_RELEASE "-O3")
+  set(CMAKE_Fortran_FLAGS "-g -assume noold_ldout_format")
+  set(fortran_d_flags "-r8")
+elseif(CMAKE_C_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
+  set(CMAKE_C_FLAGS "-g")
+  set(CMAKE_C_FLAGS_DEBUG "-ggdb -Wall")
+  set(CMAKE_Fortran_FLAGS "-g -fno-range-check -funroll-loops")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-ggdb -Wall")
+  set(fortran_d_flags "-fdefault-real-8")
+endif()
+
+set(kinds "4" "d")
+foreach(kind ${kinds})
+  set(lib_name ${PROJECT_NAME}_${kind})
+  set(module_dir ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
+
+  add_library(${lib_name}_f OBJECT ${fortran_src})
+  set_target_properties(${lib_name}_f PROPERTIES COMPILE_FLAGS
+    "${fortran_${kind}_flags}")
+  set_target_properties(${lib_name}_f PROPERTIES Fortran_MODULE_DIRECTORY
+    ${module_dir})
+
+  add_library(${lib_name}_c OBJECT ${c_src})
+  target_include_directories(${lib_name}_c
+    PRIVATE
+    ${ZLIB_INCLUDE_DIRS}
+    ${PNG_INCLUDE_DIRS}
+    ${JASPER_INCLUDE_DIR})
+
+    add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
+    target_include_directories(${lib_name} INTERFACE
+      $<BUILD_INTERFACE:${module_dir}>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include_${kind}>)
+    list(APPEND LIB_TARGETS ${lib_name})
+ 
+  install(DIRECTORY ${module_dir} DESTINATION ${CMAKE_INSTALL_PREFIX})
+  
+endforeach()
+
+install(
+  TARGETS ${LIB_TARGETS}
+  EXPORT ${PROJECT_NAME}Exports
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib)
+
+### Package config
+include(CMakePackageConfigHelpers)
+set(CONFIG_INSTALL_DESTINATION lib/cmake/${PROJECT_NAME})
+
+export(EXPORT ${PROJECT_NAME}Exports
+  NAMESPACE ${PROJECT_NAME}::
+  FILE ${PROJECT_NAME}-targets.cmake)
+
+# bacio-config.cmake
+configure_package_config_file(
+  ${CMAKE_SOURCE_DIR}/cmake/PackageConfig.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  INSTALL_DESTINATION ${CONFIG_INSTALL_DESTINATION})
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  DESTINATION ${CONFIG_INSTALL_DESTINATION})
+
+# bacio-config-version.cmake
+write_basic_package_version_file(
+  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY AnyNewerVersion)
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+  DESTINATION ${CONFIG_INSTALL_DESTINATION})
+
+# bacio-targets.cmake and bacio-targets-<build-type>.cmake
+install(EXPORT ${PROJECT_NAME}Exports
+  NAMESPACE ${PROJECT_NAME}::
+  FILE ${PROJECT_NAME}-targets.cmake
+  DESTINATION ${CONFIG_INSTALL_DESTINATION})
