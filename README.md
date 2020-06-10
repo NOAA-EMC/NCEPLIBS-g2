@@ -49,8 +49,7 @@ export FC=ifort
 ```
 #### Run cmake
 ```
-cmake .. -DCMAKE_INSTALL_PREFIX=path_to_install  \ 
--DCMAKE_PREFIX_PATH="${PNG_LIBDIR};${PNG_INC};${JASPER_LIBDIR};${JASPER_INC}"
+cmake .. -DCMAKE_INSTALL_PREFIX=path_to_install -DCMAKE_PREFIX_PATH="${JASPER_LIBDIR}/.."
 
 make
 make install
