@@ -39,14 +39,14 @@ foreach(kind ${kinds})
     ${JASPER_INCLUDE_DIR})
 
     add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
-    target_link_libraries(${lib_name} PRIVATE PNG::PNG)
+    target_link_libraries(${lib_name} PUBLIC bacio::bacio_4 PNG::PNG ${JASPER_LIBRARIES})
     target_include_directories(${lib_name} INTERFACE
       $<BUILD_INTERFACE:${module_dir}>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include_${kind}>)
     list(APPEND LIB_TARGETS ${lib_name})
- 
+
   install(DIRECTORY ${module_dir} DESTINATION ${CMAKE_INSTALL_PREFIX})
-  
+
 endforeach()
 
 install(
