@@ -39,6 +39,22 @@ jobs:
         make -j2
         make install
 
+    - name: checkout-bacio
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-bacio
+        path: bacio
+        ref: develop
+
+    - name: build-bacio
+      run: |
+        cd bacio
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
+        make -j2
+        make install
+
     - name: checkout-pfunit
       uses: actions/checkout@v2
       with:
@@ -64,18 +80,18 @@ jobs:
 
     - name: checkout
       uses: actions/checkout@v2
-      with: 
+      with:
         path: g2
         submodules: true
 
     - name: build
       run: |
         cd g2
-        mkdir build 
+        mkdir build
         cd build
         cmake .. -DENABLE_TESTS=ON -DCMAKE_PREFIX_PATH="~/pfunit;~/" -DJasper_ROOT=~/Jasper
         make -j2
-    
+
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build

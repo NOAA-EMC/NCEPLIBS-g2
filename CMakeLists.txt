@@ -24,7 +24,8 @@ endif()
 
 find_package(Jasper REQUIRED)
 find_package(PNG REQUIRED)
-find_package(ZLIB REQUIRED)
+
+find_package(bacio)
 
 add_subdirectory(src)
 
