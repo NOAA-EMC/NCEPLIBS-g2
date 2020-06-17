@@ -1083,6 +1083,8 @@
        data paramlist(1016) /gribparam(129,240,0,16,3,'RETOP')/
        data paramlist(1017) /gribparam(2,234,1,0,5,'BGRUN')/
        data paramlist(1018) /gribparam(2,235,1,0,6,'SSRUN')/
+! Added 06/12/2020
+       data paramlist(1019) /gribparam(130,160,2,3,5,'SOILL')/
 
       contains
 
