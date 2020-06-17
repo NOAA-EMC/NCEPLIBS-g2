@@ -39,22 +39,6 @@ jobs:
         make -j2
         make install
 
-    - name: checkout-bacio
-      uses: actions/checkout@v2
-      with:
-        repository: NOAA-EMC/NCEPLIBS-bacio
-        path: bacio
-        ref: develop
-
-    - name: build-bacio
-      run: |
-        cd bacio
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
-        make -j2
-        make install
-
     - name: checkout-pfunit
       uses: actions/checkout@v2
       with:
