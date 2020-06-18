@@ -24,8 +24,8 @@ cd build
 ```
 #### Load the following modules 
 ```
-module load intel/18.0.5.274
-module load impi/2018.0.4
+module load ips/18.0.1.163
+module load impi/18.0.1
 module load cmake/3.16.3
 module load jasper/1.900.1
 module load libpng/1.2.44
