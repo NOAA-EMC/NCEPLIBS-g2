@@ -44,7 +44,7 @@ Note: Windows systems is not supported at this time.
 ```
 #### Run cmake
 ```
-cmake .. -DCMAKE_INSTALL_PREFIX=path_to_install -DCMAKE_PREFIX_PATH="${JASPER_LIBDIR}/.."
+cmake .. -DCMAKE_INSTALL_PREFIX=myg2 -DCMAKE_PREFIX_PATH="${PNG_LIBDIR};${PNG_INC};${JASPER_LIBDIR};${JASPER_INC}"
 
 If -DCMAKE_INSTALL_PREFIX= is omitted, the libraries will be installed in directory 
 install underneath the build directory.
