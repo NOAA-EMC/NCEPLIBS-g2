@@ -1,0 +1,82 @@
+name: Build and Test
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    env:
+      FC: gfortran-9
+      CC: gcc-9
+      CXX: g++-9
+
+    steps:
+
+    - name: install-dependencies
+      run: |
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev
+
+    - name: checkout-jasper
+      uses: actions/checkout@v2
+      with:
+        repository: mdadams/jasper
+        path: jasper
+        ref: version-2.0.16
+
+    - name: cache-jasper
+      id: cache-jasper
+      uses: actions/cache@v2
+      with:
+        path: ~/Jasper
+        key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
+
+    - name: build-jasper
+      if: steps.cache-jasper.outputs.cache-hit != 'true'
+      run: |
+        cd jasper
+        mkdir cmake_build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
+        make -j2
+        make install
+
+    - name: checkout-pfunit
+      uses: actions/checkout@v2
+      with:
+        repository: Goddard-Fortran-Ecosystem/pFUnit
+        path: pfunit
+
+    - name: cache-pfunit
+      id: cache-pfunit
+      uses: actions/cache@v2
+      with:
+        path: ~/pfunit
+        key: pfunit-${{ runner.os }}-${{ hashFiles('pfunit/VERSION') }}
+
+    - name: build-pfunit
+      if: steps.cache-pfunit.outputs.cache-hit != 'true'
+      run: |
+        cd pfunit
+        mkdir build
+        cd build
+        cmake .. -DSKIP_MPI=YES -DSKIP_ESMF=YES -DSKIP_FHAMCREST=YES -DCMAKE_INSTALL_PREFIX=~/pfunit
+        make -j2
+        make install
+
+    - name: checkout
+      uses: actions/checkout@v2
+      with:
+        path: g2
+        submodules: true
+
+    - name: build
+      run: |
+        cd g2
+        mkdir build
+        cd build
+        cmake .. -DENABLE_TESTS=ON -DCMAKE_PREFIX_PATH="~/pfunit;~/" -DJasper_ROOT=~/Jasper
+        make -j2
+
+    - name: test
+      run: |
+        cd $GITHUB_WORKSPACE/g2/build
+        make test

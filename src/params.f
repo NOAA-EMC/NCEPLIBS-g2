@@ -29,8 +29,8 @@
 !                         to 1
 ! 2013-07-24  Vuong    -  Added more parameters and Removed
 !                         sapces in abbreviation
-!
 ! 2016-03-30  Vuong    -  Added parameter Heat Exchange Coefficient (CH)
+! 2020-05-20  Vuong    -  Added parameters 
 ! USAGE:    use params
 !
 ! ATTRIBUTES:
@@ -841,7 +841,7 @@
        data paramlist(776) /gribparam(128,144,10,3,203,'LCH')/
 ! Added 03/04/2020
        data paramlist(777) /gribparam(255,255,0,20,101,'ATMTK')/
-       data paramlist(778) /gribparam(255,255,0,1,37,'CPRAT')/
+       data paramlist(778) /gribparam(131,214,0,1,37,'CPRAT')/
        data paramlist(779) /gribparam(255,255,10,2,8,'ICETMP')/
        data paramlist(780) /gribparam(255,255,0,0,28,'UCTMP')/
        data paramlist(781) /gribparam(255,255,0,0,29,'TMPADV')/
@@ -1079,6 +1079,12 @@
        data paramlist(1013) /gribparam(255,255,10,4,19,'WATPDEN')/
        data paramlist(1014) /gribparam(255,255,10,4,20,'WATPDENA')/
        data paramlist(1015) /gribparam(255,255,10,4,21,'PRTSAL')/
+! Added 05/21/2020
+       data paramlist(1016) /gribparam(129,240,0,16,3,'RETOP')/
+       data paramlist(1017) /gribparam(2,234,1,0,5,'BGRUN')/
+       data paramlist(1018) /gribparam(2,235,1,0,6,'SSRUN')/
+! Added 06/12/2020
+       data paramlist(1019) /gribparam(130,160,2,3,5,'SOILL')/
 
       contains
 

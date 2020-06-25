@@ -81,19 +81,19 @@
       ierr=0
       nullify(igdstmpl,ideflist)
 
-      call gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8     ! skip section number
 
-      call gbyte(cgrib,igds(1),iofst,8)     ! Get source of Grid def.
+      call g2_gbytec(cgrib,igds(1),iofst,8)     ! Get source of Grid def.
       iofst=iofst+8
-      call gbyte(cgrib,igds(2),iofst,32)    ! Get number of grid pts.
+      call g2_gbytec(cgrib,igds(2),iofst,32)    ! Get number of grid pts.
       iofst=iofst+32
-      call gbyte(cgrib,igds(3),iofst,8)     ! Get num octets for opt. list
+      call g2_gbytec(cgrib,igds(3),iofst,8)     ! Get num octets for opt. list
       iofst=iofst+8
-      call gbyte(cgrib,igds(4),iofst,8)     ! Get interpret. for opt. list
+      call g2_gbytec(cgrib,igds(4),iofst,8)     ! Get interpret. for opt. list
       iofst=iofst+8
-      call gbyte(cgrib,igds(5),iofst,16)    ! Get Grid Def Template num.
+      call g2_gbytec(cgrib,igds(5),iofst,16)    ! Get Grid Def Template num.
       iofst=iofst+16
 !      if (igds(1).eq.0) then
       if (igds(1).eq.0.OR.igds(1).eq.255) then  ! FOR ECMWF TEST ONLY
@@ -128,10 +128,10 @@
       do i=1,mapgridlen
         nbits=iabs(mapgrid(i))*8
         if ( mapgrid(i).ge.0 ) then
-          call gbyte(cgrib,igdstmpl(i),iofst,nbits)
+          call g2_gbytec(cgrib,igdstmpl(i),iofst,nbits)
         else
-          call gbyte(cgrib,isign,iofst,1)
-          call gbyte(cgrib,igdstmpl(i),iofst+1,nbits-1)
+          call g2_gbytec(cgrib,isign,iofst,1)
+          call g2_gbytec(cgrib,igdstmpl(i),iofst+1,nbits-1)
           if (isign.eq.1) igdstmpl(i)=-igdstmpl(i)
         endif
         iofst=iofst+nbits
@@ -151,10 +151,10 @@
         do i=mapgridlen+1,newmapgridlen
           nbits=iabs(mapgrid(i))*8
           if ( mapgrid(i).ge.0 ) then
-            call gbyte(cgrib,igdstmpl(i),iofst,nbits)
+            call g2_gbytec(cgrib,igdstmpl(i),iofst,nbits)
           else
-            call gbyte(cgrib,isign,iofst,1)
-            call gbyte(cgrib,igdstmpl(i),iofst+1,nbits-1)
+            call g2_gbytec(cgrib,isign,iofst,1)
+            call g2_gbytec(cgrib,igdstmpl(i),iofst+1,nbits-1)
             if (isign.eq.1) igdstmpl(i)=-igdstmpl(i)
           endif
           iofst=iofst+nbits
@@ -178,7 +178,7 @@
             nullify(ideflist)
             return
          endif
-         call gbytes(cgrib,ideflist,iofst,nbits,0,idefnum)
+         call g2_gbytesc(cgrib,ideflist,iofst,nbits,0,idefnum)
          iofst=iofst+(nbits*idefnum)
       else
          idefnum=0
