@@ -102,12 +102,12 @@
 !  Unpack Section 0 - Indicator Section 
 !
       iofst=8*(istart+5)
-      call gbyte(cgrib,listsec0(1),iofst,8)     ! Discipline
+      call g2_gbytec(cgrib,listsec0(1),iofst,8)     ! Discipline
       iofst=iofst+8
-      call gbyte(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
+      call g2_gbytec(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
       iofst=iofst+8
       iofst=iofst+32
-      call gbyte(cgrib,lengrib,iofst,32)        ! Length of GRIB message
+      call g2_gbytec(cgrib,lengrib,iofst,32)        ! Length of GRIB message
       iofst=iofst+32
       listsec0(3)=lengrib
       lensec0=16
@@ -123,9 +123,9 @@
 !
 !  Unpack Section 1 - Identification Section
 !
-      call gbyte(cgrib,lensec1,iofst,32)        ! Length of Section 1
+      call g2_gbytec(cgrib,lensec1,iofst,32)        ! Length of Section 1
       iofst=iofst+32
-      call gbyte(cgrib,isecnum,iofst,8)         ! Section number ( 1 )
+      call g2_gbytec(cgrib,isecnum,iofst,8)         ! Section number ( 1 )
       iofst=iofst+8
       if (isecnum.ne.1) then
         print *,'gb_info: Could not find section 1.'
@@ -139,7 +139,7 @@
       !
       do i=1,mapsec1len
         nbits=mapsec1(i)*8
-        call gbyte(cgrib,listsec1(i),iofst,nbits)
+        call g2_gbytec(cgrib,listsec1(i),iofst,nbits)
         iofst=iofst+nbits
       enddo
       ipos=ipos+lensec1
@@ -160,9 +160,9 @@
           exit
         endif
         iofst=(ipos-1)*8
-        call gbyte(cgrib,lensec,iofst,32)        ! Get Length of Section
+        call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
         iofst=iofst+32
-        call gbyte(cgrib,isecnum,iofst,8)         ! Get Section number
+        call g2_gbytec(cgrib,isecnum,iofst,8)         ! Get Section number
         iofst=iofst+8
         ipos=ipos+lensec                 ! Update beginning of section pointer
         if (ipos.gt.(istart+lengrib)) then

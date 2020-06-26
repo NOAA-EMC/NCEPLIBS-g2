@@ -110,15 +110,15 @@
 !
       if (idrsnum.eq.3) then
          if (nbitsd.ne.0) then
-              call gbyte(cpack,ival1,iofst,nbitsd)
+              call g2_gbytec(cpack,ival1,iofst,nbitsd)
               iofst=iofst+nbitsd
               if (idrstmpl(17).eq.2) then
-                 call gbyte(cpack,ival2,iofst,nbitsd)
+                 call g2_gbytec(cpack,ival2,iofst,nbitsd)
                  iofst=iofst+nbitsd
               endif
-              call gbyte(cpack,isign,iofst,1)
+              call g2_gbytec(cpack,isign,iofst,1)
               iofst=iofst+1
-              call gbyte(cpack,minsd,iofst,nbitsd-1)
+              call g2_gbytec(cpack,minsd,iofst,nbitsd-1)
               iofst=iofst+nbitsd-1
               if (isign.eq.1) minsd=-minsd
          else
@@ -133,7 +133,7 @@
 !
       !print *,'SAG1: ',nbitsgref,ngroups,iofst
       if (nbitsgref.ne.0) then
-         call gbytes(cpack,gref,iofst,nbitsgref,0,ngroups)
+         call g2_gbytesc(cpack,gref,iofst,nbitsgref,0,ngroups)
          itemp=nbitsgref*ngroups
          iofst=iofst+(itemp)
          if (mod(itemp,8).ne.0) iofst=iofst+(8-mod(itemp,8))
@@ -146,7 +146,7 @@
 !
       !print *,'SAG2: ',nbitsgwidth,ngroups,iofst,idrstmpl(11)
       if (nbitsgwidth.ne.0) then
-         call gbytes(cpack,gwidth,iofst,nbitsgwidth,0,ngroups)
+         call g2_gbytesc(cpack,gwidth,iofst,nbitsgwidth,0,ngroups)
          itemp=nbitsgwidth*ngroups
          iofst=iofst+(itemp)
          if (mod(itemp,8).ne.0) iofst=iofst+(8-mod(itemp,8))
@@ -164,7 +164,7 @@
       !print *,'ALLOC glen: ',is
       !print *,'SAG3: ',nbitsglen,ngroups,iofst,idrstmpl(14),idrstmpl(13)
       if (nbitsglen.ne.0) then
-         call gbytes(cpack,glen,iofst,nbitsglen,0,ngroups)
+         call g2_gbytesc(cpack,glen,iofst,nbitsglen,0,ngroups)
          itemp=nbitsglen*ngroups
          iofst=iofst+(itemp)
          if (mod(itemp,8).ne.0) iofst=iofst+(8-mod(itemp,8))
@@ -203,7 +203,7 @@
          do j=1,ngroups
          !write(78,*)'NGP ',j,gwidth(j),glen(j),gref(j)
            if (gwidth(j).ne.0) then
-             call gbytes(cpack,ifld(n),iofst,gwidth(j),0,glen(j))
+             call g2_gbytesc(cpack,ifld(n),iofst,gwidth(j),0,glen(j))
              do k=1,glen(j)
                ifld(n)=ifld(n)+gref(j)
                n=n+1
@@ -225,7 +225,7 @@
            if (gwidth(j).ne.0) then
              msng1=(2**gwidth(j))-1
              msng2=msng1-1
-             call gbytes(cpack,ifld(n),iofst,gwidth(j),0,glen(j))
+             call g2_gbytesc(cpack,ifld(n),iofst,gwidth(j),0,glen(j))
              iofst=iofst+(gwidth(j)*glen(j))
              do k=1,glen(j)
                if (ifld(n).eq.msng1) then
