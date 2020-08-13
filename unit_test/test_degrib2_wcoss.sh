@@ -56,7 +56,7 @@ if [ "$machine" = "dell" ]; then
 elif [ "$machine" = "cray" ]; then
     module unload gcc
     module unload grib_util
-    module load gcc/6.3.1
+    module load gcc/6.3.0
 #   module use -a /usrx/local/nceplibs/NCEPLIBS/modulefiles
     module load grib_util/${ver}
     input_file=/usrx/local/nceplibs/gfs_data
