@@ -53,8 +53,10 @@ if [ "$machine" = "dell" ]; then
 #   module use -a /usrx/local/nceplibs/dev/NCEPLIBS/modulefiles
     module load grib_util/${ver}
     input_file=/usrx/local/nceplibs/dev/lib/fv3gfs
-elif [ "$machine" = "Cray" ]; then
+elif [ "$machine" = "cray" ]; then
+    module unload gcc
     module unload grib_util
+    module load gcc/6.3.1
 #   module use -a /usrx/local/nceplibs/NCEPLIBS/modulefiles
     module load grib_util/${ver}
     input_file=/usrx/local/nceplibs/gfs_data
