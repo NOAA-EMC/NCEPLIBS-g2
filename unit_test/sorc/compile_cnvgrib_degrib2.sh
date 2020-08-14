@@ -45,7 +45,15 @@ export W3EMC_INC4=/gpfs/dell2/emc/modeling/noscrub/Boi.Vuong/w240/myw3emc/w3emc_
   module list
 elif [ $mac = l -o $mac = s ] ; then   #    wcoss_c (i.e. luna and surge)
   machine=cray
+  module unload craype-haswell
+  module load craype-sandybridge
+  module unload PrgEnv-cray
+  module load PrgEnv-intel/5.2.82
+  module unload intel
   module load intel/18.1.163
+  module load jasper-gnu-sandybridge/1.900.1
+  module load png-intel-sandybridge/1.2.49
+  module load zlib-intel-sandybridge/1.2.7
 #
 #  If the G2 v3.2.0, W3EMC v2.4.0 and W3NCO v2.2.0 libraries are not available
 #  You can set these variables W3NCO_LIB4, W3EMC_LIB4, G2_INC4, and G2_LIB4
