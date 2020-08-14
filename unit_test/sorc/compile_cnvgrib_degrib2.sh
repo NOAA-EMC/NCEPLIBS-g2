@@ -39,8 +39,8 @@ module load w3nco/2.2.0
 #  These varibales are for W3EMC v2.4.0 library for testing on $machine
 #  You can set these variables to the path of your W3EMC library
 #
-export W3EMC_LIB4=/gpfs/dell2/emc/modeling/noscrub/Boi.Vuong/w240/myw3emc/lib/libw3emc_v2.4.0_4.a
-export W3EMC_INC4=/gpfs/dell2/emc/modeling/noscrub/Boi.Vuong/w240/myw3emc/w3emc_v2.4.0_4
+export W3EMC_LIB4=/gpfs/dell2/emc/modeling/noscrub/Boi.Vuong/n/NCEPLIBS-w3emc/build/myw3emc/lib/libw3emc_v2.4.0_4.a
+export W3EMC_INC4=/gpfs/dell2/emc/modeling/noscrub/Boi.Vuong/n/NCEPLIBS-w3emc/build/myw3emc/include_4
 
   module list
 elif [ $mac = l -o $mac = s ] ; then   #    wcoss_c (i.e. luna and surge)
