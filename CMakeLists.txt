@@ -22,8 +22,6 @@ if(NOT CMAKE_C_COMPILER_ID MATCHES "^(Intel|GNU|Clang|AppleClang)$")
   message(WARNING "Compiler not officially supported: ${CMAKE_C_COMPILER_ID}")
 endif()
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 find_package(Jasper REQUIRED)
 find_package(PNG REQUIRED)
 
