@@ -9,7 +9,7 @@ elseif(UNIX)
 endif()
 
 if(CMAKE_C_COMPILER_ID MATCHES "^(Intel)$")
-  set(CMAKE_C_FLAGS "-g -O3 ${CMAKE_C_FLAGS}")
+  set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
   set(CMAKE_C_FLAGS_RELEASE "-O3")
   set(CMAKE_Fortran_FLAGS "-g -assume noold_ldout_format ${CMAKE_Fortran_FLAGS}")
   set(fortran_d_flags "-r8")
