@@ -27,8 +27,7 @@ find_package(PNG REQUIRED)
 
 add_subdirectory(src)
 
-if(ENABLE_TESTS)
-  find_package(PFUNIT REQUIRED)
-  enable_testing()
+include(CTest)
+if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
