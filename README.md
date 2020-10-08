@@ -1,9 +1,17 @@
+![Status](https://github.com/NOAA-EMC/NCEPLIBS-sp/workflows/Build%20and%20Test/badge.svg)
+
 ### NCEPLIBS G2 Library
 
-Utilities for coding/decoding GRIB2 messages. This library
-contains Fortran 90 decoder/encoder routines for GRIB edition 2,
-as well as indexing/searching utility routines. 
+Utilities for coding/decoding GRIB2 messages. This library contains
+Fortran 90 decoder/encoder routines for GRIB edition 2, as well as
+indexing/searching utility routines. This is part of the
+[NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
+
 For more detailed documentation see (grib2.doc).
+
+#### Authors
+
+NCEP/EMC Developers
 
 Code Manager : Boi Vuong
 
@@ -53,8 +61,20 @@ make
 make install
 
 ```
-#### Version
-3.4.0
 
-#### Authors
-* **[NCEP/EMC](mailto:NCEP.List.EMC.nceplibs.Developers@noaa.gov)**
+## Disclaimer
+
+The United States Department of Commerce (DOC) GitHub project code is
+provided on an "as is" basis and the user assumes responsibility for
+its use. DOC has relinquished control of the information and no longer
+has responsibility to protect the integrity, confidentiality, or
+availability of the information. Any claims against the Department of
+Commerce stemming from the use of its GitHub project will be governed
+by all applicable Federal law. Any reference to specific commercial
+products, processes, or services by service mark, trademark,
+manufacturer, or otherwise, does not constitute or imply their
+endorsement, recommendation or favoring by the Department of
+Commerce. The Department of Commerce seal and logo, or the seal and
+logo of a DOC bureau, shall not be used in any manner to imply
+endorsement of any commercial product or activity by DOC or the United
+States Government.

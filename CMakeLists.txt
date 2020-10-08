@@ -1,3 +1,6 @@
+# This is the main CMake file for NCEPLIBS-g2.
+#
+# Mark Potts, Kyle Gerheiser
 cmake_minimum_required(VERSION 3.15)
 
 file(STRINGS "VERSION" pVersion)
@@ -18,10 +21,6 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
     "MinSizeRel" "RelWithDebInfo")
 endif()
 
-if(NOT CMAKE_C_COMPILER_ID MATCHES "^(Intel|GNU|Clang|AppleClang)$")
-  message(WARNING "Compiler not officially supported: ${CMAKE_C_COMPILER_ID}")
-endif()
-
 find_package(Jasper REQUIRED)
 find_package(PNG REQUIRED)
 
@@ -31,3 +30,10 @@ include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
+
+# Determine whether or not to generate documentation.
+option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+if(ENABLE_DOCS)
+  find_package(Doxygen REQUIRED)
+endif()
+add_subdirectory(docs)  
