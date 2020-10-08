@@ -7,7 +7,8 @@ Fortran 90 decoder/encoder routines for GRIB edition 2, as well as
 indexing/searching utility routines. This is part of the
 [NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
 
-For more detailed documentation see (grib2.doc).
+For more detailed documentation see
+https://noaa-emc.github.io/NCEPLIBS-g2/.
 
 #### Authors
 
@@ -17,7 +18,9 @@ Code Manager : Boi Vuong
 
 #### Prerequisites
 
-Compilers: GNU | Intel | Clang | AppleClang 
+The following libraries are required:
+- libpng
+- libjasper
 
 #### Installing
 ```
