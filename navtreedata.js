@@ -22,7 +22,7 @@ for the JavaScript code in this file
 */
 var NAVTREE =
 [
-  [ "NCEPLIBS-sp", "index.html", [
+  [ "NCEPLIBS-g2", "index.html", [
     [ "Introduction", "index.html#autotoc_md0", null ],
     [ "GRIB2 Encoding Routines", "index.html#autotoc_md1", null ],
     [ "GRIB2 Decoding Routines", "index.html#autotoc_md2", null ],
