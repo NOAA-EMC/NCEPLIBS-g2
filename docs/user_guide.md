@@ -105,7 +105,7 @@ needed, by an explicit call to subroutine GF_FREE.
 
 Example usage:
 
-<pre>
+@code
       use grib_mod
       type(gribfield) :: gfld
       integer,dimension(200) :: jids,jpdt,jgdt
@@ -137,7 +137,7 @@ Example usage:
 
       stop
       end
-</pre>
+@endcode
       
 # GRIB2 Tables/Templates
 
