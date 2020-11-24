@@ -1,6 +1,6 @@
 ![Status](https://github.com/NOAA-EMC/NCEPLIBS-sp/workflows/Build%20and%20Test/badge.svg)
 
-### NCEPLIBS G2 Library
+# NCEPLIBS G2 Library
 
 Utilities for coding/decoding GRIB2 messages. This library contains
 Fortran 90 decoder/encoder routines for GRIB edition 2, as well as
@@ -8,32 +8,40 @@ indexing/searching utility routines. This is part of the
 [NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
 
 For more detailed documentation see
-https://noaa-emc.github.io/NCEPLIBS-g2/.
+https://noaa-emc.github.io/NCEPLIBS-g2/. For the NCEP WMO GRIB2
+Documentation see
+https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/.
 
-#### Authors
+## Authors
 
 NCEP/EMC Developers
 
 Code Manager : Boi Vuong
 
-#### Prerequisites
+## Prerequisites
 
 The following libraries are required:
 - libpng
 - libjasper
 
-#### Installing
+## Installing
+
+#### Download G2 Code from GitHub.com:
+
 ```
-Download G2 Code from GitHub.com
 git clone -b g2_v3.2.0 --recursive https://github.com/NOAA-EMC/NCEPLIBS-g2.git
 cd NCEPLIBS-g2
 ```
+
 #### Create a directory where to build G2 library
+
 ```
 mkdir build
 cd build
 ```
+
 #### Load the following modules 
+
 ```
 module load ips/18.0.1.163
 module load impi/18.0.1
@@ -53,7 +61,9 @@ export FC=..., before invoking cmake.
 Note: Windows systems is not supported at this time.
 
 ```
+
 #### Run cmake
+
 ```
 cmake .. -DCMAKE_INSTALL_PREFIX=myg2 -DCMAKE_PREFIX_PATH="${PNG_LIBDIR};${PNG_INC};${JASPER_LIBDIR};${JASPER_INC}"
 
