@@ -20,7 +20,6 @@ set(fortran_src
   getgb2r.f
   getgb2rp.f
   getgb2s.f
-  getidxes.f
   getidx.f
   getlocal.f
   getpoly.f
