@@ -72,7 +72,7 @@ C$$$
          character(len=1),pointer,dimension(:) :: cbuf
       END TYPE GINDEX
      
-      TYPE(GINDEX),SAVE :: IDXLIST(10000)
+      TYPE(GINDEX) :: IDXLIST(10000)
 
       DATA LUX/0/
 C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -111,6 +111,11 @@ C  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
          IDXLIST(LUGB)%NNUM=0
          LUX=0
       ENDIF
+
+      IF (ASSOCIATED(IDXLIST(LUGB)%CBUF)) then
+         DEALLOCATE(IDXLIST(LUGB)%CBUF)
+      end if
+
       IF (LUGI.LT.0) THEN      ! Force re-read of index from indexfile
                                ! associated with unit abs(lugi)
          IF ( ASSOCIATED( IDXLIST(LUGB)%CBUF ) ) 
