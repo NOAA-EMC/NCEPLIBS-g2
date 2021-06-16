@@ -26,7 +26,6 @@ var files_dup =
     [ "getgb2rp.f", "getgb2rp_8f_source.html", null ],
     [ "getgb2s.f", "getgb2s_8f_source.html", null ],
     [ "getidx.f", "getidx_8f_source.html", null ],
-    [ "getidxes.f", "getidxes_8f_source.html", null ],
     [ "getlocal.f", "getlocal_8f_source.html", null ],
     [ "getpoly.f", "getpoly_8f_source.html", null ],
     [ "gettemplates.f", "gettemplates_8f_source.html", null ],
