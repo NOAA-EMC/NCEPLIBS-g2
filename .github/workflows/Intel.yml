@@ -72,4 +72,3 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose
-        
