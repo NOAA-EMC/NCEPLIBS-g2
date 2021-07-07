@@ -64,3 +64,4 @@ jobs:
       with:
         name: g2-test-coverage
         path: g2/build/*.html
+        
