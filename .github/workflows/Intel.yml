@@ -44,7 +44,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/Jasper
-        key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
+        key: jasper-intel-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
@@ -65,7 +65,7 @@ jobs:
         cd g2
         mkdir build 
         cd build
-        cmake .. -DENABLE_TESTS=ON -DOPENMP=ON -DCMAKE_PREFIX_PATH="~/"
+        cmake .. -DOPENMP=ON -DJasper_ROOT=~/Jasper
         make -j2
     
     - name: test
