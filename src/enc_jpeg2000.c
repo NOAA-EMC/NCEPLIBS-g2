@@ -101,9 +101,10 @@ int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
     printf(" enc_jpeg2000:jpclen %ld\n",*jpclen);
 */
 /*       jas_init(); */
- *   
- *     Set lossy compression options, if requested.
- *   
+
+/*   
+**     Set lossy compression options, if requested.
+*/   
     if ( *ltype != 1 ) {
        opts[0]=(char)0;
     }
@@ -115,10 +116,10 @@ int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
     }
 /*    printf("SAGopts: %s\n",opts); */
     
- *   
- *     Initialize the JasPer image structure describing the grayscale
- *     image to encode into the JPEG2000 code stream.
- *   
+/*   
+**     Initialize the JasPer image structure describing the grayscale
+**     image to encode into the JPEG2000 code stream.
+*/   
     image.tlx_=0;
     image.tly_=0;
 #ifdef JAS_1_500_4 
