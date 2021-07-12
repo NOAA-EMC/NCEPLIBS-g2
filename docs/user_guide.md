@@ -26,7 +26,7 @@ within a single GRIB message.  All sections within such repeated sequences
 must be present and shall appear in the numerical order noted above.
 Unrepeated sections remain in effect until redefined.
 
-The above overview was taken from WMO's FM 92-XII GRIB description
+The above overview was taken from WMO FM 92-XII GRIB description
 of the experimental GRIB Edition 2 form.
 
 # GRIB2 Encoding Routines
