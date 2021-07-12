@@ -133,7 +133,9 @@ int SUB_NAME(unsigned char *pngbuf,g2int *width,g2int *height,char *cout)
 
     row_pointers = png_get_rows(png_ptr, info_ptr);
 
-     Get image info, such as size, depth, colortype, etc...  
+/*
+**      Get image info, such as size, depth, colortype, etc...  
+*/
 
 /*    printf("SAGT:png %d %d %d\n",info_ptr->width,info_ptr->height,info_ptr->bit_depth);*/
 /*    (void)png_get_IHDR(png_ptr, info_ptr, (png_uint_32 *)width, (png_uint_32 *)height,
