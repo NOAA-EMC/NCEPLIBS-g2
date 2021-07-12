@@ -1,47 +1,36 @@
+!>    @file
+!>    @brief This subroutine unpacks a data field that was packed using a
+!>    complex packing algorithm as defined in the GRIB2 documention.
+!>    @author Gilbert ORG: W/NP11 @date 2000-06-21
+!>     
+!>    Using info from the GRIB2 Data Representation Template 5.2 or 5.3.
+!>    Supports GRIB2 complex packing templates with or without
+!>    spatial differences (i.e. DRTs 5.2 and 5.3).
+!>    
+!>    PROGRAM HISTORY LOG:
+!>    2000-06-21  Gilbert
+!>    2004-12-29  Gilbert  -  Added test ( provided by Arthur Taylor/MDL )
+!>    to verify that group widths and lengths are consistent with section length.
+!>    2016-02-26              update unpacking for template 5.3
+!>
+!>    @param[in] cpack The packed data field (character*1 array)
+!>    @param[in] len length of packed field cpack().
+!>    @param[in] lensec length of section 7 (used for error checking).
+!>    @param[in] idrsnum Data Representation Template number 5.N
+!>    Must equal 2 or 3.
+!>    @param[in] idrstmpl Contains the array of values for Data Representation
+!>    Template 5.2 or 5.3
+!>    @param[in] ndpts The number of data values to unpack
+!>    @param[out] fld Contains the unpacked data values
+!>    @param[out] ier Error return:
+!>    - 0 = OK
+!>    - 1 = Problem - inconsistent group lengths of widths.
+!>
+!>    @author Gilbert ORG: W/NP11 @date 2000-06-21
+!>
+
       subroutine comunpack(cpack,len,lensec,idrsnum,idrstmpl,ndpts,
      &                     fld,ier)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    comunpack
-!   PRGMMR: Gilbert          ORG: W/NP11    DATE: 2000-06-21
-!
-! ABSTRACT: This subroutine unpacks a data field that was packed using a
-!   complex packing algorithm as defined in the GRIB2 documention,
-!   using info from the GRIB2 Data Representation Template 5.2 or 5.3.
-!   Supports GRIB2 complex packing templates with or without
-!   spatial differences (i.e. DRTs 5.2 and 5.3).
-!
-! PROGRAM HISTORY LOG:
-! 2000-06-21  Gilbert
-! 2004-12-29  Gilbert  -  Added test ( provided by Arthur Taylor/MDL )
-!                         to verify that group widths and lengths are
-!                         consistent with section length.
-! 2016-02-26              update unpacking for template 5.3
-!
-! USAGE:    CALL comunpack(cpack,len,lensec,idrsnum,idrstmpl,ndpts,fld,ier)
-!   INPUT ARGUMENT LIST:
-!     cpack    - The packed data field (character*1 array)
-!     len      - length of packed field cpack().
-!     lensec   - length of section 7 (used for error checking).
-!     idrsnum  - Data Representation Template number 5.N
-!                Must equal 2 or 3.
-!     idrstmpl - Contains the array of values for Data Representation
-!                Template 5.2 or 5.3
-!     ndpts    - The number of data values to unpack
-!
-!   OUTPUT ARGUMENT LIST:
-!     fld()    - Contains the unpacked data values
-!     ier      - Error return:
-!                  0 = OK
-!                  1 = Problem - inconsistent group lengths of widths.
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: XL Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       character(len=1),intent(in) :: cpack(len)
       integer,intent(in) :: ndpts,len

@@ -32,7 +32,7 @@ if(BUILD_TESTING)
 endif()
 
 # Determine whether or not to generate documentation.
-option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+option(ENABLE_DOCS "Enable generation of doxygen-based documentation." ON)
 if(ENABLE_DOCS)
   find_package(Doxygen REQUIRED)
 endif()

@@ -48,7 +48,7 @@
 !>    spatial differencing, if desired.
 !>    @param[in] idrstmplen Max dimension of idrstmpl.
 !>    @param[in] fld Array of data points to pack.
-!>    @parram[out] ngrdpts Number of data points in grid. i.e. size of
+!>    @param[out] ngrdpts Number of data points in grid. i.e. size of
 !>    fld and bmap.
 !>    @param[out] ibmap Bitmap indicator (see Code Table 6.0).
 !>    - 0 = bitmap applies and is included in Section 6.

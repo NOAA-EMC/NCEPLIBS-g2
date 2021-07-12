@@ -1,60 +1,33 @@
+!>    @file
+!>    @brief This subroutine packs up a data field using a complex
+!>    packing algorithm as defined in the GRIB2 documention.
+!>    @author Gilbert ORG: W/NP11 @date 2000-06-21
+!>     
+!>    It supports GRIB2 complex packing templates with or without
+!>    spatial differences (i.e. DRTs 5.2 and 5.3).
+!>    It also fills in GRIB2 Data Representation Template 5.2 or 5.3 
+!>    with the appropriate values.
+!>     
+!>    @param[in] fld Contains the data values to pack
+!>    @param[in] ndpts The number of data values in array fld()
+!>    @param[in] idrsnum Data Representation Template number 5.N must equal 2 or 3.
+!>    @param[inout] idrstmpl Contains the array of values for Data Representation
+!>    Template 5.2 or 5.3
+!>    - (1) = Reference value - ignored on input
+!>    - (2) = Binary Scale Factor
+!>    - (3) = Decimal Scale Factor
+!>    - (7) = Missing value management
+!>    - (8) = Primary missing value
+!>    - (9) = Secondary missing value
+!>    - (17) = Order of Spatial Differencing  ( 1 or 2 )
+!>    @param[out] cpack The packed data field (character*1 array)
+!>    @param[out] lcpack length of packed field cpack().
+!>
+!>    @author Gilbert ORG: W/NP11 @date 2000-06-21
+!>
+
       subroutine compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    compack
-!   PRGMMR: Gilbert          ORG: W/NP11    DATE: 2000-06-21
-!
-! ABSTRACT: This subroutine packs up a data field using a complex
-!   packing algorithm as defined in the GRIB2 documention.  It
-!   supports GRIB2 complex packing templates with or without
-!   spatial differences (i.e. DRTs 5.2 and 5.3).
-!   It also fills in GRIB2 Data Representation Template 5.2 or 5.3 
-!   with the appropriate values.
-!
-! PROGRAM HISTORY LOG:
-! 2000-06-21  Gilbert
-! 2011-10-24  Boi Vuong   Added variable rmin4 for 4 byte float
-!
-! USAGE:    CALL compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
-!   INPUT ARGUMENT LIST:
-!     fld()    - Contains the data values to pack
-!     ndpts    - The number of data values in array fld()
-!     idrsnum  - Data Representation Template number 5.N
-!                Must equal 2 or 3.
-!     idrstmpl - Contains the array of values for Data Representation
-!                Template 5.2 or 5.3
-!                (1) = Reference value - ignored on input
-!                (2) = Binary Scale Factor
-!                (3) = Decimal Scale Factor
-!                    .
-!                    .
-!                (7) = Missing value management
-!                (8) = Primary missing value
-!                (9) = Secondary missing value
-!                    .
-!                    .
-!               (17) = Order of Spatial Differencing  ( 1 or 2 )
-!                    .
-!                    .
-!
-!   OUTPUT ARGUMENT LIST: 
-!     idrstmpl - Contains the array of values for Data Representation
-!                Template 5.3
-!                (1) = Reference value - set by compack routine.
-!                (2) = Binary Scale Factor - unchanged from input
-!                (3) = Decimal Scale Factor - unchanged from input
-!                    .
-!                    .
-!     cpack    - The packed data field (character*1 array)
-!     lcpack   - length of packed field cpack().
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: XL Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
       use intmath
       implicit none
       integer,intent(in) :: ndpts,idrsnum
@@ -354,7 +327,7 @@
            call g2_sbytesc(cpack,gwidth,iofst,nbitsgwidth,0,ngroups)
            itemp=nbitsgwidth*ngroups
            iofst=iofst+itemp
-           !         Pad last octet with Zeros, if necessary,
+           !     Pad last octet with Zeros, if necessary,
            if (mod(itemp,8).ne.0) then
               left=8-mod(itemp,8)
               call g2_sbytec(cpack,zero,iofst,left)
@@ -385,7 +358,7 @@
            call g2_sbytesc(cpack,glen,iofst,nbitsglen,0,ngroups)
            itemp=nbitsglen*ngroups
            iofst=iofst+itemp
-           !         Pad last octet with Zeros, if necessary,
+           !     Pad last octet with Zeros, if necessary,
            if (mod(itemp,8).ne.0) then
               left=8-mod(itemp,8)
               call g2_sbytec(cpack,zero,iofst,left)
@@ -416,7 +389,7 @@
            enddo
            n=n+glength
         enddo
-        !         Pad last octet with Zeros, if necessary,
+        !     Pad last octet with Zeros, if necessary,
         if (mod(iofst,8).ne.0) then
            left=8-mod(iofst,8)
            call g2_sbytec(cpack,zero,iofst,left)
@@ -445,7 +418,7 @@
 !
       rmin4 = rmin
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
-!      call g2_gbytec(ref,idrstmpl(1),0,32)
+!    call g2_gbytec(ref,idrstmpl(1),0,32)
       iref=transfer(ref,iref)
       idrstmpl(1)=iref
       idrstmpl(4)=nbitsgref
