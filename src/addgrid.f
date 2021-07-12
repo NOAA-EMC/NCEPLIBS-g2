@@ -7,7 +7,7 @@
 !>    and gribend() to create a complete GRIB2 message. Subroutine
 !>    gribcreate must be called first to initialize a new GRIB2 message.
 !>
-!>    @param[in] cgrib Character array to contain the GRIB2 message
+!>    @param[inout] cgrib Character array to contain the GRIB2 message
 !>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
 !>    @param[in] igds Contains information needed for GRIB Grid Definition Section 3.
 !>    Must be dimensioned >= 5.
