@@ -2,11 +2,11 @@
 !>    @brief This subroutine packs up a Grid Definition Section
 !>    (Section 3) and adds it to a GRIB2 message.
 !>    @author Gilbert ORG: W/NP11 @date 2000-05-01
-!>
+!>     
 !>    This routine is used with routines gribcreate(), addlocal(), addfield(),
 !>    and gribend() to create a complete GRIB2 message. Subroutine
 !>    gribcreate must be called first to initialize a new GRIB2 message.
-!>
+!>     
 !>    @param[inout] cgrib Character array to contain the GRIB2 message
 !>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
 !>    @param[in] igds Contains information needed for GRIB Grid Definition Section 3.
@@ -36,8 +36,10 @@
 !>    - 4 = Previous Section was not 1, 2 or 7.
 !>    - 5 = Could not find requested Grid Definition Template.
 !>
-!>    REMARKS: Note that the Local Use Section ( Section 2 ) can only follow
+!>    @note: Note that the Local Use Section ( Section 2 ) can only follow
 !>          Section 1 or Section 7 in a GRIB2 message.
+!>
+!>    @author Gilbert ORG: W/NP11 @date 2000-05-01
 !>
 
       subroutine addgrid(cgrib,lcgrib,igds,igdstmpl,igdstmplen,
