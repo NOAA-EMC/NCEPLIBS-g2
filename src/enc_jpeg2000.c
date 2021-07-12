@@ -111,7 +111,7 @@ int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
     else {
        snprintf(opts,MAXOPTSSIZE,"mode=real\nrate=%f",1.0/(float)*ratio);
     }
-    if ( *retry == 1 ) {              *    option to increase number of guard bits
+    if ( *retry == 1 ) {             // option to increase number of guard bits
        strcat(opts,"\nnumgbits=4");
     }
 /*    printf("SAGopts: %s\n",opts); */
