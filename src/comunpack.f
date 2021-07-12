@@ -218,7 +218,7 @@
          n=1
          non=1
          do j=1,ngroups
-     !> print *,'SAGNGP ',j,gwidth(j),glen(j),gref(j)
+!>      print *,'SAGNGP ',j,gwidth(j),glen(j),gref(j)
            if (gwidth(j).ne.0) then
              msng1=(2**gwidth(j))-1
              msng2=msng1-1
