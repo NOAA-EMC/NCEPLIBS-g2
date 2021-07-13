@@ -3,6 +3,7 @@
 !>    GRIB2 Data Representation Templates used in Section 5 (DRS).
 !>    @author Gilbert ORG: W/NP11 @date 2001-04-03
 !>     
+
 !>    Each Template has three parts: The number of entries in the template
 !>    (mapgridlen);  A map of the template (mapgrid), which contains the
 !>    number of octets in which to pack each of the template values; and
@@ -24,10 +25,10 @@
 !>    contain negative values.  This information is used later when packing
 !>    (or unpacking) the template data values.  Negative data values in GRIB
 !>    are stored with the left most bit set to one, and a negative number
-!>    of octets value in mapgrid() indicates that this possibility should
+!>    of octets value in mapgrid indicates that this possibility should
 !>    be considered.  The number of octets used to store the data value
 !>    in this case would be the absolute value of the negative value in 
-!>    mapgrid().
+!>    mapgrid.
 !>     
 !>    @author Gilbert ORG: W/NP11 @date 2001-04-03
 !>
@@ -111,6 +112,7 @@
 !>    Representation Template 5.NN (NN=number) in array templates.                                    .
 !>    @author Gilbert         ORG: W/NP11    DATE: 2001-06-28
 !>     
+
 !>    @param[in] number NN, indicating the number of the Data Representation 
 !>    Template 5.NN that is being requested.
 !>
@@ -137,6 +139,7 @@
 !>    specified Data Representation Template 5.NN.
 !>    @author Gilbert         ORG: W/NP11    DATE: 2000-05-11
 !>     
+
 !>    The number of entries in the template is returned along with a map
 !>    of the number of octets occupied by each entry.  Also, a flag is
 !>    returned to indicate whether the template would need to be extended.
@@ -144,7 +147,7 @@
 !>    @param[in] number NN, indicating the number of the Data Representation 
 !>    Template 5.NN that is being requested.
 !>    @param[out] nummap Number of entries in the Template
-!>    @param[out] map() An array containing the number of octets that each 
+!>    @param[out] map An array containing the number of octets that each 
 !>    template entry occupies when packed up into the DRS.
 !>    @param[out] needext Logical variable indicating whether the Data Representation
 !>    Template has to be extended.  
@@ -181,16 +184,17 @@
 !>    given Data Representation Template, if required.
 !>    @author  Gilbert         ORG: W/NP11    DATE: 2000-05-11
 !>     
+
 !>    Some Templates can vary depending on data values given in an earlier part 
 !>    of the Template, and it is necessary to know some of the earlier entry
 !>    values to generate the full octet map of the Template.
 !>
 !>    @param[in] number NN, indicating the number of the Data Representation 
 !>    Template 5.NN that is being requested.
-!>    @param[in] list() The list of values for each entry in the 
+!>    @param[in] list The list of values for each entry in the 
 !>    Data Representation Template 5.NN.
 !>    @param[out] nummap Number of entries in the Template
-!>    @param[out] map() An array containing the number of octets that each 
+!>    @param[out] map An array containing the number of octets that each 
 !>    template entry occupies when packed up into the GDS.
 !>
 !>    @author  Gilbert         ORG: W/NP11    DATE: 2000-05-11

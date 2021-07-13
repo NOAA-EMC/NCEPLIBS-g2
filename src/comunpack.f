@@ -3,6 +3,7 @@
 !>    complex packing algorithm as defined in the GRIB2 documention.
 !>    @author Gilbert ORG: W/NP11 @date 2000-06-21
 !>     
+
 !>    Using info from the GRIB2 Data Representation Template 5.2 or 5.3.
 !>    Supports GRIB2 complex packing templates with or without
 !>    spatial differences (i.e. DRTs 5.2 and 5.3).
@@ -14,7 +15,7 @@
 !>    2016-02-26              update unpacking for template 5.3
 !>
 !>    @param[in] cpack The packed data field (character*1 array)
-!>    @param[in] len length of packed field cpack().
+!>    @param[in] len length of packed field cpack.
 !>    @param[in] lensec length of section 7 (used for error checking).
 !>    @param[in] idrsnum Data Representation Template number 5.N
 !>    Must equal 2 or 3.

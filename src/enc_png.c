@@ -2,6 +2,7 @@
  * @file
  * @brief This struct write and decode PNG stream
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
