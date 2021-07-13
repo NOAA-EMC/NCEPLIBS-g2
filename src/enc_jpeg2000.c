@@ -31,13 +31,15 @@
 #endif
 
 /**
- * Using JasPer Software version 1.500.4 (or 1.700.2 ) written by the 
+ * This Function encodes a grayscale image into a JPEG2000 code stream
+ * specified in the JPEG2000 Part-1 standard. It uses JasPer 
+ * Software version 1.500.4 (or 1.700.2 ) written by the 
  * University of British Columbia, Image Power Inc, and others.
  * JasPer is available at http: *   www.ece.uvic.ca/~mdadams/jasper/.
  *  
  * PROGRAM HISTORY LOG:
- * 2002-12-02  Gilbert
- * 2004-07-20  GIlbert - Added retry argument/option to allow option of
+ * - 2002-12-02  Gilbert
+ * - 2004-07-20  GIlbert - Added retry argument/option to allow option of
  * increasing the maximum number of guard bits to the JPEG2000 algorithm.
  *
  * @param[in] cin Packed matrix of Grayscale image values to encode.

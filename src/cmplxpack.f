@@ -4,7 +4,9 @@
 !>    @author Gilbert ORG: W/NP11 @date 2004-08-27
 !>     
 
-!>    This subroutine supports GRIB2 complex packing templates with or without
+!>    This subroutine packs up a data field using a complex
+!>    packing algorithm as defined in the GRIB2 documention.
+!>    It supports GRIB2 complex packing templates with or without
 !>    spatial differences (i.e. DRTs 5.2 and 5.3).
 !>    It also fills in GRIB2 Data Representation Template 5.2 or 5.3 
 !>    with the appropriate values.

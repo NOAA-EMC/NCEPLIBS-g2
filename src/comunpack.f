@@ -4,15 +4,17 @@
 !>    @author Gilbert ORG: W/NP11 @date 2000-06-21
 !>     
 
+!>    This subroutine unpacks a data field that was packed using a
+!>    complex packing algorithm as defined in the GRIB2 documention.
 !>    Using info from the GRIB2 Data Representation Template 5.2 or 5.3.
 !>    Supports GRIB2 complex packing templates with or without
 !>    spatial differences (i.e. DRTs 5.2 and 5.3).
 !>    
 !>    PROGRAM HISTORY LOG:
-!>    2000-06-21  Gilbert
-!>    2004-12-29  Gilbert  -  Added test ( provided by Arthur Taylor/MDL )
+!>    - 2000-06-21  Gilbert
+!>    - 2004-12-29  Gilbert  -  Added test ( provided by Arthur Taylor/MDL )
 !>    to verify that group widths and lengths are consistent with section length.
-!>    2016-02-26              update unpacking for template 5.3
+!>    - 2016-02-26              update unpacking for template 5.3
 !>
 !>    @param[in] cpack The packed data field (character*1 array)
 !>    @param[in] len length of packed field cpack.

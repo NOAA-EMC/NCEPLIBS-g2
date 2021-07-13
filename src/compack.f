@@ -3,6 +3,7 @@
 !>    @author Gilbert ORG: W/NP11 @date 2000-06-21
 !>     
 
+!>    This subroutine packs up a data field.
 !>    It uses a complex packing algorithm as defined in the GRIB2
 !>    documention and supports GRIB2 complex packing templates with or without
 !>    spatial differences (i.e. DRTs 5.2 and 5.3).

@@ -4,6 +4,7 @@
 !>    @author Gilbert ORG: W/NP11 @date 2000-05-01
 !>    
 
+!>    This subroutine adds a Local Use Section (Section 2) to a GRIB2 message.
 !>    This routine is used with routines gribcreate(), addlocal(), addfield(),
 !>    and gribend() to create a complete GRIB2 message. Subroutine
 !>    gribcreate must be called first to initialize a new GRIB2 message.

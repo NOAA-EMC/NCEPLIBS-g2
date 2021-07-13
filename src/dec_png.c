@@ -1,6 +1,7 @@
 /**
  * @file
- * @brief This struct read and decode PNG stream
+ * @brief This program reads PNG stream data from memory.
+ * @author Gilbert
  */
 
 #include <stdio.h>
