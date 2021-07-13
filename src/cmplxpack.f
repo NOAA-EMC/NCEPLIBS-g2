@@ -22,7 +22,7 @@
 !>    - (8) = Primary missing value
 !>    - (9) = Secondary missing value
 !>    - (17) = Order of Spatial Differencing  ( 1 or 2 )
-!>    @param[out] pack The packed data field (character*1 array)
+!>    @param[out] cpack The packed data field (character*1 array)
 !>    @param[out] lcpack length of packed field cpack.
 !>
 !>    @author Gilbert ORG: W/NP11 @date 2004-08-27
