@@ -29,7 +29,7 @@
 
       module g2grids
 
-      integer,parameter :: MAXTEMP=200
+      integer,parameter :: MAXTEMP=200 !< maximum template number for grid definition.
 
       type,private :: g2grid
           integer :: grid_num
@@ -41,7 +41,7 @@
       end type g2grid
 
       type(g2grid),pointer,private :: gridlist
-      integer :: num_grids=0
+      integer :: num_grids=0 !< the number of grids.
 
       contains
 
