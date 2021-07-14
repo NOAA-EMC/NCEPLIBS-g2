@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief Contains subroutine which packs up Sections 4 through 7 for
 !>    a given field and adds them to a GRIB2 message.
-!>    @author Gilbert ORG: W/NP11 @date 2000-05-02
+!>    @author Stephen Gilbert @date 2000-05-02
 !>     
 !>    This subroutine packs up Sections 4 through 7 for a given field
 !>    and adds them to a GRIB2 message. They are Product Definition
@@ -18,10 +18,10 @@
 !>    added.
 !>
 !>    PROGRAM HISTORY LOG:
-!>    - 2000-05-02 Gilbert
-!>    - 2002-12-17 Gilbert - Added support for new templates using
+!>    - 2000-05-02 Stephen Gilbert
+!>    - 2002-12-17 Stephen Gilbert - Added support for new templates using
 !>    PNG and JPEG2000 algorithms/templates.
-!>    - 2004-06-22 Gilbert - Added check to determine if packing algorithm failed.
+!>    - 2004-06-22 Stephen Gilbert - Added check to determine if packing algorithm failed.
 !>
 !>    @param[inout] cgrib Character array to contain the GRIB2 message.
 !>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
@@ -77,7 +77,7 @@
 !>    @note Note that the Local Use Section (Section 2) can only follow
 !>    Section 1 or Section 7 in a GRIB2 message.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2000-05-02
+!>    @author Stephen Gilbert @date 2000-05-02
 !>
       subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen,
      & coordlist,numcoord,idrsnum,idrstmpl,

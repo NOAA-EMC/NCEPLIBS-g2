@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief This program reads PNG stream data from memory.
- * @author Gilbert
+ * @author Stephen Gilbert
  */
 
 #include <stdio.h>

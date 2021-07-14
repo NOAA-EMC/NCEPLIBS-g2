@@ -2,7 +2,7 @@
  * @file
  * @brief This Function encodes a grayscale image into a JPEG2000 code stream
  * specified in the JPEG2000 Part-1 standard.
- * @author Gilbert ORG: W/NP11 @date 2002-12-02
+ * @author Stephen Gilbert @date 2002-12-02
  */
 
 #include <stdio.h>
@@ -38,8 +38,8 @@
  * JasPer is available at http: *   www.ece.uvic.ca/~mdadams/jasper/.
  *  
  * PROGRAM HISTORY LOG:
- * - 2002-12-02  Gilbert
- * - 2004-07-20  GIlbert - Added retry argument/option to allow option of
+ * - 2002-12-02  Stephen Gilbert
+ * - 2004-07-20  Stephen Gilbert - Added retry argument/option to allow option of
  * increasing the maximum number of guard bits to the JPEG2000 algorithm.
  *
  * @param[in] cin Packed matrix of Grayscale image values to encode.
@@ -56,14 +56,14 @@
  * 1 = try increasing number of guard bits otherwise, no additional options
  * @param[in] jpclen  - Number of bytes allocated for new JPEG2000 code stream in outjpc.
  * @param[in] outjpc - Output encoded JPEG2000 code stream
- * @return - > 0 = Length in bytes of encoded JPEG2000 code stream
- *         -  -3 = Error decode jpeg2000 code stream.
- *         -  -5 = decoded image had multiple color components.
+ * @return 0 successfully decode JPEG2000 code stream
+ *         -  -3 Error decode jpeg2000 code stream.
+ *         -  -5 decoded image had multiple color components.
  * Only grayscale is expected.
  *
  * @note Requires JasPer Software version 1.500.4 or 1.700.2
  *
- * @author Gilbert ORG: W/NP11 @date 2002-12-02
+ * @author Stephen Gilbert @date 2002-12-02
  */
 int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
                  g2int *ltype, g2int *ratio, g2int *retry, char *outjpc,

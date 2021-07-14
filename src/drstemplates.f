@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This Fortran Module contains info on all the available
 !>    GRIB2 Data Representation Templates used in Section 5 (DRS).
-!>    @author Gilbert ORG: W/NP11 @date 2001-04-03
+!>    @author Stephen Gilbert @date 2001-04-03
 !>     
 
 !>    This Fortran Module contains info on all the available
@@ -32,7 +32,7 @@
 !>    in this case would be the absolute value of the negative value in 
 !>    mapgrid.
 !>     
-!>    @author Gilbert ORG: W/NP11 @date 2001-04-03
+!>    @author Stephen Gilbert @date 2001-04-03
 !>
       module drstemplates
 
@@ -112,16 +112,16 @@
 
 !>    @brief  This function returns the index of specified Data
 !>    Representation Template 5.NN (NN=number) in array templates.                                    .
-!>    @author Gilbert         ORG: W/NP11    @date 2001-06-28
+!>    @author Stephen Gilbert            @date 2001-06-28
 !>     
 
 !>    @param[in] number NN, indicating the number of the Data Representation 
 !>    Template 5.NN that is being requested.
 !>
-!>    @return - > Index of DRT 5.NN in array templates, if template exists.
+!>    @return Index of DRT 5.NN in array templates, if template exists.
 !>    = -1, otherwise.
 !>
-!>    @author Gilbert         ORG: W/NP11    @date 2001-06-28
+!>    @author Stephen Gilbert            @date 2001-06-28
 !>
          integer function getdrsindex(number)
            integer,intent(in) :: number
@@ -139,7 +139,7 @@
 
 !>    @brief This subroutine returns DRS template information for a                                   .
 !>    specified Data Representation Template 5.NN.
-!>    @author Gilbert         ORG: W/NP11    @date 2000-05-11
+!>    @author Stephen Gilbert            @date 2000-05-11
 !>     
 
 !>    The number of entries in the template is returned along with a map
@@ -157,7 +157,7 @@
 !>    - 0 = no error
 !>    - 1 = Undefined Data Representation Template number.
 !>
-!>    @author Gilbert         ORG: W/NP11    @date 2000-05-11
+!>    @author Stephen Gilbert            @date 2000-05-11
 !>
          subroutine getdrstemplate(number,nummap,map,needext,iret)
            integer,intent(in) :: number
@@ -184,7 +184,7 @@
 
 !>    @brief This subroutine generates the remaining octet map for a
 !>    given Data Representation Template, if required.
-!>    @author  Gilbert         ORG: W/NP11    @date 2000-05-11
+!>    @author  Stephen Gilbert            @date 2000-05-11
 !>     
 
 !>    Some Templates can vary depending on data values given in an earlier part 
@@ -199,7 +199,7 @@
 !>    @param[out] map An array containing the number of octets that each 
 !>    template entry occupies when packed up into the GDS.
 !>
-!>    @author  Gilbert         ORG: W/NP11    @date 2000-05-11
+!>    @author  Stephen Gilbert            @date 2000-05-11
 !>
          subroutine extdrstemplate(number,list,nummap,map)
            integer,intent(in) :: number,list(*)

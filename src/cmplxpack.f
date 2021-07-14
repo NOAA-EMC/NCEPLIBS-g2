@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This subroutine packs up a data field using a complex
 !>    packing algorithm as defined in the GRIB2 documention.
-!>    @author Gilbert ORG: W/NP11 @date 2004-08-27
+!>    @author Stephen Gilbert @date 2004-08-27
 !>     
 
 !>    This subroutine packs up a data field using a complex
@@ -25,7 +25,7 @@
 !>    @param[out] cpack The packed data field (character*1 array)
 !>    @param[out] lcpack length of packed field cpack.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2004-08-27
+!>    @author Stephen Gilbert @date 2004-08-27
 !>
 
       subroutine cmplxpack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)

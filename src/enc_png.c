@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief This program writes PNG stream to memory.
- * @author Gilbert
+ * @author Stephen Gilbert
  */
 
 #include <stdio.h>

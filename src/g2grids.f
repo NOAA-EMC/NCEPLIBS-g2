@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This Fortran Module allows access to predefined GRIB2 Grid
 !>    Definition Templates stored in a file.
-!>    @author Gilbert ORG: W/NP11 @date 2004-04-27
+!>    @author Stephen Gilbert @date 2004-04-27
 !>
 
 !>    This Fortran Module allows access to predefined GRIB2 Grid
@@ -24,7 +24,7 @@
 !>    As an example, this is the entry for the 1x1 GFS global grid
 !>    3:gbl_1deg: 0:19: 0 0 0 0 0 0 0 360 181 0 0 90000000 0 48 -90000000 359000000 1000000 1000000 0
 !>
-!>    @author Stephen Gilbert ORG: W/NP11 @date 2004-04-27
+!>    @author Stephen Gilbert @date 2004-04-27
 !>
 
       module g2grids
@@ -51,7 +51,7 @@
 !>
 !>    @param[in] lunit Fortran unit number associated the the GDT file.
 !>    @return The number of Grid Definition Templates read in.
-!>    @author Gilbert         ORG: W/NP11    @date 2001-06-28
+!>    @author Stephen Gilbert  @date 2001-06-28
 !>
 
          integer function readgrids(lunit)
@@ -143,7 +143,7 @@
 !>    - -1 Undefined Grid number.
 !>    - 3 Could not read any grids from file.
 !>
-!>    @author Stephen Gilbert ORG: W/NP11 @date 2004-04-26
+!>    @author Stephen Gilbert @date 2004-04-26
 !>
 
          subroutine getgridbynum(lunit,number,igdtn,igdtmpl,iret)
@@ -205,7 +205,7 @@
 !>    - -1 Undefined Grid name.
 !>    - 3 Could not read any grids from file.
 !>
-!>    @author Stephen Gilbert ORG: W/NP11 @date 2004-04-26
+!>    @author Stephen Gilbert @date 2004-04-26
 !>
 
          subroutine getgridbyname(lunit,name,igdtn,igdtmpl,iret)
