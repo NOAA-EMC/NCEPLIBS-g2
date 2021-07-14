@@ -24,7 +24,7 @@
 !>    As an example, this is the entry for the 1x1 GFS global grid
 !>    3:gbl_1deg: 0:19: 0 0 0 0 0 0 0 360 181 0 0 90000000 0 48 -90000000 359000000 1000000 1000000 0
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2004-04-27
+!>    @author Stephen Gilbert ORG: W/NP11 @date 2004-04-27
 !>
 
       module g2grids
@@ -45,17 +45,12 @@
 
       contains
 
-!>    @brief This function returns the number of Grid Definition
-!>    Templates read in.
-!>    @author Gilbert         ORG: W/NP11    @date 2001-06-28
-!>
-
 !>    This function reads the list of GDT entries in the file
 !>    associated with fortran unit, lunit.  All the entries are stored in a
 !>    linked list called gridlist.
 !>
 !>    @param[in] lunit Fortran unit number associated the the GDT file.
-!>    @return - > The number of Grid Definition Templates read in.
+!>    @return The number of Grid Definition Templates read in.
 !>    @author Gilbert         ORG: W/NP11    @date 2001-06-28
 !>
 
@@ -133,10 +128,6 @@
 
          end function
 
-!>    @brief This subroutine searches a file referenced by an assigned number.
-!>    @author Gilbert ORG: W/NP11 @date 2004-04-26
-!>
-
 !>    This subroutine searches a file referenced by fortran unit lunit
 !>    for a Grid Definition Template assigned to the requested number.
 !>    The input file format is described at the top of this module.
@@ -148,11 +139,11 @@
 !>    @param[out] igdtmpl An array containing the values of each entry in
 !>    the Grid Definition Template.
 !>    @param[out] iret Error return code.
-!>    - 0 = no error
-!>    - -1 = Undefined Grid number.
-!>    - 3 = Could not read any grids from file.
+!>    - 0 no error
+!>    - -1 Undefined Grid number.
+!>    - 3 Could not read any grids from file.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2004-04-26
+!>    @author Stephen Gilbert ORG: W/NP11 @date 2004-04-26
 !>
 
          subroutine getgridbynum(lunit,number,igdtn,igdtmpl,iret)
@@ -199,10 +190,6 @@
  
          end subroutine
 
-!>    @brief This subroutine searches a file referenced by name.
-!>    @author Gilbert ORG: W/NP11 @date 2004-04-26
-!>
-
 !>    This subroutine searches a file referenced by fortran unit lunit
 !>    for a Grid Definition Template assigned to the requested name.
 !>    The input file format is described at the top of this module.
@@ -214,11 +201,11 @@
 !>    @param[out] igdtmpl An array containing the values of each entry in
 !>    the Grid Definition Template.
 !>    @param[out] iret Error return code.
-!>    - 0 = no error
-!>    - -1 = Undefined Grid name.
-!>    - 3 = Could not read any grids from file.
+!>    - 0 no error
+!>    - -1 Undefined Grid name.
+!>    - 3 Could not read any grids from file.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2004-04-26
+!>    @author Stephen Gilbert ORG: W/NP11 @date 2004-04-26
 !>
 
          subroutine getgridbyname(lunit,name,igdtn,igdtmpl,iret)

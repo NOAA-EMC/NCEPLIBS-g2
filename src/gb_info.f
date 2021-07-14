@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This subroutine searches the number of gridded fields and
 !>    the number of Local Use Sections through a GRIB2 message.
-!>    @author Gilbert ORG: W/NP11 @date 2000-05-25
+!>    @author Stephen Gilbert ORG: W/NP11 @date 2000-05-25
 !>
 
 !>    This subroutine searches through a GRIB2 message and
@@ -39,15 +39,15 @@
 !>    Can be used to ensure that the return array passed to subroutine getlocal
 !>    is dimensioned large enough.
 !>    @param[out] ierr Error return code.
-!>    - 0 = no error.
-!>    - 1 = Beginning characters "GRIB" not found.
-!>    - 2 = GRIB message is not Edition 2.
-!>    - 3 = Could not find Section 1, where expected.
-!>    - 4 = End string "7777" found, but not where expected.
-!>    - 5 = End string "7777" not found at end of message.
-!>    - 6 = Invalid section number found.
+!>    - 0 no error.
+!>    - 1 Beginning characters "GRIB" not found.
+!>    - 2 GRIB message is not Edition 2.
+!>    - 3 Could not find Section 1, where expected.
+!>    - 4 End string "7777" found, but not where expected.
+!>    - 5 End string "7777" not found at end of message.
+!>    - 6 Invalid section number found.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2000-05-25
+!>    @author Stephen Gilbert ORG: W/NP11 @date 2000-05-25
 !>
 
       subroutine gb_info(cgrib,lcgrib,listsec0,listsec1,
