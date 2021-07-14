@@ -39,7 +39,7 @@
  *  
  * PROGRAM HISTORY LOG:
  * - 2002-12-02  Stephen Gilbert
- * - 2004-07-20  GIlbert - Added retry argument/option to allow option of
+ * - 2004-07-20  Stephen Gilbert - Added retry argument/option to allow option of
  * increasing the maximum number of guard bits to the JPEG2000 algorithm.
  *
  * @param[in] cin Packed matrix of Grayscale image values to encode.

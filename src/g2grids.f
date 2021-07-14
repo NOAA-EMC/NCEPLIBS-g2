@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This Fortran Module allows access to predefined GRIB2 Grid
 !>    Definition Templates stored in a file.
-!>    @author Gilbert @date 2004-04-27
+!>    @author Stephen Gilbert @date 2004-04-27
 !>
 
 !>    This Fortran Module allows access to predefined GRIB2 Grid
