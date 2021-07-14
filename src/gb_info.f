@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This subroutine searches the number of gridded fields and
 !>    the number of Local Use Sections through a GRIB2 message.
-!>    @author Stephen Gilbert ORG: W/NP11 @date 2000-05-25
+!>    @author Stephen Gilbert @date 2000-05-25
 !>
 
 !>    This subroutine searches through a GRIB2 message and
@@ -47,7 +47,7 @@
 !>    - 5 End string "7777" not found at end of message.
 !>    - 6 Invalid section number found.
 !>
-!>    @author Stephen Gilbert ORG: W/NP11 @date 2000-05-25
+!>    @author Stephen Gilbert @date 2000-05-25
 !>
 
       subroutine gb_info(cgrib,lcgrib,listsec0,listsec1,

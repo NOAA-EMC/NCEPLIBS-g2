@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This subroutine unpacks a data field that was packed using a
 !>    complex packing algorithm as defined in the GRIB2 documention.
-!>    @author Gilbert ORG: W/NP11 @date 2000-06-21
+!>    @author Stephen Gilbert @date 2000-06-21
 !>     
 
 !>    This subroutine unpacks a data field that was packed using a
@@ -11,8 +11,8 @@
 !>    spatial differences (i.e. DRTs 5.2 and 5.3).
 !>    
 !>    PROGRAM HISTORY LOG:
-!>    - 2000-06-21  Gilbert
-!>    - 2004-12-29  Gilbert  -  Added test ( provided by Arthur Taylor/MDL )
+!>    - 2000-06-21  Stephen Gilbert
+!>    - 2004-12-29  Stephen Gilbert  -  Added test ( provided by Arthur Taylor/MDL )
 !>    to verify that group widths and lengths are consistent with section length.
 !>    - 2016-02-26              update unpacking for template 5.3
 !>
@@ -29,7 +29,7 @@
 !>    - 0 = OK
 !>    - 1 = Problem - inconsistent group lengths of widths.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2000-06-21
+!>    @author Stephen Gilbert @date 2000-06-21
 !>
 
       subroutine comunpack(cpack,len,lensec,idrsnum,idrstmpl,ndpts,

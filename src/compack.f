@@ -1,6 +1,6 @@
 !>    @file
 !>    @brief This subroutine packs up a data field.
-!>    @author Gilbert ORG: W/NP11 @date 2000-06-21
+!>    @author Stephen Gilbert @date 2000-06-21
 !>     
 
 !>    This subroutine packs up a data field.
@@ -25,7 +25,7 @@
 !>    @param[out] cpack The packed data field (character*1 array)
 !>    @param[out] lcpack length of packed field cpack.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2000-06-21
+!>    @author Stephen Gilbert @date 2000-06-21
 !>
 
       subroutine compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)

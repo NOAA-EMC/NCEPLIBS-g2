@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This subroutine packs up a Grid Definition Section
 !>    (Section 3) and adds it to a GRIB2 message.
-!>    @author Gilbert ORG: W/NP11 @date 2000-05-01
+!>    @author Stephen Gilbert @date 2000-05-01
 !>     
 !>    This routine is used with routines gribcreate(), addlocal(), addfield(),
 !>    and gribend() to create a complete GRIB2 message. Subroutine
@@ -39,7 +39,7 @@
 !>    @note: Note that the Local Use Section ( Section 2 ) can only follow
 !>          Section 1 or Section 7 in a GRIB2 message.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2000-05-01
+!>    @author Stephen Gilbert @date 2000-05-01
 !>
 
       subroutine addgrid(cgrib,lcgrib,igds,igdstmpl,igdstmplen,

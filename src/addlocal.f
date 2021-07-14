@@ -1,7 +1,7 @@
 !>    @file
 !>    @brief This subroutine adds a Local Use Section (Section 2) to
 !>    a GRIB2 message.
-!>    @author Gilbert ORG: W/NP11 @date 2000-05-01
+!>    @author Stephen Gilbert @date 2000-05-01
 !>    
 
 !>    This subroutine adds a Local Use Section (Section 2) to a GRIB2 message.
@@ -25,7 +25,7 @@
 !>    @note Note that the Local Use Section ( Section 2 ) can only follow
 !>    Section 1 or Section 7 in a GRIB2 message.
 !>
-!>    @author Gilbert ORG: W/NP11 @date 2000-05-01
+!>    @author Stephen Gilbert @date 2000-05-01
 !>
 
       subroutine addlocal(cgrib,lcgrib,csec2,lcsec2,ierr)
