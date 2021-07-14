@@ -1,9 +1,33 @@
+!>    @file
+!>    @brief This Fortran module extract or store arbitrary size values
+!>    between packed bit string and unpacked array.
+!>    @author Stephen Gilbert @date 2004-04-27
+!>
+
+!>    This subrountine is to extract arbitrary size values from a
+!>    packed bit string, right justifying each value in the unpacked
+!>    array without skip and interations.
+!>
+!>    @param[in] IN character*1 array input
+!>    @param[out] IOUT unpacked array output
+!>    @param[in] ISKIP initial number of bits to skip
+!>    @param[in] NBYTE number of bits to take
+
       SUBROUTINE G2_GBYTEC(IN,IOUT,ISKIP,NBYTE)
       character*1 in(*)
       integer iout(*)
       CALL G2_GBYTESC(IN,IOUT,ISKIP,NBYTE,0,1)
       RETURN
       END
+
+!>    This subrountine is to put arbitrary size values into a packed bit
+!>    string, taking the low order bits from each value in the unpacked
+!>    array without skip and interation.
+!>
+!>    @param[in] IN unpacked array input
+!>    @param[out] OUT packed array output
+!>    @param[in] ISKIP initial number of bits to skip
+!>    @param[in] NBYTE number of bits to pack
 
       SUBROUTINE G2_SBYTEC(OUT,IN,ISKIP,NBYTE)
       character*1 out(*)
@@ -12,24 +36,25 @@
       RETURN
       END
 
+!>    This subrountine is to extract arbitrary size values from a
+!>    packed bit string, right justifying each value in the unpacked
+!>    array with skip and interation options.
+!>
+!>    @param[in] IN character*1 array input
+!>    @param[out] IOUT unpacked array output
+!>    @param[in] ISKIP initial number of bits to skip
+!>    @param[in] NBYTE number of bits to take
+!>    @param[in] NSKIP additional number of bits to skip on each iteration
+!>    @param[in] N number of iterations
+
       SUBROUTINE G2_GBYTESC(IN,IOUT,ISKIP,NBYTE,NSKIP,N)
-C          Get bytes - unpack bits:  Extract arbitrary size values from a
-C          packed bit string, right justifying each value in the unpacked
-C          array.
-C            IN    = character*1 array input
-C            IOUT  = unpacked array output
-C            ISKIP = initial number of bits to skip
-C            NBYTE = number of bits to take
-C            NSKIP = additional number of bits to skip on each iteration
-C            N     = number of iterations
-C v1.1
-C
+
       character*1 in(*)
       integer iout(*)
       integer tbit, bitcnt
       integer, parameter :: ones(8) = (/ 1,3,7,15,31,63,127,255 /)
 
-c     nbit is the start position of the field in bits
+!     nbit is the start position of the field in bits
       nbit = iskip
       do i = 1, n
          bitcnt = nbyte
@@ -37,21 +62,21 @@ c     nbit is the start position of the field in bits
          ibit=mod(nbit,8)
          nbit = nbit + nbyte + nskip
 
-c        first byte
+!        first byte
          tbit = min(bitcnt,8-ibit)
          itmp = iand(mova2i(in(index)),ones(8-ibit))
          if (tbit.ne.8-ibit) itmp = ishft(itmp,tbit-8+ibit)
          index = index + 1
          bitcnt = bitcnt - tbit
 
-c        now transfer whole bytes
+!        now transfer whole bytes
          do while (bitcnt.ge.8)
              itmp = ior(ishft(itmp,8),mova2i(in(index)))
              bitcnt = bitcnt - 8
              index = index + 1
          enddo
 
-c        get data from last byte
+!        get data from last byte
          if (bitcnt.gt.0) then
              itmp = ior(ishft(itmp,bitcnt),iand(ishft(mova2i(in(index)),
      1          -(8-bitcnt)),ones(bitcnt)))
@@ -63,24 +88,25 @@ c        get data from last byte
       RETURN
       END                                                                  
 
+!>    This subrountine is to put arbitrary size values into a packed bit
+!>    string, taking the low order bits from each value in the unpacked
+!>    array with skip and interation options.
+!>
+!>    @param[in] IN unpacked array input
+!>    @param[out] OUT packed array output
+!>    @param[in] ISKIP initial number of bits to skip
+!>    @param[in] NBYTE number of bits to pack
+!>    @param[in] NSKIP additional number of bits to skip on each iteration
+!>    @param[in] N number of iterations
+
       SUBROUTINE G2_SBYTESC(OUT,IN,ISKIP,NBYTE,NSKIP,N)
-C          Store bytes - pack bits:  Put arbitrary size values into a
-C          packed bit string, taking the low order bits from each value
-C          in the unpacked array.
-C            IOUT  = packed array output
-C            IN    = unpacked array input
-C            ISKIP = initial number of bits to skip
-C            NBYTE = number of bits to pack
-C            NSKIP = additional number of bits to skip on each iteration
-C            N     = number of iterations
-C v1.1
-C
+
       character*1 out(*)
       integer in(N), bitcnt, tbit
       integer, parameter :: ones(8)=(/ 1,  3,  7, 15, 31, 63,127,255/)
 
-c     number bits from zero to ...
-c     nbit is the last bit of the field to be filled
+!     number bits from zero to ...
+!     nbit is the last bit of the field to be filled
 
       nbit = iskip + nbyte - 1
       do i = 1, n
@@ -90,7 +116,7 @@ c     nbit is the last bit of the field to be filled
          ibit=mod(nbit,8)
          nbit = nbit + nbyte + nskip
 
-c        make byte aligned 
+!        make byte aligned 
          if (ibit.ne.7) then
              tbit = min(bitcnt,ibit+1)
              imask = ishft(ones(tbit),7-ibit)
@@ -102,9 +128,9 @@ c        make byte aligned
              index = index - 1
          endif
 
-c        now byte aligned
+!        now byte aligned
 
-c        do by bytes
+!        do by bytes
          do while (bitcnt.ge.8)
              out(index) = char(iand(itmp,255))
              itmp = ishft(itmp,-8)
@@ -112,7 +138,7 @@ c        do by bytes
              index = index - 1
          enddo
 
-c        do last byte
+!        do last byte
 
          if (bitcnt.gt.0) then
              itmp2 = iand(itmp,ones(bitcnt))
