@@ -56,9 +56,9 @@
  * 1 = try increasing number of guard bits otherwise, no additional options
  * @param[in] jpclen  - Number of bytes allocated for new JPEG2000 code stream in outjpc.
  * @param[in] outjpc - Output encoded JPEG2000 code stream
- * @return 0 = Length in bytes of encoded JPEG2000 code stream
- *         -  -3 = Error decode jpeg2000 code stream.
- *         -  -5 = decoded image had multiple color components.
+ * @return 0 successfully decode JPEG2000 code stream
+ *         -  -3 Error decode jpeg2000 code stream.
+ *         -  -5 decoded image had multiple color components.
  * Only grayscale is expected.
  *
  * @note Requires JasPer Software version 1.500.4 or 1.700.2

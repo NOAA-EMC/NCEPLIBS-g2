@@ -41,9 +41,9 @@
  * @param[in] injpc Input JPEG2000 code stream.
  * @param[in] bufsize Length (in bytes) of the input JPEG2000 code stream.
  * @param[in] outfld Output matrix of grayscale image values. Only grayscale is expected.
- * @return 0 = Successful decode
- *         - -3 = Error decode jpeg2000 code stream.
- *         - -5 = decoded image had multiple color components.
+ * @return 0 Successful decode
+ *         - -3 Error decode jpeg2000 code stream.
+ *         - -5 decoded image had multiple color components.
  *
  * @note Requires JasPer Software version 1.500.4 or 1.700.2
  *
