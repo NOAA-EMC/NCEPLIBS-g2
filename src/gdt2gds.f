@@ -36,8 +36,6 @@ C>    @param[out] iret Error return value:
 C>    - 0 Successful
 C>    - 1 Unrecognized GRIB2 GDT number 3.igds(5)
 C>
-C>    @note LIST CAVEATS, OTHER HELPFUL HINTS OR INFORMATION
-C>
 C>    @author Stephen Gilbert @date 2003-06-17
 C>
 
