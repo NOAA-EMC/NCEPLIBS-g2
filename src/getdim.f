@@ -1,6 +1,6 @@
 !>    @file
 !>    @brief This subroutine returns the info of GRIB2 Grid Definition
-!>    Section 3 format..
+!>    Section 3 format.
 !>    @author Stephen Gilbert @date 2002-12-11
 !>
 
