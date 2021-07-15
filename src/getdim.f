@@ -1,6 +1,6 @@
 !>    @file
-!>    @brief This routine converts grid information from a GRIB2 grid
-!>    to GRIB1 GDS info.
+!>    @brief This subroutine returns the info of GRIB2 Grid Definition
+!>    Section 3 format..
 !>    @author Stephen Gilbert @date 2002-12-11
 !>
 
