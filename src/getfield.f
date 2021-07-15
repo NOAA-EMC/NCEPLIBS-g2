@@ -1,6 +1,6 @@
 !>    @file
-!>    @brief This subroutine obtain grid information and the unpacked data
-!>    for a field from a GRIB2 file.
+!>    @brief Contains subroutines obtain grid information and the unpacked data
+!>    (section 3 - 6) for a field from a GRIB2 file.
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
 
