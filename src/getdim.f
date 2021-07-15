@@ -1,33 +1,24 @@
+!>    @file
+!>    @brief This subroutine returns the info of GRIB2 Grid Definition
+!>    Section 3 format.
+!>    @author Stephen Gilbert @date 2002-12-11
+!>
+
+!>    This subroutine returns the dimensions and scanning mode of
+!>    a grid definition packed in GRIB2 Grid Definition Section 3 format.
+!>
+!>    @param[in] csec3 Character array that contains the packed GRIB2 GDS.
+!>    @param[in] lcsec3 Length (in octets) of section 3.
+!>    @param[out] width x (or i) dimension of the grid.
+!>    @param[out] height y (or j) dimension of the grid.
+!>    @param[out] iscan Scanning mode (see Code Table 3.4).
+!>
+!>    @note Returns width and height set to zero, if grid template not recognized.
+!>
+!>    @author Stephen Gilbert @date 2002-12-11
+!>
+
       subroutine getdim(csec3,lcsec3,width,height,iscan)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    getdim 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2002-12-11
-!
-! ABSTRACT: This subroutine returns the dimensions and scanning mode of 
-!   a grid definition packed in GRIB2 Grid Definition Section 3 format.
-!
-! PROGRAM HISTORY LOG:
-! 2002-12-11  Gilbert
-!
-! USAGE:    CALL getdim(csec3,lcsec3,width,height,iscan)
-!   INPUT ARGUMENT LIST:
-!     csec3    - Character array that contains the packed GRIB2 GDS
-!    lcsec3    - Length (in octets) of section 3
-!
-!   OUTPUT ARGUMENT LIST:      
-!     width    - x (or i) dimension of the grid.
-!     height   - y (or j) dimension of the grid.
-!     iscan    - Scanning mode ( see Code Table 3.4 )
-!
-! REMARKS:  Returns width and height set to zero, if grid template
-!           not recognized.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 !      use grib_mod
     
       character(len=1),intent(in) :: csec3(*)
