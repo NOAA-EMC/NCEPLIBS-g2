@@ -1,67 +1,63 @@
-C-----------------------------------------------------------------------
+C>    @file
+C>    @brief This subroutine read a GRIB file and return its index content.
+C>    @author Mark Iredell @date 1995-10-31
+C>
+
+C>    This subroutine read a GRIB file and return its index content.
+C>    the index buffer returned contains index records with the internal format:
+C>    - byte 001 - 004 length of index record
+C>    - byte 005 - 008 bytes to skip in data file before grib message
+C>    - byte 009 - 012 bytes to skip in message before lus (local use)
+C>    set = 0, if no local use section in grib2 message.
+C>    - byte 013 - 016 bytes to skip in message before gds
+C>    - byte 017 - 020 bytes to skip in message before pds
+C>    - byte 021 - 024 bytes to skip in message before drs
+C>    - byte 025 - 028 bytes to skip in message before bms
+C>    - byte 029 - 032 bytes to skip in message before data section
+C>    - byte 033 - 040 bytes total in the message
+C>    - byte 041 - 041 grib version number (currently 2)
+C>    - byte 042 - 042 message discipline
+C>    - byte 043 - 044 field number within grib2 message
+C>    - byte 045 -  ii identification section (ids)
+C>    - byte ii+1-  jj grid definition section (gds)
+C>    - byte jj+1-  kk product definition section (pds)
+C>    - byte kk+1-  ll the data representation section (drs)
+C>    - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
+C>
+C>    Program history log:
+C>    - 1995-10-31 mark iredell
+C>    - 1996-10-31 mark iredell augmented optional definitions to byte 320
+C>    - 2002-01-02 stephen gilbert modified from getgir to create grib2 indexes
+C>
+C>    @param[in] lugb integer unit of the unblocked grib file
+C>    @param[in] msk1 integer number of bytes to search for first message
+C>    @param[in] msk2 integer number of bytes to search for other messages
+C>    @param[in] mnum integer number of grib messages to skip (usually 0)
+C>    output arguments:
+C>    @param[out] cbuf character*1 pointer to a buffer that contains index
+C>    records. users should free memory that cbuf points to, using
+C>    deallocate(cbuf) when cbuf is no longer needed.
+C>    @param[out] nlen integer total length of index record buffer in bytes
+C>    @param[out] nnum integer number of index records, =0 if no grib
+C>    messages are found)
+C>    @param[out] nmess last grib message in file successfully processed
+C>    @param[out] iret integer return code
+C>    - 0 all ok
+C>    - 1 not enough memory available to hold full index buffer
+C>    - 2 not enough memory to allocate initial index buffer
+C>
+C>    subprograms called:
+C>    - skgb  seek next grib message
+C>    - ixgb2 make index record
+C>
+C>    @note subprogram can be called from a multiprocessing environment.
+C>    do not engage the same logical unit from more than one processor.
+C>
+C>    @author Mark Iredell @date 1995-10-31
+C>
+
       SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,NMESS,IRET)
-C$$$  SUBPROGRAM DOCUMENTATION BLOCK
-C
-C SUBPROGRAM: GETG2IR        CREATES AN INDEX OF A GRIB2 FILE
-C   PRGMMR: GILBERT          ORG: W/NP11      DATE: 2002-01-02
-C
-C ABSTRACT: READ A GRIB FILE AND RETURN ITS INDEX CONTENTS.
-C   THE INDEX BUFFER RETURNED CONTAINS INDEX RECORDS WITH THE INTERNAL FORMAT:
-C       BYTE 001 - 004: LENGTH OF INDEX RECORD
-C       BYTE 005 - 008: BYTES TO SKIP IN DATA FILE BEFORE GRIB MESSAGE
-C       BYTE 009 - 012: BYTES TO SKIP IN MESSAGE BEFORE LUS (LOCAL USE)
-C                       SET = 0, IF NO LOCAL USE SECTION IN GRIB2 MESSAGE.
-C       BYTE 013 - 016: BYTES TO SKIP IN MESSAGE BEFORE GDS
-C       BYTE 017 - 020: BYTES TO SKIP IN MESSAGE BEFORE PDS
-C       BYTE 021 - 024: BYTES TO SKIP IN MESSAGE BEFORE DRS
-C       BYTE 025 - 028: BYTES TO SKIP IN MESSAGE BEFORE BMS
-C       BYTE 029 - 032: BYTES TO SKIP IN MESSAGE BEFORE DATA SECTION
-C       BYTE 033 - 040: BYTES TOTAL IN THE MESSAGE
-C       BYTE 041 - 041: GRIB VERSION NUMBER ( CURRENTLY 2 )
-C       BYTE 042 - 042: MESSAGE DISCIPLINE
-C       BYTE 043 - 044: FIELD NUMBER WITHIN GRIB2 MESSAGE
-C       BYTE 045 -  II: IDENTIFICATION SECTION (IDS)
-C       BYTE II+1-  JJ: GRID DEFINITION SECTION (GDS)
-C       BYTE JJ+1-  KK: PRODUCT DEFINITION SECTION (PDS)
-C       BYTE KK+1-  LL: THE DATA REPRESENTATION SECTION (DRS)
-C       BYTE LL+1-LL+6: FIRST 6 BYTES OF THE BIT MAP SECTION (BMS)
-C
-C PROGRAM HISTORY LOG:
-C   95-10-31  IREDELL
-C   96-10-31  IREDELL   AUGMENTED OPTIONAL DEFINITIONS TO BYTE 320
-C 2002-01-02  GILBERT   MODIFIED FROM GETGIR TO CREATE GRIB2 INDEXES
-C
-C USAGE:    CALL GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,NMESS,IRET)
-C   INPUT ARGUMENTS:
-C     LUGB         INTEGER UNIT OF THE UNBLOCKED GRIB FILE
-C     MSK1         INTEGER NUMBER OF BYTES TO SEARCH FOR FIRST MESSAGE
-C     MSK2         INTEGER NUMBER OF BYTES TO SEARCH FOR OTHER MESSAGES
-C     MNUM         INTEGER NUMBER OF GRIB MESSAGES TO SKIP (USUALLY 0)
-C   OUTPUT ARGUMENTS:
-C     CBUF         CHARACTER*1 POINTER TO A BUFFER THAT CONTAINS INDEX RECORDS.
-C                  USERS SHOULD FREE MEMORY THAT CBUF POINTS TO
-C                  USING DEALLOCATE(CBUF) WHEN CBUF IS NO LONGER NEEDED.
-C     NLEN         INTEGER TOTAL LENGTH OF INDEX RECORD BUFFER IN BYTES
-C     NNUM         INTEGER NUMBER OF INDEX RECORDS
-C                  (=0 IF NO GRIB MESSAGES ARE FOUND)
-C     NMESS        LAST GRIB MESSAGE IN FILE SUCCESSFULLY PROCESSED
-C     IRET         INTEGER RETURN CODE
-C                    0      ALL OK
-C                    1      NOT ENOUGH MEMORY AVAILABLE TO HOLD FULL INDEX 
-C                           BUFFER
-C                    2      NOT ENOUGH MEMORY TO ALLOCATE INITIAL INDEX BUFFER
-C
-C SUBPROGRAMS CALLED:
-C   SKGB           SEEK NEXT GRIB MESSAGE
-C   IXGB2          MAKE INDEX RECORD
-C
-C REMARKS: SUBPROGRAM CAN BE CALLED FROM A MULTIPROCESSING ENVIRONMENT.
-C   DO NOT ENGAGE THE SAME LOGICAL UNIT FROM MORE THAN ONE PROCESSOR.
-C
-C ATTRIBUTES:
-C   LANGUAGE: FORTRAN 90
-C
-C$$$
+
       USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
       PARAMETER(INIT=50000,NEXT=10000)
       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
