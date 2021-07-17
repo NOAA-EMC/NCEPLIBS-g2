@@ -210,12 +210,6 @@ C>    - 97 error reading grib file
 C>    - 99 request not found
 C>    - other gf_getfld grib2 unpacker return code
 C>
-C>    Subprograms called:
-C>    - GETIDX get index
-C>    - GETGB2S search index records
-C>    - GETGB2R read and unpack grib record
-C>    - GF_FREE frees memory used by gfld
-C>
 C>    @note specify an index file if feasible to increase speed.
 C>    do not engage the same logical unit from more than one processor.
 C>    Note that derived type gribfield contains pointers to many
