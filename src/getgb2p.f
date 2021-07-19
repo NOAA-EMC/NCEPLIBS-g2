@@ -1,9 +1,5 @@
 C>    @file
-C>    @brief This subroutine find and unpack a grib file.
-C>    @author Mark Iredell @date 1994-04-01
-C>
-
-C>    This subroutine find and extracts a grib message from a file.
+C>    @brief This subroutine find and extracts a grib message from a file.
 C>    @author Mark Iredell @date 1994-04-01
 C>
 
