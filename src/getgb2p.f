@@ -1,139 +1,107 @@
+C>    @file
+C>    @brief This subroutine find and unpack a grib file.
+C>    @author Mark Iredell @date 1994-04-01
+C>
+
+C>    This subroutine find and extracts a grib message from a file.
+C>    @author Mark Iredell @date 1994-04-01
+C>
+
+C>    This subroutine find and extracts a grib message from a file.
+C>    It reads a grib index file (or optionally the grib file itself) to
+C>    get the index buffer (i.e. table of contents) for the grib file.
+C>    find in the index buffer a reference to the grib field requested.
+C>    the grib field request specifies the number of fields to skip
+C>    and the unpacked identification section, grid definition template
+C>    and product defintion section parameters. (a requested parameter
+C>    of -9999 means to allow any value of this parameter to be found.)
+C>    if the requested grib field is found, then it is read from the
+C>    grib file and unpacked. If the grib field is not found, then the
+C>    return code will be nonzero.
+C>
+C>    PROGRAM HISTORY LOG:
+C>    - 1994-04-01 Mark Iredell
+C>    - 1995-10-31 Mark Iredell modularized portions of code into subprograms
+C>    and allowed for unspecified index file
+C>    - 2002-01-11 Stephen Gilbert modified from getgb and getgbm to work with grib2
+C>    - 2003-12-17 Stephen Gilbert modified from getgb2 to return packed grib2 message
+C>    @param[in] LUGB integer unit of the unblocked grib data file.
+C>    file must be opened with baopen or baopenr before calling
+C>    this routine.
+C>    @param[in] LUGI integer unit of the unblocked grib index file.
+C>    if nonzero, file must be opened with baopen baopenr before
+C>    calling this routine. (=0 to get index buffer from the grib file)
+C>    @param[in] J integer number of fields to skip
+C>    (=0 to search from beginning)
+C>    @param[in] JDISC grib2 discipline number of requested field
+C>    (if = -1, accept any discipline see code table 0.0)
+C>    - 0 meteorological products
+C>    - 1 hydrological products
+C>    - 2 land surface products
+C>    - 3 space products
+C>    - 10 oceanographic products
+C>    @param[in] JIDS integer array of values in the identification section
+C>    (=-9999 for wildcard)
+C>    - JIDS(1) identification of originating centre
+C>    (see common code table c-1)
+C>    - JIDS(2) identification of originating sub-centre
+C>    - JIDS(3) grib master tables version number
+C>    (see code table 1.0) 0 experimental;1 initial operational version number.
+C>    - JIDS(4) grib local tables version number (see code table 1.1)
+C>    0 local tables not used; 1-254 number of local tables version used.
+C>    - JIDS(5) significance of reference time (code table 1.2)
+C>    0 analysis; 1 start of forecast; 2 verifying time of forecast; 3 observation time
+C>    - JIDS(6) year (4 digits)
+C>    - JIDS(7) month
+C>    - JIDS(8) day
+C>    - JIDS(9) hour
+C>    - JIDS(10) minute
+C>    - JIDS(11) second
+C>    - JIDS(12) production status of processed data (see code table 1.3)
+C>    0 operational products; 1 operational test products;
+C>    2 research products; 3 re-analysis products.
+C>    - JIDS(13) type of processed data (see code table 1.4)
+C>    0 analysis products; 1 forecast products; 2 analysis and forecast
+C>    products; 3 control forecast products; 4 perturbed forecast products;
+C>    5 control and perturbed forecast products; 6 processed satellite
+C>    observations; 7 processed radar observations.
+C>    @param[in] JPDTN integer product definition template number (n)
+C>    (if = -1, don't bother matching pdt - accept any)
+C>    @param[in] JPDT integer array of values defining the product definition
+C>    template 4.n of the field for which to search (=-9999 for wildcard)
+C>    @param[in] JGDTN integer grid definition template number (m)
+C>    (if = -1, don't bother matching gdt - accept any )
+C>    @param[in] JGDT integer array of values defining the grid definition
+C>    template 3.m of the field for which to search (=-9999 for wildcard)
+C>    @param[in] EXTRACT logical value indicating whether to return a
+C>    grib2 message with just the requested field, or the entire
+C>    grib2 message containing the requested field.
+C>    - .true. = return grib2 message containing only the requested field.
+C>    - .false. = return entire grib2 message containing the requested field.
+C>    @param[out] K integer field number unpacked.
+C>    @param[out] GRIBM returned grib message.
+C>    @param[out] LENG length of returned grib message in bytes.
+C>    @param[out] IRET integer return code
+C>    - 0 all ok
+C>    - 96 error reading index
+C>    - 97 error reading grib file
+C>    - 99 request not found
+C>    @note specify an index file if feasible to increase speed.
+C>    do not engage the same logical unit from more than one processor.
+C>    Note that derived type gribfield contains pointers to many
+C>    arrays of data. The memory for these arrays is allocated
+C>    when the values in the arrays are set, to help minimize
+C>    problems with array overloading. Because of this users are 
+C>    encouraged to free up this memory, when it is no longer
+C>    needed, by an explicit call to subroutine gf_free.
+C>
+C>    @author Mark Iredell @date 1994-04-01
+C>
+
 C-----------------------------------------------------------------------
       SUBROUTINE GETGB2P(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT,
      &                   EXTRACT,K,GRIBM,LENG,IRET)
-C$$$  SUBPROGRAM DOCUMENTATION BLOCK
-C
-C SUBPROGRAM: GETGB2P        FINDS AND EXTRACTS A GRIB MESSAGE
-C   PRGMMR: IREDELL          ORG: W/NMC23     DATE: 94-04-01
-C
-C ABSTRACT: FIND AND EXTRACTS A GRIB MESSAGE FROM A FILE.
-C   READ A GRIB INDEX FILE (OR OPTIONALLY THE GRIB FILE ITSELF)
-C   TO GET THE INDEX BUFFER (I.E. TABLE OF CONTENTS) FOR THE GRIB FILE.
-C   FIND IN THE INDEX BUFFER A REFERENCE TO THE GRIB FIELD REQUESTED.
-C   THE GRIB FIELD REQUEST SPECIFIES THE NUMBER OF FIELDS TO SKIP
-C   AND THE UNPACKED IDENTIFICATION SECTION, GRID DEFINITION TEMPLATE AND
-C   PRODUCT DEFINTION SECTION PARAMETERS.  (A REQUESTED PARAMETER
-C   OF -9999 MEANS TO ALLOW ANY VALUE OF THIS PARAMETER TO BE FOUND.)
-C   IF THE REQUESTED GRIB FIELD IS FOUND, THEN IT IS READ FROM THE
-C   GRIB FILE AND RETURNED. 
-C   IF THE GRIB FIELD IS NOT FOUND, THEN THE RETURN CODE WILL BE NONZERO.
-C
-C PROGRAM HISTORY LOG:
-C   94-04-01  IREDELL
-C   95-10-31  IREDELL     MODULARIZED PORTIONS OF CODE INTO SUBPROGRAMS
-C                         AND ALLOWED FOR UNSPECIFIED INDEX FILE
-C 2002-01-11  GILBERT     MODIFIED FROM GETGB AND GETGBM TO WORK WITH GRIB2
-C 2003-12-17  GILBERT     MODIFIED FROM GETGB2 TO RETURN PACKED GRIB2 MESSAGE.
-C
-C USAGE:    CALL GETGB2P(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT,
-C    &                  EXTRACT,K,GRIBM,LENG,IRET)
-C   INPUT ARGUMENTS:
-C     LUGB         INTEGER UNIT OF THE UNBLOCKED GRIB DATA FILE.
-C                  FILE MUST BE OPENED WITH BAOPEN OR BAOPENR BEFORE CALLING 
-C                  THIS ROUTINE.
-C     LUGI         INTEGER UNIT OF THE UNBLOCKED GRIB INDEX FILE.
-C                  IF NONZERO, FILE MUST BE OPENED WITH BAOPEN BAOPENR BEFORE 
-C                  CALLING THIS ROUTINE.
-C                  (=0 TO GET INDEX BUFFER FROM THE GRIB FILE)
-C     J            INTEGER NUMBER OF FIELDS TO SKIP
-C                  (=0 TO SEARCH FROM BEGINNING)
-C     JDISC        GRIB2 DISCIPLINE NUMBER OF REQUESTED FIELD
-C                  ( IF = -1, ACCEPT ANY DISCIPLINE)
-C                  ( SEE CODE TABLE 0.0 )
-C                  0 - Meteorological products
-C                  1 - Hydrological products
-C                  2 - Land surface products
-C                  3 - Space products
-C                  10 - Oceanographic products
-C     JIDS()       INTEGER ARRAY OF VALUES IN THE IDENTIFICATION SECTION
-C                  (=-9999 FOR WILDCARD)
-C            JIDS(1)   = IDENTIFICATION OF ORIGINATING CENTRE
-C                         ( SEE COMMON CODE TABLE C-1 )
-C            JIDS(2)   = IDENTIFICATION OF ORIGINATING SUB-CENTRE
-C            JIDS(3)   = GRIB MASTER TABLES VERSION NUMBER
-C                         ( SEE CODE TABLE 1.0 )
-C                       0 - Experimental
-C                       1 - Initial operational version number
-C            JIDS(4)   = GRIB LOCAL TABLES VERSION NUMBER
-C                         ( SEE CODE TABLE 1.1 )
-C                       0     - Local tables not used
-C                       1-254 - Number of local tables version used
-C            JIDS(5)   = SIGNIFICANCE OF REFERENCE TIME (CODE TABLE 1.2)
-C                       0 - Analysis
-C                       1 - Start of forecast
-C                       2 - Verifying time of forecast
-C                       3 - Observation time
-C            JIDS(6)   = YEAR ( 4 DIGITS )
-C            JIDS(7)   = MONTH
-C            JIDS(8)   = DAY
-C            JIDS(9)   = HOUR
-C            JIDS(10)  = MINUTE
-C            JIDS(11)  = SECOND
-C            JIDS(12)  = PRODUCTION STATUS OF PROCESSED DATA
-C                         ( SEE CODE TABLE 1.3 )
-C                       0 - Operational products
-C                       1 - Operational test products
-C                       2 - Research products
-C                       3 - Re-analysis products
-C            JIDS(13)  = TYPE OF PROCESSED DATA ( SEE CODE TABLE 1.4 )
-C                       0  - Analysis products
-C                       1  - Forecast products
-C                       2  - Analysis and forecast products
-C                       3  - Control forecast products
-C                       4  - Perturbed forecast products
-C                       5  - Control and perturbed forecast products
-C                       6  - Processed satellite observations
-C                       7  - Processed radar observations
-C     JPDTN        INTEGER PRODUCT DEFINITION TEMPLATE NUMBER (N)
-C                  ( IF = -1, DON'T BOTHER MATCHING PDT - ACCEPT ANY )
-C     JPDT()       INTEGER ARRAY OF VALUES DEFINING THE PRODUCT DEFINITION
-C                  TEMPLATE 4.N OF THE FIELD FOR WHICH TO SEARCH
-C                  (=-9999 FOR WILDCARD)
-C     JGDTN        INTEGER GRID DEFINITION TEMPLATE NUMBER (M)
-C                  ( IF = -1, DON'T BOTHER MATCHING GDT - ACCEPT ANY )
-C     JGDT()       INTEGER ARRAY OF VALUES DEFINING THE GRID DEFINITION
-C                  TEMPLATE 3.M OF THE FIELD FOR WHICH TO SEARCH
-C                  (=-9999 FOR WILDCARD)
-C     EXTRACT       LOGICAL VALUE INDICATING WHETHER TO RETURN A GRIB2 
-C                   MESSAGE WITH JUST THE REQUESTED FIELD, OR THE ENTIRE
-C                   GRIB2 MESSAGE CONTAINING THE REQUESTED FIELD.
-C                  .TRUE. = RETURN GRIB2 MESSAGE CONTAINING ONLY THE REQUESTED
-C                           FIELD.
-C                  .FALSE. = RETURN ENTIRE GRIB2 MESSAGE CONTAINING THE
-C                            REQUESTED FIELD.
-C
-C   OUTPUT ARGUMENTS:
-C     K            INTEGER FIELD NUMBER RETURNED.
-C     GRIBM         RETURNED GRIB MESSAGE.
-C     LENG         LENGTH OF RETURNED GRIB MESSAGE IN BYTES.
-C     IRET         INTEGER RETURN CODE
-C                    0      ALL OK
-C                    96     ERROR READING INDEX FILE
-C                    97     ERROR READING GRIB FILE
-C                    99     REQUEST NOT FOUND
-C
-C SUBPROGRAMS CALLED:
-C   GETG2I          READ INDEX FILE
-C   GETG2IR         READ INDEX BUFFER FROM GRIB FILE
-C   GETGB2S        SEARCH INDEX RECORDS
-C   GETGB2RP        READ A PACKED GRIB RECORD
-C   GF_FREE        FREES MEMORY USED BY GFLD  ( SEE REMARKS )
-C
-C REMARKS: SPECIFY AN INDEX FILE IF FEASIBLE TO INCREASE SPEED.
-C   DO NOT ENGAGE THE SAME LOGICAL UNIT FROM MORE THAN ONE PROCESSOR.
-C
-C   Note that derived type gribfield contains pointers to many
-C   arrays of data.  The memory for these arrays is allocated
-C   when the values in the arrays are set, to help minimize
-C   problems with array overloading.  Because of this users
-C   are encouraged to free up this memory, when it is no longer
-C   needed, by an explicit call to subroutine gf_free.
-C   ( i.e.   CALL GF_FREE(GFLD) )
-C
-C ATTRIBUTES:
-C   LANGUAGE: FORTRAN 90
-C
-C$$$
+
       USE GRIB_MOD
 
       INTEGER,INTENT(IN) :: LUGB,LUGI,J,JDISC,JPDTN,JGDTN
