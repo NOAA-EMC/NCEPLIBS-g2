@@ -1,63 +1,49 @@
+C>    @file
+C>    @brief This subroutine finds, reads or generates a grib2 index for
+C>    the grib2 file associated with unit lugb.
+C>    @author Stephen Gilbert @date 2005-03-15
+C>
+
+C>    This subroutine finds, reads or generates a grib2 index for
+C>    the grib2 file associated with unit lugb. If the index already
+C>    exists, it is returned. otherwise, the index is (1) read from an
+C>    existing indexfile associated with unit LUGI. or (2) generated
+C>    from the grib2file LUGI. Users can force a regeneration of an
+C>    index. If LUGI equals LUGB, the index will be regenerated from 
+C>    the data in file LUGB. If LUGI is less than zero, then the index
+C>    is re read from index file abs(lugi).
+C>
+C>    PROGRAM HISTORY LOG:
+C>    - 2005-03-15 Stephen Gilbert Initial Programming
+C>    - 2009-07-09 Boi Vuong Fixed bug for checking (LUGB) unit index file
+C>    - 2016-03-29 Boi Vuong Restore original getidx.f from version
+C>    1.2.3 modified getidex to allow to open range of unit file number
+C>    up to 9999 added new parameters and new product definition
+C>    template numbers: 4.60, 4.61
+C>
+C>    @param[in] LUGB integer unit of the unblocked grib data file.
+C>    file must be opened with baopen or baopenr before calling
+C>    this routine.
+C>    @param[in] LUGI integer unit of the unblocked grib index file.
+C>    if nonzero, file must be opened with baopen baopenr before
+C>    calling this routine. (=0 to get index buffer from the grib file)
+C>    @param[out] CINDEX character*1 pointer to a buffer that contains
+C>    index records.
+C>    @param[out] NLEN integer total length of all index records
+C>    @param[out] NNUM integer number of index records
+C>    @param[out] IRET integer return code
+C>    - 0 all ok
+C>    - 90 unit number out of range
+C>    - 96 error reading/creating index file
+C>
+C>    @note allow file unit numbers in range 0 - 9999
+C>    the grib index will automatically generate the index file. 
+C>  
+C>    @author Stephen Gilbert @date 2005-03-15
+C>
+
 C-----------------------------------------------------------------------
       SUBROUTINE GETIDX(LUGB,LUGI,CINDEX,NLEN,NNUM,IRET)
-C$$$  SUBPROGRAM DOCUMENTATION BLOCK
-C
-C SUBPROGRAM: GETIDX         FINDS, READS OR GENERATES A GRIB2 INDEX 
-C   PRGMMR: GILBERT          ORG: W/NP11     DATE: 2005-03-15
-C
-C ABSTRACT: FINDS, READS OR GENERATES A GRIB2 INDEX FOR THE GRIB2 FILE
-C  ASSOCIATED WITH UNIT LUGB.  IF THE INDEX ALREADY EXISTS, IT IS RETURNED.
-C  OTHERWISE, THE INDEX IS (1) READ FROM AN EXISTING INDEXFILE ASSOCIATED WITH
-C  UNIT LUGI. OR (2) GENERATED FROM THE GRIB2FILE LUGB ( IF LUGI=0 ). 
-C  USERS CAN FORCE A REGENERATION OF AN INDEX.  IF LUGI EQUALS LUGB, THE INDEX
-C  WILL BE REGENERATED FROM THE DATA IN FILE LUGB.  IF LUGI IS LESS THAN
-C  ZERO, THEN THE INDEX IS RE READ FROM INDEX FILE ABS(LUGI).  
-C
-C PROGRAM HISTORY LOG:
-C 2005-03-15  GILBERT
-C 2009-07-09  VUONG      Fixed bug for checking (LUGB) unit index file
-C 2016-03-29  VUONG      Restore original getidx.f from version 1.2.3
-C                        Modified GETIDEX to allow to open range of unit file number up to 9999
-C                        Added new parameters and new Product Definition Template
-C                        numbers: 4.60, 4.61
-C
-C USAGE:    CALL GETIDX(LUGB,LUGI,CINDEX,NLEN,NNUM,IRET)
-C
-C   INPUT ARGUMENTS:
-C     LUGB         INTEGER UNIT OF THE UNBLOCKED GRIB DATA FILE.
-C                  FILE MUST BE OPENED WITH BAOPEN OR BAOPENR BEFORE CALLING 
-C                  THIS ROUTINE.
-C     LUGI         INTEGER UNIT OF THE UNBLOCKED GRIB INDEX FILE.
-C                  IF NONZERO, FILE MUST BE OPENED WITH BAOPEN BAOPENR BEFORE 
-C                  CALLING THIS ROUTINE.
-C                  >0 - READ INDEX FROM INDEX FILE LUGI, IF INDEX DOESN"T 
-C                       ALREADY EXIST.
-C                  =0 - TO GET INDEX BUFFER FROM THE GRIB FILE, IF INDEX 
-C                       DOESN"T ALREADY EXIST.
-C                  <0 - FORCE REREAD OF INDEX FROM INDEX FILE ABS(LUGI).
-C                  =LUGB - FORCE REGENERATION OF INDEX FROM GRIB2 FILE LUGB.
-C
-C   OUTPUT ARGUMENTS:
-C     CINDEX       CHARACTER*1 POINTER TO A BUFFER THAT CONTAINS INDEX RECORDS.
-C     NLEN         INTEGER TOTAL LENGTH OF ALL INDEX RECORDS
-C     NNUM         INTEGER NUMBER OF INDEX RECORDS
-C     IRET         INTEGER RETURN CODE
-C                    0      ALL OK
-C                    90     UNIT NUMBER OUT OF RANGE
-C                    96     ERROR READING/CREATING INDEX FILE
-C
-C SUBPROGRAMS CALLED:
-C   GETG2I          READ INDEX FILE
-C   GETG2IR         READ INDEX BUFFER FROM GRIB FILE
-C
-C REMARKS: 
-C        -  Allow file unit numbers in range 0 - 9999
-C           the grib index will automatically generate the index file.
-C
-C ATTRIBUTES:
-C   LANGUAGE: FORTRAN 90
-C
-C$$$
 
       INTEGER,INTENT(IN) :: LUGB,LUGI
       INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
