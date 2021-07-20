@@ -1,52 +1,38 @@
+C>    @file
+C>    @brief This subroutine find and extracts the index for the
+C>    requested field from a grib file.
+C>    @author Stephen Gilbert @date 2003-12-31
+C>
+
+C>    This subroutine find and extracts a grib message from a file given
+C>    the index for the requested field. The grib message returned can
+C>    contain only the requested field (extract=.true.). or the complete
+C>    grib message originally containing the desired field can be
+C>    returned (extract=.false.) even if other fields were included in
+C>    the grib message. If the grib field is not found, then the return
+C>    code will be nonzero.
+
+C>    @param[in] LUGB integer unit of the unblocked grib data file.
+C>    file must be opened with baopen or baopenr before calling
+C>    this routine.
+C>    @param[in] CINDEX index record of the grib field (see docblock of
+C>    subroutine ixgb2() for description of an index record.)
+C>    @param[in] EXTRACT logical value indicating whether to return a
+C>    grib2 message with just the requested field, or the entire
+C>    grib2 message containing the requested field.
+C>    - .true. = return grib2 message containing only the requested field.
+C>    - .false. = return entire grib2 message containing the requested field.
+C>    @param[out] GRIBM returned grib message.
+C>    @param[out] LENG length of returned grib message in bytes.
+C>    @param[out] IRET integer return code
+C>    - 0 all ok
+C>    - 97 error reading grib file
+C>
+C>    @author Stephen Gilbert @date 2003-12-31
+C>
+
 C-----------------------------------------------------------------------
       SUBROUTINE GETGB2RP(LUGB,CINDEX,EXTRACT,GRIBM,LENG,IRET)
-C$$$  SUBPROGRAM DOCUMENTATION BLOCK
-C
-C SUBPROGRAM: GETGB2RP       EXTRACTS A GRIB MESSAGE FROM A FILE
-C   PRGMMR: GILBERT          ORG: W/NMC23     DATE: 2003-12-31
-C
-C ABSTRACT: FIND AND EXTRACTS A GRIB MESSAGE FROM A FILE GIVEN THE 
-C   INDEX FOR THE REQUESTED FIELD.
-C   THE GRIB MESSAGE RETURNED CAN CONTAIN ONLY THE REQUESTED FIELD
-C   (EXTRACT=.TRUE.). OR THE COMPLETE GRIB MESSAGE ORIGINALLY CONTAINING
-C   THE DESIRED FIELD CAN BE RETURNED (EXTRACT=.FALSE.) EVEN IF OTHER
-C   FIELDS WERE INCLUDED IN THE GRIB MESSAGE.
-C   IF THE GRIB FIELD IS NOT FOUND, THEN THE RETURN CODE WILL BE NONZERO.
-C
-C PROGRAM HISTORY LOG:
-C 2003-12-31  GILBERT
-C
-C USAGE:    CALL GETGB2RP(LUGB,CINDEX,EXTRACT,GRIBM,LENG,IRET)
-C   INPUT ARGUMENTS:
-C     LUGB         INTEGER UNIT OF THE UNBLOCKED GRIB DATA FILE.
-C                  FILE MUST BE OPENED WITH BAOPEN OR BAOPENR BEFORE CALLING 
-C                  THIS ROUTINE.
-C     CINDEX       INDEX RECORD OF THE GRIB FILE  ( SEE DOCBLOCK OF
-C                  SUBROUTINE IXGB2 FOR DESCRIPTION OF AN INDEX RECORD.)
-C     EXTRACT       LOGICAL VALUE INDICATING WHETHER TO RETURN A GRIB2 
-C                   MESSAGE WITH JUST THE REQUESTED FIELD, OR THE ENTIRE
-C                   GRIB2 MESSAGE CONTAINING THE REQUESTED FIELD.
-C                  .TRUE. = RETURN GRIB2 MESSAGE CONTAINING ONLY THE REQUESTED
-C                           FIELD.
-C                  .FALSE. = RETURN ENTIRE GRIB2 MESSAGE CONTAINING THE
-C                            REQUESTED FIELD.
-C
-C   OUTPUT ARGUMENTS:
-C     GRIBM         RETURNED GRIB MESSAGE.
-C     LENG         LENGTH OF RETURNED GRIB MESSAGE IN BYTES.
-C     IRET         INTEGER RETURN CODE
-C                    0      ALL OK
-C                    97     ERROR READING GRIB FILE
-C
-C SUBPROGRAMS CALLED:
-C   BAREAD          BYTE-ADDRESSABLE READ
-C
-C REMARKS: NONE 
-C
-C ATTRIBUTES:
-C   LANGUAGE: FORTRAN 90
-C
-C$$$
 
       INTEGER,INTENT(IN) :: LUGB
       CHARACTER(LEN=1),INTENT(IN) :: CINDEX(*)
