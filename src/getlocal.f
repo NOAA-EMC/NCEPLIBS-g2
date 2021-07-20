@@ -1,5 +1,5 @@
 !>    @file
-!>    @brief This subroutine read and unpack sections 6 and 7 from ah
+!>    @brief This subroutine returns the contents of Section 2 from a
 !>    grib2 message.
 !>    @author Stephen Gilbert @date 2000-05-25
 !>
