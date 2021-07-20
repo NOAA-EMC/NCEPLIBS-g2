@@ -17,7 +17,7 @@ C>    in the output argument list section below.
 C>
 C>    @param[in] LUGB integer unit of the unblocked grib data file.
 C>    @param[in] CINDEX index record of the grib field (see docblock of
-C>    subroutine ixgb2 for description of an index record.)
+C>    subroutine ixgb2() for description of an index record.)
 C>    @param[out] GFLD derived type gribfield (defined in module grib_mod)
 C>    (NOTE: See Remarks Section)
 C>    - gfld\%version GRIB edition number (currently 2)
@@ -31,10 +31,13 @@ C>    - gfld\%idsect(2) Identification of originating Sub-centre
 C>    - gfld\%idsect(3) GRIB Master Tables Version Number
 C>    (see Code Table 1.0) 0 Experimental; 1 Initial operational version number
 C>    - gfld\%idsect(4) GRIB Local Tables Version Number (see Code Table 1.1)
-C>    0 Local tables not used; 1-254 Number of local tables version used
+C>     - 0 Local tables not used
+C>     - 0 1-254 Number of local tables version used
 C>    - gfld\%idsect(5) Significance of Reference Time (Code Table 1.2)
-C>    0 Analysis; 1 Start of forecast; 2 Verifying time of forecast;
-C>    3 Observation time.
+C>     - 0 Analysis 
+C>     - 1 Start of forecast
+C>     - 2 Verifying time of forecast
+C>     - 3 Observation time.
 C>    - gfld\%idsect(6) Year (4 digits)
 C>    - gfld\%idsect(7) Month
 C>    - gfld\%idsect(8) Day
@@ -43,25 +46,27 @@ C>    - gfld\%idsect(10) Minute
 C>    - gfld\%idsect(11) Second
 C>    - gfld\%idsect(12) Production status of processed data (see Code
 C>    Table 1.3)
-C>    0 Operational products; 1 Operational test products;
-C>    2 Research products; 3 Re-analysis products.
+C>     - 0 Operational products
+C>     - 1 Operational test products
+C>     - 2 Research products
+C>     - 3 Re-analysis products
 C>    - gfld\%idsect(13) Type of processed data (see Code Table 1.4)
-C>    0 Analysis products
-C>    1 Forecast products
-C>    2 Analysis and forecast products
-C>    3 Control forecast products
-C>    4 Perturbed forecast products
-C>    5 Control and perturbed forecast products
-C>    6 Processed satellite observations
-C>    7 Processed radar observations
+C>     - 0 Analysis products
+C>     - 1 Forecast products
+C>     - 2 Analysis and forecast products
+C>     - 3 Control forecast products
+C>     - 4 Perturbed forecast products
+C>     - 5 Control and perturbed forecast products
+C>     - 6 Processed satellite observations
+C>     - 7 Processed radar observations
 C>    - gfld\%idsectlen Number of elements in gfld\%idsect
 C>    - gfld\%local Pointer to character array containing contents
 C>    of Local Section 2, if included
 C>    - gfld\%locallen length of array gfld\%local
 C>    - gfld\%ifldnum field number within GRIB message
 C>    - gfld\%griddef Source of grid definition (see Code Table 3.0)
-C>    0 Specified in Code table 3.1
-C>    1 Predetermined grid Defined by originating centre
+C>     - 0 Specified in Code table 3.1
+C>     - 1 Predetermined grid Defined by originating centre
 C>    - gfld\%ngrdpts Number of grid points in the defined grid.
 C>    Note that the number of actual data values returned from getgb2
 C>    (in gfld\%ndpts) may be less than this value if a logical bitmap
@@ -125,10 +130,10 @@ C>    If false, the data values in gfld\%fld were not expanded to the
 C>    grid and are just a consecutive array of data points corresponding
 C>    to each value of "1" in gfld\%bmap.
 C>    - gfld\%ibmap Bitmap indicator (see Code Table 6.0)
-C>    0 bitmap applies and is included in Section 6.
-C>    1-253 Predefined bitmap applies
-C>    254 Previously defined bitmap applies to this field
-C>    255 Bit map does not apply to this product.
+C>     - 0 bitmap applies and is included in Section 6.
+C>     - 1-253 Predefined bitmap applies
+C>     - 254 Previously defined bitmap applies to this field
+C>     - 255 Bit map does not apply to this product.
 C>    - gfld\%bmap Logical*1 array containing decoded bitmap, if ibmap=0
 C>    or ibap=254. Otherwise nullified. This element is actually a
 C>    pointer to an array that holds the data.
@@ -146,7 +151,7 @@ C>    to many arrays of data. The memory for these arrays is allocated
 C>    when the values in the arrays are set, to help minimize problems
 C>    with array overloading. Because of this users are encouraged to
 C>    free up this memory, when it is no longer needed, by an explicit
-C>    call to subroutine gf_free.
+C>    call to subroutine gf_free().
 C>
 C>    @author Stephen Gilbert @date 2002-01-11
 C>
