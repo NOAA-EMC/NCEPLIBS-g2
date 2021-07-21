@@ -1,229 +1,196 @@
+!>    @file
+!>    @brief Contains subroutines returns the Grid Definition,
+!>    and Product Definition for a given data field.
+!>    @author Stephen Gilbert @date 2000-05-26
+!>
+
+!>    This subroutine returns the Grid Definition, Product Definition,
+!>    Bit-map (if applicable), and the unpacked data for a given data
+!>    field. All of the information returned is stored in a derived
+!>    type variable, gfld. Gfld is of type gribfield, which is defined
+!>    in module grib_mod, so users of this routine will need to include
+!>    the line "USE GRIB_MOD" in their calling routine. Each component of the
+!>    gribfield type is described in the OUTPUT ARGUMENT LIST section below.
+!>    Since there can be multiple data fields packed into a GRIB2
+!>    message, the calling routine indicates which field is being requested
+!>    with the ifldnum argument.
+!>   
+!>    PROGRAM HISTORY LOG:
+!>    - 2000-05-26 Stephen Gilbert
+!>    - 2002-01-24 Stephen Gilbert Changed to pass back derived type gribfield
+!>    variable through argument list, instead of having many different arguments.
+!>    - 2004-05-20 Stephen Gilbert Added check to see if previous a bit-map is
+!>    specified, but none was found.
+!>    - 2015-10-29 Boi Vuong Initial all pointers in derive type gribfield.
+!>
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
+!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!>    @param[in] ifldnum Specifies which field in the GRIB2 message to return.
+!>    @param[in] unpack Logical value indicating whether to unpack
+!>    bitmap/data. .true. = unpack bitmap and data values; .false. = do
+!>    not unpack bitmap and data values.
+!>    @param[in] expand Boolean value indicating whether the data points
+!>    should be expanded to the correspond grid, if a bit-map is present.
+!>    - 1 = if possible, expand data field to grid, inserting zero values
+!>    at gridpoints that are bitmapped out.
+!>    - 0 do not expand data field, leaving it an array of consecutive
+!>    data points for each "1" in the bitmap. This argument is ignored
+!>    if unpack == 0 OR if the returned field does not contain a bit-map.
+!>    @param[out] gfld derived type gribfield (defined in module grib_mod)
+!>    (NOTE: See Remarks Section)
+!>    - gfld\%version GRIB edition number (currently 2)
+!>    - gfld\%discipline Message Discipline (see Code Table 0.0)
+!>    - gfld\%idsect Contains the entries in the Identification Section
+!>    (Section 1) This element is actually a pointer to an array
+!>    that holds the data.
+!>    - gfld\%idsect(1) Identification of originating Centre
+!>    (see Common Code Table C-1) 7 US National Weather Service
+!>    - gfld\%idsect(2) Identification of originating Sub-centre
+!>    - gfld\%idsect(3) GRIB Master Tables Version Number
+!>    (see Code Table 1.0) 0 Experimental; 1 Initial operational version number
+!>    - gfld\%idsect(4) GRIB Local Tables Version Number (see Code Table 1.1)
+!>     - 0 Local tables not used
+!>     - 0 1-254 Number of local tables version used
+!>    - gfld\%idsect(5) Significance of Reference Time (Code Table 1.2)
+!>     - 0 Analysis
+!>     - 1 Start of forecast
+!>     - 2 Verifying time of forecast
+!>     - 3 Observation time.
+!>    - gfld\%idsect(6) Year (4 digits)
+!>    - gfld\%idsect(7) Month
+!>    - gfld\%idsect(8) Day
+!>    - gfld\%idsect(9) Hour
+!>    - gfld\%idsect(10) Minute
+!>    - gfld\%idsect(11) Second
+!>    - gfld\%idsect(12) Production status of processed data (see Code
+!>    Table 1.3)
+!>     - 0 Operational products
+!>     - 1 Operational test products
+!>     - 2 Research products
+!>     - 3 Re-analysis products
+!>    - gfld\%idsect(13) Type of processed data (see Code Table 1.4)
+!>     - 0 Analysis products
+!>     - 1 Forecast products
+!>     - 2 Analysis and forecast products
+!>     - 3 Control forecast products
+!>     - 4 Perturbed forecast products
+!>     - 5 Control and perturbed forecast products
+!>     - 6 Processed satellite observations
+!>     - 7 Processed radar observations
+!>    - gfld\%idsectlen Number of elements in gfld\%idsect
+!>    - gfld\%local Pointer to character array containing contents
+!>    of Local Section 2, if included
+!>    - gfld\%locallen length of array gfld\%local
+!>    - gfld\%ifldnum field number within GRIB message
+!>    - gfld\%griddef Source of grid definition (see Code Table 3.0)
+!>     - 0 Specified in Code table 3.1
+!>     - 1 Predetermined grid Defined by originating centre
+!>    - gfld\%ngrdpts Number of grid points in the defined grid.
+!>    Note that the number of actual data values returned from getgb2
+!>    (in gfld\%ndpts) may be less than this value if a logical bitmap
+!>    is in use with grid points that are being masked out.
+!>    - gfld\%numoct_opt Number of octets needed for each additional grid
+!>    points definition. Used to define number of points in each row (or
+!>    column) for non-regular grids. = 0, if using regular grid.
+!>    - gfld\%interp_opt Interpretation of list for optional points
+!>    definition.(Code Table 3.11)
+!>    - gfld\%igdtnum Grid Definition Template Number (Code Table 3.1)
+!>    - gfld\%igdtmpl Contains the data values for the specified Grid
+!>    Definition Template (NN=gfld\%igdtnum). Each element of this
+!>    integer array contains an entry (in the order specified) of Grid
+!>    Defintion Template 3.NN This element is actually a pointer to an
+!>    array that holds the data.
+!>    - gfld\%igdtlen Number of elements in gfld\%igdtmpl. i.e. number
+!>    of entries in Grid Defintion Template 3.NN (NN=gfld\%igdtnum).
+!>    - gfld\%list_opt (Used if gfld\%numoct_opt .ne. 0) This array
+!>    contains the number of grid points contained in each row (or
+!>    column). (part of Section 3) This element is actually a pointer
+!>    to an array that holds the data. This pointer is nullified
+!>    if gfld\%numoct_opt=0.
+!>    - gfld\%num_opt (Used if gfld\%numoct_opt .ne. 0) The number of
+!>    entries in array ideflist. i.e. number of rows (or columns) for which
+!>    optional grid points are defined. This value is set to zero,
+!>    if gfld\%numoct_opt=0.
+!>    - gfdl\%ipdtnum Product Definition Template Number (Code Table 4.0)
+!>    - gfld\%ipdtmpl Contains the data values for the specified Product
+!>    Definition Template (N=gfdl\%ipdtnum). Each element of this integer
+!>    array contains an entry (in the order specified) of Product Defintion
+!>    Template 4.N. This element is actually a pointer to an array
+!>    that holds the data.
+!>    - gfld\%ipdtlen Number of elements in gfld\%ipdtmpl. i.e.number of
+!>    entries in Product Defintion Template 4.N (N=gfdl\%ipdtnum).
+!>    - gfld\%coord_list Real array containing floating point values
+!>    intended to document the vertical discretisation associated to
+!>    model data on hybrid coordinate vertical levels.(part of Section 4)
+!>    This element is actually a pointer to an array
+!>    that holds the data.
+!>    - gfld\%num_coord number of values in array gfld\%coord_list.
+!>    - gfld\%ndpts Number of data points unpacked and returned.
+!>    Note that this number may be different from the value of
+!>    - gfld\%ngrdpts if a logical bitmap is in use with grid points
+!>    that are being masked out.
+!>    - gfld\%idrtnum Data Representation Template Number (Code Table 5.0)
+!>    - gfld\%idrtmpl Contains the data values for the specified Data
+!>    Representation Template (N=gfld\%idrtnum). Each element of this
+!>    integer array contains an entry (in the order specified) of
+!>    Product Defintion Template 5.N. This element is actually a
+!>    pointer to an array that holds the data.
+!>    - gfld\%idrtlen Number of elements in gfld\%idrtmpl. i.e. number
+!>    of entries in Data Representation Template 5.N (N=gfld\%idrtnum).
+!>    - gfld\%unpacked logical value indicating whether the bitmap and
+!>    data values were unpacked. If false, gfld\%bmap and gfld\%fld
+!>    pointers are nullified.
+!>    - gfld\%expanded Logical value indicating whether the data field
+!>    was expanded to the grid in the case where a bit-map is present.
+!>    If true, the data points in gfld\%fld match the grid points and
+!>    zeros were inserted at grid points where data was bit-mapped out.
+!>    If false, the data values in gfld\%fld were not expanded to the
+!>    grid and are just a consecutive array of data points corresponding
+!>    to each value of "1" in gfld\%bmap.
+!>    - gfld\%ibmap Bitmap indicator (see Code Table 6.0)
+!>     - 0 bitmap applies and is included in Section 6.
+!>     - 1-253 Predefined bitmap applies
+!>     - 254 Previously defined bitmap applies to this field
+!>     - 255 Bit map does not apply to this product.
+!>    - gfld\%bmap Logical*1 array containing decoded bitmap, if ibmap=0
+!>    or ibap=254. Otherwise nullified. This element is actually a
+!>    pointer to an array that holds the data.
+!>    - gfld\%fld Array of gfld\%ndpts unpacked data points. This element
+!>    is actually a pointer to an array that holds the data.
+!>    @param[out] ierr Error return code.
+!>    - 0 no error.
+!>    - 1 Beginning characters "GRIB" not found.
+!>    - 2 GRIB message is not Edition 2.
+!>    - 3 The data field request number was not positive.
+!>    - 4 End string "7777" found, but not where expected.
+!>    - 5 End string "7777" not found at end of message.
+!>    - 6 GRIB message did not contain the requested number of data fields.
+!>    - 7 End string "7777" not found at end of message.
+!>    - 9 Data Representation Template 5.NN not yet implemented.
+!>    - 10 Error unpacking Section 3.
+!>    - 11 Error unpacking Section 4.
+!>    - 12 Error unpacking Section 5.
+!>    - 13 Error unpacking Section 6.
+!>    - 14 Error unpacking Section 7.
+!>    - 17 Previous bitmap specified, but none exists.
+!>
+!>    @note Note that derived type gribfield contains pointers to many
+!>    arrays of data. The memory for these arrays is allocated when the
+!>    values in the arrays are set, to help minimize problems with array
+!>    overloading. Because of this users are encouraged to free up this memory,
+!>    when it is no longer needed, by an explicit call to subroutine gf_free.
+!>    Subroutine gb_info can be used to first determine how many data fields
+!>    exist in a given GRIB message.It may not always be possible to expand 
+!>    a bit-mapped data field. If a pre-defined bit-map is used and not 
+!>    included in the GRIB2 message itself, this routine would not have the 
+!>    necessary information to expand the data. In this case, gfld\%expanded
+!>    would be set to 0 (false), regardless of the value of input argument expand.
+!>
+!>    @author Stephen Gilbert @date 2000-05-26
+!>
+
       subroutine gf_getfld(cgrib,lcgrib,ifldnum,unpack,expand,gfld,ierr)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    gf_getfld 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-26
-!
-! ABSTRACT: This subroutine returns the Grid Definition, Product Definition,
-!   Bit-map ( if applicable ), and the unpacked data for a given data
-!   field.  All of the information returned is stored in a derived
-!   type variable, gfld.  Gfld is of type gribfield, which is defined
-!   in module grib_mod, so users of this routine will need to include
-!   the line "USE GRIB_MOD" in their calling routine.  Each component of the 
-!   gribfield type is described in the OUTPUT ARGUMENT LIST section below.
-!
-!   Since there can be multiple data fields packed into a GRIB2
-!   message, the calling routine indicates which field is being requested
-!   with the ifldnum argument.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-26  Gilbert
-! 2002-01-24  Gilbert  - Changed to pass back derived type gribfield
-!                        variable through argument list, instead of
-!                        having many different arguments.
-! 2004-05-20  Gilbert  - Added check to see if previous a bit-map is specified,
-!                        but none was found.
-! 2015-10-29  Vuong    - Initial all pointers in derive type gribfield
-!
-! USAGE:    CALL gf_getfld(cgrib,lcgrib,ifldnum,unpack,expand,gfld,ierr)
-!   INPUT ARGUMENT LIST:
-!     cgrib    - Character array that contains the GRIB2 message
-!     lcgrib   - Length (in bytes) of GRIB message array cgrib.
-!     ifldnum  - Specifies which field in the GRIB2 message to return.
-!     unpack   - Logical value indicating whether to unpack bitmap/data
-!                .true. = unpack bitmap and data values
-!                .false. = do not unpack bitmap and data values
-!     expand   - Boolean value indicating whether the data points should be
-!                expanded to the correspond grid, if a bit-map is present.
-!                1 = if possible, expand data field to grid, inserting zero
-!                    values at gridpoints that are bitmapped out.
-!                    (SEE REMARKS2)
-!                0 = do not expand data field, leaving it an array of
-!                    consecutive data points for each "1" in the bitmap.
-!                This argument is ignored if unpack == 0 OR if the
-!                returned field does not contain a bit-map.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     gfld - derived type gribfield ( defined in module grib_mod )
-!            ( NOTE: See Remarks Section )
-!        gfld%version = GRIB edition number ( currently 2 )
-!        gfld%discipline = Message Discipline ( see Code Table 0.0 )
-!        gfld%idsect() = Contains the entries in the Identification
-!                        Section ( Section 1 )
-!                        This element is actually a pointer to an array
-!                        that holds the data.
-!            gfld%idsect(1)  = Identification of originating Centre 
-!                                    ( see Common Code Table C-1 )
-!                             7 - US National Weather Service
-!            gfld%idsect(2)  = Identification of originating Sub-centre
-!            gfld%idsect(3)  = GRIB Master Tables Version Number
-!                                    ( see Code Table 1.0 )
-!                             0 - Experimental
-!                             1 - Initial operational version number
-!            gfld%idsect(4)  = GRIB Local Tables Version Number
-!                                    ( see Code Table 1.1 )
-!                             0     - Local tables not used
-!                             1-254 - Number of local tables version used
-!            gfld%idsect(5)  = Significance of Reference Time (Code Table 1.2)
-!                             0 - Analysis
-!                             1 - Start of forecast
-!                             2 - Verifying time of forecast
-!                             3 - Observation time
-!            gfld%idsect(6)  = Year ( 4 digits )
-!            gfld%idsect(7)  = Month
-!            gfld%idsect(8)  = Day
-!            gfld%idsect(9)  = Hour
-!            gfld%idsect(10)  = Minute
-!            gfld%idsect(11)  = Second
-!            gfld%idsect(12)  = Production status of processed data
-!                                    ( see Code Table 1.3 )
-!                              0 - Operational products
-!                              1 - Operational test products
-!                              2 - Research products
-!                              3 - Re-analysis products
-!            gfld%idsect(13)  = Type of processed data ( see Code Table 1.4 )
-!                              0  - Analysis products
-!                              1  - Forecast products
-!                              2  - Analysis and forecast products
-!                              3  - Control forecast products
-!                              4  - Perturbed forecast products
-!                              5  - Control and perturbed forecast products
-!                              6  - Processed satellite observations
-!                              7  - Processed radar observations
-!        gfld%idsectlen = Number of elements in gfld%idsect().
-!        gfld%local() = Pointer to character array containing contents
-!                       of Local Section 2, if included
-!        gfld%locallen = length of array gfld%local()
-!        gfld%ifldnum = field number within GRIB message
-!        gfld%griddef = Source of grid definition (see Code Table 3.0)
-!                      0 - Specified in Code table 3.1
-!                      1 - Predetermined grid Defined by originating centre
-!        gfld%ngrdpts = Number of grid points in the defined grid.
-!        gfld%numoct_opt = Number of octets needed for each 
-!                          additional grid points definition.  
-!                          Used to define number of
-!                          points in each row ( or column ) for
-!                          non-regular grids.  
-!                          = 0, if using regular grid.
-!        gfld%interp_opt = Interpretation of list for optional points 
-!                          definition.  (Code Table 3.11)
-!        gfld%igdtnum = Grid Definition Template Number (Code Table 3.1)
-!        gfld%igdtmpl() = Contains the data values for the specified Grid 
-!                         Definition Template ( NN=gfld%igdtnum ).  Each 
-!                         element of this integer array contains an entry (in 
-!                         the order specified) of Grid Defintion Template 3.NN
-!                         This element is actually a pointer to an array
-!                         that holds the data.
-!        gfld%igdtlen = Number of elements in gfld%igdtmpl().  i.e. number of
-!                       entries in Grid Defintion Template 3.NN  
-!                       ( NN=gfld%igdtnum ).
-!        gfld%list_opt() = (Used if gfld%numoct_opt .ne. 0)  This array 
-!                          contains the number of grid points contained in 
-!                          each row ( or column ).  (part of Section 3)
-!                          This element is actually a pointer to an array
-!                          that holds the data.  This pointer is nullified
-!                          if gfld%numoct_opt=0.
-!        gfld%num_opt = (Used if gfld%numoct_opt .ne. 0)  The number of entries
-!                       in array ideflist.  i.e. number of rows ( or columns )
-!                       for which optional grid points are defined.  This value
-!                       is set to zero, if gfld%numoct_opt=0.
-!        gfdl%ipdtnum = Product Definition Template Number (see Code Table 4.0)
-!        gfld%ipdtmpl() = Contains the data values for the specified Product 
-!                         Definition Template ( N=gfdl%ipdtnum ).  Each element
-!                         of this integer array contains an entry (in the 
-!                         order specified) of Product Defintion Template 4.N.
-!                         This element is actually a pointer to an array
-!                         that holds the data.
-!        gfld%ipdtlen = Number of elements in gfld%ipdtmpl().  i.e. number of
-!                       entries in Product Defintion Template 4.N  
-!                       ( N=gfdl%ipdtnum ).
-!        gfld%coord_list() = Real array containing floating point values 
-!                            intended to document the vertical discretisation
-!                            associated to model data on hybrid coordinate
-!                            vertical levels.  (part of Section 4)
-!                            This element is actually a pointer to an array
-!                            that holds the data.
-!        gfld%num_coord = number of values in array gfld%coord_list().
-!        gfld%ndpts = Number of data points unpacked and returned.
-!        gfld%idrtnum = Data Representation Template Number 
-!                       ( see Code Table 5.0)
-!        gfld%idrtmpl() = Contains the data values for the specified Data 
-!                         Representation Template ( N=gfld%idrtnum ).  Each 
-!                         element of this integer array contains an entry 
-!                         (in the order specified) of Product Defintion 
-!                         Template 5.N.
-!                         This element is actually a pointer to an array
-!                         that holds the data.
-!        gfld%idrtlen = Number of elements in gfld%idrtmpl().  i.e. number 
-!                       of entries in Data Representation Template 5.N 
-!                       ( N=gfld%idrtnum ).
-!        gfld%unpacked = logical value indicating whether the bitmap and
-!                        data values were unpacked.  If false, 
-!                        gfld%bmap and gfld%fld pointers are nullified.
-!        gfld%expanded = Logical value indicating whether the data field
-!                         was expanded to the grid in the case where a
-!                         bit-map is present.  If true, the data points in
-!                         gfld%fld match the grid points and zeros were
-!                         inserted at grid points where data was bit-mapped
-!                         out.  If false, the data values in gfld%fld were
-!                         not expanded to the grid and are just a consecutive
-!                         array of data points corresponding to each value of
-!                         "1" in gfld%bmap.
-!        gfld%ibmap = Bitmap indicator ( see Code Table 6.0 )
-!                     0 = bitmap applies and is included in Section 6.
-!                     1-253 = Predefined bitmap applies
-!                     254 = Previously defined bitmap applies to this field
-!                     255 = Bit map does not apply to this product.
-!        gfld%bmap() = Logical*1 array containing decoded bitmap, 
-!                      if ibmap=0 or ibap=254.  Otherwise nullified.
-!                      This element is actually a pointer to an array
-!                      that holds the data.
-!        gfld%fld() = Array of gfld%ndpts unpacked data points.
-!                     This element is actually a pointer to an array
-!                     that holds the data.
-!     ierr     - Error return code.
-!                0 = no error
-!                1 = Beginning characters "GRIB" not found.
-!                2 = GRIB message is not Edition 2.
-!                3 = The data field request number was not positive.
-!                4 = End string "7777" found, but not where expected.
-!                6 = GRIB message did not contain the requested number of
-!                    data fields.
-!                7 = End string "7777" not found at end of message.
-!                8 = Unrecognized Section encountered.
-!                9 = Data Representation Template 5.NN not yet implemented.
-!               15 = Error unpacking Section 1.
-!               16 = Error unpacking Section 2.
-!               10 = Error unpacking Section 3.
-!               11 = Error unpacking Section 4.
-!               12 = Error unpacking Section 5.
-!               13 = Error unpacking Section 6.
-!               14 = Error unpacking Section 7.
-!               17 = Previous bitmap specified, but none exists.
-!
-! REMARKS: Note that derived type gribfield contains pointers to many
-!          arrays of data.  The memory for these arrays is allocated
-!          when the values in the arrays are set, to help minimize
-!          problems with array overloading.  Because of this users
-!          are encouraged to free up this memory, when it is no longer
-!          needed, by an explicit call to subroutine gf_free.
-!          ( i.e.   CALL GF_FREE(GFLD) )
-!
-!          Subroutine gb_info can be used to first determine
-!          how many data fields exist in a given GRIB message.
-!
-! REMARKS2: It may not always be possible to expand a bit-mapped data field.
-!           If a pre-defined bit-map is used and not included in the GRIB2
-!           message itself, this routine would not have the necessary
-!           information to expand the data.  In this case, gfld%expanded would
-!           would be set to 0 (false), regardless of the value of input
-!           argument expand.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
       use grib_mod
     
       character(len=1),intent(in) :: cgrib(lcgrib)
