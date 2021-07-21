@@ -16,14 +16,14 @@
 !>    with the ifldnum argument.
 !>   
 !>    PROGRAM HISTORY LOG:
-!>    2000-05-26 Stephen Gilbert
-!>    2002-01-24 Stephen Gilbert Changed to pass back derived type gribfield
+!>    - 2000-05-26 Stephen Gilbert
+!>    - 2002-01-24 Stephen Gilbert Changed to pass back derived type gribfield
 !>    variable through argument list, instead of having many different arguments.
-!>    2004-05-20 Stephen Gilbert Added check to see if previous a bit-map is
+!>    - 2004-05-20 Stephen Gilbert Added check to see if previous a bit-map is
 !>    specified, but none was found.
-!>    2015-10-29 Boi Vuong Initial all pointers in derive type gribfield.
+!>    - 2015-10-29 Boi Vuong Initial all pointers in derive type gribfield.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
 !>    @param[in] ifldnum Specifies which field in the GRIB2 message to return.
 !>    @param[in] unpack Logical value indicating whether to unpack
@@ -175,7 +175,7 @@
 !>    - 17 Previous bitmap specified, but none exists.
 !>
 !>    @note Note that derived type gribfield contains pointers to many
-!>    arrays of data.  The memory for these arrays is allocated when the
+!>    arrays of data. The memory for these arrays is allocated when the
 !>    values in the arrays are set, to help minimize problems with array
 !>    overloading. Because of this users are encouraged to free up this memory,
 !>    when it is no longer needed, by an explicit call to subroutine gf_free.
@@ -183,7 +183,7 @@
 !>    exist in a given GRIB message.It may not always be possible to expand 
 !>    a bit-mapped data field. If a pre-defined bit-map is used and not 
 !>    included in the GRIB2 message itself, this routine would not have the 
-!>    necessary information to expand the data.  In this case, gfld\%expanded
+!>    necessary information to expand the data. In this case, gfld\%expanded
 !>    would be set to 0 (false), regardless of the value of input argument expand.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
