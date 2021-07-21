@@ -40,7 +40,7 @@ C>
 C>    Program History log:
 C>    - 1995-10-31  Mark Iredell Initial development
 C>    - 2002-01-02  Stephen Gilbert Modified from getg1s to work with grib2
-C>    - 2011-06-24  Vuong Boi initialize variable gfld%idsect and gfld%local
+C>    - 2011-06-24  Boi Vuong initialize variable gfld%idsect and gfld%local
 C>
 C>    @param[in] CBUF character*1 (nlen) buffer containing index data.
 C>    @param[in] NLEN integer total length of all index records.

@@ -1,34 +1,27 @@
+!>    @file
+!>    @brief This subroutine returns the J, K, and M pentagonal
+!>    resolution parameters specified in a GRIB Grid Definition Section.
+!>    @author Stephen Gilbert @date 2002-12-11
+!>
+
+!>    This subroutine returns the J, K, and M pentagonal resolution
+!>    parameters specified in a GRIB Grid Definition Section used
+!>    spherical harmonic coefficients using GDT 5.50 through 5.53.
+!>    
+!>    @param[in] csec3 Character array containing the packed GRIB2 GDS
+!>    @param[in] lcsec3 Length (in octets) of section 3
+!>    @param[out] JJ =J pentagonal resolution parameter
+!>    @param[out] KK =K pentagonal resolution parameter
+!>    @param[out] MM =M pentagonal resolution parameter
+!>
+!>    @note Returns JJ, KK, and MM set to zero, if grid template not
+!>    recognized.
+!>
+!>    @author Stephen Gilbert @date 2002-12-11
+!>
+
       subroutine getpoly(csec3,lcsec3,jj,kk,mm)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    getpoly 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2002-12-11
-!
-! ABSTRACT: This subroutine returns the J, K, and M pentagonal resolution
-!   parameters specified in a GRIB Grid Definition Section used
-!   spherical harmonic coefficients using GDT 5.50 through 5.53
-!
-! PROGRAM HISTORY LOG:
-! 2002-12-11  Gilbert
-!
-! USAGE:    CALL getpoly(csec3,lcsec3,jj,kk,mm)
-!   INPUT ARGUMENT LIST:
-!     csec3    - Character array that contains the packed GRIB2 GDS
-!    lcsec3    - Length (in octets) of section 3
-!
-!   OUTPUT ARGUMENT LIST:      
-!         JJ   = J - pentagonal resolution parameter
-!         KK   = K - pentagonal resolution parameter
-!         MM   = M - pentagonal resolution parameter
-!
-! REMARKS:  Returns JJ, KK, and MM set to zero, if grid template
-!           not recognized.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
 !      use grib_mod
     
       character(len=1),intent(in) :: csec3(*)
