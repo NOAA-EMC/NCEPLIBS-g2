@@ -5,7 +5,7 @@
 !>
 
 !>    This subroutine returns the Grid Definition, Product Definition,
-!>    Bit-map ( if applicable ), and the unpacked data for a given data
+!>    Bit-map (if applicable), and the unpacked data for a given data
 !>    field. All of the information returned is stored in a derived
 !>    type variable, gfld. Gfld is of type gribfield, which is defined
 !>    in module grib_mod, so users of this routine will need to include
