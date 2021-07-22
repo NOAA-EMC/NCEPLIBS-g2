@@ -1,60 +1,50 @@
+!>    @file
+!>    @brief This subroutines initializes a new GRIB2 message and packs
+!>    GRIB2 Indicator Section and Identification Section.
+!>    @author Stephen Gilbert @date 2000-04-28
+!>
+
+!>    This subroutine initializes a new GRIB2 message and packs GRIB2
+!>    sections 0 (Indicator Section) and 1 (Identification Section).
+!>    This routine is used with routines addlocal(), addgrid(), addfield(),
+!>    and gribend() to create a complete GRIB2 message. Subroutine
+!>    gribcreate must be called first to initialize a new GRIB2 message.
+!>    Also, a call to gribend is required to complete GRIB2 message
+!>    after all fields have been added.
+!>    
+!>    @param[inout] cgrib Character array to contain the GRIB2 message.
+!>    @param[in] lcgrib Maximum Length (in bytes) of array cgrib.
+!>    @param[in] listsec0 Contains information needed for GRIB Indicator
+!>    Section 0. Must be dimensioned >= 2.
+!>    - listsec0(1) Discipline-GRIB Master Table Number (Code Table 0.0)
+!>    - listsec0(2) GRIB Edition Number (currently 2)
+!>    @param[in] listsec1 Contains information needed for GRIB Identification
+!>    Section 1. Must be dimensioned >= 13.
+!>    - listsec1(1) Id of orginating centre (Common Code Table C-1)
+!>    - listsec1(2) Id of orginating sub-centre (local table)
+!>    - listsec1(3) GRIB Master Tables Version Number (Code Table 1.0)
+!>    - listsec1(4) GRIB Local Tables Version Number (Code Table 1.1)
+!>    - listsec1(5) Significance of Reference Time (Code Table 1.2)
+!>    - listsec1(6) Reference Time - Year (4 digits)
+!>    - listsec1(7) Reference Time - Month
+!>    - listsec1(8) Reference Time - Day
+!>    - listsec1(9) Reference Time - Hour
+!>    - listsec1(10) Reference Time - Minute
+!>    - listsec1(11) Reference Time - Second
+!>    - listsec1(12) Production status of data (Code Table 1.3)
+!>    - listsec1(13) Type of processed data (Code Table 1.4)
+!>    @param[out] ierr Error return code.
+!>    - 0 no error
+!>    - 1 Tried to use for version other than GRIB Edition 2
+!>
+!>    @note This routine is intended for use with routines
+!>    addlocal(), addgrid(), addfield(), and gribend() to create a
+!>    complete GRIB2 message.
+!>
+!>    @author Stephen Gilbert @date 2000-04-28
+!>
+
       subroutine gribcreate(cgrib,lcgrib,listsec0,listsec1,ierr)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    gribcreate 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-04-28
-!
-! ABSTRACT: This subroutine initializes a new GRIB2 message and packs
-!   GRIB2 sections 0 (Indicator Section) and 1 (Identification Section).
-!   This routine is used with routines "addlocal", "addgrid", "addfield",
-!   and "gribend" to create a complete GRIB2 message.  Subroutine
-!   gribcreate must be called first to initialize a new GRIB2 message.
-!   Also, a call to gribend is required to complete GRIB2 message
-!   after all fields have been added.
-!
-! PROGRAM HISTORY LOG:
-! 2000-04-28  Gilbert
-!
-! USAGE:    CALL gribcreate(cgrib,lcgrib,listsec0,listsec1,ierr)
-!   INPUT ARGUMENT LIST:
-!     cgrib    - Character array to contain the GRIB2 message
-!     lcgrib   - Maximum length (bytes) of array cgrib.
-!     listsec0 - Contains information needed for GRIB Indicator Section 0.
-!                Must be dimensioned >= 2.
-!                listsec0(1)=Discipline-GRIB Master Table Number
-!                            (see Code Table 0.0)
-!                listsec0(2)=GRIB Edition Number (currently 2)
-!     listsec1 - Contains information needed for GRIB Identification Section 1.
-!                Must be dimensioned >= 13.
-!                listsec1(1)=Id of orginating centre (Common Code Table C-1)
-!                listsec1(2)=Id of orginating sub-centre (local table)
-!                listsec1(3)=GRIB Master Tables Version Number (Code Table 1.0)
-!                listsec1(4)=GRIB Local Tables Version Number (Code Table 1.1)
-!                listsec1(5)=Significance of Reference Time (Code Table 1.2)
-!                listsec1(6)=Reference Time - Year (4 digits)
-!                listsec1(7)=Reference Time - Month
-!                listsec1(8)=Reference Time - Day
-!                listsec1(9)=Reference Time - Hour
-!                listsec1(10)=Reference Time - Minute
-!                listsec1(11)=Reference Time - Second
-!                listsec1(12)=Production status of data (Code Table 1.3)
-!                listsec1(13)=Type of processed data (Code Table 1.4)
-!
-!   OUTPUT ARGUMENT LIST:      
-!     cgrib    - Character array to contain the GRIB2 message
-!     ierr     - Error return code.
-!                0 = no error
-!                1 = Tried to use for version other than GRIB Edition 2
-!
-! REMARKS: This routine is intended for use with routines "addlocal", 
-!          "addgrid", "addfield", and "gribend" to create a complete 
-!          GRIB2 message.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       character(len=1),intent(inout) :: cgrib(lcgrib)
       integer,intent(in) :: listsec0(*),listsec1(*)
