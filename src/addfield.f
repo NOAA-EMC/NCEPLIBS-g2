@@ -3,6 +3,7 @@
 !>    a given field and adds them to a GRIB2 message.
 !>    @author Stephen Gilbert @date 2000-05-02
 !>     
+
 !>    This subroutine packs up Sections 4 through 7 for a given field
 !>    and adds them to a GRIB2 message. They are Product Definition
 !>    Section, Data Representation Section, Bit-Map Section and Data
@@ -35,6 +36,11 @@
 !>    containg floating point values intended to document the vertical
 !>    discretisation associated to model data on hybrid coordinate
 !>    vertical levels.
+!>    @param[out] coordlist Array containg floating point values intended to 
+!>    document the vertical discretisation associated to model data on hybrid 
+!>    coordinate vertical levels. (part of Section 4) The dimension of this 
+!>    array can be obtained in advance from maxvals(5), which is returned 
+!>    from subroutine gribinfo.
 !>    @param[in] numcoord - number of values in array coordlist.
 !>    @param[in] idrsnum - Data Representation Template Number ( see
 !>    Code Table 5.0 )
