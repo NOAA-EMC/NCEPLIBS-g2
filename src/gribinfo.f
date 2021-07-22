@@ -1,88 +1,73 @@
+!>    @file
+!>    @brief This subroutines searches the number of  Local Use 
+!>    Sections and gridded fields.
+!>    @author Stephen Gilbert @date 2000-05-25
+!>
+
+!>    This subroutine searches through a GRIB2 message and returns
+!>    the number of Local Use Sections and number of gridded fields
+!>    found in the message. It also performs various checks to see
+!>    if the message is a valid GRIB2 message. Last, a list of safe
+!>    array dimensions is returned for use in allocating return
+!>    arrays from routines getlocal, gettemplates, and getfields.
+!>    (See maxvals and REMARKS)
+!>
+!>    @param[in] cgrib Character that contains the GRIB2 message.
+!>    @param[in] lcgrib Length (in bytes) of array cgrib.
+!>    @param[out] listsec0 Contains information needed for GRIB Indicator
+!>    Section 0. Must be dimensioned >= 2.
+!>    - listsec0(1) Discipline-GRIB Master Table Number.
+!>    - listsec0(2) GRIB Edition Number (currently 2).
+!>    - listsec0(3) Length of GRIB message.
+!>    @param[out] listsec1 Contains information needed for GRIB Identification
+!>    Section 1. Must be dimensioned >= 13.
+!>    - listsec1(1)=Id of orginating centre (Common Code Table C-1)
+!>    - listsec1(2)=Id of orginating sub-centre (local table)
+!>    - listsec1(3) GRIB Master Tables Version Number (Code Table 1.0)
+!>    - listsec1(4) GRIB Local Tables Version Number (Code Table 1.1)
+!>    - listsec1(5) Significance of Reference Time (Code Table 1.2)
+!>    - listsec1(6) Reference Time - Year (4 digits)
+!>    - listsec1(7) Reference Time - Month
+!>    - listsec1(8) Reference Time - Day
+!>    - listsec1(9) Reference Time - Hour
+!>    - listsec1(10) Reference Time - Minute
+!>    - listsec1(11) Reference Time - Second
+!>    - listsec1(12) Production status of data (Code Table 1.3)
+!>    - listsec1(13) Type of processed data (Code Table 1.4)
+!>    @param[out] numlocal The number of Local Use Sections (Section 2)
+!>    found in the GRIB message.
+!>    @param[out] numfields The number of gridded fieldse found in the GRIB message.
+!>    @param[out] maxvals The maximum number of elements that could be
+!>    returned in various arrays from this GRIB2 message.
+!>    - maxvals(1) max length of local section 2 (for getlocal)
+!>    - maxvals(2) max length of GDS Template (for gettemplates and getfield)
+!>    - maxvals(3) max length of GDS Optional list (for getfield)
+!>    - maxvals(4) max length of PDS Template (for gettemplates and getfield)
+!>    - maxvals(5) max length of PDS Optional list (for getfield)
+!>    - maxvals(6) max length of DRS Template (for gettemplates and getfield)
+!>    - maxvals(7) max number of gridpoints (for getfield)
+!>    @param[out] ierr Error return code.
+!>    - 0 no error.
+!>    - 1 Beginning characters "GRIB" not found.
+!>    - 2 GRIB message is not Edition 2.
+!>    - 3 Could not find Section 1, where expected.
+!>    - 4 End string "7777" found, but not where expected.
+!>    - 5 End string "7777" not found at end of message.
+!>
+!>    @note Array maxvals contains the maximum possible number of values
+!>    that will be returned in argument arrays for routines getlocal(),
+!>    gettemplates() and getfields(). Users can use this info to determine
+!>    if their arrays are dimensioned large enough for the data that may
+!>    be returned from the above routines, or to dynamically allocate
+!>    arrays with a reasonable size. NOTE that the actual number of values
+!>    in these arrays is returned from the routines and will likely be
+!>    less than the values calculated by this routine.
+!>    
+!>    @author Stephen Gilbert @date 2000-05-25
+!>    
+
       subroutine gribinfo(cgrib,lcgrib,listsec0,listsec1,
      &                    numlocal,numfields,maxvals,ierr)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    gribinfo 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-25
-!
-! ABSTRACT: This subroutine searches through a GRIB2 message and
-!   returns the number of Local Use Sections and number of gridded
-!   fields found in the message.  It also performs various checks 
-!   to see if the message is a valid GRIB2 message.
-!   Last, a list of safe array dimensions is returned for use in 
-!   allocating return arrays from routines getlocal, gettemplates, and 
-!   getfields.  (See maxvals and REMARKS)
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-25  Gilbert
-!
-! USAGE:    CALL gribinfo(cgrib,lcgrib,listsec0,listsec1,
-!     &                    numlocal,numfields,ierr)
-!   INPUT ARGUMENT LIST:
-!     cgrib    - Character array that contains the GRIB2 message
-!     lcgrib   - Length (in bytes) of GRIB message in array cgrib.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     listsec0 - Contains information decoded from GRIB Indicator Section 0.
-!                Must be dimensioned >= 2.
-!                listsec0(1)=Discipline-GRIB Master Table Number
-!                            (see Code Table 0.0)
-!                listsec0(2)=GRIB Edition Number (currently 2)
-!                listsec0(3)=Length of GRIB message
-!     listsec1 - Contains information read from GRIB Identification Section 1.
-!                Must be dimensioned >= 13.
-!                listsec1(1)=Id of orginating centre (Common Code Table C-1)
-!                listsec1(2)=Id of orginating sub-centre (local table)
-!                listsec1(3)=GRIB Master Tables Version Number (Code Table 1.0)
-!                listsec1(4)=GRIB Local Tables Version Number 
-!                listsec1(5)=Significance of Reference Time (Code Table 1.1)
-!                listsec1(6)=Reference Time - Year (4 digits)
-!                listsec1(7)=Reference Time - Month
-!                listsec1(8)=Reference Time - Day
-!                listsec1(9)=Reference Time - Hour
-!                listsec1(10)=Reference Time - Minute
-!                listsec1(11)=Reference Time - Second
-!                listsec1(12)=Production status of data (Code Table 1.2)
-!                listsec1(13)=Type of processed data (Code Table 1.3)
-!     numlocal - The number of Local Use Sections ( Section 2 ) found in 
-!                the GRIB message.
-!     numfields- The number of gridded fieldse found in the GRIB message.
-!     maxvals()- The maximum number of elements that could be returned
-!                in various arrays from this GRIB2 message. (see REMARKS)
-!                maxvals(1)=max length of local section 2 (for getlocal)
-!                maxvals(2)=max length of GDS Template (for gettemplates 
-!                                                       and getfield)
-!                maxvals(3)=max length of GDS Optional list (for getfield)
-!                maxvals(4)=max length of PDS Template (for gettemplates 
-!                                                       and getfield)
-!                maxvals(5)=max length of PDS Optional list (for getfield)
-!                maxvals(6)=max length of DRS Template (for gettemplates 
-!                                                       and getfield)
-!                maxvals(7)=max number of gridpoints (for getfield)
-!     ierr     - Error return code.
-!                0 = no error
-!                1 = Beginning characters "GRIB" not found.
-!                2 = GRIB message is not Edition 2.
-!                3 = Could not find Section 1, where expected.
-!                4 = End string "7777" found, but not where expected.
-!                5 = End string "7777" not found at end of message.
-!
-! REMARKS: Array maxvals contains the maximum possible 
-!          number of values that will be returned in argument arrays
-!          for routines getlocal, gettemplates, and getfields.  
-!          Users can use this info to determine if their arrays are 
-!          dimensioned large enough for the data that may be returned
-!          from the above routines, or to dynamically allocate arrays
-!          with a reasonable size.
-!          NOTE that the actual number of values in these arrays is returned
-!          from the routines and will likely be less than the values 
-!          calculated by this routine.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
