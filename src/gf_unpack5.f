@@ -1,50 +1,40 @@
+!>    @file
+!>    @brief Contains subroutines unpacks Section 5 (Data Representation
+!>    Section).
+!>    @author Stephen Gilbert @date 2000-05-26
+!>
+
+!>    This subroutine unpacks Section 5 (Data Representation Section)
+!>    starting at octet 6 of that Section.
+!>
+!>    PROGRAM HISTORY LOG:
+!>    - 2000-05-26 Stephen Gilbert Initial development.
+!>    - 2002-01-24 Stephen Gilbert Changed to dynamically allocate
+!>    arrays and to pass pointers to those arrays through the argument
+!>    list.
+!>
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
+!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!>    @param[inout] iofst Bit offset of the beginning/end(returned) of Section 5.
+!>    @param[out] ndpts Number of data points unpacked and returned.
+!>    @param[out] idrsnum Data Representation Template Number (Code Table 5.0).
+!>    @param[out] idrstmpl Contains the data values for the specified Data
+!>    Representation Template (N=idrsnum). Each element of this integer array
+!>    contains an entry (in the order specified) of Product Defintion Template
+!>    5.N A safe dimension for this array can be obtained in advance
+!>    from maxvals(6), which is returned from subroutine gribinfo.
+!>    @param[out] mapdrslen Number of elements in idrstmpl. i.e. number of entries
+!>    in Data Representation Template 5.N (N=idrsnum).
+!>    @param[out] ierr Error return code.
+!>    - 0 no error.
+!>    - 6 memory allocation error.
+!>    - 7 "GRIB" message contains an undefined Grid Definition Template.
+!>
+!>    @author Stephen Gilbert @date 2000-05-26
+!>
+
       subroutine gf_unpack5(cgrib,lcgrib,iofst,ndpts,idrsnum,idrstmpl,
      &                   mapdrslen,ierr)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    gf_unpack5 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-26
-!
-! ABSTRACT: This subroutine unpacks Section 5 (Data Representation Section)
-!   starting at octet 6 of that Section.  
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-26  Gilbert
-! 2002-01-24  Gilbert  - Changed to dynamically allocate arrays
-!                        and to pass pointers to those arrays through
-!                        the argument list.
-!
-! USAGE:    CALL gf_unpack5(cgrib,lcgrib,iofst,ndpts,idrsnum,idrstmpl,
-!                        mapdrslen,ierr)
-!   INPUT ARGUMENT LIST:
-!     cgrib    - Character array that contains the GRIB2 message
-!     lcgrib   - Length (in bytes) of GRIB message array cgrib.
-!     iofst    - Bit offset of the beginning of Section 5.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     iofst    - Bit offset at the end of Section 5, returned.
-!     ndpts    - Number of data points unpacked and returned.
-!     idrsnum  - Data Representation Template Number ( see Code Table 5.0)
-!     idrstmpl - Pointer to an integer array containing the data values for 
-!                the specified Data Representation
-!                Template ( N=idrsnum ).  Each element of this integer
-!                array contains an entry (in the order specified) of Data
-!                Representation Template 5.N
-!     mapdrslen- Number of elements in idrstmpl().  i.e. number of entries
-!                in Data Representation Template 5.N  ( N=idrsnum ).
-!     ierr     - Error return code.
-!                0 = no error
-!                6 = memory allocation error
-!                7 = "GRIB" message contains an undefined Data
-!                    Representation Template.
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       use drstemplates
       use re_alloc        !  needed for subroutine realloc

@@ -1,59 +1,46 @@
+!>    @file
+!>    @brief Contains subroutines unpacks Section 7 (Data Section).
+!>    @author Stephen Gilbert @date 2002-01-24
+!>
 
+!>    This subroutine unpacks Section 7 (Data Section).
+!>
+!>    PROGRAM HISTORY LOG:
+!>    - 2000-05-26 Stephen Gilbert Initial development.
+!>    - 2002-12-17 Stephen Gilbert Added support for new templates using.
+!>    PNG and JPEG2000 algorithms/templates.
+!>    - 2002-12-29 Stephen Gilbert Added check on comunpack return code.
+!>
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
+!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!>    @param[inout] iofst Bit offset of the beginning/end(returned) of Section 7.
+!>    @param[in] igdsnum Grid Definition Template Number (Code Table 3.0)
+!>    (Only required to unpack DRT 5.51).
+!>    @param[in] igdstmpl Pointer to an integer array containing the data values
+!>    for the specified Grid Definition. Template (N=igdsnum). Each element of this
+!>    integer array contains an entry (in the order specified) of Grid Definition
+!>    Template 3.N (Only required to unpack DRT 5.51).
+!>    @param[in] ndpts Number of data points unpacked and returned.
+!>    @param[in] idrsnum Data Representation Template Number (Code Table 5.0).
+!>    @param[in] idrstmpl Pointer to an integer array containing the data values for
+!>    the specified Data Representation Template (N=idrsnum). Each element of this 
+!>    integer array contains an entry (in the order specified) of Product Defintion
+!>    Template 5.N A safe dimension for this array can be obtained in advance
+!>    from maxvals(6), which is returned from subroutine gribinfo.
+!>    @param[in] ndpts Number of data points unpacked and returned.
+!>    @param[out] fld Pointer to a real array containing the unpacked data field.
+!>    @param[out] ierr Error return code.
+!>    - 0 no error.
+!>    - 4 Unrecognized Data Representation Template.
+!>    - 5 One of GDT 3.50 through 3.53 required to unpack DRT 5.51.
+!>    - 6 memory allocation error.
+!>    - 7 corrupt section 7.
+!>
+!>    @author Stephen Gilbert @date 2002-01-24
+!>
 
       subroutine gf_unpack7(cgrib,lcgrib,iofst,igdsnum,igdstmpl,
      & idrsnum,idrstmpl,ndpts,fld,ierr)
-!$$$ SUBPROGRAM DOCUMENTATION BLOCK
-! . . . .
-! SUBPROGRAM: gf_unpack7
-! PRGMMR: Gilbert ORG: W/NP11 DATE: 2002-01-24
-!
-! ABSTRACT: This subroutine unpacks GRIB2 Section 7 (Data Section).
-!
-! PROGRAM HISTORY LOG:
-! 2002-01-24 Gilbert
-! 2002-12-17 Gilbert - Added support for new templates using
-! PNG and JPEG2000 algorithms/templates.
-! 2004-12-29 Gilbert - Added check on comunpack return code.
-!
-! USAGE: CALL gf_unpack7(cgrib,lcgrib,iofst,igdsnum,igdstmpl,
-! & idrsnum,idrstmpl,ndpts,fld,ierr)
-! INPUT ARGUMENT LIST:
-! cgrib - Character array that contains the GRIB2 message
-! lcgrib - Length (in bytes) of GRIB message array cgrib.
-! iofst - Bit offset of the beginning of Section 7.
-! igdsnum - Grid Definition Template Number ( see Code Table 3.0)
-! (Only required to unpack DRT 5.51)
-! igdstmpl - Pointer to an integer array containing the data values for
-! the specified Grid Definition
-! Template ( N=igdsnum ). Each element of this integer
-! array contains an entry (in the order specified) of Grid
-! Definition Template 3.N
-! (Only required to unpack DRT 5.51)
-! idrsnum - Data Representation Template Number ( see Code Table 5.0)
-! idrstmpl - Pointer to an integer array containing the data values for
-! the specified Data Representation
-! Template ( N=idrsnum ). Each element of this integer
-! array contains an entry (in the order specified) of Data
-! Representation Template 5.N
-! ndpts - Number of data points unpacked and returned.
-!
-! OUTPUT ARGUMENT LIST:
-! iofst - Bit offset at the end of Section 7, returned.
-! fld() - Pointer to a real array containing the unpacked data field.
-! ierr - Error return code.
-! 0 = no error
-! 4 = Unrecognized Data Representation Template
-! 5 = One of GDT 3.50 through 3.53 required to unpack DRT 5.51
-! 6 = memory allocation error
-! 7 = corrupt section 7.
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-! LANGUAGE: Fortran 90
-! MACHINE: IBM SP
-!
-!$$$
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib,ndpts,igdsnum,idrsnum

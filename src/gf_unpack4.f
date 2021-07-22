@@ -1,54 +1,45 @@
+!>    @file
+!>    @brief This subroutine unpacks Section 4 (Product Definition
+!>    Section).
+!>    @author Stephen Gilbert @date 2000-05-26
+!>
+
+!>    This subroutine unpacks Section 4 (Product Definition Section)
+!>    starting at octet 6 of that Section.
+!>
+!>    PROGRAM HISTORY LOG:
+!>    - 2000-05-26 Stephen Gilbert Initial development.
+!>    - 2002-01-24 Stephen Gilbert Changed to dynamically allocate
+!>    arrays and to pass pointers to those arrays through the argument
+!>    list.
+!>
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
+!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!>    @param[inout] iofst Bit offset of the beginning/end(returned) of Section 4.
+!>    @param[out] ipdsnum Product Definition Template Number (Code Table 4.0).
+!>    @param[out] ipdstmpl Contains the data values for the specified Product Definition
+!>    Template (N=ipdsnum). Each element of this integer array contains an entry
+!>    (in the order specified) of Product Defintion Template 4.N. A safe
+!>    dimension for this array can be obtained in advance from maxvals(4),
+!>    which is returned from subroutine gribinfo.
+!>    @param[out] mappdslen Number of elements in ipdstmpl. i.e. number of entries
+!>    in Product Defintion Template 4.N (N=ipdsnum).
+!>    @param[out] coordlist Pointer to real array containing floating point values
+!>    intended to document the vertical discretisation associated to model data 
+!>    on hybrid coordinate vertical levels. (part of Section 4).
+!>    @param[out] numcoord number of values in array coordlist.
+!>    @param[out] ierr Error return code.
+!>    - 0 no error.
+!>    - 5 "GRIB" message contains an undefined Grid Definition Template.
+!>    - 6 memory allocation error.
+!>
+!>    @note Uses Fortran 90 module gridtemplates and module re_alloc.
+!>
+!>    @author Stephen Gilbert @date 2000-05-26
+!>
+
       subroutine gf_unpack4(cgrib,lcgrib,iofst,ipdsnum,ipdstmpl,
      &                      mappdslen,coordlist,numcoord,ierr)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    gf_unpack4 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-26
-!
-! ABSTRACT: This subroutine unpacks Section 4 (Product Definition Section)
-!   starting at octet 6 of that Section.  
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-26  Gilbert
-! 2002-01-24  Gilbert  - Changed to dynamically allocate arrays
-!                        and to pass pointers to those arrays through
-!                        the argument list.
-!
-! USAGE:    CALL gf_unpack4(cgrib,lcgrib,iofst,ipdsnum,ipdstmpl,mappdslen,
-!    &                   coordlist,numcoord,ierr)
-!   INPUT ARGUMENT LIST:
-!     cgrib    - Character array that contains the GRIB2 message
-!     lcgrib   - Length (in bytes) of GRIB message array cgrib.
-!     iofst    - Bit offset of the beginning of Section 4.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     iofst    - Bit offset of the end of Section 4, returned.
-!     ipdsnum  - Product Definition Template Number ( see Code Table 4.0)
-!     ipdstmpl - Pointer to integer array containing the data values for 
-!                the specified Product Definition
-!                Template ( N=ipdsnum ).  Each element of this integer
-!                array contains an entry (in the order specified) of Product
-!                Defintion Template 4.N
-!     mappdslen- Number of elements in ipdstmpl().  i.e. number of entries
-!                in Product Defintion Template 4.N  ( N=ipdsnum ).
-!     coordlist- Pointer to real array containing floating point values 
-!                intended to document
-!                the vertical discretisation associated to model data
-!                on hybrid coordinate vertical levels.  (part of Section 4)
-!     numcoord - number of values in array coordlist.
-!     ierr     - Error return code.
-!                0 = no error
-!                5 = "GRIB" message contains an undefined Product Definition
-!                    Template.
-!                6 = memory allocation error
-!
-! REMARKS: Uses Fortran 90 module pdstemplates and module re_alloc.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       use pdstemplates
       use re_alloc        !  needed for subroutine realloc
