@@ -1,45 +1,34 @@
+!>    @file
+!>    @brief This subroutines finalizes a GRIB message after all grids
+!>    and fields have been added.
+!>    @author Stephen Gilbert @date 2000-05-02
+!>
+
+!>    This subroutine finalizes a GRIB message after all grids and
+!>    fields have been added. It adds the End Section ( "7777" ) to
+!>    the end of the GRIB message and calculates the length and stores
+!>    it in the appropriate place in Section 0. This routine is used
+!>    with routines gribcreate(), addlocal(), addgrid(), and addfield()
+!>    to create a complete GRIB2 message. Subroutine gribcreate()
+!>    must be called first to initialize a new GRIB2 message.
+!>
+!>    @param[inout] cgrib Character array to contain the GRIB2 message.
+!>    @param[in] lcgrib Maximum Length (in bytes) of array cgrib.
+!>    @param[out] lengrib Length of the final GRIB2 message in octets (bytes).
+!>    @param[out] ierr Error return code.
+!>    - 0 no error.
+!>    - 1 GRIB message was not initialized. call routine gribcreate() first.
+!>    - 2 GRIB message already complete.
+!>    - 3 Sum of Section byte counts doesn't add to total byte count.
+!>    - 4 Previous Section was not 7.
+!>
+!>    @note This routine is intended for use with routines gribcreate(),
+!>    addlocal(), addgrid(), and addfield().
+!>
+!>    @author Stephen Gilbert @date 2000-05-02
+!>
+
       subroutine gribend(cgrib,lcgrib,lengrib,ierr)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    gribend 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-02
-!
-! ABSTRACT: This subroutine finalizes a GRIB message after all grids
-!   and fields have been added.  It adds the End Section ( "7777" )
-!   to the end of the GRIB message and calculates the length and stores
-!   it in the appropriate place in Section 0.
-!   This routine is used with routines "gribcreate", "addlocal", "addgrid",
-!   and "addfield" to create a complete GRIB2 message.  Subroutine
-!   gribcreate must be called first to initialize a new GRIB2 message.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-02  Gilbert
-!
-! USAGE:    CALL gribend(cgrib,lcgrib,lengrib,ierr)
-!   INPUT ARGUMENT LIST:
-!     cgrib    - Character array to contain the GRIB2 message
-!     lcgrib   - Maximum length (bytes) of array cgrib.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     cgrib    - Character array to contain the GRIB2 message
-!     lengrib  - Length of the final GRIB2 message in octets (bytes)
-!     ierr     - Error return code.
-!                0 = no error
-!                1 = GRIB message was not initialized.  Need to call
-!                    routine gribcreate first.
-!                2 = GRIB message already complete.  
-!                3 = Sum of Section byte counts doesn't add to total byte count.
-!                4 = Previous Section was not 7.
-!
-! REMARKS: This routine is intended for use with routines "gribcreate", 
-!          "addlocal", "addgrid", and "addfield" to create a complete 
-!          GRIB2 message.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       character(len=1),intent(inout) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
