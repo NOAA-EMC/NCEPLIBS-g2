@@ -1,37 +1,24 @@
+!>    @file
+!>    @brief This subroutine unpacks Section 2 (Local Use Section).
+!>    @author Stephen Gilbert @date 2002-04-09
+!>
+
+!>    This subroutine unpacks Section 2 (Local Use Section) as defined
+!>    in GRIB Edition 2.
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
+!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!>    @param[inout] iofst Bit offset of the beginning/end(returned) of Section 2.
+!>    @param[out] lencsec2 Length (in octets) of Local Use data.
+!>    @param[out] csec2 Pointer to a character*1 array containing local use data.
+!>    @param[out] ierr Error return code.
+!>    - 0 no error.
+!>    - 2 Array passed is not section 2.
+!>    - 6 memory allocation error.
+!>
+!>    @author Stephen Gilbert @date 2002-04-09
+!>  
+
       subroutine gf_unpack2(cgrib,lcgrib,iofst,lencsec2,csec2,ierr)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    gf_unpack2 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2002-04-09
-!
-! ABSTRACT: This subroutine unpacks Section 2 (Local Use Section)
-!           as defined in GRIB Edition 2.
-!
-! PROGRAM HISTORY LOG:
-! 2002-04-09  Gilbert
-!
-! USAGE:    CALL gf_unpack2(cgrib,lcgrib,iofst,lencsec2,csec2,ierr)
-!   INPUT ARGUMENT LIST:
-!     cgrib    - Character array containing Section 2 of the GRIB2 message
-!     lcgrib   - Length (in bytes) of GRIB message array cgrib.
-!     iofst    - Bit offset of the beginning of Section 2.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     iofst    - Bit offset at the end of Section 2, returned.
-!     lencsec2 - Length (in octets) of Local Use data
-!     csec2()  - Pointer to a character*1 array containing local use data
-!     ierr     - Error return code.
-!                0 = no error
-!                2 = Array passed is not section 2
-!                6 = memory allocation error
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
