@@ -10,9 +10,9 @@
 #include <png.h>
 
 #ifdef __64BIT__
-  typedef int g2int;
+  typedef int g2int; /**< Integer type. */
 #else
-  typedef long g2int;
+  typedef long g2int; /**< Long integer type. */ 
 #endif
 
 #if defined CRAY90
@@ -28,10 +28,12 @@
    #define SUB_NAME enc_png_
 #endif
 
+/**
+ * location to write PNG stream
+*/
+
 struct png_stream {
-/*
-**  location to write PNG stream
-*/ 
+
    unsigned char *stream_ptr;
 /*
 **  number of bytes written
@@ -43,11 +45,18 @@ typedef struct png_stream png_stream;
 void user_write_data(png_structp ,png_bytep , png_uint_32 );
 void user_flush_data(png_structp );
 
-void user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
-/*
-**        Custom write function used to that libpng will write
-**        to memory location instead of a file on disk
+/**
+ * Custom write function used to that libpng will write to memory
+ * location instead of a file on disk.
+ *
+ * @param png_ptr pointer
+ * @param data data
+ * @param length length
+ *
+ * @author Stephen Gilbert
 */
+
+void user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
 
 {
      unsigned char *ptr;
@@ -63,17 +72,32 @@ void user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
      mem->stream_len += length;
 }
 
+/**
+ * Dummy Custom flush function.
+ *
+ * @param png_ptr Pointer to PNG struct.
+ *
+ * @author Stephen Gilbert
+*/
 
 void user_flush_data(png_structp png_ptr)
-
-/*
-**        Dummy Custom flush function
-*/
 
 {
    int *do_nothing=NULL;
 }
 
+/**
+ * create png_structs to write png stream into memory.
+ *
+ * @param data data.
+ * @param width width.
+ * @param height height.
+ * @param nbits number of bits.
+ * @param pngbuf PNG buffer.
+ * @return pnglen the length of png stream
+ *
+ * @author Stephen Gilbert
+*/
 
 int SUB_NAME(char *data,g2int *width,g2int *height,g2int *nbits,char *pngbuf)
 {

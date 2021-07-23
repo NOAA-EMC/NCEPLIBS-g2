@@ -9,12 +9,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "jasper/jasper.h"
-#define JAS_1_700_2
+#define JAS_1_700_2 /**< Define jasper type. */ 
 
 #ifdef __64BIT__
-  typedef int g2int;
+  typedef int g2int; /**< Integer type. */
 #else
-  typedef long g2int;
+  typedef long g2int; /**< Long Integer type. */
 #endif
 
 #if defined CRAY90
@@ -56,9 +56,9 @@
  * 1 = try increasing number of guard bits otherwise, no additional options
  * @param[in] jpclen  - Number of bytes allocated for new JPEG2000 code stream in outjpc.
  * @param[in] outjpc - Output encoded JPEG2000 code stream
- * @return 0 successfully decode JPEG2000 code stream
- *         -  -3 Error decode jpeg2000 code stream.
- *         -  -5 decoded image had multiple color components.
+ * @return 0 = Length in bytes of encoded JPEG2000 code stream
+ *         -  -3 = Error decode jpeg2000 code stream.
+ *         -  -5 = decoded image had multiple color components.
  * Only grayscale is expected.
  *
  * @note Requires JasPer Software version 1.500.4 or 1.700.2
@@ -73,7 +73,7 @@ int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
     jas_image_t image;
     jas_stream_t *jpcstream,*istream;
     jas_image_cmpt_t cmpt,*pcmpt;
-#define MAXOPTSSIZE 1024
+#define MAXOPTSSIZE 1024 /**< Maximum OPTS size. */
     char opts[MAXOPTSSIZE];
 
     g2int width,height,nbits;

@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief mova2i Moves a bit string from a char*1 to int
- * @author Gilbert ORG: W/NP11 @date 2002-08-15
+ * @author Stephen Gilbert @date 2002-08-15
  */
 
 /**
@@ -15,7 +15,7 @@
  * @param[in] a - Character*1 variable that holds the bitstring to extract
  * @return - > mova2i - Integer value of the bitstring in character a
  * 
- * @author Gilbert ORG: W/NP11 @date 2002-08-15
+ * @author Stephen Gilbert @date 2002-08-15
  * */
 
 #ifdef CRAY90
