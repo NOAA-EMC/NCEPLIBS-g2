@@ -294,7 +294,7 @@
 !>    template entry occupies when packed up into the GDS.
 !>    @param[out] needext Logical variable indicating whether the Grid
 !>    Defintion Template has to be extended.
-!>    @param[out] ierr Error return code.
+!>    @param[out] iret Error return code.
 !>    - 0 no error.
 !>    - 1 Undefine Grid Template number.
 !>
