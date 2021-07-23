@@ -1,53 +1,48 @@
+!>    @file
+!>    @brief This Fortran Module contains info on all the available
+!>    GRIB2 Grid Definition Templates used in Section 3 (GDS).
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
+
+!>    This Fortran Module contains info on all the available GRIB2
+!>    Grid Definition Templates used in Section 3 (GDS).
+!>    Each Template has three parts: The number of entries in the template
+!>    (mapgridlen); A map of the template (mapgrid), which contains the
+!>    number of octets in which to pack each of the template values; and
+!>    a logical value (needext) that indicates whether the Template needs
+!>    to be extended. In some cases the number of entries in a template
+!>    can vary depending upon values specified in the "static" part of
+!>    the template. (See Template 3.120 as an example)
+!>    This module also contains two subroutines. Subroutine getgridtemplate
+!>    returns the octet map for a specified Template number, and
+!>    subroutine extgridtemplate will calculate the extended octet map
+!>    of an appropriate template given values for the "static" part of the
+!>    template. See docblocks below for the arguments and usage of these
+!>    routines.
+!>    
+!>    PROGRAM HISTORY LOG:
+!>    - 2000-05-09 Stephen Gilbert Initial development
+!>    - 2003-09-02 Stephen Gilbert Added GDT 3.31 Albers Equal Area
+!>    - 2007-04-24 Boi Vuong Added GDT 3.204 Curilinear Orthogonal Grids
+!>    - 2008-05-29 Boi Vuong Added GDT 3.32768 Rotate Lat/Lon E-grid
+!>    - 2010-05-10 Boi Vuong Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
+!>    - 2013-08-06 Boi Vuong Added GDT 3.4,3.5,3.12,3.101,3.140
+!>    
+!>    @note Array mapgrid contains the number of octets in which the
+!>    corresponding template values will be stored. A negative value in
+!>    mapgrid is used to indicate that the corresponding template entry
+!>    can contain negative values. This information is used later when
+!>    packing/unpacking the template data values. Negative data values
+!>    in GRIB are stored with the left most bit set to one, and a
+!>    negative number of octets value in mapgrid() indicates that this
+!>    possibility should be considered. The number of octets used to
+!>    store the data value in this case would be the absolute value
+!>    of the negative value in mapgrid().
+!>
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
+
       module gridtemplates
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! MODULE:    gridtemplates 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-09
-!
-! ABSTRACT: This Fortran Module contains info on all the available 
-!   GRIB2 Grid Definition Templates used in Section 3 (GDS).
-!   Each Template has three parts: The number of entries in the template
-!   (mapgridlen);  A map of the template (mapgrid), which contains the
-!   number of octets in which to pack each of the template values; and
-!   a logical value (needext) that indicates whether the Template needs 
-!   to be extended.  In some cases the number of entries in a template 
-!   can vary depending upon values specified in the "static" part of 
-!   the template.  ( See Template 3.120 as an example )
-!
-!   This module also contains two subroutines.  Subroutine getgridtemplate
-!   returns the octet map for a specified Template number, and
-!   subroutine extgridtemplate will calculate the extended octet map
-!   of an appropriate template given values for the "static" part of the 
-!   template.  See docblocks below for the arguments and usage of these 
-!   routines.
-!
-!   NOTE:  Array mapgrid contains the number of octets in which the 
-!   corresponding template values will be stored.  A negative value in
-!   mapgrid is used to indicate that the corresponding template entry can
-!   contain negative values.  This information is used later when packing
-!   (or unpacking) the template data values.  Negative data values in GRIB
-!   are stored with the left most bit set to one, and a negative number
-!   of octets value in mapgrid() indicates that this possibility should
-!   be considered.  The number of octets used to store the data value
-!   in this case would be the absolute value of the negative value in 
-!   mapgrid().
-!  
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-09  Gilbert
-! 2003-09-02  Gilbert   -  Added GDT 3.31 - Albers Equal Area
-! 2007-04-24  Vuong     -  Added GDT 3.204  Curilinear Orthogonal Grids
-! 2008-05-29  Vuong     -  Added GDT 3.32768 Rotate Lat/Lon E-grid
-! 2010-05-10  Vuong     -  Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
-! 2013-08-06  Vuong     -  Added GDT 3.4,3.5,3.12,3.101,3.140
-!
-! USAGE:    use gridtemplates
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       integer,parameter :: MAXLEN=200,MAXTEMP=31
 
@@ -252,34 +247,23 @@
 
       contains
 
+!>    @brief This function returns the index of specified Grid
+!>    Definition Template 3.NN.
+!>    @author Stephen Gilbert @date 2001-06-28
+!>
+
+!>    This function returns the index of specified Grid Definition
+!>    Template 3.NN in array templates.
+!>    @param[in] number NN, indicating the number of the Grid Definition
+!>    Template 3.NN that is being requested.
+!>    @return Index of GDT 3.NN in array templates, if template exists.
+!>    -1, otherwise.
+!>
+!>    @author Stephen Gilbert @date 2001-06-28
+!>
 
          integer function getgridindex(number)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    getgridindex
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2001-06-28
-!
-! ABSTRACT: This function returns the index of specified Grid
-!   Definition Template 3.NN (NN=number) in array templates.
-!
-! PROGRAM HISTORY LOG:
-! 2001-06-28  Gilbert
-!
-! USAGE:    index=getgridindex(number)
-!   INPUT ARGUMENT LIST:
-!     number   - NN, indicating the number of the Grid Definition
-!                Template 3.NN that is being requested.
-!
-! RETURNS:  Index of GDT 3.NN in array templates, if template exists.
-!           = -1, otherwise.
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: number
 
            getgridindex=-1
@@ -293,44 +277,32 @@
 
          end function
 
+!>    @brief This subroutine finds grid template information for a
+!>    specified Grid Definition Template 3.NN.
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
+
+!>    This subroutine grid template information for a specified Grid 
+!>    Definition Template 3.NN. The number of entries in the template 
+!>    is returned along with a map of the number of octets occupied by 
+!>    each entry. Also, a flag is returned to indicate whether the 
+!>    template would need to be extended.
+!>    @param[in] number NN, indicating the number of the Grid Definition
+!>    Template 3.NN that is being requested.
+!>    @param[out] nummap Number of entries in the Template.
+!>    @param[out] map An array containing the number of octets that each
+!>    template entry occupies when packed up into the GDS.
+!>    @param[out] needext Logical variable indicating whether the Grid
+!>    Defintion Template has to be extended.
+!>    @param[out] ierr Error return code.
+!>    - 0 no error.
+!>    - 1 Undefine Grid Template number.
+!>
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
 
          subroutine getgridtemplate(number,nummap,map,needext,iret)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    getgridtemplate 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-09
-!
-! ABSTRACT: This subroutine returns grid template information for a 
-!   specified Grid Definition Template 3.NN.
-!   The number of entries in the template is returned along with a map
-!   of the number of octets occupied by each entry.  Also, a flag is
-!   returned to indicate whether the template would need to be extended.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-09  Gilbert
-!
-! USAGE:    CALL getgridtemplate(number,nummap,map,needext,iret)
-!   INPUT ARGUMENT LIST:
-!     number   - NN, indicating the number of the Grid Definition 
-!                Template 3.NN that is being requested.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     nummap   - Number of entries in the Template
-!     map()    - An array containing the number of octets that each 
-!                template entry occupies when packed up into the GDS.
-!     needext  - Logical variable indicating whether the Grid Defintion
-!                Template has to be extended.  
-!     ierr     - Error return code.
-!                0 = no error
-!                1 = Undefine Grid Template number.
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: number
            integer,intent(out) :: nummap,map(*),iret
            logical,intent(out) :: needext
@@ -353,40 +325,34 @@
 
          end subroutine
 
+!>    @brief This subroutine generates the remaining octet map for a
+!>    Grid Definition Template.
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
+
+!>    This subroutine generates the remaining octet map for a given Grid
+!>    Definition Template, if required. Some Templates can vary
+!>    depending on data values given in an earlier part of the Template,
+!>    and it is necessary to know some of the earlier entry values to
+!>    generate the full octet map of the Template.
+!>    
+!>    PROGRAM HISTORY LOG:
+!>    - 2000-05-09 Stephen Gilbert 
+!>    - 2013-07-30 Boi Vuong Added GDT 3.4,3.5,3.12,3.101,3.140
+!>    
+!>    @param[in] number NN, indicating the number of the Grid Definition
+!>    Template 3.NN that is being requested.
+!>    @param[in] list The list of values for each entry in the Grid
+!>    Definition Template.
+!>    @param[out] nummap Number of entries in the Template.
+!>    @param[out] map An array containing the number of octets that each
+!>    template entry occupies when packed up into the GDS.
+!>
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
 
          subroutine extgridtemplate(number,list,nummap,map)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    extgridtemplate 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-09
-!
-! ABSTRACT: This subroutine generates the remaining octet map for a 
-!   given Grid Definition Template, if required.  Some Templates can 
-!   vary depending on data values given in an earlier part of the 
-!   Template, and it is necessary to know some of the earlier entry
-!   values to generate the full octet map of the Template.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-09  Gilbert
-! 2013-07-30  Vuong     -  Added GDT 3.4,3.5,3.12,3.101,3.140
-!
-! USAGE:    CALL extgridtemplate(number,list,nummap,map)
-!   INPUT ARGUMENT LIST:
-!     number   - NN, indicating the number of the Grid Definition 
-!                Template 3.NN that is being requested.
-!     list()   - The list of values for each entry in 
-!                the Grid Definition Template.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     nummap   - Number of entries in the Template
-!     map()    - An array containing the number of octets that each 
-!                template entry occupies when packed up into the GDS.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: number,list(*)
            integer,intent(out) :: nummap,map(*)
 
@@ -442,35 +408,23 @@
 
          end subroutine
 
+!>    @brief This function returns the initial length in Grid
+!>    Definition Template 3.NN.
+!>    @author Stephen Gilbert @date 2004-05-11
+!>
+
+!>    This function returns the initial length (number of entries) in
+!>    the "static" part of specified Grid Definition Template 3.number.
+!>    @param[in] number NN, indicating the number of the Grid Definition
+!>    Template 3.NN that is being requested.
+!>    @return Number of entries in the "static" part of GDT 3.number.
+!>    Or 0, if requested template is not found.
+!>
+!>    @author Stephen Gilbert @date 2004-05-11
+!>
+
          integer function getgdtlen(number)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    getgdtlen
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2004-05-11
-!
-! ABSTRACT: This function returns the initial length (number of entries) in
-!   the "static" part of specified Grid Definition Template 3.number.
-!
-! PROGRAM HISTORY LOG:
-! 2004-05-11  Gilbert
-!
-! USAGE:    CALL getgdtlen(number)
-!   INPUT ARGUMENT LIST:
-!     number   - NN, indicating the number of the Grid Definition
-!                Template 3.NN that is being requested.
-!
-! RETURNS:     Number of entries in the "static" part of GDT 3.number
-!              OR returns 0, if requested template is not found.
-!
-! REMARKS: If user needs the full length of a specific template that
-!    contains additional entries based on values set in the "static" part
-!    of the GDT, subroutine extgridtemplate can be used.
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: number
 
            getgdtlen=0
