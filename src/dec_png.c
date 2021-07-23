@@ -33,10 +33,10 @@
 */
 
 struct png_stream {
-   unsigned char *stream_ptr;     /**<  location to write PNG stream */
-   g2int stream_len;              /**<  number of bytes written */       
+   unsigned char *stream_ptr;     /**< location to write PNG stream */
+   g2int stream_len;              /**< number of bytes written */       
 };
-typedef struct png_stream png_stream;
+typedef struct png_stream png_stream; /**< location to write PNG stream */
 
 void user_read_data(png_structp , png_bytep , png_uint_32 );
 
@@ -63,12 +63,11 @@ void user_read_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
 /**
  * create png_structs to write png stream into memory.
  *
- * @param data data.
+ * @param pngbuf PNG buffer.
  * @param width width.
  * @param height height.
- * @param nbits number of bits.
- * @param pngbuf PNG buffer.
- * @return 0 successful
+ * @param cout number of bits.
+ * @return 0
  *
  * @author Stephen Gilbert
 */

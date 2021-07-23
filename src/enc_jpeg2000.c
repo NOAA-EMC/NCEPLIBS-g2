@@ -73,7 +73,10 @@ int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
     jas_image_t image;
     jas_stream_t *jpcstream,*istream;
     jas_image_cmpt_t cmpt,*pcmpt;
-#define MAXOPTSSIZE 1024 /**< Maximum OPTS size. */
+/**
+ * \def MAXOPTSSIZE
+*/
+#define MAXOPTSSIZE 1024 
     char opts[MAXOPTSSIZE];
 
     g2int width,height,nbits;

@@ -40,7 +40,7 @@ struct png_stream {
 */
    g2int stream_len;
 };
-typedef struct png_stream png_stream;
+typedef struct png_stream png_stream; /**< location to write PNG stream. */
 
 void user_write_data(png_structp ,png_bytep , png_uint_32 );
 void user_flush_data(png_structp );
