@@ -44,7 +44,8 @@
 
       module gridtemplates
 
-      integer,parameter :: MAXLEN=200,MAXTEMP=31
+      integer,parameter :: MAXLEN=200 !< maximum number of octets in mapgrid
+      integer,parameter :: MAXTEMP=31 !< maximum number of entries in the template
 
       type gridtemplate
           integer :: template_num
@@ -53,7 +54,7 @@
           logical :: needext
       end type gridtemplate
 
-      type(gridtemplate),dimension(MAXTEMP) :: templates
+      type(gridtemplate),dimension(MAXTEMP) :: templates !< a gridtemplate type
 
       data templates(1)%template_num /0/     !  Lat/Lon 
       data templates(1)%mapgridlen /19/
