@@ -4,7 +4,7 @@ C>    grib2 message.
 C>    @author Stephen Gilbert @date 2002-01-11
 C>
 
-C>    This subroutine packs a single field into a grib2 message. and
+C>    This subroutine packs a single field into a grib2 message and
 C>    writes out that message to the file associated with unit lugb.
 C>    note that file/unit lugb should be opened woth a call to
 C>    subroutine baopenw before this routine is called.
@@ -16,12 +16,12 @@ C>    component of the gribfield type is described in the input argument
 C>    list section below.
 C>    
 C>    PROGRAM HISTORY LOG:
-C>    2002-04-22 Stephen Gilbert
-C>    2005-02-28 Stephen Gilbert Changed dimension of array cgrib to be
+C>    - 2002-04-22 Stephen Gilbert
+C>    - 2005-02-28 Stephen Gilbert Changed dimension of array cgrib to be
 C>    a multiple of gfld%ngrdpts instead of gfld%ndpts.
-C>    2009-03-10Boi Vuong Initialize variable coordlist.
-C>    2011-06-09Boi Vuong Initialize variable gfld%list_opt.
-C>    2012-02-28Boi Vuong Initialize variable ilistopt.
+C>    - 2009-03-10Boi Vuong Initialize variable coordlist.
+C>    - 2011-06-09Boi Vuong Initialize variable gfld%list_opt.
+C>    - 2012-02-28Boi Vuong Initialize variable ilistopt.
 C>    
 C>    @param[in] LUGB integer unit of the unblocked grib data file.
 C>    file must be opened with baopen or baopenw before calling this
