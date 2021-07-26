@@ -248,11 +248,6 @@
 
       contains
 
-!>    @brief This function returns the index of specified Grid
-!>    Definition Template 3.NN.
-!>    @author Stephen Gilbert @date 2001-06-28
-!>
-
 !>    This function returns the index of specified Grid Definition
 !>    Template 3.NN in array templates.
 !>    @param[in] number NN, indicating the number of the Grid Definition
@@ -277,11 +272,6 @@
            enddo
 
          end function
-
-!>    @brief This subroutine finds grid template information for a
-!>    specified Grid Definition Template 3.NN.
-!>    @author Stephen Gilbert @date 2000-05-09
-!>
 
 !>    This subroutine grid template information for a specified Grid 
 !>    Definition Template 3.NN. The number of entries in the template 
@@ -325,11 +315,6 @@
            endif
 
          end subroutine
-
-!>    @brief This subroutine generates the remaining octet map for a
-!>    Grid Definition Template.
-!>    @author Stephen Gilbert @date 2000-05-09
-!>
 
 !>    This subroutine generates the remaining octet map for a given Grid
 !>    Definition Template, if required. Some Templates can vary
@@ -409,12 +394,7 @@
 
          end subroutine
 
-!>    @brief This function returns the initial length in Grid
-!>    Definition Template 3.NN.
-!>    @author Stephen Gilbert @date 2004-05-11
-!>
-
-!>    This function returns the initial length (number of entries) in
+b!>    This function returns the initial length (number of entries) in
 !>    the "static" part of specified Grid Definition Template 3.number.
 !>    @param[in] number NN, indicating the number of the Grid Definition
 !>    Template 3.NN that is being requested.
