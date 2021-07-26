@@ -10,9 +10,9 @@
 #include <png.h>
 
 #ifdef __64BIT__
-  typedef int g2int;
+  typedef int g2int; /**< Integer type. */
 #else
-  typedef long g2int;
+  typedef long g2int; /**< Long Integer type. */
 #endif
 
 #if defined CRAY90
@@ -28,19 +28,23 @@
    #define SUB_NAME dec_png_
 #endif
 
+/**
+ * location to write PNG stream
+*/
+
 struct png_stream {
-   unsigned char *stream_ptr;     /*  location to write PNG stream */
-   g2int stream_len;              /*  number of bytes written */       
+   unsigned char *stream_ptr;     /**< location to write PNG stream */
+   g2int stream_len;              /**< number of bytes written */       
 };
-typedef struct png_stream png_stream;
+typedef struct png_stream png_stream; /**< location to write PNG stream */
 
 void user_read_data(png_structp , png_bytep , png_uint_32 );
 
 void user_read_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
 
-/*
-**        Custom read function used so that libpng will read a PNG stream
-**        from memory instead of a file on disk.
+/**
+ * Custom read function used so that libpng will read a PNG stream
+ * from memory instead of a file on disk.
 */
 
 {
@@ -56,6 +60,17 @@ void user_read_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
      mem->stream_len += length;
 }
 
+/**
+ * create png_structs to write png stream into memory.
+ *
+ * @param pngbuf PNG buffer.
+ * @param width width.
+ * @param height height.
+ * @param cout number of bits.
+ * @return 0
+ *
+ * @author Stephen Gilbert
+*/
 
 
 int SUB_NAME(unsigned char *pngbuf,g2int *width,g2int *height,char *cout)
