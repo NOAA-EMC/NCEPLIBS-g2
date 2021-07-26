@@ -1,30 +1,18 @@
+!>    @file
+!>    @brief This subroutine reads 32-bit IEEE floating point values.
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
+
+!>    This subroutine reads a list of real values in 32-bit IEEE
+!>    floating point format.
+!>    @param[in] rieee Input array of floating point values in 32-bit IEEE format.
+!>    @param[in] num Number of floating point values to convert.
+!>    @param[out] a Output array of real values.
+!>
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
+
       subroutine rdieee(rieee,a,num)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    rdieee 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-09
-!
-! ABSTRACT: This subroutine reads a list of real values in 
-!   32-bit IEEE floating point format.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-09  Gilbert
-!
-! USAGE:    CALL rdieee(rieee,a,num)
-!   INPUT ARGUMENT LIST:
-!     rieee    - Input array of floating point values in 32-bit IEEE format.
-!     num      - Number of floating point values to convert.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     a        - Output array of real values.
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       real(4),intent(in) :: rieee(num)
       real,intent(out) :: a(num)

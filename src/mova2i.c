@@ -6,9 +6,9 @@
 
 /**
  * This Function copies a bit string from a Character*1 variable
- * to an integer variable.  It is intended to replace the Fortran Intrinsic
+ * to an integer variable. It is intended to replace the Fortran Intrinsic
  * Function ICHAR, which only supports 0 <= ICHAR(a) <= 127 on the
- * IBM SP.  If "a" is greater than 127 in the collating sequence,
+ * IBM SP. If "a" is greater than 127 in the collating sequence,
  * ICHAR(a) does not return the expected bit value.
  * This function can be used for all values 0 <= ICHAR(a) <= 255.
  * 

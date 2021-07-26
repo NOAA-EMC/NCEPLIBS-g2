@@ -1,78 +1,46 @@
+C>    @file
+C>    @brief This subroutine determines groups of variable size.
+C>    @author Harry Glahn @date 2001-11-01
+C>
+
+C>    This subroutine determines whether the number of groups should be
+C>    increased in order to reduce the size of the large groups, and to
+C>    make that adjustment. By reducing the size of the large groups,
+C>    less bits may be necessary for packing the group sizes and all the
+C>    information about the groups. The reference for NOV was removed in
+C>    the calling routine so that kbit could be determined. This
+C>    furnishes a starting point for the iterations in reduce.
+C>    
+C>    @param[in] KFILDO unit number for output/print file.
+C>    @param[inout] JMIN the minimum of each group (j=1,lx). JMIN is
+C>    really the group reference and doesn't have to be the smallest
+C>    value.
+C>    @param[inout] JMAX the maximum of each group (j=1,lx).
+C>    @param[inout] LBIT the number of bits necessary to pack each group
+C>    (j=1,lx).
+C>    @param[inout] NOV the number of values in each group (j=1,lx).
+C>    @param[inout] LX the number of groups. This will be increased, if
+C>    groups are split.
+C>    @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
+C>    @param[in] IBIT the number of bits necessary to pack the JMIN(j)
+C>    values, j=1,LX.
+C>    @param[in] JBIT the number of bits necessary to pack the LBIT(j)
+C>    values, j=1,LX.
+C>    @param[inout] KBIT the number of bits necessary to pack the NOV(j)
+C>    values, j=1,LX. If the groups are split, kbit is reduced.
+C>    @param[in] NOVREF reference value for NOV.
+C>    @param[in] IBXX2 ibxx2(j) = 2**j (j=0,30).
+C>    @param[out] IER error return.
+C>    - 0 good return.
+C>    - 714 error in reduce--non-fatal
+C>    - 715 ngp not large enough in reduce--non-fatal
+C>
+C>    @author Harry Glahn @date 2001-11-01
+C>
+
       SUBROUTINE REDUCE(KFILDO,JMIN,JMAX,LBIT,NOV,LX,NDG,IBIT,JBIT,KBIT,
      1                  NOVREF,IBXX2,IER)            
-C
-C        NOVEMBER 2001   GLAHN   TDL   GRIB2
-C        MARCH    2002   GLAHN   COMMENT IER = 715
-C        MARCH    2002   GLAHN   MODIFIED TO ACCOMMODATE LX=1 ON ENTRY
-C
-C        PURPOSE
-C            DETERMINES WHETHER THE NUMBER OF GROUPS SHOULD BE
-C            INCREASED IN ORDER TO REDUCE THE SIZE OF THE LARGE
-C            GROUPS, AND TO MAKE THAT ADJUSTMENT.  BY REDUCING THE
-C            SIZE OF THE LARGE GROUPS, LESS BITS MAY BE NECESSARY
-C            FOR PACKING THE GROUP SIZES AND ALL THE INFORMATION
-C            ABOUT THE GROUPS.
-C
-C            THE REFERENCE FOR NOV( ) WAS REMOVED IN THE CALLING
-C            ROUTINE SO THAT KBIT COULD BE DETERMINED.  THIS
-C            FURNISHES A STARTING POINT FOR THE ITERATIONS IN REDUCE.
-C            HOWEVER, THE REFERENCE MUST BE CONSIDERED.
-C
-C        DATA SET USE 
-C           KFILDO - UNIT NUMBER FOR OUTPUT (PRINT) FILE. (OUTPUT) 
-C
-C        VARIABLES IN CALL SEQUENCE 
-C              KFILDO = UNIT NUMBER FOR OUTPUT (PRINT) FILE.  (INPUT)
-C             JMIN(J) = THE MINIMUM OF EACH GROUP (J=1,LX).  IT IS
-C                       POSSIBLE AFTER SPLITTING THE GROUPS, JMIN( )
-C                       WILL NOT BE THE MINIMUM OF THE NEW GROUP.
-C                       THIS DOESN'T MATTER; JMIN( ) IS REALLY THE
-C                       GROUP REFERENCE AND DOESN'T HAVE TO BE THE
-C                       SMALLEST VALUE.  (INPUT/OUTPUT)
-C             JMAX(J) = THE MAXIMUM OF EACH GROUP (J=1,LX). 
-C                       (INPUT/OUTPUT)
-C             LBIT(J) = THE NUMBER OF BITS NECESSARY TO PACK EACH GROUP
-C                       (J=1,LX).  (INPUT/OUTPUT)
-C              NOV(J) = THE NUMBER OF VALUES IN EACH GROUP (J=1,LX).
-C                       (INPUT/OUTPUT)
-C                  LX = THE NUMBER OF GROUPS.  THIS WILL BE INCREASED
-C                       IF GROUPS ARE SPLIT.  (INPUT/OUTPUT)
-C                 NDG = THE DIMENSION OF JMIN( ), JMAX( ), LBIT( ), AND
-C                       NOV( ).  (INPUT)
-C                IBIT = THE NUMBER OF BITS NECESSARY TO PACK THE JMIN(J)
-C                       VALUES, J=1,LX.  (INPUT)
-C                JBIT = THE NUMBER OF BITS NECESSARY TO PACK THE LBIT(J)
-C                       VALUES, J=1,LX.  (INPUT)
-C                KBIT = THE NUMBER OF BITS NECESSARY TO PACK THE NOV(J)
-C                       VALUES, J=1,LX.  IF THE GROUPS ARE SPLIT, KBIT
-C                       IS REDUCED.  (INPUT/OUTPUT)
-C              NOVREF = REFERENCE VALUE FOR NOV( ).  (INPUT)
-C            IBXX2(J) = 2**J (J=0,30).  (INPUT)
-C                 IER = ERROR RETURN.  (OUTPUT)
-C                         0 = GOOD RETURN.
-C                       714 = PROBLEM IN ALGORITHM.  REDUCE ABORTED.
-C                       715 = NGP NOT LARGE ENOUGH.  REDUCE ABORTED.
-C           NTOTBT(J) = THE TOTAL BITS USED FOR THE PACKING BITS J
-C                       (J=1,30).  (INTERNAL)
-C            NBOXJ(J) = NEW BOXES NEEDED FOR THE PACKING BITS J
-C                       (J=1,30).  (INTERNAL)
-C           NEWBOX(L) = NUMBER OF NEW BOXES (GROUPS) FOR EACH ORIGINAL
-C                       GROUP (L=1,LX) FOR THE CURRENT J.  (AUTOMATIC)
-C                       (INTERNAL)
-C          NEWBOXP(L) = SAME AS NEWBOX( ) BUT FOR THE PREVIOUS J.
-C                       THIS ELIMINATES RECOMPUTATION.  (AUTOMATIC)
-C                       (INTERNAL)
-C               CFEED = CONTAINS THE CHARACTER REPRESENTATION
-C                       OF A PRINTER FORM FEED.  (CHARACTER) (INTERNAL)
-C               IFEED = CONTAINS THE INTEGER VALUE OF A PRINTER
-C                       FORM FEED.  (INTERNAL)
-C              IORIGB = THE ORIGINAL NUMBER OF BITS NECESSARY
-C                       FOR THE GROUP VALUES.  (INTERNAL)
-C        1         2         3         4         5         6         7 X
-C
-C        NON SYSTEM SUBROUTINES CALLED 
-C           NONE
-c
+
       CHARACTER*1 CFEED
 C
       DIMENSION JMIN(NDG),JMAX(NDG),LBIT(NDG),NOV(NDG)

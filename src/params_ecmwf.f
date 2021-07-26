@@ -1,28 +1,26 @@
-      module params_ecmwf
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! MODULE:    params_ecmwf
-!   PRGMMR: Gordon         ORG: W/NP11    DATE: 2006-09-07
-!
-! ABSTRACT: This Fortran Module contains info on all the available 
-!           ECMWF GRIB Parameters.
-!
-! PROGRAM HISTORY LOG:
-! 2006-09-07  Gordon   -  Modified from Steve Gilbert's params.f for NCEP GRIB data
-! 2007-04-20  Vuong    -  Add more parameters
-! 2007-10-11  Vuong    -  Add more parameters
-! 2011-11-16  Vuong    -  Add parameters MAX and MIN temperature
-! 2013-07-24  Vuong    -  Removed sape in abbreviation
-!
-! USAGE:    use params
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+!>    @file
+!>    @brief This Fortran Module contains info on all the available
+!>    ECMWF GRIB Parameters.
+!>    @author Brent Gordon @date 2006-09-07
+!>
 
-      integer,parameter :: MAXPARAM=179
+!>    This Fortran Module contains info on all the available 
+!>    ECMWF GRIB Parameters.
+!>
+!>    PROGRAM HISTORY LOG:
+!>    - 2006-09-07 Brent Gordon Modified from Steve Gilbert's params.f
+!>    for NCEP GRIB data
+!>    - 2007-04-20 Boi Vuong Add more parameters
+!>    - 2007-10-11 Boi Vuong Add more parameters
+!>    - 2011-11-16 Boi Vuong Add parameters MAX and MIN temperature
+!>    - 2013-07-24 Boi Vuong Removed sape in abbreviation
+!>
+!>    @author Brent Gordon @date 2006-09-07
+!>
+
+      module params_ecmwf
+
+      integer,parameter :: MAXPARAM=179 !< maximum number of ECMWF GRIB parameters.
 
       type gribparam
           integer :: g1tblver
@@ -33,7 +31,7 @@
           character(len=8) :: abbrev
       end type gribparam
 
-      type(gribparam),dimension(MAXPARAM) :: paramlist
+      type(gribparam),dimension(MAXPARAM) :: paramlist !< list of ECMWF GRIB parameters.
 
       data paramlist(1) /gribparam(128,1,255,255,255,'STRF')/
       data paramlist(2) /gribparam(128,002,255,255,255,'VPOT')/
@@ -220,34 +218,22 @@
 
       contains
 
+!>    This subroutine returns the corresponding GRIB2 Discipline
+!>    Category and Number for a given GRIB1 parameter value and table
+!>    version.
+!>    @param[in] g1val GRIB1 parameter number for which discipline is
+!>    requested
+!>    @param[in] g1ver GRIB1 parameter table version number
+!>    @param[out] g2disc corresponding GRIB2 Discipline number
+!>    @param[out] g2cat corresponding GRIB2 Category number
+!>    @param[out] g2num corresponding GRIB2 Parameter number within
+!>    Category g2cat
+!>
+!>    @author Stephen Gilbert @date 2001-06-05
+!>
 
          subroutine param_ecmwf_g1_to_g2(g1val,g1ver,g2disc,g2cat,g2num)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    param_ecmwf_g1_to_g2 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2001-06-05
-!
-! ABSTRACT: This subroutine returns the corresponding GRIB2 Discipline
-!   Category and Number for a given GRIB1 parameter value and table version.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-11  Gilbert
-!
-! USAGE:    CALL param_ecmwf_g1_to_g2(g1val,g1ver,g2disc,g2cat,g2num)
-!   INPUT ARGUMENT LIST:
-!     g1val    - GRIB1 parameter number for which discipline is requested
-!     g1ver    - GRIB1 parameter table version number
-!
-!   OUTPUT ARGUMENT LIST:      
-!     g2disc   - corresponding GRIB2 Discipline number
-!     g2cat    - corresponding GRIB2 Category number
-!     g2num    - corresponding GRIB2 Parameter number within Category g2cat
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: g1val,g1ver
            integer,intent(out) :: g2disc,g2cat,g2num
 
@@ -277,36 +263,21 @@ c                print *,g2num
            return
          end subroutine
 
+!>    This subroutine returns the GRIB 1 parameter number for
+!>    a given GRIB2 Discipline, Category and Parameter number.
+!>    @param[in] g2disc GRIB2 Discipline number (See Code Table 0.0)
+!>    @param[in] g2cat corresponding GRIB2 Category number
+!>    @param[in] g2num corresponding GRIB2 Parameter number within
+!>    Category g2cat
+!>    @param[out] g1val GRIB1 parameter number for which discipline is
+!>    requested
+!>    @param[out] g1ver GRIB1 parameter table version number
+!>
+!>    @author Stephen Gilbert @date 2002-01-04
+!>
 
          subroutine param_ecmwf_g2_to_g1(g2disc,g2cat,g2num,g1val,g1ver)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    param_ecmwf_g2_to_g1 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2002-01-04
-!
-! ABSTRACT: This function returns the GRIB 1 parameter number for 
-!   a given GRIB2 Discipline, Category and Parameter number.
-!
-! PROGRAM HISTORY LOG:
-! 2001-06-05  Gilbert
-!
-! USAGE:     call param_ecmwf_g2_to_g1(g2disc,g2cat,g2num,g1val,g1ver)
-!   INPUT ARGUMENT LIST:
-!     g2disc   - GRIB2 discipline number (See Code Table 0.0)
-!     g2cat    - corresponding GRIB2 Category number
-!     g2num    - corresponding GRIB2 Parameter number within Category g2cat
-!
-!   OUTPUT ARGUMENT LIST:      
-!     g1val    - GRIB1 parameter number for which discipline is requested
-!     g1ver    - GRIB1 parameter table version number
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: g2disc,g2cat,g2num
            integer,intent(out) :: g1val,g1ver
 

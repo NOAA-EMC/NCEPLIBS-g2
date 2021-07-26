@@ -1,45 +1,42 @@
-      module params
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! MODULE:    params
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2001-06-05
-!
-! ABSTRACT: This Fortran Module contains info on all the available 
-!           GRIB Parameters.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-11  Gilbert
-! 2003-08-07  Gilbert  -  Added more parameters
-! 2003-09-26  Gilbert  -  Added more parameters
-! 2005-11-17  Gordon   -  Added more parameters for the Wave & Smoke models 
-! 2007-03-28  Vuong    -  Added more parameters
-! 2007-10-10  Vuong    -  Added more parameters
-! 2008-03-12  Vuong    -  Added more parameters
-! 2008-06-30  Vuong    -  Reformat entry paramlist from 1 to 173
-!                         Added more parameters and entire table 131 
-! 2008-11-21  Vuong    -  Added more parameters
-! 2009-06-02  Vuong    -  Added more parameters
-! 2009-12-14  Vuong    -  Correction VEGT(4.2-0-210)
-! 2010-07-27  Vuong    -  Added more parameters
-! 2010-12-06  Vuong    -  Added more parameters
-! 2011-05-24  Vuong    -  Added more parameters
-! 2011-09-12  Vuong    -  Added more parameters
-! 2012-09-12  Vuong    -  Added more parameters and change HINDEX to
-!                         parameter from 3 to 2 and RHPW from Dis 0 cat 19
-!                         to 1
-! 2013-07-24  Vuong    -  Added more parameters and Removed
-!                         sapces in abbreviation
-! 2016-03-30  Vuong    -  Added parameter Heat Exchange Coefficient (CH)
-! 2020-05-20  Vuong    -  Added parameters 
-! USAGE:    use params
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+!>    @file
+!>    @brief This Fortran Module contains info on all the available GRIB
+!>    Parameters.
+!>    @author Stephen Gilbert @date 2001-06-05
+!>
 
-      integer,parameter :: MAXPARAM=2000
+!>    This Fortran Module contains info on all the available GRIB
+!>    Parameters.
+!>
+!>    PROGRAM HISTORY LOG:
+!>    - 2000-05-11 Stephen Gilbert 
+!>    - 2003-08-07 Stephen Gilbert Added more parameters
+!>    - 2003-09-26 Stephen Gilbert Added more parameters
+!>    - 2005-11-17 Brent Gordon Added more parameters for the Wave & Smoke models
+!>    - 2007-03-28 Boi Vuong Added more parameters
+!>    - 2007-10-10 Boi Vuong Added more parameters
+!>    - 2008-03-12 Boi Vuong Added more parameters
+!>    - 2008-06-30 Boi Vuong Reformat entry paramlist from 1 to 173
+!>    Added more parameters and entire table 131
+!>    - 2008-11-21 Boi Vuong Added more parameters
+!>    - 2009-06-02 Boi Vuong Added more parameters
+!>    - 2009-12-14 Boi Vuong Correction VEGT(4.2-0-210)
+!>    - 2010-07-27 Boi Vuong Added more parameters
+!>    - 2010-12-06 Boi Vuong Added more parameters
+!>    - 2011-05-24 Boi Vuong Added more parameters
+!>    - 2011-09-12 Boi Vuong Added more parameters
+!>    - 2012-09-12 Boi Vuong Added more parameters and change HINDEX to
+!>    parameter from 3 to 2 and RHPW from Dis 0 cat 19 to 1
+!>    - 2013-07-24 Boi Vuong Added more parameters and Removed
+!>    sapces in abbreviation
+!>    - 2016-03-30 Boi Vuong Added parameter Heat Exchange Coefficient (CH)
+!>    - 2020-05-20 Boi Vuong Added parameters
+!>    
+!>    @author Stephen Gilbert @date 2001-06-05
+!>
+
+      module params
+
+      integer,parameter :: MAXPARAM=2000 !< maximum number of GRIB parameters.
 
       type gribparam
           integer :: g1tblver
@@ -50,7 +47,7 @@
           character(len=8) :: abbrev
       end type gribparam
 
-      type(gribparam),dimension(MAXPARAM) :: paramlist
+      type(gribparam),dimension(MAXPARAM) :: paramlist !< list of GRIB parameters.
 
       data paramlist(1) /gribparam(2,1,0,3,0,'PRES')/
       data paramlist(2) /gribparam(2,2,0,3,1,'PRMSL')/
@@ -1088,34 +1085,22 @@
 
       contains
 
+!>    This subroutine returns the corresponding GRIB2 Discipline
+!>    Category and Number for a given GRIB1 parameter value and table
+!>    version.
+!>    @param[in] g1val GRIB1 parameter number for which discipline is
+!>    requested.
+!>    @param[in] g1ver GRIB1 parameter table version number.
+!>    @param[out] g2disc corresponding GRIB2 Discipline number.
+!>    @param[out] g2cat corresponding GRIB2 Category number.
+!>    @param[out] g2num corresponding GRIB2 Parameter number within
+!>    Category g2cat.
+!>
+!>    @author Stephen Gilbert @date 2001-06-05
+!>
 
          subroutine param_g1_to_g2(g1val,g1ver,g2disc,g2cat,g2num)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    param_g1_to_g2 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2001-06-05
-!
-! ABSTRACT: This subroutine returns the corresponding GRIB2 Discipline
-!   Category and Number for a given GRIB1 parameter value and table version.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-11  Gilbert
-!
-! USAGE:    CALL param_g1_to_g2(g1val,g1ver,g2disc,g2cat,g2num)
-!   INPUT ARGUMENT LIST:
-!     g1val    - GRIB1 parameter number for which discipline is requested
-!     g1ver    - GRIB1 parameter table version number
-!
-!   OUTPUT ARGUMENT LIST:      
-!     g2disc   - corresponding GRIB2 Discipline number
-!     g2cat    - corresponding GRIB2 Category number
-!     g2num    - corresponding GRIB2 Parameter number within Category g2cat
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: g1val,g1ver
            integer,intent(out) :: g2disc,g2cat,g2num
 
@@ -1141,33 +1126,19 @@
            return
          end subroutine
 
+!>    This function returns the parameter abbreviation for
+!>    a given GRIB2 Discipline, Category and Parameter number.
+!>    @param[in] g2disc GRIB2 discipline number (See Code Table 0.0).
+!>    @param[in] g2cat corresponding GRIB2 Category number.
+!>    @param[in] g2num corresponding GRIB2 Parameter number within
+!>    Category g2cat.
+!>    @return parameter abbreviation for GRIB2 info.
+!>
+!>    @author Stephen Gilbert @date 2002-01-04
+!>
+
          character(len=8) function param_get_abbrev(g2disc,g2cat,g2num)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    param_get_abbrev 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2002-01-04
-!
-! ABSTRACT: This function returns the parameter abbreviation for
-!   a given GRIB2 Discipline, Category and Parameter number.
-!
-! PROGRAM HISTORY LOG:
-! 2001-06-05  Gilbert
-!
-! USAGE:     abrev=param_get_abbrev(g2disc,g2cat,g2num)
-!   INPUT ARGUMENT LIST:
-!     g2disc   - GRIB2 discipline number (See Code Table 0.0)
-!     g2cat    - corresponding GRIB2 Category number
-!     g2num    - corresponding GRIB2 Parameter number within Category g2cat
-!
-! RETURNS:  ASCII Paramter Abbreviation
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: g2disc,g2cat,g2num
 
            param_get_abbrev='UNKNOWN '
@@ -1186,36 +1157,21 @@
            return
          end function
 
+!>    This subroutine returns the GRIB 1 parameter number for
+!>    a given GRIB2 Discipline, Category and Parameter number.
+!>    @param[in] g2disc GRIB2 Discipline number (See Code Table 0.0).
+!>    @param[in] g2cat corresponding GRIB2 Category number.
+!>    @param[in] g2num corresponding GRIB2 Parameter number within
+!>    Category g2cat.
+!>    @param[out] g1val GRIB1 parameter number for which discipline is
+!>    requested.
+!>    @param[out] g1ver GRIB1 parameter table version number.
+!>
+!>    @author Stephen Gilbert @date 2002-01-04
+!>
 
          subroutine param_g2_to_g1(g2disc,g2cat,g2num,g1val,g1ver)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    param_g2_to_g1 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2002-01-04
-!
-! ABSTRACT: This function returns the GRIB 1 parameter number for 
-!   a given GRIB2 Discipline, Category and Parameter number.
-!
-! PROGRAM HISTORY LOG:
-! 2001-06-05  Gilbert
-!
-! USAGE:     call param_g2_to_g1(g2disc,g2cat,g2num,g1val,g1ver)
-!   INPUT ARGUMENT LIST:
-!     g2disc   - GRIB2 discipline number (See Code Table 0.0)
-!     g2cat    - corresponding GRIB2 Category number
-!     g2num    - corresponding GRIB2 Parameter number within Category g2cat
-!
-!   OUTPUT ARGUMENT LIST:      
-!     g1val    - GRIB1 parameter number for which discipline is requested
-!     g1ver    - GRIB1 parameter table version number
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
+
            integer,intent(in) :: g2disc,g2cat,g2num
            integer,intent(out) :: g1val,g1ver
 
