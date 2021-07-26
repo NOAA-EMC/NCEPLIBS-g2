@@ -61,7 +61,8 @@
  * - -3 Error decode jpeg2000 code stream.
  * - -5 decoded image had multiple color components.
  * Only grayscale is expected.
- *
+ * @var int MAXOPTSSIZE
+ * 
  * @note Requires JasPer Software version 1.500.4 or 1.700.2
  *
  * @author Stephen Gilbert @date 2002-12-02
@@ -74,7 +75,11 @@ int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
     jas_image_t image;
     jas_stream_t *jpcstream,*istream;
     jas_image_cmpt_t cmpt,*pcmpt;
-#define MAXOPTSSIZE 1024 /**< Maximum size of the options. */
+/**
+ * \def MAXOPTSSIZE
+ * Maximum size of the options.
+*/
+#define MAXOPTSSIZE 1024 
     char opts[MAXOPTSSIZE];
 
     g2int width,height,nbits;
