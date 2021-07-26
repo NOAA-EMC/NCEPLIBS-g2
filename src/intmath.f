@@ -1,9 +1,30 @@
+!>    @file
+!>    @brief Define math functions used by other code.
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
+
+!>    This module defines integer math functions used by other programs.
+!>    It include following functions:
+!>    - ilog2 Calculate log(x)/log(2).
+!>     - ilog2_8 for 8 bit integer numbers.
+!>     - ilog2_4 for 4 bit integer numbers.
+!>     - ilog2_2 for 2 bit integer numbers.
+!>     - ilog2_1 for 1 bit integer numbers.
+!>    - i1log2 Calculate log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2).
+!>     - i1log2_8 for 8 bit integer numbers.
+!>     - i1log2_4 for 4 bit integer numbers.
+!>     - i1log2_2 for 2 bit integer numbers.
+!>     - i1log2_1 for 1 bit integer numbers.
+!>    
+!>    @author Stephen Gilbert @date 2000-06-21
+!>    
+
       module intmath
       implicit none
 
       interface ilog2 
       ! log(x)/log(2)
-      module procedure ilog2_8
+      module procedure ilog2_8 
       module procedure ilog2_4
       module procedure ilog2_2
       module procedure ilog2_1
@@ -21,6 +42,13 @@
 
       ! ----------------------------------------------------------------
 
+!>    This function returns log(x+1)/log(2) unless x=maxint, in
+!>    which case log(x)/log(2) for 8 bit integer numbers.
+!>    @param[in] ival 8 bit integer numbers.
+!>    @return value for log(x+1)/log(2)
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
+
       function i1log2_8(ival)
       implicit none
       integer(kind=8), value :: ival
@@ -34,6 +62,13 @@
       end function i1log2_8
 
       ! ----------------------------------------------------------------
+
+!>    This function returns log(x+1)/log(2) unless x=maxint, in
+!>    which case log(x)/log(2) for 4 bit integer numbers.
+!>    @param[in] ival 4 bit integer numbers.
+!>    @return value for log(x+1)/log(2)
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
 
       function i1log2_4(ival)
       implicit none
@@ -49,6 +84,13 @@
 
       ! ----------------------------------------------------------------
 
+!>    This function returns log(x+1)/log(2) unless x=maxint, in
+!>    which case log(x)/log(2) for 2 bit integer numbers.
+!>    @param[in] ival 2 bit integer numbers.
+!>    @return value for log(x+1)/log(2)
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
+
       function i1log2_2(ival)
       implicit none
       integer(kind=2), value :: ival
@@ -63,6 +105,13 @@
 
       ! ----------------------------------------------------------------
 
+!>    This function returns log(x+1)/log(2) unless x=maxint, in
+!>    which case log(x)/log(2) for 1 bit integer numbers.
+!>    @param[in] ival 1 bit integer numbers.
+!>    @return value for log(x+1)/log(2)
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
+
       function i1log2_1(ival)
       implicit none
       integer(kind=1), value :: ival
@@ -76,6 +125,12 @@
       end function i1log2_1
 
       ! ----------------------------------------------------------------
+
+!>    This function returns log(x)/log(2) for 8 bit integer numbers.
+!>    @param[in] i_in 8 bit integer numbers.
+!>    @return value for log(x)/log(2)
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
 
       function ilog2_8(i_in)
       implicit none
@@ -122,6 +177,12 @@
 
       ! ----------------------------------------------------------------
 
+!>    This function returns log(x)/log(2) for 4 bit integer numbers.
+!>    @param[in] i_in 4 bit integer numbers.
+!>    @return value for log(x)/log(2)
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
+
       function ilog2_4(i_in)
       implicit none
       integer(kind=4), value :: i_in
@@ -162,6 +223,12 @@
 
       ! ----------------------------------------------------------------
 
+!>    This function returns log(x)/log(2) for 2 bit integer numbers.
+!>    @param[in] i_in 2 bit integer numbers.
+!>    @return value for log(x)/log(2)
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
+
       function ilog2_2(i_in)
       implicit none
       integer(kind=2), value :: i_in
@@ -196,6 +263,12 @@
       end function ilog2_2
 
       ! ----------------------------------------------------------------
+
+!>    This function returns log(x)/log(2) for 1 bit integer numbers.
+!>    @param[in] i_in 1 bit integer numbers.
+!>    @return value for log(x)/log(2)
+!>    @author Stephen Gilbert @date 2000-06-21
+!>
 
       function ilog2_1(i_in)
       implicit none
@@ -232,8 +305,8 @@ c$$$      use intmath
 c$$$      implicit none
 c$$$      real(kind=16) :: temp
 c$$$      real(kind=16), parameter :: alog2=log(2.0_16)
-c$$$      integer(kind=8), parameter  ::                                    &
-c$$$     &     one=1,big=Z'7FFFFFFFFFFFFFFF',small=-2000000_8,              &
+c$$$      integer(kind=8), parameter  :: &
+c$$$     &     one=1,big=Z'7FFFFFFFFFFFFFFF',small=-2000000_8, &
 c$$$     &     check=Z'1FFFFFFF'
 c$$$      integer(kind=8) :: ival, iret
 c$$$      !$OMP PARALLEL DO PRIVATE(ival,temp,iret)

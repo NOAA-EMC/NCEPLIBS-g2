@@ -1,62 +1,41 @@
+!>    @file
+!>    @brief Contains subroutines packs up a data field into a JPEG2000
+!>    code stream.
+!>    @author Stephen Gilbert @date 2002-12-17
+!>
+
+!>    This subroutine packs up a data field into a JPEG2000 code stream.
+!>    After the data field is scaled, and the reference value is
+!>    subtracted out, it is treated as a grayscale image and passed
+!>    to a JPEG2000 encoder. It also fills in GRIB2 Data Representation
+!>    Template 5.40 or 5.40000 with the appropriate values.
+!>    
+!>    Program history log:
+!>    - 2002-12-17 Stephen Gilbert Initial Development.
+!>    - 2002-12-29 Stephen Gilbert Added check on whether the jpeg2000
+!>    encoding was successful. If not, try again with different encoder
+!>    options.
+!>    
+!>    @param[in] fld Contains the data values to pack
+!>    @param[in] width number of points in the x direction
+!>    @param[in] height number of points in the y direction
+!>    @param[inout] idrstmpl Contains the array of values for Data
+!>    Representation Template 5.2 or 5.3
+!>    - idrstmpl(1) Reference value - ignored on input.
+!>    - idrstmpl(2) Binary Scale Factor.
+!>    - idrstmpl(3) Decimal Scale Factor.
+!>    - idrstmpl(4) Number of bits containing each grayscale pixel value
+!>    - idrstmpl(5) Original field type, currently set = 0 on output
+!>    Data values assumed to be reals.
+!>    - idrstmpl(6) = 0 use lossless compression; = 1 use lossy compression.
+!>    - idrstmpl(7) Desired compression ratio, if idrstmpl(6)=1.
+!>    @param[out] cpack The packed data field (character*1 array)
+!>    @param[out] lcpack length of packed field cpack.
+!>    
+!>    @author Stephen Gilbert @date 2002-12-17
+!>
+
       subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    jpcpack
-!   PRGMMR: Gilbert          ORG: W/NP11    DATE: 2002-12-17
-!
-! ABSTRACT: This subroutine packs up a data field into a JPEG2000 code stream.
-!   After the data field is scaled, and the reference value is subtracted out,
-!   it is treated as a grayscale image and passed to a JPEG2000 encoder.
-!   It also fills in GRIB2 Data Representation Template 5.40 or 5.40000 with the
-!   appropriate values.
-!
-! PROGRAM HISTORY LOG:
-! 2002-12-17  Gilbert
-! 2004-07-19  Gilbert - Added check on whether the jpeg2000 encoding was
-!                       successful.  If not, try again with different encoder
-!                       options.
-!
-! USAGE:    CALL jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
-!   INPUT ARGUMENT LIST:
-!     fld()    - Contains the data values to pack
-!     width    - number of points in the x direction
-!     height   - number of points in the y direction
-!     idrstmpl - Contains the array of values for Data Representation
-!                Template 5.40 or 5.40000
-!                (1) = Reference value - ignored on input
-!                (2) = Binary Scale Factor
-!                (3) = Decimal Scale Factor
-!                (4) = number of bits for each data value - ignored on input
-!                (5) = Original field type - currently ignored on input
-!                      Data values assumed to be reals.
-!                (6) = 0 - use lossless compression
-!                    = 1 - use lossy compression
-!                (7) = Desired compression ratio, if idrstmpl(6)=1.
-!                      Set to 255, if idrstmpl(6)=0.
-!     lcpack   - size of array cpack().
-!
-!   OUTPUT ARGUMENT LIST: 
-!     idrstmpl - Contains the array of values for Data Representation
-!                Template 5.0
-!                (1) = Reference value - set by jpcpack routine.
-!                (2) = Binary Scale Factor - unchanged from input
-!                (3) = Decimal Scale Factor - unchanged from input
-!                (4) = Number of bits containing each grayscale pixel value
-!                (5) = Original field type - currently set = 0 on output.
-!                      Data values assumed to be reals.
-!                (6) = 0 - use lossless compression
-!                    = 1 - use lossy compression
-!                (7) = Desired compression ratio, if idrstmpl(6)=1
-!     cpack    - The packed data field (character*1 array)
-!     lcpack   - length of packed field in cpack().
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: XL Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       integer,intent(in) :: width,height
       real,intent(in) :: fld(width*height)

@@ -1,71 +1,58 @@
-C-----------------------------------------------------------------------
+C>    @file
+C>    @brief This subroutine generates an index record for each field in
+C>    a grib2 message. 
+C>    @author Mark Iredell @date 1995-10-31
+C>
+
+C>    This subroutine generates an index record for each field in
+C>    a grib2 message. The index records are written to index buffer
+C>    pointed to by cbuf.
+C>    - byte 001 - 004 length of index record
+C>    - byte 005 - 008 bytes to skip in data file before grib message
+C>    - byte 009 - 012 bytes to skip in message before lus (local use)
+C>    set = 0, if no local use section in grib2 message.
+C>    - byte 013 - 016 bytes to skip in message before gds
+C>    - byte 017 - 020 bytes to skip in message before pds
+C>    - byte 021 - 024 bytes to skip in message before drs
+C>    - byte 025 - 028 bytes to skip in message before bms
+C>    - byte 029 - 032 bytes to skip in message before data section
+C>    - byte 033 - 040 bytes total in the message
+C>    - byte 041 - 041 grib version number (currently 2)
+C>    - byte 042 - 042 message discipline
+C>    - byte 043 - 044 field number within grib2 message
+C>    - byte 045 - ii identification section (ids)
+C>    - byte ii+1 - jj grid definition section (gds)
+C>    - byte jj+1 - kk product definition section (pds)
+C>    - byte kk+1 - ll the data representation section (drs)
+C>    - byte ll+1 - ll+6 first 6 bytes of the bit map section (bms)
+C>
+C>    Program history log:
+C>    - 1995-10-31 Mark Iredell
+C>    - 1996-10-31 Mark Iredell augmented optional definitions to byte 320.
+C>    - 2001-12-10 Stephen Gilbert modified from ixgb to create grib2 indexes.
+C>    - 2002-01-31 Stephen Gilbert added identification section to index record.
+C>    
+C>    @param[in] LUGB integer unit of the unblocked grib file.
+C>    @param[in] LSKIP integer number of bytes to skip before grib message.
+C>    @param[in] LGRIB integer number of bytes in grib message.
+C>    @param[out] CBUF character*1 pointer to a buffer that contains
+C>    index records users should free memory that cbuf points to
+C>    using deallocate(cbuf) when cbuf is no longer needed.
+C>    @param[out] NUMFLD integer number of index records created.
+C>    @param[out] MLEN integer total length of all index records.
+C>    @param[out] IRET integer return code
+C>    - 0 all ok
+C>    - 1 not enough memory available to hold full index buffer
+C>    - 2 i/o error in read
+C>    - 3 grib message is not edition 2
+C>    - 4 not enough memory to allocate extent to index buffer
+C>    - 5 unidentified grib section encountered
+C>    
+C>     @author Mark Iredell @date 1995-10-31
+C>
+
       SUBROUTINE IXGB2(LUGB,LSKIP,LGRIB,CBUF,NUMFLD,MLEN,IRET)
-C$$$  SUBPROGRAM DOCUMENTATION BLOCK
-C
-C SUBPROGRAM: IXGB2          MAKE INDEX RECORDS FOR FIELDS IN A GRIB2 MESSAGE
-C   PRGMMR: GILBERT          ORG: W/NP11      DATE: 2001-12-10
-C
-C ABSTRACT: THIS SUBPROGRAM GENERATES AN INDEX RECORD FOR EACH FIELD IN A
-C           GRIB2 MESSAGE.  THE INDEX RECORDS ARE WRITTEN TO INDEX BUFFER
-C           POINTED TO BY CBUF.
-C
-C           EACH INDEX RECORD HAS THE FOLLOWING FORM:
-C       BYTE 001 - 004: LENGTH OF INDEX RECORD
-C       BYTE 005 - 008: BYTES TO SKIP IN DATA FILE BEFORE GRIB MESSAGE
-C       BYTE 009 - 012: BYTES TO SKIP IN MESSAGE BEFORE LUS (LOCAL USE)
-C                       SET = 0, IF NO LOCAL USE SECTION IN GRIB2 MESSAGE.
-C       BYTE 013 - 016: BYTES TO SKIP IN MESSAGE BEFORE GDS
-C       BYTE 017 - 020: BYTES TO SKIP IN MESSAGE BEFORE PDS
-C       BYTE 021 - 024: BYTES TO SKIP IN MESSAGE BEFORE DRS
-C       BYTE 025 - 028: BYTES TO SKIP IN MESSAGE BEFORE BMS
-C       BYTE 029 - 032: BYTES TO SKIP IN MESSAGE BEFORE DATA SECTION
-C       BYTE 033 - 040: BYTES TOTAL IN THE MESSAGE
-C       BYTE 041 - 041: GRIB VERSION NUMBER ( CURRENTLY 2 )
-C       BYTE 042 - 042: MESSAGE DISCIPLINE
-C       BYTE 043 - 044: FIELD NUMBER WITHIN GRIB2 MESSAGE
-C       BYTE 045 -  II: IDENTIFICATION SECTION (IDS) 
-C       BYTE II+1-  JJ: GRID DEFINITION SECTION (GDS) 
-C       BYTE JJ+1-  KK: PRODUCT DEFINITION SECTION (PDS)
-C       BYTE KK+1-  LL: THE DATA REPRESENTATION SECTION (DRS)
-C       BYTE LL+1-LL+6: FIRST 6 BYTES OF THE BIT MAP SECTION (BMS)
-C
-C PROGRAM HISTORY LOG:
-C   95-10-31  IREDELL
-C   96-10-31  IREDELL   AUGMENTED OPTIONAL DEFINITIONS TO BYTE 320
-C 2001-12-10  GILBERT   MODIFIED FROM IXGB TO CREATE GRIB2 INDEXES
-C 2002-01-31  GILBERT   ADDED IDENTIFICATION SECTION TO INDEX RECORD
-C
-C USAGE:    CALL IXGB2(LUGB,LSKIP,LGRIB,CBUF,NUMFLD,MLEN,IRET)
-C   INPUT ARGUMENTS:
-C     LUGB         INTEGER LOGICAL UNIT OF INPUT GRIB FILE
-C     LSKIP        INTEGER NUMBER OF BYTES TO SKIP BEFORE GRIB MESSAGE
-C     LGRIB        INTEGER NUMBER OF BYTES IN GRIB MESSAGE
-C   OUTPUT ARGUMENTS:
-C     CBUF         CHARACTER*1 POINTER TO A BUFFER THAT CONTAINS INDEX RECORDS.
-C                  USERS SHOULD FREE MEMORY THAT CBUF POINTS TO
-C                  USING DEALLOCATE(CBUF) WHEN CBUF IS NO LONGER NEEDED.
-C     NUMFLD       INTEGER NUMBER OF INDEX RECORDS CREATED.
-C                  = 0, IF PROBLEMS
-C     MLEN         INTEGER TOTAL LENGTH OF ALL INDEX RECORDS
-C     IRET         INTEGER RETURN CODE
-C                  =0, ALL OK
-C                  =1, NOT ENOUGH MEMORY TO ALLOCATE INITIAL INDEX BUFFER
-C                  =2, I/O ERROR IN READ
-C                  =3, GRIB MESSAGE IS NOT EDITION 2
-C                  =4, NOT ENOUGH MEMORY TO ALLOCATE EXTENT TO INDEX BUFFER
-C                  =5, UNIDENTIFIED GRIB SECTION ENCOUNTERED...PROBLEM 
-C                      SOMEWHERE.
-C
-C SUBPROGRAMS CALLED:
-C   G2_GBYTE        GET INTEGER DATA FROM BYTES
-C   G2_SBYTE        STORE INTEGER DATA IN BYTES
-C   BAREAD       BYTE-ADDRESSABLE READ
-C   REALLOC      RE-ALLOCATES MORE MEMORY
-C
-C ATTRIBUTES:
-C   LANGUAGE: FORTRAN 90
-C
-C$$$
+
       USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
       PARAMETER(LINMAX=5000,INIT=50000,NEXT=10000)

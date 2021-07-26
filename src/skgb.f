@@ -1,41 +1,36 @@
+C>    @file
+C>    @brief This subroutine generates an index record for each field in
+C>    a grib2 message.
+C>    @author Mark Iredell @date 1995-10-31
+C>
+
+C>    This subroutine searches a file for the next grib 1 message. A grib 
+C>    1 message is identified by its indicator section, i.e. an 8-byte
+C>    sequence with 'grib' in bytes 1-4 and 1 in byte 8. If found, the
+C>    length of the message is decoded from bytes 5-7. The search is
+C>    done over a given section of the file. The search is terminated if
+C>    an eof or i/o error is encountered.
+C>    PROGRAM HISTORY LOG:
+C>    - 1993-11-22 Mark Iredell
+C>    - 1995-10-31 Mark Iredell add call to baread.
+C>    - 1997-03-14 Mark Iredell check for '7777'.
+C>    - 2001-12-05 Stephen Gilbert modified to also look for grib2
+C>    messages.
+C>    - 2009-12-14 Boi Vuong modified to increase length of seek (512).
+C>    
+C>    @param[in] LUGB integer unit of the unblocked grib file.
+C>    @param[in] ISEEK integer number of bytes to skip before search.
+C>    @param[in] MSEEK integer maximum number of bytes to search.
+C>    @param[out] LSKIP integer number of bytes to skip before message.
+C>    @param[out] LGRIB integer number of bytes in message (0 if not
+C>    found)
+C>    
+C>    @author Mark Iredell @date 1995-10-31
+C>    
+
 C-----------------------------------------------------------------------
       SUBROUTINE SKGB(LUGB,ISEEK,MSEEK,LSKIP,LGRIB)
-C$$$  SUBPROGRAM DOCUMENTATION BLOCK
-C
-C SUBPROGRAM: SKGB           SEARCH FOR NEXT GRIB MESSAGE
-C   PRGMMR: IREDELL          ORG: W/NMC23     DATE: 93-11-22
-C
-C ABSTRACT: THIS SUBPROGRAM SEARCHES A FILE FOR THE NEXT GRIB 1 MESSAGE.
-C   A GRIB 1 MESSAGE IS IDENTIFIED BY ITS INDICATOR SECTION, I.E.
-C   AN 8-BYTE SEQUENCE WITH 'GRIB' IN BYTES 1-4 AND 1 IN BYTE 8.
-C   IF FOUND, THE LENGTH OF THE MESSAGE IS DECODED FROM BYTES 5-7.
-C   THE SEARCH IS DONE OVER A GIVEN SECTION OF THE FILE.
-C   THE SEARCH IS TERMINATED IF AN EOF OR I/O ERROR IS ENCOUNTERED.
-C
-C PROGRAM HISTORY LOG:
-C   93-11-22  IREDELL
-C   95-10-31  IREDELL   ADD CALL TO BAREAD 
-C   97-03-14  IREDELL   CHECK FOR '7777'
-C 2001-12-05  GILBERT   MODIFIED TO ALSO LOOK FOR GRIB2 MESSAGES
-C 2009-12-14  VUONG     MODIFIED TO INCREASE LENGTH OF SEEK (512)
-C
-C USAGE:    CALL SKGB(LUGB,ISEEK,MSEEK,LSKIP,LGRIB)
-C   INPUT ARGUMENTS:
-C     LUGB         INTEGER LOGICAL UNIT OF INPUT GRIB FILE
-C     ISEEK        INTEGER NUMBER OF BYTES TO SKIP BEFORE SEARCH
-C     MSEEK        INTEGER MAXIMUM NUMBER OF BYTES TO SEARCH
-C   OUTPUT ARGUMENTS:
-C     LSKIP        INTEGER NUMBER OF BYTES TO SKIP BEFORE MESSAGE
-C     LGRIB        INTEGER NUMBER OF BYTES IN MESSAGE (0 IF NOT FOUND)
-C
-C SUBPROGRAMS CALLED:
-C   BAREAD       BYTE-ADDRESSABLE READ
-C   G2_GBYTE         GET INTEGER DATA FROM BYTES
-C
-C ATTRIBUTES:
-C   LANGUAGE: FORTRAN
-C
-C$$$
+
       PARAMETER(LSEEK=512)
       CHARACTER Z(LSEEK)
       CHARACTER Z4(4)

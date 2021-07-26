@@ -1,37 +1,25 @@
+!>    @file
+!>    @brief This subroutine packs up a spectral data field.
+!>    @author Stephen Gilbert @date 2002-12-19
+!>
+
+!>    This subroutine packs a spectral data field using the complex
+!>    packing algorithm for spherical harmonic data as defined in the
+!>    GRIB2 Data Representation Template 5.51.
+!>    @param[in] fld Contains the data values to pack.
+!>    @param[in] ndpts The number of data values in array fld.
+!>    @param[in] JJ J pentagonal resolution parameter.
+!>    @param[in] KK K pentagonal resolution parameter.
+!>    @param[in] MM M pentagonal resolution parameter.
+!>    @param[in] idrstmpl Contains the array of values for Data
+!>    Representation Template 5.51.
+!>    @param[out] cpack The packed data field (character*1 array).
+!>    @param[out] lcpack length of packed field cpack.
+!>
+!>    @author Stephen Gilbert @date 2002-12-19
+!>
+
       subroutine specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    specpack
-!   PRGMMR: Gilbert          ORG: W/NP11    DATE: 2002-12-19
-!
-! ABSTRACT: This subroutine packs a spectral data field using the complex
-!   packing algorithm for spherical harmonic data as 
-!   defined in the GRIB2 Data Representation Template 5.51.
-!
-! PROGRAM HISTORY LOG:
-! 2002-12-19  Gilbert
-!
-! USAGE:    CALL specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)
-!   INPUT ARGUMENT LIST:
-!     fld()    - Contains the packed data values
-!     ndpts    - The number of data values to pack
-!     JJ       - J - pentagonal resolution parameter
-!     KK       - K - pentagonal resolution parameter
-!     MM       - M - pentagonal resolution parameter
-!     idrstmpl - Contains the array of values for Data Representation
-!                Template 5.51
-!
-!   OUTPUT ARGUMENT LIST:
-!     cpack    - The packed data field (character*1 array)
-!     lcpack   - length of packed field cpack().
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: XL Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       real,intent(in) :: fld(ndpts)
       integer,intent(in) :: ndpts,JJ,KK,MM

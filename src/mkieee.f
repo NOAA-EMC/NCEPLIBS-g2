@@ -1,30 +1,19 @@
+!>    @file
+!>    @brief This subroutine stores real values in floating point.
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
+
+!>    This subroutine stores a list of real values in 32-bit IEEE
+!>    floating point format.
+!>    @param[in] a Input array of floating point values.
+!>    @param[in] num Number of floating point values to convert.
+!>    @param[out] rieee Output array of floating point values in 32-bit
+!>    IEEE format.
+!>    
+!>    @author Stephen Gilbert @date 2000-05-09
+!>
+
       subroutine mkieee(a,rieee,num)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    mkieee 
-!   PRGMMR: Gilbert         ORG: W/NP11    DATE: 2000-05-09
-!
-! ABSTRACT: This subroutine stores a list of real values in 
-!   32-bit IEEE floating point format.
-!
-! PROGRAM HISTORY LOG:
-! 2000-05-09  Gilbert
-!
-! USAGE:    CALL mkieee(a,rieee,num)
-!   INPUT ARGUMENT LIST:
-!     a        - Input array of floating point values.
-!     num      - Number of floating point values to convert.
-!
-!   OUTPUT ARGUMENT LIST:      
-!     rieee    - Output array of floating point values in 32-bit IEEE format.
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       real(4),intent(in) :: a(num)
       real(4),intent(out) :: rieee(num)

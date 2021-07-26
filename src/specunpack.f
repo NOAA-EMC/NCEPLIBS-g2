@@ -1,38 +1,26 @@
+!>    @file
+!>    @brief This subroutine packs up a data field.
+!>    @author Stephen Gilbert @date 2002-12-19
+!>
+
+!>    This subroutine unpacks a spectral data field that was packed
+!>    using the complex packing algorithm for spherical harmonic data as
+!>    defined in the GRIB2 documention, using info from the GRIB2 Data
+!>    Representation Template 5.51.
+!>    @param[in] cpack The packed data field (character*1 array).
+!>    @param[in] len length of packed field cpack.
+!>    @param[in] idrstmpl Contains the array of values for Data
+!>    Representation Template 5.51.
+!>    @param[in] ndpts The number of data values in array fld.
+!>    @param[in] JJ J pentagonal resolution parameter.
+!>    @param[in] KK K pentagonal resolution parameter.
+!>    @param[in] MM M pentagonal resolution parameter.
+!>    @param[out] fld Contains the unpacked data values.
+!>    
+!>    @author Stephen Gilbert @date 2002-12-19
+!>    
+
       subroutine specunpack(cpack,len,idrstmpl,ndpts,JJ,KK,MM,fld)
-!$$$  SUBPROGRAM DOCUMENTATION BLOCK
-!                .      .    .                                       .
-! SUBPROGRAM:    specunpack
-!   PRGMMR: Gilbert          ORG: W/NP11    DATE: 2002-12-19
-!
-! ABSTRACT: This subroutine unpacks a spectral data field that was packed 
-!   using the complex packing algorithm for spherical harmonic data as 
-!   defined in the GRIB2 documention,
-!   using info from the GRIB2 Data Representation Template 5.51.
-!
-! PROGRAM HISTORY LOG:
-! 2002-12-19  Gilbert
-!
-! USAGE:    CALL specunpack(cpack,len,idrstmpl,ndpts,JJ,KK,MM,fld)
-!   INPUT ARGUMENT LIST:
-!     cpack    - The packed data field (character*1 array)
-!     len      - length of packed field cpack().
-!     idrstmpl - Contains the array of values for Data Representation
-!                Template 5.51
-!     ndpts    - The number of data values to unpack
-!     JJ       - J - pentagonal resolution parameter
-!     KK       - K - pentagonal resolution parameter
-!     MM       - M - pentagonal resolution parameter
-!
-!   OUTPUT ARGUMENT LIST:
-!     fld()    - Contains the unpacked data values
-!
-! REMARKS: None
-!
-! ATTRIBUTES:
-!   LANGUAGE: XL Fortran 90
-!   MACHINE:  IBM SP
-!
-!$$$
 
       character(len=1),intent(in) :: cpack(len)
       integer,intent(in) :: ndpts,len,JJ,KK,MM

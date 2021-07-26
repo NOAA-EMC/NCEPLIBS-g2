@@ -1,283 +1,158 @@
+C>    @file
+C>    @brief This subroutine determines groups of variable size.
+C>    @author Harry Glahn @date 1994-02-01
+C>
+
+C>    This subroutine determines groups of variable size, but at least
+C>    of size minpk, the associated max(JMAX) and min(JMIN), the number
+C>    of bits necessary to hold the values in each group LBIT, the
+C>    number of values in each group NOV, the number of bits necessary
+C>    to pack the JMIN values IBIT, the number of bits necessary to pack
+C>    the LBIT values JBIT, and the number of bits necessary to pack the
+C>    NOV values KBIT. The routine is designed to determine the groups
+C>    such that a small number of bits is necessary to pack the data
+C>    without excessive computations. If all values in the group are
+C>    zero, the number of bits to use in packing is defined as zero when
+C>    there can be no missing values; when there can be missing values,
+C>    the number of bits must be at least 1 to have the capability to
+C>    recognize the missing value. However, if all values in a group are
+C>    missing, the number of bits needed is 0, and the unpacker recognizes
+C>    this. All variables are integer. even though the groups are
+C>    initially of size minpk or larger, an adjustment between two groups
+C>    (the lookback procedure) may make a group smaller than minpk. The
+C>    control on group size is that the sum of the sizes of the two
+C>    consecutive groups, each of size minpk or larger, is not decreased.
+C>    When determining the number of bits necessary for packing, the
+C>    largest value that can be accommodated in, say mbits is 2**mbits-1
+C>    this largest value (and the next smallest value) is reserved for
+C>    the missing value indicator (only) when is523 ne 0. If the
+C>    dimension NDG is not large enough to hold all the groups, the
+C>    local value of minpk is increased by 50 percent. this is repeated
+C>    until ndg will suffice. A diagnostic is printed whenever this
+C>    happens, which should be very rarely. If it happens often, NDG in
+C>    subroutine pack should be increased and a corresponding increase
+C>    in subroutine unpack made. Considerable code is provided so that
+C>    no more checking for missing values within loops is done than
+C>    necessary; the added efficiency of this is relatively minor,
+C>    but does no harm. For grib2, the reference value for the length
+C>    of groups in nov and for the number of bits necessary to pack
+C>    group values are determined, and subtracted before jbit and kbit
+C>    are determined. When 1 or more groups are large compared to the
+C>    others, the width of all groups must be as large as the largest.
+C>    A subroutine reduce breaks up large groups into 2 or more to reduce
+C>    total bits required. If reduce should abort, pack_gp will be
+C>    executed again without the call to reduce.
+C>
+C>    PROGRAM HISTORY LOG:
+C>    - 1994-02-01 Harry Glahn tdl mos-2000.
+C>    - 1995-06-01 Harry Glahn modified for lmiss error.
+C>    - 1996-07-01 Harry Glahn added misss.
+C>    - 1997-02-01 Harry Glahn removed 4 redundant tests for missp.eq.0;
+C>    inserted a test to better handle a string of 9999's.
+C>    - 1997-02-01 Harry Glahn added loops to eliminate test for misss
+C>    when misss = 0.
+C>    - 1997-03-01 Harry Glahn corrected for secondary missing value.
+C>    - 1997-03-01 Harry Glahn corrected for use of local value of minpk.
+C>    - 1997-03-01 Harry Glahn corrected for secondary missing value.
+C>    - 1997-03-01 Harry Glahn changed calculating number of bits
+C>    through exponents to an array (improved overall packing performance
+C>    by about 35 percent). Allowed 0 bit for packing JMIN, LBIT, and NOV.
+C>    - 1997-05-01 Harry Glahn a number of changes for efficiency. mod
+C>    functions eliminated and one ifthen added. Jount removed.
+C>    Recomputation of bits not made unless necessary after moving points
+C>    from one group to another. Nendb adjusted to eliminate possibility
+C>    of very small group at the end. About 8 percent improvement in
+C>    overall packing. ISKIPA removed; There is always a group b that can
+C>    become group A. Control on size of group b (statement below 150)
+C>    added. Added adda, and use of ge and le instead of gt and lt in
+C>    loop between 150 and 160. IBITBS added to shorten trip through loop.
+C>    - 2000-03-01 Harry Glahn modified for grib2; changed name from
+C>    packgp.
+C>    - 2001-01-01 Harry Glahn Add comments; ier = 706 substituted for
+C>    stops; added return; removed statement number 110; added ier.
+C>    - 2001-11-01 Harry Glahn changed some diagnostic formats to
+C>    allow printing larger numbers
+C>    - 2001-11-01 Harry Glahn added misslx to put maximum value into JMIN
+C>    when all values missing to agree with grib standard.
+C>    - 2001-11-01 Harry Glahn changed two tests on missp and misss eq 0
+C>    to tests on is523. However, missp and misss cannot in general be 0.
+C>    - 2001-11-01 Harry Glahn added call to reduce; defined itest
+C>    before loops to reduce computation; started large group when all
+C>    same value.
+C>    - 2001-12-01 Harry Glahn modified and added a few comments.
+C>    - 2002-01-01 Harry Glahn removed loop before 150 to determine
+C>    a group of all same value.
+C>    - 2002-01-01 Harry Glahn changed mallow from 9999999 to 2**30+1,
+C>    and made it a parameter.
+C>    - 2002-03-01 Harry Glahn added non fatal ier = 716, 717; removed
+C>    nendb=nxy above 150; added iersav=0.
+C>
+C>    @param[in] KFILDO unit number for output/print file.
+C>    @param[in] IC array to hold data for packing. The values do not
+C>    have to be positive at this point, but must be in the range
+C>    -2**30 to +2**30 (the value of mallow). These integer values
+C>    will be retained exactly through packing and unpacking.
+C>    @param[in] NXY number of values in IC. also treated as
+C>    its dimension.
+C>    @param[in] IS523 missing value management 0=data contains no
+C>    missing values: 1 data contains primary missing values; 2=data
+C>    contains primary and secondary missing values.
+C>    @param[in] MINPK the minimum size of each group, except possibly
+C>    the last one.
+C>    @param[in] INC the number of values to add to an already existing
+C>    group in determining whether or not to start a new group. Ideally,
+C>    this would be 1, but each time inc values are attempted, the max
+C>    and min of the next minpk values must be found. This is "a loop
+C>    within a loop," and a slightly larger value may give about as good
+C>    results with slightly less computational time. If inc is le 0, 1
+C>    is used, and a diagnostic is output. note: it is expected that
+C>    INC will equal 1. The code uses inc primarily in the loops
+C>    starting at statement 180. If INC were 1, there would not need
+C>    to be loops as such. However, kinc (the local value of INC) is
+C>    set ge 1 when near the end of the data to forestall a very small
+C>    group at the end.
+C>    @param[in] MISSP when missing points can be present in the data,
+C>    they will have the value missp or misss. missp is the primary
+C>    missing value and misss is the secondary missing value. These
+C>    must not be values that would occur with subtracting the minimum
+C>    (reference) value or scaling. for example, missp = 0 would not
+C>    be advisable.
+C>    @param[in] MISSS secondary missing value indicator (see missp).
+C>    @param[out] JMIN the minimum of each group (j=1,lx).
+C>    @param[out] JMAX the maximum of each group (j=1,lx). This is not
+C>    really needed, but since the max of each group must be found,
+C>    saving it here is cheap in case the user wants it.
+C>    @param[out] LBIT the number of bits necessary to pack each group
+C>    (j=1,lx). It is assumed the minimum of each group will be removed
+C>    before packing, and the values to pack will, therefore, all be
+C>    positive. However, IC does not necessarily contain all positive
+C>    values. If the overall minimum has been removed (the usual case),
+C>    then IC will contain only positive values.
+C>    @param[out] NOV the number of values in each group (j=1,lx).
+C>    @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
+C>    @param[out] LX the number of groups determined.
+C>    @param[out] IBIT the number of bits necessary to pack the JMIN(j)
+C>    values, j=1,LX.
+C>    @param[out] JBIT the number of bits necessary to pack the LBIT(j)
+C>    values, j=1,LX.
+C>    @param[out] KBIT the number of bits necessary to pack the NOV(j)
+C>    values, j=1,LX.
+C>    @param[out] NOVREF reference value for NOV.
+C>    @param[out] LBITREF reference value for LBIT.
+C>    @param[out] IER error return.
+C>    - 706 value will not pack in 30 bits--fatal
+C>    - 714 error in reduce--non-fatal
+C>    - 715 ngp not large enough in reduce--non-fatal
+C>    - 716 minpk inceased--non-fatal
+C>    - 717 inc set = 1--non-fatal
+C>
+C>    @author Harry Glahn @date 1994-02-01
+C>
+
       SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS,
      1                   JMIN,JMAX,LBIT,NOV,NDG,LX,IBIT,JBIT,KBIT,
      2                   NOVREF,LBITREF,IER)            
-C
-C        FEBRUARY 1994   GLAHN   TDL   MOS-2000
-C        JUNE     1995   GLAHN   MODIFIED FOR LMISS ERROR.
-C        JULY     1996   GLAHN   ADDED MISSS
-C        FEBRUARY 1997   GLAHN   REMOVED 4 REDUNDANT TESTS FOR
-C                                MISSP.EQ.0; INSERTED A TEST TO BETTER
-C                                HANDLE A STRING OF 9999'S
-C        FEBRUARY 1997   GLAHN   ADDED LOOPS TO ELIMINATE TEST FOR 
-C                                MISSS WHEN MISSS = 0
-C        MARCH    1997   GLAHN   CORRECTED FOR SECONDARY MISSING VALUE
-C        MARCH    1997   GLAHN   CORRECTED FOR USE OF LOCAL VALUE
-C                                OF MINPK
-C        MARCH    1997   GLAHN   CORRECTED FOR SECONDARY MISSING VALUE
-C        MARCH    1997   GLAHN   CHANGED CALCULATING NUMBER OF BITS 
-C                                THROUGH EXPONENTS TO AN ARRAY (IMPROVED
-C                                OVERALL PACKING PERFORMANCE BY ABOUT
-C                                35 PERCENT!).  ALLOWED 0 BITS FOR
-C                                PACKING JMIN( ), LBIT( ), AND NOV( ).
-C        MAY      1997   GLAHN   A NUMBER OF CHANGES FOR EFFICIENCY.
-C                                MOD FUNCTIONS ELIMINATED AND ONE
-C                                IFTHEN ADDED.  JOUNT REMOVED.
-C                                RECOMPUTATION OF BITS NOT MADE UNLESS
-C                                NECESSARY AFTER MOVING POINTS FROM
-C                                ONE GROUP TO ANOTHER.  NENDB ADJUSTED
-C                                TO ELIMINATE POSSIBILITY OF VERY
-C                                SMALL GROUP AT THE END. 
-C                                ABOUT 8 PERCENT IMPROVEMENT IN
-C                                OVERALL PACKING.  ISKIPA REMOVED;
-C                                THERE IS ALWAYS A GROUP B THAT CAN
-C                                BECOME GROUP A.  CONTROL ON SIZE 
-C                                OF GROUP B (STATEMENT BELOW 150)
-C                                ADDED.  ADDED ADDA, AND USE
-C                                OF GE AND LE INSTEAD OF GT AND LT
-C                                IN LOOPS BETWEEN 150 AND 160.
-C                                IBITBS ADDED TO SHORTEN TRIPS 
-C                                THROUGH LOOP.
-C        MARCH    2000   GLAHN   MODIFIED FOR GRIB2; CHANGED NAME FROM 
-C                                PACKGP
-C        JANUARY  2001   GLAHN   COMMENTS; IER = 706 SUBSTITUTED FOR
-C                                STOPS; ADDED RETURN1; REMOVED STATEMENT
-C                                NUMBER 110; ADDED IER AND * RETURN
-C        NOVEMBER 2001   GLAHN   CHANGED SOME DIAGNOSTIC FORMATS TO 
-C                                ALLOW PRINTING LARGER NUMBERS
-C        NOVEMBER 2001   GLAHN   ADDED MISSLX( ) TO PUT MAXIMUM VALUE
-C                                INTO JMIN( ) WHEN ALL VALUES MISSING
-C                                TO AGREE WITH GRIB STANDARD.
-C        NOVEMBER 2001   GLAHN   CHANGED TWO TESTS ON MISSP AND MISSS
-C                                EQ 0 TO TESTS ON IS523.  HOWEVER,
-C                                MISSP AND MISSS CANNOT IN GENERAL BE
-C                                = 0.
-C        NOVEMBER 2001   GLAHN   ADDED CALL TO REDUCE; DEFINED ITEST
-C                                BEFORE LOOPS TO REDUCE COMPUTATION;
-C                                STARTED LARGE GROUP WHEN ALL SAME
-C                                VALUE
-C        DECEMBER 2001   GLAHN   MODIFIED AND ADDED A FEW COMMENTS
-C        JANUARY  2002   GLAHN   REMOVED LOOP BEFORE 150 TO DETERMINE
-C                                A GROUP OF ALL SAME VALUE
-C        JANUARY  2002   GLAHN   CHANGED MALLOW FROM 9999999 TO 2**30+1,
-C                                AND MADE IT A PARAMETER
-C        MARCH    2002   GLAHN   ADDED NON FATAL IER = 716, 717;
-C                                REMOVED NENDB=NXY ABOVE 150;
-C                                ADDED IERSAV=0; COMMENTS
-C
-C        PURPOSE
-C            DETERMINES GROUPS OF VARIABLE SIZE, BUT AT LEAST OF
-C            SIZE MINPK, THE ASSOCIATED MAX (JMAX( )) AND MIN (JMIN( )),
-C            THE NUMBER OF BITS NECESSARY TO HOLD THE VALUES IN EACH
-C            GROUP (LBIT( )), THE NUMBER OF VALUES IN EACH GROUP
-C            (NOV( )), THE NUMBER OF BITS NECESSARY TO PACK THE JMIN( )
-C            VALUES (IBIT), THE NUMBER OF BITS NECESSARY TO PACK THE
-C            LBIT( ) VALUES (JBIT), AND THE NUMBER OF BITS NECESSARY
-C            TO PACK THE NOV( ) VALUES (KBIT).  THE ROUTINE IS DESIGNED
-C            TO DETERMINE THE GROUPS SUCH THAT A SMALL NUMBER OF BITS
-C            IS NECESSARY TO PACK THE DATA WITHOUT EXCESSIVE
-C            COMPUTATIONS.  IF ALL VALUES IN THE GROUP ARE ZERO, THE
-C            NUMBER OF BITS TO USE IN PACKING IS DEFINED AS ZERO WHEN
-C            THERE CAN BE NO MISSING VALUES; WHEN THERE CAN BE MISSING
-C            VALUES, THE NUMBER OF BITS MUST BE AT LEAST 1 TO HAVE
-C            THE CAPABILITY TO RECOGNIZE THE MISSING VALUE.  HOWEVER,
-C            IF ALL VALUES IN A GROUP ARE MISSING, THE NUMBER OF BITS
-C            NEEDED IS 0, AND THE UNPACKER RECOGNIZES THIS.
-C            ALL VARIABLES ARE INTEGER.  EVEN THOUGH THE GROUPS ARE 
-C            INITIALLY OF SIZE MINPK OR LARGER, AN ADJUSTMENT BETWEEN
-C            TWO GROUPS (THE LOOKBACK PROCEDURE) MAY MAKE A GROUP 
-C            SMALLER THAN MINPK.  THE CONTROL ON GROUP SIZE IS THAT
-C            THE SUM OF THE SIZES OF THE TWO CONSECUTIVE GROUPS, EACH OF
-C            SIZE MINPK OR LARGER, IS NOT DECREASED.  WHEN DETERMINING
-C            THE NUMBER OF BITS NECESSARY FOR PACKING, THE LARGEST
-C            VALUE THAT CAN BE ACCOMMODATED IN, SAY, MBITS, IS
-C            2**MBITS-1; THIS LARGEST VALUE (AND THE NEXT SMALLEST
-C            VALUE) IS RESERVED FOR THE MISSING VALUE INDICATOR (ONLY)
-C            WHEN IS523 NE 0.  IF THE DIMENSION NDG
-C            IS NOT LARGE ENOUGH TO HOLD ALL THE GROUPS, THE LOCAL VALUE
-C            OF MINPK IS INCREASED BY 50 PERCENT.  THIS IS REPEATED
-C            UNTIL NDG WILL SUFFICE.  A DIAGNOSTIC IS PRINTED WHENEVER
-C            THIS HAPPENS, WHICH SHOULD BE VERY RARELY.  IF IT HAPPENS
-C            OFTEN, NDG IN SUBROUTINE PACK SHOULD BE INCREASED AND
-C            A CORRESPONDING INCREASE IN SUBROUTINE UNPACK MADE. 
-C            CONSIDERABLE CODE IS PROVIDED SO THAT NO MORE CHECKING
-C            FOR MISSING VALUES WITHIN LOOPS IS DONE THAN NECESSARY;
-C            THE ADDED EFFICIENCY OF THIS IS RELATIVELY MINOR,
-C            BUT DOES NO HARM.  FOR GRIB2, THE REFERENCE VALUE FOR
-C            THE LENGTH OF GROUPS IN NOV( ) AND FOR THE NUMBER OF
-C            BITS NECESSARY TO PACK GROUP VALUES ARE DETERMINED,
-C            AND SUBTRACTED BEFORE JBIT AND KBIT ARE DETERMINED.
-C
-C            WHEN 1 OR MORE GROUPS ARE LARGE COMPARED TO THE OTHERS,
-C            THE WIDTH OF ALL GROUPS MUST BE AS LARGE AS THE LARGEST.
-C            A SUBROUTINE REDUCE BREAKS UP LARGE GROUPS INTO 2 OR
-C            MORE TO REDUCE TOTAL BITS REQUIRED.  IF REDUCE SHOULD
-C            ABORT, PACK_GP WILL BE EXECUTED AGAIN WITHOUT THE CALL
-C            TO REDUCE.
-C
-C        DATA SET USE 
-C           KFILDO - UNIT NUMBER FOR OUTPUT (PRINT) FILE. (OUTPUT) 
-C
-C        VARIABLES IN CALL SEQUENCE 
-C              KFILDO = UNIT NUMBER FOR OUTPUT (PRINT) FILE.  (INPUT)
-C               IC( ) = ARRAY TO HOLD DATA FOR PACKING.  THE VALUES
-C                       DO NOT HAVE TO BE POSITIVE AT THIS POINT, BUT
-C                       MUST BE IN THE RANGE -2**30 TO +2**30 (THE 
-C                       THE VALUE OF MALLOW).  THESE INTEGER VALUES
-C                       WILL BE RETAINED EXACTLY THROUGH PACKING AND
-C                       UNPACKING.  (INPUT)
-C                 NXY = NUMBER OF VALUES IN IC( ).  ALSO TREATED
-C                       AS ITS DIMENSION.  (INPUT)
-C              IS523  = missing value management
-C                       0=data contains no missing values
-C                       1=data contains Primary missing values
-C                       2=data contains Primary and secondary missing values
-C                       (INPUT)
-C               MINPK = THE MINIMUM SIZE OF EACH GROUP, EXCEPT POSSIBLY
-C                       THE LAST ONE.  (INPUT)
-C                 INC = THE NUMBER OF VALUES TO ADD TO AN ALREADY
-C                       EXISTING GROUP IN DETERMINING WHETHER OR NOT
-C                       TO START A NEW GROUP.  IDEALLY, THIS WOULD BE
-C                       1, BUT EACH TIME INC VALUES ARE ATTEMPTED, THE
-C                       MAX AND MIN OF THE NEXT MINPK VALUES MUST BE
-C                       FOUND.  THIS IS "A LOOP WITHIN A LOOP," AND
-C                       A SLIGHTLY LARGER VALUE MAY GIVE ABOUT AS GOOD
-C                       RESULTS WITH SLIGHTLY LESS COMPUTATIONAL TIME.
-C                       IF INC IS LE 0, 1 IS USED, AND A DIAGNOSTIC IS
-C                       OUTPUT.  NOTE:  IT IS EXPECTED THAT INC WILL
-C                       EQUAL 1.  THE CODE USES INC PRIMARILY IN THE
-C                       LOOPS STARTING AT STATEMENT 180.  IF INC
-C                       WERE 1, THERE WOULD NOT NEED TO BE LOOPS
-C                       AS SUCH.  HOWEVER, KINC (THE LOCAL VALUE OF
-C                       INC) IS SET GE 1 WHEN NEAR THE END OF THE DATA
-C                       TO FORESTALL A VERY SMALL GROUP AT THE END. 
-C                       (INPUT)
-C               MISSP = WHEN MISSING POINTS CAN BE PRESENT IN THE DATA,
-C                       THEY WILL HAVE THE VALUE MISSP OR MISSS.
-C                       MISSP IS THE PRIMARY MISSING VALUE AND  MISSS
-C                       IS THE SECONDARY MISSING VALUE .  THESE MUST
-C                       NOT BE VALUES THAT WOULD OCCUR WITH SUBTRACTING
-C                       THE MINIMUM (REFERENCE) VALUE OR SCALING.
-C                       FOR EXAMPLE, MISSP = 0 WOULD NOT BE ADVISABLE.
-C                       (INPUT)
-C               MISSS = SECONDARY MISSING VALUE INDICATOR (SEE MISSP).
-C                       (INPUT)
-C             JMIN(J) = THE MINIMUM OF EACH GROUP (J=1,LX).  (OUTPUT)
-C             JMAX(J) = THE MAXIMUM OF EACH GROUP (J=1,LX).  THIS IS
-C                       NOT REALLY NEEDED, BUT SINCE THE MAX OF EACH
-C                       GROUP MUST BE FOUND, SAVING IT HERE IS CHEAP
-C                       IN CASE THE USER WANTS IT.  (OUTPUT)
-C             LBIT(J) = THE NUMBER OF BITS NECESSARY TO PACK EACH GROUP
-C                       (J=1,LX).  IT IS ASSUMED THE MINIMUM OF EACH
-C                       GROUP WILL BE REMOVED BEFORE PACKING, AND THE
-C                       VALUES TO PACK WILL, THEREFORE, ALL BE POSITIVE.
-C                       HOWEVER, IC( ) DOES NOT NECESSARILY CONTAIN
-C                       ALL POSITIVE VALUES.  IF THE OVERALL MINIMUM
-C                       HAS BEEN REMOVED (THE USUAL CASE), THEN IC( )
-C                       WILL CONTAIN ONLY POSITIVE VALUES.  (OUTPUT)
-C              NOV(J) = THE NUMBER OF VALUES IN EACH GROUP (J=1,LX).
-C                       (OUTPUT)
-C                 NDG = THE DIMENSION OF JMIN( ), JMAX( ), LBIT( ), AND
-C                       NOV( ).  (INPUT)
-C                  LX = THE NUMBER OF GROUPS DETERMINED.  (OUTPUT)
-C                IBIT = THE NUMBER OF BITS NECESSARY TO PACK THE JMIN(J)
-C                       VALUES, J=1,LX.  (OUTPUT)
-C                JBIT = THE NUMBER OF BITS NECESSARY TO PACK THE LBIT(J)
-C                       VALUES, J=1,LX.  (OUTPUT)
-C                KBIT = THE NUMBER OF BITS NECESSARY TO PACK THE NOV(J)
-C                       VALUES, J=1,LX.  (OUTPUT)
-C              NOVREF = REFERENCE VALUE FOR NOV( ).  (OUTPUT)
-C             LBITREF = REFERENCE VALUE FOR LBIT( ).  (OUTPUT)
-C                 IER = ERROR RETURN.
-C                       706 = VALUE WILL NOT PACK IN 30 BITS--FATAL
-C                       714 = ERROR IN REDUCE--NON-FATAL
-C                       715 = NGP NOT LARGE ENOUGH IN REDUCE--NON-FATAL
-C                       716 = MINPK INCEASED--NON-FATAL
-C                       717 = INC SET = 1--NON-FATAL
-C                       (OUTPUT)
-C                   * = ALTERNATE RETURN WHEN IER NE 0 AND FATAL ERROR.
-C
-C        INTERNAL VARIABLES 
-C               CFEED = CONTAINS THE CHARACTER REPRESENTATION
-C                       OF A PRINTER FORM FEED.
-C               IFEED = CONTAINS THE INTEGER VALUE OF A PRINTER
-C                       FORM FEED.
-C                KINC = WORKING COPY OF INC.  MAY BE MODIFIED.
-C                MINA = MINIMUM VALUE IN GROUP A.
-C                MAXA = MAXIMUM VALUE IN GROUP A.
-C               NENDA = THE PLACE IN IC( ) WHERE GROUP A ENDS.
-C              KSTART = THE PLACE IN IC( ) WHERE GROUP A STARTS.
-C               IBITA = NUMBER OF BITS NEEDED TO HOLD VALUES IN GROUP A.
-C                MINB = MINIMUM VALUE IN GROUP B.
-C                MAXB = MAXIMUM VALUE IN GROUP B.
-C               NENDB = THE PLACE IN IC( ) WHERE GROUP B ENDS.
-C               IBITB = NUMBER OF BITS NEEDED TO HOLD VALUES IN GROUP B.
-C                MINC = MINIMUM VALUE IN GROUP C.
-C                MAXC = MAXIMUM VALUE IN GROUP C.
-C              KTOTAL = COUNT OF NUMBER OF VALUES IN IC( ) PROCESSED.
-C               NOUNT = NUMBER OF VALUES ADDED TO GROUP A.
-C               LMISS = 0 WHEN IS523 = 0.  WHEN PACKING INTO A 
-C                       SPECIFIC NUMBER OF BITS, SAY MBITS,
-C                       THE MAXIMUM VALUE THAT CAN BE HANDLED IS
-C                       2**MBITS-1.  WHEN IS523 = 1, INDICATING
-C                       PRIMARY MISSING VALUES, THIS MAXIMUM VALUE 
-C                       IS RESERVED TO HOLD THE PRIMARY MISSING VALUE 
-C                       INDICATOR AND LMISS = 1.  WHEN IS523 = 2,
-C                       THE VALUE JUST BELOW THE MAXIMUM (I.E.,
-C                       2**MBITS-2) IS RESERVED TO HOLD THE SECONDARY 
-C                       MISSING VALUE INDICATOR AND LMISS = 2.
-C              LMINPK = LOCAL VALUE OF MINPK.  THIS WILL BE ADJUSTED
-C                       UPWARD WHENEVER NDG IS NOT LARGE ENOUGH TO HOLD
-C                       ALL THE GROUPS.
-C              MALLOW = THE LARGEST ALLOWABLE VALUE FOR PACKING.
-C              MISLLA = SET TO 1 WHEN ALL VALUES IN GROUP A ARE MISSING.
-C                       THIS IS USED TO DISTINGUISH BETWEEN A REAL
-C                       MINIMUM WHEN ALL VALUES ARE NOT MISSING
-C                       AND A MINIMUM THAT HAS BEEN SET TO ZERO WHEN
-C                       ALL VALUES ARE MISSING.  0 OTHERWISE.
-C                       NOTE THAT THIS DOES NOT DISTINGUISH BETWEEN
-C                       PRIMARY AND SECONDARY MISSINGS WHEN SECONDARY
-C                       MISSINGS ARE PRESENT.  THIS MEANS THAT 
-C                       LBIT( ) WILL NOT BE ZERO WITH THE RESULTING
-C                       COMPRESSION EFFICIENCY WHEN SECONDARY MISSINGS
-C                       ARE PRESENT.  ALSO NOTE THAT A CHECK HAS BEEN
-C                       MADE EARLIER TO DETERMINE THAT SECONDARY
-C                       MISSINGS ARE REALLY THERE.
-C              MISLLB = SET TO 1 WHEN ALL VALUES IN GROUP B ARE MISSING.
-C                       THIS IS USED TO DISTINGUISH BETWEEN A REAL
-C                       MINIMUM WHEN ALL VALUES ARE NOT MISSING
-C                       AND A MINIMUM THAT HAS BEEN SET TO ZERO WHEN
-C                       ALL VALUES ARE MISSING.  0 OTHERWISE.
-C              MISLLC = PERFORMS THE SAME FUNCTION FOR GROUP C THAT
-C                       MISLLA AND MISLLB DO FOR GROUPS B AND C,
-C                       RESPECTIVELY.
-C            IBXX2(J) = POWERS OF 2
-C               MINAK = KEEPS TRACK OF THE LOCATION IN IC( ) WHERE THE 
-C                       MINIMUM VALUE IN GROUP A IS LOCATED.
-C               MAXAK = DOES THE SAME AS MINAK, EXCEPT FOR THE MAXIMUM.
-C               MINBK = THE SAME AS MINAK FOR GROUP B.
-C               MAXBK = THE SAME AS MAXAK FOR GROUP B.
-C               MINCK = THE SAME AS MINAK FOR GROUP C.
-C               MAXCK = THE SAME AS MAXAK FOR GROUP C.
-C                ADDA = KEEPS TRACK WHETHER OR NOT AN ATTEMPT TO ADD
-C                       POINTS TO GROUP A WAS MADE.  IF SO, THEN ADDA
-C                       KEEPS FROM TRYING TO PUT ONE BACK INTO B.
-C                       (LOGICAL)
-C              IBITBS = KEEPS CURRENT VALUE IF IBITB SO THAT LOOP
-C                       ENDING AT 166 DOESN'T HAVE TO START AT
-C                       IBITB = 0 EVERY TIME.
-C           MISSLX(J) = MALLOW EXCEPT WHEN A GROUP IS ALL ONE VALUE (AND
-C                       LBIT(J) = 0) AND THAT VALUE IS MISSING.  IN
-C                       THAT CASE, MISSLX(J) IS MISSP OR MISSS.  THIS
-C                       GETS INSERTED INTO JMIN(J) LATER AS THE 
-C                       MISSING INDICATOR; IT CAN'T BE PUT IN UNTIL
-C                       THE END, BECAUSE JMIN( ) IS USED TO CALCULATE
-C                       THE MAXIMUM NUMBER OF BITS (IBITS) NEEDED TO
-C                       PACK JMIN( ).
-C        1         2         3         4         5         6         7 X
-C
-C        NON SYSTEM SUBROUTINES CALLED 
-C           NONE
-C
+
       PARAMETER (MALLOW=2**30+1)
 C
       CHARACTER*1 CFEED
