@@ -36,7 +36,9 @@
 !>
       module drstemplates
 
-      integer,parameter :: MAXLEN=200,MAXTEMP=9
+      integer,parameter :: MAXLEN=200 !< maximum number of octets in mapgrid
+      integer,parameter :: MAXTEMP=9 !< maximum number of entries in the template
+
 
       type drstemplate
           integer :: template_num
@@ -45,7 +47,7 @@
           logical :: needext
       end type drstemplate
 
-      type(drstemplate),dimension(MAXTEMP) :: templates
+      type(drstemplate),dimension(MAXTEMP) :: templates !< template in type of drstemplate
 
       data templates(1)%template_num /0/     !<     Simple Packing
       data templates(1)%mapdrslen /5/ 
