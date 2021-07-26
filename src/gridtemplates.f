@@ -394,7 +394,7 @@
 
          end subroutine
 
-b!>    This function returns the initial length (number of entries) in
+!>    This function returns the initial length (number of entries) in
 !>    the "static" part of specified Grid Definition Template 3.number.
 !>    @param[in] number NN, indicating the number of the Grid Definition
 !>    Template 3.NN that is being requested.
