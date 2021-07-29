@@ -14,9 +14,9 @@ https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/.
 
 ## Authors
 
-NCEP/EMC Developers
+Stephen Gilbert, NCEP/EMC Developers
 
-Code Manager : Boi Vuong
+Code Manager : Hang Lei, Edward Hartnett
 
 ## Prerequisites
 
@@ -24,45 +24,7 @@ The following libraries are required:
 - libpng
 - libjasper
 
-## Installing
-
-#### Download G2 Code from GitHub.com:
-
-```
-git clone -b g2_v3.2.0 --recursive https://github.com/NOAA-EMC/NCEPLIBS-g2.git
-cd NCEPLIBS-g2
-```
-
-#### Create a directory where to build G2 library
-
-```
-mkdir build
-cd build
-```
-
-#### Load the following modules 
-
-```
-module load ips/18.0.1.163
-module load impi/18.0.1
-module load cmake/3.16.3
-module load jasper/1.900.1
-module load libpng/1.2.44
-module load zlib/1.2.11
-
-export CC=icc
-export CXX=icpc
-export FC=ifort
-
-If the chosen compiler is not the default compiler on the system,
-set the environment variables: export CC=..., export CXX=..., 
-export FC=..., before invoking cmake.
-
-Note: Windows systems is not supported at this time.
-
-```
-
-#### Run cmake
+## Building
 
 ```
 cmake .. -DCMAKE_INSTALL_PREFIX=myg2 -DCMAKE_PREFIX_PATH="${PNG_LIBDIR};${PNG_INC};${JASPER_LIBDIR};${JASPER_INC}"
@@ -85,7 +47,6 @@ ECMWF User Orientation, retrieved on July 27, 2021 from
 https://www.yumpu.com/en/document/view/11925806/grib2-conversion-and-its-usage-at-ncep.
 
 ```
-
 ## Disclaimer
 
 ```
