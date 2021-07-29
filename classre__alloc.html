@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('classre__alloc.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,6 +109,9 @@ $(document).ready(function(){initNavTree('classre__alloc.html','');});
 <div class="title">re_alloc Module Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This module contains three subroutines to reorganize the integer, real and character data in memory into one dimensional array and back to memory.  
+ <a href="classre__alloc.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Types</h2></td></tr>
@@ -117,20 +120,183 @@ Data Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab3dc5cdb5a5e8468aff46e582d19eb71"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3dc5cdb5a5e8468aff46e582d19eb71"></a>
-subroutine&#160;</td><td class="memItemRight" valign="bottom"><b>realloc_c1</b> (c, n, m, istat)</td></tr>
+<tr class="memitem:ab3dc5cdb5a5e8468aff46e582d19eb71"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classre__alloc.html#ab3dc5cdb5a5e8468aff46e582d19eb71">realloc_c1</a> (c, n, m, istat)</td></tr>
+<tr class="memdesc:ab3dc5cdb5a5e8468aff46e582d19eb71"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine reorganize character type data in memory into one one dimensional array.  <a href="#ab3dc5cdb5a5e8468aff46e582d19eb71">More...</a><br/></td></tr>
 <tr class="separator:ab3dc5cdb5a5e8468aff46e582d19eb71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb77f273ac94f2b319238e10a9369653"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb77f273ac94f2b319238e10a9369653"></a>
-subroutine&#160;</td><td class="memItemRight" valign="bottom"><b>realloc_i</b> (c, n, m, istat)</td></tr>
+<tr class="memitem:aeb77f273ac94f2b319238e10a9369653"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classre__alloc.html#aeb77f273ac94f2b319238e10a9369653">realloc_i</a> (c, n, m, istat)</td></tr>
+<tr class="memdesc:aeb77f273ac94f2b319238e10a9369653"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine reorganize integer type data in memory into one one dimensional array.  <a href="#aeb77f273ac94f2b319238e10a9369653">More...</a><br/></td></tr>
 <tr class="separator:aeb77f273ac94f2b319238e10a9369653"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e8746c3bfb9226f51446ef2b95f1c44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e8746c3bfb9226f51446ef2b95f1c44"></a>
-subroutine&#160;</td><td class="memItemRight" valign="bottom"><b>realloc_r</b> (c, n, m, istat)</td></tr>
+<tr class="memitem:a9e8746c3bfb9226f51446ef2b95f1c44"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classre__alloc.html#a9e8746c3bfb9226f51446ef2b95f1c44">realloc_r</a> (c, n, m, istat)</td></tr>
+<tr class="memdesc:a9e8746c3bfb9226f51446ef2b95f1c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine reorganize real type data in memory into one one dimensional array.  <a href="#a9e8746c3bfb9226f51446ef2b95f1c44">More...</a><br/></td></tr>
 <tr class="separator:a9e8746c3bfb9226f51446ef2b95f1c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="realloc_8f_source.html#l00001">1</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
-</div><hr/>The documentation for this module was generated from the following file:<ul>
+<div class="textblock"><p>This module contains three subroutines to reorganize the integer, real and character data in memory into one dimensional array and back to memory. </p>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-10-01 </dd></dl>
+
+<p>Definition at line <a class="el" href="realloc_8f_source.html#l00014">14</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
+</div><h2 class="groupheader">Member Function/Subroutine Documentation</h2>
+<a class="anchor" id="ab3dc5cdb5a5e8468aff46e582d19eb71"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine re_alloc::realloc_c1 </td>
+          <td>(</td>
+          <td class="paramtype">character(len=1), dimension(:), pointer&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(out)&#160;</td>
+          <td class="paramname"><em>istat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This subroutine reorganize character type data in memory into one one dimensional array. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">c</td><td>pointer for data in memory. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>dimension for data in memory. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>dimension for allocatable array. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">istat</td><td>scalar INTEGER variable for allocate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-10-01 </dd></dl>
+
+<p>Definition at line <a class="el" href="realloc_8f_source.html#l00048">48</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aeb77f273ac94f2b319238e10a9369653"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine re_alloc::realloc_i </td>
+          <td>(</td>
+          <td class="paramtype">integer, dimension(:), pointer&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(out)&#160;</td>
+          <td class="paramname"><em>istat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This subroutine reorganize integer type data in memory into one one dimensional array. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">c</td><td>pointer for data in memory. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>dimension for data in memory. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>dimension for allocatable array. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">istat</td><td>scalar INTEGER variable for allocate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-10-01 </dd></dl>
+
+<p>Definition at line <a class="el" href="realloc_8f_source.html#l00132">132</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9e8746c3bfb9226f51446ef2b95f1c44"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine re_alloc::realloc_r </td>
+          <td>(</td>
+          <td class="paramtype">real, dimension(:), pointer&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(out)&#160;</td>
+          <td class="paramname"><em>istat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This subroutine reorganize real type data in memory into one one dimensional array. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">c</td><td>pointer for data in memory. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>dimension for data in memory. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>dimension for allocatable array. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">istat</td><td>scalar INTEGER variable for allocate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-10-01 </dd></dl>
+
+<p>Definition at line <a class="el" href="realloc_8f_source.html#l00090">90</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this module was generated from the following file:<ul>
 <li><a class="el" href="realloc_8f_source.html">realloc.f</a></li>
 </ul>
 </div><!-- contents -->

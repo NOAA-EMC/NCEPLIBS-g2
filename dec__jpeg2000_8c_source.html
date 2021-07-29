@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('dec__jpeg2000_8c_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -115,9 +115,9 @@ $(document).ready(function(){initNavTree('dec__jpeg2000_8c_source.html','');});
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifdef __64BIT__</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor"></span>  <span class="keyword">typedef</span> <span class="keywordtype">int</span> g2int;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor"></span>  <span class="keyword">typedef</span> <span class="keywordtype">int</span> <a class="code" href="dec__jpeg2000_8c.html#a09f53c0d5cd3cb3b7864b7dd4983211e">g2int</a>; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span>  <span class="keyword">typedef</span> <span class="keywordtype">long</span> g2int;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="dec__jpeg2000_8c.html#a09f53c0d5cd3cb3b7864b7dd4983211e">   18</a></span>&#160;<span class="preprocessor"></span>  <span class="keyword">typedef</span> <span class="keywordtype">long</span> <a class="code" href="dec__jpeg2000_8c.html#a09f53c0d5cd3cb3b7864b7dd4983211e">g2int</a>; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#if defined CRAY90</span></div>
@@ -133,10 +133,10 @@ $(document).ready(function(){initNavTree('dec__jpeg2000_8c_source.html','');});
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span><span class="preprocessor">   #define SUB_NAME dec_jpeg2000_</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="dec__jpeg2000_8c.html#a37385fd1c2192026c7d5bfd3fc75748b">   52</a></span>&#160;   <span class="keywordtype">int</span> <a class="code" href="dec__jpeg2000_8c.html#a37385fd1c2192026c7d5bfd3fc75748b">SUB_NAME</a>(<span class="keywordtype">char</span> *injpc,g2int *bufsize,g2int *outfld)</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="dec__jpeg2000_8c.html#a37385fd1c2192026c7d5bfd3fc75748b">   52</a></span>&#160;   <span class="keywordtype">int</span> <a class="code" href="dec__jpeg2000_8c.html#a37385fd1c2192026c7d5bfd3fc75748b">SUB_NAME</a>(<span class="keywordtype">char</span> *injpc,<a class="code" href="dec__jpeg2000_8c.html#a09f53c0d5cd3cb3b7864b7dd4983211e">g2int</a> *bufsize,<a class="code" href="dec__jpeg2000_8c.html#a09f53c0d5cd3cb3b7864b7dd4983211e">g2int</a> *outfld)</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">int</span> ier=0;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    g2int i,j,k,n;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="dec__jpeg2000_8c.html#a09f53c0d5cd3cb3b7864b7dd4983211e">g2int</a> i,j,k,n;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    jas_image_t *image=0;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    jas_stream_t *jpcstream,*istream;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    jas_image_cmpt_t cmpt,*pcmpt;</div>
@@ -230,6 +230,7 @@ $(document).ready(function(){initNavTree('dec__jpeg2000_8c_source.html','');});
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;}</div>
+<div class="ttc" id="dec__jpeg2000_8c_html_a09f53c0d5cd3cb3b7864b7dd4983211e"><div class="ttname"><a href="dec__jpeg2000_8c.html#a09f53c0d5cd3cb3b7864b7dd4983211e">g2int</a></div><div class="ttdeci">long g2int</div><div class="ttdoc">Long Integer type. </div><div class="ttdef"><b>Definition:</b> <a href="dec__jpeg2000_8c_source.html#l00018">dec_jpeg2000.c:18</a></div></div>
 <div class="ttc" id="dec__jpeg2000_8c_html_a37385fd1c2192026c7d5bfd3fc75748b"><div class="ttname"><a href="dec__jpeg2000_8c.html#a37385fd1c2192026c7d5bfd3fc75748b">SUB_NAME</a></div><div class="ttdeci">int SUB_NAME(char *injpc, g2int *bufsize, g2int *outfld)</div><div class="ttdoc">This Function decodes a JPEG2000 code stream specified in the JPEG2000 Part-1 standard. </div><div class="ttdef"><b>Definition:</b> <a href="dec__jpeg2000_8c_source.html#l00052">dec_jpeg2000.c:52</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

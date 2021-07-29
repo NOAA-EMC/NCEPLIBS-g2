@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('getidx_8f_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -106,175 +106,162 @@ $(document).ready(function(){initNavTree('getidx_8f_source.html','');});
 <div class="title">getidx.f</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">C-----------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">      SUBROUTINE </span>getidx(LUGB,LUGI,CINDEX,NLEN,NNUM,IRET)</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">C$$$  SUBPROGRAM DOCUMENTATION BLOCK</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">C SUBPROGRAM: GETIDX         FINDS, READS OR GENERATES A GRIB2 INDEX </span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">C   PRGMMR: GILBERT          ORG: W/NP11     DATE: 2005-03-15</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">C ABSTRACT: FINDS, READS OR GENERATES A GRIB2 INDEX FOR THE GRIB2 FILE</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">C  ASSOCIATED WITH UNIT LUGB.  IF THE INDEX ALREADY EXISTS, IT IS RETURNED.</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">C  OTHERWISE, THE INDEX IS (1) READ FROM AN EXISTING INDEXFILE ASSOCIATED WITH</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">C  UNIT LUGI. OR (2) GENERATED FROM THE GRIB2FILE LUGB ( IF LUGI=0 ). </span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">C  USERS CAN FORCE A REGENERATION OF AN INDEX.  IF LUGI EQUALS LUGB, THE INDEX</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">C  WILL BE REGENERATED FROM THE DATA IN FILE LUGB.  IF LUGI IS LESS THAN</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">C  ZERO, THEN THE INDEX IS RE READ FROM INDEX FILE ABS(LUGI).  </span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">C PROGRAM HISTORY LOG:</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">C 2005-03-15  GILBERT</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">C 2009-07-09  VUONG      Fixed bug for checking (LUGB) unit index file</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">C 2016-03-29  VUONG      Restore original getidx.f from version 1.2.3</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">C                        Modified GETIDEX to allow to open range of unit file number up to 9999</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">C                        Added new parameters and new Product Definition Template</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">C                        numbers: 4.60, 4.61</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">C USAGE:    CALL GETIDX(LUGB,LUGI,CINDEX,NLEN,NNUM,IRET)</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">C   INPUT ARGUMENTS:</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">C     LUGB         INTEGER UNIT OF THE UNBLOCKED GRIB DATA FILE.</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">C                  FILE MUST BE OPENED WITH BAOPEN OR BAOPENR BEFORE CALLING </span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">C                  THIS ROUTINE.</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">C     LUGI         INTEGER UNIT OF THE UNBLOCKED GRIB INDEX FILE.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">C                  IF NONZERO, FILE MUST BE OPENED WITH BAOPEN BAOPENR BEFORE </span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">C                  CALLING THIS ROUTINE.</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">C                  &gt;0 - READ INDEX FROM INDEX FILE LUGI, IF INDEX DOESN&quot;T </span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">C                       ALREADY EXIST.</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">C                  =0 - TO GET INDEX BUFFER FROM THE GRIB FILE, IF INDEX </span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">C                       DOESN&quot;T ALREADY EXIST.</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">C                  &lt;0 - FORCE REREAD OF INDEX FROM INDEX FILE ABS(LUGI).</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">C                  =LUGB - FORCE REGENERATION OF INDEX FROM GRIB2 FILE LUGB.</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">C   OUTPUT ARGUMENTS:</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">C     CINDEX       CHARACTER*1 POINTER TO A BUFFER THAT CONTAINS INDEX RECORDS.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">C     NLEN         INTEGER TOTAL LENGTH OF ALL INDEX RECORDS</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">C     NNUM         INTEGER NUMBER OF INDEX RECORDS</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">C     IRET         INTEGER RETURN CODE</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">C                    0      ALL OK</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">C                    90     UNIT NUMBER OUT OF RANGE</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">C                    96     ERROR READING/CREATING INDEX FILE</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">C SUBPROGRAMS CALLED:</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">C   GETG2I          READ INDEX FILE</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">C   GETG2IR         READ INDEX BUFFER FROM GRIB FILE</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">C REMARKS: </span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">C        -  Allow file unit numbers in range 0 - 9999</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">C           the grib index will automatically generate the index file.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">C ATTRIBUTES:</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">C   LANGUAGE: FORTRAN 90</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">C</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">C$$$</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(IN)</span> :: lugb,lugi</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(OUT)</span> :: nlen,nnum,iret</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordtype">CHARACTER(LEN=1)</span>,<span class="keywordtype">POINTER</span>,<span class="keywordtype">DIMENSION(:)</span> :: cindex</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keywordtype">INTEGER</span>,<span class="keywordtype">PARAMETER</span> :: maxidx=10000</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keywordtype">INTEGER</span>,<span class="keywordtype">PARAMETER</span> :: msk1=32000,msk2=4000</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keyword">TYPE</span> gindex</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;         <span class="keywordtype">integer</span> :: nlen</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;         <span class="keywordtype">integer</span> :: nnum</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;         <span class="keywordtype">character(len=1)</span>,<span class="keywordtype">pointer</span>,<span class="keywordtype">dimension(:)</span> :: cbuf</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">      END TYPE </span>gindex</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;     </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keywordtype">TYPE(</span>gindex<span class="keywordtype">)</span> :: idxlist(10000)</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keyword">DATA</span> lux/0/</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">C  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keyword">INTERFACE</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">         SUBROUTINE </span><a class="code" href="getg2i_8f.html#a44c16f665d204ab2236a58ef37bc8b13">getg2i</a>(LUGI,CBUF,NLEN,NNUM,IRET)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordtype">CHARACTER(LEN=1)</span>,<span class="keywordtype">POINTER</span>,<span class="keywordtype">DIMENSION(:)</span> :: cbuf</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(IN)</span> :: lugi</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(OUT)</span> :: nlen,nnum,iret</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">         END SUBROUTINE </span><a class="code" href="getg2i_8f.html#a44c16f665d204ab2236a58ef37bc8b13">getg2i</a></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">         SUBROUTINE </span><a class="code" href="getg2ir_8f.html#ab4764647a6cf4a3b178dc4069f46ebfd">getg2ir</a>(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;     &amp;                      nmess,iret)</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordtype">CHARACTER(LEN=1)</span>,<span class="keywordtype">POINTER</span>,<span class="keywordtype">DIMENSION(:)</span> :: cbuf</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(IN)</span> :: lugb,msk1,msk2,mnum</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(OUT)</span> :: nlen,nnum,nmess,iret</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">         END SUBROUTINE </span><a class="code" href="getg2ir_8f.html#ab4764647a6cf4a3b178dc4069f46ebfd">getg2ir</a></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">      END INTERFACE</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">C  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      lux=0</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      iret=0</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keywordflow">IF</span> ( lugb.LE.0 .OR. lugb.GT.9999 ) <span class="keywordflow">THEN</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;         print*,<span class="stringliteral">&#39; &#39;</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;         print *,<span class="stringliteral">&#39; FILE UNIT NUMBER OUT OF RANGE&#39;</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;         print *,<span class="stringliteral">&#39; USE UNIT NUMBERS IN RANGE: 0 - 9999 &#39;</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;         print*,<span class="stringliteral">&#39; &#39;</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;         iret=90</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;         <span class="keywordflow">RETURN</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keywordflow">ENDIF</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keywordflow">IF</span> (lugi.EQ.lugb) <span class="keywordflow">THEN</span>      <span class="comment">! Force regeneration of index from GRIB2 File</span></div>
+<a href="getidx_8f.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">C&gt;    @file</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">C&gt;    @brief This subroutine finds, reads or generates a grib2 index for</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">C&gt;    the grib2 file associated with unit lugb.</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">C&gt;    @author Stephen Gilbert @date 2005-03-15</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">C&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">C&gt;    This subroutine finds, reads or generates a grib2 index for</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">C&gt;    the grib2 file associated with unit lugb. If the index already</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">C&gt;    exists, it is returned. otherwise, the index is (1) read from an</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">C&gt;    existing indexfile associated with unit LUGI. or (2) generated</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">C&gt;    from the grib2file LUGI. Users can force a regeneration of an</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">C&gt;    index. If LUGI equals LUGB, the index will be regenerated from </span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">C&gt;    the data in file LUGB. If LUGI is less than zero, then the index</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">C&gt;    is re read from index file abs(lugi).</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">C&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">C&gt;    PROGRAM HISTORY LOG:</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">C&gt;    - 2005-03-15 Stephen Gilbert Initial Programming</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">C&gt;    - 2009-07-09 Boi Vuong Fixed bug for checking (LUGB) unit index file</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">C&gt;    - 2016-03-29 Boi Vuong Restore original getidx.f from version</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">C&gt;    1.2.3 modified getidex to allow to open range of unit file number</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">C&gt;    up to 9999 added new parameters and new product definition</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">C&gt;    template numbers: 4.60, 4.61</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">C&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">C&gt;    @param[in] LUGB integer unit of the unblocked grib data file.</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">C&gt;    file must be opened with baopen or baopenr before calling</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">C&gt;    this routine.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">C&gt;    @param[in] LUGI integer unit of the unblocked grib index file.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">C&gt;    if nonzero, file must be opened with baopen baopenr before</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">C&gt;    calling this routine. (=0 to get index buffer from the grib file)</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">C&gt;    @param[out] CINDEX character*1 pointer to a buffer that contains</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">C&gt;    index records.</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">C&gt;    @param[out] NLEN integer total length of all index records</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">C&gt;    @param[out] NNUM integer number of index records</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">C&gt;    @param[out] IRET integer return code</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">C&gt;    - 0 all ok</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">C&gt;    - 90 unit number out of range</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">C&gt;    - 96 error reading/creating index file</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">C&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">C&gt;    @note allow file unit numbers in range 0 - 9999</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">C&gt;    the grib index will automatically generate the index file. </span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">C&gt;  </span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">C&gt;    @author Stephen Gilbert @date 2005-03-15</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">C&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">C-----------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="getidx_8f.html#aacdcd327443e6e2cdf8da8298727ed6d">   46</a></span>&#160;<span class="keyword">      SUBROUTINE </span><a class="code" href="getidx_8f.html#aacdcd327443e6e2cdf8da8298727ed6d">getidx</a>(LUGB,LUGI,CINDEX,NLEN,NNUM,IRET)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(IN)</span> :: lugb,lugi</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(OUT)</span> :: nlen,nnum,iret</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      <span class="keywordtype">CHARACTER(LEN=1)</span>,<span class="keywordtype">POINTER</span>,<span class="keywordtype">DIMENSION(:)</span> :: cindex</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <span class="keywordtype">INTEGER</span>,<span class="keywordtype">PARAMETER</span> :: maxidx=10000</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordtype">INTEGER</span>,<span class="keywordtype">PARAMETER</span> :: msk1=32000,msk2=4000</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keyword">TYPE</span> gindex</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;         <span class="keywordtype">integer</span> :: nlen</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;         <span class="keywordtype">integer</span> :: nnum</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;         <span class="keywordtype">character(len=1)</span>,<span class="keywordtype">pointer</span>,<span class="keywordtype">dimension(:)</span> :: cbuf</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">      END TYPE </span>gindex</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;     </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keywordtype">TYPE(</span>gindex<span class="keywordtype">)</span> :: idxlist(10000)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keyword">DATA</span> lux/0/</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">C  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      <span class="keyword">INTERFACE</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">         SUBROUTINE </span><a class="code" href="getg2i_8f.html#a44c16f665d204ab2236a58ef37bc8b13">getg2i</a>(LUGI,CBUF,NLEN,NNUM,IRET)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordtype">CHARACTER(LEN=1)</span>,<span class="keywordtype">POINTER</span>,<span class="keywordtype">DIMENSION(:)</span> :: cbuf</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(IN)</span> :: lugi</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(OUT)</span> :: nlen,nnum,iret</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">         END SUBROUTINE </span><a class="code" href="getg2i_8f.html#a44c16f665d204ab2236a58ef37bc8b13">getg2i</a></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">         SUBROUTINE </span><a class="code" href="getg2ir_8f.html#ab4764647a6cf4a3b178dc4069f46ebfd">getg2ir</a>(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;     &amp;                      nmess,iret)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordtype">CHARACTER(LEN=1)</span>,<span class="keywordtype">POINTER</span>,<span class="keywordtype">DIMENSION(:)</span> :: cbuf</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(IN)</span> :: lugb,msk1,msk2,mnum</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordtype">INTEGER</span>,<span class="keywordtype">INTENT(OUT)</span> :: nlen,nnum,nmess,iret</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">         END SUBROUTINE </span><a class="code" href="getg2ir_8f.html#ab4764647a6cf4a3b178dc4069f46ebfd">getg2ir</a></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">      END INTERFACE</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">C  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      lux=0</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      iret=0</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keywordflow">IF</span> ( lugb.LE.0 .OR. lugb.GT.9999 ) <span class="keywordflow">THEN</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;         print*,<span class="stringliteral">&#39; &#39;</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;         print *,<span class="stringliteral">&#39; FILE UNIT NUMBER OUT OF RANGE&#39;</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;         print *,<span class="stringliteral">&#39; USE UNIT NUMBERS IN RANGE: 0 - 9999 &#39;</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;         print*,<span class="stringliteral">&#39; &#39;</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;         iret=90</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;         <span class="keywordflow">RETURN</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keywordflow">ENDIF</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keywordflow">IF</span> (lugi.EQ.lugb) <span class="keywordflow">THEN</span>      <span class="comment">! Force regeneration of index from GRIB2 File</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;         <span class="keywordflow">IF</span> ( <span class="keyword">ASSOCIATED</span>( idxlist(lugb)%CBUF ) ) </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;     &amp;                  <span class="keyword">DEALLOCATE</span>(idxlist(lugb)%CBUF)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;         nullify(idxlist(lugb)%CBUF)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;         idxlist(lugb)%NLEN=0</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;         idxlist(lugb)%NNUM=0</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;         lux=0</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">ENDIF</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keywordflow">IF</span> (<span class="keyword">ASSOCIATED</span>(idxlist(lugb)%CBUF)) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;         <span class="keyword">DEALLOCATE</span>(idxlist(lugb)%CBUF)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      <span class="keywordflow">end if</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keywordflow">IF</span> (lugi.LT.0) <span class="keywordflow">THEN</span>      <span class="comment">! Force re-read of index from indexfile</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                               <span class="comment">! associated with unit abs(lugi)</span></div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;         <span class="keywordflow">IF</span> ( <span class="keyword">ASSOCIATED</span>( idxlist(lugb)%CBUF ) ) </div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;     &amp;                  <span class="keyword">DEALLOCATE</span>(idxlist(lugb)%CBUF)</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;         nullify(idxlist(lugb)%CBUF)</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;         idxlist(lugb)%NLEN=0</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;         idxlist(lugb)%NNUM=0</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;         lux=0</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;         lux=abs(lugi)</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="keywordflow">ENDIF</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="keywordflow">IF</span> (<span class="keyword">ASSOCIATED</span>(idxlist(lugb)%CBUF)) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;         <span class="keyword">DEALLOCATE</span>(idxlist(lugb)%CBUF)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <span class="keywordflow">end if</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="keywordflow">IF</span> (lugi.LT.0) <span class="keywordflow">THEN</span>      <span class="comment">! Force re-read of index from indexfile</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                               <span class="comment">! associated with unit abs(lugi)</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;         <span class="keywordflow">IF</span> ( <span class="keyword">ASSOCIATED</span>( idxlist(lugb)%CBUF ) ) </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;     &amp;                  <span class="keyword">DEALLOCATE</span>(idxlist(lugb)%CBUF)</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;         nullify(idxlist(lugb)%CBUF)</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;         idxlist(lugb)%NLEN=0</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;         idxlist(lugb)%NNUM=0</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;         lux=abs(lugi)</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      <span class="keywordflow">ENDIF</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">C  Check if index already exists in memory</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <span class="keywordflow">IF</span> ( <span class="keyword">ASSOCIATED</span>( idxlist(lugb)%CBUF ) ) <span class="keywordflow">THEN</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;         cindex =&gt; idxlist(lugb)%CBUF</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;         nlen = idxlist(lugb)%NLEN</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;         nnum = idxlist(lugb)%NNUM</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;         <span class="keywordflow">RETURN</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      <span class="keywordflow">ENDIF</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      irgi=0</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      <span class="keywordflow">IF</span>(lux.GT.0) <span class="keywordflow">THEN</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        CALL <a class="code" href="getg2i_8f.html#a44c16f665d204ab2236a58ef37bc8b13">getg2i</a>(lux,idxlist(lugb)%CBUF,nlen,nnum,irgi)</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;      <span class="keywordflow">ELSEIF</span>(lux.LE.0) <span class="keywordflow">THEN</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        mskp=0</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        CALL <a class="code" href="getg2ir_8f.html#ab4764647a6cf4a3b178dc4069f46ebfd">getg2ir</a>(lugb,msk1,msk2,mskp,idxlist(lugb)%CBUF,</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;     &amp;               nlen,nnum,nmess,irgi)</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      <span class="keywordflow">ENDIF</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      <span class="keywordflow">IF</span>(irgi.EQ.0) <span class="keywordflow">THEN</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;         cindex =&gt; idxlist(lugb)%CBUF</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;         idxlist(lugb)%NLEN = nlen</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;         idxlist(lugb)%NNUM = nnum</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      <span class="keywordflow">ELSE</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;         nlen = 0</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;         nnum = 0</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;         print*,<span class="stringliteral">&#39; &#39;</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;         print *,<span class="stringliteral">&#39; ERROR READING INDEX FILE &#39;</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;         print*,<span class="stringliteral">&#39; &#39;</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;         iret=96</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;         <span class="keywordflow">RETURN</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;      <span class="keywordflow">ENDIF</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <span class="keywordflow">RETURN</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      <span class="keywordflow">END</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">C  Check if index already exists in memory</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <span class="keywordflow">IF</span> ( <span class="keyword">ASSOCIATED</span>( idxlist(lugb)%CBUF ) ) <span class="keywordflow">THEN</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;         cindex =&gt; idxlist(lugb)%CBUF</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;         nlen = idxlist(lugb)%NLEN</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;         nnum = idxlist(lugb)%NNUM</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;         <span class="keywordflow">RETURN</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keywordflow">ENDIF</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      irgi=0</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="keywordflow">IF</span>(lux.GT.0) <span class="keywordflow">THEN</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        CALL <a class="code" href="getg2i_8f.html#a44c16f665d204ab2236a58ef37bc8b13">getg2i</a>(lux,idxlist(lugb)%CBUF,nlen,nnum,irgi)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      <span class="keywordflow">ELSEIF</span>(lux.LE.0) <span class="keywordflow">THEN</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        mskp=0</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        CALL <a class="code" href="getg2ir_8f.html#ab4764647a6cf4a3b178dc4069f46ebfd">getg2ir</a>(lugb,msk1,msk2,mskp,idxlist(lugb)%CBUF,</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;     &amp;               nlen,nnum,nmess,irgi)</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <span class="keywordflow">ENDIF</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      <span class="keywordflow">IF</span>(irgi.EQ.0) <span class="keywordflow">THEN</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;         cindex =&gt; idxlist(lugb)%CBUF</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;         idxlist(lugb)%NLEN = nlen</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;         idxlist(lugb)%NNUM = nnum</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      <span class="keywordflow">ELSE</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;         nlen = 0</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;         nnum = 0</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;         print*,<span class="stringliteral">&#39; &#39;</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;         print *,<span class="stringliteral">&#39; ERROR READING INDEX FILE &#39;</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;         print*,<span class="stringliteral">&#39; &#39;</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;         iret=96</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;         <span class="keywordflow">RETURN</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <span class="keywordflow">ENDIF</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="keywordflow">RETURN</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <span class="keywordflow">END</span></div>
 <div class="ttc" id="getg2i_8f_html_a44c16f665d204ab2236a58ef37bc8b13"><div class="ttname"><a href="getg2i_8f.html#a44c16f665d204ab2236a58ef37bc8b13">getg2i</a></div><div class="ttdeci">subroutine getg2i(LUGI, CBUF, NLEN, NNUM, IRET)</div><div class="ttdoc">READ A GRIB2 INDEX FILE AND RETURN ITS CONTENTS. </div><div class="ttdef"><b>Definition:</b> <a href="getg2i_8f_source.html#l00056">getg2i.f:56</a></div></div>
-<div class="ttc" id="getg2ir_8f_html_ab4764647a6cf4a3b178dc4069f46ebfd"><div class="ttname"><a href="getg2ir_8f.html#ab4764647a6cf4a3b178dc4069f46ebfd">getg2ir</a></div><div class="ttdeci">subroutine getg2ir(LUGB, MSK1, MSK2, MNUM, CBUF, NLEN, NNUM, NMESS, IRET)</div><div class="ttdoc">READ A GRIB FILE AND RETURN ITS INDEX CONTENTS. </div><div class="ttdef"><b>Definition:</b> <a href="getg2ir_8f_source.html#l00059">getg2ir.f:59</a></div></div>
+<div class="ttc" id="getg2ir_8f_html_ab4764647a6cf4a3b178dc4069f46ebfd"><div class="ttname"><a href="getg2ir_8f.html#ab4764647a6cf4a3b178dc4069f46ebfd">getg2ir</a></div><div class="ttdeci">subroutine getg2ir(LUGB, MSK1, MSK2, MNUM, CBUF, NLEN, NNUM, NMESS, IRET)</div><div class="ttdoc">This subroutine read a GRIB file and return its index content. </div><div class="ttdef"><b>Definition:</b> <a href="getg2ir_8f_source.html#l00059">getg2ir.f:59</a></div></div>
+<div class="ttc" id="getidx_8f_html_aacdcd327443e6e2cdf8da8298727ed6d"><div class="ttname"><a href="getidx_8f.html#aacdcd327443e6e2cdf8da8298727ed6d">getidx</a></div><div class="ttdeci">subroutine getidx(LUGB, LUGI, CINDEX, NLEN, NNUM, IRET)</div><div class="ttdoc">This subroutine finds, reads or generates a grib2 index for the grib2 file associated with unit lugb...</div><div class="ttdef"><b>Definition:</b> <a href="getidx_8f_source.html#l00046">getidx.f:46</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_75b82e7e4a5feb05200b9ad7adf06257.html">home</a></li><li class="navelem"><a class="el" href="dir_b90aa5a6084b86bdb838378bc1dc161c.html">Hang.Lei</a></li><li class="navelem"><a class="el" href="dir_a172c4a69c8c4fc64ef5d9224f684072.html">noscrub</a></li><li class="navelem"><a class="el" href="dir_dd819178255f7a9ad49a3b8867a6c150.html">docus</a></li><li class="navelem"><a class="el" href="dir_648917924aeb9ce7c1fc0528dd2caf69.html">feature</a></li><li class="navelem"><a class="el" href="dir_d016ec1399c85acecef32bf81e1fad9c.html">dox</a></li><li class="navelem"><a class="el" href="dir_a7b3ebe721b8c60c479822a40383d337.html">src</a></li><li class="navelem"><b>getidx.f</b></li>
+    <li class="navelem"><a class="el" href="dir_75b82e7e4a5feb05200b9ad7adf06257.html">home</a></li><li class="navelem"><a class="el" href="dir_b90aa5a6084b86bdb838378bc1dc161c.html">Hang.Lei</a></li><li class="navelem"><a class="el" href="dir_a172c4a69c8c4fc64ef5d9224f684072.html">noscrub</a></li><li class="navelem"><a class="el" href="dir_dd819178255f7a9ad49a3b8867a6c150.html">docus</a></li><li class="navelem"><a class="el" href="dir_648917924aeb9ce7c1fc0528dd2caf69.html">feature</a></li><li class="navelem"><a class="el" href="dir_d016ec1399c85acecef32bf81e1fad9c.html">dox</a></li><li class="navelem"><a class="el" href="dir_a7b3ebe721b8c60c479822a40383d337.html">src</a></li><li class="navelem"><a class="el" href="getidx_8f.html">getidx.f</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>

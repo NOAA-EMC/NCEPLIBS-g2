@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('comunpack_8f_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('comunpack_8f_source.html','');});
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      ier=0</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      <span class="comment">!print *,&#39;IDRSTMPL: &#39;,(idrstmpl(j),j=1,16)</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      ieee = idrstmpl(1)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      call rdieee(ieee,ref,1)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      call <a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(ieee,ref,1)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      bscale = 2.0**<span class="keywordtype">real</span>(idrstmpl(2))</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      dscale = 10.0**<span class="keywordtype">real</span>(-idrstmpl(3))</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      nbitsgref = idrstmpl(4)</div>
@@ -160,14 +160,14 @@ $(document).ready(function(){initNavTree('comunpack_8f_source.html','');});
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">!</span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      <span class="keywordflow">if</span> ( idrstmpl(7).eq.1 ) <span class="keywordflow">then</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;         <span class="keywordflow">if</span> (itype.eq.0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            call rdieee(idrstmpl(8),rmiss1,1)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            call <a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(idrstmpl(8),rmiss1,1)</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;         <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            rmiss1=<span class="keywordtype">real</span>(idrstmpl(8))</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;         <span class="keywordflow">endif</span></div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keywordflow">elseif</span> ( idrstmpl(7).eq.2 ) <span class="keywordflow">then</span></div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;         <span class="keywordflow">if</span> (itype.eq.0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            call rdieee(idrstmpl(8),rmiss1,1)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            call rdieee(idrstmpl(9),rmiss2,1)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            call <a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(idrstmpl(8),rmiss1,1)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            call <a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(idrstmpl(9),rmiss2,1)</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;         <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            rmiss1=<span class="keywordtype">real</span>(idrstmpl(8))</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            rmiss2=<span class="keywordtype">real</span>(idrstmpl(9))</div>
@@ -401,6 +401,7 @@ $(document).ready(function(){initNavTree('comunpack_8f_source.html','');});
 <div class="ttc" id="g2__gbytesc_8f_html_aca0f5451292195fe5e0eb3ff4e53fe98"><div class="ttname"><a href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a></div><div class="ttdeci">subroutine g2_gbytec(IN, IOUT, ISKIP, NBYTE)</div><div class="ttdoc">This subrountine is to extract arbitrary size values from a packed bit string, right justifying each ...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8f_source.html#l00019">g2_gbytesc.f:19</a></div></div>
 <div class="ttc" id="g2__gbytesc_8f_html_a43b84c9ffac05a56d909d3520018d68d"><div class="ttname"><a href="g2__gbytesc_8f.html#a43b84c9ffac05a56d909d3520018d68d">g2_gbytesc</a></div><div class="ttdeci">subroutine g2_gbytesc(IN, IOUT, ISKIP, NBYTE, NSKIP, N)</div><div class="ttdoc">This subrountine is to extract arbitrary size values from a packed bit string, right justifying each ...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8f_source.html#l00059">g2_gbytesc.f:59</a></div></div>
 <div class="ttc" id="comunpack_8f_html_a78a7efb9e450327a66eb02faab53e731"><div class="ttname"><a href="comunpack_8f.html#a78a7efb9e450327a66eb02faab53e731">comunpack</a></div><div class="ttdeci">subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, fld, ier)</div><div class="ttdoc">This subroutine unpacks a data field that was packed using a complex packing algorithm as defined in ...</div><div class="ttdef"><b>Definition:</b> <a href="comunpack_8f_source.html#l00035">comunpack.f:35</a></div></div>
+<div class="ttc" id="rdieee_8f_html_a291f738ad3d63df5491d5ba7357050c4"><div class="ttname"><a href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a></div><div class="ttdeci">subroutine rdieee(rieee, a, num)</div><div class="ttdoc">This subroutine reads a list of real values in 32-bit IEEE floating point format. ...</div><div class="ttdef"><b>Definition:</b> <a href="rdieee_8f_source.html#l00015">rdieee.f:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('addgrid_8f.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -116,15 +116,79 @@ $(document).ready(function(){initNavTree('addgrid_8f.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
-<tr class="memitem:a0550b62ab5fac8de78235d0c77c49c21"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0550b62ab5fac8de78235d0c77c49c21"></a>
-subroutine&#160;</td><td class="memItemRight" valign="bottom"><b>addgrid</b> (cgrib, lcgrib, igds, igdstmpl, igdstmplen, ideflist, idefnum, ierr)</td></tr>
+<tr class="memitem:a0550b62ab5fac8de78235d0c77c49c21"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addgrid_8f.html#a0550b62ab5fac8de78235d0c77c49c21">addgrid</a> (cgrib, lcgrib, igds, igdstmpl, igdstmplen, ideflist, idefnum, ierr)</td></tr>
+<tr class="memdesc:a0550b62ab5fac8de78235d0c77c49c21"><td class="mdescLeft">&#160;</td><td class="mdescRight">This routine is used with routines <a class="el" href="gribcreate_8f.html#a1b722f74a2a9d7c2e4612f7780d64f31" title="This subroutine initializes a new GRIB2 message and packs GRIB2 sections 0 (Indicator Section) and 1 ...">gribcreate()</a>, <a class="el" href="addlocal_8f.html#a176884ec84d6c5f9d99f6ce1b9707eff" title="This subroutine adds a Local Use Section (Section 2) to a GRIB2 message. ">addlocal()</a>, <a class="el" href="addfield_8f.html#abe47d00e9129168f66617de9260d91e2" title="This subroutine packs up Sections 4 through 7 for a given field and adds them to a GRIB2 message...">addfield()</a>, and <a class="el" href="gribend_8f.html#acb8e7c48285d0121896b0341d9aed8e9" title="This subroutine finalizes a GRIB message after all grids and fields have been added. ">gribend()</a> to create a complete GRIB2 message.  <a href="#a0550b62ab5fac8de78235d0c77c49c21">More...</a><br/></td></tr>
 <tr class="separator:a0550b62ab5fac8de78235d0c77c49c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This subroutine packs up a Grid Definition Section (Section 3) and adds it to a GRIB2 message. </p>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
-<dl class="section date"><dt>Date</dt><dd>2000-05-01</dd></dl>
-<p>This routine is used with routines gribcreate(), <a class="el" href="addlocal_8f.html#a176884ec84d6c5f9d99f6ce1b9707eff" title="This subroutine adds a Local Use Section (Section 2) to a GRIB2 message. ">addlocal()</a>, addfield(), and gribend() to create a complete GRIB2 message. Subroutine gribcreate must be called first to initialize a new GRIB2 message.</p>
+<dl class="section date"><dt>Date</dt><dd>2000-05-01 </dd></dl>
+
+<p>Definition in file <a class="el" href="addgrid_8f_source.html">addgrid.f</a>.</p>
+</div><h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a class="anchor" id="a0550b62ab5fac8de78235d0c77c49c21"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine addgrid </td>
+          <td>(</td>
+          <td class="paramtype">character(len=1), dimension(lcgrib), intent(inout)&#160;</td>
+          <td class="paramname"><em>cgrib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>lcgrib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, dimension(*), intent(in)&#160;</td>
+          <td class="paramname"><em>igds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, dimension(*), intent(in)&#160;</td>
+          <td class="paramname"><em>igdstmpl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>igdstmplen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, dimension(idefnum), intent(in)&#160;</td>
+          <td class="paramname"><em>ideflist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>idefnum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(out)&#160;</td>
+          <td class="paramname"><em>ierr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This routine is used with routines <a class="el" href="gribcreate_8f.html#a1b722f74a2a9d7c2e4612f7780d64f31" title="This subroutine initializes a new GRIB2 message and packs GRIB2 sections 0 (Indicator Section) and 1 ...">gribcreate()</a>, <a class="el" href="addlocal_8f.html#a176884ec84d6c5f9d99f6ce1b9707eff" title="This subroutine adds a Local Use Section (Section 2) to a GRIB2 message. ">addlocal()</a>, <a class="el" href="addfield_8f.html#abe47d00e9129168f66617de9260d91e2" title="This subroutine packs up Sections 4 through 7 for a given field and adds them to a GRIB2 message...">addfield()</a>, and <a class="el" href="gribend_8f.html#acb8e7c48285d0121896b0341d9aed8e9" title="This subroutine finalizes a GRIB message after all grids and fields have been added. ">gribend()</a> to create a complete GRIB2 message. </p>
+<p>Subroutine gribcreate must be called first to initialize a new GRIB2 message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">cgrib</td><td>Character array to contain the GRIB2 message </td></tr>
@@ -157,8 +221,15 @@ subroutine&#160;</td><td class="memItemRight" valign="bottom"><b>addgrid</b> (cg
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-05-01 </dd></dl>
 
-<p>Definition in file <a class="el" href="addgrid_8f_source.html">addgrid.f</a>.</p>
-</div></div><!-- contents -->
+<p>Definition at line <a class="el" href="addgrid_8f_source.html#l00046">46</a> of file <a class="el" href="addgrid_8f_source.html">addgrid.f</a>.</p>
+
+<p>References <a class="el" href="gridtemplates_8f_source.html#l00340">gridtemplates::extgridtemplate()</a>, <a class="el" href="g2__gbytesc_8f_source.html#l00019">g2_gbytec()</a>, <a class="el" href="g2__gbytesc_8f_source.html#l00038">g2_sbytec()</a>, <a class="el" href="g2__gbytesc_8f_source.html#l00114">g2_sbytesc()</a>, and <a class="el" href="gridtemplates_8f_source.html#l00295">gridtemplates::getgridtemplate()</a>.</p>
+
+<p>Referenced by <a class="el" href="putgb2_8f_source.html#l00168">putgb2()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
