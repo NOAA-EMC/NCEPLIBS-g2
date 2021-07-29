@@ -75,8 +75,20 @@ make install
 
 ```
 
+## References
+
+```
+Kumar, V. Krishna, Gilbert, Stephen A., [GRIB2 conversion and its
+usage at NCEP](docs/GRIB2_conversion_and_its_usage_at_NCEP.pdf), 14-18
+November 2005, 10th Workshop on Meteorological Operational Systems
+ECMWF User Orientation, retrieved on July 27, 2021 from
+https://www.yumpu.com/en/document/view/11925806/grib2-conversion-and-its-usage-at-ncep.
+
+```
+
 ## Disclaimer
 
+```
 The United States Department of Commerce (DOC) GitHub project code is
 provided on an "as is" basis and the user assumes responsibility for
 its use. DOC has relinquished control of the information and no longer
