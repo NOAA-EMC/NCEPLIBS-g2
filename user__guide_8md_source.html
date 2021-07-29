@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('user__guide_8md.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -111,10 +111,10 @@ $(document).ready(function(){initNavTree('user__guide_8md.html','');});
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"># Introduction</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;This document briefly describes the routines available <span class="keywordflow">for</span> encoding/decoding</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;GRIB Edition 2 (GRIB2) messages.  A basic familiarity with GRIB is assumed.</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;GRIB Edition 2 (GRIB2) messages. A basic familiarity with GRIB is assumed.</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;A GRIB Edition 2 message is a machine independent format <span class="keywordflow">for</span> storing</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;one or more gridded data fields.  Each GRIB2 message consists of the </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;one or more gridded data fields. Each GRIB2 message consists of the </div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;following sections:</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;&lt;pre&gt;</div>
@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('user__guide_8md.html','');});
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;&lt;/pre&gt;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;Sequences of GRIB sections 2 to 7, 3 to 7, or sections 4 to 7 may be repeated</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;within a single GRIB message.  All sections within such repeated sequences</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;within a single GRIB message. All sections within such repeated sequences</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;must be present and shall appear in the numerical order noted above.</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;Unrepeated sections remain in effect until redefined.</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
@@ -144,72 +144,72 @@ $(document).ready(function(){initNavTree('user__guide_8md.html','');});
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="stringliteral">This should give users more flexibility in how to organize data</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="stringliteral">within one or more GRIB2 messages.</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="stringliteral">To start a new GRIB2 message, call subroutine GRIBCREATE.  GRIBCREATE </span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="stringliteral">encodes Sections 0 and 1 at the beginning of the message.  This routine </span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="stringliteral">To start a new GRIB2 message, call subroutine gribcreate(). It </span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="stringliteral">codes Sections 0 and 1 at the beginning of the message. This routine </span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="stringliteral">must be used to create each message.</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="stringliteral">Subroutine ADDLOCAL can be used to add a Local Use Section ( Section 2 ).</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="stringliteral">Subroutine addlocal() can be used to add a Local Use Section (Section 2).</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="stringliteral">Note that section is optional and need not appear in a GRIB2 message.</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="stringliteral">Subroutine ADDGRID is used to encode a grid definition into Section 3.</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="stringliteral">Subroutine addgrid() is used to encode a grid definition into Section 3.</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="stringliteral">This grid definition defines the geometry of the the data values in the</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="stringliteral">fields that follow it.  ADDGRID can be called again to change the grid </span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="stringliteral">fields that follow it. ADDGRID() can be called again to change the grid </span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="stringliteral">definition describing subsequent data fields.</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral">Each data field is added to the GRIB2 message using routine ADDFIELD,</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral">Each data field is added to the GRIB2 message using routine ADDFIELD(),</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral">which adds Sections 4, 5, 6, and 7 to the message.</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral"></span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral">After all desired data fields have been added to the GRIB2 message, a</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral">call to routine GRIBEND is needed to add the final section 8 to the</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="stringliteral">message and to update the length of the message.  A call to GRIBEND</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral">call to routine GRIBEND() is needed to add the final section 8 to the</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="stringliteral">message and to update the length of the message. A call to GRIBEND()</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="stringliteral">is required for each GRIB2 message.</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="stringliteral"></span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="stringliteral"># GRIB2 Decoding Routines</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="stringliteral">Subroutine GB_INFO can be used to find out how many Local Use sections</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="stringliteral">and data fields are contained in a given GRIB2 message.  In addition,</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="stringliteral">Subroutine GB_INFO() can be used to find out how many Local Use sections</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="stringliteral">and data fields are contained in a given GRIB2 message. In addition,</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="stringliteral">this routine also returns the number of octets of the largest Local Use </span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="stringliteral">section in the message.  This value can be used to ensure that the </span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="stringliteral">output array of subroutine GETLOCAL ( described below ) is dimensioned</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="stringliteral">section in the message. This value can be used to ensure that the </span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="stringliteral">output array of subroutine GETLOCAL() (described below) is dimensioned</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="stringliteral">large enough.</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="stringliteral">Subroutine GETLOCAL will return the requested occurrence of Section 2</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="stringliteral">from a given GRIB2 message.  </span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="stringliteral">Subroutine GETLOCAL() will return the requested occurrence of Section 2</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="stringliteral">from a given GRIB2 message. </span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="stringliteral"></span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="stringliteral">GF_GETFLD can be used to get all information pertaining to the nth </span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="stringliteral">data field in the message.  The subroutine returns all the unpacked values</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="stringliteral">data field in the message. The subroutine returns all the unpacked values</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="stringliteral">for each Section and Template in a Fortran 90 derived type gribfield,</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="stringliteral">which is defined in module GRIB_MOD.  An option exists that lets the</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="stringliteral">user decide if the subroutine should unpack the Bit-map ( if</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="stringliteral">applicable ) and the data values or just return the field description</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="stringliteral">which is defined in module GRIB_MOD. An option exists that lets the</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="stringliteral">user decide if the subroutine should unpack the Bit-map (if</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="stringliteral">applicable) and the data values or just return the field description</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="stringliteral">information.</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="stringliteral">Note that derived type gribfield contains pointers to dynamically</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="stringliteral">allocated space that holds the contents of all arrays, and users are encouraged </span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="stringliteral">to free up this memory, when it is no longer needed, by an explicit call</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="stringliteral">to subroutine GF_FREE.</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="stringliteral">to subroutine GF_FREE().</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="stringliteral"></span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="stringliteral"># Extracting GRIB2 Fields from a GRIB2 file</span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="stringliteral">Subroutine GETGB2 can be used to extract a specified field from a file</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="stringliteral">containing many GRIB2 messages.  GETGB2 searches an index to find the </span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="stringliteral">location of the user specified field.  The index can be supplied from a</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="stringliteral">Subroutine GETGB2() can be used to extract a specified field from a file</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="stringliteral">containing many GRIB2 messages. GETGB2() searches an index to find the </span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="stringliteral">location of the user specified field. The index can be supplied from a</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="stringliteral">seperate GRIB2 index file, or it can be generated internally.</span></div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="stringliteral">The GRIB2 file ( and the index file, if supplied ) must be opened with</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral">a call to subroutine BAOPEN prior to the call to GETGB2.</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="stringliteral">The GRIB2 file (and the index file, if supplied) must be opened with</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral">a call to subroutine BAOPEN() prior to the call to GETGB2.</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="stringliteral"></span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="stringliteral">The decoded information for the selected GRIB field is returned in a </span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="stringliteral">derived type variable, gfld.  Gfld is of type gribfield, which is defined</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="stringliteral">derived type variable, gfld. Gfld is of type gribfield, which is defined</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="stringliteral">in module grib_mod, so users of this routine will need to include</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="stringliteral">the line &quot;USE GRIB_MOD&quot; in their calling routine.  Each component of the</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="stringliteral">the line &quot;USE GRIB_MOD&quot; in their calling routine. Each component of the</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="stringliteral">gribfield type is described in the OUTPUT ARGUMENT LIST in the docblock</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="stringliteral">for subroutine GETGB2 below.</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="stringliteral">for subroutine GETGB2() below.</span></div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="stringliteral">Note that derived type gribfield contains pointers to many arrays of data.  </span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="stringliteral">Note that derived type gribfield contains pointers to many arrays of data.</span></div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="stringliteral">The memory for these arrays is allocated when the values in the arrays </span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="stringliteral">are set, to help minimize problems with array overloading.  Because of this,</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="stringliteral">are set, to help minimize problems with array overloading. Because of this,</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="stringliteral">users are encouraged to free up this memory, when it is no longer</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="stringliteral">needed, by an explicit call to subroutine GF_FREE.</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="stringliteral">needed, by an explicit call to subroutine GF_FREE().</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="stringliteral"></span></div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="stringliteral">Example usage:</span></div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="stringliteral"></span></div>
@@ -251,7 +251,7 @@ $(document).ready(function(){initNavTree('user__guide_8md.html','');});
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="stringliteral"></span></div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="stringliteral">WMO&#39;</span>s GRIB2 specification <span class="stringliteral">&quot;FM 92-XII GRIB - General Regularly-distributed</span></div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="stringliteral">Information in Binary Form&quot;</span> contains descriptions of each <span class="keyword">template</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;and code table information.  This document can be found at</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;and code table information. This document can be found at</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;http:<span class="comment">//www.wmo.ch/web/www/WMOCodes.html</span></div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;(PDF and MSWord formats are available)</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>

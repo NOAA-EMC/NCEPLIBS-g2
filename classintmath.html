@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('classintmath.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,6 +109,9 @@ $(document).ready(function(){initNavTree('classintmath.html','');});
 <div class="title">intmath Module Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This module defines integer math functions used by other programs.  
+ <a href="classintmath.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Types</h2></td></tr>
@@ -119,35 +122,304 @@ Data Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2e61ebae49ba1ff07241034e38a4b727"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e61ebae49ba1ff07241034e38a4b727"></a>
-integer(kind=1) function&#160;</td><td class="memItemRight" valign="bottom"><b>i1log2_1</b> (ival)</td></tr>
+<tr class="memitem:a2e61ebae49ba1ff07241034e38a4b727"><td class="memItemLeft" align="right" valign="top">integer(kind=1) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintmath.html#a2e61ebae49ba1ff07241034e38a4b727">i1log2_1</a> (ival)</td></tr>
+<tr class="memdesc:a2e61ebae49ba1ff07241034e38a4b727"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2) for 1 bit integer numbers.  <a href="#a2e61ebae49ba1ff07241034e38a4b727">More...</a><br/></td></tr>
 <tr class="separator:a2e61ebae49ba1ff07241034e38a4b727"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73b15eb877031cd0226d5a28edfc5ad8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73b15eb877031cd0226d5a28edfc5ad8"></a>
-integer(kind=2) function&#160;</td><td class="memItemRight" valign="bottom"><b>i1log2_2</b> (ival)</td></tr>
+<tr class="memitem:a73b15eb877031cd0226d5a28edfc5ad8"><td class="memItemLeft" align="right" valign="top">integer(kind=2) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintmath.html#a73b15eb877031cd0226d5a28edfc5ad8">i1log2_2</a> (ival)</td></tr>
+<tr class="memdesc:a73b15eb877031cd0226d5a28edfc5ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2) for 2 bit integer numbers.  <a href="#a73b15eb877031cd0226d5a28edfc5ad8">More...</a><br/></td></tr>
 <tr class="separator:a73b15eb877031cd0226d5a28edfc5ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a551b80804f16691442dea8c7f3b7cc9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a551b80804f16691442dea8c7f3b7cc9f"></a>
-integer(kind=4) function&#160;</td><td class="memItemRight" valign="bottom"><b>i1log2_4</b> (ival)</td></tr>
+<tr class="memitem:a551b80804f16691442dea8c7f3b7cc9f"><td class="memItemLeft" align="right" valign="top">integer(kind=4) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintmath.html#a551b80804f16691442dea8c7f3b7cc9f">i1log2_4</a> (ival)</td></tr>
+<tr class="memdesc:a551b80804f16691442dea8c7f3b7cc9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2) for 4 bit integer numbers.  <a href="#a551b80804f16691442dea8c7f3b7cc9f">More...</a><br/></td></tr>
 <tr class="separator:a551b80804f16691442dea8c7f3b7cc9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7e5df4b7b272f9576e6a2b0844fe9b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7e5df4b7b272f9576e6a2b0844fe9b9"></a>
-integer(kind=8) function&#160;</td><td class="memItemRight" valign="bottom"><b>i1log2_8</b> (ival)</td></tr>
+<tr class="memitem:ad7e5df4b7b272f9576e6a2b0844fe9b9"><td class="memItemLeft" align="right" valign="top">integer(kind=8) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintmath.html#ad7e5df4b7b272f9576e6a2b0844fe9b9">i1log2_8</a> (ival)</td></tr>
+<tr class="memdesc:ad7e5df4b7b272f9576e6a2b0844fe9b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2) for 8 bit integer numbers.  <a href="#ad7e5df4b7b272f9576e6a2b0844fe9b9">More...</a><br/></td></tr>
 <tr class="separator:ad7e5df4b7b272f9576e6a2b0844fe9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af783e57fc2ad127a8c3f63e7755b69f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af783e57fc2ad127a8c3f63e7755b69f5"></a>
-integer(kind=1) function&#160;</td><td class="memItemRight" valign="bottom"><b>ilog2_1</b> (i_in)</td></tr>
+<tr class="memitem:af783e57fc2ad127a8c3f63e7755b69f5"><td class="memItemLeft" align="right" valign="top">integer(kind=1) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintmath.html#af783e57fc2ad127a8c3f63e7755b69f5">ilog2_1</a> (i_in)</td></tr>
+<tr class="memdesc:af783e57fc2ad127a8c3f63e7755b69f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns log(x)/log(2) for 1 bit integer numbers.  <a href="#af783e57fc2ad127a8c3f63e7755b69f5">More...</a><br/></td></tr>
 <tr class="separator:af783e57fc2ad127a8c3f63e7755b69f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac48cfc4aac12160bffdccedd10f70bc7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac48cfc4aac12160bffdccedd10f70bc7"></a>
-integer(kind=2) function&#160;</td><td class="memItemRight" valign="bottom"><b>ilog2_2</b> (i_in)</td></tr>
+<tr class="memitem:ac48cfc4aac12160bffdccedd10f70bc7"><td class="memItemLeft" align="right" valign="top">integer(kind=2) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintmath.html#ac48cfc4aac12160bffdccedd10f70bc7">ilog2_2</a> (i_in)</td></tr>
+<tr class="memdesc:ac48cfc4aac12160bffdccedd10f70bc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns log(x)/log(2) for 2 bit integer numbers.  <a href="#ac48cfc4aac12160bffdccedd10f70bc7">More...</a><br/></td></tr>
 <tr class="separator:ac48cfc4aac12160bffdccedd10f70bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59e1e039e0e8bb14a6915f38623f7477"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59e1e039e0e8bb14a6915f38623f7477"></a>
-integer(kind=4) function&#160;</td><td class="memItemRight" valign="bottom"><b>ilog2_4</b> (i_in)</td></tr>
+<tr class="memitem:a59e1e039e0e8bb14a6915f38623f7477"><td class="memItemLeft" align="right" valign="top">integer(kind=4) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintmath.html#a59e1e039e0e8bb14a6915f38623f7477">ilog2_4</a> (i_in)</td></tr>
+<tr class="memdesc:a59e1e039e0e8bb14a6915f38623f7477"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns log(x)/log(2) for 4 bit integer numbers.  <a href="#a59e1e039e0e8bb14a6915f38623f7477">More...</a><br/></td></tr>
 <tr class="separator:a59e1e039e0e8bb14a6915f38623f7477"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad944cb5a1970cb4f7ce0366ebb43ea2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad944cb5a1970cb4f7ce0366ebb43ea2d"></a>
-integer(kind=8) function&#160;</td><td class="memItemRight" valign="bottom"><b>ilog2_8</b> (i_in)</td></tr>
+<tr class="memitem:ad944cb5a1970cb4f7ce0366ebb43ea2d"><td class="memItemLeft" align="right" valign="top">integer(kind=8) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classintmath.html#ad944cb5a1970cb4f7ce0366ebb43ea2d">ilog2_8</a> (i_in)</td></tr>
+<tr class="memdesc:ad944cb5a1970cb4f7ce0366ebb43ea2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function returns log(x)/log(2) for 8 bit integer numbers.  <a href="#ad944cb5a1970cb4f7ce0366ebb43ea2d">More...</a><br/></td></tr>
 <tr class="separator:ad944cb5a1970cb4f7ce0366ebb43ea2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="intmath_8f_source.html#l00001">1</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
-</div><hr/>The documentation for this module was generated from the following file:<ul>
+<div class="textblock"><p>This module defines integer math functions used by other programs. </p>
+<p>It include following functions:</p>
+<ul>
+<li><a class="el" href="interfaceintmath_1_1ilog2.html">ilog2</a> Calculate log(x)/log(2).<ul>
+<li>ilog2_8 for 8 bit integer numbers.</li>
+<li>ilog2_4 for 4 bit integer numbers.</li>
+<li>ilog2_2 for 2 bit integer numbers.</li>
+<li>ilog2_1 for 1 bit integer numbers.</li>
+</ul>
+</li>
+<li><a class="el" href="interfaceintmath_1_1i1log2.html">i1log2</a> Calculate log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2).<ul>
+<li>i1log2_8 for 8 bit integer numbers.</li>
+<li>i1log2_4 for 4 bit integer numbers.</li>
+<li>i1log2_2 for 2 bit integer numbers.</li>
+<li>i1log2_1 for 1 bit integer numbers.</li>
+</ul>
+</li>
+</ul>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00022">22</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+</div><h2 class="groupheader">Member Function/Subroutine Documentation</h2>
+<a class="anchor" id="a2e61ebae49ba1ff07241034e38a4b727"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer(kind=1) function intmath::i1log2_1 </td>
+          <td>(</td>
+          <td class="paramtype">integer(kind=1)&#160;</td>
+          <td class="paramname"><em>ival</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2) for 1 bit integer numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ival</td><td>1 bit integer numbers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value for log(x+1)/log(2) </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00115">115</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+
+<p>References <a class="el" href="intmath_8f_source.html#l00115">intmath::i1log2::i1log2_1()</a>, and <a class="el" href="intmath_8f_source.html#l00273">intmath::ilog2::ilog2_1()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a73b15eb877031cd0226d5a28edfc5ad8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer(kind=2) function intmath::i1log2_2 </td>
+          <td>(</td>
+          <td class="paramtype">integer(kind=2)&#160;</td>
+          <td class="paramname"><em>ival</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2) for 2 bit integer numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ival</td><td>2 bit integer numbers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value for log(x+1)/log(2) </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00094">94</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+
+<p>References <a class="el" href="intmath_8f_source.html#l00094">intmath::i1log2::i1log2_2()</a>, and <a class="el" href="intmath_8f_source.html#l00232">intmath::ilog2::ilog2_2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a551b80804f16691442dea8c7f3b7cc9f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer(kind=4) function intmath::i1log2_4 </td>
+          <td>(</td>
+          <td class="paramtype">integer(kind=4)&#160;</td>
+          <td class="paramname"><em>ival</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2) for 4 bit integer numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ival</td><td>4 bit integer numbers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value for log(x+1)/log(2) </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00073">73</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+
+<p>References <a class="el" href="intmath_8f_source.html#l00073">intmath::i1log2::i1log2_4()</a>, and <a class="el" href="intmath_8f_source.html#l00186">intmath::ilog2::ilog2_4()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad7e5df4b7b272f9576e6a2b0844fe9b9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer(kind=8) function intmath::i1log2_8 </td>
+          <td>(</td>
+          <td class="paramtype">integer(kind=8)&#160;</td>
+          <td class="paramname"><em>ival</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2) for 8 bit integer numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ival</td><td>8 bit integer numbers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value for log(x+1)/log(2) </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00052">52</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+
+<p>References <a class="el" href="intmath_8f_source.html#l00052">intmath::i1log2::i1log2_8()</a>, and <a class="el" href="intmath_8f_source.html#l00135">intmath::ilog2::ilog2_8()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af783e57fc2ad127a8c3f63e7755b69f5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer(kind=1) function intmath::ilog2_1 </td>
+          <td>(</td>
+          <td class="paramtype">integer(kind=1)&#160;</td>
+          <td class="paramname"><em>i_in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns log(x)/log(2) for 1 bit integer numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i_in</td><td>1 bit integer numbers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value for log(x)/log(2) </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00273">273</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+
+<p>References <a class="el" href="intmath_8f_source.html#l00273">intmath::ilog2::ilog2_1()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac48cfc4aac12160bffdccedd10f70bc7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer(kind=2) function intmath::ilog2_2 </td>
+          <td>(</td>
+          <td class="paramtype">integer(kind=2)&#160;</td>
+          <td class="paramname"><em>i_in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns log(x)/log(2) for 2 bit integer numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i_in</td><td>2 bit integer numbers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value for log(x)/log(2) </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00232">232</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+
+<p>References <a class="el" href="intmath_8f_source.html#l00232">intmath::ilog2::ilog2_2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a59e1e039e0e8bb14a6915f38623f7477"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer(kind=4) function intmath::ilog2_4 </td>
+          <td>(</td>
+          <td class="paramtype">integer(kind=4)&#160;</td>
+          <td class="paramname"><em>i_in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns log(x)/log(2) for 4 bit integer numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i_in</td><td>4 bit integer numbers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value for log(x)/log(2) </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00186">186</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+
+<p>References <a class="el" href="intmath_8f_source.html#l00186">intmath::ilog2::ilog2_4()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad944cb5a1970cb4f7ce0366ebb43ea2d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer(kind=8) function intmath::ilog2_8 </td>
+          <td>(</td>
+          <td class="paramtype">integer(kind=8)&#160;</td>
+          <td class="paramname"><em>i_in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function returns log(x)/log(2) for 8 bit integer numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">i_in</td><td>8 bit integer numbers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value for log(x)/log(2) </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2000-06-21 </dd></dl>
+
+<p>Definition at line <a class="el" href="intmath_8f_source.html#l00135">135</a> of file <a class="el" href="intmath_8f_source.html">intmath.f</a>.</p>
+
+<p>References <a class="el" href="intmath_8f_source.html#l00135">intmath::ilog2::ilog2_8()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this module was generated from the following file:<ul>
 <li><a class="el" href="intmath_8f_source.html">intmath.f</a></li>
 </ul>
 </div><!-- contents -->

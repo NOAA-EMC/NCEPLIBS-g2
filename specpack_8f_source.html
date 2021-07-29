@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('specpack_8f_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -106,136 +106,109 @@ $(document).ready(function(){initNavTree('specpack_8f_source.html','');});
 <div class="title">specpack.f</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">      subroutine </span>specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">!$$$  SUBPROGRAM DOCUMENTATION BLOCK</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">!                .      .    .                                       .</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">! SUBPROGRAM:    specpack</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">!   PRGMMR: Gilbert          ORG: W/NP11    DATE: 2002-12-19</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">! ABSTRACT: This subroutine packs a spectral data field using the complex</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">!   packing algorithm for spherical harmonic data as </span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">!   defined in the GRIB2 Data Representation Template 5.51.</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">! PROGRAM HISTORY LOG:</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">! 2002-12-19  Gilbert</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">! USAGE:    CALL specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">!   INPUT ARGUMENT LIST:</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">!     fld()    - Contains the packed data values</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">!     ndpts    - The number of data values to pack</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">!     JJ       - J - pentagonal resolution parameter</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">!     KK       - K - pentagonal resolution parameter</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">!     MM       - M - pentagonal resolution parameter</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">!     idrstmpl - Contains the array of values for Data Representation</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">!                Template 5.51</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">!   OUTPUT ARGUMENT LIST:</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">!     cpack    - The packed data field (character*1 array)</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">!     lcpack   - length of packed field cpack().</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">! REMARKS: None</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">! ATTRIBUTES:</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">!   LANGUAGE: XL Fortran 90</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">!   MACHINE:  IBM SP</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">!$$$</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      <span class="keywordtype">real</span>,<span class="keywordtype">intent(in)</span> :: fld(ndpts)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <span class="keywordtype">integer</span>,<span class="keywordtype">intent(in)</span> :: ndpts,jj,kk,mm</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keywordtype">integer</span>,<span class="keywordtype">intent(inout)</span> :: idrstmpl(*)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      <span class="keywordtype">character(len=1)</span>,<span class="keywordtype">intent(out)</span> :: cpack(*)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="keywordtype">integer</span>,<span class="keywordtype">intent(out)</span> :: lcpack</div>
+<a href="specpack_8f.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="specpack_8f.html#a8ca96d02d64aef61d821ac8c90543d46">   22</a></span>&#160;<span class="keyword">      subroutine </span><a class="code" href="specpack_8f.html#a8ca96d02d64aef61d821ac8c90543d46">specpack</a>(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keywordtype">real</span>,<span class="keywordtype">intent(in)</span> :: fld(ndpts)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      <span class="keywordtype">integer</span>,<span class="keywordtype">intent(in)</span> :: ndpts,jj,kk,mm</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <span class="keywordtype">integer</span>,<span class="keywordtype">intent(inout)</span> :: idrstmpl(*)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      <span class="keywordtype">character(len=1)</span>,<span class="keywordtype">intent(out)</span> :: cpack(*)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;      <span class="keywordtype">integer</span>,<span class="keywordtype">intent(out)</span> :: lcpack</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;      <span class="keywordtype">integer</span> :: ifld(ndpts),ts,tmplsim(5)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      <span class="keywordtype">real</span> :: bscale,dscale,unpk(ndpts),tfld(ndpts)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      <span class="keywordtype">real</span>,<span class="keywordtype">allocatable</span> :: pscale(:)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      bscale = 2.0**<span class="keywordtype">real</span>(-idrstmpl(2))</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;      dscale = 10.0**<span class="keywordtype">real</span>(idrstmpl(3))</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;      nbits = idrstmpl(4)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      js=idrstmpl(6)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      ks=idrstmpl(7)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;      ms=idrstmpl(8)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      ts=idrstmpl(9)</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordtype">integer</span> :: ifld(ndpts),ts,tmplsim(5)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      <span class="keywordtype">real</span> :: bscale,dscale,unpk(ndpts),tfld(ndpts)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keywordtype">real</span>,<span class="keywordtype">allocatable</span> :: pscale(:)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      bscale = 2.0**<span class="keywordtype">real</span>(-idrstmpl(2))</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      dscale = 10.0**<span class="keywordtype">real</span>(idrstmpl(3))</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      nbits = idrstmpl(4)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      js=idrstmpl(6)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      ks=idrstmpl(7)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      ms=idrstmpl(8)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      ts=idrstmpl(9)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">!   Calculate Laplacian scaling factors for each possible wave number.</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keyword">allocate</span>(pscale(jj+mm))</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      tscale=<span class="keywordtype">real</span>(idrstmpl(5))*1e-6</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="keywordflow">do</span> n=js,jj+mm</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;         pscale(n)=<span class="keywordtype">real</span>(n*(n+1))**(tscale)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      <span class="keywordflow">enddo</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">!   Separate spectral coeffs into two lists; one to contain unpacked</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">!   values within the sub-spectrum Js, Ks, Ms, and the other with values </span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">!   outside of the sub-spectrum to be packed.</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">!   Calculate Laplacian scaling factors for each possible wave number.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      <span class="keyword">allocate</span>(pscale(jj+mm))</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      tscale=<span class="keywordtype">real</span>(idrstmpl(5))*1e-6</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">do</span> n=js,jj+mm</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;         pscale(n)=<span class="keywordtype">real</span>(n*(n+1))**(tscale)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keywordflow">enddo</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">!   Separate spectral coeffs into two lists; one to contain unpacked</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">!   values within the sub-spectrum Js, Ks, Ms, and the other with values </span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">!   outside of the sub-spectrum to be packed.</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      inc=1</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      incu=1</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      incp=1</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      <span class="keywordflow">do</span> m=0,mm</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;         nm=jj      <span class="comment">! triangular or trapezoidal</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;         <span class="keywordflow">if</span> ( kk .eq. jj+mm ) nm=jj+m          <span class="comment">! rhombodial</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;         ns=js      <span class="comment">! triangular or trapezoidal</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;         <span class="keywordflow">if</span> ( ks .eq. js+ms ) ns=js+m          <span class="comment">! rhombodial</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;         <span class="keywordflow">do</span> n=m,nm</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">if</span> (n.le.ns .AND. m.le.ms) <span class="keywordflow">then</span>    <span class="comment">! save unpacked value</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;               unpk(incu)=fld(inc)         <span class="comment">! real part</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;               unpk(incu+1)=fld(inc+1)     <span class="comment">! imaginary part</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;               inc=inc+2</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;               incu=incu+2</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">else</span>                         <span class="comment">! Save value to be packed and scale</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                         <span class="comment">! Laplacian scale factor</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;               tfld(incp)=fld(inc)*pscale(n)         <span class="comment">! real part</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;               tfld(incp+1)=fld(inc+1)*pscale(n)     <span class="comment">! imaginary part</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;               inc=inc+2</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;               incp=incp+2</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">endif</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;         <span class="keywordflow">enddo</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keywordflow">enddo</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      <span class="keyword">deallocate</span>(pscale)</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      incu=incu-1</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="keywordflow">if</span> (incu .ne. ts) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;         print *,<span class="stringliteral">&#39;specpack: Incorrect number of unpacked values &#39;</span>,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;     &amp;           <span class="stringliteral">&#39;given:&#39;</span>,ts     </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;         print *,<span class="stringliteral">&#39;specpack: Resetting idrstmpl(9) to &#39;</span>,incu</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;         ts=incu</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">endif</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">!  Add unpacked values to the packed data array in 32-bit IEEE format</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      call mkieee(unpk,cpack,ts)</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      ipos=4*ts</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">!  Scale and pack the rest of the coefficients</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">! </span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      tmplsim(2)=idrstmpl(2)</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      tmplsim(3)=idrstmpl(3)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      tmplsim(4)=idrstmpl(4)</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      call simpack(tfld,ndpts-ts,tmplsim,cpack(ipos+1),lcpack)</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      lcpack=lcpack+ipos</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">!  Fill in Template 5.51</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      idrstmpl(1)=tmplsim(1)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      idrstmpl(2)=tmplsim(2)</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      idrstmpl(3)=tmplsim(3)</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      idrstmpl(4)=tmplsim(4)</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      idrstmpl(9)=ts</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      idrstmpl(10)=1         <span class="comment">! Unpacked spectral data is 32-bit IEEE</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <span class="keywordflow">end</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      inc=1</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      incu=1</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      incp=1</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordflow">do</span> m=0,mm</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;         nm=jj      <span class="comment">! triangular or trapezoidal</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;         <span class="keywordflow">if</span> ( kk .eq. jj+mm ) nm=jj+m          <span class="comment">! rhombodial</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;         ns=js      <span class="comment">! triangular or trapezoidal</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;         <span class="keywordflow">if</span> ( ks .eq. js+ms ) ns=js+m          <span class="comment">! rhombodial</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;         <span class="keywordflow">do</span> n=m,nm</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">if</span> (n.le.ns .AND. m.le.ms) <span class="keywordflow">then</span>    <span class="comment">! save unpacked value</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;               unpk(incu)=fld(inc)         <span class="comment">! real part</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;               unpk(incu+1)=fld(inc+1)     <span class="comment">! imaginary part</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;               inc=inc+2</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;               incu=incu+2</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">else</span>                         <span class="comment">! Save value to be packed and scale</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                                         <span class="comment">! Laplacian scale factor</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;               tfld(incp)=fld(inc)*pscale(n)         <span class="comment">! real part</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;               tfld(incp+1)=fld(inc+1)*pscale(n)     <span class="comment">! imaginary part</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;               inc=inc+2</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;               incp=incp+2</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keywordflow">endif</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;         <span class="keywordflow">enddo</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keywordflow">enddo</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      <span class="keyword">deallocate</span>(pscale)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      incu=incu-1</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      <span class="keywordflow">if</span> (incu .ne. ts) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;         print *,<span class="stringliteral">&#39;specpack: Incorrect number of unpacked values &#39;</span>,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;     &amp;           <span class="stringliteral">&#39;given:&#39;</span>,ts     </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;         print *,<span class="stringliteral">&#39;specpack: Resetting idrstmpl(9) to &#39;</span>,incu</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;         ts=incu</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      <span class="keywordflow">endif</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">!  Add unpacked values to the packed data array in 32-bit IEEE format</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      call <a class="code" href="mkieee_8f.html#a375998969cdd6bf0800a5d3c69152aac">mkieee</a>(unpk,cpack,ts)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      ipos=4*ts</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">!  Scale and pack the rest of the coefficients</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">! </span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      tmplsim(2)=idrstmpl(2)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      tmplsim(3)=idrstmpl(3)</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      tmplsim(4)=idrstmpl(4)</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      call <a class="code" href="simpack_8f.html#a8ad780e9cc53e95db8cbbbe5ee703411">simpack</a>(tfld,ndpts-ts,tmplsim,cpack(ipos+1),lcpack)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      lcpack=lcpack+ipos</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">!  Fill in Template 5.51</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      idrstmpl(1)=tmplsim(1)</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      idrstmpl(2)=tmplsim(2)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      idrstmpl(3)=tmplsim(3)</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      idrstmpl(4)=tmplsim(4)</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      idrstmpl(9)=ts</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      idrstmpl(10)=1         <span class="comment">! Unpacked spectral data is 32-bit IEEE</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      <span class="keywordflow">end</span></div>
+<div class="ttc" id="mkieee_8f_html_a375998969cdd6bf0800a5d3c69152aac"><div class="ttname"><a href="mkieee_8f.html#a375998969cdd6bf0800a5d3c69152aac">mkieee</a></div><div class="ttdeci">subroutine mkieee(a, rieee, num)</div><div class="ttdoc">This subroutine stores a list of real values in 32-bit IEEE floating point format. </div><div class="ttdef"><b>Definition:</b> <a href="mkieee_8f_source.html#l00016">mkieee.f:16</a></div></div>
+<div class="ttc" id="simpack_8f_html_a8ad780e9cc53e95db8cbbbe5ee703411"><div class="ttname"><a href="simpack_8f.html#a8ad780e9cc53e95db8cbbbe5ee703411">simpack</a></div><div class="ttdeci">subroutine simpack(fld, ndpts, idrstmpl, cpack, lcpack)</div><div class="ttdoc">This subroutine packs up a data field using a simple packing algorithm as defined in the GRIB2 docume...</div><div class="ttdef"><b>Definition:</b> <a href="simpack_8f_source.html#l00033">simpack.f:33</a></div></div>
+<div class="ttc" id="specpack_8f_html_a8ca96d02d64aef61d821ac8c90543d46"><div class="ttname"><a href="specpack_8f.html#a8ca96d02d64aef61d821ac8c90543d46">specpack</a></div><div class="ttdeci">subroutine specpack(fld, ndpts, JJ, KK, MM, idrstmpl, cpack, lcpack)</div><div class="ttdoc">This subroutine packs a spectral data field using the complex packing algorithm for spherical harmoni...</div><div class="ttdef"><b>Definition:</b> <a href="specpack_8f_source.html#l00022">specpack.f:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_75b82e7e4a5feb05200b9ad7adf06257.html">home</a></li><li class="navelem"><a class="el" href="dir_b90aa5a6084b86bdb838378bc1dc161c.html">Hang.Lei</a></li><li class="navelem"><a class="el" href="dir_a172c4a69c8c4fc64ef5d9224f684072.html">noscrub</a></li><li class="navelem"><a class="el" href="dir_dd819178255f7a9ad49a3b8867a6c150.html">docus</a></li><li class="navelem"><a class="el" href="dir_648917924aeb9ce7c1fc0528dd2caf69.html">feature</a></li><li class="navelem"><a class="el" href="dir_d016ec1399c85acecef32bf81e1fad9c.html">dox</a></li><li class="navelem"><a class="el" href="dir_a7b3ebe721b8c60c479822a40383d337.html">src</a></li><li class="navelem"><b>specpack.f</b></li>
+    <li class="navelem"><a class="el" href="dir_75b82e7e4a5feb05200b9ad7adf06257.html">home</a></li><li class="navelem"><a class="el" href="dir_b90aa5a6084b86bdb838378bc1dc161c.html">Hang.Lei</a></li><li class="navelem"><a class="el" href="dir_a172c4a69c8c4fc64ef5d9224f684072.html">noscrub</a></li><li class="navelem"><a class="el" href="dir_dd819178255f7a9ad49a3b8867a6c150.html">docus</a></li><li class="navelem"><a class="el" href="dir_648917924aeb9ce7c1fc0528dd2caf69.html">feature</a></li><li class="navelem"><a class="el" href="dir_d016ec1399c85acecef32bf81e1fad9c.html">dox</a></li><li class="navelem"><a class="el" href="dir_a7b3ebe721b8c60c479822a40383d337.html">src</a></li><li class="navelem"><a class="el" href="specpack_8f.html">specpack.f</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.5 </li>

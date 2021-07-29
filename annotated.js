@@ -2,7 +2,7 @@ var annotated =
 [
     [ "drstemplates", "classdrstemplates.html", "classdrstemplates" ],
     [ "g2grids", "classg2grids.html", "classg2grids" ],
-    [ "grib_mod", "classgrib__mod.html", "classgrib__mod" ],
+    [ "grib_mod", "gribmod_8f.html#classgrib__mod", "gribmod_8f" ],
     [ "gridtemplates", "classgridtemplates.html", "classgridtemplates" ],
     [ "intmath", "classintmath.html", "classintmath" ],
     [ "params", "classparams.html", "classparams" ],

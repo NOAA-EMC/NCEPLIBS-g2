@@ -14,7 +14,9 @@ var NAVTREE =
       [ "File List", "files.html", "files" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
-        [ "Functions/Subroutines", "globals_func.html", null ]
+        [ "Functions/Subroutines", "globals_func.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
+        [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
   ] ]
@@ -23,7 +25,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "addfield_8f.html",
-"pdstemplates_8f_source.html"
+"gribmod_8f.html#a8b0fd057c75b18274da1922fc4f6ef38"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

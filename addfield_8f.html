@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('addfield_8f.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -116,15 +116,121 @@ $(document).ready(function(){initNavTree('addfield_8f.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
-<tr class="memitem:abe47d00e9129168f66617de9260d91e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe47d00e9129168f66617de9260d91e2"></a>
-subroutine&#160;</td><td class="memItemRight" valign="bottom"><b>addfield</b> (cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, ngrdpts, ibmap, bmap, ierr)</td></tr>
+<tr class="memitem:abe47d00e9129168f66617de9260d91e2"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="addfield_8f.html#abe47d00e9129168f66617de9260d91e2">addfield</a> (cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, ngrdpts, ibmap, bmap, ierr)</td></tr>
+<tr class="memdesc:abe47d00e9129168f66617de9260d91e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine packs up Sections 4 through 7 for a given field and adds them to a GRIB2 message.  <a href="#abe47d00e9129168f66617de9260d91e2">More...</a><br/></td></tr>
 <tr class="separator:abe47d00e9129168f66617de9260d91e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains subroutine which packs up Sections 4 through 7 for a given field and adds them to a GRIB2 message. </p>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
-<dl class="section date"><dt>Date</dt><dd>2000-05-02</dd></dl>
-<p>This subroutine packs up Sections 4 through 7 for a given field and adds them to a GRIB2 message. They are Product Definition Section, Data Representation Section, Bit-Map Section and Data Section, respectively.</p>
+<dl class="section date"><dt>Date</dt><dd>2000-05-02 </dd></dl>
+
+<p>Definition in file <a class="el" href="addfield_8f_source.html">addfield.f</a>.</p>
+</div><h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a class="anchor" id="abe47d00e9129168f66617de9260d91e2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine addfield </td>
+          <td>(</td>
+          <td class="paramtype">character(len=1), dimension(lcgrib), intent(inout)&#160;</td>
+          <td class="paramname"><em>cgrib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>lcgrib</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>ipdsnum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, dimension(*), intent(in)&#160;</td>
+          <td class="paramname"><em>ipdstmpl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>ipdstmplen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension(numcoord), intent(in)&#160;</td>
+          <td class="paramname"><em>coordlist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>numcoord</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>idrsnum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, dimension(*), intent(inout)&#160;</td>
+          <td class="paramname"><em>idrstmpl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>idrstmplen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real, dimension(ngrdpts), intent(in), target&#160;</td>
+          <td class="paramname"><em>fld</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>ngrdpts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>ibmap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical*1, dimension(ngrdpts), intent(in)&#160;</td>
+          <td class="paramname"><em>bmap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(out)&#160;</td>
+          <td class="paramname"><em>ierr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This subroutine packs up Sections 4 through 7 for a given field and adds them to a GRIB2 message. </p>
+<p>They are Product Definition Section, Data Representation Section, Bit-Map Section and Data Section, respectively.</p>
 <p>This routine is used with routines "gribcreate", "addlocal", "addgrid", and "gribend" to create a complete GRIB2 message. Subroutine gribcreate must be called first to initialize a new GRIB2 message. Also, subroutine addgrid must be called after gribcreate and before this routine to add the appropriate grid description to the GRIB2 message. Also, a call to gribend is required to complete GRIB2 message after all fields have been added.</p>
 <p>PROGRAM HISTORY LOG:</p>
 <ul>
@@ -139,6 +245,7 @@ subroutine&#160;</td><td class="memItemRight" valign="bottom"><b>addfield</b> (c
     <tr><td class="paramdir">[in]</td><td class="paramname">ipdsnum</td><td>Product Definition Template Number ( see Code Table 4.0). </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">ipdstmpl</td><td>Contains the data values for the specified Product Definition Template (N=ipdsnum). Each element of this integer array contains an entry (in the order specified) of Product Defintion Template 4.N </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">ipdstmplen</td><td>Max dimension of ipdstmpl coordlist Array containg floating point values intended to document the vertical discretisation associated to model data on hybrid coordinate vertical levels. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">coordlist</td><td>Array containg floating point values intended to document the vertical discretisation associated to model data on hybrid coordinate vertical levels. (part of Section 4) The dimension of this array can be obtained in advance from maxvals(5), which is returned from subroutine gribinfo. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">numcoord</td><td>- number of values in array coordlist. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">idrsnum</td><td>- Data Representation Template Number ( see Code Table 5.0 ) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">idrstmpl</td><td>Contains the data values for the specified Data Representation Template (N=idrsnum). Each element of this integer array contains an entry (in the order specified) of Data Representation Template 5.N. Note that some values in this template (eg. reference values, number of bits, etc...) may be changed by the data packing algorithms. Use this to specify scaling factors and order of spatial differencing, if desired. </td></tr>
@@ -174,8 +281,15 @@ subroutine&#160;</td><td class="memItemRight" valign="bottom"><b>addfield</b> (c
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-05-02 </dd></dl>
 
-<p>Definition in file <a class="el" href="addfield_8f_source.html">addfield.f</a>.</p>
-</div></div><!-- contents -->
+<p>Definition at line <a class="el" href="addfield_8f_source.html#l00088">88</a> of file <a class="el" href="addfield_8f_source.html">addfield.f</a>.</p>
+
+<p>References <a class="el" href="cmplxpack_8f_source.html#l00031">cmplxpack()</a>, <a class="el" href="pdstemplates_8f_source.html#l00458">pdstemplates::extpdstemplate()</a>, <a class="el" href="g2__gbytesc_8f_source.html#l00019">g2_gbytec()</a>, <a class="el" href="g2__gbytesc_8f_source.html#l00038">g2_sbytec()</a>, <a class="el" href="g2__gbytesc_8f_source.html#l00114">g2_sbytesc()</a>, <a class="el" href="getdim_8f_source.html#l00021">getdim()</a>, <a class="el" href="drstemplates_8f_source.html#l00164">drstemplates::getdrstemplate()</a>, <a class="el" href="pdstemplates_8f_source.html#l00411">pdstemplates::getpdstemplate()</a>, <a class="el" href="getpoly_8f_source.html#l00023">getpoly()</a>, <a class="el" href="jpcpack_8f_source.html#l00038">jpcpack()</a>, <a class="el" href="mkieee_8f_source.html#l00016">mkieee()</a>, <a class="el" href="pngpack_8f_source.html#l00031">pngpack()</a>, <a class="el" href="simpack_8f_source.html#l00033">simpack()</a>, and <a class="el" href="specpack_8f_source.html#l00022">specpack()</a>.</p>
+
+<p>Referenced by <a class="el" href="putgb2_8f_source.html#l00168">putgb2()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
