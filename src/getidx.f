@@ -58,7 +58,7 @@ C-----------------------------------------------------------------------
          character(len=1),pointer,dimension(:) :: cbuf
       END TYPE GINDEX
      
-      TYPE(GINDEX) :: IDXLIST(10000)
+      TYPE(GINDEX), save :: IDXLIST(10000)
 
       DATA LUX/0/
 C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
