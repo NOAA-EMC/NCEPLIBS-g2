@@ -30,18 +30,37 @@ var NAVTREE =
     [ "GRIB2 Decoding Routines", "index.html#autotoc_md2", null ],
     [ "Extracting GRIB2 Fields from a GRIB2 file", "index.html#autotoc_md3", null ],
     [ "GRIB2 Tables/Templates", "index.html#autotoc_md4", null ],
+    [ "Modules", "namespaces.html", [
+      [ "Modules List", "namespaces.html", "namespaces_dup" ],
+      [ "Module Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions/Subroutines", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ]
+      ] ]
+    ] ],
     [ "Data Types List", "annotated.html", [
-      [ "Data Types List", "annotated.html", "annotated_dup" ]
+      [ "Data Types List", "annotated.html", "annotated_dup" ],
+      [ "Data Fields", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Functions/Subroutines", "functions_func.html", null ]
+      ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+      [ "File List", "files.html", "files_dup" ],
+      [ "Globals", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Functions/Subroutines", "globals_func.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
+        [ "Macros", "globals_defs.html", null ]
+      ] ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"addfield_8f_source.html"
+"addfield_8f.html",
+"namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
