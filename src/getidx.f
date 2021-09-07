@@ -98,10 +98,6 @@ C  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
          LUX=0
       ENDIF
 
-      IF (ASSOCIATED(IDXLIST(LUGB)%CBUF)) then
-         DEALLOCATE(IDXLIST(LUGB)%CBUF)
-      end if
-
       IF (LUGI.LT.0) THEN      ! Force re-read of index from indexfile
                                ! associated with unit abs(lugi)
          IF ( ASSOCIATED( IDXLIST(LUGB)%CBUF ) ) 
