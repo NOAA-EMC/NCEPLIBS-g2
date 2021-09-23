@@ -1,4 +1,12 @@
+# This is the cmake build file for the tests directory of the
+# NCEPLIBS-g2_UTILS project.
+#
 
-add_executable(test_g2 test_g2.f90)
-target_link_libraries(test_g2 g2_d)
-add_test(test_g2 test_g2)
+function(g2_test name)
+  add_executable(${name} ${name}.f)
+  add_dependencies(${name} g2)
+  target_link_libraries(${name} PRIVATE g2)
+  add_test(NAME ${name} COMMAND ${name})
+endfunction()
+
+g2_test(tst_decode)
