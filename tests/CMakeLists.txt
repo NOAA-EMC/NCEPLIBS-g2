@@ -4,8 +4,8 @@
 
 function(g2_test name)
   add_executable(${name} ${name}.f)
-  add_dependencies(${name} g2)
-  target_link_libraries(${name} PRIVATE g2)
+  add_dependencies(${name} g2_d)
+  target_link_libraries(${name} PRIVATE g2_d)
   add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
