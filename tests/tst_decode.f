@@ -105,5 +105,5 @@
        call gf_free(gfld)
 
        print *,"SUCCESS!\n"
-       return
+       
        end program tst_decode
