@@ -79,33 +79,25 @@
        if (iret .ne. 0) stop 101
 
        do i =0,2
-         if (listsec0(i) .ne. listsec0_ok(i)) then
-          print *, G2_ERROR
-         endif
+         if (listsec0(i) .ne. listsec0_ok(i)) stop 102
        end do
 
        do i =0,12
-         if (listsec1(i) .ne. listsec1_ok(i)) then
-          print *, G2_ERROR
-         endif
+         if (listsec1(i) .ne. listsec1_ok(i)) stop 103
        end do
 
-       if (numfields .ne. 1) print *, G2_ERROR
-       if (numlocal .ne. 0)  print *, G2_ERROR
+       if (numfields .ne. 1) stop 104
+       if (numlocal .ne. 0)  stop 105
 
        call gf_getfld(fgrib, fgrib_len, 1, 1, 1, gfld, iret)
-       if (iret .ne. 0) stop 102
+       if (iret .ne. 0) stop 106
 
-       if (gfld%version .ne. 2) then
-         print *, G2_ERROR
-       endif
+       if (gfld%version .ne. 2) stop 107
 
-       if (gfld%ndpts .ne. 121) stop 121 
+       if (gfld%ndpts .ne. 121) stop 108
 
        do i =0,(gfld%ndpts-1) 
-        if (gfld%fld(i) .ne. fld_ok(i)) then
-          print *, G2_ERROR
-        endif
+        if (gfld%fld(i) .ne. fld_ok(i)) stop 109
        end do
 
        call gf_free(gfld)
