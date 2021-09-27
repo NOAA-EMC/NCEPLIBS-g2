@@ -1,6 +1,7 @@
-!>
-!> This test is for decoding full grib2 message.
-!> Dusan Jovic, July, 2021
+!> @file
+!> @brief This test is for decoding full grib2 message. Code was translated
+!> from the C version originated from Dusan. 
+!> @author Dusan Jovic @date 20210701
 !>
 
        program tst_decode
@@ -75,19 +76,20 @@
  
         call gb_info(fgrib, fgrib_len, listsec0, listsec1,
      &  numfields, numlocal, maxlocal, iret)
-       if (iret .ne. 0)  print *, G2_ERROR
+       if (iret .ne. 0) then
+         print *, G2_ERROR
+          stop 101
+       endif
 
        do i =0,2
          if (listsec0(i) .ne. listsec0_ok(i)) then
           print *, G2_ERROR
-          stop 101
          endif
        end do
 
        do i =0,12
          if (listsec1(i) .ne. listsec1_ok(i)) then
           print *, G2_ERROR
-          stop 102
          endif
        end do
 
@@ -95,22 +97,22 @@
        if (numlocal .ne. 0)  print *, G2_ERROR
 
        call gf_getfld(fgrib, fgrib_len, 1, 1, 1, gfld, iret)
-       if (iret .ne. 0)  print *, G2_ERROR
+       if (iret .ne. 0) then
+         print *, G2_ERROR
+         stop 102
+       endif
 
        if (gfld%version .ne. 2) then
          print *, G2_ERROR
-         stop 103
        endif
 
        if (gfld%ndpts .ne. 121) then 
          print *, G2_ERROR  
-         stop 104
        endif
 
        do i =0,(gfld%ndpts-1) 
         if (gfld%fld(i) .ne. fld_ok(i)) then
           print *, G2_ERROR
-          stop 105
         endif
        end do
 
