@@ -76,10 +76,7 @@
  
         call gb_info(fgrib, fgrib_len, listsec0, listsec1,
      &  numfields, numlocal, maxlocal, iret)
-       if (iret .ne. 0) then
-         print *, G2_ERROR
-          stop 101
-       endif
+       if (iret .ne. 0) stop 101
 
        do i =0,2
          if (listsec0(i) .ne. listsec0_ok(i)) then
@@ -97,18 +94,13 @@
        if (numlocal .ne. 0)  print *, G2_ERROR
 
        call gf_getfld(fgrib, fgrib_len, 1, 1, 1, gfld, iret)
-       if (iret .ne. 0) then
-         print *, G2_ERROR
-         stop 102
-       endif
+       if (iret .ne. 0) stop 102
 
        if (gfld%version .ne. 2) then
          print *, G2_ERROR
        endif
 
-       if (gfld%ndpts .ne. 121) then 
-         print *, G2_ERROR  
-       endif
+       if (gfld%ndpts .ne. 121) stop 121 
 
        do i =0,(gfld%ndpts-1) 
         if (gfld%fld(i) .ne. fld_ok(i)) then
