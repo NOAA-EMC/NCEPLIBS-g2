@@ -71,4 +71,4 @@ jobs:
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose
+        ctest --verbose --output-on-failure
