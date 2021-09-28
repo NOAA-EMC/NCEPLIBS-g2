@@ -1,7 +1,6 @@
-!> @file
-!> @brief This test is for decoding full grib2 message. Code was translated
+!> This test is for decoding full grib2 message. Code was translated
 !> from the C version originated from Dusan. 
-!> @author Dusan Jovic @date 20210701
+!> Dusan Jovic July 2021
 !>
 
        program tst_decode
@@ -14,13 +13,15 @@
        character, dimension(195) :: fgrib
        real, dimension(121) :: fld_ok
        integer G2_ERROR, numfields, numlocal, maxlocal
+       character, dimension(195) :: hex
        integer, dimension(3) :: listsec0, listsec0_ok
        integer, dimension(13) :: listsec1, listsec1_ok
        type(gribfield) :: gfld
     
        print *,"Testing decoding full grib2 message.\n"
 
-       fgrib(:) = (/ 
+!        read(fgrib(1:75),'(z4)')
+         hex(:)=(/ 
      &  "0x47", "0x52", "0x49", "0x42", "0x00", "0x00",
      &  "0x02", "0x02", "0x00", "0x00", "0x00", "0x00",
      &  "0x00", "0x00", "0x00", "0xc3", "0x00", "0x00",
@@ -54,7 +55,7 @@
      &  "0x00", "0x00", "0x08", "0x00", "0x01", "0x83",
      &  "0x38", "0xee", "0x3f", "0xa7", "0x80", "0x37",
      &  "0x37", "0x37", "0x37" /)
-       
+       read(fgrib(1:195),'(195z4)')hex(1:195)      
         fgrib_len = 195
         G2_ERROR = 2
        listsec0_ok(:) = (/ 2, 2, 195 /)
