@@ -113,7 +113,7 @@
       contains
 
 !>    This function returns the index of specified Data
-!>    Representation Template 5.NN (NN=number) in array templates.                                    .
+!>    Representation Template 5.NN (NN=number) in array templates.
 !>     
 !>    @param[in] number NN, indicating the number of the Data Representation 
 !>    Template 5.NN that is being requested.
@@ -137,7 +137,7 @@
 
          end function
 
-!>    This subroutine returns DRS template information for a                                   .
+!>    This subroutine returns DRS template information for a
 !>    specified Data Representation Template 5.NN.
 !>
 !>    The number of entries in the template is returned along with a map
