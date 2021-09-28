@@ -40,13 +40,15 @@ typedef struct png_stream png_stream; /**< location to write PNG stream */
 
 void user_read_data(png_structp , png_bytep , png_uint_32 );
 
-void user_read_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
-
 /**
  * Custom read function used so that libpng will read a PNG stream
  * from memory instead of a file on disk.
+ *
+ * @param png_ptr pointer to png.
+ * @param data the data.
+ * @param length length of data.
 */
-
+void user_read_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
 {
      char *ptr;
      g2int offset;
