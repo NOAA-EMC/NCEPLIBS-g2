@@ -10,8 +10,7 @@
 !>    - 2000-05-26 Stephen Gilbert Modified from getg1s to work with grib2
 !>    - 2012-12-11 Boi Vuong initialize an undefine pointers
 !>    - 2015-10-29 Boi Vuong Deallocate pointers in derived type gribfield
-!>    @param[in] gfld derived type gribfield (defined in module grib_mod)
-!>    @param[out] gfld derived type gribfield (defined in module grib_mod)
+!>    @param gfld derived type gribfield (defined in module grib_mod)
 !>    (NOTE: See Remarks Section)
 !>    - gfld\%version GRIB edition number (currently 2)
 !>    - gfld\%discipline Message Discipline (see Code Table 0.0)

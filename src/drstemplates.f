@@ -112,11 +112,9 @@
 
       contains
 
-!>    @brief  This function returns the index of specified Data
+!>    This function returns the index of specified Data
 !>    Representation Template 5.NN (NN=number) in array templates.                                    .
-!>    @author Stephen Gilbert            @date 2001-06-28
 !>     
-
 !>    @param[in] number NN, indicating the number of the Data Representation 
 !>    Template 5.NN that is being requested.
 !>
@@ -139,11 +137,9 @@
 
          end function
 
-!>    @brief This subroutine returns DRS template information for a                                   .
+!>    This subroutine returns DRS template information for a                                   .
 !>    specified Data Representation Template 5.NN.
-!>    @author Stephen Gilbert            @date 2000-05-11
-!>     
-
+!>
 !>    The number of entries in the template is returned along with a map
 !>    of the number of octets occupied by each entry. Also, a flag is
 !>    returned to indicate whether the template would need to be extended.
@@ -184,11 +180,9 @@
 
          end subroutine
 
-!>    @brief This subroutine generates the remaining octet map for a
+!>    This subroutine generates the remaining octet map for a
 !>    given Data Representation Template, if required.
-!>    @author  Stephen Gilbert            @date 2000-05-11
 !>     
-
 !>    Some Templates can vary depending on data values given in an earlier part 
 !>    of the Template, and it is necessary to know some of the earlier entry
 !>    values to generate the full octet map of the Template.

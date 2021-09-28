@@ -20,7 +20,6 @@
 !>    for the specified Grid Definition. Template (N=igdsnum). Each element of this
 !>    integer array contains an entry (in the order specified) of Grid Definition
 !>    Template 3.N (Only required to unpack DRT 5.51).
-!>    @param[in] ndpts Number of data points unpacked and returned.
 !>    @param[in] idrsnum Data Representation Template Number (Code Table 5.0).
 !>    @param[in] idrstmpl Pointer to an integer array containing the data values for
 !>    the specified Data Representation Template (N=idrsnum). Each element of this 
