@@ -47,6 +47,7 @@ jobs:
 
     - name: build
       run: |
+        set -x
         cd g2
         mkdir build
         doxygen --version
@@ -57,7 +58,7 @@ jobs:
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose
+        ctest --verbose --output-on-failure
         gcovr -r .. -v  --html-details -o test-coverage.html
 
     - name: upload-test-coverage
