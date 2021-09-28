@@ -66,9 +66,9 @@ jobs:
         mkdir build 
         cd build
         cmake .. -DOPENMP=ON -DJasper_ROOT=~/Jasper
-        make -j2
+        make -j2 VERBOSE=1
     
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose
+        ctest --verbose --output-on-failure
