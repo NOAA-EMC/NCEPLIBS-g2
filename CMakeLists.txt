@@ -21,7 +21,8 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
     "MinSizeRel" "RelWithDebInfo")
 endif()
 
-find_package(Jasper REQUIRED)
+# There was a bug in jasper for the intel compiler that was fixed in 2.0.25.
+find_package(Jasper 2.0.25 REQUIRED)
 find_package(PNG REQUIRED)
 
 add_subdirectory(src)
