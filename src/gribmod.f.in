@@ -150,7 +150,7 @@
 
       module grib_mod
 
-      character(len=12) :: G2_VERSION="g2lib-3.4.5" !< Library version.
+      character(len=12) :: G2_VERSION="g2lib-@pVersion@" !< Library version.
 
       type gribfield
           integer :: version,discipline
