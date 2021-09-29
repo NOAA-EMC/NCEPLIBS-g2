@@ -10,6 +10,7 @@ program test_g2_encode
   character (len = MAX_MSG_LEN) :: msg
   integer :: listsec0(2)
   integer :: listsec1(13)
+  integer :: msg_len
   integer :: ierr
 
   print *, 'Testing g2 library encoding.'
@@ -45,9 +46,15 @@ program test_g2_encode
   listsec1(11) = 59
   listsec1(12) = 0
   listsec1(13) = 0
-  
+
+  ! Create the GRIB2 message.
   call gribcreate(msg, MAX_MSG_LEN, listsec0, listsec1, ierr)
   if (ierr .ne. 0) stop 2
+
+  ! Finilize the GRIB2 message.
+  call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
+  if (ierr .ne. 0) stop 3
+  print *, 'msg_len = ', msg_len
   
   print *, 'SUCESSS!'
 end program test_g2_encode
