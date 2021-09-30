@@ -111,7 +111,7 @@ program test_g2_encode
   endif
 
   ! Product Definition Template Number ( see Code Table 4.0).
-  ipdsnum = 0
+  ipdsnum = 8
 
   ! Contains the data values for the specified Product Definition
   ! Template (N=ipdsnum). Each element of this integer array contains
