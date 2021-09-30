@@ -1,5 +1,5 @@
 program test_g2
-  use grib_mod
+  use grib_mod, only: G2_VERSION
   implicit none
 
   character(len=5) :: version_in
