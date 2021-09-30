@@ -6,8 +6,9 @@
 !>
 
 !>    This Fortran Module contains info on all the available GRIB2 Grid
-!>    Definition Templates used in Section 3 - the Grid Definition
-!>    Section (GDS).
+!>    Definition Templates used in [Section 3 - the Grid Definition
+!>    Section
+!>    (GDS)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml).
 !>      
 !>    Each Template has three parts: The number of entries in the
 !>    template (mapgridlen); A map of the template (mapgrid), which
