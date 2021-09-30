@@ -32,7 +32,7 @@ program test_g2_encode
   integer, parameter :: ngrdpts = 3
   real :: fld(ngrdpts)
   integer :: ibmap
-  logical*1 :: bmap
+  logical*1 :: bmap(1)
 
   integer :: ierr
 
@@ -157,17 +157,19 @@ program test_g2_encode
   ! ngrdpts Number of data points in grid. i.e. size of fld and bmap.
 
   ! ibmap Bitmap indicator (see Code Table 6.0).
+  ibmap = 254
 
-  ! bmap Logical*1 array containing bitmap to be added. (if ibmap=0 or ibmap=254)
+  ! bmap Logical*1 array containing bitmap to be added. (if ibmap=0 or
+  ! ibmap=254)
   
-  ! Add a field to the GRIB2 message.
-  call addfield(msg, MAX_MSG_LEN, ipdsnum, ipdstmpl, ipdstmplen, &
-       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-       ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 0) then
-     print *, 'ierr = ', ierr
-     stop 3
-  endif
+  ! ! Add a field to the GRIB2 message.
+  ! call addfield(msg, MAX_MSG_LEN, ipdsnum, ipdstmpl, ipdstmplen, &
+  !      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+  !      ngrdpts, ibmap, bmap, ierr)
+  ! if (ierr .ne. 0) then
+  !    print *, 'ierr = ', ierr
+  !    stop 3
+  ! endif
 
   ! Finilize the GRIB2 message.
   call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
