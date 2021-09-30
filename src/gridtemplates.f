@@ -1,24 +1,29 @@
 !>    @file
 !>    @brief This Fortran Module contains info on all the available
-!>    GRIB2 Grid Definition Templates used in Section 3 (GDS).
+!>    GRIB2 Grid Definition Templates used in Section 3 - the Grid
+!>    Definition Section (GDS).
 !>    @author Stephen Gilbert @date 2000-05-09
 !>
 
-!>    This Fortran Module contains info on all the available GRIB2
-!>    Grid Definition Templates used in Section 3 (GDS).
-!>    Each Template has three parts: The number of entries in the template
-!>    (mapgridlen); A map of the template (mapgrid), which contains the
-!>    number of octets in which to pack each of the template values; and
-!>    a logical value (needext) that indicates whether the Template needs
-!>    to be extended. In some cases the number of entries in a template
-!>    can vary depending upon values specified in the "static" part of
-!>    the template. (See Template 3.120 as an example)
-!>    This module also contains two subroutines. Subroutine getgridtemplate
-!>    returns the octet map for a specified Template number, and
-!>    subroutine extgridtemplate will calculate the extended octet map
-!>    of an appropriate template given values for the "static" part of the
-!>    template. See docblocks below for the arguments and usage of these
-!>    routines.
+!>    This Fortran Module contains info on all the available GRIB2 Grid
+!>    Definition Templates used in [Section 3 - the Grid Definition
+!>    Section
+!>    (GDS)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml).
+!>      
+!>    Each Template has three parts: The number of entries in the
+!>    template (mapgridlen); A map of the template (mapgrid), which
+!>    contains the number of octets in which to pack each of the
+!>    template values; and a logical value (needext) that indicates
+!>    whether the Template needs to be extended. In some cases the
+!>    number of entries in a template can vary depending upon values
+!>    specified in the "static" part of the template. (See Template
+!>    3.120 as an example).
+!>
+!>    This module also contains two subroutines. Subroutine
+!>    getgridtemplate() returns the octet map for a specified Template
+!>    number, and subroutine extgridtemplate() will calculate the
+!>    extended octet map of an appropriate template given values for the
+!>    static part of the template.
 !>    
 !>    PROGRAM HISTORY LOG:
 !>    - 2000-05-09 Stephen Gilbert Initial development
@@ -27,21 +32,20 @@
 !>    - 2008-05-29 Boi Vuong Added GDT 3.32768 Rotate Lat/Lon E-grid
 !>    - 2010-05-10 Boi Vuong Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
 !>    - 2013-08-06 Boi Vuong Added GDT 3.4,3.5,3.12,3.101,3.140
-!>    
+!>
 !>    @note Array mapgrid contains the number of octets in which the
 !>    corresponding template values will be stored. A negative value in
 !>    mapgrid is used to indicate that the corresponding template entry
 !>    can contain negative values. This information is used later when
 !>    packing/unpacking the template data values. Negative data values
 !>    in GRIB are stored with the left most bit set to one, and a
-!>    negative number of octets value in mapgrid() indicates that this
+!>    negative number of octets value in mapgrid indicates that this
 !>    possibility should be considered. The number of octets used to
-!>    store the data value in this case would be the absolute value
-!>    of the negative value in mapgrid().
+!>    store the data value in this case would be the absolute value of
+!>    the negative value in mapgrid.
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
 !>
-
       module gridtemplates
 
       integer,parameter :: MAXLEN=200 !< maximum number of octets in mapgrid
@@ -250,6 +254,7 @@
 
 !>    This function returns the index of specified Grid Definition
 !>    Template 3.NN in array templates.
+!>      
 !>    @param[in] number NN, indicating the number of the Grid Definition
 !>    Template 3.NN that is being requested.
 !>    @return Index of GDT 3.NN in array templates, if template exists.
@@ -257,7 +262,6 @@
 !>
 !>    @author Stephen Gilbert @date 2001-06-28
 !>
-
          integer function getgridindex(number)
 
            integer,intent(in) :: number
@@ -273,11 +277,12 @@
 
          end function
 
-!>    This subroutine grid template information for a specified Grid 
-!>    Definition Template 3.NN. The number of entries in the template 
-!>    is returned along with a map of the number of octets occupied by 
-!>    each entry. Also, a flag is returned to indicate whether the 
-!>    template would need to be extended.
+!>    This subroutine gets template information for a specified Grid
+!>    Definition Template 3.NN. The number of entries in the template is
+!>    returned along with a map of the number of octets occupied by each
+!>    entry. Also, a flag is returned to indicate whether the template
+!>    would need to be extended.
+!>      
 !>    @param[in] number NN, indicating the number of the Grid Definition
 !>    Template 3.NN that is being requested.
 !>    @param[out] nummap Number of entries in the Template.
@@ -291,7 +296,6 @@
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
 !>
-
          subroutine getgridtemplate(number,nummap,map,needext,iret)
 
            integer,intent(in) :: number
@@ -336,7 +340,6 @@
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
 !>
-
          subroutine extgridtemplate(number,list,nummap,map)
 
            integer,intent(in) :: number,list(*)
@@ -395,7 +398,8 @@
          end subroutine
 
 !>    This function returns the initial length (number of entries) in
-!>    the "static" part of specified Grid Definition Template 3.number.
+!>    the static part of specified Grid Definition Template 3.number.
+!>      
 !>    @param[in] number NN, indicating the number of the Grid Definition
 !>    Template 3.NN that is being requested.
 !>    @return Number of entries in the "static" part of GDT 3.number.
@@ -403,7 +407,6 @@
 !>
 !>    @author Stephen Gilbert @date 2004-05-11
 !>
-
          integer function getgdtlen(number)
 
            integer,intent(in) :: number
