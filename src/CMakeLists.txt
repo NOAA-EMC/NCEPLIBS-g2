@@ -1,6 +1,29 @@
+# This is the CMake file for the src directory of the NCEPLIBS-g2 project.
+#
+# Mark Potts, Kyle Gerheiser
 
-include("list_of_files.cmake")
+# These are the fortran source files.
+set(fortran_src addfield.f addgrid.f addlocal.f cmplxpack.f compack.f
+comunpack.f drstemplates.f g2_gbytesc.f g2grids.f gb_info.f gdt2gds.f
+getdim.f getfield.f getg2i.f getg2ir.f getgb2.f getgb2l.f getgb2p.f
+getgb2r.f getgb2rp.f getgb2s.f getidx.f getlocal.f getpoly.f
+gettemplates.f gf_free.f gf_getfld.f gf_unpack1.f gf_unpack2.f
+gf_unpack3.f gf_unpack4.f gf_unpack5.f gf_unpack6.f gf_unpack7.f
+gribcreate.f gribend.f gribinfo.f ${CMAKE_BINARY_DIR}/src/gribmod.f
+gridtemplates.f intmath.f ixgb2.f jpcpack.f jpcunpack.f misspack.f
+mkieee.f pack_gp.f params_ecmwf.f params.f pdstemplates.f pngpack.f
+pngunpack.f putgb2.f rdieee.f realloc.f reduce.f simpack.f simunpack.f
+skgb.f specpack.f specunpack.f)
 
+# These are the C source files.
+set(c_src dec_jpeg2000.c dec_png.c enc_jpeg2000.c enc_png.c mova2i.c)
+
+# Create this fortran file, which has the contents of the VERSION file
+# substituted in.
+CONFIGURE_FILE("${CMAKE_SOURCE_DIR}/src/gribmod.f.in" "${CMAKE_BINARY_DIR}/src/gribmod.f"
+  @ONLY)
+
+# Set compiler definitions.
 add_compile_definitions(__64BIT__)
 if(APPLE)
   add_compile_definitions(APPLE)
@@ -8,6 +31,7 @@ elseif(UNIX)
   add_compile_definitions(LINUX)
 endif()
 
+# Set flags.
 if(CMAKE_C_COMPILER_ID MATCHES "^(Intel)$")
   set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
   set(CMAKE_C_FLAGS_RELEASE "-O3")
@@ -25,6 +49,8 @@ if(${CMAKE_Fortran_COMPILER_ID} MATCHES "^(GNU)$" AND ${CMAKE_Fortran_COMPILER_V
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -w -fallow-argument-mismatch -fallow-invalid-boz")
 endif()
 
+# Build a _4 and _d version of the library, for 4-byte real, and
+# 8-byte real.
 set(kinds "4" "d")
 foreach(kind ${kinds})
   set(lib_name ${PROJECT_NAME}_${kind})
@@ -51,6 +77,7 @@ foreach(kind ${kinds})
 
 endforeach()
 
+# Set up the install.
 install(
   TARGETS ${LIB_TARGETS}
   EXPORT ${PROJECT_NAME}Exports
