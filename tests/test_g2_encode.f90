@@ -27,7 +27,7 @@ program test_g2_encode
   integer, parameter :: numcoord = 3
   real :: coordlist(numcoord)
   integer :: idrsnum
-  integer :: idrstmpl
+  integer :: idrstmpl(3)
   integer :: idrstmplen
   integer, parameter :: ngrdpts = 3
   real :: fld(ngrdpts)
@@ -134,6 +134,31 @@ program test_g2_encode
   coordlist(1) = 1.0
   coordlist(2) = 2.0
   coordlist(3) = 3.0
+
+  ! idrsnum - Data Representation Template Number (see Code Table 5.0)
+
+  ! idrstmpl Contains the data values for the specified Data
+  ! Representation Template (N=idrsnum). Each element of this integer
+  ! array contains an entry (in the order specified) of Data
+  ! Representation Template 5.N. Note that some values in this
+  ! template (eg. reference values, number of bits, etc...) may be
+  ! changed by the data packing algorithms. Use this to specify
+  ! scaling factors and order of spatial differencing, if desired.
+  
+  ! Max dimension of idrstmpl.
+  idrstmplen = 3
+
+  idrstmpl(1) = 0
+  idrstmpl(2) = 0
+  idrstmpl(3) = 0
+
+  ! fld Array of data points to pack.
+
+  ! ngrdpts Number of data points in grid. i.e. size of fld and bmap.
+
+  ! ibmap Bitmap indicator (see Code Table 6.0).
+
+  ! bmap Logical*1 array containing bitmap to be added. (if ibmap=0 or ibmap=254)
   
   ! Add a field to the GRIB2 message.
   call addfield(msg, MAX_MSG_LEN, ipdsnum, ipdstmpl, ipdstmplen, &
