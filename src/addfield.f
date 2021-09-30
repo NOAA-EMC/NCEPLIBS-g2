@@ -9,14 +9,14 @@
 !>    Section, Data Representation Section, Bit-Map Section and Data
 !>    Section, respectively.
 !>     
-!>    This routine is used with routines "gribcreate", "addlocal",
-!>    "addgrid", and "gribend" to create a complete GRIB2
-!>    message. Subroutine gribcreate must be called first to initialize
-!>    a new GRIB2 message.  Also, subroutine addgrid must be called
-!>    after gribcreate and before this routine to add the appropriate
-!>    grid description to the GRIB2 message. Also, a call to gribend is
-!>    required to complete GRIB2 message after all fields have been
-!>    added.
+!>    This routine is used with routines gribcreate(), addlocal(),
+!>    addgrid(), and gribend() to create a complete GRIB2
+!>    message. Subroutine gribcreate() must be called first to
+!>    initialize a new GRIB2 message. Also, subroutine addgrid() must be
+!>    called after gribcreate and before this routine to add the
+!>    appropriate grid description to the GRIB2 message. Also, a call to
+!>    gribend() is required to complete GRIB2 message after all fields
+!>    have been added.
 !>
 !>    PROGRAM HISTORY LOG:
 !>    - 2000-05-02 Stephen Gilbert
@@ -26,8 +26,9 @@
 !>
 !>    @param[inout] cgrib Character array to contain the GRIB2 message.
 !>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
-!>    @param[in] ipdsnum Product Definition Template Number ( see Code
-!>    Table 4.0).
+!>    @param[in] ipdsnum Product Definition Template Number (see [Code
+!>    Table
+!>    4.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml)).
 !>    @param[in] ipdstmpl Contains the data values for the specified
 !>    Product Definition Template (N=ipdsnum). Each element of this
 !>    integer array contains an entry (in the order specified) of
