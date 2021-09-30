@@ -1,0 +1,201 @@
+!>    @file
+!>    @brief This Fortran Module contains the declaration of derived
+!>    type gribfield.
+!>    @author Stephen Gilbert @date 2002-01-23
+!>
+
+!>    This Fortran Module contains the declaration of derived type
+!>    gribfield.
+!>
+!>    PROGRAM HISTORY LOG:
+!>    - 2002-01-23 Stephen Gilbert
+!>    - 2007-04-24 Boi Vuong Added GDT 3.204 Curvilinear Orthogonal Grids
+!>    - 2008-05-29 Boi Vuong Added GDT 3.32768 Rotate Lat/Lon E-grid
+!>    - 2009-02-17 Boi Vuong Allow negative scale factors and limits for
+!>    Templates 4.5 and 4.9
+!>    - 2009-12-14 Boi Vuong 
+!>     - Fixed bug in routine getidx.f
+!>     - Modified to increase length of seek(512)
+!>     - Added Templates (Satellite Product) 4.31
+!>     - Added Templates (ICAO WAFS) 4.15
+!>    - 2013-05-07 Boi Vuong Initialized all pointers to null()
+!>    - 2013-08-29 Boi Vuong Changed version number 2.5.0
+!>    - 2015-11-01 Boi Vuong Changed version number 2.6.0
+!>    - 2017-18-01 Boi Vuong Changed version number 3.1.0
+!>    
+!>    @author Stephen Gilbert @date 2002-01-23
+!>
+
+      module grib_mod
+
+      character(len=12) :: G2_VERSION="g2lib-@pVersion@" !< Library version.
+
+      type gribfield
+          integer :: version !< GRIB edition number (currently 2).
+          integer :: discipline !< Message Discipline (see Code Table 0.0).
+
+          !> Contains the entries in the Identification Section (Section
+          !> 1). This element is actually a pointer to an array that
+          !> holds the data.
+          !>    - idsect(1) Identification of originating Centre
+          !>    (see Common Code Table C-1) 7 US National Weather Service.
+          !>    - idsect(2) Identification of originating Sub-centre.
+          !>    - idsect(3) GRIB Master Tables Version Number. (see Code Table
+          !>    1.0) 0 Experimental; 1 Initial operational version number
+          !>    - idsect(4) GRIB Local Tables Version Number (Code Table 1.1).
+          !>     - 0 Local tables not used
+          !>     - 0 1-254 Number of local tables version used
+          !>    - idsect(5) Significance of Reference Time (Code Table 1.2).
+          !>     - 0 Analysis
+          !>     - 1 Start of forecast
+          !>     - 2 Verifying time of forecast
+          !>     - 3 Observation time
+          !>    - idsect(6) Year (4 digits)
+          !>    - idsect(7) Month
+          !>    - idsect(8) Day
+          !>    - idsect(9) Hour
+          !>    - idsect(10) Minute
+          !>    - idsect(11) Second
+          !>    - idsect(12) Production status of processed data (see Code
+          !>    Table 1.3)
+          !>     - 0 Operational products
+          !>     - 1 Operational test products
+          !>     - 2 Research products
+          !>     - 3 Re-analysis products
+          !>    - idsect(13) Type of processed data (see Code Table 1.4)
+          !>     - 0 Analysis products
+          !>     - 1 Forecast products
+          !>     - 2 Analysis and forecast products
+          !>     - 3 Control forecast products
+          !>     - 4 Perturbed forecast products
+          !>     - 5 Control and perturbed forecast products
+          !>     - 6 Processed satellite observations
+          !>     - 7 Processed radar observations
+          integer,pointer,dimension(:) :: idsect => null ()
+          
+          integer :: idsectlen  !< Number of elements in idsect.
+
+          !> Pointer to character array containing contents
+          !>    of Local Section 2, if included.
+          character(len=1),pointer,dimension(:) :: local => null ()
+          integer :: locallen !< length of array local.
+          integer :: ifldnum    !< field number within GRIB message
+
+          !> Source of grid definition (see Code Table 3.0)
+          !>     - 0 Specified in Code table 3.1
+          !>     - 1 Predetermined grid Defined by originating centre
+          integer :: griddef 
+
+          !>    Number of grid points in the defined grid. Note that the number of
+          !>    actual data values returned from getgb2 (in ndpts) may be less
+          !>    than this value if a logical bitmap is in use with grid points
+          !>    that are being masked out.
+          integer :: ngrdpts
+
+          !>    Number of octets needed for each additional grid points
+          !>    definition. Used to define number of points in each row (or
+          !>    column) for non-regular grids. = 0, if using regular grid.
+          integer :: numoct_opt
+          
+          !>    Interpretation of list for optional points definition. (Code Table
+          !>    3.11).
+          integer :: interp_opt
+          
+          !>    (Used if numoct_opt .ne. 0) The number of entries in array
+          !>    ideflist. i.e. number of rows (or columns) for which optional grid
+          !>    points are defined. This value is set to zero, if umoct_opt=0.
+          integer :: num_opt
+
+          !>    (Used if numoct_opt .ne. 0) This array contains the number of grid
+          !>    points contained in each row (or column). (part of Section 3) This
+          !>    element is actually a pointer to an array that holds the
+          !>    data. This pointer is nullified if numoct_opt=0.
+          integer,pointer,dimension(:) :: list_opt       => null ()
+          
+          !>    Grid Definition Template Number (Code Table 3.1).
+          integer :: igdtnum
+
+          !>    Number of elements in igdtmpl. i.e. number of entries in Grid
+          !>    Defintion Template 3.NN (NN=igdtnum).
+          integer :: igdtlen
+
+          !>    Contains the data values for the specified Grid Definition
+          !>    Template (NN=igdtnum). Each element of this integer array contains
+          !>    an entry (in the order specified) of Grid Defintion Template 3.NN
+          !>    This element is actually a pointer to an array that holds the
+          !>    data.
+          integer,pointer,dimension(:) :: igdtmpl        => null ()
+          
+          !>    Product Definition Template Number (Code Table 4.0).
+          integer :: ipdtnum
+          
+          !>    Number of elements in ipdtmpl. i.e. number of entries in Product
+          !>    Defintion Template 4.N (N=ipdtnum).
+          integer :: ipdtlen
+          
+          !>    Contains the data values for the specified Product Definition
+          !>    Template (N=ipdtnum). Each element of this integer array contains
+          !>    an entry (in the order specified) of Product Defintion Template
+          !>    4.N. This element is actually a pointer to an array that holds the
+          !>    data.
+          integer,pointer,dimension(:) :: ipdtmpl        => null ()
+
+          !>    Number of values in array coord_list.          
+          integer :: num_coord
+          
+          !>    Real array containing floating point values intended to document
+          !>    the vertical discretisation associated to model data on hybrid
+          !>    coordinate vertical levels.(part of Section 4) This element is
+          !>    actually a pointer to an array that holds the data.
+          real,pointer,dimension(:) :: coord_list        => null ()
+          
+          !>    Number of data points unpacked and returned.  Note that this
+          !>    number may be different from the value of ngrdpts if a logical
+          !>    bitmap is in use with grid points that are being masked out.
+          integer :: ndpts
+
+          !>    Data Representation Template Number (Code Table 5.0).
+          integer :: idrtnum
+
+          !>    Number of elements in gfld\%idrtmpl. i.e. number of entries in
+          !>    Data Representation Template 5.N (N=idrtnum).
+          integer :: idrtlen
+          
+          !>    Contains the data values for the specified Data Representation
+          !>    Template (N=idrtnum). Each element of this integer array contains
+          !>    an entry (in the order specified) of Product Defintion Template
+          !>    5.N. This element is actually a pointer to an array that holds the
+          !>    data.
+          integer,pointer,dimension(:) :: idrtmpl        => null ()
+          
+          !>    Logical value indicating whether the bitmap and data values were
+          !>    unpacked. If false, bmap and fld pointers are nullified.
+          logical :: unpacked
+
+          !>    Logical value indicating whether the data field was expanded to
+          !>    the grid in the case where a bit-map is present.  If true, the
+          !>    data points in fld match the grid points and zeros were inserted
+          !>    at grid points where data was bit-mapped out.  If false, the data
+          !>    values in fld were not expanded to the grid and are just a
+          !>    consecutive array of data points corresponding to each value of
+          !>    "1" in bmap.
+          logical :: expanded
+
+          !>    Bitmap indicator (see Code Table 6.0).
+          !>     - 0 bitmap applies and is included in Section 6.
+          !>     - 1-253 Predefined bitmap applies.
+          !>     - 254 Previously defined bitmap applies to this field.
+          !>     - 255 Bit map does not apply to this product.
+          integer :: ibmap
+
+          !>    Logical*1 array containing decoded bitmap, if ibmap=0 or
+          !>    ibap=254. Otherwise nullified. This element is actually a pointer
+          !>    to an array that holds the data.
+          logical*1,pointer,dimension(:) :: bmap         => null ()
+
+          !>    Array of gfld\%ndpts unpacked data points. This element is
+          !>    actually a pointer to an array that holds the data.
+          real,pointer,dimension(:) :: fld               => null ()
+      end type gribfield
+
+      end module

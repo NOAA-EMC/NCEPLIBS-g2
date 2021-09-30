@@ -35,6 +35,9 @@ add_subdirectory(src)
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
+
+  # Copy the VERSION file, it's needed in a test.
+  FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/VERSION DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tests)
 endif()
 
 # Determine whether or not to generate documentation.
