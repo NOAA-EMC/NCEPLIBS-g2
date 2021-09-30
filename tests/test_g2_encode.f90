@@ -29,10 +29,10 @@ program test_g2_encode
   integer :: idrsnum
   integer :: idrstmpl(3)
   integer :: idrstmplen
-  integer, parameter :: ngrdpts = 3
+  integer, parameter :: ngrdpts = 4
   real :: fld(ngrdpts)
   integer :: ibmap
-  logical*1 :: bmap(1)
+  logical*1 :: bmap(ngrdpts)
 
   integer :: ierr
 
@@ -74,21 +74,21 @@ program test_g2_encode
   call gribcreate(msg, MAX_MSG_LEN, listsec0, listsec1, ierr)
   if (ierr .ne. 0) stop 2
 
-  ! igds(1)=Source of grid definition (see Code Table 3.0)
-  ! igds(2)=Number of grid points in the defined grid.
-  ! igds(3)=Number of octets needed for each additional grid points
-  ! definition.Used to define number of points in each row (or column)
+  ! igds(1) Source of grid definition (see Code Table 3.0)
+  ! igds(2) Number of grid points in the defined grid.
+  ! igds(3) Number of octets needed for each additional grid points
+  ! definition. Used to define number of points in each row (or column)
   ! for non-regular grids. = 0, if using regular grid.
-  ! igds(4)=Interpretation of list for optional points definition. (Code Table 3.11)
-  ! igds(5)=Grid Definition Template Number (Code Table 3.1)
+  ! igds(4) Interpretation of list for optional points definition. (Code Table 3.11)
+  ! igds(5) Grid Definition Template Number (Code Table 3.1)
   idgs(1) = 0
-  idgs(2) = 0
+  idgs(2) = 4
   idgs(3) = 0
   idgs(4) = 0
   idgs(5) = 0
 
   ! Contains the data values for the specified Grid Definition
-  ! Template ( NN=igds(5) ). Each element of this integer array
+  ! Template (NN=igds(5)). Each element of this integer array
   ! contains an entry (in the order specified) of Grid Defintion
   ! Template 3.NN.
   idgstmpl(1) = 0
