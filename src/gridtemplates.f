@@ -34,10 +34,10 @@
 !>    can contain negative values. This information is used later when
 !>    packing/unpacking the template data values. Negative data values
 !>    in GRIB are stored with the left most bit set to one, and a
-!>    negative number of octets value in mapgrid() indicates that this
+!>    negative number of octets value in mapgrid indicates that this
 !>    possibility should be considered. The number of octets used to
 !>    store the data value in this case would be the absolute value
-!>    of the negative value in mapgrid().
+!>    of the negative value in mapgrid.
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
 !>
@@ -48,10 +48,12 @@
       integer,parameter :: MAXTEMP=31 !< maximum number of entries in the template
 
       type gridtemplate
-          integer :: template_num
-          integer :: mapgridlen
-          integer,dimension(MAXLEN) :: mapgrid
-          logical :: needext
+          integer :: template_num !< [Grid Definition Template
+                                  !< Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml).
+          integer :: mapgridlen !< Number of entries in the template.
+          integer,dimension(MAXLEN) :: mapgrid !< The number of octets in which 
+                                               !< to pack each of the template values.
+          logical :: needext !< Does template need to be extended?
       end type gridtemplate
 
       type(gridtemplate),dimension(MAXTEMP) :: templates !< a gridtemplate type
@@ -395,15 +397,15 @@
          end subroutine
 
 !>    This function returns the initial length (number of entries) in
-!>    the "static" part of specified Grid Definition Template 3.number.
+!>    the static part of specified Grid Definition Template 3.number.
+!>      
 !>    @param[in] number NN, indicating the number of the Grid Definition
 !>    Template 3.NN that is being requested.
-!>    @return Number of entries in the "static" part of GDT 3.number.
+!>    @return Number of entries in the static part of GDT 3.number.
 !>    Or 0, if requested template is not found.
 !>
 !>    @author Stephen Gilbert @date 2004-05-11
 !>
-
          integer function getgdtlen(number)
 
            integer,intent(in) :: number
