@@ -1,25 +1,30 @@
 !>    @file
 !>    @brief This Fortran Module contains info on all the available
-!>    GRIB2 Product Definition Templates used in Section 4 (PDS).
+!>    GRIB2 Product Definition Templates used in Section 4 - the Product
+!>    Definition Section (PDS).
 !>    @author Stephen Gilbert @date 2000-05-11
 !>
 
 !>    This Fortran Module contains info on all the available GRIB2
-!>    Product Definition Templates used in Section 4 (PDS). Each
+!>    Product Definition Templates used in [Section 4 - the Product
+!>    Definition Section
+!>    (PDS)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml). Each
 !>    Template has three parts: The number of entries in the template
-!>    (mapgridlen); A map of the template (mapgrid), which contains the
-!>    number of octets in which to pack each of the template values;
-!>    and a logical value (needext) that indicates whether the Template
+!>    (mapppdslen); A map of the template (mappds), which contains the
+!>    number of octets in which to pack each of the template values; and
+!>    a logical value (needext) that indicates whether the Template
 !>    needs to be extended. In some cases the number of entries in a
-!>    template can vary depending upon values specified in the "static"
-!>    part of the template. (Template 4.3 as an example)
+!>    template can vary depending upon values specified in the static
+!>    part of the template. (Template 4.3 as an example).
 !>    
-!>    This module also contains two subroutines. getpdstemplate()
-!>    returns the octet map for a specified Template number, and
-!>    extpdstemplate() will calculate the extended octet map of an
-!>    appropriate template given values for the "static" part of the
-!>    template. See docblocks below for the arguments and usage of these
-!>    routines.
+
+!>    This module also contains two subroutines.
+
+!>    - getpdstemplate() returns the octet map for a specified
+!>    Template number.
+!>    - extpdstemplate() will calculate the extended octet map of an
+!>    appropriate template given values for the static part of the
+!>    template.
 !>    
 !>    PROGRAM HISTORY LOG:
 !>    - 2000-05-11 Stephen Gilbert
@@ -43,10 +48,10 @@
 !>    can contain negative values. This information is used later when
 !>    packing (or unpacking) the template data values. Negative data
 !>    values in GRIB are stored with the left most bit set to one, and
-!>    a negative number of octets value in mapgrid() indicates that this
+!>    a negative number of octets value in mapgrid indicates that this
 !>    possibility should be considered. The number of octets used to
 !>    store the data value in this case would be the absolute value of
-!>    the negative value in mapgrid().
+!>    the negative value in mapgrid.
 !>    
 !>    @author Stephen Gilbert @date 2000-05-11
 !>    
@@ -56,11 +61,13 @@
       integer,parameter :: MAXLEN=200 !< MAXLEN max length of entries
       integer,parameter :: MAXTEMP=43 !< MAXTEMP maximum number of templates
 
+      !> This is the defined type for a Product Definition Section (PDS)
+      !> template.
       type pdstemplate
-          integer :: template_num
-          integer :: mappdslen
-          integer,dimension(MAXLEN) :: mappds
-          logical :: needext
+          integer :: template_num 
+          integer :: mappdslen !< The number of entries in the template.
+          integer,dimension(MAXLEN) :: mappds !< Number of octets in which to pack each value.
+          logical :: needext !< Does template need to be extended?
       end type pdstemplate
 
       type(pdstemplate),dimension(MAXTEMP) :: templates !< template in type of pdstemplate

@@ -9,41 +9,29 @@
 !>    back to memory.
 !>    
 !>    @author Stephen Gilbert @date 2000-10-01
-!>
 
       module re_alloc
 
+!>    This interface calls the correct subroutines to reorganize the
+!>    integer, real and character data in memory into one dimensional
+!>    array and back to memory.
       interface realloc
-         module procedure realloc_c1
-         module procedure realloc_r
-         module procedure realloc_i
-!!         subroutine realloc_c1(c,n,m,istat)
-!!            character(len=1),pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
-!!         subroutine realloc_r(c,n,m,istat)
-!!            real,pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
-!!         subroutine realloc_i(c,n,m,istat)
-!!            integer,pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
+         module procedure realloc_c1 !< realloc for character.
+         module procedure realloc_r  !< realloc for real.
+         module procedure realloc_i  !< realloc for integer.
       end interface
 
       contains
 
-!>    This subroutine reorganize character type data in memory
-!>    into one one dimensional array.
+!>    This subroutine reorganize character type data in memory into one
+!>    one dimensional array.
+!>      
 !>    @param[inout] c pointer for data in memory.
 !>    @param[in] n dimension for data in memory.
 !>    @param[in] m dimension for allocatable array.
 !>    @param[out] istat scalar INTEGER variable for allocate.
-!>    @author Stephen Gilbert @date 2000-10-01
 !>
+!>    @author Stephen Gilbert @date 2000-10-01
 
          subroutine realloc_c1(c,n,m,istat)
             character(len=1),pointer,dimension(:) :: c
@@ -78,14 +66,15 @@
             return
          end subroutine
 
-!>    This subroutine reorganize real type data in memory into
-!>    one one dimensional array.
+!>    This subroutine reorganize real type data in memory into one one
+!>    dimensional array.
+!>      
 !>    @param[inout] c pointer for data in memory.
 !>    @param[in] n dimension for data in memory.
 !>    @param[in] m dimension for allocatable array.
 !>    @param[out] istat scalar INTEGER variable for allocate.
-!>    @author Stephen Gilbert @date 2000-10-01
 !>
+!>    @author Stephen Gilbert @date 2000-10-01
 
          subroutine realloc_r(c,n,m,istat)
             real,pointer,dimension(:) :: c
@@ -120,14 +109,15 @@
             return
          end subroutine
 
-!>    This subroutine reorganize integer type data in memory into
-!>    one one dimensional array.
+!>    This subroutine reorganize integer type data in memory into one
+!>    one dimensional array.
+!>      
 !>    @param[inout] c pointer for data in memory.
 !>    @param[in] n dimension for data in memory.
 !>    @param[in] m dimension for allocatable array.
 !>    @param[out] istat scalar INTEGER variable for allocate.
-!>    @author Stephen Gilbert @date 2000-10-01
 !>
+!>    @author Stephen Gilbert @date 2000-10-01
 
          subroutine realloc_i(c,n,m,istat)
             integer,pointer,dimension(:) :: c
