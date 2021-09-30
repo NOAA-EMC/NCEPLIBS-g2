@@ -37,7 +37,6 @@
       
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
-
 !>    - 1 GRIB message was not initialized. Need to call routine
 !>    gribcreate first.
 !>    - 2 GRIB message already complete. Cannot add new section.
