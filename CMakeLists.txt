@@ -32,6 +32,10 @@ if(BUILD_TESTING)
 
   # Copy the VERSION file, it's needed in a test.
   FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/VERSION DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tests)
+
+  # Copy this sample GRIB2 file, it's needed in a test.
+  FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tests/gdaswave.t00z.arctic.9km.f000.grib2
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tests)  
 endif()
 
 # Determine whether or not to generate documentation.
