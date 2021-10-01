@@ -1,13 +1,16 @@
 !>    @file
 !>    @brief This Fortran Module contains info on all the available
-!>    GRIB2 Data Representation Templates used in Section 5 (DRS).
+!>    GRIB2 Data Representation Templates used in Section 5 - the Data
+!>    Representation Section (DRS).
 !>    @author Stephen Gilbert @date 2001-04-03
 !>     
 
 !>    This Fortran Module contains info on all the available
-!>    GRIB2 Data Representation Templates used in Section 5 (DRS).
+!>    GRIB2 Data Representation Templates used in Section 5 - the Data
+!>    Representation Section (DRS).
+!>      
 !>    Each Template has three parts: The number of entries in the template
-!>    (mapgridlen);  A map of the template (mapgrid), which contains the
+!>    (mapdrslen);  A map of the template (mapdrs), which contains the
 !>    number of octets in which to pack each of the template values; and
 !>    a logical value (needext) that indicates whether the Template needs 
 !>    to be extended.  In some cases the number of entries in a template 
@@ -21,22 +24,22 @@
 !>    template.  See docblocks below for the arguments and usage of these 
 !>    routines.
 !>
-!>    @note Array mapgrid contains the number of octets in which the 
+!>    @note Array mapdrs contains the number of octets in which the 
 !>    corresponding template values will be stored.  A negative value in
-!>    mapgrid is used to indicate that the corresponding template entry can
+!>    mapdrs is used to indicate that the corresponding template entry can
 !>    contain negative values.  This information is used later when packing
 !>    (or unpacking) the template data values.  Negative data values in GRIB
 !>    are stored with the left most bit set to one, and a negative number
-!>    of octets value in mapgrid indicates that this possibility should
+!>    of octets value in mapdrs indicates that this possibility should
 !>    be considered.  The number of octets used to store the data value
 !>    in this case would be the absolute value of the negative value in 
-!>    mapgrid.
+!>    mapdrs.
 !>     
 !>    @author Stephen Gilbert @date 2001-04-03
 !>
       module drstemplates
 
-      integer,parameter :: MAXLEN=200 !< maximum number of octets in mapgrid
+      integer,parameter :: MAXLEN=200 !< maximum number of octets in mapdrs
       integer,parameter :: MAXTEMP=9 !< maximum number of entries in the template
 
 

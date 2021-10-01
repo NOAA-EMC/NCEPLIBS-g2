@@ -6,3 +6,7 @@ add_test(test_g2 test_g2)
 add_executable(test_gridtemplates test_gridtemplates.f90)
 target_link_libraries(test_gridtemplates g2_d)
 add_test(test_gridtemplates test_gridtemplates)
+
+add_executable(test_drstemplates test_drstemplates.f90)
+target_link_libraries(test_drstemplates g2_d)
+add_test(test_drstemplates test_drstemplates)

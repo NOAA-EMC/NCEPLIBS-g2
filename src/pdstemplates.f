@@ -57,10 +57,10 @@
       integer,parameter :: MAXTEMP=43 !< MAXTEMP maximum number of templates
 
       type pdstemplate
-          integer :: template_num
-          integer :: mappdslen
-          integer,dimension(MAXLEN) :: mappds
-          logical :: needext
+          integer :: template_num !< Template number.
+          integer :: mappdslen !< The number of entries in the template.
+          integer,dimension(MAXLEN) :: mappds !< Number of octets in which to pack each value.
+          logical :: needext !< Does template need to be extended?
       end type pdstemplate
 
       type(pdstemplate),dimension(MAXTEMP) :: templates !< template in type of pdstemplate
@@ -358,6 +358,7 @@
 
 !>    This function returns the index of specified Product
 !>    Definition Template 4.NN (NN=number) in array templates.
+!>      
 !>    @param[in] number NN, indicating the number of the Product
 !>    Definition Template 4.NN that is being requested.
 !>    @return 
@@ -676,11 +677,12 @@
          end subroutine
 
 !>    This function returns the initial length (number of entries) in
-!>    the "static" part of specified Product Definition Template 4.number.
+!>    the static part of specified Product Definition Template 4.number.
+!>      
 !>    @param[in] number NN, indicating the number of the Product
 !>    Definition Template 4.NN that is being requested.
 !>    @return
-!>    - Number of entries in the "static" part of PDT 4.number..
+!>    - Number of entries in the static part of PDT 4.number..
 !>    - 0, if requested template is not found.
 !>
 !>    @author Stephen Gilbert @date 2004-05-11
