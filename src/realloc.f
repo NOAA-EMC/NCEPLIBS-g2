@@ -17,7 +17,7 @@
 !>    integer, real and character data in memory into one dimensional
 !>    array and back to memory.
       interface realloc
-         module procedure realloc_c1
+         module procedure realloc_c1 
          module procedure realloc_r
          module procedure realloc_i
       end interface
