@@ -6,9 +6,9 @@
 !>     
 
 !>    This Fortran Module contains info on all the available GRIB2 Data
-!>    Representation Templates used in Section 5 - the (Data
-!>    Representation Section
-!>    (DRS))[https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect5.shtml].
+!>    Representation Templates used in Section 5 - the Data
+!>    Representation Section (DRS). (See
+!>    https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect5.shtml.)
 !>      
 !>    Each Template has three parts: The number of entries in the
 !>    template (mapdrslen); A map of the template (mapdrs), which
