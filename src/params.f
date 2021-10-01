@@ -38,13 +38,14 @@
 
       integer,parameter :: MAXPARAM=2000 !< maximum number of GRIB parameters.
 
+      !> This type holds information about GRIB parameters.
       type gribparam
-          integer :: g1tblver
-          integer :: grib1val
-          integer :: grib2dsc
-          integer :: grib2cat
-          integer :: grib2num
-          character(len=8) :: abbrev
+          integer :: g1tblver !< Grib1 table version.
+          integer :: grib1val !< Grib1 value.
+          integer :: grib2dsc !< GRIB2 discipline category.
+          integer :: grib2cat !< GRIB2 category number.
+          integer :: grib2num !< GRIB2 parameter number.
+          character(len=8) :: abbrev !< Abbreviation.
       end type gribparam
 
       type(gribparam),dimension(MAXPARAM) :: paramlist !< list of GRIB parameters.
@@ -1088,6 +1089,7 @@
 !>    This subroutine returns the corresponding GRIB2 Discipline
 !>    Category and Number for a given GRIB1 parameter value and table
 !>    version.
+!>      
 !>    @param[in] g1val GRIB1 parameter number for which discipline is
 !>    requested.
 !>    @param[in] g1ver GRIB1 parameter table version number.
@@ -1107,9 +1109,6 @@
            g2disc=255
            g2cat=255
            g2num=255
-! for testing
-!           g2num=g1val
-! for testing
 
            do n=1,MAXPARAM
               if (paramlist(n)%grib1val.eq.g1val .AND.
@@ -1128,6 +1127,7 @@
 
 !>    This function returns the parameter abbreviation for
 !>    a given GRIB2 Discipline, Category and Parameter number.
+!>      
 !>    @param[in] g2disc GRIB2 discipline number (See Code Table 0.0).
 !>    @param[in] g2cat corresponding GRIB2 Category number.
 !>    @param[in] g2num corresponding GRIB2 Parameter number within
@@ -1159,6 +1159,7 @@
 
 !>    This subroutine returns the GRIB 1 parameter number for
 !>    a given GRIB2 Discipline, Category and Parameter number.
+!>      
 !>    @param[in] g2disc GRIB2 Discipline number (See Code Table 0.0).
 !>    @param[in] g2cat corresponding GRIB2 Category number.
 !>    @param[in] g2num corresponding GRIB2 Parameter number within
@@ -1177,14 +1178,6 @@
 
            g1val=255
            g1ver=255
-
-! for testing
-!           if ( g2disc.eq.255.and.g2cat.eq.255 ) then
-!             g1val=g2num
-!             g1ver=2
-!             return
-!           endif
-! for testing
 
            do n=1,MAXPARAM
               if (paramlist(n)%grib2dsc.eq.g2disc.AND.
