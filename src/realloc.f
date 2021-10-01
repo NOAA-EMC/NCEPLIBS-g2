@@ -17,27 +17,13 @@
          module procedure realloc_c1
          module procedure realloc_r
          module procedure realloc_i
-!!         subroutine realloc_c1(c,n,m,istat)
-!!            character(len=1),pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
-!!         subroutine realloc_r(c,n,m,istat)
-!!            real,pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
-!!         subroutine realloc_i(c,n,m,istat)
-!!            integer,pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
       end interface
 
       contains
 
 !>    This subroutine reorganize character type data in memory
 !>    into one one dimensional array.
+!>      
 !>    @param[inout] c pointer for data in memory.
 !>    @param[in] n dimension for data in memory.
 !>    @param[in] m dimension for allocatable array.
@@ -122,6 +108,7 @@
 
 !>    This subroutine reorganize integer type data in memory into
 !>    one one dimensional array.
+!>      
 !>    @param[inout] c pointer for data in memory.
 !>    @param[in] n dimension for data in memory.
 !>    @param[in] m dimension for allocatable array.
