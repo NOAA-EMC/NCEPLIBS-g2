@@ -1,7 +1,7 @@
 ! This program tests the drstemplates module of the NCEPLIBS-g2
 ! project.
 !
-! Ed Hartnett 9/30/21
+! Ed Hartnett 10/1/21
 program test_drstemplates
   use drstemplates
   implicit none
