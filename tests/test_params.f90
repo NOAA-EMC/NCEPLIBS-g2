@@ -6,14 +6,29 @@ program test_params
   use params
   implicit none
 
+  integer :: g2disc, g2cat, g2num, g1val, g1ver
+  character(len=8) :: abbrev
+
   print *, 'Testing the params module.'
 
   print *, 'Testing param_g1_to_g2...'
+  call param_g1_to_g2(1, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 2
+  call param_g1_to_g2(47, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 0) stop 3
   
   print *, 'Testing param_get_abbrev...'
+  abbrev = param_get_abbrev(0, 3, 1)
+  if (abbrev .ne. 'PRMSL') stop 4
+  abbrev = param_get_abbrev(0, 3, 8)
+  if (abbrev .ne. 'PRESA') stop 4
   
   print *, 'Testing param_g2_to_g1...'
+  call param_g2_to_g1(0, 3, 1, g1val, g1ver)
+  if (g1val .ne. 2 .or. g1ver .ne. 2) stop 6
+  call param_g2_to_g1(0, 2, 0, g1val, g1ver)
+  if (g1val .ne. 31 .or. g1ver .ne. 2) stop 7
   
   print *, 'SUCCESS!'
   
-end program test_gridtemplates
+end program test_params
