@@ -13,6 +13,9 @@
 
       module re_alloc
 
+!>    This interface calls the correct subroutines to reorganize the
+!>    integer, real and character data in memory into one dimensional
+!>    array and back to memory.
       interface realloc
          module procedure realloc_c1
          module procedure realloc_r
