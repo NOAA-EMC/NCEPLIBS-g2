@@ -29,7 +29,7 @@
           integer :: grib2dsc !< GRIB2 discipline category.
           integer :: grib2cat !< GRIB2 category number.
           integer :: grib2num !< GRIB2 parameter number.
-          character(len=8) :: abbrev
+          character(len=8) :: abbrev !< Abbreviation.
       end type gribparam
 
       type(gribparam),dimension(MAXPARAM) :: paramlist !< list of ECMWF GRIB parameters.
