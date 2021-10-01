@@ -17,9 +17,7 @@
 !>    template can vary depending upon values specified in the static
 !>    part of the template. (Template 4.3 as an example).
 !>    
-
 !>    This module also contains two subroutines.
-
 !>    - getpdstemplate() returns the octet map for a specified
 !>    Template number.
 !>    - extpdstemplate() will calculate the extended octet map of an
