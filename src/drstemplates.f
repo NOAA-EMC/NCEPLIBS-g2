@@ -5,35 +5,34 @@
 !>    @author Stephen Gilbert @date 2001-04-03
 !>     
 
-!>    This Fortran Module contains info on all the available
-!>    GRIB2 Data Representation Templates used in Section 5 - the Data
-!>    Representation Section (DRS).
+!>    This Fortran Module contains info on all the available GRIB2 Data
+!>    Representation Templates used in Section 5 - the [Data
+!>    Representation Section
+!>    (DRS)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect5.shtml).
 !>      
-!>    Each Template has three parts: The number of entries in the template
-!>    (mapdrslen);  A map of the template (mapdrs), which contains the
-!>    number of octets in which to pack each of the template values; and
-!>    a logical value (needext) that indicates whether the Template needs 
-!>    to be extended.  In some cases the number of entries in a template 
-!>    can vary depending upon values specified in the "static" part of 
-!>    the template.  ( See Template 5.1 as an example )
+!>    Each Template has three parts: The number of entries in the
+!>    template (mapdrslen); A map of the template (mapdrs), which
+!>    contains the number of octets in which to pack each of the
+!>    template values; and a logical value (needext) that indicates
+!>    whether the Template needs to be extended.
 !>
-!>    This module also contains two subroutines.  Subroutine getdrstemplate
-!>    returns the octet map for a specified Template number, and
-!>    subroutine extdrstemplate will calculate the extended octet map
-!>    of an appropriate template given values for the "static" part of the 
-!>    template.  See docblocks below for the arguments and usage of these 
-!>    routines.
+!>    This module also contains two subroutines. Subroutine
+!>    getdrstemplate returns the octet map for a specified Template
+!>    number, and subroutine extdrstemplate will calculate the extended
+!>    octet map of an appropriate template given values for the "static"
+!>    part of the template. See docblocks below for the arguments and
+!>    usage of these routines.
 !>
-!>    @note Array mapdrs contains the number of octets in which the 
-!>    corresponding template values will be stored.  A negative value in
-!>    mapdrs is used to indicate that the corresponding template entry can
-!>    contain negative values.  This information is used later when packing
-!>    (or unpacking) the template data values.  Negative data values in GRIB
-!>    are stored with the left most bit set to one, and a negative number
-!>    of octets value in mapdrs indicates that this possibility should
-!>    be considered.  The number of octets used to store the data value
-!>    in this case would be the absolute value of the negative value in 
-!>    mapdrs.
+!>    @note Array mapdrs contains the number of octets in which the
+!>    corresponding template values will be stored. A negative value in
+!>    mapdrs is used to indicate that the corresponding template entry
+!>    can contain negative values. This information is used later when
+!>    packing (or unpacking) the template data values. Negative data
+!>    values in GRIB are stored with the left most bit set to one, and a
+!>    negative number of octets value in mapdrs indicates that this
+!>    possibility should be considered. The number of octets used to
+!>    store the data value in this case would be the absolute value of
+!>    the negative value in mapdrs.
 !>     
 !>    @author Stephen Gilbert @date 2001-04-03
 !>
@@ -42,12 +41,12 @@
       integer,parameter :: MAXLEN=200 !< maximum number of octets in mapdrs
       integer,parameter :: MAXTEMP=9 !< maximum number of entries in the template
 
-
+      !> This type holds information about a DRS template.
       type drstemplate
-          integer :: template_num
-          integer :: mapdrslen
-          integer,dimension(MAXLEN) :: mapdrs
-          logical :: needext
+          integer :: template_num !< Template number.
+          integer :: mapdrslen !< The number of entries in the template.
+          integer,dimension(MAXLEN) :: mapdrs !< Number of octets in which to pack each value.
+          logical :: needext !< Does template need to be extended?
       end type drstemplate
 
       type(drstemplate),dimension(MAXTEMP) :: templates !< template in type of drstemplate
@@ -153,7 +152,7 @@
 !>    @param[out] map An array containing the number of octets that each 
 !>    template entry occupies when packed up into the DRS.
 !>    @param[out] needext Logical variable indicating whether the Data Representation
-!>    Template has to be extended.  
+!>    Template has to be extended. 
 !>    @param[out] iret Error return code.
 !>    - 0 = no error
 !>    - 1 = Undefined Data Representation Template number.
@@ -183,19 +182,20 @@
 
          end subroutine
 
-!>    This subroutine generates the remaining octet map for a
-!>    given Data Representation Template, if required.
-!>     
-!>    Some Templates can vary depending on data values given in an earlier part 
-!>    of the Template, and it is necessary to know some of the earlier entry
-!>    values to generate the full octet map of the Template.
+!>    This subroutine generates the remaining octet map for a given Data
+!>    Representation Template, if required.
 !>
-!>    @param[in] number NN, indicating the number of the Data Representation 
-!>    Template 5.NN that is being requested.
-!>    @param[in] list The list of values for each entry in the 
-!>    Data Representation Template 5.NN.
+!>    Some Templates can vary depending on data values given in an
+!>    earlier part of the Template, and it is necessary to know some of
+!>    the earlier entry values to generate the full octet map of the
+!>    Template.
+!>
+!>    @param[in] number NN, indicating the number of the Data
+!>    Representation Template 5.NN that is being requested.
+!>    @param[in] list The list of values for each entry in the Data
+!>    Representation Template 5.NN.
 !>    @param[out] nummap Number of entries in the Template
-!>    @param[out] map An array containing the number of octets that each 
+!>    @param[out] map An array containing the number of octets that each
 !>    template entry occupies when packed up into the GDS.
 !>
 !>    @author  Stephen Gilbert            @date 2000-05-11
