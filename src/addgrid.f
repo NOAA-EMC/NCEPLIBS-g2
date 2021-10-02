@@ -29,8 +29,8 @@
 !>    integer array contains an entry (in the order specified) of Grid
 !>    Defintion Template 3.NN. This should have the length of mapgridlen
 !>    of the selected grid template.
-!>    @param[in] igdstmplen Max dimension of igdstmpl. This must match
-!>    the mapgridlen of the chosen template.
+!>    @param[in] igdstmplen Max dimension of igdstmpl. This must be at
+!>    least as large as the mapgridlen of the chosen template.
 !>    @param[in] ideflist (Used if igds(3) .ne. 0). This array contains
 !>    the number of grid points contained in each row (or column).
 !>    @param[in] idefnum (Used if igds(3) .ne. 0). The number of entries

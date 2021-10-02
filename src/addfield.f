@@ -54,7 +54,8 @@
 !>    changed by the data packing algorithms.
 !>    Use this to specify scaling factors and order of
 !>    spatial differencing, if desired.
-!>    @param[in] idrstmplen Max dimension of idrstmpl.
+!>    @param[in] idrstmplen Max dimension of idrstmpl. This must be at
+!>    least as large as the length of the selected PDS template.
 !>    @param[in] fld Array of data points to pack.
 !>    @param[out] ngrdpts Number of data points in grid. i.e. size of
 !>    fld and bmap.
