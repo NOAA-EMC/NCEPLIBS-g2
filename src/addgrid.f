@@ -17,7 +17,7 @@
 !>    3.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml)).
 !>    - igds(2) Number of grid points in the defined grid.
 !>    - igds(3) Number of octets needed for each additional grid points
-!>    definition.Used to define number of points in each row (or column)
+!>    definition. Used to define number of points in each row (or column)
 !>    for non-regular grids. = 0, if using regular grid.
 !>    - igds(4) Interpretation of list for optional points
 !>    definition. (See [Code Table
