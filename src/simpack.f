@@ -33,7 +33,6 @@
 !>
 !>    @author Stephen Gilbert @date 2000-06-21
 !>
-
       subroutine simpack(fld,ndpts,idrstmpl,cpack,lcpack)
 
       use intmath
@@ -44,18 +43,13 @@
       integer,intent(out) :: lcpack
 
       real(4) :: ref,rmin4
-C     real(8) :: rmin,rmax
+!     real(8) :: rmin,rmax
 
       integer(4) :: iref
       integer :: ifld(ndpts)
       integer,parameter :: zero=0
       integer :: i
 
-      print *, 'ndpts = ', ndpts
-      do i=1, ndpts
-          print *, fld(i)
-      enddo
-      
       bscale=2.0**real(-idrstmpl(2))
       dscale=10.0**real(idrstmpl(3))
       if (idrstmpl(4).le.0.OR.idrstmpl(4).gt.31) then
@@ -83,7 +77,6 @@ C     real(8) :: rmin,rmax
 !  value (rmin) is the value for each point in the field and
 !  set nbits to 0.
 !
-      print *, 'rmin, rmax: ', rmin, rmax
       if (rmin.ne.rmax) then
         !
         !  Determine which algorithm to use based on user-supplied 
