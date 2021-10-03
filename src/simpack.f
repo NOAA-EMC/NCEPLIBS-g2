@@ -16,7 +16,10 @@
 !>    @param[in] fld Contains the data values to pack.
 !>    @param[in] ndpts The number of data values in array fld.
 !>    @param[inout] idrstmpl Contains the array of values for Data
-!>    Representation Template 5.2 or 5.3.
+!>    Representation [Template
+!>    5.2](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-2.shtml)
+!>    or [Template
+!>    5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-3.shtml).
 !>    1. Reference value - ignored on input
 !>    2. Binary Scale Factor
 !>    3. Decimal Scale Factor
@@ -46,6 +49,12 @@ C     real(8) :: rmin,rmax
       integer(4) :: iref
       integer :: ifld(ndpts)
       integer,parameter :: zero=0
+      integer :: i
+
+      print *, 'ndpts = ', ndpts
+      do i=1, ndpts
+          print *, fld(i)
+      enddo
       
       bscale=2.0**real(-idrstmpl(2))
       dscale=10.0**real(idrstmpl(3))
@@ -74,6 +83,7 @@ C     real(8) :: rmin,rmax
 !  value (rmin) is the value for each point in the field and
 !  set nbits to 0.
 !
+      print *, 'rmin, rmax: ', rmin, rmax
       if (rmin.ne.rmax) then
         !
         !  Determine which algorithm to use based on user-supplied 
