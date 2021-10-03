@@ -48,7 +48,6 @@
       integer(4) :: iref
       integer :: ifld(ndpts)
       integer,parameter :: zero=0
-      integer :: i
 
       bscale=2.0**real(-idrstmpl(2))
       dscale=10.0**real(idrstmpl(3))
