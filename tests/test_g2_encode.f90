@@ -108,7 +108,7 @@ program test_g2_encode
   coordlist(3) = 3.0
 
   ! idrsnum - Data Representation Template Number (see Code Table 5.0)
-  idrsnum = 1
+  idrsnum = 0
 
   ! idrstmpl Contains the data values for the specified Data
   ! Representation Template (N=idrsnum). Each element of this integer
@@ -125,21 +125,21 @@ program test_g2_encode
   ! ngrdpts Number of data points in grid. i.e. size of fld and bmap.
 
   ! ibmap Bitmap indicator (see Code Table 6.0).
-  ibmap = 254
+  ibmap = 253
 
   ! bmap Logical*1 array containing bitmap to be added. (if ibmap=0 or
   ! ibmap=254)
   
   ! Add a field to the GRIB2 message.
-  call addfield(msg, MAX_MSG_LEN, ipdsnum, ipdstmpl, my_pds_tmpl_maplen, &
-       coordlist, numcoord, idrsnum, idrstmpl, my_drs_tmpl_maplen, fld, &
-       ngrdpts, ibmap, bmap, ierr)
+  ! call addfield(msg, MAX_MSG_LEN, ipdsnum, ipdstmpl, my_pds_tmpl_maplen, &
+  !      coordlist, numcoord, idrsnum, idrstmpl, my_drs_tmpl_maplen, fld, &
+  !      ngrdpts, ibmap, bmap, ierr)
   ! if (ierr .ne. 0) then
   !    print *, 'ierr = ', ierr
   !    stop 3
   ! endif
 
-  ! Finilize the GRIB2 message.
+  ! ! Finilize the GRIB2 message.
   ! call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
   ! if (ierr .ne. 0) stop 4
   ! print *, 'msg_len = ', msg_len
