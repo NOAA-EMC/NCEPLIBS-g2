@@ -15,7 +15,6 @@ program test_simpack
 
   print *, 'Testing simpack.'
   expected_cpack = (/ char(0), char(93), char(108), char(64) /)
-!  expected_cpack(1) = char(0)
 
   print *, 'Testing simple call to simpack...'
   fld = (/ 42.3, 43.2, 44.1, 45.0/)
@@ -28,8 +27,6 @@ program test_simpack
   end do
   if (lcpack .ne. 4) stop 2
   
-  
   print *, 'SUCCESS!'
-
 
 end program test_simpack
