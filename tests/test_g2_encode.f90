@@ -143,6 +143,9 @@ program test_g2_encode
   call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
   if (ierr .ne. 0) stop 4
   print *, 'msg_len = ', msg_len
+
+  ! Check the message for correctness.
+  
   
   print *, 'SUCESSS!'
 end program test_g2_encode
