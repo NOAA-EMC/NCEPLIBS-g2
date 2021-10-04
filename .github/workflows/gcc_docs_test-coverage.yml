@@ -52,7 +52,7 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        cmake .. -DJasper_ROOT=~/Jasper -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0"
+        cmake .. -DJasper_ROOT=~/Jasper -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address"
         make -j2 VERBOSE=1 
 
     - name: test
