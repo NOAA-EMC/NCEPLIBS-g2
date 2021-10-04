@@ -31,12 +31,12 @@ program test_g2_encode
   integer, parameter :: my_drs_tmpl_maplen = 5
   integer :: idrstmpl(my_drs_tmpl_maplen)
   integer, parameter :: ngrdpts = 4
-  real :: fld(ngrdpts)
+  real :: fld(10)
   integer :: ibmap
   logical*1 :: bmap(ngrdpts)
 
   ! For rereading the message.
-  integer :: listsec0_in(2)
+  integer :: listsec0_in(3)
   integer :: listsec1_in(13)
   integer :: numfields, numlocal, maxlocal
   
