@@ -1,50 +1,58 @@
 !>    @file
-!>    @brief This subroutine unpacks Section 3 (Grid Definition
-!>    Section).
+!>    @brief This subroutine unpacks Section 3 ([Grid Definition
+!>    Section]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml)).
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
 
-!>    This subroutine unpacks Section 3 (Grid Definition Section)
+!>    This subroutine unpacks Section 3 ([Grid Definition
+!>    Section]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml))
 !>    starting at octet 6 of that Section.
 !>
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-26 Stephen Gilbert Initial development.
-!>    - 2002-01-24 Stephen Gilbert Changed to dynamically allocate
-!>    arrays and to pass pointers to those arrays through the argument
-!>    list.
+!>    ### Program History Log
+!>    Date | Programmer | Comments
+!>    -----|------------|--------- 
+!>    2000-05-26 | Stephen Gilbert | Initial development.
+!>    2002-01-24 | Stephen Gilbert | Dynamically allocate arrays and pass pointers.
 !>
 !>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning/end(returned) of Section 3.
-!>    @param[out] igds Contains information read from the appropriate GRIB Grid
-!>    Definition Section 3 for the field being returned.
-!>    Must be dimensioned >= 5.
-!>    - igds(1) Source of grid definition (see Code Table 3.0).
+!>    @param[inout] iofst Bit offset of the beginning/end(returned) of
+!>    Section 3.
+!>    @param[out] igds Contains information read from the appropriate
+!>    GRIB Grid Definition Section 3 for the field being returned.  Must
+!>    be dimensioned >= 5.
+!>    - igds(1) Source of grid definition (see [Code Table 3.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml)).
 !>    - igds(2) Number of grid points in the defined grid.
-!>    - igds(3) Number of octets needed for each additional grid points definition.
-!>    Used to define number of points in each row (or column) for
-!>    non-regular grids. = 0, if using regular grid.
-!>    - igds(4) Interpretation of list for optional points definition (Code Table 3.11).
-!>    - igds(5) Grid Definition Template Number (Code Table 3.1).
-!>    @param[out] igdstmpl Contains the data values for the specified Grid Definition
-!>    Template (NN=igds(5)). Each element of this integer array contains an entry (in
-!>    the order specified) of Grid Defintion Template 3.NN. A safe dimension for this
-!>    array can be obtained in advance from maxvals(2), which is returned
-!>    from subroutine gribinfo.
-!>    @param[out] mapgridlen Number of elements in igdstmpl. i.e. number of entries
-!>    in Grid Defintion Template 3.NN (NN=igds(5)).
-!>    @param[out] ideflist (Used if igds(3) .ne. 0) This array contains the number
-!>    of grid points contained in each row (or column). (part of Section 3)
-!>    A safe dimension for this array can be obtained in advance
-!>    from maxvals(3), which is returned from subroutine gribinfo.
-!>    @param[out] idefnum (Used if igds(3) .ne. 0) The number of entries in array ideflist.
-!>    i.e. number of rows (or columns) for which optional grid points are defined.
+!>    - igds(3) Number of octets needed for each additional grid points
+!>    definition. Used to define number of points in each row (or
+!>    column) for non-regular grids. = 0, if using regular grid.
+!>    - igds(4) Interpretation of list for optional points definition ([Code Table 3.11]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
+!>    - igds(5) Grid Definition Template Number ([Code Table 3.1]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
+!>    @param[out] igdstmpl Contains the data values for the specified
+!>    Grid Definition Template (NN=igds(5)). Each element of this
+!>    integer array contains an entry (in the order specified) of Grid
+!>    Defintion Template 3.NN. A safe dimension for this array can be
+!>    obtained in advance from maxvals(2), which is returned from
+!>    subroutine gribinfo().
+!>    @param[out] mapgridlen Number of elements in igdstmpl. i.e. number
+!>    of entries in Grid Defintion Template 3.NN (NN=igds(5)).
+!>    @param[out] ideflist (Used if igds(3) .ne. 0) This array contains
+!>    the number of grid points contained in each row (or column). (part
+!>    of Section 3) A safe dimension for this array can be obtained in
+!>    advance from maxvals(3), which is returned from subroutine
+!>    gribinfo().
+!>    @param[out] idefnum (Used if igds(3) .ne. 0) The number of entries
+!>    in array ideflist.  i.e. number of rows (or columns) for which
+!>    optional grid points are defined.
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 5 "GRIB" message contains an undefined Grid Definition Template.
 !>    - 6 memory allocation error.
-!>
-!>    @note Uses Fortran 90 module gridtemplates and module re_alloc.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
