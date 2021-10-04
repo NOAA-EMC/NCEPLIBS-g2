@@ -25,13 +25,15 @@
 !>    extended octet map of an appropriate template given values for the
 !>    static part of the template.
 !>    
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-09 Stephen Gilbert Initial development
-!>    - 2003-09-02 Stephen Gilbert Added GDT 3.31 Albers Equal Area
-!>    - 2007-04-24 Boi Vuong Added GDT 3.204 Curilinear Orthogonal Grids
-!>    - 2008-05-29 Boi Vuong Added GDT 3.32768 Rotate Lat/Lon E-grid
-!>    - 2010-05-10 Boi Vuong Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
-!>    - 2013-08-06 Boi Vuong Added GDT 3.4,3.5,3.12,3.101,3.140
+!>    ### Program History Log
+!>    Date | Programmer | Comments
+!>    -----|------------|--------- 
+!>    2000-05-09 | Stephen Gilbert | Initial development
+!>    2003-09-02 | Stephen Gilbert | Added GDT 3.31 Albers Equal Area
+!>    2007-04-24 | Boi Vuong | Added GDT 3.204 Curilinear Orthogonal Grids
+!>    2008-05-29 | Boi Vuong | Added GDT 3.32768 Rotate Lat/Lon E-grid
+!>    2010-05-10 | Boi Vuong | Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
+!>    2013-08-06 | Boi Vuong | Added GDT 3.4,3.5,3.12,3.101,3.140
 !>
 !>    @note Array mapgrid contains the number of octets in which the
 !>    corresponding template values will be stored. A negative value in
