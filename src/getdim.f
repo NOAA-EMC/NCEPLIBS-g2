@@ -3,6 +3,7 @@
 !>    Section 3 format.
 !>    @author Stephen Gilbert @date 2002-12-11
 !>
+      
 !>    This subroutine returns the dimensions and scanning mode of a grid
 !>    definition packed in GRIB2 Grid Definition Section 3 format.
 !>
