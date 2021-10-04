@@ -1,6 +1,11 @@
 var gridtemplates_8f =
 [
-    [ "gridtemplates::gridtemplate", "namespacegridtemplates.html#structgridtemplates_1_1gridtemplate", null ],
+    [ "gridtemplate", "namespacegridtemplates.html#structgridtemplates_1_1gridtemplate", [
+      [ "mapgrid", "namespacegridtemplates.html#ab1b1ed7f2aa907391a19b59356995eb4", null ],
+      [ "mapgridlen", "namespacegridtemplates.html#a9dd3401707144f081e84f3df4d0ee52f", null ],
+      [ "needext", "namespacegridtemplates.html#affbc9fceb8b7d1a1a0e79595720fff1c", null ],
+      [ "template_num", "namespacegridtemplates.html#a4ed900dc695336347baca8c028be7743", null ]
+    ] ],
     [ "extgridtemplate", "gridtemplates_8f.html#a5f5d50ac236e47cc8965802b8398bb82", null ],
     [ "getgdtlen", "gridtemplates_8f.html#a5c949015f562ac98d64dfcbee9ce102d", null ],
     [ "getgridindex", "gridtemplates_8f.html#a94705b2402536b9ebc6447c96257d720", null ],

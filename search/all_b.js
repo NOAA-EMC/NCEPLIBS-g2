@@ -1,14 +1,10 @@
 var searchData=
 [
-  ['simpack_0',['simpack',['../simpack_8f.html#a8ad780e9cc53e95db8cbbbe5ee703411',1,'simpack.f']]],
-  ['simpack_2ef_1',['simpack.f',['../simpack_8f.html',1,'']]],
-  ['simunpack_2',['simunpack',['../simunpack_8f.html#a5047ba28bbe7d18c4d2385c880ef863c',1,'simunpack.f']]],
-  ['simunpack_2ef_3',['simunpack.f',['../simunpack_8f.html',1,'']]],
-  ['skgb_4',['skgb',['../skgb_8f.html#a7654c30923c8fa28091b5cb300c93311',1,'skgb.f']]],
-  ['skgb_2ef_5',['skgb.f',['../skgb_8f.html',1,'']]],
-  ['specpack_6',['specpack',['../specpack_8f.html#a8ca96d02d64aef61d821ac8c90543d46',1,'specpack.f']]],
-  ['specpack_2ef_7',['specpack.f',['../specpack_8f.html',1,'']]],
-  ['specunpack_8',['specunpack',['../specunpack_8f.html#ac62623670f5c37f1d648ca24907044ed',1,'specunpack.f']]],
-  ['specunpack_2ef_9',['specunpack.f',['../specunpack_8f.html',1,'']]],
-  ['sub_5fname_10',['SUB_NAME',['../dec__jpeg2000_8c.html#a37385fd1c2192026c7d5bfd3fc75748b',1,'SUB_NAME(char *injpc, g2int *bufsize, g2int *outfld):&#160;dec_jpeg2000.c'],['../dec__png_8c.html#a186d26755df74b12e767c773cc069f6a',1,'SUB_NAME(unsigned char *pngbuf, g2int *width, g2int *height, char *cout):&#160;dec_png.c'],['../enc__png_8c.html#a2797eb173e10c631b55fdfc143a497e2',1,'SUB_NAME(char *data, g2int *width, g2int *height, g2int *nbits, char *pngbuf):&#160;enc_png.c']]]
+  ['ndpts_167',['ndpts',['../namespacegrib__mod.html#a2f71ae6eaf06d142f6095ac426763d2e',1,'grib_mod::gribfield']]],
+  ['needext_168',['needext',['../namespacedrstemplates.html#a1aed94ae62ca33090997a6a1b55d97d0',1,'drstemplates::drstemplate::needext()'],['../namespacegridtemplates.html#affbc9fceb8b7d1a1a0e79595720fff1c',1,'gridtemplates::gridtemplate::needext()'],['../namespacepdstemplates.html#a8fb6f0bec8baa091466fa6c341f020f4',1,'pdstemplates::pdstemplate::needext()']]],
+  ['ngrdpts_169',['ngrdpts',['../namespacegrib__mod.html#a260d1bd683736c616ea0440ca7b3110d',1,'grib_mod::gribfield']]],
+  ['num_5fcoord_170',['num_coord',['../namespacegrib__mod.html#a8bbc587bb2812ee0096f6ee1ecb5a9f4',1,'grib_mod::gribfield']]],
+  ['num_5fgrids_171',['num_grids',['../namespaceg2grids.html#a722699f566db5273fbab2ecf2cf937e9',1,'g2grids']]],
+  ['num_5fopt_172',['num_opt',['../namespacegrib__mod.html#a87979744266c53a54f7b42d94b0a35a9',1,'grib_mod::gribfield']]],
+  ['numoct_5fopt_173',['numoct_opt',['../namespacegrib__mod.html#ae5a2b615b82a423cc5ce04dee99f53b4',1,'grib_mod::gribfield']]]
 ];

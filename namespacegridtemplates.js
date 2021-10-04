@@ -1,6 +1,6 @@
 var namespacegridtemplates =
 [
-    [ "gridtemplate", "namespacegridtemplates.html#structgridtemplates_1_1gridtemplate", null ],
+    [ "gridtemplate", "namespacegridtemplates.html#structgridtemplates_1_1gridtemplate", "namespacegridtemplates_structgridtemplates_1_1gridtemplate_dup" ],
     [ "extgridtemplate", "namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82", null ],
     [ "getgdtlen", "namespacegridtemplates.html#a5c949015f562ac98d64dfcbee9ce102d", null ],
     [ "getgridindex", "namespacegridtemplates.html#a94705b2402536b9ebc6447c96257d720", null ],

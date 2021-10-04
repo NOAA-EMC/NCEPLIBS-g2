@@ -1,7 +1,7 @@
 var intmath_8f =
 [
-    [ "intmath::i1log2", "interfaceintmath_1_1i1log2.html", "interfaceintmath_1_1i1log2" ],
-    [ "intmath::ilog2", "interfaceintmath_1_1ilog2.html", "interfaceintmath_1_1ilog2" ],
+    [ "i1log2", "interfaceintmath_1_1i1log2.html", "interfaceintmath_1_1i1log2" ],
+    [ "ilog2", "interfaceintmath_1_1ilog2.html", "interfaceintmath_1_1ilog2" ],
     [ "i1log2_1", "intmath_8f.html#a2e61ebae49ba1ff07241034e38a4b727", null ],
     [ "i1log2_2", "intmath_8f.html#a73b15eb877031cd0226d5a28edfc5ad8", null ],
     [ "i1log2_4", "intmath_8f.html#a551b80804f16691442dea8c7f3b7cc9f", null ],

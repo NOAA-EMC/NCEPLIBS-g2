@@ -42,7 +42,8 @@ var NAVTREE =
       [ "Data Types List", "annotated.html", "annotated_dup" ],
       [ "Data Fields", "functions.html", [
         [ "All", "functions.html", null ],
-        [ "Functions/Subroutines", "functions_func.html", null ]
+        [ "Functions/Subroutines", "functions_func.html", null ],
+        [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -60,7 +61,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "addfield_8f.html",
-"namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82"
+"namespacegrib__mod.html#a495b80c254d3a304bca37816ae1d2099"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

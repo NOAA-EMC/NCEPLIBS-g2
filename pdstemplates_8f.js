@@ -1,6 +1,11 @@
 var pdstemplates_8f =
 [
-    [ "pdstemplates::pdstemplate", "namespacepdstemplates.html#structpdstemplates_1_1pdstemplate", null ],
+    [ "pdstemplate", "namespacepdstemplates.html#structpdstemplates_1_1pdstemplate", [
+      [ "mappds", "namespacepdstemplates.html#a068ebc8929912bca29be70d855aedf20", null ],
+      [ "mappdslen", "namespacepdstemplates.html#a94c8327655901ddff66b8a6bea308783", null ],
+      [ "needext", "namespacepdstemplates.html#a8fb6f0bec8baa091466fa6c341f020f4", null ],
+      [ "template_num", "namespacepdstemplates.html#a4a5fa123b3e4ab6a61d0a14f6fe33832", null ]
+    ] ],
     [ "extpdstemplate", "pdstemplates_8f.html#a0570955986fc8d676e5acd2d990e828d", null ],
     [ "getpdsindex", "pdstemplates_8f.html#a2c4b84d6cf1959b749034c79acf5d497", null ],
     [ "getpdstemplate", "pdstemplates_8f.html#ae982fefe8217f6bafdfafddcdac27198", null ],

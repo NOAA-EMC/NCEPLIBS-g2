@@ -1,6 +1,6 @@
 var namespacepdstemplates =
 [
-    [ "pdstemplate", "namespacepdstemplates.html#structpdstemplates_1_1pdstemplate", null ],
+    [ "pdstemplate", "namespacepdstemplates.html#structpdstemplates_1_1pdstemplate", "namespacepdstemplates_structpdstemplates_1_1pdstemplate_dup" ],
     [ "extpdstemplate", "namespacepdstemplates.html#a0570955986fc8d676e5acd2d990e828d", null ],
     [ "getpdsindex", "namespacepdstemplates.html#a2c4b84d6cf1959b749034c79acf5d497", null ],
     [ "getpdstemplate", "namespacepdstemplates.html#ae982fefe8217f6bafdfafddcdac27198", null ],
