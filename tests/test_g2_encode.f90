@@ -35,10 +35,17 @@ program test_g2_encode
   integer :: ibmap
   logical*1 :: bmap(ngrdpts)
 
+  ! For rereading the message.
+  integer :: listsec0_in(2)
+  integer :: listsec1_in(13)
+  integer :: numfields, numlocal, maxlocal
+  
   integer :: ierr
+  integer :: i
 
-  print *, 'Testing g2 library encoding.'
+  print *, 'Testing g2 library encoding/decoding.'
 
+  print *, 'Testing g2 library encoding...'
 !  listsec0(1) Discipline-GRIB Master Table Number (Code Table 0.0)
 !  listsec0(2) GRIB Edition Number (currently 2)
   listsec0 = (/ 0, 2 /)
@@ -134,18 +141,26 @@ program test_g2_encode
   call addfield(msg, MAX_MSG_LEN, ipdsnum, ipdstmpl, my_pds_tmpl_maplen, &
        coordlist, numcoord, idrsnum, idrstmpl, my_drs_tmpl_maplen, fld, &
        ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 0) then
-     print *, 'ierr = ', ierr
-     stop 3
-  endif
+  if (ierr .ne. 0) stop 3
 
   ! Finilize the GRIB2 message.
   call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
   if (ierr .ne. 0) stop 4
-  print *, 'msg_len = ', msg_len
+  if (msg_len .ne. 216) stop 5
+
+  print *, 'Testing g2 library decoding...'
 
   ! Check the message for correctness.
-  
+  call gb_info(msg, msg_len, listsec0_in, listsec1_in, &
+       numfields, numlocal, maxlocal, ierr)
+  if (ierr .ne. 0) stop 10
+  ! I don't understand why listsec0_in(1) is 216 instead of 0...
+  ! print *, listsec0(1), listsec0_in(1)
+  if (listsec0(2) .ne. listsec0_in(2)) stop 11
+  do i = 1, 13
+     if (listsec1(i) .ne. listsec1_in(i)) stop 12
+  enddo
+  if (numfields .ne. 1 .or. numlocal .ne. 0 .or. maxlocal .ne. 0) stop 10
   
   print *, 'SUCESSS!'
 end program test_g2_encode

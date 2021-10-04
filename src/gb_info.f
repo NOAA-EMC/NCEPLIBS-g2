@@ -6,19 +6,20 @@
 
 !>    This subroutine searches through a GRIB2 message and returns the
 !>    number of gridded fields found in the message and the number (and
-!>    maximum size) of Local Use Sections.  Also various checks are
+!>    maximum size) of Local Use Sections. Also various checks are
 !>    performed to see if the message is a valid GRIB2 message.
 !>
 !>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message in array
 !>    cgrib.
 !>    @param[out] listsec0 Contains information decoded from GRIB
-!>    Indicator Section 0.  Must be dimensioned >= 2.
-!>    - listsec0(1) Discipline-GRIB Master Table Number (see Code Table 0.0)
+!>    Indicator Section 0. Must be dimensioned >= 2.
+!>    - listsec0(1) Discipline-GRIB Master Table Number (see [Code Table
+!>    - 0.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml))
 !>    - listsec0(2) GRIB Edition Number (currently 2)
 !>    - listsec0(3) Length of GRIB message
-!>    @param[out] listsec1 Contains information read from GRIB Identification Section 1.
-!>    Must be dimensioned >= 13.
+!>    @param[out] listsec1 Contains information read from GRIB
+!>    Identification Section 1. Must be dimensioned >= 13.
 !>    - listsec1(1) Id of orginating centre (Common Code Table C-1)
 !>    - listsec1(2) Id of orginating sub-centre (local table)
 !>    - listsec1(3) GRIB Master Tables Version Number (Code Table 1.0)
