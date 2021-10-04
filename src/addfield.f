@@ -28,8 +28,8 @@
 !>    @param[inout] cgrib Character array to contain the GRIB2 message.
 !>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
 !>    @param[in] ipdsnum Product Definition Template Number (see [Code
-!>    Table
-!>    4.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml)).
+!>    Table 4.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml)).
 !>    @param[in] ipdstmpl Contains the data values for the specified
 !>    Product Definition Template (N=ipdsnum). Each element of this
 !>    integer array contains an entry (in the order specified) of
