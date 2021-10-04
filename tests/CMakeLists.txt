@@ -22,3 +22,8 @@ add_test(test_params test_params)
 add_executable(test_params_ecmwf test_params_ecmwf.f90)
 target_link_libraries(test_params_ecmwf g2_d)
 add_test(test_params_ecmwf test_params_ecmwf)
+
+add_executable(test_simpack test_simpack.f90)
+target_link_libraries(test_simpack g2_4)
+add_test(test_simpack test_simpack)
+
