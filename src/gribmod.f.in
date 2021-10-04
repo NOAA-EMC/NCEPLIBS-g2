@@ -28,21 +28,29 @@
       character(len=12) :: G2_VERSION="g2lib-@pVersion@" !< Library version.
 
       type gribfield
-          integer :: version !< GRIB edition number (currently 2).
-          integer :: discipline !< Message Discipline (see Code Table 0.0).
+          integer :: version        !< GRIB edition number (currently 2).
+
+          !> Message Discipline (see [Code Table 0.0]
+          !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml)).      
+          integer :: discipline 
 
           !> Contains the entries in the Identification Section (Section
           !> 1). This element is actually a pointer to an array that
           !> holds the data.
           !>    - idsect(1) Identification of originating Centre
-          !>    (see Common Code Table C-1) 7 US National Weather Service.
-          !>    - idsect(2) Identification of originating Sub-centre.
-          !>    - idsect(3) GRIB Master Tables Version Number. (see Code Table
-          !>    1.0) 0 Experimental; 1 Initial operational version number
-          !>    - idsect(4) GRIB Local Tables Version Number (Code Table 1.1).
+          !>    (see Common Code Table C-1) 7 US National Weather Service. ([Table 0]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html)).
+          !>    - idsect(2) Identification of originating Sub-centre ([Table C]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html)).
+          !>    - idsect(3) GRIB Master Tables Version Number. ([Table 1.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml))
+          !>    0 Experimental; 1 Initial operational version number
+          !>    - idsect(4) GRIB Local Tables Version Number ([Table 1.1]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml)).
           !>     - 0 Local tables not used
           !>     - 0 1-254 Number of local tables version used
-          !>    - idsect(5) Significance of Reference Time (Code Table 1.2).
+          !>    - idsect(5) Significance of Reference Time ([Table 1.2]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml)).
           !>     - 0 Analysis
           !>     - 1 Start of forecast
           !>     - 2 Verifying time of forecast
@@ -53,13 +61,14 @@
           !>    - idsect(9) Hour
           !>    - idsect(10) Minute
           !>    - idsect(11) Second
-          !>    - idsect(12) Production status of processed data (see Code
-          !>    Table 1.3)
+          !>    - idsect(12) Production status of processed data (see [Table 1.3]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml))
           !>     - 0 Operational products
           !>     - 1 Operational test products
           !>     - 2 Research products
           !>     - 3 Re-analysis products
-          !>    - idsect(13) Type of processed data (see Code Table 1.4)
+          !>    - idsect(13) Type of processed data ([Table 1.4]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml))
           !>     - 0 Analysis products
           !>     - 1 Forecast products
           !>     - 2 Analysis and forecast products

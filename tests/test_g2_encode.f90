@@ -4,6 +4,7 @@
 !
 ! Ed Hartnett 9/29/21
 program test_g2_encode
+  use grib_mod
   implicit none
 
   ! For gribcreate().
@@ -39,6 +40,7 @@ program test_g2_encode
   integer :: listsec0_in(3)
   integer :: listsec1_in(13)
   integer :: numfields, numlocal, maxlocal
+  type(gribfield) :: gfld
   
   integer :: ierr
   integer :: i
@@ -146,7 +148,7 @@ program test_g2_encode
   ! Finilize the GRIB2 message.
   call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
   if (ierr .ne. 0) stop 4
-  print *, msg_len
+  print *, 'msg_len = ', msg_len
   ! I don't understand why the msg_len is 216 on GNU and 217 on Intel...
   !  if (msg_len .ne. 216) stop 5
 
@@ -163,6 +165,11 @@ program test_g2_encode
      if (listsec1(i) .ne. listsec1_in(i)) stop 12
   enddo
   if (numfields .ne. 1 .or. numlocal .ne. 0 .or. maxlocal .ne. 0) stop 10
+
+  call gf_getfld(msg, msg_len, 1, .true., 0, gfld, ierr)
+  if (ierr .ne. 0) stop 20
+  if (gfld%ibmap .ne. ibmap .or. gfld%discipline .ne. listsec0(1)) stop 21
+  print *, gfld%discipline
   
   print *, 'SUCESSS!'
 end program test_g2_encode
