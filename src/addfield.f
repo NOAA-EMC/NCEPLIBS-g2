@@ -18,11 +18,12 @@
 !>    gribend() is required to complete GRIB2 message after all fields
 !>    have been added.
 !>
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-02 Stephen Gilbert
-!>    - 2002-12-17 Stephen Gilbert - Added support for new templates using
-!>    PNG and JPEG2000 algorithms/templates.
-!>    - 2004-06-22 Stephen Gilbert - Added check to determine if packing algorithm failed.
+!>    ### Program History Log
+!>    Date | Programmer | Comments
+!>    -----|------------|--------- 
+!>    2000-05-02 | Stephen Gilbert | Initial.
+!>    2002-12-17 | Stephen Gilbert | Added support for new templates using PNG and JPEG2000 algorithms/templates.
+!>    2004-06-22 | Stephen Gilbert | Added check to determine if packing algorithm failed.
 !>
 !>    @param[inout] cgrib Character array to contain the GRIB2 message.
 !>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
