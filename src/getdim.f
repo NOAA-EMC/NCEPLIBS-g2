@@ -3,15 +3,15 @@
 !>    Section 3 format.
 !>    @author Stephen Gilbert @date 2002-12-11
 !>
-
-!>    This subroutine returns the dimensions and scanning mode of
-!>    a grid definition packed in GRIB2 Grid Definition Section 3 format.
+!>    This subroutine returns the dimensions and scanning mode of a grid
+!>    definition packed in GRIB2 Grid Definition Section 3 format.
 !>
 !>    @param[in] csec3 Character array that contains the packed GRIB2 GDS.
 !>    @param[in] lcsec3 Length (in octets) of section 3.
 !>    @param[out] width x (or i) dimension of the grid.
 !>    @param[out] height y (or j) dimension of the grid.
-!>    @param[out] iscan Scanning mode (see Code Table 3.4).
+!>    @param[out] iscan Scanning mode (see [Code Table 3.4]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-4.shtml)).
 !>
 !>    @note Returns width and height set to zero, if grid template not recognized.
 !>
