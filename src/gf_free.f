@@ -13,6 +13,8 @@
 !>    2012-12-11 | Boi Vuong | initialize an undefine pointers
 !>    2015-10-29 | Boi Vuong | Deallocate pointers in derived type gribfield
 !>
+!>    @param gfld derived type gribfield (defined in module grib_mod).
+!>      
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
 
