@@ -146,6 +146,7 @@ program test_g2_encode
   ! Finilize the GRIB2 message.
   call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
   if (ierr .ne. 0) stop 4
+  print *, msg_len
   if (msg_len .ne. 216) stop 5
 
   print *, 'Testing g2 library decoding...'
