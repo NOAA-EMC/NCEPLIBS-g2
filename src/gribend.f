@@ -5,16 +5,16 @@
 !>
 
 !>    This subroutine finalizes a GRIB message after all grids and
-!>    fields have been added. It adds the End Section ( "7777" ) to
-!>    the end of the GRIB message and calculates the length and stores
-!>    it in the appropriate place in Section 0. This routine is used
-!>    with routines gribcreate(), addlocal(), addgrid(), and addfield()
-!>    to create a complete GRIB2 message. Subroutine gribcreate()
-!>    must be called first to initialize a new GRIB2 message.
+!>    fields have been added. It adds the End Section ("7777") to the
+!>    end of the GRIB message and calculates the length and stores it in
+!>    the appropriate place in Section 0. This routine is used with
+!>    routines gribcreate(), addlocal(), addgrid(), and addfield() to
+!>    create a complete GRIB2 message. 
 !>
 !>    @param[inout] cgrib Character array to contain the GRIB2 message.
 !>    @param[in] lcgrib Maximum Length (in bytes) of array cgrib.
-!>    @param[out] lengrib Length of the final GRIB2 message in octets (bytes).
+!>    @param[out] lengrib Length of the final GRIB2 message in octets
+!>    (bytes).
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 1 GRIB message was not initialized. call routine gribcreate() first.
