@@ -1,21 +1,26 @@
 !>    @file
-!>    @brief This subroutine packs up a data field using a GRIB2 algorithm.
+!>    @brief This subroutine packs up a data field using a GRIB2
+!>    algorithm.
 !>    @author Stephen Gilbert @date 2000-06-21
 !>
 
 !>    This subroutine packs up a data field using a complex packing
 !>    algorithm as defined in the GRIB2 documention. It supports GRIB2
 !>    complex packing templates with or without spatial differences
-!>    (i.e. DRTs 5.2 and 5.3). It also fills in GRIB2 Data
-!>    Representation Template 5.2 or 5.3 with the appropriate values.
-!>    This version assumes that Missing Value Management is being
-!>    used and that1 or 2 missing values appear in the data.
+!>    (i.e. Data Representation Tables [5.2]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-2.shtml)
+!>    and [5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-3.shtml)).
+!>    It also fills in GRIB2 Data Representation Template 5.2 or 5.3
+!>    with the appropriate values. This version assumes that Missing
+!>    Value Management is being used and that1 or 2 missing values
+!>    appear in the data.
 !>    
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-06-21 Stephen Gilbert
-!>    - 2004-12-29 Stephen Gilbert Corrected bug when encoding secondary
-!>    missing values.
-!>    - 2012-05-10 Boi Vuong Added variable rmin4 for 4 byte real.
+!>    ### Program History Log
+!>    Date | Programmer | Comments
+!>    -----|------------|--------- 
+!>    2000-06-21 | Stephen Gilbert | 
+!>    2004-12-29 | Stephen Gilbert | Corrected bug when encoding secondary missing values.
+!>    2012-05-10 | Boi Vuong | Added variable rmin4 for 4 byte real.
 !>    
 !>    @param[in] fld Contains the data values to pack.
 !>    @param[in] ndpts The number of data values in array fld.

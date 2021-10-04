@@ -1,6 +1,6 @@
 !>    @file
-!>    @brief This subroutines searches the number of  Local Use 
-!>    Sections and gridded fields.
+!>    @brief This subroutines searches the number of Local Use Sections
+!>    and gridded fields.
 !>    @author Stephen Gilbert @date 2000-05-25
 !>
 
@@ -10,19 +10,18 @@
 !>    if the message is a valid GRIB2 message. Last, a list of safe
 !>    array dimensions is returned for use in allocating return
 !>    arrays from routines getlocal, gettemplates, and getfields.
-!>    (See maxvals and REMARKS)
 !>
 !>    @param[in] cgrib Character that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of array cgrib.
-!>    @param[out] listsec0 Contains information needed for GRIB Indicator
-!>    Section 0. Must be dimensioned >= 2.
+!>    @param[out] listsec0 Contains information needed for GRIB
+!>    Indicator Section 0. Must be dimensioned >= 2.
 !>    - listsec0(1) Discipline-GRIB Master Table Number.
 !>    - listsec0(2) GRIB Edition Number (currently 2).
 !>    - listsec0(3) Length of GRIB message.
-!>    @param[out] listsec1 Contains information needed for GRIB Identification
-!>    Section 1. Must be dimensioned >= 13.
-!>    - listsec1(1)=Id of orginating centre (Common Code Table C-1)
-!>    - listsec1(2)=Id of orginating sub-centre (local table)
+!>    @param[out] listsec1 Contains information needed for GRIB
+!>    Identification Section 1. Must be dimensioned >= 13.
+!>    - listsec1(1) Id of orginating centre (Common Code Table C-1)
+!>    - listsec1(2) Id of orginating sub-centre (local table)
 !>    - listsec1(3) GRIB Master Tables Version Number (Code Table 1.0)
 !>    - listsec1(4) GRIB Local Tables Version Number (Code Table 1.1)
 !>    - listsec1(5) Significance of Reference Time (Code Table 1.2)
@@ -36,16 +35,17 @@
 !>    - listsec1(13) Type of processed data (Code Table 1.4)
 !>    @param[out] numlocal The number of Local Use Sections (Section 2)
 !>    found in the GRIB message.
-!>    @param[out] numfields The number of gridded fieldse found in the GRIB message.
+!>    @param[out] numfields The number of gridded fieldse found in the
+!>    GRIB message.
 !>    @param[out] maxvals The maximum number of elements that could be
 !>    returned in various arrays from this GRIB2 message.
-!>    - maxvals(1) max length of local section 2 (for getlocal)
-!>    - maxvals(2) max length of GDS Template (for gettemplates and getfield)
-!>    - maxvals(3) max length of GDS Optional list (for getfield)
-!>    - maxvals(4) max length of PDS Template (for gettemplates and getfield)
-!>    - maxvals(5) max length of PDS Optional list (for getfield)
-!>    - maxvals(6) max length of DRS Template (for gettemplates and getfield)
-!>    - maxvals(7) max number of gridpoints (for getfield)
+!>    - maxvals(1) max length of local section 2 (for getlocal()).
+!>    - maxvals(2) max length of GDS Template (for gettemplates() and getfield()).
+!>    - maxvals(3) max length of GDS Optional list (for getfield()).
+!>    - maxvals(4) max length of PDS Template (for gettemplates() and getfield()).
+!>    - maxvals(5) max length of PDS Optional list (for getfield()).
+!>    - maxvals(6) max length of DRS Template (for gettemplates() and getfield()).
+!>    - maxvals(7) max number of gridpoints (for getfield()).
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 1 Beginning characters "GRIB" not found.
