@@ -3,52 +3,54 @@ C>    @brief This subroutine read a GRIB2 index file and return its content.
 C>    @author Mark Iredell @date 1995-10-31
 C>
 
-C>    READ A GRIB2 INDEX FILE AND RETURN ITS CONTENTS.
-C>    VERSION 1 OF THE INDEX FILE HAS THE FOLLOWING FORMAT:
-C>    81-BYTE S.LORD HEADER WITH 'GB2IX1' IN COLUMNS 42-47 FOLLOWED BY
-C>    81-BYTE HEADER WITH NUMBER OF BYTES TO SKIP BEFORE INDEX RECORDS,
-C>    TOTAL LENGTH IN BYTES OF THE INDEX RECORDS, NUMBER OF INDEX RECORDS,
-C>    AND GRIB FILE BASENAME WRITTEN IN FORMAT ('IX1FORM:',3I10,2X,A40).
-C>    EACH FOLLOWING INDEX RECORD CORRESPONDS TO A GRIB MESSAGE
-C>    AND HAS THE INTERNAL FORMAT:
-C>    - BYTE 001 - 004 LENGTH OF INDEX RECORD
-C>    - BYTE 005 - 008 BYTES TO SKIP IN DATA FILE BEFORE GRIB MESSAGE
-C>    - BYTE 009 - 012 BYTES TO SKIP IN MESSAGE BEFORE LUS (LOCAL USE)
-C>    SET = 0, IF NO LOCAL USE SECTION IN GRIB2 MESSAGE.
-C>    - BYTE 013 - 016 BYTES TO SKIP IN MESSAGE BEFORE GDS
-C>    - BYTE 017 - 020 BYTES TO SKIP IN MESSAGE BEFORE PDS
-C>    - BYTE 021 - 024 BYTES TO SKIP IN MESSAGE BEFORE DRS
-C>    - BYTE 025 - 028 BYTES TO SKIP IN MESSAGE BEFORE BMS
-C>    - BYTE 029 - 032 BYTES TO SKIP IN MESSAGE BEFORE DATA SECTION
-C>    - BYTE 033 - 040 BYTES TOTAL IN THE MESSAGE
-C>    - BYTE 041 - 041 GRIB VERSION NUMBER (CURRENTLY 2)
-C>    - BYTE 042 - 042 MESSAGE DISCIPLINE
-C>    - BYTE 043 - 044 FIELD NUMBER WITHIN GRIB2 MESSAGE
-C>    - BYTE 045 -  II IDENTIFICATION SECTION (IDS)
-C>    - BYTE II+1-  JJ GRID DEFINITION SECTION (GDS)
-C>    - BYTE JJ+1-  KK PRODUCT DEFINITION SECTION (PDS)
-C>    - BYTE KK+1-  LL THE DATA REPRESENTATION SECTION (DRS)
-C>    - BYTE LL+1-LL+6 FIRST 6 BYTES OF THE BIT MAP SECTION (BMS)
+C>    Read a grib2 index file and return its contents.
+C>    Version 1 of the index file has the following format:
+c>    81-byte s.lord header with 'gb2ix1' in columns 42-47 followed by
+c>    81-byte header with number of bytes to skip before index records,
+c>    total length in bytes of the index records, number of index records,
+c>    and grib file basename written in format ('ix1form:',3i10,2x,a40).
+C>    Each following index record corresponds to a grib message
+c>    and has the internal format:
+c>    - byte 001 - 004 length of index record
+c>    - byte 005 - 008 bytes to skip in data file before grib message
+c>    - byte 009 - 012 bytes to skip in message before lus (local use)
+c>    set = 0, if no local use section in grib2 message.
+c>    - byte 013 - 016 bytes to skip in message before gds
+c>    - byte 017 - 020 bytes to skip in message before pds
+c>    - byte 021 - 024 bytes to skip in message before drs
+c>    - byte 025 - 028 bytes to skip in message before bms
+c>    - byte 029 - 032 bytes to skip in message before data section
+c>    - byte 033 - 040 bytes total in the message
+c>    - byte 041 - 041 grib version number (currently 2)
+c>    - byte 042 - 042 message discipline
+c>    - byte 043 - 044 field number within grib2 message
+c>    - byte 045 -  ii identification section (ids)
+c>    - byte ii+1-  jj grid definition section (gds)
+c>    - byte jj+1-  kk product definition section (pds)
+c>    - byte kk+1-  ll the data representation section (drs)
+c>    - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
 C>
-C>    PROGRAM HISTORY LOG:
-C>    - 1995-10-31 Mark Iredell
-C>    - 1996-10-31 Mark Iredell AUGMENTED OPTIONAL DEFINITIONS TO BYTE 320
-C>    - 2002-01-03 Stephen Gilbert MODIFIED FROM GETGI TO WORK WITH GRIB2
+C>    ### Program History Log
+C>    Date | Programmer | Comments
+C>    -----|------------|--------- 
+C>    1995-10-31 | Mark Iredell | Initial.
+C>    1996-10-31 | Mark Iredell | Augmented optional definitions to byte 320.
+C>    2002-01-03 | Stephen Gilbert | Modified from getgi to work with grib2.
 C>
-C>    @param[in] LUGI INTEGER UNIT OF THE UNBLOCKED GRIB INDEX FILE
-C>    @param[out] CBUF CHARACTER*1 POINTER TO A BUFFER THAT CONTAINS INDEX
-C>    RECORDS. USERS SHOULD FREE MEMORY THAT CBUF POINTS TO, USING
-C>    DEALLOCATE(CBUF) WHEN CBUF IS NO LONGER NEEDED.
-C>    @param[out] NLEN INTEGER TOTAL LENGTH OF ALL INDEX RECORDS
-C>    @param[out] NNUM INTEGER NUMBER OF INDEX RECORDS
-C>    @param[out] IRET INTEGER RETURN CODE
-C>    - 0 ALL OK
-C>    - 2 NOT ENOUGH MEMORY TO HOLD INDEX BUFFER
-C>    - 3 ERROR READING INDEX FILE BUFFER
-C>    - 4 ERROR READING INDEX FILE HEADER
+c>    @param[in] lugi integer unit of the unblocked grib index file
+c>    @param[out] cbuf character*1 pointer to a buffer that contains index
+c>    records. users should free memory that cbuf points to, using
+c>    deallocate(cbuf) when cbuf is no longer needed.
+c>    @param[out] nlen integer total length of all index records
+c>    @param[out] nnum integer number of index records
+c>    @param[out] iret integer return code
+c>    - 0 all ok
+c>    - 2 not enough memory to hold index buffer
+c>    - 3 error reading index file buffer
+c>    - 4 error reading index file header
 C>
-C>    @note SUBPROGRAM CAN BE CALLED FROM A MULTIPROCESSING ENVIRONMENT.
-C>    DO NOT ENGAGE THE SAME LOGICAL UNIT FROM MORE THAN ONE PROCESSOR.
+C>    @note Subprogram can be called from a multiprocessing environment.
+C>    Do not engage the same logical unit from more than one processor.
 C>
 C>    @author Mark Iredell @date 2000-05-26
 C>
