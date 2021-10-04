@@ -131,18 +131,18 @@ program test_g2_encode
   ! ibmap=254)
   
   ! Add a field to the GRIB2 message.
-  ! call addfield(msg, MAX_MSG_LEN, ipdsnum, ipdstmpl, my_pds_tmpl_maplen, &
-  !      coordlist, numcoord, idrsnum, idrstmpl, my_drs_tmpl_maplen, fld, &
-  !      ngrdpts, ibmap, bmap, ierr)
-  ! if (ierr .ne. 0) then
-  !    print *, 'ierr = ', ierr
-  !    stop 3
-  ! endif
+  call addfield(msg, MAX_MSG_LEN, ipdsnum, ipdstmpl, my_pds_tmpl_maplen, &
+       coordlist, numcoord, idrsnum, idrstmpl, my_drs_tmpl_maplen, fld, &
+       ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) then
+     print *, 'ierr = ', ierr
+     stop 3
+  endif
 
-  ! ! Finilize the GRIB2 message.
-  ! call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
-  ! if (ierr .ne. 0) stop 4
-  ! print *, 'msg_len = ', msg_len
+  ! Finilize the GRIB2 message.
+  call gribend(msg, MAX_MSG_LEN, msg_len, ierr)
+  if (ierr .ne. 0) stop 4
+  print *, 'msg_len = ', msg_len
   
   print *, 'SUCESSS!'
 end program test_g2_encode
