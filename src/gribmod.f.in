@@ -10,7 +10,7 @@
 !>    ### Program History Log
 !>    Date | Programmer | Comments
 !>    -----|------------|--------- 
-!>    2002-01-23 | Stephen Gilbert
+!>    2002-01-23 | Stephen Gilbert | Initial.
 !>    2007-04-24 | Boi Vuong | Added GDT 3.204 Curvilinear Orthogonal Grids
 !>    2008-05-29 | Boi Vuong | Added GDT 3.32768 Rotate Lat/Lon E-grid
 !>    2009-02-17 | Boi Vuong | Allow negative scale factors and limits for Templates 4.5 and 4.9
