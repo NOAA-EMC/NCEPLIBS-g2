@@ -1,74 +1,91 @@
 !>    @file
-!>    @brief Contains subroutines obtain grid information and the unpacked data
-!>    (section 3 - 6) for a field from a GRIB2 file.
+!>    @brief Contains subroutines obtain grid information and the
+!>    unpacked data (section 3 - 6) for a field from a GRIB2 file.
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
 
 !>    This subroutine returns the Grid Definition, Product Definition,
 !>    Bit-map (if applicable), and the unpacked data for a given data
 !>    field. Since there can be multiple data fields packed into a GRIB2
-!>    message, the calling routine indicates which field is being requested
-!>    with the ifldnum argument.
+!>    message, the calling routine indicates which field is being
+!>    requested with the ifldnum argument.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[in] ifldnum Specifies which field in the GRIB2 message to return.
-!>    @param[out] igds Contains information read from the appropriate GRIB Grid
-!>    Definition Section 3 for the field being returned.
-!>    Must be dimensioned >= 5.
-!>    - igds(1) Source of grid definition (see Code Table 3.0)
+!>    @param[in] ifldnum Specifies which field in the GRIB2 message to
+!>    return.
+
+!>    @param[out] igds Contains information read from the appropriate
+!>    GRIB Grid Definition Section 3 for the field being returned. Must
+!>    be dimensioned >= 5.
+!>    - igds(1) Source of grid definition (see [Code Table
+!>    3.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml)).
 !>    - igds(2) Number of grid points in the defined grid.
-!>    - igds(3) Number of octets needed for each additional grid points definition.
-!>    Used to define number of points in each row (or column) for
-!>    non-regular grids. = 0, if using regular grid.
-!>    - igds(4) Interpretation of list for optional points definition (Code Table 3.11).
-!>    - igds(5) Grid Definition Template Number (Code Table 3.1).
-!>    @param[out] igdstmpl Contains the data values for the specified Grid Definition
-!>    Template (NN=igds(5)). Each element of this integer array contains an entry (in
-!>    the order specified) of Grid Defintion Template 3.NN. A safe dimension for this
-!>    array can be obtained in advance from maxvals(2), which is returned
-!>    from subroutine gribinfo.
-!>    @param[out] igdslen Number of elements in igdstmpl. i.e. number of entries
-!>    in Grid Defintion Template 3.NN (NN=igds(5)).
-!>    @param[out] ideflist (Used if igds(3) .ne. 0) This array contains the number
-!>    of grid points contained in each row (or column). (part of Section 3)
-!>    A safe dimension for this array can be obtained in advance
-!>    from maxvals(3), which is returned from subroutine gribinfo.
-!>    @param[out] idefnum (Used if igds(3) .ne. 0) The number of entries in array ideflist.
-!>    i.e. number of rows (or columns) for which optional grid points are defined.
-!>    @param[out] ipdsnum Product Definition Template Number (see Code Table 4.0).
-!>    @param[out] ipdstmpl Contains the data values for the specified Product Definition
-!>    Template (N=ipdsnum). Each element of this integer array contains an entry
-!>    (in the order specified) of Product Defintion Template 4.N. A safe
-!>    dimension for this array can be obtained in advance from maxvals(4),
-!>    which is returned from subroutine gribinfo.
-!>    @param[out] ipdslen Number of elements in ipdstmpl. i.e. number of entries
-!>    in Product Defintion Template 4.N (N=ipdsnum).
-!>    @param[out] coordlist Array containg floating point values intended to document
-!>    the vertical discretisation associated to model data on hybrid coordinate vertical levels.
-!>    (part of Section 4) The dimension of this array can be obtained in advance
-!>    from maxvals(5), which is returned from subroutine gribinfo.
+!>    - igds(3) Number of octets needed for each additional grid points
+!>    definition. Used to define number of points in each row (or
+!>    column) for non-regular grids. = 0, if using regular grid.
+!>    - igds(4) Interpretation of list for optional points definition
+!>    ([Code Table
+!>    3.11](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
+!>    - igds(5) Grid Definition Template Number ([Code Table
+!>    3.1](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
+!>    @param[out] igdstmpl Contains the data values for the specified
+!>    Grid Definition Template (NN=igds(5)). Each element of this
+!>    integer array contains an entry (in the order specified) of Grid
+!>    Defintion Template 3.NN. A safe dimension for this array can be
+!>    obtained in advance from maxvals(2), which is returned from
+!>    subroutine gribinfo().
+!>    @param[out] igdslen Number of elements in igdstmpl. i.e. number of
+!>    entries in Grid Defintion Template 3.NN (NN=igds(5)).
+!>    @param[out] ideflist (Used if igds(3) .ne. 0) This array contains
+!>    the number of grid points contained in each row (or column). (part
+!>    of Section 3) A safe dimension for this array can be obtained in
+!>    advance from maxvals(3), which is returned from subroutine
+!>    gribinfo().
+!>    @param[out] idefnum (Used if igds(3) .ne. 0) The number of entries
+!>    in array ideflist - i.e. number of rows (or columns) for which
+!>    optional grid points are defined.
+!>    @param[out] ipdsnum Product Definition Template Number (see [Code
+!>    Table 4.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
+!>    @param[out] ipdstmpl Contains the data values for the specified
+!>    Product Definition Template (N=ipdsnum). Each element of this
+!>    integer array contains an entry (in the order specified) of
+!>    Product Defintion Template 4.N. A safe dimension for this array
+!>    can be obtained in advance from maxvals(4), which is returned from
+!>    subroutine gribinfo().
+!>    @param[out] ipdslen Number of elements in ipdstmpl - i.e. number
+!>    of entries in Product Defintion Template 4.N (N=ipdsnum).
+!>    @param[out] coordlist Array containg floating point values
+!>    intended to document the vertical discretisation associated to
+!>    model data on hybrid coordinate vertical levels (part of Section
+!>    4). The dimension of this array can be obtained in advance from
+!>    maxvals(5), which is returned from subroutine gribinfo().
 !>    @param[out] numcoord number of values in array coordlist.
 !>    @param[out] ndpts Number of data points unpacked and returned.
-!>    @param[out] idrsnum Data Representation Template Number (see Code Table 5.0).
-!>    @param[out] idrstmpl Contains the data values for the specified Data Representation
-!>    Template (N=idrsnum). Each element of this integer array contains
-!>    an entry (in the order specified) of Product Defintion Template 5.N
-!>    A safe dimension for this array can be obtained in advance
-!>    from maxvals(6), which is returned from subroutine gribinfo.
-!>    @param[out] idrslen Number of elements in idrstmpl. i.e. number of entries
-!>    in Data Representation Template 5.N (N=idrsnum).
-!>    @param[out] ibmap Bitmap indicator (see Code Table 6.0)
+!>    @param[out] idrsnum Data Representation Template Number (see [Code
+!>    Table 5.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml)).
+!>    @param[out] idrstmpl Contains the data values for the specified
+!>    Data Representation Template (N=idrsnum). Each element of this
+!>    integer array contains an entry (in the order specified) of
+!>    Product Defintion Template 5.N A safe dimension for this array can
+!>    be obtained in advance from maxvals(6), which is returned from
+!>    subroutine gribinfo().
+!>    @param[out] idrslen Number of elements in idrstmpl. i.e. number of
+!>    entries in Data Representation Template 5.N (N=idrsnum).
+!>    @param[out] ibmap Bitmap indicator (see [Code Table
+!>    6.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
 !>    - 0 bitmap applies and is included in Section 6.
 !>    - 1-253 Predefined bitmap applies.
 !>    - 254 Previously defined bitmap applies to this field.
 !>    - 255 Bit map does not apply to this product.
-!>    @param[out] bmap Logical*1 array containing decoded bitmap. (if ibmap=0)
-!>    The dimension of this array can be obtained in advance from maxvals(7),
-!>    which is returned from subroutine gribinfo.
-!>    @param[out] fld Array of ndpts unpacked data points. A safe dimension
-!>    for this array can be obtained in advance from maxvals(7),
-!>    which is returned from subroutine gribinfo.
+!>    @param[out] bmap Logical*1 array containing decoded bitmap (if
+!>    ibmap=0). The dimension of this array can be obtained in advance
+!>    from maxvals(7), which is returned from subroutine gribinfo().
+!>    @param[out] fld Array of ndpts unpacked data points. A safe
+!>    dimension for this array can be obtained in advance from
+!>    maxvals(7), which is returned from subroutine gribinfo().
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 1 Beginning characters "GRIB" not found.
@@ -166,7 +183,7 @@
       endif
 !
 !  Loop through the remaining sections keeping track of the 
-!  length of each.  Also keep the latest Grid Definition Section info.
+!  length of each. Also keep the latest Grid Definition Section info.
 !  Unpack the requested field number.
 !
       do
@@ -191,7 +208,7 @@
         !print *,' lensec= ',lensec,'    secnum= ',isecnum
         !
         !   If found Section 3, unpack the GDS info using the 
-        !   appropriate template.  Save in case this is the latest
+        !   appropriate template. Save in case this is the latest
         !   grid before the requested field.
         !
         if (isecnum.eq.3) then
@@ -321,30 +338,39 @@
 !>
 !>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning (in) or the end (out) of Section 3.
-!>    @param[out] igds Contains information read from the appropriate GRIB Grid
-!>    Definition Section 3 for the field being returned. Must be dimensioned >= 5.
-!>    - igds(1) Source of grid definition (see Code Table 3.0)
+!>    @param[inout] iofst Bit offset of the beginning (in) or the end
+!>    (out) of Section 3.
+!>    @param[out] igds Contains information read from the appropriate
+!>    GRIB Grid Definition Section 3 for the field being returned. Must
+!>    be dimensioned >= 5.
+
+!>    - igds(1) Source of grid definition (see [Code Table - 3.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml))
 !>    - igds(2) Number of grid points in the defined grid.
-!>    - igds(3) Number of octets needed for each additional grid points definition.
-!>    Used to define number of points in each row (or column) for non-regular
-!>    grids. = 0, if using regular grid.
-!>    - igds(4) Interpretation of list for optional points definition. (Code Table 3.11)
-!>    - igds(5) Grid Definition Template Number (Code Table 3.1)
-!>    @param[out] igdstmpl Contains the data values for the specified Grid Definition
-!>    Template (NN=igds(5)). Each element of this integer array contains an entry
-!>    (in the order specified) of Grid Defintion Template 3.NN.
-!>    @param[out] mapgridlen Number of elements in igdstmpl. i.e. number of entries
-!>    in Grid Defintion Template 3.NN (NN=igds(5)).
-!>    @param[out] ideflist (Used if igds(3) .ne. 0) This array contains the
-!>    number of grid points contained in each row (or column). (part of Section 3).
-!>    @param[out] idefnum (Used if igds(3) .ne. 0) The number of entries in array
-!>    ideflist. i.e. number of rows (or columns) for which optional grid points are defined.
+!>    - igds(3) Number of octets needed for each additional grid points
+!>    definition. Used to define number of points in each row (or
+!>    column) for non-regular grids. = 0, if using regular grid.
+!>    - igds(4) Interpretation of list for optional points
+!>    definition. ([Code Table 3.11]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
+!>    - igds(5) Grid Definition Template Number ([Code Table 3.1]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
+!>    @param[out] igdstmpl Contains the data values for the specified
+!>    Grid Definition Template (NN=igds(5)). Each element of this
+!>    integer array contains an entry (in the order specified) of Grid
+!>    Defintion Template 3.NN.
+!>    @param[out] mapgridlen Number of elements in igdstmpl -
+!>    i.e. number of entries in Grid Defintion Template 3.NN
+!>    (NN=igds(5)).
+!>    @param[out] ideflist (Used if igds(3) .ne. 0). This array contains
+!>    the number of grid points contained in each row (or column) (part
+!>    of Section 3).
+!>    @param[out] idefnum (Used if igds(3) .ne. 0). The number of
+!>    entries in array ideflist - i.e. number of rows (or columns) for
+!>    which optional grid points are defined.
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 5 "GRIB" message contains an undefined Grid Definition Template.
-!>
-!>    @note Uses Fortran 90 module gridtemplates.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
@@ -438,7 +464,7 @@
       endif
       !
       !   Unpack optional list of numbers defining number of points
-      !   in each row or column, if included.  This is used for non regular
+      !   in each row or column, if included. This is used for non regular
       !   grids.
       !
       if ( igds(3).ne.0 ) then
@@ -456,24 +482,27 @@
 !>    This subroutine unpacks Section 4 (Product Definition Section)
 !>    starting at octet 6 of that Section.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning (in) or the end (out) of Section 4.
-!>    @param[out] ipdsnum Product Definition Template Number (see Code Table 4.0).
-!>    @param[out] ipdstmpl Contains the data values for the specified Product Definition
-!>    Template (N=ipdsnum). Each element of this integer array contains an entry
-!>    (in the order specified) of Product Defintion Template 4.N.
-!>    @param[out] mappdslen Number of elements in ipdstmpl. i.e. number of entries
-!>    in Product Defintion Template 4.N (N=ipdsnum).
-!>    @param[out] coordlist- Array containg floating point values intended to document
-!>    the vertical discretisation associated to model data on hybrid coordinate
-!>    vertical levels. (part of Section 4).
+!>    @param[inout] iofst Bit offset of the beginning (in) or the end
+!>    (out) of Section 4.
+!>    @param[out] ipdsnum Product Definition Template Number (see [Code
+!>    Table 4.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
+!>    @param[out] ipdstmpl Contains the data values for the specified
+!>    Product Definition Template (N=ipdsnum). Each element of this
+!>    integer array contains an entry (in the order specified) of
+!>    Product Defintion Template 4.N.
+!>    @param[out] mappdslen Number of elements in ipdstmpl. i.e. number
+!>    of entries in Product Defintion Template 4.N (N=ipdsnum).
+!>    @param[out] coordlist- Array containg floating point values
+!>    intended to document the vertical discretisation associated to
+!>    model data on hybrid coordinate vertical levels (part of Section
+!>    4).
 !>    @param[out] numcoord number of values in array coordlist.
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 5 GRIB message contains an undefined Product Definition Template.
-!>
-!>    @note Uses Fortran 90 module pdstemplates.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
@@ -568,16 +597,20 @@
 !>    This subroutine unpacks Section 5 (Data Representation Section)
 !>    starting at octet 6 of that Section.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning (in) or the end(out) of Section 5.
+!>    @param[inout] iofst Bit offset of the beginning (in) or the
+!>    end(out) of Section 5.
 !>    @param[out] ndpts Number of data points unpacked and returned.
-!>    @param[out] idrsnum Data Representation Template Number (see Code Table 5.0)
-!>    @param[out] idrstmpl Contains the data values for the specified Data Representation
-!>    Template (N=idrsnum). Each element of this integer array contains an entry
-!>    (in the order specified) of Data Representation Template 5.N.
-!>    @param[out] mapdrslen Number of elements in idrstmpl. i.e. number of entries
-!>    in Data Representation Template 5.N (N=idrsnum).
+!>    @param[out] idrsnum Data Representation Template Number (see [Code
+!>    Table 5.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml))
+!>    @param[out] idrstmpl Contains the data values for the specified
+!>    Data Representation Template (N=idrsnum). Each element of this
+!>    integer array contains an entry (in the order specified) of Data
+!>    Representation Template 5.N.
+!>    @param[out] mapdrslen Number of elements in idrstmpl. i.e. number
+!>    of entries in Data Representation Template 5.N (N=idrsnum).
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 7 GRIB message contains an undefined Data Representation Template.
@@ -661,19 +694,22 @@
       return    ! End of Section 5 processing
       end
 
-!>    This subroutine unpacks Section 6 (Bit-Map Section)
-!>    starting at octet 6 of that Section.
+!>    This subroutine unpacks Section 6 (Bit-Map Section) starting at
+!>    octet 6 of that Section.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message
+!>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning (in) or the end (out) of Section 6.
-!>    @param[in] ngpts Number of grid points specified in the bit-map
-!>    @param[out] ibmap Bitmap indicator (see Code Table 6.0).
+!>    @param[inout] iofst Bit offset of the beginning (in) or the end
+!>    (out) of Section 6.
+!>    @param[in] ngpts Number of grid points specified in the bit-map.
+!>    @param[out] ibmap Bitmap indicator (see [Code Table 6.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
 !>    - 0 bitmap applies and is included in Section 6.
 !>    - 1-253 Predefined bitmap applies.
 !>    - 254 Previously defined bitmap applies to this field.
 !>    - 255 Bit map does not apply to this product.
-!>    @param[out] bmap Logical*1 array containing decoded bitmap (if ibmap=0).
+!>    @param[out] bmap Logical*1 array containing decoded bitmap (if
+!>    ibmap=0).
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 4 Unrecognized pre-defined bit-map.

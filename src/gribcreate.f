@@ -8,31 +8,40 @@
 !>    sections 0 (Indicator Section) and 1 (Identification Section).
 !>    This routine is used with routines addlocal(), addgrid(), addfield(),
 !>    and gribend() to create a complete GRIB2 message. Subroutine
-!>    gribcreate must be called first to initialize a new GRIB2 message.
-!>    Also, a call to gribend is required to complete GRIB2 message
+!>    gribcreate() must be called first to initialize a new GRIB2 message.
+!>    Also, a call to gribend() is required to complete GRIB2 message
 !>    after all fields have been added.
 !>    
 !>    @param[inout] cgrib Character array to contain the GRIB2 message.
 !>    @param[in] lcgrib Maximum Length (in bytes) of array cgrib.
 !>    @param[in] listsec0 Contains information needed for GRIB Indicator
 !>    Section 0. Must be dimensioned >= 2.
-!>    - listsec0(1) Discipline-GRIB Master Table Number (Code Table 0.0)
+!>    - listsec0(1) Discipline-GRIB Master Table Number ([Code Table 0.0]
+!>      (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml)).
 !>    - listsec0(2) GRIB Edition Number (currently 2)
-!>    @param[in] listsec1 Contains information needed for GRIB Identification
-!>    Section 1. Must be dimensioned >= 13.
-!>    - listsec1(1) Id of orginating centre (Common Code Table C-1)
-!>    - listsec1(2) Id of orginating sub-centre (local table)
-!>    - listsec1(3) GRIB Master Tables Version Number (Code Table 1.0)
-!>    - listsec1(4) GRIB Local Tables Version Number (Code Table 1.1)
-!>    - listsec1(5) Significance of Reference Time (Code Table 1.2)
+!>    @param[in] listsec1 Contains information needed for GRIB
+!>    [Identification Section 1](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect1.shtml).
+!>    Must be dimensioned >= 13.
+!>    - listsec1(1) Id of orginating centre ([Table 0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html)).
+!>    - listsec1(2) Id of orginating sub-centre ([Table C]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html)).
+!>    - listsec1(3) GRIB Master Tables Version Number ([Table 1.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml)).
+!>    - listsec1(4) GRIB Local Tables Version Number ([Table 1.1]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml)).
+!>    - listsec1(5) Significance of Reference Time ([Table 1.2]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml))
 !>    - listsec1(6) Reference Time - Year (4 digits)
 !>    - listsec1(7) Reference Time - Month
 !>    - listsec1(8) Reference Time - Day
 !>    - listsec1(9) Reference Time - Hour
 !>    - listsec1(10) Reference Time - Minute
 !>    - listsec1(11) Reference Time - Second
-!>    - listsec1(12) Production status of data (Code Table 1.3)
-!>    - listsec1(13) Type of processed data (Code Table 1.4)
+!>    - listsec1(12) Production status of data ([Table 1.3]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml)).
+!>    - listsec1(13) Type of processed data ([Table 1.4]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml)).
 !>    @param[out] ierr Error return code.
 !>    - 0 no error
 !>    - 1 Tried to use for version other than GRIB Edition 2
