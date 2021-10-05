@@ -1,5 +1,5 @@
-! This program tests the simple packing subroutine of the NCEPLIBS-g2
-! project. Link this to the _4 build of the library.
+! This program tests the simple packing and unpacking subroutines of
+! the NCEPLIBS-g2 project. Link this to the _4 build of the library.
 !
 ! Ed Hartnett 10/3/21
 program test_simpack
