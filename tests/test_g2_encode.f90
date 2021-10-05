@@ -249,6 +249,9 @@ program test_g2_encode
   call gf_getfld(msg, msg_len, 1, .true., 0, gfld, ierr)
   if (ierr .ne. 0) stop 20
 
+  ! Print results.
+  call print_gribfield(gfld)
+
   ! Section 0 - Indicator.
   if (gfld%discipline .ne. listsec0(1)) stop 100
   if (gfld%version .ne. 2) stop 101
@@ -296,8 +299,6 @@ program test_g2_encode
   ! Section 7 - Data.
   if (gfld%ndpts .ne. 4 .or. .not. gfld%unpacked) stop 170
   if (gfld%ifldnum .ne. 1 .or. .not. gfld%expanded) stop 171
-
-  call print_gribfield(gfld)
 
   print *, 'SUCESSS!'
 end program test_g2_encode
