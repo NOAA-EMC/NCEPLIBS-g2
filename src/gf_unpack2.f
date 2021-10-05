@@ -1,13 +1,16 @@
 !>    @file
-!>    @brief This subroutine unpacks Section 2 (Local Use Section).
+!>    @brief This subroutine unpacks Section 2 ([Local Use Section]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml)).
 !>    @author Stephen Gilbert @date 2002-04-09
 !>
 
-!>    This subroutine unpacks Section 2 (Local Use Section) as defined
-!>    in GRIB Edition 2.
+!>    This subroutine unpacks Section 2 ([Local Use Section]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml)).
+!>      
 !>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning/end(returned) of Section 2.
+!>    @param[inout] iofst Bit offset of the beginning/end (returned) of
+!>    Section 2.
 !>    @param[out] lencsec2 Length (in octets) of Local Use data.
 !>    @param[out] csec2 Pointer to a character*1 array containing local use data.
 !>    @param[out] ierr Error return code.

@@ -3,6 +3,10 @@ add_executable(test_g2 test_g2.f90)
 target_link_libraries(test_g2 g2_d)
 add_test(test_g2 test_g2)
 
+add_executable(test_g2_encode test_g2_encode.f90)
+target_link_libraries(test_g2_encode g2_d)
+add_test(test_g2_encode test_g2_encode)
+
 add_executable(test_gridtemplates test_gridtemplates.f90)
 target_link_libraries(test_gridtemplates g2_d)
 add_test(test_gridtemplates test_gridtemplates)
@@ -22,3 +26,7 @@ add_test(test_params_ecmwf test_params_ecmwf)
 add_executable(test_pngpack test_pngpack.f90)
 target_link_libraries(test_pngpack g2_d)
 add_test(test_pngpack test_pngpack)
+
+add_executable(test_simpack test_simpack.f90)
+target_link_libraries(test_simpack g2_4)
+add_test(test_simpack test_simpack)
