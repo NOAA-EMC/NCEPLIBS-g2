@@ -23,7 +23,7 @@ The NCEPLIBS-g2 library is used by:
  - [The WAVEWATCH III Framework](https://github.com/NOAA-EMC/WW3)
  - [global-workflow](https://github.com/NOAA-EMC/global-workflow)
  - [HWRF](https://github.com/NCAR/HWRFdev)
- - [MDL]()
+ - [NOAA Meteorological Development Laboratory (MDL)](https://github.com/NOAA-MDL)
 
 ## Authors
 
