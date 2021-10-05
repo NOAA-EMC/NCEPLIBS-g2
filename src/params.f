@@ -7,29 +7,28 @@
 !>    This Fortran Module contains info on all the available GRIB
 !>    Parameters.
 !>
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-11 Stephen Gilbert 
-!>    - 2003-08-07 Stephen Gilbert Added more parameters
-!>    - 2003-09-26 Stephen Gilbert Added more parameters
-!>    - 2005-11-17 Brent Gordon Added more parameters for the Wave & Smoke models
-!>    - 2007-03-28 Boi Vuong Added more parameters
-!>    - 2007-10-10 Boi Vuong Added more parameters
-!>    - 2008-03-12 Boi Vuong Added more parameters
-!>    - 2008-06-30 Boi Vuong Reformat entry paramlist from 1 to 173
-!>    Added more parameters and entire table 131
-!>    - 2008-11-21 Boi Vuong Added more parameters
-!>    - 2009-06-02 Boi Vuong Added more parameters
-!>    - 2009-12-14 Boi Vuong Correction VEGT(4.2-0-210)
-!>    - 2010-07-27 Boi Vuong Added more parameters
-!>    - 2010-12-06 Boi Vuong Added more parameters
-!>    - 2011-05-24 Boi Vuong Added more parameters
-!>    - 2011-09-12 Boi Vuong Added more parameters
-!>    - 2012-09-12 Boi Vuong Added more parameters and change HINDEX to
-!>    parameter from 3 to 2 and RHPW from Dis 0 cat 19 to 1
-!>    - 2013-07-24 Boi Vuong Added more parameters and Removed
-!>    sapces in abbreviation
-!>    - 2016-03-30 Boi Vuong Added parameter Heat Exchange Coefficient (CH)
-!>    - 2020-05-20 Boi Vuong Added parameters
+!>    ### Program History Log
+!>    Date | Programmer | Comments
+!>    -----|------------|--------- 
+!>    2000-05-11 | Stephen Gilbert | 
+!>    2003-08-07 | Stephen Gilbert | Added more parameters
+!>    2003-09-26 | Stephen Gilbert | Added more parameters
+!>    2005-11-17 | Brent Gordon | Added more parameters for the Wave & Smoke models
+!>    2007-03-28 | Boi Vuong | Added more parameters
+!>    2007-10-10 | Boi Vuong | Added more parameters
+!>    2008-03-12 | Boi Vuong | Added more parameters
+!>    2008-06-30 | Boi Vuong | Reformat paramlist from 1 to 173, Added more parameters and table 131
+!>    2008-11-21 | Boi Vuong | Added more parameters
+!>    2009-06-02 | Boi Vuong | Added more parameters
+!>    2009-12-14 | Boi Vuong | Correction VEGT(4.2-0-210)
+!>    2010-07-27 | Boi Vuong | Added more parameters
+!>    2010-12-06 | Boi Vuong | Added more parameters
+!>    2011-05-24 | Boi Vuong | Added more parameters
+!>    2011-09-12 | Boi Vuong | Added more parameters
+!>    2012-09-12 | Boi Vuong | Added more parameters, change HINDEX to parameter from 3 to 2 and RHPW from Dis 0 cat 19 to 1
+!>    2013-07-24 | Boi Vuong | Added more parameters, removed spaces in abbreviation
+!>    2016-03-30 | Boi Vuong | Added parameter Heat Exchange Coefficient (CH)
+!>    2020-05-20 | Boi Vuong | Added parameters
 !>    
 !>    @author Stephen Gilbert @date 2001-06-05
 !>
@@ -38,13 +37,14 @@
 
       integer,parameter :: MAXPARAM=2000 !< maximum number of GRIB parameters.
 
+      !> This type holds information about GRIB parameters.
       type gribparam
-          integer :: g1tblver
-          integer :: grib1val
-          integer :: grib2dsc
-          integer :: grib2cat
-          integer :: grib2num
-          character(len=8) :: abbrev
+          integer :: g1tblver !< Grib1 table version.
+          integer :: grib1val !< Grib1 value.
+          integer :: grib2dsc !< GRIB2 discipline category.
+          integer :: grib2cat !< GRIB2 category number.
+          integer :: grib2num !< GRIB2 parameter number.
+          character(len=8) :: abbrev !< Abbreviation.
       end type gribparam
 
       type(gribparam),dimension(MAXPARAM) :: paramlist !< list of GRIB parameters.
@@ -1088,6 +1088,7 @@
 !>    This subroutine returns the corresponding GRIB2 Discipline
 !>    Category and Number for a given GRIB1 parameter value and table
 !>    version.
+!>      
 !>    @param[in] g1val GRIB1 parameter number for which discipline is
 !>    requested.
 !>    @param[in] g1ver GRIB1 parameter table version number.
@@ -1107,9 +1108,6 @@
            g2disc=255
            g2cat=255
            g2num=255
-! for testing
-!           g2num=g1val
-! for testing
 
            do n=1,MAXPARAM
               if (paramlist(n)%grib1val.eq.g1val .AND.
@@ -1128,6 +1126,7 @@
 
 !>    This function returns the parameter abbreviation for
 !>    a given GRIB2 Discipline, Category and Parameter number.
+!>      
 !>    @param[in] g2disc GRIB2 discipline number (See Code Table 0.0).
 !>    @param[in] g2cat corresponding GRIB2 Category number.
 !>    @param[in] g2num corresponding GRIB2 Parameter number within
@@ -1159,6 +1158,7 @@
 
 !>    This subroutine returns the GRIB 1 parameter number for
 !>    a given GRIB2 Discipline, Category and Parameter number.
+!>      
 !>    @param[in] g2disc GRIB2 Discipline number (See Code Table 0.0).
 !>    @param[in] g2cat corresponding GRIB2 Category number.
 !>    @param[in] g2num corresponding GRIB2 Parameter number within
@@ -1177,14 +1177,6 @@
 
            g1val=255
            g1ver=255
-
-! for testing
-!           if ( g2disc.eq.255.and.g2cat.eq.255 ) then
-!             g1val=g2num
-!             g1ver=2
-!             return
-!           endif
-! for testing
 
            do n=1,MAXPARAM
               if (paramlist(n)%grib2dsc.eq.g2disc.AND.

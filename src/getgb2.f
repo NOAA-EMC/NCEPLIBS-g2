@@ -1,9 +1,9 @@
 C>    @file
-C>    @brief This subroutine find and unpack a grib file.
+C>    @brief This subroutine finds and unpacks a grib file.
 C>    @author Mark Iredell @date 1994-04-01
 C>
 
-C>    This subroutine find and unpack a grib message. It reads
+C>    This subroutine finds and unpacks a grib message. It reads
 C>    a grib index file (or optionally the grib file itself) to
 C>    get the index buffer (i.e. table of contents) for the grib file.
 C>    find in the index buffer a reference to the grib field requested.
@@ -25,18 +25,19 @@ C>    will need to include the line "USE GRIB_MOD" in their calling
 C>    routine. Each component of the gribfield type is described in 
 C>    the OUTPUT ARGUMENT LIST section below.
 C>
-C>    PROGRAM HISTORY LOG:
-C>    - 1994-04-01 Mark Iredell
-C>    - 1995-10-31 Mark Iredell modularized portions of code into subprograms
-C>    and allowed for unspecified index file
-C>    - 2002-01-11 Stephen Gilbert modified from getgb and getgbm to work with grib2
-C>    - 2015-11-10 Boi Vuong modified doc block for gfld\%ngrdpts and gfld\%ndpts
+C>    ### Program History Log
+C>    Date | Programmer | Comments
+C>    -----|------------|--------- 
+C>    1994-04-01 | Mark Iredell | Initial.
+C>    1995-10-31 | Mark Iredell | modularized code into subprograms, allowed for unspecified index file,
+C>    2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with grib2
+C>    2015-11-10 | Boi Vuong | modified doc block for gfld\%ngrdpts and gfld\%ndpts
 C>
 C>    @param[in] LUGB integer unit of the unblocked grib data file.
-C>    file must be opened with baopen or baopenr before calling
+C>    file must be opened with baopen() or baopenr() before calling
 C>    this routine.
 C>    @param[in] LUGI integer unit of the unblocked grib index file.
-C>    if nonzero, file must be opened with baopen baopenr before
+C>    if nonzero, file must be opened with baopen() or baopenr() before
 C>    calling this routine.
 C>    - >0 read index from index file lugi, if index doesn"t already exist.
 C>    - =0 to get index buffer from the grib file, if index

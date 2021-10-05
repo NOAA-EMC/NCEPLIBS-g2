@@ -1,32 +1,39 @@
 !>    @file
-!>    @brief This subroutine unpacks Section 4 (Product Definition
-!>    Section).
+!>    @brief This subroutine unpacks Section 4 ([Product Definition
+!>    Section]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml)).
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
 
-!>    This subroutine unpacks Section 4 (Product Definition Section)
+!>    This subroutine unpacks Section 4 ([Product Definition
+!>    Section]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml))
 !>    starting at octet 6 of that Section.
 !>
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-26 Stephen Gilbert Initial development.
-!>    - 2002-01-24 Stephen Gilbert Changed to dynamically allocate
-!>    arrays and to pass pointers to those arrays through the argument
-!>    list.
+!>    ### Program History Log
+!>    Date | Programmer | Comments
+!>    -----|------------|--------- 
+!>    2000-05-26 | Stephen Gilbert | Initial development.
+!>    2002-01-24 | Stephen Gilbert | Allocate arrays and to pass pointers.
 !>
 !>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning/end(returned) of Section 4.
-!>    @param[out] ipdsnum Product Definition Template Number (Code Table 4.0).
-!>    @param[out] ipdstmpl Contains the data values for the specified Product Definition
-!>    Template (N=ipdsnum). Each element of this integer array contains an entry
-!>    (in the order specified) of Product Defintion Template 4.N. A safe
-!>    dimension for this array can be obtained in advance from maxvals(4),
-!>    which is returned from subroutine gribinfo.
-!>    @param[out] mappdslen Number of elements in ipdstmpl. i.e. number of entries
-!>    in Product Defintion Template 4.N (N=ipdsnum).
-!>    @param[out] coordlist Pointer to real array containing floating point values
-!>    intended to document the vertical discretisation associated to model data 
-!>    on hybrid coordinate vertical levels. (part of Section 4).
+!>    @param[inout] iofst Bit offset of the beginning/end(returned) of
+!>    Section 4.
+!>    @param[out] ipdsnum Product Definition Template Number ([Code Table 4.0]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
+!>    @param[out] ipdstmpl Contains the data values for the specified
+!>    Product Definition Template (N=ipdsnum). Each element of this
+!>    integer array contains an entry (in the order specified) of
+!>    Product Defintion Template 4.N. A safe dimension for this array
+!>    can be obtained in advance from maxvals(4), which is returned from
+!>    subroutine gribinfo.
+!>    @param[out] mappdslen Number of elements in ipdstmpl. i.e. number
+!>    of entries in Product Defintion Template 4.N (N=ipdsnum).
+!>    @param[out] coordlist Pointer to real array containing floating
+!>    point values intended to document the vertical discretisation
+!>    associated to model data on hybrid coordinate vertical
+!>    levels. (part of Section 4).
 !>    @param[out] numcoord number of values in array coordlist.
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
