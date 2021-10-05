@@ -3,6 +3,33 @@
 ! In this test we try out the encode() subroutine.
 !
 ! Ed Hartnett 9/29/21
+
+! This subroutine prints in a pretty way the contents of a gribfield
+! type.
+!
+! Ed Hartnett 10/5/21
+subroutine print_gribfield(gfld)
+  use grib_mod
+  implicit none
+
+  type(gribfield), intent(in) :: gfld  
+
+  print *, 'discipline: ', gfld%discipline, ' expanded: ', gfld%expanded
+  print *, 'griddef: ', gfld%griddef, ' ibmap: ', gfld%ibmap
+  print *, 'idrtlen: ', gfld%idrtlen, ' idrtnum: ', gfld%idrtnum
+  print *, 'idsectlen: ', gfld%idsectlen, ' ifldnum: ', gfld%ifldnum
+  print *, 'igdtlen: ', gfld%igdtlen, ' igdtnum: ', gfld%igdtnum
+  print *, 'interp_opt: ', gfld%interp_opt, ' ipdtlen: ', gfld%ipdtlen
+  print *, 'ipdtnum: ', gfld%ipdtnum, ' locallen: ', gfld%locallen
+  print *, 'ndpts: ', gfld%ndpts, ' ngrdpts: ', gfld%ngrdpts
+  print *, 'num_coord: ', gfld%num_coord, ' num_opt: ', gfld%num_opt
+  print *, 'numoct_opt: ', gfld%numoct_opt, ' unpacked: ', gfld%unpacked
+  print *, 'version: ', gfld%version
+end subroutine print_gribfield
+
+! This is the main test program.
+!
+! Ed Hartnett 9/29/21
 program test_g2_encode
   use grib_mod
   implicit none
@@ -126,7 +153,6 @@ program test_g2_encode
   ! template (eg. reference values, number of bits, etc...) may be
   ! changed by the data packing algorithms. Use this to specify
   ! scaling factors and order of spatial differencing, if desired.
-  
   idrstmpl = (/ 0, 0, 0, 0, 0 /)
 
   ! fld Array of data points to pack.
@@ -169,7 +195,10 @@ program test_g2_encode
   call gf_getfld(msg, msg_len, 1, .true., 0, gfld, ierr)
   if (ierr .ne. 0) stop 20
   if (gfld%ibmap .ne. ibmap .or. gfld%discipline .ne. listsec0(1)) stop 21
-  print *, gfld%discipline
-  
+  if (gfld%ifldnum .ne. 1 .or. .not. gfld%expanded) stop 22
+  if (gfld%griddef .ne. igds(1) .or. gfld%ibmap .ne. ibmap) stop 23
+  if (gfld%idrtlen .ne. my_drs_tmpl_maplen) stop 24
+  call print_gribfield(gfld)
+
   print *, 'SUCESSS!'
 end program test_g2_encode

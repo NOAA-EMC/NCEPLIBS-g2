@@ -9,8 +9,8 @@
 !>
 !>    ### Program History Log
 !>    Date | Programmer | Comments
-!>    -----|------------|--------- 
-!>    2002-01-23 | Stephen Gilbert
+!>    -----|------------|---------
+!>    2002-01-23 | Stephen Gilbert |
 !>    2007-04-24 | Boi Vuong | Added GDT 3.204 Curvilinear Orthogonal Grids
 !>    2008-05-29 | Boi Vuong | Added GDT 3.32768 Rotate Lat/Lon E-grid
 !>    2009-02-17 | Boi Vuong | Allow negative scale factors and limits for Templates 4.5 and 4.9
@@ -19,7 +19,7 @@
 !>    2013-08-29 | Boi Vuong | Changed version number 2.5.0
 !>    2015-11-01 | Boi Vuong | Changed version number 2.6.0
 !>    2017-18-01 | Boi Vuong | Changed version number 3.1.0
-!>    
+!>
 !>    @author Stephen Gilbert @date 2002-01-23
 !>
 
@@ -31,8 +31,8 @@
           integer :: version        !< GRIB edition number (currently 2).
 
           !> Message Discipline (see [Code Table 0.0]
-          !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml)).      
-          integer :: discipline 
+          !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml)).     
+          integer :: discipline
 
           !> Contains the entries in the Identification Section (Section
           !> 1). This element is actually a pointer to an array that
@@ -78,116 +78,131 @@
           !>     - 6 Processed satellite observations
           !>     - 7 Processed radar observations
           integer,pointer,dimension(:) :: idsect => null ()
-          
+
           integer :: idsectlen  !< Number of elements in idsect.
 
           !> Pointer to character array containing contents
-          !>    of Local Section 2, if included.
+          !> of Local Section 2, if included.
           character(len=1),pointer,dimension(:) :: local => null ()
           integer :: locallen !< length of array local.
           integer :: ifldnum    !< field number within GRIB message
 
-          !> Source of grid definition (see Code Table 3.0)
-          !>     - 0 Specified in Code table 3.1
-          !>     - 1 Predetermined grid Defined by originating centre
-          integer :: griddef 
+          !> Source of grid definition (see [Code Table 3.0]
+          !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml))
+          !>     - 0 Specified in [Code table 3.1]
+          !>     (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml). 
+          !>     - 1 Predetermined grid Defined by originating centre.
+          integer :: griddef
 
           !>    Number of grid points in the defined grid. Note that the number of
-          !>    actual data values returned from getgb2 (in ndpts) may be less
+          !>    actual data values returned from getgb2() (in ndpts) may be less
           !>    than this value if a logical bitmap is in use with grid points
           !>    that are being masked out.
           integer :: ngrdpts
 
           !>    Number of octets needed for each additional grid points
-          !>    definition. Used to define number of points in each row (or
-          !>    column) for non-regular grids. = 0, if using regular grid.
+          !>    definition. Used to define number of points in each row
+          !>    (or column) for non-regular grids. Equal to 0, if using
+          !>    regular grid.
           integer :: numoct_opt
-          
-          !>    Interpretation of list for optional points definition. (Code Table
-          !>    3.11).
+
+          !>    Interpretation of list for optional points definition. ([Code Table
+          !>    3.11]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
           integer :: interp_opt
-          
-          !>    (Used if numoct_opt .ne. 0) The number of entries in array
-          !>    ideflist. i.e. number of rows (or columns) for which optional grid
-          !>    points are defined. This value is set to zero, if umoct_opt=0.
+
+          !>    (Used if numoct_opt .ne. 0.) The number of entries in
+          !>    array ideflist. i.e. number of rows (or columns) for
+          !>    which optional grid points are defined. This value is
+          !>    set to zero, if umoct_opt=0.
           integer :: num_opt
 
-          !>    (Used if numoct_opt .ne. 0) This array contains the number of grid
-          !>    points contained in each row (or column). (part of Section 3) This
-          !>    element is actually a pointer to an array that holds the
-          !>    data. This pointer is nullified if numoct_opt=0.
+          !>    (Used if numoct_opt .ne. 0.) This array contains the
+          !>    number of grid points contained in each row (or
+          !>    column). (part of Section 3) This element is actually a
+          !>    pointer to an array that holds the data. This pointer is
+          !>    nullified if numoct_opt=0.
           integer,pointer,dimension(:) :: list_opt       => null ()
-          
-          !>    Grid Definition Template Number (Code Table 3.1).
+
+          !>    Grid Definition Template Number ([Code Table 3.1]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
           integer :: igdtnum
 
-          !>    Number of elements in igdtmpl. i.e. number of entries in Grid
-          !>    Defintion Template 3.NN (NN=igdtnum).
+          !>    Number of elements in igdtmpl. i.e. number of entries in
+          !>    Grid Defintion Template 3.NN (NN=igdtnum).
           integer :: igdtlen
 
-          !>    Contains the data values for the specified Grid Definition
-          !>    Template (NN=igdtnum). Each element of this integer array contains
-          !>    an entry (in the order specified) of Grid Defintion Template 3.NN
-          !>    This element is actually a pointer to an array that holds the
-          !>    data.
+          !>    Contains the data values for the specified Grid
+          !>    Definition Template (NN=igdtnum). Each element of this
+          !>    integer array contains an entry (in the order specified)
+          !>    of Grid Defintion Template 3.NN This element is actually
+          !>    a pointer to an array that holds the data.
           integer,pointer,dimension(:) :: igdtmpl        => null ()
-          
-          !>    Product Definition Template Number (Code Table 4.0).
+
+          !>    Product Definition Template Number ([Code Table 4.0]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
           integer :: ipdtnum
-          
-          !>    Number of elements in ipdtmpl. i.e. number of entries in Product
-          !>    Defintion Template 4.N (N=ipdtnum).
+
+          !>    Number of elements in ipdtmpl. i.e. number of entries in
+          !>    Product Defintion Template 4.N (N=ipdtnum).
           integer :: ipdtlen
-          
-          !>    Contains the data values for the specified Product Definition
-          !>    Template (N=ipdtnum). Each element of this integer array contains
-          !>    an entry (in the order specified) of Product Defintion Template
-          !>    4.N. This element is actually a pointer to an array that holds the
-          !>    data.
+
+          !>    Contains the data values for the specified Product
+          !>    Definition Template (N=ipdtnum). Each element of this
+          !>    integer array contains an entry (in the order specified)
+          !>    of Product Defintion Template 4.N. This element is
+          !>    actually a pointer to an array that holds the data.
           integer,pointer,dimension(:) :: ipdtmpl        => null ()
 
-          !>    Number of values in array coord_list.          
+          !>    Number of values in array coord_list.
           integer :: num_coord
-          
-          !>    Real array containing floating point values intended to document
-          !>    the vertical discretisation associated to model data on hybrid
-          !>    coordinate vertical levels.(part of Section 4) This element is
-          !>    actually a pointer to an array that holds the data.
+
+          !>    Real array containing floating point values intended to
+          !>    document the vertical discretisation associated to model
+          !>    data on hybrid coordinate vertical levels (part of
+          !>    Section 4). This element is actually a pointer to an
+          !>    array that holds the data.
           real,pointer,dimension(:) :: coord_list        => null ()
-          
-          !>    Number of data points unpacked and returned.  Note that this
-          !>    number may be different from the value of ngrdpts if a logical
-          !>    bitmap is in use with grid points that are being masked out.
+
+          !>    Number of data points unpacked and returned. Note that
+          !>    this number may be different from the value of ngrdpts
+          !>    if a logical bitmap is in use with grid points that are
+          !>    being masked out.
           integer :: ndpts
 
-          !>    Data Representation Template Number (Code Table 5.0).
+          !>    Data Representation Template Number ([Code Table 5.0]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml)).
           integer :: idrtnum
 
-          !>    Number of elements in gfld\%idrtmpl. i.e. number of entries in
+          !>    Number of elements in idrtmpl. i.e. number of entries in
           !>    Data Representation Template 5.N (N=idrtnum).
           integer :: idrtlen
-          
-          !>    Contains the data values for the specified Data Representation
-          !>    Template (N=idrtnum). Each element of this integer array contains
-          !>    an entry (in the order specified) of Product Defintion Template
-          !>    5.N. This element is actually a pointer to an array that holds the
+
+          !>    Contains the data values for the specified Data
+          !>    Representation Template (N=idrtnum). Each element of
+          !>    this integer array contains an entry (in the order
+          !>    specified) of Product Defintion Template 5.N. This
+          !>    element is actually a pointer to an array that holds the
           !>    data.
           integer,pointer,dimension(:) :: idrtmpl        => null ()
-          
-          !>    Logical value indicating whether the bitmap and data values were
-          !>    unpacked. If false, bmap and fld pointers are nullified.
+
+          !>    Logical value indicating whether the bitmap and data
+          !>    values were unpacked. If false, bmap and fld pointers
+          !>    are nullified.
           logical :: unpacked
 
-          !>    Logical value indicating whether the data field was expanded to
-          !>    the grid in the case where a bit-map is present.  If true, the
-          !>    data points in fld match the grid points and zeros were inserted
-          !>    at grid points where data was bit-mapped out.  If false, the data
-          !>    values in fld were not expanded to the grid and are just a
-          !>    consecutive array of data points corresponding to each value of
-          !>    "1" in bmap.
+          !>    Logical value indicating whether the data field was
+          !>    expanded to the grid in the case where a bit-map is
+          !>    present. If true, the data points in fld match the grid
+          !>    points and zeros were inserted at grid points where data
+          !>    was bit-mapped out. If false, the data values in fld
+          !>    were not expanded to the grid and are just a consecutive
+          !>    array of data points corresponding to each value of "1"
+          !>    in bmap.
           logical :: expanded
 
-          !>    Bitmap indicator (see Code Table 6.0).
+          !>    Bitmap indicator (see [Code Table 6.0]
+          !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
           !>     - 0 bitmap applies and is included in Section 6.
           !>     - 1-253 Predefined bitmap applies.
           !>     - 254 Previously defined bitmap applies to this field.
@@ -195,11 +210,11 @@
           integer :: ibmap
 
           !>    Logical*1 array containing decoded bitmap, if ibmap=0 or
-          !>    ibap=254. Otherwise nullified. This element is actually a pointer
-          !>    to an array that holds the data.
+          !>    ibap=254. Otherwise nullified. This element is actually
+          !>    a pointer to an array that holds the data.
           logical*1,pointer,dimension(:) :: bmap         => null ()
 
-          !>    Array of gfld\%ndpts unpacked data points. This element is
+          !>    Array of ndpts unpacked data points. This element is
           !>    actually a pointer to an array that holds the data.
           real,pointer,dimension(:) :: fld               => null ()
       end type gribfield
