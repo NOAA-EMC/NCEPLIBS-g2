@@ -15,6 +15,16 @@ https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/.
 For a C implementation of the GRIB 2 functions, see project
 [NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c).
 
+### Users
+
+The NCEPLIBS-g2 library is used by:
+ - [UPP](https://github.com/NOAA-EMC/UPP)
+ - [UFS_UTILS](https://github.com/NOAA-EMC/UFS_UTILS)
+ - [The WAVEWATCH III Framework](https://github.com/NOAA-EMC/WW3)
+ - [global-workflow](https://github.com/NOAA-EMC/global-workflow)
+ - [HWRF](https://github.com/NCAR/HWRFdev)
+ - [NOAA Meteorological Development Laboratory (MDL)](https://github.com/NOAA-MDL)
+
 ## Authors
 
 Stephen Gilbert, NCEP/EMC Developers
