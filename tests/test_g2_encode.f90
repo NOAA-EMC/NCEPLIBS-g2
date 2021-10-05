@@ -10,21 +10,75 @@
 ! Ed Hartnett 10/5/21
 subroutine print_gribfield(gfld)
   use grib_mod
+  use gridtemplates
   implicit none
 
-  type(gribfield), intent(in) :: gfld  
+  type(gribfield), intent(in) :: gfld
+  integer :: nummap
+  logical :: needext
+  integer :: map(maxlen)
+  integer :: i
+  integer :: iret
 
-  print *, 'discipline: ', gfld%discipline, ' expanded: ', gfld%expanded
-  print *, 'griddef: ', gfld%griddef, ' ibmap: ', gfld%ibmap
-  print *, 'idrtlen: ', gfld%idrtlen, ' idrtnum: ', gfld%idrtnum
-  print *, 'idsectlen: ', gfld%idsectlen, ' ifldnum: ', gfld%ifldnum
-  print *, 'igdtlen: ', gfld%igdtlen, ' igdtnum: ', gfld%igdtnum
-  print *, 'interp_opt: ', gfld%interp_opt, ' ipdtlen: ', gfld%ipdtlen
-  print *, 'ipdtnum: ', gfld%ipdtnum, ' locallen: ', gfld%locallen
-  print *, 'ndpts: ', gfld%ndpts, ' ngrdpts: ', gfld%ngrdpts
-  print *, 'num_coord: ', gfld%num_coord, ' num_opt: ', gfld%num_opt
-  print *, 'numoct_opt: ', gfld%numoct_opt, ' unpacked: ', gfld%unpacked
+  print *, 'Section 0: Indicator Section'
+  print *, 'discipline: ', gfld%discipline
   print *, 'version: ', gfld%version
+  print *, ''
+
+  print *, 'Section 1: Identification Section'
+  print *, 'idsectlen: ', gfld%idsectlen
+  do i = 1, gfld%idsectlen
+     print *, 'idsect(', i, '): ', gfld%idsect(i)
+  enddo
+  print *, ''
+
+  print *, 'Section 2: Local Use Section'
+  print *, ' locallen: ', gfld%locallen
+  print *, ''
+
+  print *, 'Section 3: Grid Definition Section'
+  print *, 'griddef: ', gfld%griddef
+  print *, 'igdtnum: ', gfld%igdtnum, ' igdtlen: ', gfld%igdtlen
+  print *, 'ngrdpts: ', gfld%ngrdpts
+  print *, 'numoct_opt: ', gfld%numoct_opt
+  print *, 'interp_opt: ', gfld%interp_opt
+  print *, 'num_opt: ', gfld%num_opt
+  do i = 1, gfld%igdtlen
+     print *, 'igdtmpl(', i, '): ', gfld%igdtmpl(i)
+  enddo
+  print *, 'num_coord: ', gfld%num_coord
+  do i = 1, gfld%num_coord
+     print *, 'coord_list(', i, '): ', gfld%coord_list(i)
+  enddo
+  print *, ''
+
+  print *, 'Section 4: Product Definition Section'
+  print *, 'ipdtnum: ', gfld%ipdtnum
+  print *, 'ipdtlen: ', gfld%ipdtlen
+  do i = 1, gfld%ipdtlen
+     print *, 'ipdtmpl(', i, '): ', gfld%ipdtmpl(i)
+  enddo
+  print *, ''
+
+  print *, 'Section 5: Data Representation Section'
+  print *, 'idrtnum: ', gfld%idrtnum
+  print *, 'idrtlen: ', gfld%idrtlen
+  do i = 1, gfld%idrtlen
+     print *, 'idrtmpl(', i, '): ', gfld%idrtmpl(i)
+  enddo
+  print *, ''
+
+  print *, 'Section 6: Bit Map Section'
+  print *, ' ibmap: ', gfld%ibmap
+  print *, ''
+
+  print *, 'Section 7: Data Section'
+  print *, 'ndpts: ', gfld%ndpts
+  print *, 'ifldnum: ', gfld%ifldnum
+  print *, 'expanded: ', gfld%expanded
+  print *, 'unpacked: ', gfld%unpacked
+  print *, ''
+  
 end subroutine print_gribfield
 
 ! This is the main test program.
@@ -44,7 +98,7 @@ program test_g2_encode
   ! For addgrid().
   integer :: igds(5)
   integer, parameter :: my_grid_tmpl_maplen = 19
-  integer :: igdstmpl(my_grid_tmpl_maplen)
+  integer, dimension(my_grid_tmpl_maplen) :: igdstmpl
   integer :: igdstmplen
   integer :: ideflist(5)
   integer :: idefnum
@@ -194,10 +248,55 @@ program test_g2_encode
 
   call gf_getfld(msg, msg_len, 1, .true., 0, gfld, ierr)
   if (ierr .ne. 0) stop 20
-  if (gfld%ibmap .ne. ibmap .or. gfld%discipline .ne. listsec0(1)) stop 21
-  if (gfld%ifldnum .ne. 1 .or. .not. gfld%expanded) stop 22
-  if (gfld%griddef .ne. igds(1) .or. gfld%ibmap .ne. ibmap) stop 23
-  if (gfld%idrtlen .ne. my_drs_tmpl_maplen) stop 24
+
+  ! Section 0 - Indicator.
+  if (gfld%discipline .ne. listsec0(1)) stop 100
+  if (gfld%version .ne. 2) stop 101
+
+  ! Section 1 - Identification.
+  if (gfld%idrtlen .ne. my_drs_tmpl_maplen) stop 110
+  do i = 1, 13
+     if (gfld%idsect(i) .ne. listsec1(i)) stop 111
+  enddo
+
+  ! Section 2 - Local Use.
+  if (gfld%locallen .ne. 0) stop 120
+
+  ! Section 3 - Grid Definition.
+  if (gfld%griddef .ne. igds(1)) stop 130  
+  do i = 1, my_grid_tmpl_maplen
+     if (igdstmpl(i) .ne. gfld%igdtmpl(i)) stop 131
+  end do
+  if (gfld%ngrdpts .ne. ngrdpts) stop 132
+  if (gfld%numoct_opt .ne. 0) stop 133
+  if (gfld%interp_opt .ne. 0) stop 134
+  if (gfld%num_opt .ne. 0) stop 135
+  if (gfld%num_coord .ne. numcoord) stop 136
+  do i = 1, gfld%num_coord
+     if (coordlist(i) .ne. gfld%coord_list(i)) stop 131
+  end do
+
+  ! Section 4 - Product Definition.
+  if (gfld%ipdtnum .ne. ipdsnum) stop 140
+  if (gfld%ipdtlen .ne. 29) stop 141
+  do i = 1, 29
+     if (ipdstmpl(i) .ne. gfld%ipdtmpl(i)) stop 142
+  end do
+
+  ! Section 5 - Data Representation.
+  if (gfld%idrtnum .ne. idrsnum) stop 140
+  if (gfld%idrtlen .ne. 5) stop 141
+  do i = 1, 5
+     if (idrstmpl(i) .ne. gfld%idrtmpl(i)) stop 142
+  end do
+
+  ! Section 6 - Bit Map.
+  if (gfld%ibmap .ne. ibmap) stop 160
+
+  ! Section 7 - Data.
+  if (gfld%ndpts .ne. 4 .or. .not. gfld%unpacked) stop 170
+  if (gfld%ifldnum .ne. 1 .or. .not. gfld%expanded) stop 171
+
   call print_gribfield(gfld)
 
   print *, 'SUCESSS!'
