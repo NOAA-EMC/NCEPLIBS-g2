@@ -23,6 +23,7 @@ endif()
 
 find_package(Jasper REQUIRED)
 find_package(PNG REQUIRED)
+find_package(bacio REQUIRED)
 
 add_subdirectory(src)
 

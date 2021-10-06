@@ -32,6 +32,21 @@ jobs:
         sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-mpi-devel intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
         echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
       
+    - name: checkout-bacio
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-bacio
+        path: bacio
+        ref: develop
+
+    - name: build-bacio
+      run: |
+        cd bacio
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
+        make -j2
+        make install
     - name: checkout-jasper
       uses: actions/checkout@v2
       with:
@@ -65,7 +80,7 @@ jobs:
         cd g2
         mkdir build 
         cd build
-        cmake .. -DOPENMP=ON -DJasper_ROOT=~/Jasper
+        cmake .. -DOPENMP=ON -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH=~/bacio
         make -j2 VERBOSE=1
     
     - name: test
