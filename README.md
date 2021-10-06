@@ -44,6 +44,9 @@ Code Manager : Hang Lei, Edward Hartnett
   compression format. Tested version: libpng-1.2.44. More information
   about PNG can be found at http://www.libpng.org/pub/png/.
 
+- [NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio) - This library
+  does binary file I/O.
+
 ## Building
 
 Download the tarball from the release page and unpack it, and cd into
