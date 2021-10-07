@@ -22,12 +22,8 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
 endif()
 
 # There was a bug in jasper for the intel compiler that was fixed in
-# 2.0.25 but WCOSS-Cray only has Jasper 1.900.1.
-if(CMAKE_C_COMPILER_ID MATCHES "^(Intel)$")
-  find_package(Jasper 2.0.25 REQUIRED)
-else()
-  find_package(Jasper 1.900.1 REQUIRED)
-endif()
+# 2.0.25.
+find_package(Jasper 2.0.25 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
 
