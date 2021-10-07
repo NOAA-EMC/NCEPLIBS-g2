@@ -17,6 +17,21 @@ jobs:
         sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
         python3 -m pip install gcovr
 
+    - name: checkout-bacio
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-bacio
+        path: bacio
+        ref: develop
+
+    - name: build-bacio
+      run: |
+        cd bacio
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
+        make -j2
+        make install
     - name: checkout-jasper
       uses: actions/checkout@v2
       with:
@@ -52,7 +67,7 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        cmake .. -DJasper_ROOT=~/Jasper -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0"
+        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH=~/bacio -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address"
         make -j2 VERBOSE=1 
 
     - name: test

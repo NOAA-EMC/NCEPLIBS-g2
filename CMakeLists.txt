@@ -29,6 +29,7 @@ else()
   find_package(Jasper 1.900.1 REQUIRED)
 endif()
 find_package(PNG REQUIRED)
+find_package(bacio REQUIRED)
 
 add_subdirectory(src)
 

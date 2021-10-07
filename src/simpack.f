@@ -5,31 +5,34 @@
 !>
 
 !>    This subroutine packs up a data field using a simple packing
-!>    algorithm as defined in the GRIB2 documention. It also fills in GRIB2
-!>    Data Representation Template 5.0 with the appropriate values.
+!>    algorithm as defined in the GRIB2 documention. It also fills in
+!>    GRIB2 Data Representation Template 5.0 with the appropriate
+!>    values.
 !>    
 !>    PROGRAM HISTORY LOG:
 !>    - 2000-06-21 Stephen Gilbert Initial development.
 !>    - 2011-10-24 Boi Vuong Added variable rmin4 for 4 byte float.
 !>    
-!>    @param[in] fld Contains the data values to pack
-!>    @param[in] ndpts The number of data values in array fld
+!>    @param[in] fld Contains the data values to pack.
+!>    @param[in] ndpts The number of data values in array fld.
 !>    @param[inout] idrstmpl Contains the array of values for Data
-!>    Representation Template 5.2 or 5.3.
-!>    - (1) Reference value - ignored on input
-!>    - (2) Binary Scale Factor
-!>    - (3) Decimal Scale Factor
-!>    - (4) Number of bits used to pack data, if value is > 0 and <=
-!>    31. If this input value is 0 or outside above range then the num
-!>    of bits is calculated based on given data and scale factors.
-!>    - (5) Original field type - currently ignored on input Data values
+!>    Representation [Template
+!>    5.2](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-2.shtml)
+!>    or [Template
+!>    5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-3.shtml).
+!>    1. Reference value - ignored on input
+!>    2. Binary Scale Factor
+!>    3. Decimal Scale Factor
+!>    4. Number of bits used to pack data, if value is > 0 and <= 31. If
+!>    this input value is 0 or outside above range then the num of bits
+!>    is calculated based on given data and scale factors.
+!>    5. Original field type - currently ignored on input Data values
 !>    assumed to be reals.
-!>    @param[out] cpack The packed data field (character*1 array)
+!>    @param[out] cpack The packed data field (character*1 array).
 !>    @param[out] lcpack length of packed field cpack.
 !>
 !>    @author Stephen Gilbert @date 2000-06-21
 !>
-
       subroutine simpack(fld,ndpts,idrstmpl,cpack,lcpack)
 
       use intmath
@@ -40,12 +43,12 @@
       integer,intent(out) :: lcpack
 
       real(4) :: ref,rmin4
-C     real(8) :: rmin,rmax
+!     real(8) :: rmin,rmax
 
       integer(4) :: iref
       integer :: ifld(ndpts)
       integer,parameter :: zero=0
-      
+
       bscale=2.0**real(-idrstmpl(2))
       dscale=10.0**real(idrstmpl(3))
       if (idrstmpl(4).le.0.OR.idrstmpl(4).gt.31) then
