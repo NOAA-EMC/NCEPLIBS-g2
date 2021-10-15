@@ -1,17 +1,20 @@
 !>    @file
-!>    @brief Contains subroutines unpacks Section 6 (Bit-Map 
-!>    Section).
+!>    @brief Contains subroutines unpacks Section 6 ([Bit-Map 
+!>    Section]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect6.shtml)).
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
 
-!>    This subroutine unpacks Section 6 (Bit-Map Section)
+!>    This subroutine unpacks Section 6 ([Bit-Map 
+!>    Section]
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect6.shtml))
 !>    starting at octet 6 of that Section.
 !>
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-26 Stephen Gilbert Initial development.
-!>    - 2002-01-24 Stephen Gilbert Changed to dynamically allocate
-!>    arrays and to pass pointers to those arrays through the argument
-!>    list.
+!>    ### Program History Log
+!>    Date | Programmer | Comments
+!>    -----|------------|--------- 
+!>    2000-05-26 | Stephen Gilbert | Initial development.
+!>    2002-01-24 | Stephen Gilbert | Dynamically allocate arrays and to pass pointers.
 !>
 !>    @param[in] cgrib Character array that contains the GRIB2 message.
 !>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.

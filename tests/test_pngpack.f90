@@ -20,7 +20,7 @@ program test_pngpack
   fld = (/0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4/)
 
   ! No idea what this needs to be, documentation confusing
-  idrstmpl = 0000000
+  idrstmpl = (/41, 0, 0, 0, 0, 0, 0/)
   print *, 'Testing pngpack/unpack'
   call pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   print *, 'Call to pngpack successful'
