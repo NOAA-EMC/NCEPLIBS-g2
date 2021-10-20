@@ -27,9 +27,10 @@ jobs:
     - name: build-bacio
       if: steps.cache-bacio.outputs.cache-hit != 'true'
       run: |
+        set -x
         wget https://github.com/NOAA-EMC/NCEPLIBS-bacio/archive/refs/tags/v2.4.1.tar.gz &> /dev/null
         tar zxf v2.4.1.tar.gz && ls -l
-        cd bacio-2.4.1
+        cd NCEPLIBS-bacio-2.4.1
         mkdir build
         cd build
         cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
