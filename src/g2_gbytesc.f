@@ -8,10 +8,10 @@ C>    This subrountine is to extract arbitrary size values from a
 C>    packed bit string, right justifying each value in the unpacked
 C>    array without skip and interations.
 C>
-C>    @param[in] IN character*1 array input
-C>    @param[out] IOUT unpacked array output
-C>    @param[in] ISKIP initial number of bits to skip
-C>    @param[in] NBYTE number of bits to take
+C>    @param[in] IN Array input.
+C>    @param[out] IOUT Unpacked array output.
+C>    @param[in] ISKIP Initial number of bits to skip.
+C>    @param[in] NBYTE Number of bits to take.
 C>
 C>    @author Stephen Gilbert @date 2004-04-27
 C>
@@ -46,7 +46,7 @@ C>    This subrountine is to extract arbitrary size values from a
 C>    packed bit string, right justifying each value in the unpacked
 C>    array with skip and interation options.
 C>
-C>    @param[in] IN character*1 array input
+C>    @param[in] IN array input
 C>    @param[out] IOUT unpacked array output
 C>    @param[in] ISKIP initial number of bits to skip
 C>    @param[in] NBYTE number of bits to take
