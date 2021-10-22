@@ -26,21 +26,25 @@ C>    - byte jj+1 - kk product definition section (pds)
 C>    - byte kk+1 - ll the data representation section (drs)
 C>    - byte ll+1 - ll+6 first 6 bytes of the bit map section (bms)
 C>
-C>    Program history log:
-C>    - 1995-10-31 Mark Iredell
-C>    - 1996-10-31 Mark Iredell augmented optional definitions to byte 320.
-C>    - 2001-12-10 Stephen Gilbert modified from ixgb to create grib2 indexes.
-C>    - 2002-01-31 Stephen Gilbert added identification section to index record.
+C>    ### Program History Log
+C>    Date | Programmer | Comments
+C>    -----|------------|--------- 
+C>    1995-10-31 | Mark Iredell | Initial.
+C>    1996-10-31 | Mark Iredell | augmented optional definitions to byte 320.
+C>    2001-12-10 | Stephen Gilbert | modified from ixgb to create grib2 indexes.
+C>    2002-01-31 | Stephen Gilbert | added identification section to index record.
 C>    
-C>    @param[in] LUGB integer unit of the unblocked grib file.
-C>    @param[in] LSKIP integer number of bytes to skip before grib message.
-C>    @param[in] LGRIB integer number of bytes in grib message.
-C>    @param[out] CBUF character*1 pointer to a buffer that contains
+C>    @param[in] LUGB Unit of the unblocked grib file. Must
+C>     be opened by [baopen() or baopenr()]
+C>    (https://noaa-emc.github.io/NCEPLIBS-bacio/).
+C>    @param[in] LSKIP Number of bytes to skip before grib message.
+C>    @param[in] LGRIB Number of bytes in grib message.
+C>    @param[out] CBUF Pointer to a buffer that contains
 C>    index records users should free memory that cbuf points to
 C>    using deallocate(cbuf) when cbuf is no longer needed.
-C>    @param[out] NUMFLD integer number of index records created.
-C>    @param[out] MLEN integer total length of all index records.
-C>    @param[out] IRET integer return code
+C>    @param[out] NUMFLD Number of index records created.
+C>    @param[out] MLEN Total length of all index records.
+C>    @param[out] IRET Return code
 C>    - 0 all ok
 C>    - 1 not enough memory available to hold full index buffer
 C>    - 2 i/o error in read

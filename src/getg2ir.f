@@ -4,7 +4,7 @@ C>    @author Mark Iredell @date 1995-10-31
 C>
 
 C>    This subroutine read a GRIB file and return its index content.
-C>    the index buffer returned contains index records with the internal format:
+C>    The index buffer returned contains index records with the internal format:
 C>    - byte 001 - 004 length of index record
 C>    - byte 005 - 008 bytes to skip in data file before grib message
 C>    - byte 009 - 012 bytes to skip in message before lus (local use)
@@ -24,34 +24,33 @@ C>    - byte jj+1-  kk product definition section (pds)
 C>    - byte kk+1-  ll the data representation section (drs)
 C>    - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
 C>
-C>    Program history log:
-C>    - 1995-10-31 mark iredell
-C>    - 1996-10-31 mark iredell augmented optional definitions to byte 320
-C>    - 2002-01-02 stephen gilbert modified from getgir to create grib2 indexes
+C>    ### Program History Log
+C>    Date | Programmer | Comments
+C>    -----|------------|--------- 
+C>    1995-10-31 | Mark Iredell
+C>    1996-10-31 | Mark Iredell | augmented optional definitions to byte 320
+C>    2002-01-02 | Stephen Gilbert | modified from getgir to create grib2 indexes
 C>
-C>    @param[in] lugb integer unit of the unblocked grib file
-C>    @param[in] msk1 integer number of bytes to search for first message
-C>    @param[in] msk2 integer number of bytes to search for other messages
-C>    @param[in] mnum integer number of grib messages to skip (usually 0)
-C>    output arguments:
-C>    @param[out] cbuf character*1 pointer to a buffer that contains index
-C>    records. users should free memory that cbuf points to, using
+C>    @param[in] lugb Unit of the unblocked grib file. Must
+C>     be opened by [baopen() or baopenr()]
+C>    (https://noaa-emc.github.io/NCEPLIBS-bacio/).
+C>    @param[in] msk1 Number of bytes to search for first message.
+C>    @param[in] msk2 Number of bytes to search for other messages.
+C>    @param[in] mnum Number of grib messages to skip (usually 0).
+C>    @param[out] cbuf Pointer to a buffer that contains index
+C>    records. Users should free memory that cbuf points to, using
 C>    deallocate(cbuf) when cbuf is no longer needed.
-C>    @param[out] nlen integer total length of index record buffer in bytes
-C>    @param[out] nnum integer number of index records, =0 if no grib
-C>    messages are found)
-C>    @param[out] nmess last grib message in file successfully processed
-C>    @param[out] iret integer return code
+C>    @param[out] nlen Total length of index record buffer in bytes.
+C>    @param[out] nnum Number of index records, =0 if no grib
+C>    messages are found).
+C>    @param[out] nmess Last grib message in file successfully processed
+C>    @param[out] iret Return code.
 C>    - 0 all ok
 C>    - 1 not enough memory available to hold full index buffer
 C>    - 2 not enough memory to allocate initial index buffer
 C>
-C>    subprograms called:
-C>    - skgb  seek next grib message
-C>    - ixgb2 make index record
-C>
-C>    @note subprogram can be called from a multiprocessing environment.
-C>    do not engage the same logical unit from more than one processor.
+C>    @note Subprogram can be called from a multiprocessing environment.
+C>    Do not engage the same logical unit from more than one processor.
 C>
 C>    @author Mark Iredell @date 1995-10-31
 C>
