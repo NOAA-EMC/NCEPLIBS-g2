@@ -27,3 +27,7 @@ add_executable(test_simpack test_simpack.f90)
 target_link_libraries(test_simpack g2_4)
 add_test(test_simpack test_simpack)
 
+add_executable(test_gbytec.f90)
+target_link_libraries(test_gbytec g2_4)
+add_test(test_gbytec test_gbytec)
+
