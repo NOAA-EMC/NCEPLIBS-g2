@@ -1,5 +1,5 @@
-! This program tests the simple packing subroutine of the NCEPLIBS-g2
-! project. Link this to the _4 build of the library.
+! This program tests the simple packing and unpacking subroutines of
+! the NCEPLIBS-g2 project. Link this to the _4 build of the library.
 !
 ! Ed Hartnett 10/3/21
 program test_simpack
@@ -7,6 +7,7 @@ program test_simpack
 
   integer, parameter :: ndpts = 4
   real(4) :: fld(ndpts)
+  real(4) :: fld_in(ndpts)
   integer :: idrstmpl(5)
   character, dimension(10) :: cpack
   character, dimension(4) :: expected_cpack
@@ -26,6 +27,12 @@ program test_simpack
      if (cpack(i) .ne. expected_cpack(i)) stop 3
   end do
   if (lcpack .ne. 4) stop 2
+
+  print *, 'Testing simple call to simunpack...'
+  call simunpack(cpack, lcpack, idrstmpl, ndpts, fld_in)
+  do i = 1, ndpts
+     if (abs(fld(i) - fld_in(i)) .gt. .1) stop 10
+  end do
   
   print *, 'SUCCESS!'
 

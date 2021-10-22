@@ -12,6 +12,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake")
 include(CMakeFindDependencyMacro)
 
 find_dependency(PNG)
+find_dependency(bacio)
 
 get_target_property(@PROJECT_NAME@_BUILD_TYPES @PROJECT_NAME@::@PROJECT_NAME@_4 IMPORTED_CONFIGURATIONS)
 
