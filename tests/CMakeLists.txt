@@ -1,3 +1,7 @@
+# This is the CMake file for the test directory in the NCEPLIBS-g2
+# project.
+#
+# Ed Hartnett
 
 add_executable(test_g2 test_g2.f90)
 target_link_libraries(test_g2 g2_d)
@@ -27,7 +31,7 @@ add_executable(test_simpack test_simpack.f90)
 target_link_libraries(test_simpack g2_4)
 add_test(test_simpack test_simpack)
 
-add_executable(test_gbytec.f90)
+add_executable(test_gbytec test_gbytec.f90)
 target_link_libraries(test_gbytec g2_4)
 add_test(test_gbytec test_gbytec)
 
