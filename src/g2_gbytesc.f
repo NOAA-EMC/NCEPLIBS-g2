@@ -101,12 +101,12 @@ C>    This subrountine is to put arbitrary size values into a packed bit
 C>    string, taking the low order bits from each value in the unpacked
 C>    array with skip and interation options.
 C>
-C>    @param[out] OUT packed array output
-C>    @param[in] IN unpacked array input
-C>    @param[in] ISKIP initial number of bits to skip
-C>    @param[in] NBYTE number of bits to pack
-C>    @param[in] NSKIP additional number of bits to skip on each iteration
-C>    @param[in] N number of iterations
+C>    @param[out] OUT Packed array output.
+C>    @param[in] IN Unpacked array input.
+C>    @param[in] ISKIP Initial number of bits to skip.
+C>    @param[in] NBYTE Number of bits to pack.
+C>    @param[in] NSKIP Additional number of bits to skip on each iteration.
+C>    @param[in] N Number of iterations.
 C>
 C>    @author Stephen Gilbert @date 2004-04-27
 C>

@@ -1,7 +1,17 @@
 program test_gbytec
   implicit none
 
-  print *, 'Testing gbytec...'
+  character*1 :: out(1)
+  integer, parameter :: n = 1
+  integer :: in(n)
+  integer :: iskip = 0
+  integer :: nbyte = 8
+  integer :: nskip = 0
+
+  print *, 'Testing gbytec.'
+
+  print *, 'Testing sbytesc()...'
+  call g2_sbytesc(out, in, iskip, nbyte, nskip, n)
 
   print *, 'SUCCESS!'
 end program test_gbytec
