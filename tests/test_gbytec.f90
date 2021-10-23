@@ -10,6 +10,12 @@ program test_gbytec
 
   print *, 'Testing gbytec.'
 
+  print *, 'Testing sbytec()...'
+  in(1) = 3
+  call g2_sbytec(out, in, iskip, nbyte)
+  print *, ichar(out(1))
+  if (ichar(out(1)) .ne. in(1)) stop 10
+
   print *, 'Testing sbytesc()...'
   in(1) = 3
   call g2_sbytesc(out, in, iskip, nbyte, nskip, n)
