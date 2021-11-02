@@ -13,19 +13,20 @@ C>    index. If LUGI equals LUGB, the index will be regenerated from
 C>    the data in file LUGB. If LUGI is less than zero, then the index
 C>    is re read from index file abs(lugi).
 C>
-C>    PROGRAM HISTORY LOG:
-C>    - 2005-03-15 Stephen Gilbert Initial Programming
-C>    - 2009-07-09 Boi Vuong Fixed bug for checking (LUGB) unit index file
-C>    - 2016-03-29 Boi Vuong Restore original getidx.f from version
-C>    1.2.3 modified getidex to allow to open range of unit file number
-C>    up to 9999 added new parameters and new product definition
-C>    template numbers: 4.60, 4.61
+C>    ### Program History Log
+C>    Date | Programmer | Comments
+C>    -----|------------|--------- 
+C>    2005-03-15 | Stephen Gilbert | Initial Programming
+C>    2009-07-09 | Boi Vuong | Fixed bug for checking (LUGB) unit index file
+C>    2016-03-29 | Boi Vuong | Restore getidx.f from 1.2.3; file num up to 9999; added templates: 4.60, 4.61
 C>
 C>    @param[in] LUGB integer unit of the unblocked grib data file.
-C>    file must be opened with baopen or baopenr before calling
+C>    file must be opened with [baopen() or baopenr()]
+C>    (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
 C>    this routine.
 C>    @param[in] LUGI integer unit of the unblocked grib index file.
-C>    if nonzero, file must be opened with baopen baopenr before
+C>    if nonzero, file must be opened with [baopen() or baopenr()]
+C>    (https://noaa-emc.github.io/NCEPLIBS-bacio/) before
 C>    calling this routine. (=0 to get index buffer from the grib file)
 C>    @param[out] CINDEX character*1 pointer to a buffer that contains
 C>    index records.
