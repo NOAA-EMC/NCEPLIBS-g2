@@ -7,6 +7,7 @@ program test_jpcpack
     implicit none
 
     integer, parameter :: width=2, height=2, ndpts=4
+    real(kind=8), parameter :: delta = 0.001
     real(kind=8) :: fld(ndpts), fld2(ndpts)
     integer :: idrstmpl(7)
     character(len=1) :: cpack(200)
@@ -20,20 +21,20 @@ program test_jpcpack
     idrstmpl(1)=0
     idrstmpl(2)=1
     idrstmpl(3)=1
-    idrstmpl(4)=21
+    idrstmpl(4)=8
     idrstmpl(5)=0
     idrstmpl(6)=0
-    idrstmpl(7)=0
+    idrstmpl(7)=1
 
     ! Testing jpcpack
     call jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
-
+    print *, 'lcpack: ', lcpack
     ! Testing jpcunpack
     call jpcunpack(cpack, lcpack, idrstmpl, ndpts, fld2)
-    
-    ! Compare each value to see match, reals do not compare well
+
+    ! Compare each value to see match, remember, comparing reals
     do i = 1, ndpts
-        if (fld(i) .ne. fld2(i)) then
+        if (dabs(fld(i) - fld2(i)) .ge. delta) then
             print *, fld(i), fld2(i), 'do not match'
             stop 4
         end if
