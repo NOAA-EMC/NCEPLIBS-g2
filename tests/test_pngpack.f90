@@ -7,7 +7,7 @@ program test_pngpack
     implicit none
 
     integer, parameter :: width=2, height=2, ndpts=4
-    real(kind=8), parameter :: delta = 0.001
+    real(kind=8), parameter :: delta = 0.00000000001
     real(kind=8) :: fld(ndpts), fld2(ndpts)
     integer :: idrstmpl(7)
     character(len=1) :: cpack(100)
