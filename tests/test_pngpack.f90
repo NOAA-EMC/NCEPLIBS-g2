@@ -34,7 +34,7 @@ program test_pngpack
 
     ! Compare each value to see match, reals do not compare well
     do i = 1, ndpts
-        if (dabs(fld(i) - fld2(i)) .ge. delta) then
+        if (abs(fld(i) - fld2(i)) .ge. delta) then
             print *, fld(i), fld2(i), 'do not match'
             stop 4
         end if
