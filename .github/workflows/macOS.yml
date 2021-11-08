@@ -5,8 +5,8 @@ jobs:
   macOS-build:
     runs-on: macos-latest
     env:
-      CC: gcc-11
-      CXX: g++-11
+      FC: gfortran-9
+      CC: gcc-9
 
     steps:
     - name: install-dependencies
