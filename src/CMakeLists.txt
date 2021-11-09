@@ -63,7 +63,7 @@ foreach(kind ${kinds})
     ${module_dir})
 
   add_library(${lib_name}_c OBJECT ${c_src})
-  target_include_directories(${lib_name}_c PRIVATE ${JASPER_INCLUDE_DIR})
+  target_include_directories(${lib_name}_c PRIVATE ${JASPER_INCLUDE_DIR} ${PNG_INCLUDE_DIRS})
   target_link_libraries(${lib_name}_c PRIVATE ${PNG_LIBRARIES})
 
   add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
