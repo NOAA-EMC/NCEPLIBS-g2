@@ -24,7 +24,7 @@ target_link_libraries(test_params_ecmwf g2_d)
 add_test(test_params_ecmwf test_params_ecmwf)
 
 add_executable(test_pngpack test_pngpack.f90)
-target_link_libraries(test_pngpack g2_d)
+target_link_libraries(test_pngpack g2_d ${PNG_LIBRARIES})
 add_test(test_pngpack test_pngpack)
 
 add_executable(test_simpack test_simpack.f90)
