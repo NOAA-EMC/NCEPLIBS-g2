@@ -38,7 +38,6 @@ program test_pdstemplates
 
   print *, 'testing with template -1 (nonexistent)...'
   pdtlen = getpdtlen(-1)
-  print *, 'pdtlen(index(-1)):', pdtlen
   if (pdtlen .ne. 0) stop 10
   call getpdstemplate(-1, nummap, map, needext, iret)
   if (iret .eq. 0) stop 11
