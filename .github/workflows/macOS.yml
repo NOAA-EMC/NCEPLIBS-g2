@@ -12,7 +12,7 @@ jobs:
     - name: install-dependencies
       run: |
         brew update
-        brew install openjpeg libpng
+        brew install 
 
     - name: checkout-bacio
       uses: actions/checkout@v2
