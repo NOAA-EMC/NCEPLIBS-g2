@@ -28,6 +28,10 @@ add_executable(test_pngpack test_pngpack.f90)
 target_link_libraries(test_pngpack g2_d ${PNG_LIBRARIES})
 add_test(test_pngpack test_pngpack)
 
+add_executable(test_pdstemplates test_pdstemplates.f90)
+target_link_libraries(test_pdstemplates g2_d)
+add_test(test_pdstemplates test_pdstemplates)
+
 add_executable(test_simpack test_simpack.f90)
 target_link_libraries(test_simpack g2_4 ${PNG_LIBRARIES})
 add_test(test_simpack test_simpack)
