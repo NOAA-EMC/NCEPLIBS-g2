@@ -32,7 +32,7 @@ program test_gbytec
 
   ! This will pack the numbers 1 and 2 into the first two chars of the
   ! buffer. The rest of the output buffer will remain zeros.
-  print *, 'Testing g2_sbytesc() with more bytes...'
+  print *, 'Testing g2_sbytesc() packing 2 values...'
   in2(1) = 1
   in2(2) = 2
   do i = 1, 8
@@ -49,6 +49,7 @@ program test_gbytec
   end do
 
   ! Now pack 5 values into the 5 character array out5.
+  print *, 'Testing g2_sbytesc() packing 5 values...'
   in5(1) = 1
   in5(2) = 2
   in5(3) = 3
@@ -66,6 +67,7 @@ program test_gbytec
 
   ! Now pack 5 values into the 10 character array out10. Skip every
   ! other byte in the output.
+  print *, 'Testing g2_sbytesc() packing 5 values, skipping every other byte...'
   nbyte = 8
   nskip = 0
   do i = 1, 10
@@ -80,6 +82,14 @@ program test_gbytec
         if (ichar(out10(i)) .ne. 0) stop 50;
      endif
   end do
+
+  print *, 'Testing g2_sbytec() with iskip of 1...'
+  in(1) = 1
+  out(1) = char(0)
+  call g2_sbytec(out, in, 1, 6)
+  print '(z2.2)', out(1)  
+  if (ichar(out(1)) .ne. 2) stop 20
+
   print *, 'SUCCESS!'
 
 end program test_gbytec
