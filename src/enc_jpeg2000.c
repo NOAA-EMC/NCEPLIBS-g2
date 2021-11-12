@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "jasper/jasper.h"
-#define JAS_1_700_2 /**< Define jasper type. */ 
 
 #ifdef __64BIT__
   typedef int g2int; /**< Integer type. */
@@ -17,25 +16,13 @@
   typedef long g2int; /**< Long Integer type. */
 #endif
 
-#if defined CRAY90
-   #include <fortran.h>
-   #define SUB_NAME ENC_JPEG2000
-#elif defined LINUXF90
-   #define SUB_NAME ENC_JPEG2000
-#elif defined LINUXG95
-   #define SUB_NAME enc_jpeg2000__
-#elif defined HP || defined AIX
-   #define SUB_NAME enc_jpeg2000
-#elif defined SGI || defined LINUX || defined VPP5000 || defined APPLE
-   #define SUB_NAME enc_jpeg2000_
-#endif
-
 /**
  * This Function encodes a grayscale image into a JPEG2000 code stream
- * specified in the JPEG2000 Part-1 standard. It uses JasPer 
- * Software version 1.500.4 (or 1.700.2 ) written by the 
- * University of British Columbia, Image Power Inc, and others.
- * JasPer is available at http: *   www.ece.uvic.ca/~mdadams/jasper/.
+ * specified in the JPEG2000 Part-1 standard. 
+ *
+ * It uses JasPer Software written by the University of British
+ * Columbia, Image Power Inc, and others.  JasPer is available at
+ * http: www.ece.uvic.ca/~mdadams/jasper/.
  *  
  * PROGRAM HISTORY LOG:
  * - 2002-12-02  Stephen Gilbert
@@ -67,9 +54,10 @@
  *
  * @author Stephen Gilbert @date 2002-12-02
  */
-int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
-                 g2int *ltype, g2int *ratio, g2int *retry, char *outjpc,
-                 g2int *jpclen)
+int
+enc_jpeg2000_(unsigned char *cin, g2int *pwidth, g2int *pheight, g2int *pnbits,
+              g2int *ltype, g2int *ratio, g2int *retry, char *outjpc,
+              g2int *jpclen)
 {
     int ier,rwcnt;
     jas_image_t image;
@@ -114,44 +102,24 @@ int SUB_NAME(unsigned char *cin,g2int *pwidth,g2int *pheight,g2int *pnbits,
 */   
     image.tlx_=0;
     image.tly_=0;
-#ifdef JAS_1_500_4 
-    image.brx_=(uint_fast32_t)width;
-    image.bry_=(uint_fast32_t)height;
-#endif 
-#ifdef JAS_1_700_2
     image.brx_=(jas_image_coord_t)width;
     image.bry_=(jas_image_coord_t)height;
-#endif
     image.numcmpts_=1;
     image.maxcmpts_=1;
-#ifdef JAS_1_500_4
-/*
-**  grayscale Image
-*/
-    image.colormodel_=JAS_IMAGE_CM_GRAY;
-#endif
-#ifdef JAS_1_700_2
 /*
 **  grayscale Image
 */
     image.clrspc_=JAS_CLRSPC_SGRAY;
     image.cmprof_=0; 
-#endif
 /*       image.inmem_=1; */
 
     cmpt.tlx_=0;
     cmpt.tly_=0;
     cmpt.hstep_=1;
     cmpt.vstep_=1;
-#ifdef JAS_1_500_4
-    cmpt.width_=(uint_fast32_t)width;
-    cmpt.height_=(uint_fast32_t)height;
-#endif
-#ifdef JAS_1_700_2
     cmpt.width_=(jas_image_coord_t)width;
     cmpt.height_=(jas_image_coord_t)height;
     cmpt.type_=JAS_IMAGE_CT_COLOR(JAS_CLRSPC_CHANIND_GRAY_Y);
-#endif
     cmpt.prec_=nbits;
     cmpt.sgnd_=0;
     cmpt.cps_=(nbits+7)/8;
