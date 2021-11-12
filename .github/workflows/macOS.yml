@@ -1,21 +1,18 @@
-name: GCC Build, docs, test coverage
+name: macOS Build
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  macOS-build:
+    runs-on: macos-latest
     env:
-      FC: gfortran
-      CC: gcc
-      CXX: g++
+      FC: gfortran-9
+      CC: gcc-9
 
     steps:
-
     - name: install-dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
-        python3 -m pip install gcovr
+        brew update
+        brew install libpng
 
     - name: checkout-bacio
       uses: actions/checkout@v2
@@ -62,25 +59,13 @@ jobs:
 
     - name: build
       run: |
-        set -x
         cd g2
         mkdir build
-        doxygen --version
         cd build
-        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH=~/bacio -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address -Wall"
-        make -j2 VERBOSE=1 
+        cmake -DCMAKE_PREFIX_PATH="~/Jasper;~/bacio" ..
+        make -j2
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose --output-on-failure
-        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html
-
-    - name: upload-test-coverage
-      uses: actions/upload-artifact@v2
-      with:
-        name: g2-test-coverage
-        path: |
-          g2/build/*.html
-          g2/build/*.css
-
+        ctest  --output-on-failure
