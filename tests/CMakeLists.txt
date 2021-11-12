@@ -1,3 +1,9 @@
+# This is the CMake file for the test directory in the NCEPLIBS-g2
+# project.
+#
+# Ed Hartnett
+
+# This is needed for macos to work on GitHub CI.
 link_directories("/usr/local/lib")
 
 add_executable(test_g2 test_g2.f90)
@@ -35,3 +41,7 @@ add_test(test_pdstemplates test_pdstemplates)
 add_executable(test_simpack test_simpack.f90)
 target_link_libraries(test_simpack g2_4 ${PNG_LIBRARIES})
 add_test(test_simpack test_simpack)
+
+add_executable(test_gbytec test_gbytec.f90)
+target_link_libraries(test_gbytec g2_4)
+add_test(test_gbytec test_gbytec)

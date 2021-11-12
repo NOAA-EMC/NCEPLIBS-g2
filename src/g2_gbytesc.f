@@ -8,10 +8,13 @@ C>    This subrountine is to extract arbitrary size values from a
 C>    packed bit string, right justifying each value in the unpacked
 C>    array without skip and interations.
 C>
+C>    This should be used when input array IN has only one element. If IN
+C>    has more elements, use G2_SBYTESC().
+C>
 C>    @param[in] IN Array input.
 C>    @param[out] IOUT Unpacked array output.
 C>    @param[in] ISKIP Initial number of bits to skip.
-C>    @param[in] NBYTE Number of bits to take.
+C>    @param[in] NBYTE Number of bits of each integer in IN to take.
 C>
 C>    @author Stephen Gilbert @date 2004-04-27
 C>
@@ -27,10 +30,13 @@ C>    This subrountine is to put arbitrary size values into a packed bit
 C>    string, taking the low order bits from each value in the unpacked
 C>    array without skip and interation.
 C>
+C>    This should be used when input array IN has only one element. If IN
+C>    has more elements, use G2_SBYTESC().
+C>
 C>    @param[out] OUT packed array output
 C>    @param[in] IN unpacked array input
 C>    @param[in] ISKIP initial number of bits to skip
-C>    @param[in] NBYTE number of bits to pack
+C>    @param[in] NBYTE Number of bits of each integer in OUT to fill.
 C>
 C>    @author Stephen Gilbert @date 2004-04-27
 C>
@@ -49,9 +55,9 @@ C>
 C>    @param[in] IN array input
 C>    @param[out] IOUT unpacked array output
 C>    @param[in] ISKIP initial number of bits to skip
-C>    @param[in] NBYTE number of bits to take
-C>    @param[in] NSKIP additional number of bits to skip on each iteration
-C>    @param[in] N number of iterations
+C>    @param[in] NBYTE Number of bits of each integer in IN to take.
+C>    @param[in] NSKIP Additional number of bits to skip on each iteration.
+C>    @param[in] N Number of integers to extract.
 C>
 C>    @author Stephen Gilbert @date 2004-04-27
 C>
@@ -101,12 +107,12 @@ C>    This subrountine is to put arbitrary size values into a packed bit
 C>    string, taking the low order bits from each value in the unpacked
 C>    array with skip and interation options.
 C>
-C>    @param[out] OUT packed array output
-C>    @param[in] IN unpacked array input
-C>    @param[in] ISKIP initial number of bits to skip
-C>    @param[in] NBYTE number of bits to pack
-C>    @param[in] NSKIP additional number of bits to skip on each iteration
-C>    @param[in] N number of iterations
+C>    @param[out] OUT Packed array output.
+C>    @param[in] IN Unpacked array input.
+C>    @param[in] ISKIP Initial number of bits to skip.
+C>    @param[in] NBYTE Number of bits of each integer in OUT to fill.
+C>    @param[in] NSKIP Additional number of bits to skip on each iteration.
+C>    @param[in] N Number of iterations.
 C>
 C>    @author Stephen Gilbert @date 2004-04-27
 C>
