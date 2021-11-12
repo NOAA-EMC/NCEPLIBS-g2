@@ -18,7 +18,7 @@ program test_gribcreate
   print *, 'Testing gribcreate().'
   !   expected_cpack = (/ char(0), char(93), char(108), char(64) /)
 
-  print *, 'Testing simple call to gribcreate()...'
+  print *, 'Testing simple call to gribcreate(). Expect and ignore error messages.'
 
   ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml.
   listsec0(1) = 0
@@ -39,10 +39,17 @@ program test_gribcreate
   listsec1(12) = 1 !  Operational Test Products
   listsec1(13) = 0 ! Analysis Products
 
+  ! Change the GRIB version and try to create message - will not work.
+  listsec0(2) = 1
+  call gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
+  if (ierr .ne. 1) stop 10
+  listsec0(2) = 2
+
   ! Create the GRIB2 message, with sections 0 and 1.
   call gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
+  if (ierr .ne. 0) stop 20
   do i = 1, lcgrib
-     if (cgrib(i) .ne. expected_cgrib(i)) stop 10
+     if (cgrib(i) .ne. expected_cgrib(i)) stop 21
 !     write(*, fmt='(i3a2)', advance="no") ichar(cgrib(i)), ', '
   enddo
   
