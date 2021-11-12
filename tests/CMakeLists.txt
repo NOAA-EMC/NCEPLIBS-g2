@@ -45,3 +45,7 @@ add_test(test_simpack test_simpack)
 add_executable(test_gbytec test_gbytec.f90)
 target_link_libraries(test_gbytec g2_4)
 add_test(test_gbytec test_gbytec)
+
+add_executable(test_gribcreate test_gribcreate.f90)
+target_link_libraries(test_gribcreate g2_4)
+add_test(test_gribcreate test_gribcreate)
