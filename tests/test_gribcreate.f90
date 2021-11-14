@@ -16,6 +16,7 @@ program test_gribcreate
        achar(7), achar(229), achar(11), achar(13), achar(15), achar(59), achar(59), achar(1), &
        achar(0), achar(0), achar(0), achar(0), achar(8), achar(2), achar(1), achar(2), achar(3) /)
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
+  character :: old_val
   integer :: i, ierr
 
   print *, 'Testing gribcreate().'
@@ -52,14 +53,22 @@ program test_gribcreate
   call gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   if (ierr .ne. 0) stop 20
 
+  ! Change the first byte of the message, then try to add local - will
+  ! not work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  if (ierr .ne. 1) stop 30
+  cgrib(1) = old_val
+
   ! Add a local section.
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
-  if (ierr .ne. 0) stop 30
+  if (ierr .ne. 0) stop 40
   
   ! Check the results.
   do i = 1, lcgrib
 !     write(*, fmt='(i3a2)', advance="no") ichar(cgrib(i)), ', '
-     if (cgrib(i) .ne. expected_cgrib(i)) stop 40
+     if (cgrib(i) .ne. expected_cgrib(i)) stop 50
   enddo
 
   print *, 'SUCCESS!'
