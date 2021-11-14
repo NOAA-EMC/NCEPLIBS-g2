@@ -6,8 +6,10 @@ program test_gribcreate
   implicit none
 
   integer :: listsec0(2), listsec1(13)
-  integer, parameter :: lcgrib = 37
+  integer, parameter :: lcgrib = 44
   character, dimension(lcgrib) :: cgrib
+  character :: csec2(3) = (/ achar(1), achar(2), achar(3) /)
+  integer :: lcsec2 = 3
   character :: expected_cgrib(lcgrib) = (/  achar(71), achar(82), achar(73), achar(66), &
        achar(0), achar(0), achar(0), achar(2), achar(0), achar(0), achar(0), achar(0), &
        achar(0), achar(0), achar(0), achar(37), achar(0), achar(0), achar(0), achar(21), &
@@ -52,6 +54,9 @@ program test_gribcreate
      if (cgrib(i) .ne. expected_cgrib(i)) stop 21
 !     write(*, fmt='(i3a2)', advance="no") ichar(cgrib(i)), ', '
   enddo
+
+  ! Add a local section.
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   
   print *, 'SUCCESS!'
 
