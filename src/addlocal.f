@@ -42,7 +42,7 @@
       
       ierr = 0
 
-!    Check to see if beginning of GRIB message exists
+!     Check to see if beginning of GRIB message exists
 
       ctemp = cgrib(1) // cgrib(2) // cgrib(3) // cgrib(4)
       if (ctemp .ne. grib) then
@@ -53,11 +53,11 @@
           return
       endif
 
-!    Get current length of GRIB message
+!     Get current length of GRIB message
       
       call g2_gbytec(cgrib, lencurr, 96, 32)
 
-!    Check to see if GRIB message is already complete
+!     Check to see if GRIB message is already complete
       
       ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // 
      &     cgrib(lencurr - 1) // cgrib(lencurr)
@@ -68,8 +68,8 @@
           return
       endif
 
-!    Loop through all current sections of the GRIB message to
-!    find the last section number.
+!     Loop through all current sections of the GRIB message to
+!     find the last section number.
 
       len = 16                  ! length of Section 0
       do 
@@ -79,32 +79,33 @@
           iofst = iofst + 32
           call g2_gbytec(cgrib, isecnum, iofst, 8)
           len = len + ilen
-!    Exit loop if last section reached
+!         Exit loop if last section reached
           if (len .eq. lencurr) exit
-!    If byte count for each section doesn't match current
-!    total length,  then there is a problem.
+!         If byte count for each section doesn't match current
+!         total length,  then there is a problem.
           if (len .gt. lencurr) then
-              print *, 'addlocal: Section byte counts don''t ' \\
-              &              'add to total.'
+              print *, 'addlocal: Section byte counts don''t ' //
+     &             'add to total.'
               print *, 'addlocal: Sum of section byte counts = ', len
-              print *, 'addlocal: Total byte count in Section 0 = ', lencurr
+              print *, 'addlocal: Total byte count in Section 0 = ', 
+     &             lencurr
               ierr = 3
               return
           endif
       enddo
 
-!    Section 2 can only be added after sections 1 and 7.
+!     Section 2 can only be added after sections 1 and 7.
 
       if ((isecnum .ne. 1) .and. (isecnum .ne. 7)) then
-          print *, 'addlocal: Section 2 can only be added after Section', 
-     &         ' 1 or Section 7.'
+          print *, 'addlocal: Section 2 can only be added after ' //
+     &         'Section 1 or Section 7.'
           print *, 'addlocal: Section ', isecnum,
      &         ' was the last found in given GRIB message.'
           ierr = 4
           return
       endif
 
-!    Add Section 2  - Local Use Section
+!     Add Section 2  - Local Use Section
 
       ibeg = lencurr * 8        !    Calculate offset for beginning of section 2
       iofst = ibeg + 32         !    leave space for length of section
@@ -112,15 +113,12 @@
       istart = lencurr + 5
       cgrib(istart + 1:istart + lcsec2) = csec2(1:lcsec2)
       
-!    Calculate length of section 2 and store it in octets
-!    1-4 of section 2.
-      
+!     Calculate length of section 2 and store it in octets
+!     1-4 of section 2.
       lensec2 = lcsec2 + 5      !  bytes
       call g2_sbytec(cgrib, lensec2, ibeg, 32)
 
-
-!    Update current byte total of message in Section 0
-
+!     Update current byte total of message in Section 0
       call g2_sbytec(cgrib, lencurr + lensec2, 96, 32)
 
       return
