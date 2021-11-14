@@ -61,6 +61,14 @@ program test_gribcreate
   if (ierr .ne. 1) stop 30
   cgrib(1) = old_val
 
+  ! Change the section count, then try to add local - will
+  ! not work.
+  old_val = cgrib(16)
+  cgrib(16) = achar(10)
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  if (ierr .ne. 3) stop 30
+  cgrib(16) = old_val
+
   ! Add a local section.
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   if (ierr .ne. 0) stop 40
