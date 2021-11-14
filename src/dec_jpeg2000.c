@@ -39,10 +39,10 @@
 int
 dec_jpeg2000_(char *injpc, g2int *bufsize, g2int *outfld)
 {
-    g2int i, j, k, n;
+    g2int i, j, k;
     jas_image_t *image = NULL;
-    jas_stream_t *jpcstream, *istream;
-    jas_image_cmpt_t cmpt, *pcmpt;
+    jas_stream_t *jpcstream;
+    jas_image_cmpt_t *pcmpt;
     char *opts = NULL;
     jas_matrix_t *data;
     int ier = 0;
