@@ -65,6 +65,10 @@ program test_gribcreate
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   if (ierr .ne. 0) stop 40
   
+  ! Try to add a local section again - will not work.
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  if (ierr .ne. 4) stop 40
+  
   ! Check the results.
   do i = 1, lcgrib
 !     write(*, fmt='(i3a2)', advance="no") ichar(cgrib(i)), ', '
