@@ -6,7 +6,7 @@ program test_gribcreate
   implicit none
 
   integer :: listsec0(2), listsec1(13)
-  integer, parameter :: lcgrib = 44
+  integer, parameter :: lcgrib = 45
   character, dimension(lcgrib) :: cgrib
   integer, parameter :: lcsec2 = 3
   character :: expected_cgrib(lcgrib) = (/  achar(71), achar(82), achar(73), achar(66), &
@@ -14,7 +14,7 @@ program test_gribcreate
        achar(0), achar(0), achar(0), achar(45), achar(0), achar(0), achar(0), achar(21), &
        achar(1), achar(0), achar(7), achar(0), achar(4), achar(2), achar(24), achar(0), &
        achar(7), achar(229), achar(11), achar(13), achar(15), achar(59), achar(59), achar(1), &
-       achar(0), achar(0), achar(0), achar(0), achar(8), achar(2), achar(1), achar(2) /)
+       achar(0), achar(0), achar(0), achar(0), achar(8), achar(2), achar(1), achar(2), achar(3) /)
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
   integer :: i, ierr
 
