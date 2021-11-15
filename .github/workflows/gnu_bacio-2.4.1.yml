@@ -2,7 +2,7 @@ name: bacio-2.4.1 build
 on: [push, pull_request]
 
 jobs:
-  bacio-2.4.1-build:
+  bacio-2_4_1-build:
     runs-on: ubuntu-20.04
     env:
       FC: gfortran

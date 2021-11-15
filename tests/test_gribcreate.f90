@@ -5,17 +5,54 @@
 program test_gribcreate
   implicit none
 
-  integer :: listsec0(2), listsec1(13)
-  integer, parameter :: lcgrib = 45
+  ! Storage for the grib2 message we are constructing.
+  integer, parameter :: lcgrib = 117
   character, dimension(lcgrib) :: cgrib
+  
+  ! Section 0 and 1.
+  integer :: listsec0(2), listsec1(13)
+
+  ! Section 2.
   integer, parameter :: lcsec2 = 3
-  character :: expected_cgrib(lcgrib) = (/  achar(71), achar(82), achar(73), achar(66), &
-       achar(0), achar(0), achar(0), achar(2), achar(0), achar(0), achar(0), achar(0), &
-       achar(0), achar(0), achar(0), achar(45), achar(0), achar(0), achar(0), achar(21), &
-       achar(1), achar(0), achar(7), achar(0), achar(4), achar(2), achar(24), achar(0), &
-       achar(7), achar(229), achar(11), achar(13), achar(15), achar(59), achar(59), achar(1), &
-       achar(0), achar(0), achar(0), achar(0), achar(8), achar(2), achar(1), achar(2), achar(3) /)
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
+
+  ! Section 3.
+  integer, parameter :: expected_len_sec3 = 72
+  integer, parameter :: igdstmplen = 19
+  integer, parameter :: idefnum = 0
+  integer, parameter :: ndata = 4
+  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml
+  integer :: igds(5) = (/ 0, ndata, 0, 0, 0/)
+  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp3-0.shtml
+  integer :: igdstmpl(igdstmplen) = (/ 0, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 45, 91, 0, 55, 101, 5, 5, 0 /)
+  integer :: ideflist(idefnum)  
+
+  ! This is the GRIB2 message we expect to get.
+  character :: expected_cgrib(lcgrib) = (/  achar( 71), achar( 82),&
+       & achar( 73), achar( 66), achar(  0), achar(  0), achar(  0),&
+       & achar(  2), achar(  0), achar(  0), achar(  0), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar(117), achar(  0),&
+       & achar(  0), achar(  0), achar( 21), achar(  1), achar(  0),&
+       & achar(  7), achar(  0), achar(  4), achar(  2), achar( 24),&
+       & achar(  0), achar(  7), achar(229), achar( 11), achar( 13),&
+       & achar( 15), achar( 59), achar( 59), achar(  1), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar(  8), achar(  2),&
+       & achar(  1), achar(  2), achar(  3), achar(  0), achar(  0),&
+       & achar(  0), achar( 72), achar(  3), achar(  0), achar(  0),&
+       & achar(  0), achar(  0), achar(  4), achar(  0), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar(  1), achar(  0),&
+       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
+       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
+       & achar(  0), achar(  0), achar(  1), achar(  0), achar(  0),&
+       & achar(  0), achar(  2), achar(  0), achar(  0), achar(  0),&
+       & achar(  2), achar(  0), achar(  0), achar(  0), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
+       & achar(  0), achar(  0), achar( 45), achar(  0), achar(  0),&
+       & achar(  0), achar( 91), achar(  0), achar(  0), achar(  0),&
+       & achar(  0), achar( 55), achar(  0), achar(  0), achar(  0),&
+       & achar(101), achar(  0), achar(  0), achar(  0), achar(  5),&
+       & achar(  0), achar(  0), achar(  0), achar(  5), achar(  0) /)
+  
   character :: old_val
   integer :: i, ierr
 
@@ -72,15 +109,45 @@ program test_gribcreate
   ! Add a local section.
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   if (ierr .ne. 0) stop 40
-  
+    
   ! Try to add a local section again - will not work.
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
-  if (ierr .ne. 4) stop 40
+  if (ierr .ne. 4) stop 41
+
+  ! Change the first byte of the message, then try to add grid - will
+  ! not work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 1) stop 50
+  cgrib(1) = old_val
+
+  ! Change the section count, then try to add grid - will
+  ! not work.
+  old_val = cgrib(16)
+  cgrib(16) = achar(10)
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 3) stop 60
+  cgrib(16) = old_val
+
+  ! Try with a bad template number.
+  igds(5) = 999
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 5) stop 70
+  igds(5) = 0
+
+  ! Add a grid section.
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 0) stop 80
   
   ! Check the results.
   do i = 1, lcgrib
-!     write(*, fmt='(i3a2)', advance="no") ichar(cgrib(i)), ', '
-     if (cgrib(i) .ne. expected_cgrib(i)) stop 50
+!     write(*, fmt='(a6i3a3)', advance="no") 'achar(', ichar(cgrib(i)), '), '
+     if (cgrib(i) .ne. expected_cgrib(i)) stop 100
   enddo
 
   print *, 'SUCCESS!'
