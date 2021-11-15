@@ -6,13 +6,17 @@ program test_gribcreate
   implicit none
 
   integer :: listsec0(2), listsec1(13)
-  integer, parameter :: lcgrib = 37
+  integer, parameter :: lcgrib = 45
   character, dimension(lcgrib) :: cgrib
+  integer, parameter :: lcsec2 = 3
   character :: expected_cgrib(lcgrib) = (/  achar(71), achar(82), achar(73), achar(66), &
        achar(0), achar(0), achar(0), achar(2), achar(0), achar(0), achar(0), achar(0), &
-       achar(0), achar(0), achar(0), achar(37), achar(0), achar(0), achar(0), achar(21), &
+       achar(0), achar(0), achar(0), achar(45), achar(0), achar(0), achar(0), achar(21), &
        achar(1), achar(0), achar(7), achar(0), achar(4), achar(2), achar(24), achar(0), &
-       achar(7), achar(229), achar(11), achar(13), achar(15), achar(59), achar(59), achar(1), achar(0) /)
+       achar(7), achar(229), achar(11), achar(13), achar(15), achar(59), achar(59), achar(1), &
+       achar(0), achar(0), achar(0), achar(0), achar(8), achar(2), achar(1), achar(2), achar(3) /)
+  character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
+  character :: old_val
   integer :: i, ierr
 
   print *, 'Testing gribcreate().'
@@ -48,11 +52,37 @@ program test_gribcreate
   ! Create the GRIB2 message, with sections 0 and 1.
   call gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   if (ierr .ne. 0) stop 20
-  do i = 1, lcgrib
-     if (cgrib(i) .ne. expected_cgrib(i)) stop 21
-!     write(*, fmt='(i3a2)', advance="no") ichar(cgrib(i)), ', '
-  enddo
+
+  ! Change the first byte of the message, then try to add local - will
+  ! not work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  if (ierr .ne. 1) stop 30
+  cgrib(1) = old_val
+
+  ! Change the section count, then try to add local - will
+  ! not work.
+  old_val = cgrib(16)
+  cgrib(16) = achar(10)
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  if (ierr .ne. 3) stop 30
+  cgrib(16) = old_val
+
+  ! Add a local section.
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  if (ierr .ne. 0) stop 40
   
+  ! Try to add a local section again - will not work.
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  if (ierr .ne. 4) stop 40
+  
+  ! Check the results.
+  do i = 1, lcgrib
+!     write(*, fmt='(i3a2)', advance="no") ichar(cgrib(i)), ', '
+     if (cgrib(i) .ne. expected_cgrib(i)) stop 50
+  enddo
+
   print *, 'SUCCESS!'
 
 end program test_gribcreate
