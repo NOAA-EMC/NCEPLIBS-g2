@@ -123,10 +123,26 @@ program test_gribcreate
   if (ierr .ne. 1) stop 50
   cgrib(1) = old_val
 
+  ! Change the section count, then try to add grid - will
+  ! not work.
+  old_val = cgrib(16)
+  cgrib(16) = achar(10)
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 3) stop 60
+  cgrib(16) = old_val
+
+  ! Try with a bad template number.
+  igds(5) = 999
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 5) stop 70
+  igds(5) = 0
+
   ! Add a grid section.
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
-  if (ierr .ne. 0) stop 55
+  if (ierr .ne. 0) stop 80
   
   ! Check the results.
   do i = 1, lcgrib
