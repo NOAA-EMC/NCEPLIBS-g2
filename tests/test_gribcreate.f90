@@ -114,10 +114,19 @@ program test_gribcreate
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   if (ierr .ne. 4) stop 41
 
+  ! Change the first byte of the message, then try to add grid - will
+  ! not work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 1) stop 50
+  cgrib(1) = old_val
+
   ! Add a grid section.
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
-  if (ierr .ne. 0) stop 50
+  if (ierr .ne. 0) stop 55
   
   ! Check the results.
   do i = 1, lcgrib

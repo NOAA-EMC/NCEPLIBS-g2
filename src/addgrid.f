@@ -74,7 +74,6 @@
  10           format('"', 4A1, '" /= "GRIB"')
               print 10, cgrib(1:4)
               ierr = 1
-              stop 1
               return
           endif
       enddo
