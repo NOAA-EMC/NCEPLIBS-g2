@@ -7,20 +7,25 @@ program test_compack
 
   integer, parameter :: ndpts = 4
   real(8) :: fld_orig(ndpts), fld(ndpts), fld_in(ndpts)
-  integer :: idrstmpl(6), idrsnum
-  character*1, dimension(10) :: cpack
-  character*1, dimension(4) :: expected_cpack
+  integer :: idrstmpl(16)
+  integer :: idrsnum
+  character*1, dimension(50) :: cpack
   integer :: lcpack, lensec
   integer :: i, ierr
 
   print *, 'Testing compack.'
-  expected_cpack = (/ char(0), char(93), char(108), char(64) /)
-  lensec = 5
+  lensec = ndpts
 
   print *, 'Testing simple call to compack...'
   fld_orig = (/42.3, 43.2, 44.1, 45.4/)
   fld = fld_orig
-  idrstmpl = (/42, 1, 1, 0, 0, 0/)
+  ! idrstmpl = (/42, 1, 1, 0, 0, 0/)
+  idrstmpl(1) = 42
+  idrstmpl(2) = 1
+  idrstmpl(3) = 1
+  idrstmpl(7) = 0
+  idrstmpl(8) = 0
+  idrstmpl(9) = 0
   idrsnum = 2
   call compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
   print *, 'lcpack: ', lcpack
@@ -35,7 +40,7 @@ program test_compack
       stop 22
   endif
   do i = 1, ndpts
-      print *, 'fld, fldin:', fld_orig(i), fld_in(i)
+      print *, 'fld_orig, fldin:', fld_orig(i), fld_in(i)
     if (abs(fld_orig(i) - fld_in(i)) .gt. .1) stop 10
   end do
 
