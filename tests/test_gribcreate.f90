@@ -6,7 +6,7 @@ program test_gribcreate
   implicit none
 
   ! Storage for the grib2 message we are constructing.
-  integer, parameter :: lcgrib = 117
+  integer, parameter :: lcgrib = 187
   character, dimension(lcgrib) :: cgrib
   
   ! Section 0 and 1.
@@ -25,13 +25,23 @@ program test_gribcreate
   integer :: igds(5) = (/ 0, ndata, 0, 0, 0/)
   ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp3-0.shtml
   integer :: igdstmpl(igdstmplen) = (/ 0, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 45, 91, 0, 55, 101, 5, 5, 0 /)
-  integer :: ideflist(idefnum)  
+  integer :: ideflist(idefnum)
+
+  ! Sections 4-7.
+  integer, parameter :: ipdsnum = 0, ipdstmplen = 15, numcoord = 0
+  integer :: ipdstmpl(ipdstmplen)
+  integer :: coordlist(1)
+  integer, parameter :: idrsnum = 0, idrstmplen = 5
+  integer :: idrstmpl(idrstmplen)
+  integer, parameter :: ngrdpts = 4, ibmap = 255
+  logical :: bmap(1)
+  real :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   ! This is the GRIB2 message we expect to get.
   character :: expected_cgrib(lcgrib) = (/  achar( 71), achar( 82),&
        & achar( 73), achar( 66), achar(  0), achar(  0), achar(  0),&
        & achar(  2), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(117), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar(187), achar(  0),&
        & achar(  0), achar(  0), achar( 21), achar(  1), achar(  0),&
        & achar(  7), achar(  0), achar(  4), achar(  2), achar( 24),&
        & achar(  0), achar(  7), achar(229), achar( 11), achar( 13),&
@@ -51,7 +61,21 @@ program test_gribcreate
        & achar(  0), achar( 91), achar(  0), achar(  0), achar(  0),&
        & achar(  0), achar( 55), achar(  0), achar(  0), achar(  0),&
        & achar(101), achar(  0), achar(  0), achar(  0), achar(  5),&
-       & achar(  0), achar(  0), achar(  0), achar(  5), achar(  0) /)
+       & achar(  0), achar(  0), achar(  0), achar(  5), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar( 34), achar(  4),&
+       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
+       & achar( 12), achar( 59), achar(  0), achar(  0), achar(  0),&
+       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
+       & achar(  0), achar(  0), achar(  1), achar(  2), achar(  1),&
+       & achar(  0), achar(  0), achar(  0), achar(  1), achar(  0),&
+       & achar(  0), achar(  0), achar( 21), achar(  5), achar(  0),&
+       & achar(  0), achar(  0), achar(  4), achar(  0), achar(  0),&
+       & achar( 65), achar( 48), achar(  0), achar(  0), achar(  0),&
+       & achar(  1), achar(  0), achar(  1), achar(  8), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar(  6), achar(  6),&
+       & achar(255), achar(  0), achar(  0), achar(  0), achar(  9),&
+       & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2) /)
   
   character :: old_val
   integer :: i, ierr
@@ -143,6 +167,38 @@ program test_gribcreate
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
   if (ierr .ne. 0) stop 80
+
+  ! Set up product definition section template.
+  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml
+  ipdstmpl(1) = 0
+  ipdstmpl(2) = 0
+  ipdstmpl(3) = 0
+  ipdstmpl(4) = 0
+  ipdstmpl(5) = 0
+  ipdstmpl(6) = 12
+  ipdstmpl(7) = 59
+  ipdstmpl(8) = 0
+  ipdstmpl(9) = 0
+  ipdstmpl(10) = 1
+  ipdstmpl(11) = 1
+  ipdstmpl(12) = 1
+  ipdstmpl(13) = 2
+  ipdstmpl(14) = 1
+  ipdstmpl(15) = 1
+
+  ! Set up data representation section template.
+  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-0.shtml
+  idrstmpl(1) = 0
+  idrstmpl(2) = 1
+  idrstmpl(3) = 1
+  idrstmpl(4) = 8
+  idrstmpl(5) = 0
+
+  ! Add a field.
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       & ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 90
   
   ! Check the results.
   do i = 1, lcgrib

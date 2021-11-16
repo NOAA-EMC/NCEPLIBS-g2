@@ -29,30 +29,23 @@
 !>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
 !>    @param[in] ipdsnum Product Definition Template Number (see [Code
 !>    Table 4.0]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml)).
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
 !>    @param[in] ipdstmpl Contains the data values for the
 !>    Product Definition Template specified by ipdsnum.
-!>    @param[in] ipdstmplen Max dimension of ipdstmpl coordlist Array
-!>    containg floating point values intended to document the vertical
-!>    discretisation associated to model data on hybrid coordinate
-!>    vertical levels.
+!>    @param[in] ipdstmplen Max dimension of ipdstmpl.
 !>    @param[out] coordlist Array containg floating point values intended to 
 !>    document the vertical discretisation associated to model data on hybrid 
-!>    coordinate vertical levels. (part of Section 4) The dimension of this 
-!>    array can be obtained in advance from maxvals(5), which is returned 
-!>    from subroutine gribinfo.
+!>    coordinate vertical levels (part of Section 4).
 !>    @param[in] numcoord - number of values in array coordlist.
 !>    @param[in] idrsnum - Data Representation Template Number (see
 !>    [Code Table 5.0]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-0.shtml)).
-!>    @param[in] idrstmpl Contains the data values for the specified
-!>    Data Representation Template (N=idrsnum). Each element of this
-!>    integer array contains an entry (in the order specified) of Data
-!>    Representation Template 5.N. Note that some values in this
-!>    template (eg. reference values, number of bits, etc...) may be
-!>    changed by the data packing algorithms.
-!>    Use this to specify scaling factors and order of
-!>    spatial differencing, if desired.
+!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml)).
+!>    @param[in] idrstmpl Contains the data values for the Data
+!>    Representation Template specified by idrsnum. Note that some
+!>    values in this template (eg. reference values, number of bits,
+!>    etc...) may be changed by the data packing algorithms. Use this
+!>    to specify scaling factors and order of spatial differencing, if
+!>    desired.
 !>    @param[in] idrstmplen Max dimension of idrstmpl. This must be at
 !>    least as large as the length of the selected PDS template.
 !>    @param[in] fld Array of data points to pack.
