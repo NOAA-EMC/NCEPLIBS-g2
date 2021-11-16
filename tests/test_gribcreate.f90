@@ -6,7 +6,7 @@ program test_gribcreate
   implicit none
 
   ! Storage for the grib2 message we are constructing.
-  integer, parameter :: lcgrib = 187
+  integer, parameter :: lcgrib = 191
   character, dimension(lcgrib) :: cgrib
   
   ! Section 0 and 1.
@@ -37,11 +37,14 @@ program test_gribcreate
   logical :: bmap(1)
   real :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
+  ! Section 8
+  integer :: lengrib
+
   ! This is the GRIB2 message we expect to get.
   character :: expected_cgrib(lcgrib) = (/  achar( 71), achar( 82),&
        & achar( 73), achar( 66), achar(  0), achar(  0), achar(  0),&
        & achar(  2), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(187), achar(  0),&
+       & achar(  0), achar(  0), achar(  0), achar(191), achar(  0),&
        & achar(  0), achar(  0), achar( 21), achar(  1), achar(  0),&
        & achar(  7), achar(  0), achar(  4), achar(  2), achar( 24),&
        & achar(  0), achar(  7), achar(229), achar( 11), achar( 13),&
@@ -75,7 +78,8 @@ program test_gribcreate
        & achar(  1), achar(  0), achar(  1), achar(  8), achar(  0),&
        & achar(  0), achar(  0), achar(  0), achar(  6), achar(  6),&
        & achar(255), achar(  0), achar(  0), achar(  0), achar(  9),&
-       & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2) /)
+       & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2),&
+       & achar( 55), achar( 55), achar( 55), achar( 55) /)
   
   character :: old_val
   integer :: i, ierr
@@ -168,6 +172,12 @@ program test_gribcreate
        ideflist, idefnum, ierr)
   if (ierr .ne. 0) stop 80
 
+  ! Try to add a grid section - won't work, can only be added after
+  ! sections 1, 2, and 7.
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 4) stop 110
+
   ! Set up product definition section template.
   ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml
   ipdstmpl(1) = 0
@@ -199,11 +209,21 @@ program test_gribcreate
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        & ngrdpts, ibmap, bmap, ierr)
   if (ierr .ne. 0) stop 90
+
+  ! End the grib message by adding section 8.
+  call gribend(cgrib, lcgrib, lengrib, ierr)
+  if (ierr .ne. 0) stop 100
   
+  ! Try to add a grid section - won't work, can only be added after
+  ! sections 1, 2, and 7.
+  call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+       ideflist, idefnum, ierr)
+  if (ierr .ne. 2) stop 110
+
   ! Check the results.
   do i = 1, lcgrib
 !     write(*, fmt='(a6i3a3)', advance="no") 'achar(', ichar(cgrib(i)), '), '
-     if (cgrib(i) .ne. expected_cgrib(i)) stop 100
+     if (cgrib(i) .ne. expected_cgrib(i)) stop 200
   enddo
 
   print *, 'SUCCESS!'
