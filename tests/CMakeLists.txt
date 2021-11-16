@@ -49,3 +49,7 @@ add_test(test_gbytec test_gbytec)
 add_executable(test_gribcreate test_gribcreate.f90)
 target_link_libraries(test_gribcreate g2_4)
 add_test(test_gribcreate test_gribcreate)
+
+add_executable(test_getfield test_getfield.f90)
+target_link_libraries(test_getfield g2_4)
+add_test(test_getfield test_getfield)

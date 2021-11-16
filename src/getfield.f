@@ -73,7 +73,7 @@
 !>    be obtained in advance from maxvals(6), which is returned from
 !>    subroutine gribinfo().
 !>    @param[out] idrslen Number of elements in idrstmpl. i.e. number of
-!>    entries in Data Representation Template 5.N (N=idrsnum).
+!>    entries in Data Representation Template specified by idrsnum.
 !>    @param[out] ibmap Bitmap indicator (see [Code Table
 !>    6.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
 !>    - 0 bitmap applies and is included in Section 6.
@@ -105,230 +105,223 @@
 !>    how many data fields exist in a given GRIB message.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-!>
+      subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl,
+     $     igdslen, ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen,
+     $     coordlist, numcoord, ndpts, idrsnum, idrstmpl, idrslen, 
+     $     ibmap, bmap, fld, ierr)
 
-      subroutine getfield(cgrib,lcgrib,ifldnum,igds,igdstmpl,igdslen,
-     &                    ideflist,idefnum,ipdsnum,ipdstmpl,ipdslen,
-     &                    coordlist,numcoord,ndpts,idrsnum,idrstmpl,
-     &                    idrslen,ibmap,bmap,fld,ierr)
-
-      character(len=1),intent(in) :: cgrib(lcgrib)
-      integer,intent(in) :: lcgrib,ifldnum
-      integer,intent(out) :: igds(*),igdstmpl(*),ideflist(*)
-      integer,intent(out) :: ipdsnum,ipdstmpl(*)
-      integer,intent(out) :: idrsnum,idrstmpl(*)
-      integer,intent(out) :: ndpts,ibmap,idefnum,numcoord
-      integer,intent(out) :: ierr
-      logical*1,intent(out) :: bmap(*)
-      real,intent(out) :: fld(*),coordlist(*)
+      character(len = 1), intent(in) :: cgrib(lcgrib)
+      integer, intent(in) :: lcgrib, ifldnum
+      integer, intent(out) :: igds(*), igdstmpl(*), ideflist(*)
+      integer, intent(out) :: ipdsnum, ipdstmpl(*)
+      integer, intent(out) :: idrsnum, idrstmpl(*)
+      integer, intent(out) :: ndpts, ibmap, idefnum, numcoord
+      integer, intent(out) :: ierr
+      logical*1, intent(out) :: bmap(*)
+      real, intent(out) :: fld(*), coordlist(*)
       
-      character(len=4),parameter :: grib='GRIB',c7777='7777'
-      character(len=4) :: ctemp
+      character(len = 4), parameter :: grib = 'GRIB', c7777 = '7777'
+      character(len = 4) :: ctemp
       integer:: listsec0(2)
-      integer iofst,ibeg,istart
+      integer iofst, ibeg, istart
       integer(4) :: ieee
-      logical have3,have4,have5,have6,have7
+      logical have3, have4, have5, have6, have7
 
-      have3=.false.
-      have4=.false.
-      have5=.false.
-      have6=.false.
-      have7=.false.
-      ierr=0
-      numfld=0
-!
-!  Check for valid request number
-!  
-      if (ifldnum.le.0) then
-        print *,'getfield: Request for field number must be positive.'
-        ierr=3
-        return
-      endif
-!
-!  Check for beginning of GRIB message in the first 100 bytes
-!
-      istart=0
-      do j=1,100
-        ctemp=cgrib(j)//cgrib(j+1)//cgrib(j+2)//cgrib(j+3)
-        if (ctemp.eq.grib ) then
-          istart=j
-          exit
-        endif
-      enddo
-      if (istart.eq.0) then
-        print *,'getfield:  Beginning characters GRIB not found.'
-        ierr=1
-        return
-      endif
-!
-!  Unpack Section 0 - Indicator Section 
-!
-      iofst=8*(istart+5)
-      call g2_gbytec(cgrib,listsec0(1),iofst,8)     ! Discipline
-      iofst=iofst+8
-      call g2_gbytec(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
-      iofst=iofst+8
-      iofst=iofst+32
-      call g2_gbytec(cgrib,lengrib,iofst,32)        ! Length of GRIB message
-      iofst=iofst+32
-      lensec0=16
-      ipos=istart+lensec0
-!
-!  Currently handles only GRIB Edition 2.
-!  
-      if (listsec0(2).ne.2) then
-        print *,'getfield: can only decode GRIB edition 2.'
-        ierr=2
-        return
-      endif
-!
-!  Loop through the remaining sections keeping track of the 
-!  length of each. Also keep the latest Grid Definition Section info.
-!  Unpack the requested field number.
-!
-      do
-        !    Check to see if we are at end of GRIB message
-        ctemp=cgrib(ipos)//cgrib(ipos+1)//cgrib(ipos+2)//cgrib(ipos+3)
-        if (ctemp.eq.c7777 ) then
-          ipos=ipos+4
-          !    If end of GRIB message not where expected, issue error
-          if (ipos.ne.(istart+lengrib)) then
-            print *,'getfield: "7777" found, but not where expected.'
-            ierr=4
-            return
-          endif
-          exit
-        endif
-        !     Get length of Section and Section number
-        iofst=(ipos-1)*8
-        call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
-        iofst=iofst+32
-        call g2_gbytec(cgrib,isecnum,iofst,8)         ! Get Section number
-        iofst=iofst+8
-        !print *,' lensec= ',lensec,'    secnum= ',isecnum
-        !
-        !   If found Section 3, unpack the GDS info using the 
-        !   appropriate template. Save in case this is the latest
-        !   grid before the requested field.
-        !
-        if (isecnum.eq.3) then
-          iofst=iofst-40       ! reset offset to beginning of section
-          call unpack3(cgrib,lcgrib,iofst,igds,igdstmpl,igdslen,
-     &                 ideflist,idefnum,jerr)
-          if (jerr.eq.0) then
-            have3=.true.
-          else
-            ierr=10
-            return
-          endif
-        endif
-        !
-        !   If found Section 4, check to see if this field is the
-        !   one requested.
-        !
-        if (isecnum.eq.4) then
-          numfld=numfld+1
-          if (numfld.eq.ifldnum) then
-            iofst=iofst-40       ! reset offset to beginning of section
-            call unpack4(cgrib,lcgrib,iofst,ipdsnum,ipdstmpl,ipdslen,
-     &                   coordlist,numcoord,jerr)
-            if (jerr.eq.0) then
-              have4=.true.
-            else
-              ierr=11
-              return
-            endif
-          endif
-        endif
-        !
-        !   If found Section 5, check to see if this field is the
-        !   one requested.
-        !
-        if ((isecnum.eq.5).and.(numfld.eq.ifldnum)) then
-          iofst=iofst-40       ! reset offset to beginning of section
-          call unpack5(cgrib,lcgrib,iofst,ndpts,idrsnum,idrstmpl,
-     &                 idrslen,jerr)
-          if (jerr.eq.0) then
-            have5=.true.
-          else
-            ierr=12
-            return
-          endif
-        endif
-        !
-        !   If found Section 6, Unpack bitmap.
-        !   Save in case this is the latest
-        !   bitmap before the requested field.
-        !
-        if (isecnum.eq.6) then
-          iofst=iofst-40       ! reset offset to beginning of section
-          call unpack6(cgrib,lcgrib,iofst,igds(2),ibmap,bmap,jerr)
-          if (jerr.eq.0) then
-            have6=.true.
-          else
-            ierr=13
-            return
-          endif
-        endif
-        !
-        !   If found Section 7, check to see if this field is the
-        !   one requested.
-        !
-        if ((isecnum.eq.7).and.(numfld.eq.ifldnum)) then
-          if (idrsnum.eq.0) then
-            call simunpack(cgrib(ipos+5),lensec-6,idrstmpl,ndpts,fld)
-            have7=.true.
-          elseif (idrsnum.eq.2.or.idrsnum.eq.3) then
-            call comunpack(cgrib(ipos+5),lensec-6,lensec,idrsnum,
-     &                     idrstmpl,ndpts,fld,ier)
-            if ( ier .ne. 0 ) then
-                ierr=14
-                return
-            endif
-            have7=.true.
-          elseif (idrsnum.eq.50) then
-            call simunpack(cgrib(ipos+5),lensec-6,idrstmpl,ndpts-1,
-     &                     fld(2))
-            ieee=idrstmpl(5)
-            call rdieee(ieee,fld(1),1)
-            have7=.true.
-          elseif (idrsnum.eq.40 .OR. idrsnum.eq.40000) then
-            call jpcunpack(cgrib(ipos+5),lensec-5,idrstmpl,ndpts,fld)
-            have7=.true.
-          elseif (idrsnum.eq.41 .OR. idrsnum.eq.40010) then
-            call pngunpack(cgrib(ipos+5),lensec-5,idrstmpl,ndpts,fld)
-            have7=.true.
-          else
-            print *,'getfield: Data Representation Template ',idrsnum,
-     &              ' not yet implemented.'
-            ierr=9
-            return
-          endif
-        endif
-        !
-        !   Check to see if we read pass the end of the GRIB
-        !   message and missed the terminator string '7777'.
-        !
-        ipos=ipos+lensec                 ! Update beginning of section pointer
-        if (ipos.gt.(istart+lengrib)) then
-          print *,'getfield: "7777"  not found at end of GRIB message.'
-          ierr=7
+      have3 = .false.
+      have4 = .false.
+      have5 = .false.
+      have6 = .false.
+      have7 = .false.
+      ierr = 0
+      numfld = 0
+
+!     Check for valid request number
+      if (ifldnum .le. 0) then
+          print *, 'getfield: Request for field number '
+     $         ,'must be positive.'
+          ierr = 3
           return
-        endif
+      endif
 
-        if (have3.and.have4.and.have5.and.have6.and.have7) return
-        
+!     Check for beginning of GRIB message in the first 100 bytes
+      istart = 0
+      do j = 1, 100
+          ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j +
+     $         3)
+          if (ctemp .eq. grib) then
+              istart = j
+              exit
+          endif
+      enddo
+      if (istart .eq. 0) then
+          print *, 'getfield:  Beginning characters GRIB not found.'
+          ierr = 1
+          return
+      endif
+
+!     Unpack Section 0 - Indicator Section 
+      iofst = 8 * (istart + 5)
+      call g2_gbytec(cgrib, listsec0(1), iofst, 8) ! Discipline
+      iofst = iofst + 8
+      call g2_gbytec(cgrib, listsec0(2), iofst, 8) ! GRIB edition number
+      iofst = iofst + 8
+      iofst = iofst + 32
+      call g2_gbytec(cgrib, lengrib, iofst, 32) ! Length of GRIB message
+      iofst = iofst + 32
+      lensec0 = 16
+      ipos = istart + lensec0
+
+!     Currently handles only GRIB Edition 2.
+      if (listsec0(2) .ne. 2) then
+          print *, 'getfield: can only decode GRIB edition 2.'
+          ierr = 2
+          return
+      endif
+
+!     Loop through the remaining sections keeping track of the length of
+!     each. Also keep the latest Grid Definition Section info.  Unpack
+!     the requested field number.
+      do
+!         Check to see if we are at end of GRIB message
+          ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) //
+     $         cgrib(ipos + 3)
+          if (ctemp .eq. c7777) then
+              ipos = ipos + 4
+!             If end of GRIB message not where expected, issue error
+              if (ipos.ne.(istart + lengrib)) then
+                  print *, 'getfield: "7777" found, but not '
+     $                 ,'where expected.'
+                  ierr = 4
+                  return
+              endif
+              exit
+          endif
+!         Get length of Section and Section number
+          iofst = (ipos - 1) * 8
+          call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+          iofst = iofst + 32
+          call g2_gbytec(cgrib, isecnum, iofst, 8) ! Get Section number
+          iofst = iofst + 8
+
+!         If found Section 3, unpack the GDS info using the appropriate
+!         template. Save in case this is the latest grid before the
+!         requested field.
+          if (isecnum .eq. 3) then
+              iofst = iofst - 40    ! reset offset to beginning of section
+              call unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, 
+     $             igdslen, ideflist, idefnum, jerr)
+              if (jerr .eq. 0) then
+                  have3 = .true.
+              else
+                  ierr = 10
+                  return
+              endif
+          endif
+
+!         If found Section 4, check to see if this field is the one
+!         requested.
+          if (isecnum .eq. 4) then
+              numfld = numfld + 1
+              if (numfld.eq.ifldnum) then
+                  iofst = iofst - 40 ! reset offset to beginning of section
+                  call unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl,
+     $                 ipdslen, coordlist, numcoord, jerr)
+                  if (jerr .eq. 0) then
+                      have4 = .true.
+                  else
+                      ierr = 11
+                      return
+                  endif
+              endif
+          endif
+
+!         If found Section 5, check to see if this field is the one
+!         requested.
+          if ((isecnum .eq. 5) .and. (numfld .eq. ifldnum)) then
+              iofst = iofst - 40    ! reset offset to beginning of section
+              call unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,
+     $             idrstmpl, idrslen, jerr)
+              if (jerr .eq. 0) then
+                  have5 = .true.
+              else
+                  ierr = 12
+                  return
+              endif
+          endif
+
+!         If found Section 6, Unpack bitmap. Save in case this is the
+!         latest bitmap before the requested field.
+          if (isecnum .eq. 6) then
+              iofst = iofst - 40    ! reset offset to beginning of section
+              call unpack6(cgrib, lcgrib, iofst, igds(2), ibmap, bmap,
+     $             jerr)
+              if (jerr .eq. 0) then
+                  have6 = .true.
+              else
+                  ierr = 13
+                  return
+              endif
+          endif
+
+!         If found Section 7, check to see if this field is the one
+!         requested.
+          if ((isecnum .eq. 7) .and. (numfld .eq. ifldnum)) then
+              if (idrsnum .eq. 0) then
+                  call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl,
+     $                 ndpts, fld)
+                  have7 = .true.
+              elseif (idrsnum .eq. 2 .or. idrsnum .eq. 3) then
+                  call comunpack(cgrib(ipos + 5), lensec - 6, lensec,
+     $                 idrsnum,idrstmpl, ndpts, fld, ier)
+                  if (ier .ne. 0) then
+                      ierr = 14
+                      return
+                  endif
+                  have7 = .true.
+              elseif (idrsnum .eq. 50) then
+                  call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl,
+     $                 ndpts - 1, fld(2))
+                  ieee = idrstmpl(5)
+                  call rdieee(ieee, fld(1), 1)
+                  have7 = .true.
+              elseif (idrsnum .eq. 40 .or. idrsnum .eq. 40000) then
+                  call jpcunpack(cgrib(ipos + 5), lensec - 5, idrstmpl,
+     $                 ndpts, fld)
+                  have7 = .true.
+              elseif (idrsnum .eq. 41 .or. idrsnum .eq. 40010) then
+                  call pngunpack(cgrib(ipos + 5), lensec - 5, idrstmpl,
+     $                 ndpts, fld)
+                  have7 = .true.
+              else
+                  print *, 'getfield: Data Representation Template ',
+     $                 idrsnum, ' not yet implemented.'
+                  ierr = 9
+                  return
+              endif
+          endif
+
+!         Check to see if we read pass the end of the GRIB message and
+!         missed the terminator string '7777'.
+          ipos = ipos + lensec      ! Update beginning of section pointer
+          if (ipos .gt. (istart + lengrib)) then
+              print *, 'getfield: "7777"  not found at end'
+     $             ,' of GRIB message.'
+              ierr = 7
+              return
+          endif
+
+          if (have3 .and. have4 .and. have5 .and. have6 .and. have7)
+     $         return
+          
       enddo
 
-!
-!  If exited from above loop, the end of the GRIB message was reached
-!  before the requested field was found.
-!
-      print *,'getfield: GRIB message contained ',numlocal,
-     &        ' different fields.'
-      print *,'getfield: The request was for the ',ifldnum,
-     &        ' field.'
-      ierr=6
+!     If exited from above loop, the end of the GRIB message was reached
+!     before the requested field was found.
+      print *, 'getfield: GRIB message contained ', numlocal, 
+     &     ' different fields.'
+      print *, 'getfield: The request was for the ', ifldnum, 
+     &     ' field.'
+      ierr = 6
 
       return
       end
@@ -374,109 +367,105 @@
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
-      subroutine unpack3(cgrib,lcgrib,iofst,igds,igdstmpl,
-     &                   mapgridlen,ideflist,idefnum,ierr)
+      subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, 
+     &     mapgridlen, ideflist, idefnum, ierr)
 
       use gridtemplates
 
-      character(len=1),intent(in) :: cgrib(lcgrib)
-      integer,intent(in) :: lcgrib
-      integer,intent(inout) :: iofst
-      integer,intent(out) :: igds(*),igdstmpl(*),ideflist(*)
-      integer,intent(out) :: ierr,idefnum
+      character(len = 1), intent(in) :: cgrib(lcgrib)
+      integer, intent(in) :: lcgrib
+      integer, intent(inout) :: iofst
+      integer, intent(out) :: igds(*), igdstmpl(*), ideflist(*)
+      integer, intent(out) :: ierr, idefnum
 
-      integer,allocatable :: mapgrid(:)
-      integer :: mapgridlen,ibyttem
+      integer, allocatable :: mapgrid(:)
+      integer :: mapgridlen, ibyttem
       logical needext
 
-      ierr=0
+      ierr = 0
 
-      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
-      iofst=iofst+32
-      iofst=iofst+8     ! skip section number
+      call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+      iofst = iofst + 32
+      iofst = iofst + 8             ! skip section number
 
-      call g2_gbytec(cgrib,igds(1),iofst,8)     ! Get source of Grid def.
-      iofst=iofst+8
-      call g2_gbytec(cgrib,igds(2),iofst,32)    ! Get number of grid pts.
-      iofst=iofst+32
-      call g2_gbytec(cgrib,igds(3),iofst,8)     ! Get num octets for opt. list
-      iofst=iofst+8
-      call g2_gbytec(cgrib,igds(4),iofst,8)     ! Get interpret. for opt. list
-      iofst=iofst+8
-      call g2_gbytec(cgrib,igds(5),iofst,16)    ! Get Grid Def Template num.
-      iofst=iofst+16
-      if (igds(1).eq.0) then
+      call g2_gbytec(cgrib, igds(1), iofst, 8) ! Get source of Grid def.
+      iofst = iofst + 8
+      call g2_gbytec(cgrib, igds(2), iofst, 32) ! Get number of grid pts.
+      iofst = iofst + 32
+      call g2_gbytec(cgrib, igds(3), iofst, 8) ! Get num octets for opt. list
+      iofst = iofst + 8
+      call g2_gbytec(cgrib, igds(4), iofst, 8) ! Get interpret. for opt. list
+      iofst = iofst + 8
+      call g2_gbytec(cgrib, igds(5), iofst, 16) ! Get Grid Def Template num.
+      iofst = iofst + 16
+      if (igds(1) .eq. 0) then
 !      if (igds(1).eq.0.OR.igds(1).eq.255) then  ! FOR ECMWF TEST ONLY
-        allocate(mapgrid(lensec))
-        !   Get Grid Definition Template
-        call getgridtemplate(igds(5),mapgridlen,mapgrid,needext,
-     &                       iret)
-        if (iret.ne.0) then
-          ierr=5
-          return
-        endif
-      else
-!        igdstmpl=-1
-        mapgridlen=0
-        needext=.false.
-      endif
-      !
-      !   Unpack each value into array igdstmpl from the
-      !   the appropriate number of octets, which are specified in
-      !   corresponding entries in array mapgrid.
-      !
-      ibyttem=0
-      do i=1,mapgridlen
-        nbits=iabs(mapgrid(i))*8
-        if ( mapgrid(i).ge.0 ) then
-          call g2_gbytec(cgrib,igdstmpl(i),iofst,nbits)
-        else
-          call g2_gbytec(cgrib,isign,iofst,1)
-          call g2_gbytec(cgrib,igdstmpl(i),iofst+1,nbits-1)
-          if (isign.eq.1) igdstmpl(i)=-igdstmpl(i)
-        endif
-        iofst=iofst+nbits
-        ibyttem=ibyttem+iabs(mapgrid(i))
-      enddo
-      !
-      !   Check to see if the Grid Definition Template needs to be
-      !   extended.
-      !   The number of values in a specific template may vary
-      !   depending on data specified in the "static" part of the
-      !   template.
-      !
-      if ( needext ) then
-        call extgridtemplate(igds(5),igdstmpl,newmapgridlen,mapgrid)
-        !   Unpack the rest of the Grid Definition Template
-        do i=mapgridlen+1,newmapgridlen
-          nbits=iabs(mapgrid(i))*8
-          if ( mapgrid(i).ge.0 ) then
-            call g2_gbytec(cgrib,igdstmpl(i),iofst,nbits)
-          else
-            call g2_gbytec(cgrib,isign,iofst,1)
-            call g2_gbytec(cgrib,igdstmpl(i),iofst+1,nbits-1)
-            if (isign.eq.1) igdstmpl(i)=-igdstmpl(i)
+          allocate(mapgrid(lensec))
+!         Get Grid Definition Template
+          call getgridtemplate(igds(5), mapgridlen, mapgrid, needext, 
+     &         iret)
+          if (iret .ne. 0) then
+              ierr = 5
+              return
           endif
-          iofst=iofst+nbits
-          ibyttem=ibyttem+iabs(mapgrid(i))
-        enddo
-        mapgridlen=newmapgridlen
-      endif
-      !
-      !   Unpack optional list of numbers defining number of points
-      !   in each row or column, if included. This is used for non regular
-      !   grids.
-      !
-      if ( igds(3).ne.0 ) then
-         nbits=igds(3)*8
-         idefnum=(lensec-14-ibyttem)/igds(3)
-         call g2_gbytesc(cgrib,ideflist,iofst,nbits,0,idefnum)
-         iofst=iofst+(nbits*idefnum)
       else
-         idefnum=0
+!        igdstmpl = -1
+          mapgridlen = 0
+          needext = .false.
       endif
-      if( allocated(mapgrid) ) deallocate(mapgrid)
-      return    ! End of Section 3 processing
+
+!     Unpack each value into array igdstmpl from the the appropriate
+!     number of octets, which are specified in corresponding entries in
+!     array mapgrid.
+      ibyttem = 0
+      do i = 1, mapgridlen
+          nbits = iabs(mapgrid(i)) * 8
+          if (mapgrid(i) .ge. 0) then
+              call g2_gbytec(cgrib, igdstmpl(i), iofst, nbits)
+          else
+              call g2_gbytec(cgrib, isign, iofst, 1)
+              call g2_gbytec(cgrib, igdstmpl(i), iofst + 1, nbits-1)
+              if (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)
+          endif
+          iofst = iofst + nbits
+          ibyttem = ibyttem + iabs(mapgrid(i))
+      enddo
+
+!      Check to see if the Grid Definition Template needs to be
+!      extended. The number of values in a specific template may vary
+!      depending on data specified in the "static" part of the template.
+      if (needext) then
+          call extgridtemplate(igds(5), igdstmpl, newmapgridlen,
+     $         mapgrid)
+!         Unpack the rest of the Grid Definition Template
+          do i = mapgridlen + 1, newmapgridlen
+              nbits = iabs(mapgrid(i)) * 8
+              if (mapgrid(i) .ge. 0) then
+                  call g2_gbytec(cgrib, igdstmpl(i), iofst, nbits)
+              else
+                  call g2_gbytec(cgrib, isign, iofst, 1)
+                  call g2_gbytec(cgrib, igdstmpl(i), iofst + 1, nbits -
+     $                 1)
+                  if (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)
+              endif
+              iofst = iofst + nbits
+              ibyttem = ibyttem + iabs(mapgrid(i))
+          enddo
+          mapgridlen = newmapgridlen
+      endif
+
+!     Unpack optional list of numbers defining number of points in each
+!     row or column, if included. This is used for non regular grids.
+      if (igds(3) .ne. 0) then
+          nbits = igds(3) * 8
+          idefnum = (lensec - 14 - ibyttem) / igds(3)
+          call g2_gbytesc(cgrib, ideflist, iofst, nbits, 0, idefnum)
+          iofst = iofst + (nbits * idefnum)
+      else
+          idefnum = 0
+      endif
+      if (allocated(mapgrid)) deallocate(mapgrid)
+      return                    ! End of Section 3 processing
       end
 
 !>    This subroutine unpacks Section 4 (Product Definition Section)
@@ -505,93 +494,88 @@
 !>    - 5 GRIB message contains an undefined Product Definition Template.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-!>
-      subroutine unpack4(cgrib,lcgrib,iofst,ipdsnum,ipdstmpl,mappdslen,
-     &                   coordlist,numcoord,ierr)
+      subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl,
+     $     mappdslen, coordlist, numcoord, ierr)
 
       use pdstemplates
 
-      character(len=1),intent(in) :: cgrib(lcgrib)
-      integer,intent(in) :: lcgrib
-      integer,intent(inout) :: iofst
-      real,intent(out) :: coordlist(*)
-      integer,intent(out) :: ipdsnum,ipdstmpl(*)
-      integer,intent(out) :: ierr,numcoord
+      character(len = 1), intent(in) :: cgrib(lcgrib)
+      integer, intent(in) :: lcgrib
+      integer, intent(inout) :: iofst
+      real, intent(out) :: coordlist(*)
+      integer, intent(out) :: ipdsnum, ipdstmpl(*)
+      integer, intent(out) :: ierr, numcoord
 
-      real(4),allocatable :: coordieee(:)
-      integer,allocatable :: mappds(:)
+      real(4), allocatable :: coordieee(:)
+      integer, allocatable :: mappds(:)
       integer :: mappdslen
       logical needext
 
-      ierr=0
+      ierr = 0
 
-      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
-      iofst=iofst+32
-      iofst=iofst+8     ! skip section number
+      call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+      iofst = iofst + 32
+      iofst = iofst + 8             ! skip section number
       allocate(mappds(lensec))
 
-      call g2_gbytec(cgrib,numcoord,iofst,16)    ! Get num of coordinate values
-      iofst=iofst+16
-      call g2_gbytec(cgrib,ipdsnum,iofst,16)    ! Get Prod. Def Template num.
-      iofst=iofst+16
-      !   Get Product Definition Template
-      call getpdstemplate(ipdsnum,mappdslen,mappds,needext,iret)
+      call g2_gbytec(cgrib, numcoord, iofst, 16) ! Get num of coordinate values
+      iofst = iofst + 16
+      call g2_gbytec(cgrib, ipdsnum, iofst, 16) ! Get Prod. Def Template num.
+      iofst = iofst + 16
+!     Get Product Definition Template.
+      call getpdstemplate(ipdsnum, mappdslen, mappds, needext, iret)
       if (iret.ne.0) then
-        ierr=5
-        return
+          ierr = 5
+          return
       endif
-      !
-      !   Unpack each value into array ipdstmpl from the
-      !   the appropriate number of octets, which are specified in
-      !   corresponding entries in array mappds.
-      !
-      do i=1,mappdslen
-        nbits=iabs(mappds(i))*8
-        if ( mappds(i).ge.0 ) then
-          call g2_gbytec(cgrib,ipdstmpl(i),iofst,nbits)
-        else
-          call g2_gbytec(cgrib,isign,iofst,1)
-          call g2_gbytec(cgrib,ipdstmpl(i),iofst+1,nbits-1)
-          if (isign.eq.1) ipdstmpl(i)=-ipdstmpl(i)
-        endif
-        iofst=iofst+nbits
-      enddo
-      !
-      !   Check to see if the Product Definition Template needs to be
-      !   extended.
-      !   The number of values in a specific template may vary
-      !   depending on data specified in the "static" part of the
-      !   template.
-      !
-      if ( needext ) then
-        call extpdstemplate(ipdsnum,ipdstmpl,newmappdslen,mappds)
-        !   Unpack the rest of the Product Definition Template
-        do i=mappdslen+1,newmappdslen
-          nbits=iabs(mappds(i))*8
-          if ( mappds(i).ge.0 ) then
-            call g2_gbytec(cgrib,ipdstmpl(i),iofst,nbits)
+
+!     Unpack each value into array ipdstmpl from the the appropriate
+!     number of octets, which are specified in corresponding entries in
+!     array mappds.
+      do i = 1, mappdslen
+          nbits = iabs(mappds(i))*8
+          if (mappds(i).ge.0) then
+              call g2_gbytec(cgrib, ipdstmpl(i), iofst, nbits)
           else
-            call g2_gbytec(cgrib,isign,iofst,1)
-            call g2_gbytec(cgrib,ipdstmpl(i),iofst+1,nbits-1)
-            if (isign.eq.1) ipdstmpl(i)=-ipdstmpl(i)
+              call g2_gbytec(cgrib, isign, iofst, 1)
+              call g2_gbytec(cgrib, ipdstmpl(i), iofst + 1, nbits-1)
+              if (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)
           endif
-          iofst=iofst+nbits
-        enddo
-        mappdslen=newmappdslen
+          iofst = iofst + nbits
+      enddo
+
+!     Check to see if the Product Definition Template needs to be
+!     extended. The number of values in a specific template may vary
+!     depending on data specified in the "static" part of the template.
+      if (needext) then
+          call extpdstemplate(ipdsnum, ipdstmpl, newmappdslen, mappds)
+
+!         Unpack the rest of the Product Definition Template
+          do i = mappdslen + 1, newmappdslen
+              nbits = iabs(mappds(i))*8
+              if (mappds(i).ge.0) then
+                  call g2_gbytec(cgrib, ipdstmpl(i), iofst, nbits)
+              else
+                  call g2_gbytec(cgrib, isign, iofst, 1)
+                  call g2_gbytec(cgrib, ipdstmpl(i), iofst + 1, nbits-1)
+                  if (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)
+              endif
+              iofst = iofst + nbits
+          enddo
+          mappdslen = newmappdslen
       endif
-      !
-      !   Get Optional list of vertical coordinate values
-      !   after the Product Definition Template, if necessary.
-      !
-      if ( numcoord .ne. 0 ) then
-        allocate (coordieee(numcoord))
-        call g2_gbytesc(cgrib,coordieee,iofst,32,0,numcoord)
-        call rdieee(coordieee,coordlist,numcoord)
-        deallocate (coordieee)
-        iofst=iofst+(32*numcoord)
+
+!     Get Optional list of vertical coordinate values after the Product
+!     Definition Template, if necessary.
+      if (numcoord .ne. 0) then
+          allocate (coordieee(numcoord))
+          call g2_gbytesc(cgrib, coordieee, iofst, 32, 0, numcoord)
+          call rdieee(coordieee, coordlist, numcoord)
+          deallocate (coordieee)
+          iofst = iofst + (32*numcoord)
       endif
-      if( allocated(mappds) ) deallocate(mappds)
-      return    ! End of Section 4 processing
+      if (allocated(mappds)) deallocate(mappds)
+      return                    ! End of Section 4 processing
       end
 
 !>    This subroutine unpacks Section 5 (Data Representation Section)
@@ -606,92 +590,87 @@
 !>    Table 5.0]
 !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml))
 !>    @param[out] idrstmpl Contains the data values for the specified
-!>    Data Representation Template (N=idrsnum). Each element of this
+!>    Data Representation Template (N = idrsnum). Each element of this
 !>    integer array contains an entry (in the order specified) of Data
 !>    Representation Template 5.N.
 !>    @param[out] mapdrslen Number of elements in idrstmpl. i.e. number
-!>    of entries in Data Representation Template 5.N (N=idrsnum).
+!>    of entries in Data Representation Template 5.N (N = idrsnum).
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 7 GRIB message contains an undefined Data Representation Template.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-!>
-
-      subroutine unpack5(cgrib,lcgrib,iofst,ndpts,idrsnum,idrstmpl,
-     &                   mapdrslen,ierr)
+      subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, 
+     $     idrstmpl, mapdrslen, ierr)
 
       use drstemplates
 
-      character(len=1),intent(in) :: cgrib(lcgrib)
-      integer,intent(in) :: lcgrib
-      integer,intent(inout) :: iofst
-      integer,intent(out) :: ndpts,idrsnum,idrstmpl(*)
-      integer,intent(out) :: ierr
+      character(len = 1), intent(in) :: cgrib(lcgrib)
+      integer, intent(in) :: lcgrib
+      integer, intent(inout) :: iofst
+      integer, intent(out) :: ndpts, idrsnum, idrstmpl(*)
+      integer, intent(out) :: ierr
 
-!      integer,allocatable :: mapdrs(:)
-      integer,allocatable :: mapdrs(:)
+!      integer, allocatable :: mapdrs(:)
+      integer, allocatable :: mapdrs(:)
       integer :: mapdrslen
       logical needext
 
-      ierr=0
+      ierr = 0
 
-      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
-      iofst=iofst+32
-      iofst=iofst+8     ! skip section number
+      call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+      iofst = iofst + 32
+      iofst = iofst + 8             ! skip section number
       allocate(mapdrs(lensec))
 
-      call g2_gbytec(cgrib,ndpts,iofst,32)    ! Get num of data points
-      iofst=iofst+32
-      call g2_gbytec(cgrib,idrsnum,iofst,16)     ! Get Data Rep Template Num.
-      iofst=iofst+16
-      !   Gen Data Representation Template
-      call getdrstemplate(idrsnum,mapdrslen,mapdrs,needext,iret)
+      call g2_gbytec(cgrib, ndpts, iofst, 32) ! Get num of data points
+      iofst = iofst + 32
+      call g2_gbytec(cgrib, idrsnum, iofst, 16) ! Get Data Rep Template Num.
+      iofst = iofst + 16
+!     Gen Data Representation Template
+      call getdrstemplate(idrsnum, mapdrslen, mapdrs, needext, iret)
       if (iret.ne.0) then
-        ierr=7
-        return
+          ierr = 7
+          return
       endif
-      !
-      !   Unpack each value into array ipdstmpl from the
-      !   the appropriate number of octets, which are specified in
-      !   corresponding entries in array mappds.
-      !
-      do i=1,mapdrslen
-        nbits=iabs(mapdrs(i))*8
-        if ( mapdrs(i).ge.0 ) then
-          call g2_gbytec(cgrib,idrstmpl(i),iofst,nbits)
-        else
-          call g2_gbytec(cgrib,isign,iofst,1)
-          call g2_gbytec(cgrib,idrstmpl(i),iofst+1,nbits-1)
-          if (isign.eq.1) idrstmpl(i)=-idrstmpl(i)
-        endif
-        iofst=iofst+nbits
-      enddo
-      !
-      !   Check to see if the Data Representation Template needs to be
-      !   extended.
-      !   The number of values in a specific template may vary
-      !   depending on data specified in the "static" part of the
-      !   template.
-      !
-      if ( needext ) then
-        call extdrstemplate(idrsnum,idrstmpl,newmapdrslen,mapdrs)
-        !   Unpack the rest of the Data Representation Template
-        do i=mapdrslen+1,newmapdrslen
-          nbits=iabs(mapdrs(i))*8
-          if ( mapdrs(i).ge.0 ) then
-            call g2_gbytec(cgrib,idrstmpl(i),iofst,nbits)
+
+!     Unpack each value into array ipdstmpl from the the appropriate
+!     number of octets, which are specified in corresponding entries in
+!     array mappds.
+      do i = 1, mapdrslen
+          nbits = iabs(mapdrs(i))*8
+          if (mapdrs(i).ge.0) then
+              call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
           else
-            call g2_gbytec(cgrib,isign,iofst,1)
-            call g2_gbytec(cgrib,idrstmpl(i),iofst+1,nbits-1)
-            if (isign.eq.1) idrstmpl(i)=-idrstmpl(i)
+              call g2_gbytec(cgrib, isign, iofst, 1)
+              call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits-1)
+              if (isign.eq.1) idrstmpl(i) = -idrstmpl(i)
           endif
-          iofst=iofst+nbits
-        enddo
-        mapdrslen=newmapdrslen
+          iofst = iofst + nbits
+      enddo
+
+!     Check to see if the Data Representation Template needs to be
+!     extended. The number of values in a specific template may vary
+!     depending on data specified in the "static" part of the template.
+      if (needext) then
+          call extdrstemplate(idrsnum, idrstmpl, newmapdrslen, mapdrs)
+!         Unpack the rest of the Data Representation Template
+          do i = mapdrslen + 1, newmapdrslen
+              nbits = iabs(mapdrs(i))*8
+              if (mapdrs(i).ge.0) then
+                  call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
+              else
+                  call g2_gbytec(cgrib, isign, iofst, 1)
+                  call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits -
+     $                 1)
+                  if (isign.eq.1) idrstmpl(i) = -idrstmpl(i)
+              endif
+              iofst = iofst + nbits
+          enddo
+          mapdrslen = newmapdrslen
       endif
-      if( allocated(mapdrs) ) deallocate(mapdrs)
-      return    ! End of Section 5 processing
+      if (allocated(mapdrs)) deallocate(mapdrs)
+      return                    ! End of Section 5 processing
       end
 
 !>    This subroutine unpacks Section 6 (Bit-Map Section) starting at
@@ -709,48 +688,48 @@
 !>    - 254 Previously defined bitmap applies to this field.
 !>    - 255 Bit map does not apply to this product.
 !>    @param[out] bmap Logical*1 array containing decoded bitmap (if
-!>    ibmap=0).
+!>    ibmap = 0).
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 4 Unrecognized pre-defined bit-map.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-!>
-      subroutine unpack6(cgrib,lcgrib,iofst,ngpts,ibmap,bmap,ierr)
+      subroutine unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
 
-      character(len=1),intent(in) :: cgrib(lcgrib)
-      integer,intent(in) :: lcgrib,ngpts
-      integer,intent(inout) :: iofst
-      integer,intent(out) :: ibmap
-      integer,intent(out) :: ierr
-      logical*1,intent(out) :: bmap(ngpts)
+      character(len = 1), intent(in) :: cgrib(lcgrib)
+      integer, intent(in) :: lcgrib, ngpts
+      integer, intent(inout) :: iofst
+      integer, intent(out) :: ibmap
+      integer, intent(out) :: ierr
+      logical*1, intent(out) :: bmap(ngpts)
 
       integer :: intbmap(ngpts)
 
-      ierr=0
+      ierr = 0
 
-      iofst=iofst+32    ! skip Length of Section
-      iofst=iofst+8     ! skip section number
+      iofst = iofst + 32            ! skip Length of Section
+      iofst = iofst + 8             ! skip section number
 
-      call g2_gbytec(cgrib,ibmap,iofst,8)    ! Get bit-map indicator
-      iofst=iofst+8
+      call g2_gbytec(cgrib, ibmap, iofst, 8) ! Get bit-map indicator
+      iofst = iofst + 8
 
-      if (ibmap.eq.0) then               ! Unpack bitmap
-        call g2_gbytesc(cgrib,intbmap,iofst,1,0,ngpts)
-        iofst=iofst+ngpts
-        do j=1,ngpts
-          bmap(j)=.true.
-          if (intbmap(j).eq.0) bmap(j)=.false.
-        enddo
-      elseif (ibmap.eq.254) then               ! Use previous bitmap
-        return
-      elseif (ibmap.eq.255) then               ! No bitmap in message
-        bmap(1:ngpts)=.true.
+      if (ibmap.eq.0) then      ! Unpack bitmap
+          call g2_gbytesc(cgrib, intbmap, iofst, 1, 0, ngpts)
+          iofst = iofst + ngpts
+          do j = 1, ngpts
+              bmap(j) = .true.
+              if (intbmap(j).eq.0) bmap(j) = .false.
+          enddo
+      elseif (ibmap.eq.254) then ! Use previous bitmap
+          return
+      elseif (ibmap.eq.255) then ! No bitmap in message
+          bmap(1:ngpts) = .true.
       else
-        print *,'unpack6: Predefined bitmap ',ibmap,' not recognized.'
-        ierr=4
+          print *, 'unpack6: Predefined bitmap ', ibmap,
+     $         ' not recognized.'
+          ierr = 4
       endif
       
-      return    ! End of Section 6 processing
+      return                    ! End of Section 6 processing
       end
 
