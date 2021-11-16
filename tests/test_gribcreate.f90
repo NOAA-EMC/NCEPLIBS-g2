@@ -204,6 +204,16 @@ program test_gribcreate
   idrstmpl(4) = 8
   idrstmpl(5) = 0
 
+  ! Change the first byte of the message, then try to add field - will
+  ! not work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       & ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 1) stop 50
+  cgrib(1) = old_val
+
   ! Add a field.
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
@@ -214,11 +224,16 @@ program test_gribcreate
   call gribend(cgrib, lcgrib, lengrib, ierr)
   if (ierr .ne. 0) stop 100
   
-  ! Try to add a grid section - won't work, can only be added after
-  ! sections 1, 2, and 7.
+  ! Try to add a grid section - won't work, message has been ended.
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
   if (ierr .ne. 2) stop 110
+
+  ! Try to add a field section - won't work, message has been ended.
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       & ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 2) stop 50
 
   ! Check the results.
   do i = 1, lcgrib

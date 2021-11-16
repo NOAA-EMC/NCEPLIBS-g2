@@ -131,9 +131,9 @@
       call g2_gbytec(cgrib, lencurr, 96, 32)
 
 !     Check to see if GRIB message is already complete
-      ctemp = cgrib(lencurr-3)//cgrib(lencurr-2)//cgrib(lencurr-1)
-     &     //cgrib(lencurr)
-      if (ctemp.eq.c7777) then
+      ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // cgrib(lencurr
+     $     - 1) // cgrib(lencurr)
+      if (ctemp .eq. c7777) then
           print *, 'addfield: GRIB message already complete.  Cannot',
      &         ' add new section.'
           ierr = 2
