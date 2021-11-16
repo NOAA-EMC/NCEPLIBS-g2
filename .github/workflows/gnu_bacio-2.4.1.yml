@@ -21,8 +21,8 @@ jobs:
       id: cache-bacio
       uses: actions/cache@v2
       with:
-        path: ~/Bacio
-        key: bacio-${{ runner.os }}-2.4.1
+        path: ~/bacio
+        key: bacio-${{ runner.os }}-2.4.1-1
 
     - name: build-bacio
       if: steps.cache-bacio.outputs.cache-hit != 'true'
