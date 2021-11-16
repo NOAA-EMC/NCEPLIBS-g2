@@ -146,22 +146,23 @@
       isprevbmap = .false.
       len = 16                  ! length of Section 0
       do
-!       Get number and length of next section
+!         Get number and length of next section
           iofst = len*8
           call g2_gbytec(cgrib, ilen, iofst, 32)
           iofst = iofst + 32
           call g2_gbytec(cgrib, isecnum, iofst, 8)
           iofst = iofst + 8
 
-!       Check if previous Section 3 exists and save location of the
-!       section 3 in case needed later.
+!         Check if previous Section 3 exists and save location of the
+!         section 3 in case needed later.
           if (isecnum.eq.3) then
               issec3 = .true.
               lpos3 = len + 1
               lensec3 = ilen
           endif
-!       Check if a previous defined bitmap exists
-          if (isecnum.eq.6) then
+
+!         Check if a previous defined bitmap exists
+          if (isecnum .eq. 6) then
               call g2_gbytec(cgrib, ibmprev, iofst, 8)
               iofst = iofst + 8
               if (ibmprev .ge. 0 .and. ibmprev.le.253) isprevbmap =
@@ -174,7 +175,7 @@
 
 !         If byte count for each section does not match current total
 !         length, then there is a problem.
-          if (len.gt.lencurr) then
+          if (len .gt. lencurr) then
               print *, 'addfield: Section byte counts don''t ' //
      $             'add to total.'
               print *, 'addfield: Sum of section byte counts = ', len
@@ -186,7 +187,7 @@
       enddo
 
 !     Sections 4 through 7 can only be added after section 3 or 7.
-      if ((isecnum.ne.3) .and. (isecnum.ne.7)) then
+      if ((isecnum .ne. 3) .and. (isecnum .ne. 7)) then
           print *, 'addfield: Sections 4-7 can only be added after',
      &         ' Section 3 or 7.'
           print *, 'addfield: Section ', isecnum,
@@ -196,7 +197,7 @@
 
 !     Sections 4 through 7 can only be added if section 3 was previously
 !     defined.
-      elseif (.not.issec3) then
+      elseif (.not. issec3) then
           print *, 'addfield: Sections 4-7 can only be added if ',
      $         'Section 3 was previously included.'
           print *, 'addfield: Section 3 was not found in',
@@ -208,7 +209,7 @@
       endif
 
 !     Add Section 4 - Product Definition Section.
-      ibeg = lencurr*8          ! Calculate offset for beginning of section 4
+      ibeg = lencurr * 8          ! Calculate offset for beginning of section 4
       iofst = ibeg + 32         ! leave space for length of section
       call g2_sbytec(cgrib, four, iofst, 8) ! Store section number (4)
       iofst = iofst + 8
@@ -219,7 +220,7 @@
 
 !     Get Product Definition Template
       call getpdstemplate(ipdsnum, mappdslen, mappds, needext, iret)
-      if (iret.ne.0) then
+      if (iret .ne. 0) then
           ierr = 5
           return
       endif

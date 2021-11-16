@@ -28,7 +28,8 @@ program test_gribcreate
   integer :: ideflist(idefnum)
 
   ! Sections 4-7.
-  integer, parameter :: ipdsnum = 0, ipdstmplen = 15, numcoord = 0
+  integer :: ipdsnum
+  integer, parameter :: ipdstmplen = 15, numcoord = 0
   integer :: ipdstmpl(ipdstmplen)
   integer :: coordlist(1)
   integer, parameter :: idrsnum = 0, idrstmplen = 5
@@ -108,6 +109,35 @@ program test_gribcreate
   listsec1(12) = 1 !  Operational Test Products
   listsec1(13) = 0 ! Analysis Products
 
+  ! Product definition template 0.
+  ipdsnum = 0
+  
+  ! Set up product definition section template.
+  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml
+  ipdstmpl(1) = 0
+  ipdstmpl(2) = 0
+  ipdstmpl(3) = 0
+  ipdstmpl(4) = 0
+  ipdstmpl(5) = 0
+  ipdstmpl(6) = 12
+  ipdstmpl(7) = 59
+  ipdstmpl(8) = 0
+  ipdstmpl(9) = 0
+  ipdstmpl(10) = 1
+  ipdstmpl(11) = 1
+  ipdstmpl(12) = 1
+  ipdstmpl(13) = 2
+  ipdstmpl(14) = 1
+  ipdstmpl(15) = 1
+
+  ! Set up data representation section template.
+  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-0.shtml
+  idrstmpl(1) = 0
+  idrstmpl(2) = 1
+  idrstmpl(3) = 1
+  idrstmpl(4) = 8
+  idrstmpl(5) = 0
+
   ! Change the GRIB version and try to create message - will not work.
   listsec0(2) = 1
   call gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
@@ -160,17 +190,31 @@ program test_gribcreate
   if (ierr .ne. 3) stop 60
   cgrib(16) = old_val
 
-  ! Try with a bad template number.
+  ! Try to add a grid with a bad template number - won't work.
   igds(5) = 999
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
   if (ierr .ne. 5) stop 70
   igds(5) = 0
 
+  ! Try to add a field - won't work, we need a grid section first.
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       & ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 4) stop 90
+
   ! Add a grid section.
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
   if (ierr .ne. 0) stop 80
+
+  ! Try to add a field with a bad product definition template number - won't work.
+  ipdsnum = 101
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       & ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 5) stop 90
+  ipdsnum = 0
 
   ! Try to add a grid section - won't work, can only be added after
   ! sections 1, 2, and 7.
@@ -178,33 +222,7 @@ program test_gribcreate
        ideflist, idefnum, ierr)
   if (ierr .ne. 4) stop 110
 
-  ! Set up product definition section template.
-  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml
-  ipdstmpl(1) = 0
-  ipdstmpl(2) = 0
-  ipdstmpl(3) = 0
-  ipdstmpl(4) = 0
-  ipdstmpl(5) = 0
-  ipdstmpl(6) = 12
-  ipdstmpl(7) = 59
-  ipdstmpl(8) = 0
-  ipdstmpl(9) = 0
-  ipdstmpl(10) = 1
-  ipdstmpl(11) = 1
-  ipdstmpl(12) = 1
-  ipdstmpl(13) = 2
-  ipdstmpl(14) = 1
-  ipdstmpl(15) = 1
-
-  ! Set up data representation section template.
-  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-0.shtml
-  idrstmpl(1) = 0
-  idrstmpl(2) = 1
-  idrstmpl(3) = 1
-  idrstmpl(4) = 8
-  idrstmpl(5) = 0
-
-  ! Change the first byte of the message, then try to add field - will
+    ! Change the first byte of the message, then try to add field - will
   ! not work.
   old_val = cgrib(1)
   cgrib(1) = achar(0)
@@ -214,6 +232,14 @@ program test_gribcreate
   if (ierr .ne. 1) stop 50
   cgrib(1) = old_val
 
+  ! Try to add a field with a bad product definition template number - won't work.
+  ipdsnum = 101
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       & ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 5) stop 90
+  ipdsnum = 0
+  
   ! Add a field.
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
