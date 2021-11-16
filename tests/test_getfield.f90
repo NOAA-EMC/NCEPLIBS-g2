@@ -81,7 +81,7 @@ program test_getfield
   integer :: idrstmpl(5)
   integer :: x_idrstmpl(5) = (/ 1093664768, 1, 1, 8, 0 /)
   integer :: ngrdpts = 4, ibmap = 255
-  logical :: bmap(1)
+  logical :: bmap(4)
   real :: fld(4)
   real :: x_fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
   real, parameter :: EPSILON = .2
@@ -190,6 +190,36 @@ program test_getfield
   if (ierr .ne. 10) stop 46
   cgrib(58) = old_val
 
+  ! Mess up section 4 and try to get a field - won't work.
+  old_val = cgrib(125)
+  cgrib(125) = achar(99)
+  call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
+       & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
+       & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
+       & fld, ierr)
+  if (ierr .ne. 11) stop 47
+  cgrib(125) = old_val
+  
+  ! Mess up section 5 and try to get a field - won't work.
+  old_val = cgrib(161)
+  cgrib(161) = achar(99)
+  call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
+       & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
+       & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
+       & fld, ierr)
+  if (ierr .ne. 12) stop 48
+  cgrib(161) = old_val
+  
+  ! Mess up section 6 and try to get a field - won't work.
+  old_val = cgrib(178)
+  cgrib(178) = achar(99)
+  call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
+       & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
+       & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
+       & fld, ierr)
+  if (ierr .ne. 13) stop 49
+  cgrib(178) = old_val
+  
   ! Get the field.
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
