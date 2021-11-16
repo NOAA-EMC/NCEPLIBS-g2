@@ -59,28 +59,32 @@ program test_getfield
 
   ! Section 3.
   integer, parameter :: expected_len_sec3 = 72
-  integer, parameter :: igdstmplen = 19
+  integer :: igdstmplen = 19
   integer :: idefnum
   integer :: ndpts
   ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml
   integer :: igds(5)
-!  integer :: igds(5) = (/ 0, ndpts, 0, 0, 0/)
+  integer :: x_igds(5) = (/ 0, 4, 0, 0, 0/)
   ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp3-0.shtml
-  integer :: igdstmpl(igdstmplen)
-!  integer :: igdstmpl(igdstmplen) = (/ 0, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 45, 91, 0, 55, 101, 5, 5, 0 /)
+  integer :: igdstmpl(19)
+  integer :: x_igdstmpl(19) = (/ 0, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 45, 91, 0, 55, 101, 5, 5, 0 /)
   integer :: ideflist(1)
 
   ! Sections 4-7.
   integer :: ipdsnum
   integer :: ipdstmplen = 15, numcoord = 0
   integer :: ipdstmpl(15)
+  integer :: x_ipdstmpl(15) = (/ 0, 0, 0, 0, 0, 12, 59, 0, 0, 1, 1, 1, 2, 1, 1 /)
   integer :: coordlist(1)
   integer :: idrsnum = 0
-  integer, parameter :: idrstmplen = 5
-  integer :: idrstmpl(idrstmplen)
+  integer :: idrstmplen = 5
+  integer :: idrstmpl(5)
+  integer :: x_idrstmpl(5) = (/ 1093664768, 1, 1, 8, 0 /)
   integer :: ngrdpts = 4, ibmap = 255
   logical :: bmap(1)
-  real :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+  real :: fld(4)
+  real :: x_fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+  real, parameter :: EPSILON = .2
 
   ! Section 8
   integer :: lengrib
@@ -113,27 +117,6 @@ program test_getfield
   ! listsec1(11) = 59 ! Second
   ! listsec1(12) = 1 !  Operational Test Products
   ! listsec1(13) = 0 ! Analysis Products
-
-  ! ! Product definition template 0.
-  ! ipdsnum = 0
-  
-  ! ! Set up product definition section template.
-  ! ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml
-  ! ipdstmpl(1) = 0
-  ! ipdstmpl(2) = 0
-  ! ipdstmpl(3) = 0
-  ! ipdstmpl(4) = 0
-  ! ipdstmpl(5) = 0
-  ! ipdstmpl(6) = 12
-  ! ipdstmpl(7) = 59
-  ! ipdstmpl(8) = 0
-  ! ipdstmpl(9) = 0
-  ! ipdstmpl(10) = 1
-  ! ipdstmpl(11) = 1
-  ! ipdstmpl(12) = 1
-  ! ipdstmpl(13) = 2
-  ! ipdstmpl(14) = 1
-  ! ipdstmpl(15) = 1
 
   ! ! Set up data representation section template.
   ! ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-0.shtml
@@ -170,11 +153,43 @@ program test_getfield
   if (ierr .ne. 2) stop 30
   cgrib(8) = old_val
 
+  ! Request a field that's not present.
+  call getfield(cgrib, lcgrib, 2, igds, igdstmpl, igdslen,&
+       & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
+       & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
+       & fld, ierr)
+  if (ierr .ne. 6) stop 40
+
+  ! Get the field.
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
        & fld, ierr)
-  if (ierr .ne. 0) stop 10
+  if (ierr .ne. 0) stop 50
+
+  ! Check results.
+  if (igdslen .ne. 19) stop 200
+  do i = 1, 5
+     if (igds(i) .ne. x_igds(i)) stop 205
+  end do
+  do i = 1, 19
+     if (igdstmpl(i) .ne. x_igdstmpl(i)) stop 210
+  end do
+  if (idefnum .ne. 0) stop 220
+  if (ipdsnum .ne. 0) stop 230
+  if (ipdslen .ne. 15) stop 240
+  do i = 1, 15
+     if (ipdstmpl(i) .ne. x_ipdstmpl(i)) stop 250
+  end do
+  if (numcoord .ne. 0) stop 260
+  if (ndpts .ne. 4) stop 270
+  if (idrsnum .ne. 0) stop 280
+  if (idrslen .ne. 5) stop 290
+  if (ibmap .ne. 255) stop 300
+  do i = 1, 4
+!     print *, fld(i), abs(fld(i) - x_fld(i))
+     if (abs(fld(i) - x_fld(i)) .ge. EPSILON) stop 310
+  end do
 
   print *, 'SUCCESS!'
 
