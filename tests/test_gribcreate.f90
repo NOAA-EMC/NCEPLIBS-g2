@@ -198,6 +198,11 @@ program test_gribcreate
   if (ierr .ne. 5) stop 70
   igds(5) = 0
 
+  ! Try to end the grib message by adding section 8 - won't work, we
+  ! need sections 4-7.
+  call gribend(cgrib, lcgrib, lengrib, ierr)
+  if (ierr .ne. 4) stop 150
+
   ! Try to add a field - won't work, we need a grid section first.
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
@@ -231,7 +236,7 @@ program test_gribcreate
        ideflist, idefnum, ierr)
   if (ierr .ne. 4) stop 110
 
-    ! Change the first byte of the message, then try to add field - will
+  ! Change the first byte of the message, then try to add field - will
   ! not work.
   old_val = cgrib(1)
   cgrib(1) = achar(0)
@@ -254,6 +259,22 @@ program test_gribcreate
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        & ngrdpts, ibmap, bmap, ierr)
   if (ierr .ne. 0) stop 140
+
+  ! Change the first byte of the message, then try to end message - will
+  ! not work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call gribend(cgrib, lcgrib, lengrib, ierr)
+  if (ierr .ne. 1) stop 145
+  cgrib(1) = old_val
+
+  ! Change the section count, then try to end message - will
+  ! not work.
+  old_val = cgrib(16)
+  cgrib(16) = achar(10)
+  call gribend(cgrib, lcgrib, lengrib, ierr)
+  if (ierr .ne. 3) stop 35
+  cgrib(16) = old_val
 
   ! End the grib message by adding section 8.
   call gribend(cgrib, lcgrib, lengrib, ierr)
