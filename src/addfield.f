@@ -2,13 +2,13 @@
 !>    @brief Contains a subroutine which packs up Sections 4 through 7
 !>    for a given field and adds them to a GRIB2 message.
 !>    @author Stephen Gilbert @date 2000-05-02
-!>     
+!>
 
 !>    This subroutine packs up Sections 4 through 7 for a given field
 !>    and adds them to a GRIB2 message. They are Product Definition
 !>    Section, Data Representation Section, Bit-Map Section and Data
 !>    Section, respectively.
-!>     
+!>
 !>    This routine is used with routines gribcreate(), addlocal(),
 !>    addgrid(), and gribend() to create a complete GRIB2
 !>    message. Subroutine gribcreate() must be called first to
@@ -20,7 +20,7 @@
 !>
 !>    ### Program History Log
 !>    Date | Programmer | Comments
-!>    -----|------------|--------- 
+!>    -----|------------|---------
 !>    2000-05-02 | Stephen Gilbert | Initial.
 !>    2002-12-17 | Stephen Gilbert | Added support for new templates using PNG and JPEG2000 algorithms/templates.
 !>    2004-06-22 | Stephen Gilbert | Added check to determine if packing algorithm failed.
@@ -84,8 +84,8 @@
 !>    - 10 Error packing data field.
 !>
 !>    @author Stephen Gilbert @date 2000-05-02
-      subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, 
-     &     coordlist, numcoord, idrsnum, idrstmpl, 
+      subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen,
+     &     coordlist, numcoord, idrsnum, idrstmpl,
      &     idrstmplen, fld, ngrdpts, ibmap, bmap, ierr)
       use pdstemplates
       use drstemplates
@@ -128,7 +128,7 @@
       enddo
       if (.not. match) then
           print *, 'addfield: GRIB not found in given message.'
-          print *, 'addfield: Call to routine gribcreate required', 
+          print *, 'addfield: Call to routine gribcreate required',
      &         ' to initialize GRIB messge.'
           ierr = 1
           return
@@ -141,7 +141,7 @@
       ctemp = cgrib(lencurr-3)//cgrib(lencurr-2)//cgrib(lencurr-1)
      &     //cgrib(lencurr)
       if (ctemp.eq.c7777) then
-          print *, 'addfield: GRIB message already complete.  Cannot', 
+          print *, 'addfield: GRIB message already complete.  Cannot',
      &         ' add new section.'
           ierr = 2
           return
@@ -151,7 +151,7 @@
 !     find the last section number.
       issec3 = .false.
       isprevbmap = .false.
-      len = 16                    ! length of Section 0
+      len = 16                  ! length of Section 0
       do
 !       Get number and length of next section
           iofst = len*8
@@ -194,7 +194,7 @@
 
 !     Sections 4 through 7 can only be added after section 3 or 7.
       if ((isecnum.ne.3) .and. (isecnum.ne.7)) then
-          print *, 'addfield: Sections 4-7 can only be added after', 
+          print *, 'addfield: Sections 4-7 can only be added after',
      &         ' Section 3 or 7.'
           print *, 'addfield: Section ', isecnum,
      $         ' was the last found in',' given GRIB message.'
@@ -206,17 +206,17 @@
       elseif (.not.issec3) then
           print *, 'addfield: Sections 4-7 can only be added if ',
      $         'Section 3 was previously included.'
-          print *, 'addfield: Section 3 was not found in', 
+          print *, 'addfield: Section 3 was not found in',
      &         ' given GRIB message.'
-          print *, 'addfield: Call to routine addgrid required', 
+          print *, 'addfield: Call to routine addgrid required',
      &         ' to specify Grid definition.'
           ierr = 6
           return
       endif
 
 !     Add Section 4 - Product Definition Section.
-      ibeg = lencurr*8            ! Calculate offset for beginning of section 4
-      iofst = ibeg + 32             ! leave space for length of section
+      ibeg = lencurr*8          ! Calculate offset for beginning of section 4
+      iofst = ibeg + 32         ! leave space for length of section
       call g2_sbytec(cgrib, four, iofst, 8) ! Store section number (4)
       iofst = iofst + 8
       call g2_sbytec(cgrib, numcoord, iofst, 16) ! Store num of coordinate values
@@ -299,7 +299,7 @@
       nsize = ndpts * 4
       if (nsize .lt. minsize) nsize = minsize
       allocate(cpack(nsize), stat = istat)
-      if (idrsnum .eq. 0) then    ! Simple Packing
+      if (idrsnum .eq. 0) then  ! Simple Packing
           call simpack(pfld, ndpts, idrstmpl, cpack, lcpack)
       elseif (idrsnum .eq. 2 .or. idrsnum .eq. 3) then ! Complex Packing
           call cmplxpack(pfld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
@@ -383,8 +383,8 @@
       endif
 
 !     Add Section 5 - Data Representation Section.
-      ibeg = iofst                ! Calculate offset for beginning of section 5
-      iofst = ibeg + 32             ! leave space for length of section
+      ibeg = iofst              ! Calculate offset for beginning of section 5
+      iofst = ibeg + 32         ! leave space for length of section
       call g2_sbytec(cgrib, five, iofst, 8) ! Store section number (5)
       iofst = iofst + 8
       call g2_sbytec(cgrib, ndpts, iofst, 32) ! Store num of actual data points
@@ -413,8 +413,8 @@
       call g2_sbytec(cgrib, lensec5, ibeg, 32)
 
 !     Add Section 6 - Bit-Map Section.
-      ibeg = iofst                ! Calculate offset for beginning of section 6
-      iofst = ibeg + 32             ! leave space for length of section
+      ibeg = iofst              ! Calculate offset for beginning of section 6
+      iofst = ibeg + 32         ! leave space for length of section
       call g2_sbytec(cgrib, six, iofst, 8) ! Store section number (6)
       iofst = iofst + 8
       call g2_sbytec(cgrib, ibmap, iofst, 8) ! Store Bit Map indicator
@@ -429,12 +429,12 @@
 !     If specifying a previously defined bit-map, make sure one already
 !     exists in the current GRIB message.
       if ((ibmap .eq. 254) .and. (.not. isprevbmap)) then
-          print *, 'addfield: Requested previously defined bitmap, ', 
+          print *, 'addfield: Requested previously defined bitmap, ',
      &         ' but one does not exist in the current GRIB message.'
           ierr = 8
           return
       endif
-      
+
 !     Calculate length of section 6 and store it in octets
 !     1-4 of section 6. Pad to end of octect, if necessary.
       left = 8 - mod(iofst, 8)
@@ -446,8 +446,8 @@
       call g2_sbytec(cgrib, lensec6, ibeg, 32)
 
 !     Add Section 7 - Data Section.
-      ibeg = iofst                ! Calculate offset for beginning of section 7
-      iofst = ibeg + 32             ! leave space for length of section
+      ibeg = iofst              ! Calculate offset for beginning of section 7
+      iofst = ibeg + 32         ! leave space for length of section
       call g2_sbytec(cgrib, seven, iofst, 8) ! Store section number (7)
       iofst = iofst + 8
 
