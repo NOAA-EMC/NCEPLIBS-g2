@@ -92,6 +92,7 @@ program test_getfield
   integer :: idrslen, igdslen, ipdslen
 
   character :: old_val
+  character :: old_val_arr(4)
   integer :: i, ierr
 
   print *, 'Testing gribcreate().'
@@ -159,6 +160,35 @@ program test_getfield
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
        & fld, ierr)
   if (ierr .ne. 6) stop 40
+
+  ! Mess up the end of message and call getfield - will not work.
+  old_val_arr(1) = cgrib(17)
+  old_val_arr(2) = cgrib(18)
+  old_val_arr(3) = cgrib(19)
+  old_val_arr(4) = cgrib(20)
+  cgrib(17) = achar(55)
+  cgrib(18) = achar(55)
+  cgrib(19) = achar(55)
+  cgrib(20) = achar(55)
+  call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
+       & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
+       & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
+       & fld, ierr)
+  if (ierr .ne. 4) stop 45
+  cgrib(17) = old_val_arr(1)
+  cgrib(18) = old_val_arr(2)
+  cgrib(19) = old_val_arr(3)
+  cgrib(20) = old_val_arr(4)
+
+  ! Mess up section 3 and try to get a field - won't work.
+  old_val = cgrib(58)
+  cgrib(58) = achar(99)
+  call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
+       & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
+       & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
+       & fld, ierr)
+  if (ierr .ne. 10) stop 46
+  cgrib(58) = old_val
 
   ! Get the field.
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
