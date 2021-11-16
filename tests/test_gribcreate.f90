@@ -32,7 +32,8 @@ program test_gribcreate
   integer, parameter :: ipdstmplen = 15, numcoord = 0
   integer :: ipdstmpl(ipdstmplen)
   integer :: coordlist(1)
-  integer, parameter :: idrsnum = 0, idrstmplen = 5
+  integer :: idrsnum = 0
+  integer, parameter :: idrstmplen = 5
   integer :: idrstmpl(idrstmplen)
   integer, parameter :: ngrdpts = 4, ibmap = 255
   logical :: bmap(1)
@@ -161,7 +162,7 @@ program test_gribcreate
   old_val = cgrib(16)
   cgrib(16) = achar(10)
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
-  if (ierr .ne. 3) stop 30
+  if (ierr .ne. 3) stop 35
   cgrib(16) = old_val
 
   ! Add a local section.
@@ -201,7 +202,7 @@ program test_gribcreate
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        & ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 4) stop 90
+  if (ierr .ne. 4) stop 75
 
   ! Add a grid section.
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
@@ -216,6 +217,14 @@ program test_gribcreate
   if (ierr .ne. 5) stop 90
   ipdsnum = 0
 
+  ! Try to add a field with a bad data representation template number - won't work.
+  idrsnum = 101
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       & ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 5) stop 95
+  idrsnum = 0
+
   ! Try to add a grid section - won't work, can only be added after
   ! sections 1, 2, and 7.
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
@@ -229,7 +238,7 @@ program test_gribcreate
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        & ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 1) stop 50
+  if (ierr .ne. 1) stop 120
   cgrib(1) = old_val
 
   ! Try to add a field with a bad product definition template number - won't work.
@@ -237,29 +246,29 @@ program test_gribcreate
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        & ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 5) stop 90
+  if (ierr .ne. 5) stop 130
   ipdsnum = 0
   
   ! Add a field.
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        & ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 0) stop 90
+  if (ierr .ne. 0) stop 140
 
   ! End the grib message by adding section 8.
   call gribend(cgrib, lcgrib, lengrib, ierr)
-  if (ierr .ne. 0) stop 100
+  if (ierr .ne. 0) stop 150
   
   ! Try to add a grid section - won't work, message has been ended.
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
-  if (ierr .ne. 2) stop 110
+  if (ierr .ne. 2) stop 160
 
   ! Try to add a field section - won't work, message has been ended.
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        & ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 2) stop 50
+  if (ierr .ne. 2) stop 170
 
   ! Check the results.
   do i = 1, lcgrib

@@ -147,7 +147,7 @@
       len = 16                  ! length of Section 0
       do
 !         Get number and length of next section
-          iofst = len*8
+          iofst = len * 8
           call g2_gbytec(cgrib, ilen, iofst, 32)
           iofst = iofst + 32
           call g2_gbytec(cgrib, isecnum, iofst, 8)
@@ -155,7 +155,7 @@
 
 !         Check if previous Section 3 exists and save location of the
 !         section 3 in case needed later.
-          if (isecnum.eq.3) then
+          if (isecnum .eq. 3) then
               issec3 = .true.
               lpos3 = len + 1
               lensec3 = ilen
@@ -165,13 +165,13 @@
           if (isecnum .eq. 6) then
               call g2_gbytec(cgrib, ibmprev, iofst, 8)
               iofst = iofst + 8
-              if (ibmprev .ge. 0 .and. ibmprev.le.253) isprevbmap =
+              if (ibmprev .ge. 0 .and. ibmprev .le. 253) isprevbmap =
      $             .true.
           endif
           len = len + ilen
 
 !         Exit loop if last section reached
-          if (len.eq.lencurr) exit
+          if (len .eq. lencurr) exit
 
 !         If byte count for each section does not match current total
 !         length, then there is a problem.
@@ -264,7 +264,7 @@
 
 !     Get Data Representation Template
       call getdrstemplate(idrsnum, mapdrslen, mapdrs, needext, iret)
-      if (iret.ne.0) then
+      if (iret .ne. 0) then
           ierr = 5
           return
       endif
