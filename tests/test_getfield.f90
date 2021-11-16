@@ -161,7 +161,7 @@ program test_getfield
        & fld, ierr)
   if (ierr .ne. 6) stop 40
 
-  ! Mess up the end of message and call getfield - will not work.
+  ! Put an early end in the message and call getfield - will not work.
   old_val_arr(1) = cgrib(17)
   old_val_arr(2) = cgrib(18)
   old_val_arr(3) = cgrib(19)
@@ -220,6 +220,16 @@ program test_getfield
   if (ierr .ne. 13) stop 49
   cgrib(178) = old_val
   
+  ! Mess up end of message and call getfield - will not work.
+  old_val = cgrib(16)
+  cgrib(16) = achar(0)
+  call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
+       & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
+       & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
+       & fld, ierr)
+  if (ierr .ne. 7) stop 45
+  cgrib(16) = old_val
+
   ! Get the field.
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
