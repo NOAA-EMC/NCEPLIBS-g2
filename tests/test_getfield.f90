@@ -53,7 +53,8 @@ program test_getfield
 
   ! Section 2.
   integer, parameter :: lcsec2 = 3
-
+  character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
+  
   ! Section 3.
   integer, parameter :: expected_len_sec3 = 72
   integer :: idefnum
@@ -306,7 +307,11 @@ program test_getfield
   if (ierr .ne. 0) stop 600
 
   ! Check results.
-  if (gfld%igdtnum .ne. 0) stop 800
+  if (gfld%locallen .ne. 3) stop 800
+  do i = 1, 3
+     if (gfld%local(i) .ne. csec2(i)) stop 810
+  end do
+  if (gfld%igdtnum .ne. 0) stop 802
   if (gfld%igdtlen .ne. 19) stop 801
   do i = 1, 19
      if (gfld%igdtmpl(i) .ne. x_igdstmpl(i)) stop 810
