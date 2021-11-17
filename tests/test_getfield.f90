@@ -287,7 +287,7 @@ program test_getfield
   if (ierr .ne. 12) stop 548
   cgrib(161) = old_val
 
-  ! Mess up section 6 and try to get a field - won't work.
+  ! ! Mess up section 6 and try to get a field - won't work.
   ! old_val = cgrib(178)
   ! cgrib(178) = achar(99)
   ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
@@ -295,11 +295,11 @@ program test_getfield
   ! cgrib(178) = old_val
 
   ! Mess up end of message and call getfield - will not work.
-  ! old_val = cgrib(16)
-  ! cgrib(16) = achar(0)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 7) stop 545
-  ! cgrib(16) = old_val
+  old_val = cgrib(16)
+  cgrib(16) = achar(0)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 7) stop 545
+  cgrib(16) = old_val
 
   ! Now read the same field with gf_getfld().
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
