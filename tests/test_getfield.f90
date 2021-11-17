@@ -302,6 +302,13 @@ program test_getfield
   if (ierr .ne. 7) stop 545
   cgrib(16) = old_val
 
+  ! Mess up section number and call getfield - will not work.
+  old_val = cgrib(21)
+  cgrib(21) = achar(0)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 8) stop 545
+  cgrib(21) = old_val
+
   ! Now read the same field with gf_getfld().
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 0) stop 600

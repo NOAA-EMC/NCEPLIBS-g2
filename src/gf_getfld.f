@@ -205,7 +205,7 @@
       ipos = istart + lensec0
 
 !     Currently handles only GRIB Edition 2.
-      if (listsec0(2).ne.2) then
+      if (listsec0(2) .ne. 2) then
           print *, 'gf_getfld: can only decode GRIB edition 2.'
           ierr = 2
           return
