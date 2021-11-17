@@ -19,7 +19,6 @@
 !>    Section 1.
 !>    @param[out] ids Pointer to integer array containing information
 !>    read from Section 1, the Identification section.
-
 !>    - ids(1) Identification of originating Centre ([Table 0]
 !>    (https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html)).
 !>    - ids(2) Identification of originating Sub-centre.([Table C]
@@ -66,9 +65,7 @@
       iofst = iofst + 32
       iofst = iofst + 8             ! skip section number
 
-!     Unpack each value into array ids from the the appropriate number
-!     of octets,  which are specified in corresponding entries in array
-!     mapid.
+!     Allocate storage for identification section data.
       istat = 0
       allocate(ids(idslen), stat = istat)
       if (istat .ne. 0) then
@@ -77,6 +74,9 @@
           return
       endif
 
+!     Unpack each value into array ids from the the appropriate number
+!     of octets, which are specified in corresponding entries in array
+!     mapid.
       do i = 1, idslen
           nbits = mapid(i) * 8
           call g2_gbytec(cgrib, ids(i), iofst, nbits)

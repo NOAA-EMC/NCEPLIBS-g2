@@ -51,6 +51,9 @@ program test_getfield
        & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2),&
        & achar( 55), achar( 55), achar( 55), achar( 55) /)
 
+  ! Section 1.
+  integer :: listsec1(13) = (/ 7, 4, 2, 24, 0, 2021, 11, 13, 15, 59, 59, 1, 0 /)
+
   ! Section 2.
   integer, parameter :: lcsec2 = 3
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
@@ -314,6 +317,10 @@ program test_getfield
   if (ierr .ne. 0) stop 600
 
   ! Check results.
+  if (gfld%idsectlen .ne. 13) stop 800
+  do i = 1, 13
+     if (gfld%idsect(i) .ne. listsec1(i)) stop 810
+  end do
   if (gfld%locallen .ne. 3) stop 800
   do i = 1, 3
      if (gfld%local(i) .ne. csec2(i)) stop 810
