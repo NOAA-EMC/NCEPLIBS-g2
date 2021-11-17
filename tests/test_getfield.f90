@@ -3,6 +3,7 @@
 !
 ! Ed Hartnett 11/16/21
 program test_getfield
+  use grib_mod
   implicit none
 
   ! Storage for the grib2 message we are reading.
@@ -89,16 +90,20 @@ program test_getfield
   ! Section 8
   integer :: lengrib
 
+  ! For reading values.
   integer :: idrslen, igdslen, ipdslen
+  type(gribfield) :: gfld
 
+  ! For changing values for tests.
   character :: old_val
   character :: old_val_arr(4)
+  
   integer :: i, ierr
 
   print *, 'Testing gribcreate().'
   !   expected_cpack = (/ char(0), char(93), char(108), char(64) /)
 
-  print *, 'Testing simple call to gribcreate(). Expect and ignore error messages.'
+  print *, 'Testing getfield(). Expect and ignore error messages.'
 
   ! ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml.
   ! listsec0(1) = 0
@@ -261,6 +266,14 @@ program test_getfield
      if (abs(fld(i) - x_fld(i)) .ge. EPSILON) stop 310
   end do
 
+  print *, 'Testing gf_getfld(). Expect and ignore error messages.'
+
+  ! Now read the same field with gf_getfld().
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)  
+
+  ! Free resources.
+  call gf_free(gfld)
+  
   print *, 'SUCCESS!'
 
 end program test_getfield
