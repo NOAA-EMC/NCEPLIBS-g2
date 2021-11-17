@@ -241,30 +241,99 @@ program test_getfield
   print *, 'OK!'
   print *, '*** Testing gf_getfld(). Expect and ignore error messages.'
 
+  ! Try to read with bad field number - won't work.
+  call gf_getfld(cgrib, lcgrib, -1, .true., .true., gfld, ierr)
+  if (ierr .ne. 3) stop 500
+
+  ! Mess up first char and try to read - won't work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 1) stop 510
+  cgrib(1) = old_val
+
+  ! Change grib version number and try to get a field - won't work.
+  old_val = cgrib(8)
+  cgrib(8) = achar(0)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 2) stop 520
+  cgrib(8) = old_val  
+
+  ! Put an early end in the message and call getfield - will not work.
+  old_val_arr(1) = cgrib(17)
+  old_val_arr(2) = cgrib(18)
+  old_val_arr(3) = cgrib(19)
+  old_val_arr(4) = cgrib(20)
+  cgrib(17) = achar(55)
+  cgrib(18) = achar(55)
+  cgrib(19) = achar(55)
+  cgrib(20) = achar(55)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 4) stop 545
+  cgrib(17) = old_val_arr(1)
+  cgrib(18) = old_val_arr(2)
+  cgrib(19) = old_val_arr(3)
+  cgrib(20) = old_val_arr(4)
+
+  ! Mess up section 3 and try to get a field - won't work.
+  old_val = cgrib(58)
+  cgrib(58) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 10) stop 546
+  cgrib(58) = old_val
+
+  ! Mess up section 4 and try to get a field - won't work.
+  old_val = cgrib(125)
+  cgrib(125) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 11) stop 547
+  cgrib(125) = old_val
+
+  ! Mess up section 5 and try to get a field - won't work.
+  old_val = cgrib(161)
+  cgrib(161) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 12) stop 548
+  cgrib(161) = old_val
+
+  ! ! Mess up section 6 and try to get a field - won't work.
+  ! old_val = cgrib(178)
+  ! cgrib(178) = achar(99)
+  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  ! if (ierr .ne. 13) stop 549
+  ! cgrib(178) = old_val
+
+  ! Mess up end of message and call getfield - will not work.
+  old_val = cgrib(16)
+  cgrib(16) = achar(0)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 7) stop 545
+  cgrib(16) = old_val
+
   ! Now read the same field with gf_getfld().
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  if (ierr .ne. 0) stop 500
+  if (ierr .ne. 0) stop 600
 
   ! Check results.
-  if (gfld%igdtnum .ne. 0) stop 200
-  if (gfld%igdtlen .ne. 19) stop 201
+  if (gfld%igdtnum .ne. 0) stop 800
+  if (gfld%igdtlen .ne. 19) stop 801
   do i = 1, 19
-     if (gfld%igdtmpl(i) .ne. x_igdstmpl(i)) stop 210
+     if (gfld%igdtmpl(i) .ne. x_igdstmpl(i)) stop 810
   end do
-  if (idefnum .ne. 0) stop 220
-  if (gfld%ipdtnum .ne. 0) stop 230
-  if (gfld%ipdtlen .ne. 15) stop 240
+  if (idefnum .ne. 0) stop 820
+  if (gfld%ipdtnum .ne. 0) stop 830
+  if (gfld%ipdtlen .ne. 15) stop 840
   do i = 1, 15
-     if (gfld%ipdtmpl(i) .ne. x_ipdstmpl(i)) stop 250
+     if (gfld%ipdtmpl(i) .ne. x_ipdstmpl(i)) stop 850
   end do
-  if (gfld%num_coord .ne. 0) stop 260
-  if (gfld%ndpts .ne. 4) stop 270
-  if (gfld%idrtnum .ne. 0) stop 280
-  if (gfld%idrtlen .ne. 5) stop 290
-  if (gfld%ibmap .ne. 255) stop 300
+  if (gfld%num_coord .ne. 0) stop 860
+  if (gfld%ndpts .ne. 4) stop 870
+  if (gfld%idrtnum .ne. 0) stop 880
+  if (gfld%idrtlen .ne. 5) stop 890
+  if (gfld%ibmap .ne. 255) stop 900
   do i = 1, 4
      !     print *, fld(i), abs(fld(i) - x_fld(i))
-     if (abs(gfld%fld(i) - x_fld(i)) .ge. EPSILON) stop 310
+     if (abs(gfld%fld(i) - x_fld(i)) .ge. EPSILON) stop 910
   end do
 
   ! Free resources.
