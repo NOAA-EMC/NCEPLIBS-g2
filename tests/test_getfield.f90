@@ -51,16 +51,11 @@ program test_getfield
        & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2),&
        & achar( 55), achar( 55), achar( 55), achar( 55) /)
 
-  ! Section 0 and 1.
-  integer :: listsec0(2), listsec1(13)
-
   ! Section 2.
   integer, parameter :: lcsec2 = 3
-  character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
 
   ! Section 3.
   integer, parameter :: expected_len_sec3 = 72
-  integer :: igdstmplen = 19
   integer :: idefnum
   integer :: ndpts
   ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml
@@ -73,22 +68,18 @@ program test_getfield
 
   ! Sections 4-7.
   integer :: ipdsnum
-  integer :: ipdstmplen = 15, numcoord = 0
+  integer :: numcoord = 0
   integer :: ipdstmpl(15)
   integer :: x_ipdstmpl(15) = (/ 0, 0, 0, 0, 0, 12, 59, 0, 0, 1, 1, 1, 2, 1, 1 /)
   integer :: coordlist(1)
   integer :: idrsnum = 0
-  integer :: idrstmplen = 5
   integer :: idrstmpl(5)
-  integer :: x_idrstmpl(5) = (/ 1093664768, 1, 1, 8, 0 /)
-  integer :: ngrdpts = 4, ibmap = 255
+!  integer :: x_idrstmpl(5) = (/ 1093664768, 1, 1, 8, 0 /)
+  integer :: ibmap = 255
   logical :: bmap(4)
   real :: fld(4)
   real :: x_fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
   real, parameter :: EPSILON = .2
-
-  ! Section 8
-  integer :: lengrib
 
   ! For reading values.
   integer :: idrslen, igdslen, ipdslen
