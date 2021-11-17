@@ -46,14 +46,15 @@
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
       subroutine gf_unpack1(cgrib, lcgrib, iofst, ids, idslen, ierr)
-
+      implicit none
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib
       integer, intent(inout) :: iofst
       integer, pointer, dimension(:) :: ids
       integer, intent(out) :: ierr, idslen
-
       integer, dimension(:) :: mapid(13)
+      integer :: lensec, nbits
+      integer :: i, istat
 
       data mapid /2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1/
 
