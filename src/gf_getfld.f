@@ -264,6 +264,7 @@
               call gf_unpack2(cgrib, lcgrib, iofst, gfld%locallen,
      &             gfld%local, jerr)
               if (jerr .ne. 0) then
+                  call gf_free(gfld)
                   ierr = 16
                   return
               endif
@@ -279,6 +280,7 @@
               call gf_unpack3(cgrib, lcgrib, iofst, igds, gfld%igdtmpl,
      $             gfld%igdtlen, gfld%list_opt, gfld%num_opt, jerr)
               if (jerr .ne. 0) then
+                  call gf_free(gfld)
                   ierr = 10
                   return
               endif
@@ -305,6 +307,7 @@
      &                 gfld%ipdtmpl, gfld%ipdtlen, gfld%coord_list,
      &                 gfld%num_coord, jerr)
                   if (jerr .ne. 0) then
+                      call gf_free(gfld)
                       ierr = 11
                       return
                   endif
@@ -319,6 +322,7 @@
               call gf_unpack5(cgrib, lcgrib, iofst, gfld%ndpts,
      $             gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen, jerr)
               if (jerr .ne. 0) then
+                  call gf_free(gfld)
                   ierr = 12
                   return
               endif
@@ -334,6 +338,7 @@
                   call gf_unpack6(cgrib, lcgrib, iofst, gfld%ngrdpts,
      $                 gfld%ibmap, gfld%bmap, jerr)
                   if (jerr .ne. 0) then
+                      call gf_free(gfld)
                       ierr = 13
                       return
                   endif
@@ -344,6 +349,7 @@
                       else
                           print *, 'gf_getfld:  Previous bit-map '
      $                         ,'specified, but none exists, '
+                          call gf_free(gfld)
                           ierr = 17
                           return
                       endif
@@ -366,6 +372,7 @@
      &             gfld%idrtmpl, gfld%ndpts,
      &             gfld%fld, jerr)
               if (jerr .ne. 0) then
+                  call gf_free(gfld)
                   print *, 'gf_getfld: return from gf_unpack7 = ', jerr
                   ierr = 14
                   return
@@ -403,6 +410,7 @@
           if (ipos .gt. (istart + lengrib)) then
               print *, 'gf_getfld: "7777"  not found at end '
      $             ,'of GRIB message.'
+              call gf_free(gfld)
               ierr = 7
               return
           endif
@@ -425,6 +433,7 @@
       print *, 'gf_getfld: The request was for the ', ifldnum,
      &     ' field.'
       ierr = 6
+      call gf_free(gfld)
 
       return
       end

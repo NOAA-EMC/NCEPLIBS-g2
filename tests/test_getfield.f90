@@ -266,33 +266,33 @@ program test_getfield
   cgrib(19) = old_val_arr(3)
   cgrib(20) = old_val_arr(4)
 
-  ! ! Mess up section 3 and try to get a field - won't work.
-  ! old_val = cgrib(58)
-  ! cgrib(58) = achar(99)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 10) stop 546
-  ! cgrib(58) = old_val
+  ! Mess up section 3 and try to get a field - won't work.
+  old_val = cgrib(58)
+  cgrib(58) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 10) stop 546
+  cgrib(58) = old_val
 
-  ! ! Mess up section 4 and try to get a field - won't work.
-  ! old_val = cgrib(125)
-  ! cgrib(125) = achar(99)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 11) stop 547
-  ! cgrib(125) = old_val
+  ! Mess up section 4 and try to get a field - won't work.
+  old_val = cgrib(125)
+  cgrib(125) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 11) stop 547
+  cgrib(125) = old_val
 
-  ! ! Mess up section 5 and try to get a field - won't work.
-  ! old_val = cgrib(161)
-  ! cgrib(161) = achar(99)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 12) stop 548
-  ! cgrib(161) = old_val
+  ! Mess up section 5 and try to get a field - won't work.
+  old_val = cgrib(161)
+  cgrib(161) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 12) stop 548
+  cgrib(161) = old_val
 
-  ! ! Mess up section 6 and try to get a field - won't work.
-  ! old_val = cgrib(178)
-  ! cgrib(178) = achar(99)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 13) stop 549
-  ! cgrib(178) = old_val
+  ! Mess up section 6 and try to get a field - won't work.
+  old_val = cgrib(178)
+  cgrib(178) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 13) stop 549
+  cgrib(178) = old_val
 
   ! Mess up end of message and call getfield - will not work.
   ! old_val = cgrib(16)
