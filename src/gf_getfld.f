@@ -169,7 +169,7 @@
       nullify(gfld%coord_list, gfld%idrtmpl, gfld%bmap, gfld%fld)
 
 !     Check for valid request number
-      if (ifldnum.le.0) then
+      if (ifldnum .le. 0) then
           print *, 'gf_getfld: Request for field number '
      $         ,'must be positive.'
           ierr = 3
@@ -179,32 +179,33 @@
 !     Check for beginning of GRIB message in the first 100 bytes
       istart = 0
       do j = 1, 100
-          ctemp = cgrib(j)//cgrib(j+1)//cgrib(j+2)//cgrib(j+3)
-          if (ctemp.eq.grib) then
+          ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j +
+     $         3)
+          if (ctemp .eq. grib) then
               istart = j
               exit
           endif
       enddo
-      if (istart.eq.0) then
+      if (istart .eq. 0) then
           print *, 'gf_getfld:  Beginning characters GRIB not found.'
           ierr = 1
           return
       endif
 
 !     Unpack Section 0 - Indicator Section
-      iofst = 8*(istart+5)
+      iofst = 8 * (istart + 5)
       call g2_gbytec(cgrib, listsec0(1), iofst, 8) ! Discipline
-      iofst = iofst+8
+      iofst = iofst + 8
       call g2_gbytec(cgrib, listsec0(2), iofst, 8) ! GRIB edition number
-      iofst = iofst+8
-      iofst = iofst+32
+      iofst = iofst + 8
+      iofst = iofst + 32
       call g2_gbytec(cgrib, lengrib, iofst, 32) ! Length of GRIB message
-      iofst = iofst+32
+      iofst = iofst + 32
       lensec0 = 16
-      ipos = istart+lensec0
+      ipos = istart + lensec0
 
 !     Currently handles only GRIB Edition 2.
-      if (listsec0(2).ne.2) then
+      if (listsec0(2) .ne. 2) then
           print *, 'gf_getfld: can only decode GRIB edition 2.'
           ierr = 2
           return
@@ -217,10 +218,10 @@
 !         Check to see if we are at end of GRIB message
           ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) //
      $         cgrib(ipos + 3)
-          if (ctemp.eq.c7777) then
-              ipos = ipos+4
+          if (ctemp .eq. c7777) then
+              ipos = ipos + 4
 !             If end of GRIB message not where expected, issue error
-              if (ipos.ne.(istart+lengrib)) then
+              if (ipos.ne.(istart + lengrib)) then
                   print *, 'gf_getfld: "7777" found, but not '
      $                 ,'where expected.'
                   ierr = 4
@@ -230,14 +231,14 @@
           endif
 
 !         Get length of Section and Section number
-          iofst = (ipos-1)*8
+          iofst = (ipos - 1) * 8
           call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
-          iofst = iofst+32
+          iofst = iofst + 32
           call g2_gbytec(cgrib, isecnum, iofst, 8) ! Get Section number
-          iofst = iofst+8
+          iofst = iofst + 8
 
 !         Check to see if section number is valid
-          if ((isecnum.lt.1).OR.(isecnum.gt.7)) then
+          if ((isecnum .lt. 1) .or. (isecnum .gt. 7)) then
               print *, 'gf_getfld: Unrecognized Section Encountered = ',
      $             isecnum
               ierr = 8
@@ -245,11 +246,11 @@
           endif
 
 !         If found Section 1, decode elements in Identification Section.
-          if (isecnum.eq.1) then
-              iofst = iofst-40    ! reset offset to beginning of section
+          if (isecnum .eq. 1) then
+              iofst = iofst - 40    ! reset offset to beginning of section
               call gf_unpack1(cgrib, lcgrib, iofst, gfld%idsect,
      &             gfld%idsectlen, jerr)
-              if (jerr.ne.0) then
+              if (jerr .ne. 0) then
                   ierr = 15
                   return
               endif
@@ -257,12 +258,13 @@
 
 !         If found Section 2, Grab local section. Save in case this is
 !         the latest one before the requested field.
-          if (isecnum.eq.2) then
-              iofst = iofst-40    ! reset offset to beginning of section
+          if (isecnum .eq. 2) then
+              iofst = iofst - 40    ! reset offset to beginning of section
               if (associated(gfld%local)) deallocate(gfld%local)
               call gf_unpack2(cgrib, lcgrib, iofst, gfld%locallen,
      &             gfld%local, jerr)
-              if (jerr.ne.0) then
+              if (jerr .ne. 0) then
+                  call gf_free(gfld)
                   ierr = 16
                   return
               endif
@@ -271,30 +273,30 @@
 !         If found Section 3, unpack the GDS info using the appropriate
 !         template. Save in case this is the latest grid before the
 !         requested field.
-          if (isecnum.eq.3) then
-              iofst = iofst-40    ! reset offset to beginning of section
+          if (isecnum .eq. 3) then
+              iofst = iofst - 40    ! reset offset to beginning of section
               if (associated(gfld%igdtmpl)) deallocate(gfld%igdtmpl)
               if (associated(gfld%list_opt)) deallocate(gfld%list_opt)
               call gf_unpack3(cgrib, lcgrib, iofst, igds, gfld%igdtmpl,
      $             gfld%igdtlen, gfld%list_opt, gfld%num_opt, jerr)
-              if (jerr.eq.0) then
-                  have3 = .true.
-                  gfld%griddef = igds(1)
-                  gfld%ngrdpts = igds(2)
-                  gfld%numoct_opt = igds(3)
-                  gfld%interp_opt = igds(4)
-                  gfld%igdtnum = igds(5)
-              else
+              if (jerr .ne. 0) then
+                  call gf_free(gfld)
                   ierr = 10
                   return
               endif
+              have3 = .true.
+              gfld%griddef = igds(1)
+              gfld%ngrdpts = igds(2)
+              gfld%numoct_opt = igds(3)
+              gfld%interp_opt = igds(4)
+              gfld%igdtnum = igds(5)
           endif
 
 !         If found Section 4, check to see if this field is the one
 !         requested.
-          if (isecnum.eq.4) then
-              numfld = numfld+1
-              if (numfld.eq.ifldnum) then
+          if (isecnum .eq. 4) then
+              numfld = numfld + 1
+              if (numfld .eq. ifldnum) then
                   gfld%discipline = listsec0(1)
                   gfld%version = listsec0(2)
                   gfld%ifldnum = ifldnum
@@ -304,54 +306,55 @@
                   call gf_unpack4(cgrib, lcgrib, iofst, gfld%ipdtnum,
      &                 gfld%ipdtmpl, gfld%ipdtlen, gfld%coord_list,
      &                 gfld%num_coord, jerr)
-                  if (jerr.eq.0) then
-                      have4 = .true.
-                  else
+                  if (jerr .ne. 0) then
+                      call gf_free(gfld)
                       ierr = 11
                       return
                   endif
+                  have4 = .true.
               endif
           endif
 
 !         If found Section 5, check to see if this field is the one
 !         requested.
-          if ((isecnum.eq.5).and.(numfld.eq.ifldnum)) then
+          if ((isecnum .eq. 5).and.(numfld .eq. ifldnum)) then
               iofst = iofst-40    ! reset offset to beginning of section
               call gf_unpack5(cgrib, lcgrib, iofst, gfld%ndpts,
      $             gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen, jerr)
-              if (jerr.eq.0) then
-                  have5 = .true.
-              else
+              if (jerr .ne. 0) then
+                  call gf_free(gfld)
                   ierr = 12
                   return
               endif
+              have5 = .true.
           endif
 
 !         If found Section 6, Unpack bitmap. Save in case this is the
 !         latest bitmap before the requested field.
-          if (isecnum.eq.6) then
+          if (isecnum .eq. 6) then
               if (unpack) then  ! unpack bitmap
-                  iofst = iofst-40 ! reset offset to beginning of section
+                  iofst = iofst - 40 ! reset offset to beginning of section
                   bmpsave => gfld%bmap ! save pointer to previous bitmap
                   call gf_unpack6(cgrib, lcgrib, iofst, gfld%ngrdpts,
      $                 gfld%ibmap, gfld%bmap, jerr)
-                  if (jerr.eq.0) then
-                      have6 = .true.
-                      if (gfld%ibmap .eq. 254) then ! use previously specified bitmap
-                          if (associated(bmpsave)) then
-                              gfld%bmap => bmpsave
-                          else
-                              print *, 'gf_getfld:  Previous bit-map '
-     $                             ,'specified, but none exists, '
-                              ierr = 17
-                              return
-                          endif
-                      else      ! get rid of it
-                          if (associated(bmpsave)) deallocate(bmpsave)
-                      endif
-                  else
+                  if (jerr .ne. 0) then
+                      call gf_free(gfld)
                       ierr = 13
                       return
+                  endif
+                  have6 = .true.
+                  if (gfld%ibmap .eq. 254) then ! use previously specified bitmap
+                      if (associated(bmpsave)) then
+                          gfld%bmap => bmpsave
+                      else
+                          print *, 'gf_getfld:  Previous bit-map '
+     $                         ,'specified, but none exists, '
+                          call gf_free(gfld)
+                          ierr = 17
+                          return
+                      endif
+                  else          ! get rid of it
+                      if (associated(bmpsave)) deallocate(bmpsave)
                   endif
               else              ! do not unpack bitmap
                   call g2_gbytec(cgrib, gfld%ibmap, iofst, 8) ! Get BitMap Indicator
@@ -363,51 +366,51 @@
 !         requested.
           if ((isecnum .eq. 7) .and. (numfld .eq. ifldnum) .and. unpack)
      $         then
-              iofst = iofst-40    ! reset offset to beginning of section
+              iofst = iofst - 40    ! reset offset to beginning of section
               call gf_unpack7(cgrib, lcgrib, iofst, gfld%igdtnum,
      &             gfld%igdtmpl, gfld%idrtnum,
      &             gfld%idrtmpl, gfld%ndpts,
      &             gfld%fld, jerr)
-              if (jerr.eq.0) then
-                  have7 = .true.
-
-!                 If bitmap is used with this field, expand data field
-!                 to grid, if possible.
-                  if (gfld%ibmap .ne. 255 .AND. associated(gfld%bmap))
-     $                 then
-                      if (expand) then
-                          allocate(newfld(gfld%ngrdpts))
-                          n = 1
-                          do j = 1, gfld%ngrdpts
-                              if (gfld%bmap(j)) then
-                                  newfld(j) = gfld%fld(n)
-                                  n = n+1
-                              else
-                                  newfld(j) = 0.0
-                              endif
-                          enddo
-                          deallocate(gfld%fld);
-                          gfld%fld=>newfld;
-                          gfld%expanded = .true.
-                      else
-                          gfld%expanded = .false.
-                      endif
-                  else
-                      gfld%expanded = .true.
-                  endif
-              else
+              if (jerr .ne. 0) then
+                  call gf_free(gfld)
                   print *, 'gf_getfld: return from gf_unpack7 = ', jerr
                   ierr = 14
                   return
+              endif
+              have7 = .true.
+
+!             If bitmap is used with this field, expand data field
+!             to grid, if possible.
+              if (gfld%ibmap .ne. 255 .AND. associated(gfld%bmap)) then
+                  if (expand) then
+                      allocate(newfld(gfld%ngrdpts))
+                      n = 1
+                      do j = 1, gfld%ngrdpts
+                          if (gfld%bmap(j)) then
+                              newfld(j) = gfld%fld(n)
+                              n = n + 1
+                          else
+                              newfld(j) = 0.0
+                          endif
+                      enddo
+                      deallocate(gfld%fld);
+                      gfld%fld=>newfld;
+                      gfld%expanded = .true.
+                  else
+                      gfld%expanded = .false.
+                  endif
+              else
+                  gfld%expanded = .true.
               endif
           endif
 
 !         Check to see if we read pass the end of the GRIB message and
 !         missed the terminator string '7777'.
-          ipos = ipos+lensec      ! Update beginning of section pointer
-          if (ipos.gt.(istart+lengrib)) then
+          ipos = ipos + lensec      ! Update beginning of section pointer
+          if (ipos .gt. (istart + lengrib)) then
               print *, 'gf_getfld: "7777"  not found at end '
      $             ,'of GRIB message.'
+              call gf_free(gfld)
               ierr = 7
               return
           endif
@@ -419,7 +422,7 @@
 
 !         If unpacking is not requested, return when sections 3 through
 !         6 have been processed.
-          if ((.NOT. unpack) .and. have3 .and. have4 .and. have5 .and.
+          if ((.not. unpack) .and. have3 .and. have4 .and. have5 .and.
      $         have6) return
       enddo
 
@@ -430,6 +433,7 @@
       print *, 'gf_getfld: The request was for the ', ifldnum,
      &     ' field.'
       ierr = 6
+      call gf_free(gfld)
 
       return
       end

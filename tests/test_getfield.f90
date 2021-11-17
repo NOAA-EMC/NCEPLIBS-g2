@@ -51,16 +51,20 @@ program test_getfield
        & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2),&
        & achar( 55), achar( 55), achar( 55), achar( 55) /)
 
-  ! Section 0 and 1.
-  integer :: listsec0(2), listsec1(13)
+  ! Section 0.
+  integer :: listsec0(3)
+
+  ! Section 1.
+  integer :: listsec1(13)
+  integer :: x_listsec1(13) = (/ 7, 4, 2, 24, 0, 2021, 11, 13, 15, 59, 59, 1, 0 /)
 
   ! Section 2.
   integer, parameter :: lcsec2 = 3
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
-
+  integer :: numlocal
+  
   ! Section 3.
   integer, parameter :: expected_len_sec3 = 72
-  integer :: igdstmplen = 19
   integer :: idefnum
   integer :: ndpts
   ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml
@@ -73,22 +77,20 @@ program test_getfield
 
   ! Sections 4-7.
   integer :: ipdsnum
-  integer :: ipdstmplen = 15, numcoord = 0
+  integer :: numcoord = 0
   integer :: ipdstmpl(15)
   integer :: x_ipdstmpl(15) = (/ 0, 0, 0, 0, 0, 12, 59, 0, 0, 1, 1, 1, 2, 1, 1 /)
   integer :: coordlist(1)
   integer :: idrsnum = 0
-  integer :: idrstmplen = 5
   integer :: idrstmpl(5)
-  integer :: x_idrstmpl(5) = (/ 1093664768, 1, 1, 8, 0 /)
-  integer :: ngrdpts = 4, ibmap = 255
+!  integer :: x_idrstmpl(5) = (/ 1093664768, 1, 1, 8, 0 /)
+  integer :: ibmap = 255
   logical :: bmap(4)
   real :: fld(4)
   real :: x_fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
   real, parameter :: EPSILON = .2
-
-  ! Section 8
-  integer :: lengrib
+  integer :: numfields, maxvals(7)
+  integer :: x_maxvals(7) = (/ 3, 58, 1, 25, 1, 10, 4 /)
 
   ! For reading values.
   integer :: idrslen, igdslen, ipdslen
@@ -275,47 +277,62 @@ program test_getfield
   cgrib(19) = old_val_arr(3)
   cgrib(20) = old_val_arr(4)
 
-  ! ! Mess up section 3 and try to get a field - won't work.
-  ! old_val = cgrib(58)
-  ! cgrib(58) = achar(99)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 10) stop 546
-  ! cgrib(58) = old_val
+  ! Mess up section 3 and try to get a field - won't work.
+  old_val = cgrib(58)
+  cgrib(58) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 10) stop 547
+  cgrib(58) = old_val
 
-  ! ! Mess up section 4 and try to get a field - won't work.
-  ! old_val = cgrib(125)
-  ! cgrib(125) = achar(99)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 11) stop 547
-  ! cgrib(125) = old_val
+  ! Mess up section 4 and try to get a field - won't work.
+  old_val = cgrib(125)
+  cgrib(125) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 11) stop 548
+  cgrib(125) = old_val
 
-  ! ! Mess up section 5 and try to get a field - won't work.
-  ! old_val = cgrib(161)
-  ! cgrib(161) = achar(99)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 12) stop 548
-  ! cgrib(161) = old_val
+  ! Mess up section 5 and try to get a field - won't work.
+  old_val = cgrib(161)
+  cgrib(161) = achar(99)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 12) stop 549
+  cgrib(161) = old_val
 
   ! ! Mess up section 6 and try to get a field - won't work.
   ! old_val = cgrib(178)
   ! cgrib(178) = achar(99)
   ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 13) stop 549
+  ! if (ierr .ne. 13) stop 550
   ! cgrib(178) = old_val
 
   ! Mess up end of message and call getfield - will not work.
-  ! old_val = cgrib(16)
-  ! cgrib(16) = achar(0)
-  ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
-  ! if (ierr .ne. 7) stop 545
-  ! cgrib(16) = old_val
+  old_val = cgrib(16)
+  cgrib(16) = achar(0)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 7) stop 551
+  cgrib(16) = old_val
+
+  ! Mess up section number and call getfield - will not work.
+  old_val = cgrib(21)
+  cgrib(21) = achar(0)
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 8) stop 552
+  cgrib(21) = old_val
 
   ! Now read the same field with gf_getfld().
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 0) stop 600
 
   ! Check results.
-  if (gfld%igdtnum .ne. 0) stop 800
+  if (gfld%idsectlen .ne. 13) stop 800
+  do i = 1, 13
+     if (gfld%idsect(i) .ne. x_listsec1(i)) stop 810
+  end do
+  if (gfld%locallen .ne. 3) stop 800
+  do i = 1, 3
+     if (gfld%local(i) .ne. csec2(i)) stop 810
+  end do
+  if (gfld%igdtnum .ne. 0) stop 802
   if (gfld%igdtlen .ne. 19) stop 801
   do i = 1, 19
      if (gfld%igdtmpl(i) .ne. x_igdstmpl(i)) stop 810
@@ -340,6 +357,66 @@ program test_getfield
   call gf_free(gfld)
 
   print *, 'OK!'
+  print *, '*** Testing gribinfo(). Expect and ignore error messages.'
+
+  ! Mess up first char and try to read - won't work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 1) stop 510
+  cgrib(1) = old_val
+
+  ! Change grib version number and try to get a field - won't work.
+  old_val = cgrib(8)
+  cgrib(8) = achar(0)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 2) stop 520
+  cgrib(8) = old_val  
+
+  ! Put an early end in the message and call getfield - will not work.
+  old_val_arr(1) = cgrib(38)
+  old_val_arr(2) = cgrib(39)
+  old_val_arr(3) = cgrib(40)
+  old_val_arr(4) = cgrib(41)
+  cgrib(38) = achar(55)
+  cgrib(39) = achar(55)
+  cgrib(40) = achar(55)
+  cgrib(41) = achar(55)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 4) stop 521
+  cgrib(38) = old_val_arr(1)
+  cgrib(39) = old_val_arr(2)
+  cgrib(40) = old_val_arr(3)
+  cgrib(41) = old_val_arr(4)
+
+  ! Mess up section length end of message and call getfield - will not work.
+  old_val = cgrib(40)
+  cgrib(40) = achar(99)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 5) stop 522
+  cgrib(40) = old_val
+
+  ! Call gribinfo().
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 0) stop 915
+  
+  ! Check results.
+  if (listsec0(1) .ne. 0 .or. listsec0(2) .ne. 2) stop 920
+  if (listsec0(3) .ne. lcgrib) stop 921
+  do i = 1, 13
+     if (listsec1(i) .ne. x_listsec1(i)) stop 922
+  end do
+  if (numlocal .ne. 1) stop 923
+  if (numfields .ne. 1) stop 924
+  do i = 1, 7
+     if (maxvals(i) .ne. x_maxvals(i)) stop 925
+  end do
+
   print *, 'SUCCESS!'
 
 end program test_getfield
