@@ -8,7 +8,7 @@ program test_getfield
 
   ! Storage for the grib2 message we are reading.
   integer, parameter :: lcgrib = 191
-  
+
   ! This is a copy of the GRIB2 message generated in
   ! test_gribcreate.f90.
   character :: cgrib(lcgrib) = (/  achar( 71), achar( 82),&
@@ -50,7 +50,7 @@ program test_getfield
        & achar(255), achar(  0), achar(  0), achar(  0), achar(  9),&
        & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2),&
        & achar( 55), achar( 55), achar( 55), achar( 55) /)
-  
+
   ! Section 0 and 1.
   integer :: listsec0(2), listsec1(13)
 
@@ -97,40 +97,12 @@ program test_getfield
   ! For changing values for tests.
   character :: old_val
   character :: old_val_arr(4)
-  
+
   integer :: i, ierr
 
-  print *, 'Testing gribcreate().'
-  !   expected_cpack = (/ char(0), char(93), char(108), char(64) /)
+  print *, '*** Testing gribcreate().'
 
-  print *, 'Testing getfield(). Expect and ignore error messages.'
-
-  ! ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml.
-  ! listsec0(1) = 0
-  ! listsec0(2) = 2
-
-  ! ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect1.shtml.
-  ! listsec1(1) = 7 ! US National Weather Service - NCEP (WMC)
-  ! listsec1(2) = 4 ! Environmental Modeling Center
-  ! listsec1(3) = 2 ! GRIB master tables version number (currently 2)
-  ! listsec1(4) = 24 ! Version Implemented on 06 November 2019
-  ! listsec1(5) = 0 ! Local tables not used. 
-  ! listsec1(6) = 2021 ! Year
-  ! listsec1(7) = 11 ! Month
-  ! listsec1(8) = 13 ! Day
-  ! listsec1(9) = 15 ! Hour
-  ! listsec1(10) = 59 ! Minute
-  ! listsec1(11) = 59 ! Second
-  ! listsec1(12) = 1 !  Operational Test Products
-  ! listsec1(13) = 0 ! Analysis Products
-
-  ! ! Set up data representation section template.
-  ! ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-0.shtml
-  ! idrstmpl(1) = 0
-  ! idrstmpl(2) = 1
-  ! idrstmpl(3) = 1
-  ! idrstmpl(4) = 8
-  ! idrstmpl(5) = 0
+  print *, '*** Testing getfield(). Expect and ignore error messages.'
 
   ! Request an invalid field - won't work.
   call getfield(cgrib, lcgrib, 0, igds, igdstmpl, igdslen,&
@@ -204,7 +176,7 @@ program test_getfield
        & fld, ierr)
   if (ierr .ne. 11) stop 47
   cgrib(125) = old_val
-  
+
   ! Mess up section 5 and try to get a field - won't work.
   old_val = cgrib(161)
   cgrib(161) = achar(99)
@@ -214,7 +186,7 @@ program test_getfield
        & fld, ierr)
   if (ierr .ne. 12) stop 48
   cgrib(161) = old_val
-  
+
   ! Mess up section 6 and try to get a field - won't work.
   old_val = cgrib(178)
   cgrib(178) = achar(99)
@@ -224,7 +196,7 @@ program test_getfield
        & fld, ierr)
   if (ierr .ne. 13) stop 49
   cgrib(178) = old_val
-  
+
   ! Mess up end of message and call getfield - will not work.
   old_val = cgrib(16)
   cgrib(16) = achar(0)
@@ -262,18 +234,45 @@ program test_getfield
   if (idrslen .ne. 5) stop 290
   if (ibmap .ne. 255) stop 300
   do i = 1, 4
-!     print *, fld(i), abs(fld(i) - x_fld(i))
+     !     print *, fld(i), abs(fld(i) - x_fld(i))
      if (abs(fld(i) - x_fld(i)) .ge. EPSILON) stop 310
   end do
 
-  print *, 'Testing gf_getfld(). Expect and ignore error messages.'
+  print *, 'OK!'
+  print *, '*** Testing gf_getfld(). Expect and ignore error messages.'
 
   ! Now read the same field with gf_getfld().
-  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)  
+  call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
+  if (ierr .ne. 0) stop 500
+
+  ! Check results.
+  if (igdslen .ne. 19) stop 200
+  do i = 1, 5
+     if (igds(i) .ne. x_igds(i)) stop 205
+  end do
+  do i = 1, 19
+     if (igdstmpl(i) .ne. x_igdstmpl(i)) stop 210
+  end do
+  if (idefnum .ne. 0) stop 220
+  if (ipdsnum .ne. 0) stop 230
+  if (ipdslen .ne. 15) stop 240
+  do i = 1, 15
+     if (ipdstmpl(i) .ne. x_ipdstmpl(i)) stop 250
+  end do
+  if (numcoord .ne. 0) stop 260
+  if (ndpts .ne. 4) stop 270
+  if (idrsnum .ne. 0) stop 280
+  if (idrslen .ne. 5) stop 290
+  if (ibmap .ne. 255) stop 300
+  do i = 1, 4
+     !     print *, fld(i), abs(fld(i) - x_fld(i))
+     if (abs(fld(i) - x_fld(i)) .ge. EPSILON) stop 310
+  end do
 
   ! Free resources.
   call gf_free(gfld)
-  
+
+  print *, 'OK!'
   print *, 'SUCCESS!'
 
 end program test_getfield
