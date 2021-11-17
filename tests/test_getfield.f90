@@ -246,27 +246,25 @@ program test_getfield
   if (ierr .ne. 0) stop 500
 
   ! Check results.
-  if (igdslen .ne. 19) stop 200
-  do i = 1, 5
-     if (igds(i) .ne. x_igds(i)) stop 205
-  end do
+  if (gfld%igdtnum .ne. 0) stop 200
+  if (gfld%igdtlen .ne. 19) stop 201
   do i = 1, 19
-     if (igdstmpl(i) .ne. x_igdstmpl(i)) stop 210
+     if (gfld%igdtmpl(i) .ne. x_igdstmpl(i)) stop 210
   end do
   if (idefnum .ne. 0) stop 220
-  if (ipdsnum .ne. 0) stop 230
-  if (ipdslen .ne. 15) stop 240
+  if (gfld%ipdtnum .ne. 0) stop 230
+  if (gfld%ipdtlen .ne. 15) stop 240
   do i = 1, 15
-     if (ipdstmpl(i) .ne. x_ipdstmpl(i)) stop 250
+     if (gfld%ipdtmpl(i) .ne. x_ipdstmpl(i)) stop 250
   end do
-  if (numcoord .ne. 0) stop 260
-  if (ndpts .ne. 4) stop 270
-  if (idrsnum .ne. 0) stop 280
-  if (idrslen .ne. 5) stop 290
-  if (ibmap .ne. 255) stop 300
+  if (gfld%num_coord .ne. 0) stop 260
+  if (gfld%ndpts .ne. 4) stop 270
+  if (gfld%idrtnum .ne. 0) stop 280
+  if (gfld%idrtlen .ne. 5) stop 290
+  if (gfld%ibmap .ne. 255) stop 300
   do i = 1, 4
      !     print *, fld(i), abs(fld(i) - x_fld(i))
-     if (abs(fld(i) - x_fld(i)) .ge. EPSILON) stop 310
+     if (abs(gfld%fld(i) - x_fld(i)) .ge. EPSILON) stop 310
   end do
 
   ! Free resources.
