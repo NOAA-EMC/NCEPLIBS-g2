@@ -386,11 +386,19 @@ program test_getfield
   cgrib(41) = achar(55)
   call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
        numfields, maxvals, ierr)
-  if (ierr .ne. 4) stop 545
+  if (ierr .ne. 4) stop 521
   cgrib(38) = old_val_arr(1)
   cgrib(39) = old_val_arr(2)
   cgrib(40) = old_val_arr(3)
   cgrib(41) = old_val_arr(4)
+
+  ! Mess up section length end of message and call getfield - will not work.
+  old_val = cgrib(40)
+  cgrib(40) = achar(99)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 5) stop 522
+  cgrib(40) = old_val
 
   ! Call gribinfo().
   call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
