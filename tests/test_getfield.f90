@@ -359,6 +359,40 @@ program test_getfield
   print *, 'OK!'
   print *, '*** Testing gribinfo(). Expect and ignore error messages.'
 
+  ! Mess up first char and try to read - won't work.
+  old_val = cgrib(1)
+  cgrib(1) = achar(0)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 1) stop 510
+  cgrib(1) = old_val
+
+  ! Change grib version number and try to get a field - won't work.
+  old_val = cgrib(8)
+  cgrib(8) = achar(0)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 2) stop 520
+  cgrib(8) = old_val  
+
+  ! Put an early end in the message and call getfield - will not work.
+  old_val_arr(1) = cgrib(38)
+  old_val_arr(2) = cgrib(39)
+  old_val_arr(3) = cgrib(40)
+  old_val_arr(4) = cgrib(41)
+  cgrib(38) = achar(55)
+  cgrib(39) = achar(55)
+  cgrib(40) = achar(55)
+  cgrib(41) = achar(55)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
+       numfields, maxvals, ierr)
+  if (ierr .ne. 4) stop 545
+  cgrib(38) = old_val_arr(1)
+  cgrib(39) = old_val_arr(2)
+  cgrib(40) = old_val_arr(3)
+  cgrib(41) = old_val_arr(4)
+
+  ! Call gribinfo().
   call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
        numfields, maxvals, ierr)
   if (ierr .ne. 0) stop 915
