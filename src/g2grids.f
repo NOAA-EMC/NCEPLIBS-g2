@@ -68,7 +68,7 @@
            integer :: pos1,pos2,pos3,pos4
 
            type(g2grid),pointer :: gtemp
-           type(g2grid),pointer :: prev
+           type(g2grid),pointer :: prev => NULL()
            integer count
 
            count=0
@@ -118,12 +118,12 @@
              gtemp%gridtmpl=igdtmpl
              gtemp%cdesc=desc
              nullify(gtemp%next)              ! defines end of linked list.
-             prev => gtemp
              if ( count .eq. 1 ) then
                 gridlist => gtemp
              else                       ! make sure previous entry in list
                 prev%next => gtemp      ! points to the new entry,
              endif
+             prev => gtemp
 
            enddo
 
