@@ -118,12 +118,12 @@
              gtemp%gridtmpl=igdtmpl
              gtemp%cdesc=desc
              nullify(gtemp%next)              ! defines end of linked list.
+             prev => gtemp
              if ( count .eq. 1 ) then
                 gridlist => gtemp
              else                       ! make sure previous entry in list
                 prev%next => gtemp      ! points to the new entry,
              endif
-             prev => gtemp
 
            enddo
 
