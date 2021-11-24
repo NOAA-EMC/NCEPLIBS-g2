@@ -17,7 +17,7 @@ program test_compack
   lensec = ndpts
 
   print *, 'Testing simple call to compack...'
-  fld_orig = (/42.3, 43.2, 44.1, 45.4/)
+  fld_orig = (/42.3, 43.2, 44.1, 45.0/)
   fld = fld_orig
   ! idrstmpl = (/42, 1, 1, 0, 0, 0/)
   idrstmpl(1) = 42
