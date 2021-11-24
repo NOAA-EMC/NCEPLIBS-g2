@@ -68,7 +68,7 @@
            integer :: pos1,pos2,pos3,pos4
 
            type(g2grid),pointer :: gtemp
-           type(g2grid),pointer :: prev
+           type(g2grid),pointer :: prev => NULL()
            integer count
 
            count=0

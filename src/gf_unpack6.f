@@ -1,18 +1,17 @@
 !>    @file
-!>    @brief Contains subroutines unpacks Section 6 ([Bit-Map 
+!>    @brief Contains subroutines unpacks Section 6 ([Bit-Map
 !>    Section]
 !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect6.shtml)).
 !>    @author Stephen Gilbert @date 2000-05-26
-!>
 
-!>    This subroutine unpacks Section 6 ([Bit-Map 
+!>    This subroutine unpacks Section 6 ([Bit-Map
 !>    Section]
 !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect6.shtml))
 !>    starting at octet 6 of that Section.
 !>
 !>    ### Program History Log
 !>    Date | Programmer | Comments
-!>    -----|------------|--------- 
+!>    -----|------------|---------
 !>    2000-05-26 | Stephen Gilbert | Initial development.
 !>    2002-01-24 | Stephen Gilbert | Dynamically allocate arrays and to pass pointers.
 !>
@@ -27,58 +26,56 @@
 !>    - 255 Bit map does not apply to this product.
 !>    @param[out] bmap Logical*1 array containing decoded bitmap. (if ibmap=0)
 !>    The dimension of this array can be obtained in advance from maxvals(7),
-!>    which is returned from subroutine gribinfo.
+!>    which is returned from subroutine gribinfo().
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 4 Unrecognized pre-defined bit-map.
 !>    - 6 memory allocation error.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-!>
+      subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap,
+     $     ierr)
 
-      subroutine gf_unpack6(cgrib,lcgrib,iofst,ngpts,ibmap,bmap,ierr)
-
-      character(len=1),intent(in) :: cgrib(lcgrib)
-      integer,intent(in) :: lcgrib,ngpts
-      integer,intent(inout) :: iofst
-      integer,intent(out) :: ibmap
-      integer,intent(out) :: ierr
-      logical*1,pointer,dimension(:) :: bmap
+      character(len = 1), intent(in) :: cgrib(lcgrib)
+      integer, intent(in) :: lcgrib, ngpts
+      integer, intent(inout) :: iofst
+      integer, intent(out) :: ibmap
+      integer, intent(out) :: ierr
+      logical*1, pointer, dimension(:) :: bmap
 
       integer :: intbmap(ngpts)
 
-      ierr=0
+      ierr = 0
       nullify(bmap)
 
-      iofst=iofst+32    ! skip Length of Section
-      iofst=iofst+8     ! skip section number
+      iofst = iofst + 32            ! skip Length of Section
+      iofst = iofst + 8             ! skip section number
 
-      call g2_gbytec(cgrib,ibmap,iofst,8)    ! Get bit-map indicator
-      iofst=iofst+8
+      call g2_gbytec(cgrib, ibmap, iofst, 8) ! Get bit-map indicator
+      iofst = iofst + 8
 
-      if (ibmap.eq.0) then               ! Unpack bitmap
-         istat=0
-         if (ngpts.gt.0) allocate(bmap(ngpts),stat=istat)
-         if (istat.ne.0) then
-            ierr=6
-            nullify(bmap)
-            return
-         endif
-         call g2_gbytesc(cgrib,intbmap,iofst,1,0,ngpts)
-         iofst=iofst+ngpts
-         do j=1,ngpts
-           bmap(j)=.true.
-           if (intbmap(j).eq.0) bmap(j)=.false.
-         enddo
-!      elseif (ibmap.eq.254) then               ! Use previous bitmap
+      if (ibmap .eq. 0) then      ! Unpack bitmap
+          istat = 0
+          if (ngpts .gt. 0) allocate(bmap(ngpts), stat = istat)
+          if (istat .ne. 0) then
+              ierr = 6
+              nullify(bmap)
+              return
+          endif
+          call g2_gbytesc(cgrib, intbmap, iofst, 1, 0, ngpts)
+          iofst = iofst + ngpts
+          do j = 1, ngpts
+              bmap(j) = .true.
+              if (intbmap(j) .eq. 0) bmap(j) = .false.
+          enddo
+!      elseif (ibmap .eq. 254) then               ! Use previous bitmap
 !        return
-!      elseif (ibmap.eq.255) then               ! No bitmap in message
-!        bmap(1:ngpts)=.true.
+!      elseif (ibmap .eq. 255) then               ! No bitmap in message
+!        bmap(1:ngpts) = .true.
 !      else
-!        print *,'gf_unpack6: Predefined bitmap ',ibmap,' not recognized.'
-!        ierr=4
+!        print *, 'gf_unpack6: Predefined bitmap ', ibmap, ' not recognized.'
+!        ierr = 4
       endif
-      
-      return    ! End of Section 6 processing
-      end
 
+      return
+      end

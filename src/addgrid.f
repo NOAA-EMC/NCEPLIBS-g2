@@ -95,7 +95,7 @@
 !     last section number.
       len = 16                  ! length of Section 0
       do
-!         Get section number and length of next section.
+!         Get length and section number of next section.
           iofst = len * 8
           call g2_gbytec(cgrib, ilen, iofst, 32)
           iofst = iofst + 32

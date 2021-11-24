@@ -21,8 +21,8 @@ jobs:
       id: cache-bacio
       uses: actions/cache@v2
       with:
-        path: ~/Bacio
-        key: bacio-${{ runner.os }}-2.4.1
+        path: ~/bacio
+        key: bacio-${{ runner.os }}-2.4.1-1
 
     - name: build-bacio
       if: steps.cache-bacio.outputs.cache-hit != 'true'
@@ -70,6 +70,7 @@ jobs:
         cd g2
         mkdir build
         doxygen --version
+        ls ~/bacio
         cd build
         cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH=~/bacio -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address"
         make -j2 VERBOSE=1 

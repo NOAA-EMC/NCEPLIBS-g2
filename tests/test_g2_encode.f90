@@ -14,11 +14,7 @@ subroutine print_gribfield(gfld)
   implicit none
 
   type(gribfield), intent(in) :: gfld
-  integer :: nummap
-  logical :: needext
-  integer :: map(maxlen)
   integer :: i
-  integer :: iret
 
   print *, 'Section 0: Indicator Section'
   print *, 'discipline: ', gfld%discipline
@@ -99,7 +95,6 @@ program test_g2_encode
   integer :: igds(5)
   integer, parameter :: my_grid_tmpl_maplen = 19
   integer, dimension(my_grid_tmpl_maplen) :: igdstmpl
-  integer :: igdstmplen
   integer :: ideflist(5)
   integer :: idefnum
 
