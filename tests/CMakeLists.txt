@@ -5,6 +5,7 @@
 
 # This is needed for macos to work on GitHub CI.
 link_directories("/usr/local/lib")
+link_libraries(bacio::bacio)
 
 add_executable(test_g2 test_g2.f90)
 target_link_libraries(test_g2 g2_d ${PNG_LIBRARIES})
@@ -55,9 +56,9 @@ target_link_libraries(test_getfield g2_4)
 add_test(test_getfield test_getfield)
 
 add_executable(creategrib creategrib.f90)
-target_link_libraries(creategrib g2_d bacio)
+target_link_libraries(creategrib g2_d)
 add_test(creategrib creategrib)
 
 add_executable(test_getgb2 test_getgb2.f90)
-target_link_libraries(test_getgb2 g2_d bacio)
+target_link_libraries(test_getgb2 g2_d)
 add_test(test_getgb2 test_getgb2)
