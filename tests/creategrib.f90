@@ -37,7 +37,7 @@ program creategrib
   integer :: idrstmpl(idrstmplen)
   integer, parameter :: ngrdpts = 4, ibmap = 255
   logical :: bmap(1)
-  real :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
+  real(8) :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   ! Section 8
   integer :: lengrib
