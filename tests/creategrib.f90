@@ -41,9 +41,7 @@ program creategrib
 
   ! Section 8
   integer :: lengrib
-
-  character :: old_val
-  integer :: i, ierr
+  integer :: ierr
 
   print *, 'Testing gribcreate().'
   !   expected_cpack = (/ char(0), char(93), char(108), char(64) /)
