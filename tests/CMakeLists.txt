@@ -5,7 +5,6 @@
 
 # This is needed for macos to work on GitHub CI.
 link_directories("/usr/local/lib")
-link_libraries(bacio::bacio)
 
 add_executable(test_g2 test_g2.f90)
 target_link_libraries(test_g2 g2_d ${PNG_LIBRARIES})
