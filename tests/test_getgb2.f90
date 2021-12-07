@@ -1,7 +1,6 @@
 ! This program creates a grib file to use in testing other source files
 !
-! Ed Hartnett 11/12/21 (use from test_gribcreate)
-! Brian Curtis 11/26/2021 (modify to just create GRIB message)
+! Brian Curtis 11/26/2021
 program test_getgb2
   use grib_mod
   use bacio_module
