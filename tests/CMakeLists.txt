@@ -57,3 +57,7 @@ add_test(test_getfield test_getfield)
 #add_executable(test_compack test_compack.f90)
 #target_link_libraries(test_compack g2_d)
 #add_test(test_compack test_compack)
+
+#add_executable(test_jpcpack test_jpcpack.f90)
+#target_link_libraries(test_jpcpack g2_d)
+#add_test(test_jpcpack test_jpcpack)
