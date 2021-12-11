@@ -77,9 +77,9 @@
 !>    - 10 Error packing data field.
 !>
 !>    @author Stephen Gilbert @date 2000-05-02
-      subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen,
-     &     coordlist, numcoord, idrsnum, idrstmpl,
-     &     idrstmplen, fld, ngrdpts, ibmap, bmap, ierr)
+      subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+           coordlist, numcoord, idrsnum, idrstmpl, &
+           idrstmplen, fld, ngrdpts, ibmap, bmap, ierr)
       use pdstemplates
       use drstemplates
       logical :: match
@@ -99,10 +99,8 @@
       real, pointer, dimension(:) :: pfld
       real(4) :: coordieee(numcoord), re00
       integer(4) :: ire00, allones
-      integer :: mappds(ipdstmplen), intbmap(ngrdpts),
-     $     mapdrs(idrstmplen)
-      integer, parameter :: zero = 0, one = 1, four = 4, five = 5, six =
-     $     6, seven = 7
+      integer :: mappds(ipdstmplen), intbmap(ngrdpts), mapdrs(idrstmplen)
+      integer, parameter :: zero = 0, one = 1, four = 4, five = 5, six = 6, seven = 7
       integer, parameter :: minsize = 50000
       integer :: iofst, ibeg, lencurr, len, mappdslen, mapdrslen, lpos3
       integer :: width, height, ndpts
@@ -121,8 +119,8 @@
       enddo
       if (.not. match) then
           print *, 'addfield: GRIB not found in given message.'
-          print *, 'addfield: Call to routine gribcreate required',
-     &         ' to initialize GRIB messge.'
+          print *, 'addfield: Call to routine gribcreate required', &
+               ' to initialize GRIB messge.'
           ierr = 1
           return
       endif
@@ -131,11 +129,11 @@
       call g2_gbytec(cgrib, lencurr, 96, 32)
 
 !     Check to see if GRIB message is already complete
-      ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // cgrib(lencurr
-     $     - 1) // cgrib(lencurr)
+      ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // cgrib(lencurr &
+           - 1) // cgrib(lencurr)
       if (ctemp .eq. c7777) then
-          print *, 'addfield: GRIB message already complete.  Cannot',
-     &         ' add new section.'
+          print *, 'addfield: GRIB message already complete.  Cannot', &
+               ' add new section.'
           ierr = 2
           return
       endif
@@ -165,8 +163,7 @@
           if (isecnum .eq. 6) then
               call g2_gbytec(cgrib, ibmprev, iofst, 8)
               iofst = iofst + 8
-              if (ibmprev .ge. 0 .and. ibmprev .le. 253) isprevbmap =
-     $             .true.
+              if (ibmprev .ge. 0 .and. ibmprev .le. 253) isprevbmap = .true.
           endif
           len = len + ilen
 
@@ -176,11 +173,10 @@
 !         If byte count for each section does not match current total
 !         length, then there is a problem.
           if (len .gt. lencurr) then
-              print *, 'addfield: Section byte counts don''t ' //
-     $             'add to total.'
+              print *, 'addfield: Section byte counts don''t ' // &
+                   'add to total.'
               print *, 'addfield: Sum of section byte counts = ', len
-              print *, 'addfield: Total byte count in Section 0 = ',
-     $             lencurr
+              print *, 'addfield: Total byte count in Section 0 = ', lencurr
               ierr = 3
               return
           endif
@@ -188,22 +184,22 @@
 
 !     Sections 4 through 7 can only be added after section 3 or 7.
       if ((isecnum .ne. 3) .and. (isecnum .ne. 7)) then
-          print *, 'addfield: Sections 4-7 can only be added after',
-     &         ' Section 3 or 7.'
-          print *, 'addfield: Section ', isecnum,
-     $         ' was the last found in',' given GRIB message.'
+          print *, 'addfield: Sections 4-7 can only be added after', &
+               ' Section 3 or 7.'
+          print *, 'addfield: Section ', isecnum, &
+               ' was the last found in',' given GRIB message.'
           ierr = 4
           return
 
 !     Sections 4 through 7 can only be added if section 3 was previously
 !     defined.
       elseif (.not. issec3) then
-          print *, 'addfield: Sections 4-7 can only be added if ',
-     $         'Section 3 was previously included.'
-          print *, 'addfield: Section 3 was not found in',
-     &         ' given GRIB message.'
-          print *, 'addfield: Call to routine addgrid required',
-     &         ' to specify Grid definition.'
+          print *, 'addfield: Sections 4-7 can only be added if ', &
+               'Section 3 was previously included.'
+          print *, 'addfield: Section 3 was not found in', &
+               ' given GRIB message.'
+          print *, 'addfield: Call to routine addgrid required', &
+               ' to specify Grid definition.'
           ierr = 6
           return
       endif
@@ -241,8 +237,7 @@
               call g2_sbytec(cgrib, ipdstmpl(i), iofst, nbits)
           else
               call g2_sbytec(cgrib, one, iofst, 1)
-              call g2_sbytec(cgrib, iabs(ipdstmpl(i)), iofst + 1, nbits
-     $             - 1)
+              call g2_sbytec(cgrib, iabs(ipdstmpl(i)), iofst + 1, nbits - 1)
           endif
           iofst = iofst + nbits
       enddo
@@ -305,8 +300,7 @@
       elseif (idrsnum .eq. 51) then ! Sperical Harmonic Complex Packing
           call getpoly(cgrib(lpos3), lensec3, jj, kk, mm)
           if (jj .ne. 0 .and. kk .ne. 0 .and. mm .ne. 0) then
-              call specpack(pfld, ndpts, jj, kk, mm, idrstmpl, cpack,
-     $             lcpack)
+              call specpack(pfld, ndpts, jj, kk, mm, idrstmpl, cpack, lcpack)
           else
               print *, 'addfield: Cannot pack DRT 5.51.'
               ierr = 9
@@ -334,8 +328,8 @@
           if (width < 1 .or. height < 1) then
 !             Special case: bitmask off everywhere.
               write(0, *) 'Warning: bitmask off everywhere.'
-              write(0, *) '   Pretend one point in jpcpack '
-     $             ,'to avoid crash.'
+              write(0, *) '   Pretend one point in jpcpack ' &
+                   ,'to avoid crash.'
               width = 1
               height = 1
           endif
@@ -362,8 +356,8 @@
           endif
           call pngpack(pfld, width, height, idrstmpl, cpack, lcpack)
       else
-          print *, 'addfield: Data Representation Template 5.', idrsnum
-     $         ,' not yet implemented.'
+          print *, 'addfield: Data Representation Template 5.', idrsnum &
+               ,' not yet implemented.'
           ierr = 7
           return
       endif
@@ -395,8 +389,7 @@
               call g2_sbytec(cgrib, idrstmpl(i), iofst, nbits)
           else
               call g2_sbytec(cgrib, one, iofst, 1)
-              call g2_sbytec(cgrib, iabs(idrstmpl(i)), iofst + 1, nbits
-     $             - 1)
+              call g2_sbytec(cgrib, iabs(idrstmpl(i)), iofst + 1, nbits - 1)
           endif
           iofst = iofst + nbits
       enddo
@@ -423,8 +416,8 @@
 !     If specifying a previously defined bit-map, make sure one already
 !     exists in the current GRIB message.
       if ((ibmap .eq. 254) .and. (.not. isprevbmap)) then
-          print *, 'addfield: Requested previously defined bitmap, ',
-     &         ' but one does not exist in the current GRIB message.'
+          print *, 'addfield: Requested previously defined bitmap, ', &
+               ' but one does not exist in the current GRIB message.'
           ierr = 8
           return
       endif
