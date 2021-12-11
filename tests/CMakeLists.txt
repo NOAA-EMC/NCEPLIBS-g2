@@ -53,3 +53,19 @@ add_test(test_gribcreate test_gribcreate)
 add_executable(test_getfield test_getfield.f90)
 target_link_libraries(test_getfield g2_4)
 add_test(test_getfield test_getfield)
+
+#add_executable(test_compack test_compack.f90)
+#target_link_libraries(test_compack g2_d)
+#add_test(test_compack test_compack)
+
+#add_executable(test_jpcpack test_jpcpack.f90)
+#target_link_libraries(test_jpcpack g2_d)
+#add_test(test_jpcpack test_jpcpack)
+
+add_executable(creategrib creategrib.f90)
+target_link_libraries(creategrib g2_d)
+add_test(creategrib creategrib)
+
+add_executable(test_getgb2 test_getgb2.f90)
+target_link_libraries(test_getgb2 g2_d)
+add_test(test_getgb2 test_getgb2)
