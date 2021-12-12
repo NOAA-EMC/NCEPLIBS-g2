@@ -47,8 +47,8 @@
       ctemp = cgrib(1) // cgrib(2) // cgrib(3) // cgrib(4)
       if (ctemp .ne. grib) then
           print *, 'addlocal: GRIB not found in given message.'
-          print *, 'addlocal: Call to routine gribcreate required',
-     &         ' to initialize GRIB messge.'
+          print *, 'addlocal: Call to routine gribcreate required', &
+               ' to initialize GRIB messge.'
           ierr = 1
           return
       endif
@@ -57,11 +57,11 @@
       call g2_gbytec(cgrib, lencurr, 96, 32)
 
 !     Check to see if GRIB message is already complete.
-      ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) //
-     &     cgrib(lencurr - 1) // cgrib(lencurr)
+      ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // &
+           cgrib(lencurr - 1) // cgrib(lencurr)
       if (ctemp .eq. c7777) then
-          print *, 'addlocal: GRIB message already complete.  Cannot',
-     &         ' add new section.'
+          print *, 'addlocal: GRIB message already complete.  Cannot', &
+               ' add new section.'
           ierr = 2
           return
       endif
@@ -83,11 +83,9 @@
 !         If byte count for each section doesn't match current
 !         total length,  then there is a problem.
           if (len .gt. lencurr) then
-              print *, 'addlocal: Section byte counts don''t ' //
-     &             'add to total.'
+              print *, 'addlocal: Section byte counts don''t add to total.'
               print *, 'addlocal: Sum of section byte counts = ', len
-              print *, 'addlocal: Total byte count in Section 0 = ',
-     &             lencurr
+              print *, 'addlocal: Total byte count in Section 0 = ', lencurr
               ierr = 3
               return
           endif
@@ -95,10 +93,10 @@
 
 !     Section 2 can only be added after sections 1 and 7.
       if ((isecnum .ne. 1) .and. (isecnum .ne. 7)) then
-          print *, 'addlocal: Section 2 can only be added after ' //
-     &         'Section 1 or Section 7.'
-          print *, 'addlocal: Section ', isecnum,
-     &         ' was the last found in given GRIB message.'
+          print *, 'addlocal: Section 2 can only be added after ' // &
+               'Section 1 or Section 7.'
+          print *, 'addlocal: Section ', isecnum, &
+               ' was the last found in given GRIB message.'
           ierr = 4
           return
       endif

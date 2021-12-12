@@ -224,13 +224,12 @@
            allocate(jmax(maxgrps))
            allocate(lbit(maxgrps))
            missopt=0
-           call pack_gp(kfildo,ifld,ndpts,missopt,minpk,inc,miss1,miss2,
-     &                  jmin,jmax,lbit,glen,maxgrps,ngroups,ibit,jbit,
-     &                  kbit,novref,lbitref,ier)
+           call pack_gp(kfildo,ifld,ndpts,missopt,minpk,inc,miss1,miss2, &
+                jmin,jmax,lbit,glen,maxgrps,ngroups,ibit,jbit, &
+                kbit,novref,lbitref,ier)
            if(ier/=0) then
               ! Dr. Glahn's algorithm failed; use simple packing method instead.
- 1099         format('G2: fall back to simple algorithm (glahn ier=',I0,&
-     &               ')')
+ 1099         format('G2: fall back to simple algorithm (glahn ier=', I0, ')')
               print 1099,ier
               ngroups=ndpts/10
               glen(1:ngroups)=10

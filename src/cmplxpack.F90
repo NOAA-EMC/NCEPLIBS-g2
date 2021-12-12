@@ -27,25 +27,22 @@
 !>
 !>    @author Stephen Gilbert @date 2004-08-27
 !>
+subroutine cmplxpack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
 
-      subroutine cmplxpack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
+  integer,intent(in) :: ndpts,idrsnum
+  real,intent(in) :: fld(ndpts)
+  character(len=1),intent(out) :: cpack(*)
+  integer,intent(inout) :: idrstmpl(*)
+  integer,intent(out) :: lcpack
 
-      integer,intent(in) :: ndpts,idrsnum
-      real,intent(in) :: fld(ndpts)
-      character(len=1),intent(out) :: cpack(*)
-      integer,intent(inout) :: idrstmpl(*)
-      integer,intent(out) :: lcpack
+  if (idrstmpl(7) .eq. 0) then       ! No internal missing values
+     call compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
+  elseif (idrstmpl(7).eq.1 .OR. idrstmpl(7).eq.2) then
+     call misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
+  else
+     print *,'cmplxpack: Do not recognize Missing value option.'
+     lcpack = -1
+  endif
 
-      
-
-      if ( idrstmpl(7) .eq. 0 ) then       ! No internal missing values
-         call compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
-      elseif ( idrstmpl(7).eq.1 .OR. idrstmpl(7).eq.2) then
-         call misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
-      else
-         print *,'cmplxpack: Do not recognize Missing value option.'
-         lcpack=-1
-      endif
-
-      return
-      end
+  return
+end subroutine cmplxpack

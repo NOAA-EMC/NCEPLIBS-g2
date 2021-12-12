@@ -33,8 +33,8 @@
 !>    @author Stephen Gilbert @date 2000-06-21
 !>
 
-      subroutine comunpack(cpack,len,lensec,idrsnum,idrstmpl,ndpts,
-     &                     fld,ier)
+      subroutine comunpack(cpack,len,lensec,idrsnum,idrstmpl,ndpts, &
+           fld,ier)
 
       character(len=1),intent(in) :: cpack(len)
       integer,intent(in) :: ndpts,len

@@ -54,62 +54,62 @@
       data templates(1)%template_num /0/     !<     Simple Packing
       data templates(1)%mapdrslen /5/ 
       data templates(1)%needext /.false./
-      data (templates(1)%mapdrs(j),j=1,5) 
-     &                             /4,-2,-2,1,1/
+      data (templates(1)%mapdrs(j),j=1,5)  &
+           /4,-2,-2,1,1/
 
       data templates(2)%template_num /2/     !<     Complex Packing
       data templates(2)%mapdrslen /16/
       data templates(2)%needext /.false./
-      data (templates(2)%mapdrs(j),j=1,16)
-     &                        /4,-2,-2,1,1,1,1,4,4,4,1,1,4,1,4,1/
+      data (templates(2)%mapdrs(j),j=1,16) &
+           /4,-2,-2,1,1,1,1,4,4,4,1,1,4,1,4,1/
 
       data templates(3)%template_num /3/     !<     Complex Packing - Spatial Diff
       data templates(3)%mapdrslen /18/
       data templates(3)%needext /.false./
-      data (templates(3)%mapdrs(j),j=1,18)
-     &                        /4,-2,-2,1,1,1,1,4,4,4,1,1,4,1,4,1,1,1/
+      data (templates(3)%mapdrs(j),j=1,18) &
+           /4,-2,-2,1,1,1,1,4,4,4,1,1,4,1,4,1,1,1/
 
       data templates(4)%template_num /50/     !<     Simple Packing - Spectral Data
       data templates(4)%mapdrslen /5/
       data templates(4)%needext /.false./
-      data (templates(4)%mapdrs(j),j=1,5)
-     &                         /4,-2,-2,1,4/
+      data (templates(4)%mapdrs(j),j=1,5) &
+           /4,-2,-2,1,4/
 
       data templates(5)%template_num /51/    !<     Complex Packing - Spectral Data
       data templates(5)%mapdrslen /10/
       data templates(5)%needext /.false./
-      data (templates(5)%mapdrs(j),j=1,10)
-     &                         /4,-2,-2,1,-4,2,2,2,4,1/
+      data (templates(5)%mapdrs(j),j=1,10) &
+           /4,-2,-2,1,-4,2,2,2,4,1/
 
       data templates(6)%template_num /40000/     !<     JPEG2000 Encoding
       data templates(6)%mapdrslen /7/ 
       data templates(6)%needext /.false./
-      data (templates(6)%mapdrs(j),j=1,7) 
-     &                             /4,-2,-2,1,1,1,1/
+      data (templates(6)%mapdrs(j),j=1,7)  &
+           /4,-2,-2,1,1,1,1/
 
       data templates(7)%template_num /40010/     !<     PNG Encoding
       data templates(7)%mapdrslen /5/ 
       data templates(7)%needext /.false./
-      data (templates(7)%mapdrs(j),j=1,5) 
-     &                             /4,-2,-2,1,1/
+      data (templates(7)%mapdrs(j),j=1,5)  &
+           /4,-2,-2,1,1/
 
       data templates(8)%template_num /40/     !<     JPEG2000 Encoding
       data templates(8)%mapdrslen /7/ 
       data templates(8)%needext /.false./
-      data (templates(8)%mapdrs(j),j=1,7) 
-     &                             /4,-2,-2,1,1,1,1/
+      data (templates(8)%mapdrs(j),j=1,7)  &
+           /4,-2,-2,1,1,1,1/
 
       data templates(9)%template_num /41/     !<     PNG Encoding
       data templates(9)%mapdrslen /5/ 
       data templates(9)%needext /.false./
-      data (templates(9)%mapdrs(j),j=1,5) 
-     &                             /4,-2,-2,1,1/
+      data (templates(9)%mapdrs(j),j=1,5)  &
+           /4,-2,-2,1,1/
 
 !         data templates(5)%template_num /1/      !<     Simple Packing - Matrix
 !         data templates(5)%mapdrslen /15/ 
 !         data templates(5)%needext /.true./
-!         data (templates(5)%mapdrs(j),j=1,15)
-!        &                        /4,-2,-2,1,1,1,4,2,2,1,1,1,1,1,1/
+!         data (templates(5)%mapdrs(j),j=1,15) &
+      !                                /4,-2,-2,1,1,1,4,2,2,1,1,1,1,1,1/
 
 
       contains
@@ -175,8 +175,8 @@
            else
              nummap=0
              needext=.false.
-             print *,'getdrstemplate: DRS Template ',number,
-     &               ' not defined.'
+             print *,'getdrstemplate: DRS Template ',number, &
+                  ' not defined.'
              iret=1
            endif
 
