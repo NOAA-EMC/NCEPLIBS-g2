@@ -33,8 +33,8 @@
       integer iofst,igdtlen,num_opt,jerr
 
       interface
-         subroutine gf_unpack3(cgrib,lcgrib,iofst,igds,igdstmpl,
-     &                         mapgridlen,ideflist,idefnum,ierr)
+         subroutine gf_unpack3(cgrib,lcgrib,iofst,igds,igdstmpl, &
+              mapgridlen,ideflist,idefnum,ierr)
             character(len=1),intent(in) :: cgrib(lcgrib)
             integer,intent(in) :: lcgrib
             integer,intent(inout) :: iofst
@@ -47,8 +47,8 @@
       nullify(igdstmpl,list_opt)
         !
       iofst=0       ! set offset to beginning of section
-      call gf_unpack3(csec3,lcsec3,iofst,igds,igdstmpl,
-     &                 igdtlen,list_opt,num_opt,jerr)
+      call gf_unpack3(csec3,lcsec3,iofst,igds,igdstmpl, &
+           igdtlen,list_opt,num_opt,jerr)
       if (jerr.eq.0) then
          selectcase( igds(5) )     !  Template number
            case (50:53)   ! Spherical harmonic coefficients

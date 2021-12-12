@@ -140,10 +140,10 @@
 !  If exited from above loop, the end of the GRIB message was reached
 !  before the requested occurrence of section 2 was found.
 !
-      print *,'getlocal: GRIB message contained ',numlocal,
-     &        ' local sections.'
-      print *,'getlocal: The request was for the ',localnum,
-     &        ' occurrence.'
+      print *,'getlocal: GRIB message contained ',numlocal, &
+           ' local sections.'
+      print *,'getlocal: The request was for the ',localnum, &
+           ' occurrence.'
       ierr=6
 
       return

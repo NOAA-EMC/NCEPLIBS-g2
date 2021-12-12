@@ -16,8 +16,6 @@
 !>    @param gfld derived type gribfield (defined in module grib_mod).
 !>      
 !>    @author Stephen Gilbert @date 2000-05-26
-!>
-
       subroutine gf_free(gfld)
 
       use grib_mod

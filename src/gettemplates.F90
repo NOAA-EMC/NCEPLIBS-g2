@@ -66,9 +66,9 @@
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
 
-      subroutine gettemplates(cgrib,lcgrib,ifldnum,igds,igdstmpl,
-     &                    igdslen,ideflist,idefnum,ipdsnum,ipdstmpl,
-     &                    ipdslen,coordlist,numcoord,ierr)
+      subroutine gettemplates(cgrib,lcgrib,ifldnum,igds,igdstmpl, &
+           igdslen,ideflist,idefnum,ipdsnum,ipdstmpl, &
+           ipdslen,coordlist,numcoord,ierr)
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib,ifldnum
@@ -92,8 +92,8 @@
 !  Check for valid request number
 !  
       if (ifldnum.le.0) then
-        print *,'gettemplates: Request for field number must be ',
-     &          'positive.'
+        print *,'gettemplates: Request for field number must be ', &
+             'positive.'
         ierr=3
         return
       endif
@@ -146,8 +146,8 @@
           ipos=ipos+4
           !    If end of GRIB message not where expected, issue error
           if (ipos.ne.(istart+lengrib)) then
-            print *,'gettemplates: "7777" found, but not where ',
-     &              'expected.'
+            print *,'gettemplates: "7777" found, but not where ', &
+                 'expected.'
             ierr=4
             return
           endif
@@ -167,8 +167,8 @@
         !
         if (isecnum.eq.3) then
           iofst=iofst-40       ! reset offset to beginning of section
-          call unpack3(cgrib,lcgrib,iofst,igds,igdstmpl,igdslen,
-     &                 ideflist,idefnum,jerr)
+          call unpack3(cgrib,lcgrib,iofst,igds,igdstmpl,igdslen, &
+               ideflist,idefnum,jerr)
           if (jerr.eq.0) then
             have3=.true.
           else
@@ -184,8 +184,8 @@
           numfld=numfld+1
           if (numfld.eq.ifldnum) then
             iofst=iofst-40       ! reset offset to beginning of section
-            call unpack4(cgrib,lcgrib,iofst,ipdsnum,ipdstmpl,ipdslen,
-     &                   coordlist,numcoord,jerr)
+            call unpack4(cgrib,lcgrib,iofst,ipdsnum,ipdstmpl,ipdslen, &
+                 coordlist,numcoord,jerr)
             if (jerr.eq.0) then
               have4=.true.
             else
@@ -200,8 +200,8 @@
         !
         ipos=ipos+lensec                 ! Update beginning of section pointer
         if (ipos.gt.(istart+lengrib)) then
-          print *,'gettemplates: "7777"  not found at end of GRIB ',
-     &            'message.'
+          print *,'gettemplates: "7777"  not found at end of GRIB ', &
+               'message.'
           ierr=7
           return
         endif
@@ -214,10 +214,10 @@
 !  If exited from above loop, the end of the GRIB message was reached
 !  before the requested field was found.
 !
-      print *,'gettemplates: GRIB message contained ',numlocal,
-     &        ' different fields.'
-      print *,'gettemplates: The request was for the ',ifldnum,
-     &        ' field.'
+      print *,'gettemplates: GRIB message contained ',numlocal, &
+           ' different fields.'
+      print *,'gettemplates: The request was for the ',ifldnum, &
+           ' field.'
       ierr=6
 
       return
