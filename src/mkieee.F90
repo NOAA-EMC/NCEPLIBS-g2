@@ -1,7 +1,6 @@
 !>    @file
 !>    @brief This subroutine stores real values in floating point.
 !>    @author Stephen Gilbert @date 2000-05-09
-!>
 
 !>    This subroutine stores a list of real values in 32-bit IEEE
 !>    floating point format.
@@ -11,8 +10,6 @@
 !>    IEEE format.
 !>    
 !>    @author Stephen Gilbert @date 2000-05-09
-!>
-
       subroutine mkieee(a,rieee,num)
 
       real(4),intent(in) :: a(num)

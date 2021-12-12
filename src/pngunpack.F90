@@ -2,7 +2,6 @@
 !>    @brief This subroutine unpacks a data field packed into a
 !>    PNG image format.
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
 
 !>    This subroutine unpacks a data field that was packed into a
 !>    PNG image format using info from the GRIB2 Data Representation
@@ -16,8 +15,6 @@
 !>    @param[out] fld Contains the unpacked data values.
 !>
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
 
       character(len = 1), intent(in) :: cpack(len)

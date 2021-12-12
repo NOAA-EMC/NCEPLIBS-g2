@@ -2,7 +2,6 @@
 !>    @brief This subroutine packs up a data field using a GRIB2
 !>    algorithm.
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
 
 !>    This subroutine packs up a data field using a complex packing
 !>    algorithm as defined in the GRIB2 documention. It supports GRIB2
@@ -43,8 +42,6 @@
 !>    @param[out] lcpack length of packed field cpack.
 !>    
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       subroutine misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
 
       use intmath
@@ -82,7 +79,7 @@
 !  AND set up missing value mapping of the field.
 !
       allocate(ifldmiss(ndpts))
-c     rmin=huge(rmin)
+!     rmin=huge(rmin)
 
       if ( missopt .eq. 1 ) then        ! Primary missing value only
          do j=1,ndpts
@@ -294,9 +291,9 @@ c     rmin=huge(rmin)
            allocate(jmin(maxgrps))
            allocate(jmax(maxgrps))
            allocate(lbit(maxgrps))
-           call pack_gp(kfildo,ifld,ndpts,missopt,minpk,inc,miss1,miss2,
-     &                  jmin,jmax,lbit,glen,maxgrps,ngroups,ibit,jbit,
-     &                  kbit,novref,lbitref,ier)
+           call pack_gp(kfildo,ifld,ndpts,missopt,minpk,inc,miss1,miss2, &
+                jmin,jmax,lbit,glen,maxgrps,ngroups,ibit,jbit, &
+                kbit,novref,lbitref,ier)
            !print *,'SAGier = ',ier,ibit,jbit,kbit,novref,lbitref
            do ng=1,ngroups
               glen(ng)=glen(ng)+novref

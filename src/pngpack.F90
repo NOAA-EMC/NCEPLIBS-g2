@@ -1,7 +1,6 @@
 !>    @file
 !>    @brief This subroutine packs up a data field into PNG image format.
 !>    @author Stephen Gilbert @date 2002-12-21
-!>
 
 !>    This subroutine packs up a data field into PNG image format. After
 !>    the data field is scaled, and the reference value is subtracted out,
@@ -26,8 +25,6 @@
 !>    @param[out] lcpack length of packed field cpack.
 !>
 !>    @author Stephen Gilbert @date 2002-12-21
-!>
-
       subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
 
       integer, intent(in) :: width, height

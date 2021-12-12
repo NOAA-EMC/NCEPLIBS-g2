@@ -2,7 +2,6 @@
 !>    @brief This Fortran Module contains info on all the available GRIB
 !>    Parameters.
 !>    @author Stephen Gilbert @date 2001-06-05
-!>
 
 !>    This Fortran Module contains info on all the available GRIB
 !>    Parameters.
@@ -31,8 +30,6 @@
 !>    2020-05-20 | Boi Vuong | Added parameters
 !>    
 !>    @author Stephen Gilbert @date 2001-06-05
-!>
-
       module params
 
       integer,parameter :: MAXPARAM=2000 !< maximum number of GRIB parameters.
@@ -1110,8 +1107,8 @@
            g2num=255
 
            do n=1,MAXPARAM
-              if (paramlist(n)%grib1val.eq.g1val .AND.
-     &            paramlist(n)%g1tblver.eq.g1ver ) then
+              if (paramlist(n)%grib1val.eq.g1val .AND. &
+                   paramlist(n)%g1tblver.eq.g1ver ) then
                  g2disc=paramlist(n)%grib2dsc
                  g2cat=paramlist(n)%grib2cat
                  g2num=paramlist(n)%grib2num
@@ -1119,8 +1116,8 @@
               endif
            enddo
 
-           print *,'param_g1_to_g2:GRIB1 param ',g1val,' not found.',
-     &             ' for table version ',g1ver
+           print *,'param_g1_to_g2:GRIB1 param ',g1val,' not found.', &
+                ' for table version ',g1ver
            return
          end subroutine
 
@@ -1143,16 +1140,16 @@
            param_get_abbrev='UNKNOWN '
 
            do n=1,MAXPARAM
-              if (paramlist(n)%grib2dsc.eq.g2disc.AND.
-     &             paramlist(n)%grib2cat.eq.g2cat.AND.
-     &             paramlist(n)%grib2num.eq.g2num) then
+              if (paramlist(n)%grib2dsc.eq.g2disc.AND. &
+                   paramlist(n)%grib2cat.eq.g2cat.AND. &
+                   paramlist(n)%grib2num.eq.g2num) then
                  param_get_abbrev=paramlist(n)%abbrev
                  return
               endif
            enddo
 
-!           print *,'param_get_abbrev:GRIB2 param ',g2disc,g2cat,
-!     &              g2num,' not found.'
+!           print *,'param_get_abbrev:GRIB2 param ',g2disc,g2cat, &
+           !                   g2num,' not found.'
            return
          end function
 
@@ -1179,17 +1176,17 @@
            g1ver=255
 
            do n=1,MAXPARAM
-              if (paramlist(n)%grib2dsc.eq.g2disc.AND.
-     &             paramlist(n)%grib2cat.eq.g2cat.AND.
-     &             paramlist(n)%grib2num.eq.g2num) then
+              if (paramlist(n)%grib2dsc.eq.g2disc.AND. &
+                   paramlist(n)%grib2cat.eq.g2cat.AND. &
+                   paramlist(n)%grib2num.eq.g2num) then
                  g1val=paramlist(n)%grib1val
                  g1ver=paramlist(n)%g1tblver
                  return
               endif
            enddo
 
-           print *,'param_g2_to_g1:GRIB2 param ',g2disc,g2cat,
-     &              g2num,' not found.'
+           print *,'param_g2_to_g1:GRIB2 param ',g2disc,g2cat, &
+                g2num,' not found.'
            return
          end subroutine
 
