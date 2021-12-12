@@ -1,37 +1,35 @@
-C>    @file
-C>    @brief This subroutine find and extracts the index for the
-C>    requested field from a grib file.
-C>    @author Stephen Gilbert @date 2003-12-31
-C>
+!>    @file
+!>    @brief This subroutine find and extracts the index for the
+!>    requested field from a grib file.
+!>    @author Stephen Gilbert @date 2003-12-31
+!>
 
-C>    This subroutine find and extracts a grib message from a file given
-C>    the index for the requested field. The grib message returned can
-C>    contain only the requested field (extract=.true.). or the complete
-C>    grib message originally containing the desired field can be
-C>    returned (extract=.false.) even if other fields were included in
-C>    the grib message. If the grib field is not found, then the return
-C>    code will be nonzero.
+!>    This subroutine find and extracts a grib message from a file given
+!>    the index for the requested field. The grib message returned can
+!>    contain only the requested field (extract=.true.). or the complete
+!>    grib message originally containing the desired field can be
+!>    returned (extract=.false.) even if other fields were included in
+!>    the grib message. If the grib field is not found, then the return
+!>    code will be nonzero.
 
-C>    @param[in] LUGB integer unit of the unblocked grib data file.
-C>    file must be opened with baopen or baopenr before calling
-C>    this routine.
-C>    @param[in] CINDEX index record of the grib field (see docblock of
-C>    subroutine ixgb2() for description of an index record.)
-C>    @param[in] EXTRACT logical value indicating whether to return a
-C>    grib2 message with just the requested field, or the entire
-C>    grib2 message containing the requested field.
-C>    - .true. = return grib2 message containing only the requested field.
-C>    - .false. = return entire grib2 message containing the requested field.
-C>    @param[out] GRIBM returned grib message.
-C>    @param[out] LENG length of returned grib message in bytes.
-C>    @param[out] IRET integer return code
-C>    - 0 all ok
-C>    - 97 error reading grib file
-C>
-C>    @author Stephen Gilbert @date 2003-12-31
-C>
-
-C-----------------------------------------------------------------------
+!>    @param[in] LUGB integer unit of the unblocked grib data file.
+!>    file must be opened with baopen or baopenr before calling
+!>    this routine.
+!>    @param[in] CINDEX index record of the grib field (see docblock of
+!>    subroutine ixgb2() for description of an index record.)
+!>    @param[in] EXTRACT logical value indicating whether to return a
+!>    grib2 message with just the requested field, or the entire
+!>    grib2 message containing the requested field.
+!>    - .true. = return grib2 message containing only the requested field.
+!>    - .false. = return entire grib2 message containing the requested field.
+!>    @param[out] GRIBM returned grib message.
+!>    @param[out] LENG length of returned grib message in bytes.
+!>    @param[out] IRET integer return code
+!>    - 0 all ok
+!>    - 97 error reading grib file
+!>
+!>    @author Stephen Gilbert @date 2003-12-31
+!>
       SUBROUTINE GETGB2RP(LUGB,CINDEX,EXTRACT,GRIBM,LENG,IRET)
 
       INTEGER,INTENT(IN) :: LUGB
@@ -45,8 +43,8 @@ C-----------------------------------------------------------------------
       CHARACTER(LEN=4) :: Ctemp
 
       IRET=0
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  EXTRACT GRIB MESSAGE FROM FILE
+! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!  EXTRACT GRIB MESSAGE FROM FILE
       IF ( EXTRACT ) THEN
          LEN0=16
          LEN8=4
@@ -119,8 +117,8 @@ C  EXTRACT GRIB MESSAGE FROM FILE
          !
          ! Copy Sections 3 through 5
          !
-         GRIBM(lencur+1:lencur+LEN3+LEN4+LEN5)=
-     &                      CINDEX(ipos+1:ipos+LEN3+LEN4+LEN5)
+         GRIBM(lencur+1:lencur+LEN3+LEN4+LEN5)= &
+              CINDEX(ipos+1:ipos+LEN3+LEN4+LEN5)
          lencur=lencur+LEN3+LEN4+LEN5
          ipos=ipos+LEN3+LEN4+LEN5
          !
@@ -170,6 +168,6 @@ C  EXTRACT GRIB MESSAGE FROM FILE
             RETURN
          ENDIF
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       RETURN
       END
