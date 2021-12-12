@@ -55,8 +55,8 @@
 !>    - 6 memory allocation error.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-      subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,
-     &     mapgridlen, ideflist, idefnum, ierr)
+      subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, &
+           mapgridlen, ideflist, idefnum, ierr)
 
       use gridtemplates
       use re_alloc              !  needed for subroutine realloc
@@ -94,8 +94,7 @@
           allocate(mapgrid(lensec))
 
 !         Get Grid Definition Template
-          call getgridtemplate(igds(5), mapgridlen, mapgrid, needext,
-     &         iret)
+          call getgridtemplate(igds(5), mapgridlen, mapgrid, needext, iret)
           if (iret.ne.0) then
               ierr=5
               if (allocated(mapgrid) ) deallocate(mapgrid)
@@ -135,8 +134,8 @@
 !     The number of values in a specific template may vary depending on
 !     data specified in the "static" part of the template.
       if (needext ) then
-          call extgridtemplate(igds(5), igdstmpl, newmapgridlen,
-     $         mapgrid)
+          call extgridtemplate(igds(5), igdstmpl, newmapgridlen, &
+               mapgrid)
 
 !         Unpack the rest of the Grid Definition Template
           call realloc(igdstmpl, mapgridlen, newmapgridlen, istat)

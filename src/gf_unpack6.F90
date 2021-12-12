@@ -33,8 +33,7 @@
 !>    - 6 memory allocation error.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-      subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap,
-     $     ierr)
+      subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
 
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib, ngpts

@@ -38,8 +38,8 @@
 !>    - 6 memory allocation error.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-      subroutine gf_unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, 
-     &     mappdslen, coordlist, numcoord, ierr)
+      subroutine gf_unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
+           mappdslen, coordlist, numcoord, ierr)
 
       use pdstemplates
       use re_alloc              !  needed for subroutine realloc
@@ -115,8 +115,7 @@
                   call g2_gbytec(cgrib, ipdstmpl(i), iofst, nbits)
               else
                   call g2_gbytec(cgrib, isign, iofst, 1)
-                  call g2_gbytec(cgrib, ipdstmpl(i), iofst + 1, nbits -
-     $                 1)
+                  call g2_gbytec(cgrib, ipdstmpl(i), iofst + 1, nbits - 1)
                   if (isign .eq. 1) ipdstmpl(i) = -ipdstmpl(i)
               endif
               iofst = iofst + nbits

@@ -37,10 +37,8 @@
 !>    - 7 "GRIB" message contains an undefined Grid Definition Template.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-!>
-
-      subroutine gf_unpack5(cgrib,lcgrib,iofst,ndpts,idrsnum,idrstmpl,
-     &                   mapdrslen,ierr)
+      subroutine gf_unpack5(cgrib,lcgrib,iofst,ndpts,idrsnum,idrstmpl, &
+           mapdrslen,ierr)
 
       use drstemplates
       use re_alloc        !  needed for subroutine realloc

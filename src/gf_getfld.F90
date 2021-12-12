@@ -73,8 +73,7 @@
 !>    expand.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-      subroutine gf_getfld(cgrib, lcgrib, ifldnum, unpack, expand, gfld,
-     $     ierr)
+      subroutine gf_getfld(cgrib, lcgrib, ifldnum, unpack, expand, gfld, ierr)
 
       use grib_mod
 
@@ -109,8 +108,8 @@
       integer, intent(out) :: ierr
       character(len = 1), pointer, dimension(:) :: csec2
       end subroutine gf_unpack2
-      subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,
-     &     mapgridlen, ideflist, idefnum, ierr)
+      subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, &
+           mapgridlen, ideflist, idefnum, ierr)
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib
       integer, intent(inout) :: iofst
@@ -118,8 +117,8 @@
       integer, intent(out) :: igds(5)
       integer, intent(out) :: ierr, idefnum
       end subroutine gf_unpack3
-      subroutine gf_unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl,
-     &     mappdslen, coordlist, numcoord, ierr)
+      subroutine gf_unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
+           mappdslen, coordlist, numcoord, ierr)
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib
       integer, intent(inout) :: iofst
@@ -128,8 +127,8 @@
       integer, intent(out) :: ipdsnum
       integer, intent(out) :: ierr, numcoord
       end subroutine gf_unpack4
-      subroutine gf_unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,
-     &     idrstmpl, mapdrslen, ierr)
+      subroutine gf_unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, &
+           idrstmpl, mapdrslen, ierr)
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib
       integer, intent(inout) :: iofst
@@ -137,8 +136,8 @@
       integer, pointer, dimension(:) :: idrstmpl
       integer, intent(out) :: ierr
       end subroutine gf_unpack5
-      subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap,
-     $     ierr)
+      subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, &
+           ierr)
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib, ngpts
       integer, intent(inout) :: iofst
@@ -146,8 +145,8 @@
       integer, intent(out) :: ierr
       logical*1, pointer, dimension(:) :: bmap
       end subroutine gf_unpack6
-      subroutine gf_unpack7(cgrib, lcgrib, iofst, igdsnum, igdstmpl,
-     &     idrsnum, idrstmpl, ndpts, fld, ierr)
+      subroutine gf_unpack7(cgrib, lcgrib, iofst, igdsnum, igdstmpl, &
+           idrsnum, idrstmpl, ndpts, fld, ierr)
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib, ndpts, idrsnum, igdsnum
       integer, intent(inout) :: iofst
@@ -170,8 +169,8 @@
 
 !     Check for valid request number
       if (ifldnum .le. 0) then
-          print *, 'gf_getfld: Request for field number '
-     $         ,'must be positive.'
+          print *, 'gf_getfld: Request for field number ' &
+               ,'must be positive.'
           ierr = 3
           return
       endif
@@ -179,8 +178,7 @@
 !     Check for beginning of GRIB message in the first 100 bytes
       istart = 0
       do j = 1, 100
-          ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j +
-     $         3)
+          ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j + 3)
           if (ctemp .eq. grib) then
               istart = j
               exit
@@ -216,14 +214,14 @@
 !     the requested field number.
       do
 !         Check to see if we are at end of GRIB message
-          ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) //
-     $         cgrib(ipos + 3)
+          ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // &
+               cgrib(ipos + 3)
           if (ctemp .eq. c7777) then
               ipos = ipos + 4
 !             If end of GRIB message not where expected, issue error
               if (ipos.ne.(istart + lengrib)) then
-                  print *, 'gf_getfld: "7777" found, but not '
-     $                 ,'where expected.'
+                  print *, 'gf_getfld: "7777" found, but not ' &
+                       ,'where expected.'
                   ierr = 4
                   return
               endif
@@ -239,8 +237,8 @@
 
 !         Check to see if section number is valid
           if ((isecnum .lt. 1) .or. (isecnum .gt. 7)) then
-              print *, 'gf_getfld: Unrecognized Section Encountered = ',
-     $             isecnum
+              print *, 'gf_getfld: Unrecognized Section Encountered = ', &
+                   isecnum
               ierr = 8
               return
           endif
@@ -248,8 +246,8 @@
 !         If found Section 1, decode elements in Identification Section.
           if (isecnum .eq. 1) then
               iofst = iofst - 40    ! reset offset to beginning of section
-              call gf_unpack1(cgrib, lcgrib, iofst, gfld%idsect,
-     &             gfld%idsectlen, jerr)
+              call gf_unpack1(cgrib, lcgrib, iofst, gfld%idsect, &
+                   gfld%idsectlen, jerr)
               if (jerr .ne. 0) then
                   ierr = 15
                   return
@@ -261,8 +259,8 @@
           if (isecnum .eq. 2) then
               iofst = iofst - 40    ! reset offset to beginning of section
               if (associated(gfld%local)) deallocate(gfld%local)
-              call gf_unpack2(cgrib, lcgrib, iofst, gfld%locallen,
-     &             gfld%local, jerr)
+              call gf_unpack2(cgrib, lcgrib, iofst, gfld%locallen, &
+                   gfld%local, jerr)
               if (jerr .ne. 0) then
                   call gf_free(gfld)
                   ierr = 16
@@ -277,8 +275,8 @@
               iofst = iofst - 40    ! reset offset to beginning of section
               if (associated(gfld%igdtmpl)) deallocate(gfld%igdtmpl)
               if (associated(gfld%list_opt)) deallocate(gfld%list_opt)
-              call gf_unpack3(cgrib, lcgrib, iofst, igds, gfld%igdtmpl,
-     $             gfld%igdtlen, gfld%list_opt, gfld%num_opt, jerr)
+              call gf_unpack3(cgrib, lcgrib, iofst, igds, gfld%igdtmpl, &
+                   gfld%igdtlen, gfld%list_opt, gfld%num_opt, jerr)
               if (jerr .ne. 0) then
                   call gf_free(gfld)
                   ierr = 10
@@ -303,9 +301,9 @@
                   gfld%unpacked = unpack
                   gfld%expanded = .false.
                   iofst = iofst-40 ! reset offset to beginning of section
-                  call gf_unpack4(cgrib, lcgrib, iofst, gfld%ipdtnum,
-     &                 gfld%ipdtmpl, gfld%ipdtlen, gfld%coord_list,
-     &                 gfld%num_coord, jerr)
+                  call gf_unpack4(cgrib, lcgrib, iofst, gfld%ipdtnum, &
+                       gfld%ipdtmpl, gfld%ipdtlen, gfld%coord_list, &
+                       gfld%num_coord, jerr)
                   if (jerr .ne. 0) then
                       call gf_free(gfld)
                       ierr = 11
@@ -319,8 +317,8 @@
 !         requested.
           if ((isecnum .eq. 5).and.(numfld .eq. ifldnum)) then
               iofst = iofst-40    ! reset offset to beginning of section
-              call gf_unpack5(cgrib, lcgrib, iofst, gfld%ndpts,
-     $             gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen, jerr)
+              call gf_unpack5(cgrib, lcgrib, iofst, gfld%ndpts, &
+                   gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen, jerr)
               if (jerr .ne. 0) then
                   call gf_free(gfld)
                   ierr = 12
@@ -335,8 +333,8 @@
               if (unpack) then  ! unpack bitmap
                   iofst = iofst - 40 ! reset offset to beginning of section
                   bmpsave => gfld%bmap ! save pointer to previous bitmap
-                  call gf_unpack6(cgrib, lcgrib, iofst, gfld%ngrdpts,
-     $                 gfld%ibmap, gfld%bmap, jerr)
+                  call gf_unpack6(cgrib, lcgrib, iofst, gfld%ngrdpts, &
+                       gfld%ibmap, gfld%bmap, jerr)
                   if (jerr .ne. 0) then
                       call gf_free(gfld)
                       ierr = 13
@@ -347,8 +345,8 @@
                       if (associated(bmpsave)) then
                           gfld%bmap => bmpsave
                       else
-                          print *, 'gf_getfld:  Previous bit-map '
-     $                         ,'specified, but none exists, '
+                          print *, 'gf_getfld:  Previous bit-map ' &
+                               ,'specified, but none exists, '
                           call gf_free(gfld)
                           ierr = 17
                           return
@@ -364,13 +362,13 @@
 
 !         If found Section 7, check to see if this field is the one
 !         requested.
-          if ((isecnum .eq. 7) .and. (numfld .eq. ifldnum) .and. unpack)
-     $         then
+          if ((isecnum .eq. 7) .and. (numfld .eq. ifldnum) .and. unpack) &
+               then
               iofst = iofst - 40    ! reset offset to beginning of section
-              call gf_unpack7(cgrib, lcgrib, iofst, gfld%igdtnum,
-     &             gfld%igdtmpl, gfld%idrtnum,
-     &             gfld%idrtmpl, gfld%ndpts,
-     &             gfld%fld, jerr)
+              call gf_unpack7(cgrib, lcgrib, iofst, gfld%igdtnum, &
+                   gfld%igdtmpl, gfld%idrtnum, &
+                   gfld%idrtmpl, gfld%ndpts, &
+                   gfld%fld, jerr)
               if (jerr .ne. 0) then
                   call gf_free(gfld)
                   print *, 'gf_getfld: return from gf_unpack7 = ', jerr
@@ -408,8 +406,8 @@
 !         missed the terminator string '7777'.
           ipos = ipos + lensec      ! Update beginning of section pointer
           if (ipos .gt. (istart + lengrib)) then
-              print *, 'gf_getfld: "7777"  not found at end '
-     $             ,'of GRIB message.'
+              print *, 'gf_getfld: "7777"  not found at end ' &
+                   ,'of GRIB message.'
               call gf_free(gfld)
               ierr = 7
               return
@@ -417,21 +415,21 @@
 !
 !         If unpacking requested, return when all sections have been
 !         processed.
-          if (unpack .and. have3 .and. have4 .and. have5 .and. have6
-     $         .and. have7) return
+          if (unpack .and. have3 .and. have4 .and. have5 .and. have6 &
+               .and. have7) return
 
 !         If unpacking is not requested, return when sections 3 through
 !         6 have been processed.
-          if ((.not. unpack) .and. have3 .and. have4 .and. have5 .and.
-     $         have6) return
+          if ((.not. unpack) .and. have3 .and. have4 .and. have5 .and. &
+               have6) return
       enddo
 
 !     If exited from above loop, the end of the GRIB message was reached
 !     before the requested field was found.
-      print *, 'gf_getfld: GRIB message contained ', numlocal,
-     &     ' different fields.'
-      print *, 'gf_getfld: The request was for the ', ifldnum,
-     &     ' field.'
+      print *, 'gf_getfld: GRIB message contained ', numlocal, &
+           ' different fields.'
+      print *, 'gf_getfld: The request was for the ', ifldnum, &
+           ' field.'
       ierr = 6
       call gf_free(gfld)
 
