@@ -105,10 +105,10 @@
 !>    how many data fields exist in a given GRIB message.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-      subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl,
-     $     igdslen, ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen,
-     $     coordlist, numcoord, ndpts, idrsnum, idrstmpl, idrslen, 
-     $     ibmap, bmap, fld, ierr)
+      subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
+           igdslen, ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, &
+           coordlist, numcoord, ndpts, idrsnum, idrstmpl, idrslen,  &
+           ibmap, bmap, fld, ierr)
 
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib, ifldnum
@@ -137,8 +137,8 @@
 
 !     Check for valid request number
       if (ifldnum .le. 0) then
-          print *, 'getfield: Request for field number '
-     $         ,'must be positive.'
+          print *, 'getfield: Request for field number ' &
+               ,'must be positive.'
           ierr = 3
           return
       endif
@@ -146,8 +146,7 @@
 !     Check for beginning of GRIB message in the first 100 bytes
       istart = 0
       do j = 1, 100
-          ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j +
-     $         3)
+          ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j + 3)
           if (ctemp .eq. grib) then
               istart = j
               exit
@@ -183,14 +182,14 @@
 !     the requested field number.
       do
 !         Check to see if we are at end of GRIB message
-          ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) //
-     $         cgrib(ipos + 3)
+          ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // &
+               cgrib(ipos + 3)
           if (ctemp .eq. c7777) then
               ipos = ipos + 4
 !             If end of GRIB message not where expected, issue error
               if (ipos.ne.(istart + lengrib)) then
-                  print *, 'getfield: "7777" found, but not '
-     $                 ,'where expected.'
+                  print *, 'getfield: "7777" found, but not ' &
+                       ,'where expected.'
                   ierr = 4
                   return
               endif
@@ -208,8 +207,8 @@
 !         requested field.
           if (isecnum .eq. 3) then
               iofst = iofst - 40    ! reset offset to beginning of section
-              call unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, 
-     $             igdslen, ideflist, idefnum, jerr)
+              call unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
+                   igdslen, ideflist, idefnum, jerr)
               if (jerr .eq. 0) then
                   have3 = .true.
               else
@@ -224,8 +223,8 @@
               numfld = numfld + 1
               if (numfld.eq.ifldnum) then
                   iofst = iofst - 40 ! reset offset to beginning of section
-                  call unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl,
-     $                 ipdslen, coordlist, numcoord, jerr)
+                  call unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
+                       ipdslen, coordlist, numcoord, jerr)
                   if (jerr .eq. 0) then
                       have4 = .true.
                   else
@@ -239,8 +238,8 @@
 !         requested.
           if ((isecnum .eq. 5) .and. (numfld .eq. ifldnum)) then
               iofst = iofst - 40    ! reset offset to beginning of section
-              call unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,
-     $             idrstmpl, idrslen, jerr)
+              call unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, &
+                   idrstmpl, idrslen, jerr)
               if (jerr .eq. 0) then
                   have5 = .true.
               else
@@ -253,8 +252,8 @@
 !         latest bitmap before the requested field.
           if (isecnum .eq. 6) then
               iofst = iofst - 40    ! reset offset to beginning of section
-              call unpack6(cgrib, lcgrib, iofst, igds(2), ibmap, bmap,
-     $             jerr)
+              call unpack6(cgrib, lcgrib, iofst, igds(2), ibmap, bmap, &
+                   jerr)
               if (jerr .eq. 0) then
                   have6 = .true.
               else
@@ -267,34 +266,34 @@
 !         requested.
           if ((isecnum .eq. 7) .and. (numfld .eq. ifldnum)) then
               if (idrsnum .eq. 0) then
-                  call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl,
-     $                 ndpts, fld)
+                  call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl, &
+                       ndpts, fld)
                   have7 = .true.
               elseif (idrsnum .eq. 2 .or. idrsnum .eq. 3) then
-                  call comunpack(cgrib(ipos + 5), lensec - 6, lensec,
-     $                 idrsnum,idrstmpl, ndpts, fld, ier)
+                  call comunpack(cgrib(ipos + 5), lensec - 6, lensec, &
+                       idrsnum,idrstmpl, ndpts, fld, ier)
                   if (ier .ne. 0) then
                       ierr = 14
                       return
                   endif
                   have7 = .true.
               elseif (idrsnum .eq. 50) then
-                  call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl,
-     $                 ndpts - 1, fld(2))
+                  call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl, &
+                       ndpts - 1, fld(2))
                   ieee = idrstmpl(5)
                   call rdieee(ieee, fld(1), 1)
                   have7 = .true.
               elseif (idrsnum .eq. 40 .or. idrsnum .eq. 40000) then
-                  call jpcunpack(cgrib(ipos + 5), lensec - 5, idrstmpl,
-     $                 ndpts, fld)
+                  call jpcunpack(cgrib(ipos + 5), lensec - 5, idrstmpl, &
+                       ndpts, fld)
                   have7 = .true.
               elseif (idrsnum .eq. 41 .or. idrsnum .eq. 40010) then
-                  call pngunpack(cgrib(ipos + 5), lensec - 5, idrstmpl,
-     $                 ndpts, fld)
+                  call pngunpack(cgrib(ipos + 5), lensec - 5, idrstmpl, &
+                       ndpts, fld)
                   have7 = .true.
               else
-                  print *, 'getfield: Data Representation Template ',
-     $                 idrsnum, ' not yet implemented.'
+                  print *, 'getfield: Data Representation Template ', &
+                       idrsnum, ' not yet implemented.'
                   ierr = 9
                   return
               endif
@@ -304,23 +303,23 @@
 !         missed the terminator string '7777'.
           ipos = ipos + lensec      ! Update beginning of section pointer
           if (ipos .gt. (istart + lengrib)) then
-              print *, 'getfield: "7777"  not found at end'
-     $             ,' of GRIB message.'
+              print *, 'getfield: "7777"  not found at end' &
+                   ,' of GRIB message.'
               ierr = 7
               return
           endif
 
-          if (have3 .and. have4 .and. have5 .and. have6 .and. have7)
-     $         return
+          if (have3 .and. have4 .and. have5 .and. have6 .and. have7) &
+               return
           
       enddo
 
 !     If exited from above loop, the end of the GRIB message was reached
 !     before the requested field was found.
-      print *, 'getfield: GRIB message contained ', numlocal, 
-     &     ' different fields.'
-      print *, 'getfield: The request was for the ', ifldnum, 
-     &     ' field.'
+      print *, 'getfield: GRIB message contained ', numlocal,  &
+           ' different fields.'
+      print *, 'getfield: The request was for the ', ifldnum,  &
+           ' field.'
       ierr = 6
 
       return
@@ -367,8 +366,8 @@
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
 !>
-      subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, 
-     &     mapgridlen, ideflist, idefnum, ierr)
+      subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
+           mapgridlen, ideflist, idefnum, ierr)
 
       use gridtemplates
 
@@ -402,8 +401,8 @@
 !      if (igds(1).eq.0.OR.igds(1).eq.255) then  ! FOR ECMWF TEST ONLY
           allocate(mapgrid(lensec))
 !         Get Grid Definition Template
-          call getgridtemplate(igds(5), mapgridlen, mapgrid, needext, 
-     &         iret)
+          call getgridtemplate(igds(5), mapgridlen, mapgrid, needext,  &
+               iret)
           if (iret .ne. 0) then
               ierr = 5
               return
@@ -435,8 +434,8 @@
 !      extended. The number of values in a specific template may vary
 !      depending on data specified in the "static" part of the template.
       if (needext) then
-          call extgridtemplate(igds(5), igdstmpl, newmapgridlen,
-     $         mapgrid)
+          call extgridtemplate(igds(5), igdstmpl, newmapgridlen, &
+               mapgrid)
 !         Unpack the rest of the Grid Definition Template
           do i = mapgridlen + 1, newmapgridlen
               nbits = iabs(mapgrid(i)) * 8
@@ -444,8 +443,8 @@
                   call g2_gbytec(cgrib, igdstmpl(i), iofst, nbits)
               else
                   call g2_gbytec(cgrib, isign, iofst, 1)
-                  call g2_gbytec(cgrib, igdstmpl(i), iofst + 1, nbits -
-     $                 1)
+                  call g2_gbytec(cgrib, igdstmpl(i), iofst + 1, nbits - &
+                       1)
                   if (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)
               endif
               iofst = iofst + nbits
@@ -494,8 +493,8 @@
 !>    - 5 GRIB message contains an undefined Product Definition Template.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-      subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl,
-     $     mappdslen, coordlist, numcoord, ierr)
+      subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
+           mappdslen, coordlist, numcoord, ierr)
 
       use pdstemplates
 
@@ -600,8 +599,8 @@
 !>    - 7 GRIB message contains an undefined Data Representation Template.
 !>
 !>    @author Stephen Gilbert @date 2000-05-26
-      subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, 
-     $     idrstmpl, mapdrslen, ierr)
+      subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
+           idrstmpl, mapdrslen, ierr)
 
       use drstemplates
 
@@ -661,8 +660,7 @@
                   call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
               else
                   call g2_gbytec(cgrib, isign, iofst, 1)
-                  call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits -
-     $                 1)
+                  call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits - 1)
                   if (isign.eq.1) idrstmpl(i) = -idrstmpl(i)
               endif
               iofst = iofst + nbits
@@ -725,8 +723,8 @@
       elseif (ibmap.eq.255) then ! No bitmap in message
           bmap(1:ngpts) = .true.
       else
-          print *, 'unpack6: Predefined bitmap ', ibmap,
-     $         ' not recognized.'
+          print *, 'unpack6: Predefined bitmap ', ibmap, &
+               ' not recognized.'
           ierr = 4
       endif
       

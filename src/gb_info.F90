@@ -52,8 +52,8 @@
 !>    @author Stephen Gilbert @date 2000-05-25
 !>
 
-      subroutine gb_info(cgrib,lcgrib,listsec0,listsec1,
-     &                    numfields,numlocal,maxlocal,ierr)
+      subroutine gb_info(cgrib,lcgrib,listsec0,listsec1, &
+           numfields,numlocal,maxlocal,ierr)
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
@@ -64,8 +64,8 @@
       character(len=4) :: ctemp
       integer,parameter :: zero=0,one=1
       integer,parameter :: mapsec1len=13
-      integer,parameter :: 
-     &        mapsec1(mapsec1len)=(/ 2,2,1,1,1,2,1,1,1,1,1,1,1 /)
+      integer,parameter ::  &
+           mapsec1(mapsec1len)=(/ 2,2,1,1,1,2,1,1,1,1,1,1,1 /)
       integer iofst,ibeg,istart
 
       ierr=0
@@ -171,8 +171,8 @@
               numfields=numfields+1
            endif
         else
-           print *,'gb_info: Invalid section number found in GRIB',
-     &             ' message: ',isecnum
+           print *,'gb_info: Invalid section number found in GRIB', &
+                ' message: ',isecnum
            ierr=6
            return
         endif

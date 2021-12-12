@@ -95,8 +95,8 @@
              pos3=index(cline,':')
              cline(pos3:pos3)=';'
              pos4=index(cline,':')
-             if ( pos1.eq.0 .or. pos2.eq.0 .or. pos3.eq.0 .or. 
-     &            pos4.eq.0) cycle
+             if ( pos1.eq.0 .or. pos2.eq.0 .or. pos3.eq.0 .or.  &
+                  pos4.eq.0) cycle
 
              !
              !  Read each of the five fields.
@@ -181,8 +181,8 @@
            do while ( associated(tempgrid) )
                if ( number .eq. tempgrid%grid_num ) then
                   igdtn=tempgrid%gdt_num
-                  igdtmpl(1:tempgrid%gdt_len)=
-     &                        tempgrid%gridtmpl(1:tempgrid%gdt_len)
+                  igdtmpl(1:tempgrid%gdt_len)= &
+                       tempgrid%gridtmpl(1:tempgrid%gdt_len)
                   return
                else
                   tempgrid => tempgrid%next
@@ -244,8 +244,8 @@
            do while ( associated(tempgrid) )
                if ( name .eq. tempgrid%cdesc ) then
                   igdtn=tempgrid%gdt_num
-                  igdtmpl(1:tempgrid%gdt_len)=
-     &                     tempgrid%gridtmpl(1:tempgrid%gdt_len)
+                  igdtmpl(1:tempgrid%gdt_len)= &
+                       tempgrid%gridtmpl(1:tempgrid%gdt_len)
                   return
                else
                   tempgrid => tempgrid%next
