@@ -2,7 +2,6 @@
 !>    @brief Contains subroutines packs up a data field into a JPEG2000
 !>    code stream.
 !>    @author Stephen Gilbert @date 2002-12-17
-!>
 
 !>    This subroutine packs up a data field into a JPEG2000 code stream.
 !>    After the data field is scaled, and the reference value is
@@ -33,8 +32,6 @@
 !>    @param[out] lcpack length of packed field cpack.
 !>    
 !>    @author Stephen Gilbert @date 2002-12-17
-!>
-
       subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
 
       integer,intent(in) :: width,height
@@ -123,15 +120,15 @@
         nsize=lcpack      ! needed for input to enc_jpeg2000
         allocate(ctemp(nbytes*ndpts))
         call g2_sbytesc(ctemp,ifld,0,nbytes*8,0,ndpts)
-        lcpack=enc_jpeg2000(ctemp,width,height,nbits,idrstmpl(6),
-     &                      idrstmpl(7),retry,cpack,nsize)
+        lcpack=enc_jpeg2000(ctemp,width,height,nbits,idrstmpl(6), &
+             idrstmpl(7),retry,cpack,nsize)
         if (lcpack.le.0) then
            print *,'jpcpack: ERROR Packing JPC=',lcpack
            if (lcpack.eq.-3) then
               retry=1
               print *,'jpcpack: Retrying....'
-              lcpack=enc_jpeg2000(ctemp,width,height,nbits,idrstmpl(6),
-     &                         idrstmpl(7),retry,cpack,nsize)
+              lcpack=enc_jpeg2000(ctemp,width,height,nbits,idrstmpl(6), &
+                   idrstmpl(7),retry,cpack,nsize)
               if (lcpack.le.0) then
                  print *,'jpcpack: Retry Failed.'
               else

@@ -1,7 +1,6 @@
 !>    @file
 !>    @brief This subroutine unpacks a data field from a JPEG2000 code stream.
 !>    @author Stephen Gilbert @date 2002-12-17
-!>
 
 !>    This subroutine unpacks a data field that was packed into a
 !>    JPEG2000 code stream using info from the GRIB2 Data Representation
@@ -15,8 +14,6 @@
 !>    @param[out] fld Contains the unpacked data values.
 !>    
 !>    @author Stephen Gilbert @date 2002-12-17
-!>
-
       subroutine jpcunpack(cpack,len,idrstmpl,ndpts,fld)
 
       character(len=1),intent(in) :: cpack(len)

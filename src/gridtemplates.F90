@@ -67,68 +67,68 @@
       data templates(1)%template_num /0/     !  Lat/Lon 
       data templates(1)%mapgridlen /19/
       data templates(1)%needext /.false./
-      data (templates(1)%mapgrid(j),j=1,19) 
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1/
+      data (templates(1)%mapgrid(j),j=1,19)  &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1/
 
       data templates(2)%template_num /1/     !  Rotated Lat/Lon 
       data templates(2)%mapgridlen /22/
       data templates(2)%needext /.false./
-      data (templates(2)%mapgrid(j),j=1,22) 
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,4/
+      data (templates(2)%mapgrid(j),j=1,22)  &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,4/
 
       data templates(3)%template_num /2/     !  Stretched Lat/Lon 
       data templates(3)%mapgridlen /22/
       data templates(3)%needext /.false./
-      data (templates(3)%mapgrid(j),j=1,22) 
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,-4/
+      data (templates(3)%mapgrid(j),j=1,22)  &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,-4/
 
-      data templates(4)%template_num /3/     !  Stretched & Rotated Lat/Lon 
+      data templates(4)%template_num /3/     !  Stretched and Rotated Lat/Lon 
       data templates(4)%mapgridlen /25/
       data templates(4)%needext /.false./
-      data (templates(4)%mapgrid(j),j=1,25) 
-     &       /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,4,-4,4,-4/
+      data (templates(4)%mapgrid(j),j=1,25)  &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,4,-4,4,-4/
 
       data templates(5)%template_num /10/     !  Mercator
       data templates(5)%mapgridlen /19/
       data templates(5)%needext /.false./
-      data (templates(5)%mapgrid(j),j=1,19)
-     &              /1,1,4,1,4,1,4,4,4,-4,4,1,-4,-4,4,1,4,4,4/
+      data (templates(5)%mapgrid(j),j=1,19) &
+           /1,1,4,1,4,1,4,4,4,-4,4,1,-4,-4,4,1,4,4,4/
 
       data templates(6)%template_num /20/     !  Polar Stereographic
       data templates(6)%mapgridlen /18/
       data templates(6)%needext /.false./
-      data (templates(6)%mapgrid(j),j=1,18) 
-     &              /1,1,4,1,4,1,4,4,4,-4,4,1,-4,4,4,4,1,1/
+      data (templates(6)%mapgrid(j),j=1,18)  &
+           /1,1,4,1,4,1,4,4,4,-4,4,1,-4,4,4,4,1,1/
 
       data templates(7)%template_num /30/     !  Lambert Conformal
       data templates(7)%mapgridlen /22/
       data templates(7)%needext /.false./
-      data (templates(7)%mapgrid(j),j=1,22) 
-     &              /1,1,4,1,4,1,4,4,4,-4,4,1,-4,4,4,4,1,1,-4,-4,-4,4/
+      data (templates(7)%mapgrid(j),j=1,22)  &
+           /1,1,4,1,4,1,4,4,4,-4,4,1,-4,4,4,4,1,1,-4,-4,-4,4/
 
       data templates(8)%template_num /40/     !  Gaussian Lat/Lon
       data templates(8)%mapgridlen /19/
       data templates(8)%needext /.false./
-      data (templates(8)%mapgrid(j),j=1,19) 
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1/
+      data (templates(8)%mapgrid(j),j=1,19)  &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1/
 
       data templates(9)%template_num /41/     !  Rotated Gaussian Lat/Lon
       data templates(9)%mapgridlen /22/
       data templates(9)%needext /.false./
-      data (templates(9)%mapgrid(j),j=1,22) 
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,4/
+      data (templates(9)%mapgrid(j),j=1,22)  &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,4/
 
       data templates(10)%template_num /42/     !  Stretched Gaussian Lat/Lon
       data templates(10)%mapgridlen /22/
       data templates(10)%needext /.false./
-      data (templates(10)%mapgrid(j),j=1,22) 
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,-4/
+      data (templates(10)%mapgrid(j),j=1,22)  &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,-4/
 
       data templates(11)%template_num /43/     !  Strtchd and Rot'd Gaus Lat/Lon
       data templates(11)%mapgridlen /25/
       data templates(11)%needext /.false./
-      data (templates(11)%mapgrid(j),j=1,25) 
-     &          /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,4,-4,4,-4/
+      data (templates(11)%mapgrid(j),j=1,25)  &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,-4,4,4,-4,4,-4/
 
       data templates(12)%template_num /50/    !  Spherical Harmonic Coefficients
       data templates(12)%mapgridlen /5/
@@ -153,8 +153,8 @@
       data templates(16)%template_num /90/     !  Space view Perspective
       data templates(16)%mapgridlen /21/
       data templates(16)%needext /.false./
-      data (templates(16)%mapgrid(j),j=1,21) 
-     &              /1,1,4,1,4,1,4,4,4,-4,4,1,4,4,4,4,1,4,4,4,4/
+      data (templates(16)%mapgrid(j),j=1,21)  &
+           /1,1,4,1,4,1,4,4,4,-4,4,1,4,4,4,4,1,4,4,4,4/
 
       data templates(17)%template_num /100/    !  Triangular grid (icosahedron)
       data templates(17)%mapgridlen /11/
@@ -164,8 +164,8 @@
       data templates(18)%template_num /110/ !  Equatorial Azimuthal equidistant
       data templates(18)%mapgridlen /16/
       data templates(18)%needext /.false./
-      data (templates(18)%mapgrid(j),j=1,16) 
-     &              /1,1,4,1,4,1,4,4,4,-4,4,1,4,4,1,1/
+      data (templates(18)%mapgrid(j),j=1,16)  &
+           /1,1,4,1,4,1,4,4,4,-4,4,1,4,4,1,1/
 
        data templates(19)%template_num /120/     !  Azimuth-range 
        data templates(19)%mapgridlen /7/
@@ -175,84 +175,84 @@
        data templates(20)%template_num /1000/     !  Cross Section Grid 
        data templates(20)%mapgridlen /20/
        data templates(20)%needext /.true./
-       data (templates(20)%mapgrid(j),j=1,20) 
-     &              /1,1,4,1,4,1,4,4,4,4,-4,4,1,4,4,1,2,1,1,2/
+       data (templates(20)%mapgrid(j),j=1,20)  &
+            /1,1,4,1,4,1,4,4,4,4,-4,4,1,4,4,1,2,1,1,2/
 
        data templates(21)%template_num /1100/     !  Hovmoller Diagram Grid 
        data templates(21)%mapgridlen /28/
        data templates(21)%needext /.false./
-       data (templates(21)%mapgrid(j),j=1,28) 
-     &    /1,1,4,1,4,1,4,4,4,4,-4,4,1,-4,4,1,4,1,-4,1,1,-4,2,1,1,1,1,1/
+       data (templates(21)%mapgrid(j),j=1,28)  &
+            /1,1,4,1,4,1,4,4,4,4,-4,4,1,-4,4,1,4,1,-4,1,1,-4,2,1,1,1,1,1/
 
        data templates(22)%template_num /1200/     !  Time Section Grid 
        data templates(22)%mapgridlen /16/
        data templates(22)%needext /.true./
-       data (templates(22)%mapgrid(j),j=1,16) 
-     &              /4,1,-4,1,1,-4,2,1,1,1,1,1,2,1,1,2/
+       data (templates(22)%mapgrid(j),j=1,16)  &
+            /4,1,-4,1,1,-4,2,1,1,1,1,1,2,1,1,2/
 
       data templates(23)%template_num /31/     !  Albers Equal Area
       data templates(23)%mapgridlen /22/
       data templates(23)%needext /.false./
-      data (templates(23)%mapgrid(j),j=1,22) 
-     &              /1,1,4,1,4,1,4,4,4,-4,4,1,-4,4,4,4,1,1,-4,-4,-4,4/
+      data (templates(23)%mapgrid(j),j=1,22)  &
+           /1,1,4,1,4,1,4,4,4,-4,4,1,-4,4,4,4,1,1,-4,-4,-4,4/
 
       data templates(24)%template_num /204/     !  Curilinear Orthogonal Grids
       data templates(24)%mapgridlen /19/
       data templates(24)%needext /.false./
-      data (templates(24)%mapgrid(j),j=1,19)
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1/
+      data (templates(24)%mapgrid(j),j=1,19) &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1/
 
       data templates(25)%template_num /32768/   ! Rotate Lat/Lon E-grid
       data templates(25)%mapgridlen /19/
       data templates(25)%needext /.false./
-      data (templates(25)%mapgrid(j),j=1,19)
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1/
+      data (templates(25)%mapgrid(j),j=1,19) &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1/
 
       data templates(26)%template_num /32769/   ! Rotate Lat/Lon Non-E Stagger grid
       data templates(26)%mapgridlen /21/
       data templates(26)%needext /.false./
-      data (templates(26)%mapgrid(j),j=1,21)
-     &              /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,4,4/
+      data (templates(26)%mapgrid(j),j=1,21) &
+           /1,1,4,1,4,1,4,4,4,4,4,-4,4,1,-4,4,4,4,1,4,4/
 !
 !     GDT 3.4 Added (08/05/2013)
 !
       data templates(27)%template_num /4/     !  Variable resolution Latitude/Longitude
       data templates(27)%mapgridlen /13/
       data templates(27)%needext /.true./
-      data (templates(27)%mapgrid(j),j=1,13)
-     &              /1,1,4,1,4,1,4,4,4,4,4,1,1/
+      data (templates(27)%mapgrid(j),j=1,13) &
+           /1,1,4,1,4,1,4,4,4,4,4,1,1/
 !
 !     GDT 3.5 Added (08/05/2013)
 !
       data templates(28)%template_num /5/     !  Variable resolution rotate Latitude/Longitude
       data templates(28)%mapgridlen /16/
       data templates(28)%needext /.true./
-      data (templates(28)%mapgrid(j),j=1,16)
-     &              /1,1,4,1,4,1,4,4,4,4,4,1,1,-4,4,4/
+      data (templates(28)%mapgrid(j),j=1,16) &
+           /1,1,4,1,4,1,4,4,4,4,4,1,1,-4,4,4/
 !
 !     GDT 3.12 Added (08/05/2013)
 !
       data templates(29)%template_num /12/     !  Transverse Mercator
       data templates(29)%mapgridlen /22/
       data templates(29)%needext /.false./
-      data (templates(29)%mapgrid(j),j=1,22)
-     &              /1,1,4,1,4,1,4,4,4,-4,4,1,-4,4,4,1,4,4,-4,-4,-4,-4/
+      data (templates(29)%mapgrid(j),j=1,22) &
+           /1,1,4,1,4,1,4,4,4,-4,4,1,-4,4,4,1,4,4,-4,-4,-4,-4/
 !
 !     GDT 3.101 Added (08/05/2013)
 !
       data templates(30)%template_num /101/     !  General unstructured grid
       data templates(30)%mapgridlen /4/
       data templates(30)%needext /.false./
-      data (templates(30)%mapgrid(j),j=1,4)
-     &              /1,4,1,-4/
+      data (templates(30)%mapgrid(j),j=1,4) &
+           /1,4,1,-4/
 !
 !     GDT 3.140 Added (08/05/2013)
 !
       data templates(31)%template_num /140/     !  Lambert Azimuthal Equal Area Projection
       data templates(31)%mapgridlen /17/
       data templates(31)%needext /.false./
-      data (templates(31)%mapgrid(j),j=1,17)
-     &              /1,1,4,1,4,1,4,4,4,-4,4,4,4,1,4,4,1/
+      data (templates(31)%mapgrid(j),j=1,17) &
+           /1,1,4,1,4,1,4,4,4,-4,4,4,4,1,4,4,1/
 
       contains
 
@@ -317,8 +317,7 @@
            else
              nummap=0
              needext=.false.
-             print *,'getgridtemplate: Grid Template ',number,
-     &               ' not defined.'
+             print *,'getgridtemplate: Grid Template ', number, ' not defined.'
              iret=1
            endif
 

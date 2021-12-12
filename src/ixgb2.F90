@@ -1,75 +1,73 @@
-C>    @file
-C>    @brief This subroutine generates an index record for each field in
-C>    a grib2 message. 
-C>    @author Mark Iredell @date 1995-10-31
-C>
+!>    @file
+!>    @brief This subroutine generates an index record for each field in
+!>    a grib2 message. 
+!>    @author Mark Iredell @date 1995-10-31
+!>
 
-C>    This subroutine generates an index record for each field in
-C>    a grib2 message. The index records are written to index buffer
-C>    pointed to by cbuf.
-C>    - byte 001 - 004 length of index record
-C>    - byte 005 - 008 bytes to skip in data file before grib message
-C>    - byte 009 - 012 bytes to skip in message before lus (local use)
-C>    set = 0, if no local use section in grib2 message.
-C>    - byte 013 - 016 bytes to skip in message before gds
-C>    - byte 017 - 020 bytes to skip in message before pds
-C>    - byte 021 - 024 bytes to skip in message before drs
-C>    - byte 025 - 028 bytes to skip in message before bms
-C>    - byte 029 - 032 bytes to skip in message before data section
-C>    - byte 033 - 040 bytes total in the message
-C>    - byte 041 - 041 grib version number (currently 2)
-C>    - byte 042 - 042 message discipline
-C>    - byte 043 - 044 field number within grib2 message
-C>    - byte 045 - ii identification section (ids)
-C>    - byte ii+1 - jj grid definition section (gds)
-C>    - byte jj+1 - kk product definition section (pds)
-C>    - byte kk+1 - ll the data representation section (drs)
-C>    - byte ll+1 - ll+6 first 6 bytes of the bit map section (bms)
-C>
-C>    ### Program History Log
-C>    Date | Programmer | Comments
-C>    -----|------------|--------- 
-C>    1995-10-31 | Mark Iredell | Initial.
-C>    1996-10-31 | Mark Iredell | augmented optional definitions to byte 320.
-C>    2001-12-10 | Stephen Gilbert | modified from ixgb to create grib2 indexes.
-C>    2002-01-31 | Stephen Gilbert | added identification section to index record.
-C>    
-C>    @param[in] LUGB Unit of the unblocked grib file. Must
-C>     be opened by [baopen() or baopenr()]
-C>    (https://noaa-emc.github.io/NCEPLIBS-bacio/).
-C>    @param[in] LSKIP Number of bytes to skip before grib message.
-C>    @param[in] LGRIB Number of bytes in grib message.
-C>    @param[out] CBUF Pointer to a buffer that contains
-C>    index records users should free memory that cbuf points to
-C>    using deallocate(cbuf) when cbuf is no longer needed.
-C>    @param[out] NUMFLD Number of index records created.
-C>    @param[out] MLEN Total length of all index records.
-C>    @param[out] IRET Return code
-C>    - 0 all ok
-C>    - 1 not enough memory available to hold full index buffer
-C>    - 2 i/o error in read
-C>    - 3 grib message is not edition 2
-C>    - 4 not enough memory to allocate extent to index buffer
-C>    - 5 unidentified grib section encountered
-C>    
-C>     @author Mark Iredell @date 1995-10-31
-C>
-
+!>    This subroutine generates an index record for each field in
+!>    a grib2 message. The index records are written to index buffer
+!>    pointed to by cbuf.
+!>    - byte 001 - 004 length of index record
+!>    - byte 005 - 008 bytes to skip in data file before grib message
+!>    - byte 009 - 012 bytes to skip in message before lus (local use)
+!>    set = 0, if no local use section in grib2 message.
+!>    - byte 013 - 016 bytes to skip in message before gds
+!>    - byte 017 - 020 bytes to skip in message before pds
+!>    - byte 021 - 024 bytes to skip in message before drs
+!>    - byte 025 - 028 bytes to skip in message before bms
+!>    - byte 029 - 032 bytes to skip in message before data section
+!>    - byte 033 - 040 bytes total in the message
+!>    - byte 041 - 041 grib version number (currently 2)
+!>    - byte 042 - 042 message discipline
+!>    - byte 043 - 044 field number within grib2 message
+!>    - byte 045 - ii identification section (ids)
+!>    - byte ii+1 - jj grid definition section (gds)
+!>    - byte jj+1 - kk product definition section (pds)
+!>    - byte kk+1 - ll the data representation section (drs)
+!>    - byte ll+1 - ll+6 first 6 bytes of the bit map section (bms)
+!>
+!>    ### Program History Log
+!>    Date | Programmer | Comments
+!>    -----|------------|--------- 
+!>    1995-10-31 | Mark Iredell | Initial.
+!>    1996-10-31 | Mark Iredell | augmented optional definitions to byte 320.
+!>    2001-12-10 | Stephen Gilbert | modified from ixgb to create grib2 indexes.
+!>    2002-01-31 | Stephen Gilbert | added identification section to index record.
+!>    
+!>    @param[in] LUGB Unit of the unblocked grib file. Must
+!>     be opened by [baopen() or baopenr()]
+!>    (https://noaa-emc.github.io/NCEPLIBS-bacio/).
+!>    @param[in] LSKIP Number of bytes to skip before grib message.
+!>    @param[in] LGRIB Number of bytes in grib message.
+!>    @param[out] CBUF Pointer to a buffer that contains
+!>    index records users should free memory that cbuf points to
+!>    using deallocate(cbuf) when cbuf is no longer needed.
+!>    @param[out] NUMFLD Number of index records created.
+!>    @param[out] MLEN Total length of all index records.
+!>    @param[out] IRET Return code
+!>    - 0 all ok
+!>    - 1 not enough memory available to hold full index buffer
+!>    - 2 i/o error in read
+!>    - 3 grib message is not edition 2
+!>    - 4 not enough memory to allocate extent to index buffer
+!>    - 5 unidentified grib section encountered
+!>    
+!>     @author Mark Iredell @date 1995-10-31
       SUBROUTINE IXGB2(LUGB,LSKIP,LGRIB,CBUF,NUMFLD,MLEN,IRET)
 
       USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
       PARAMETER(LINMAX=5000,INIT=50000,NEXT=10000)
-      PARAMETER(IXSKP=4,IXLUS=8,IXSGD=12,IXSPD=16,IXSDR=20,IXSBM=24,
-     &          IXDS=28,IXLEN=36,IXFLD=42,IXIDS=44)
-      PARAMETER(MXSKP=4,MXLUS=4,MXSGD=4,MXSPD=4,MXSDR=4,MXSBM=4,
-     &          MXDS=4,MXLEN=4,MXFLD=2,MXBMS=6)
+      PARAMETER(IXSKP=4,IXLUS=8,IXSGD=12,IXSPD=16,IXSDR=20,IXSBM=24, &
+           IXDS=28,IXLEN=36,IXFLD=42,IXIDS=44)
+      PARAMETER(MXSKP=4,MXLUS=4,MXSGD=4,MXSPD=4,MXSDR=4,MXSBM=4, &
+           MXDS=4,MXLEN=4,MXFLD=2,MXBMS=6)
       CHARACTER CBREAD(LINMAX),CINDEX(LINMAX)
       CHARACTER CVER,CDISC
       CHARACTER CIDS(LINMAX),CGDS(LINMAX),CBMS(6)
       CHARACTER(LEN=4) :: CTEMP
       INTEGER LOCLUS,LOCGDS,LENGDS,LOCBMS
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       LOCLUS=0
       IRET=0
       MLEN=0
@@ -81,8 +79,8 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
          IRET=1
          RETURN
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
+
+!  READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
       IBREAD=MIN(LGRIB,LINMAX)
       CALL BAREAD(LUGB,LSKIP,IBREAD,LBREAD,CBREAD)
       IF(LBREAD.NE.IBREAD) THEN
@@ -99,8 +97,8 @@ C  READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
       LENSEC1=MIN(LENSEC1,IBREAD)
       CIDS(1:LENSEC1)=CBREAD(17:16+LENSEC1)
       IBSKIP=LSKIP+16+LENSEC1
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
+
+!  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
       IBREAD=MAX(5,MXBMS)
       DO
          CALL BAREAD(LUGB,IBSKIP,IBREAD,LBREAD,CBREAD)     
@@ -192,6 +190,5 @@ C  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
          IBSKIP=IBSKIP+LENSEC
       ENDDO
 
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       RETURN
       END

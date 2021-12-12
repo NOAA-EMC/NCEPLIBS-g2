@@ -46,8 +46,8 @@
       call g2_gbytec(cgrib, lencurr, 96, 32)
 
 !     Check to see if GRIB message is already complete
-!     ctemp=cgrib(lencurr-3)//cgrib(lencurr-2)//cgrib(lencurr-1)
-!    &      //cgrib(lencurr)
+!     ctemp=cgrib(lencurr-3)//cgrib(lencurr-2)//cgrib(lencurr-1) &
+      !          //cgrib(lencurr)
 !     if (ctemp.eq.c7777) then
 !       print *, 'gribend: GRIB message already complete.'
 !       ierr=2
@@ -71,11 +71,11 @@
 !         If byte count for each section doesn't match current total
 !         length, then there is a problem.
           if (len .gt. lencurr) then
-              print *, 'gribend: Section byte counts don''t add '
-     $             ,'to total.'
+              print *, 'gribend: Section byte counts don''t add ' &
+                   ,'to total.'
               print *, 'gribend: Sum of section byte counts = ', len
-              print *, 'gribend: Total byte count in Section 0 = ',
-     $             lencurr
+              print *, 'gribend: Total byte count in Section 0 = ', &
+                   lencurr
               ierr = 3
               return
           endif
@@ -83,10 +83,10 @@
 
 !     Can only add End Section (Section 8) after Section 7.
       if (isecnum .ne. 7) then
-          print *, 'gribend: Section 8 can only be added after '
-     $         ,'Section 7.'
-          print *, 'gribend: Section ', isecnum,
-     $         ' was the last found in',' given GRIB message.'
+          print *, 'gribend: Section 8 can only be added after ' &
+               ,'Section 7.'
+          print *, 'gribend: Section ', isecnum, &
+               ' was the last found in',' given GRIB message.'
           ierr = 4
           return
       endif

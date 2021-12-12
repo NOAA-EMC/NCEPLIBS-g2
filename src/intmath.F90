@@ -17,8 +17,6 @@
 !>     - i1log2_1 for 1 bit integer numbers.
 !>    
 !>    @author Stephen Gilbert @date 2000-06-21
-!>    
-
       module intmath
       implicit none
 
@@ -40,15 +38,11 @@
 
       contains
 
-      ! ----------------------------------------------------------------
-
 !>    This function returns log(x+1)/log(2) unless x=maxint, in
 !>    which case log(x)/log(2) for 8 bit integer numbers.
 !>    @param[in] ival 8 bit integer numbers.
 !>    @return value for log(x+1)/log(2)
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       function i1log2_8(ival)
       implicit none
       integer(kind=8), value :: ival
@@ -61,15 +55,11 @@
       endif
       end function i1log2_8
 
-      ! ----------------------------------------------------------------
-
 !>    This function returns log(x+1)/log(2) unless x=maxint, in
 !>    which case log(x)/log(2) for 4 bit integer numbers.
 !>    @param[in] ival 4 bit integer numbers.
 !>    @return value for log(x+1)/log(2)
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       function i1log2_4(ival)
       implicit none
       integer(kind=4), value :: ival
@@ -82,15 +72,11 @@
       endif
       end function i1log2_4
 
-      ! ----------------------------------------------------------------
-
 !>    This function returns log(x+1)/log(2) unless x=maxint, in
 !>    which case log(x)/log(2) for 2 bit integer numbers.
 !>    @param[in] ival 2 bit integer numbers.
 !>    @return value for log(x+1)/log(2)
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       function i1log2_2(ival)
       implicit none
       integer(kind=2), value :: ival
@@ -103,15 +89,11 @@
       endif
       end function i1log2_2
 
-      ! ----------------------------------------------------------------
-
 !>    This function returns log(x+1)/log(2) unless x=maxint, in
 !>    which case log(x)/log(2) for 1 bit integer numbers.
 !>    @param[in] ival 1 bit integer numbers.
 !>    @return value for log(x+1)/log(2)
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       function i1log2_1(ival)
       implicit none
       integer(kind=1), value :: ival
@@ -124,14 +106,10 @@
       endif
       end function i1log2_1
 
-      ! ----------------------------------------------------------------
-
 !>    This function returns log(x)/log(2) for 8 bit integer numbers.
 !>    @param[in] i_in 8 bit integer numbers.
 !>    @return value for log(x)/log(2)
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       function ilog2_8(i_in)
       implicit none
       integer(kind=8), value :: i_in
@@ -175,14 +153,10 @@
       endif
       end function ilog2_8
 
-      ! ----------------------------------------------------------------
-
 !>    This function returns log(x)/log(2) for 4 bit integer numbers.
 !>    @param[in] i_in 4 bit integer numbers.
 !>    @return value for log(x)/log(2)
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       function ilog2_4(i_in)
       implicit none
       integer(kind=4), value :: i_in
@@ -221,14 +195,10 @@
       endif
       end function ilog2_4
 
-      ! ----------------------------------------------------------------
-
 !>    This function returns log(x)/log(2) for 2 bit integer numbers.
 !>    @param[in] i_in 2 bit integer numbers.
 !>    @return value for log(x)/log(2)
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       function ilog2_2(i_in)
       implicit none
       integer(kind=2), value :: i_in
@@ -262,14 +232,10 @@
       endif
       end function ilog2_2
 
-      ! ----------------------------------------------------------------
-
 !>    This function returns log(x)/log(2) for 1 bit integer numbers.
 !>    @param[in] i_in 1 bit integer numbers.
 !>    @return value for log(x)/log(2)
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       function ilog2_1(i_in)
       implicit none
       integer(kind=1), value :: i_in
@@ -299,35 +265,35 @@
       end function ilog2_1
       end module intmath
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-c$$$ TEST PROGRAM FOR THIS MODULE
-c$$$      program test_intmath
-c$$$      use intmath
-c$$$      implicit none
-c$$$      real(kind=16) :: temp
-c$$$      real(kind=16), parameter :: alog2=log(2.0_16)
-c$$$      integer(kind=8), parameter  :: &
-c$$$     &     one=1,big=Z'7FFFFFFFFFFFFFFF',small=-2000000_8, &
-c$$$     &     check=Z'1FFFFFFF'
-c$$$      integer(kind=8) :: ival, iret
-c$$$      !$OMP PARALLEL DO PRIVATE(ival,temp,iret)
-c$$$      do ival=small,big
-c$$$ 10      format(Z16,' -- MISMATCH: ',I0,'=>',I0,' (',I0,' = ',F0.10,')')
-c$$$ 20      format(Z16,' -- OKAY:     ',I0,'=>',I0,' (',I0,' = ',F0.10,')')
-c$$$         if(ival+one<ival) then
-c$$$            temp=log(real(max(ival,one),kind=16))/alog2
-c$$$         else
-c$$$            temp=log(real(max(ival+one,one),kind=16))/alog2
-c$$$         endif
-c$$$         iret=i1log2(ival)
-c$$$         if(iret/=ceiling(temp) .or. ival==0 .or. ival==check) then
-c$$$            !$OMP CRITICAL
-c$$$            if(iret/=ceiling(temp)) then
-c$$$               print 10, ival, ival, iret,ceiling(temp),temp
-c$$$            else
-c$$$               print 20, ival, ival, iret,ceiling(temp),temp
-c$$$            endif
-c$$$            !$OMP END CRITICAL
-c$$$         endif
-c$$$      enddo
-c$$$      !$OMP END PARALLEL DO
-c$$$      end program test_intmath
+!$$$ TEST PROGRAM FOR THIS MODULE
+!$$$      program test_intmath
+!$$$      use intmath
+!$$$      implicit none
+!$$$      real(kind=16) :: temp
+!$$$      real(kind=16), parameter :: alog2=log(2.0_16)
+!$$$      integer(kind=8), parameter  :: &
+!$$$     &     one=1,big=Z'7FFFFFFFFFFFFFFF',small=-2000000_8, &
+!$$$     &     check=Z'1FFFFFFF'
+!$$$      integer(kind=8) :: ival, iret
+!$$$      !$OMP PARALLEL DO PRIVATE(ival,temp,iret)
+!$$$      do ival=small,big
+!$$$ 10      format(Z16,' -- MISMATCH: ',I0,'=>',I0,' (',I0,' = ',F0.10,')')
+!$$$ 20      format(Z16,' -- OKAY:     ',I0,'=>',I0,' (',I0,' = ',F0.10,')')
+!$$$         if(ival+one<ival) then
+!$$$            temp=log(real(max(ival,one),kind=16))/alog2
+!$$$         else
+!$$$            temp=log(real(max(ival+one,one),kind=16))/alog2
+!$$$         endif
+!$$$         iret=i1log2(ival)
+!$$$         if(iret/=ceiling(temp) .or. ival==0 .or. ival==check) then
+!$$$            !$OMP CRITICAL
+!$$$            if(iret/=ceiling(temp)) then
+!$$$               print 10, ival, ival, iret,ceiling(temp),temp
+!$$$            else
+!$$$               print 20, ival, ival, iret,ceiling(temp),temp
+!$$$            endif
+!$$$            !$OMP END CRITICAL
+!$$$         endif
+!$$$      enddo
+!$$$      !$OMP END PARALLEL DO
+!$$$      end program test_intmath

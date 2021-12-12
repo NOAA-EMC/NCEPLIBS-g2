@@ -2,7 +2,6 @@
 !>    @brief This subroutines initializes a new GRIB2 message and packs
 !>    GRIB2 Indicator Section and Identification Section.
 !>    @author Stephen Gilbert @date 2000-04-28
-!>
 
 !>    This subroutine initializes a new GRIB2 message and packs GRIB2
 !>    sections 0 (Indicator Section) and 1 (Identification Section).
@@ -51,8 +50,6 @@
 !>    complete GRIB2 message.
 !>
 !>    @author Stephen Gilbert @date 2000-04-28
-!>
-
       subroutine gribcreate(cgrib,lcgrib,listsec0,listsec1,ierr)
 
       character(len=1),intent(inout) :: cgrib(lcgrib)
@@ -63,8 +60,8 @@
       character(len=4),parameter :: grib='GRIB'
       integer,parameter :: zero=0,one=1
       integer,parameter :: mapsec1len=13
-      integer,parameter :: 
-     &        mapsec1(mapsec1len)=(/ 2,2,1,1,1,2,1,1,1,1,1,1,1 /)
+      integer,parameter ::  &
+           mapsec1(mapsec1len)=(/ 2,2,1,1,1,2,1,1,1,1,1,1,1 /)
       integer lensec0,iofst,ibeg
 
       ierr=0

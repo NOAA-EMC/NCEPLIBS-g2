@@ -71,8 +71,8 @@
 !>    less than the values calculated by this routine.
 !>
 !>    @author Stephen Gilbert @date 2000-05-25
-      subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1, 
-     &     numlocal, numfields, maxvals, ierr)
+      subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
+           numlocal, numfields, maxvals, ierr)
 
       character(len = 1), intent(in) :: cgrib(lcgrib)
       integer, intent(in) :: lcgrib
@@ -83,8 +83,8 @@
       character(len = 4) :: ctemp
       integer, parameter :: zero = 0, one = 1
       integer, parameter :: mapsec1len = 13
-      integer, parameter :: mapsec1(mapsec1len) = (/ 2, 2, 1, 1, 1, 2, 1
-     $     , 1, 1, 1, 1, 1, 1 /)
+      integer, parameter :: mapsec1(mapsec1len) = (/ 2, 2, 1, 1, 1, 2, 1, 1, &
+           1, 1, 1, 1, 1 /)
       integer iofst, ibeg, istart
 
       ierr = 0
@@ -101,8 +101,7 @@
 !     Check for beginning of GRIB message in the first 100 bytes
       istart = 0
       do j = 1, 100
-          ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j +
-     $         3)
+          ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j + 3)
           if (ctemp .eq. grib) then
               istart = j
               exit
@@ -159,13 +158,12 @@
 !     each. Also count the number of times Section 2 and Section 4
 !     appear.
       do
-          ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) //
-     $         cgrib(ipos + 3)
+          ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // &
+               cgrib(ipos + 3)
           if (ctemp .eq. c7777) then
               ipos = ipos + 4
               if (ipos .ne. (istart + lengrib)) then
-                  print *, 'gribinfo: "7777" found, but not '
-     $                 ,'where expected.'
+                  print *, 'gribinfo: "7777" found, but not where expected.'
                   ierr = 4
                   return
               endif
@@ -178,8 +176,7 @@
           iofst = iofst + 8
           ipos = ipos + lensec      ! Update beginning of section pointer
           if (ipos .gt. (istart + lengrib)) then
-              print *, 'gribinfo: "7777"  not found at end of '
-     $             ,'GRIB message.'
+              print *, 'gribinfo: "7777"  not found at end of GRIB message.'
               ierr = 5
               return
           endif
