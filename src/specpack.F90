@@ -1,7 +1,6 @@
 !>    @file
 !>    @brief This subroutine packs up a spectral data field.
 !>    @author Stephen Gilbert @date 2002-12-19
-!>
 
 !>    This subroutine packs a spectral data field using the complex
 !>    packing algorithm for spherical harmonic data as defined in the
@@ -17,8 +16,6 @@
 !>    @param[out] lcpack length of packed field cpack.
 !>
 !>    @author Stephen Gilbert @date 2002-12-19
-!>
-
       subroutine specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)
 
       real,intent(in) :: fld(ndpts)
@@ -80,8 +77,8 @@
 
       incu=incu-1
       if (incu .ne. Ts) then
-         print *,'specpack: Incorrect number of unpacked values ',
-     &           'given:',Ts     
+         print *,'specpack: Incorrect number of unpacked values ', &
+              'given:',Ts     
          print *,'specpack: Resetting idrstmpl(9) to ',incu
          Ts=incu
       endif

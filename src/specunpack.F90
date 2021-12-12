@@ -1,7 +1,6 @@
 !>    @file
 !>    @brief This subroutine packs up a data field.
 !>    @author Stephen Gilbert @date 2002-12-19
-!>
 
 !>    This subroutine unpacks a spectral data field that was packed
 !>    using the complex packing algorithm for spherical harmonic data as
@@ -18,8 +17,6 @@
 !>    @param[out] fld Contains the unpacked data values.
 !>    
 !>    @author Stephen Gilbert @date 2002-12-19
-!>    
-
       subroutine specunpack(cpack,len,idrstmpl,ndpts,JJ,KK,MM,fld)
 
       character(len=1),intent(in) :: cpack(len)
@@ -73,10 +70,10 @@
                   inc=inc+2
                   incu=incu+2
                else                         ! Calc coeff from packed value
-                  fld(inc)=((real(ifld(incp))*bscale)+ref)*
-     &                      dscale*pscale(n)           ! real part
-                  fld(inc+1)=((real(ifld(incp+1))*bscale)+ref)*
-     &                      dscale*pscale(n)           ! imaginary part
+                  fld(inc)=((real(ifld(incp))*bscale)+ref)* &
+                       dscale*pscale(n)           ! real part
+                  fld(inc+1)=((real(ifld(incp+1))*bscale)+ref)* &
+                       dscale*pscale(n)           ! imaginary part
                   inc=inc+2
                   incp=incp+2
                endif

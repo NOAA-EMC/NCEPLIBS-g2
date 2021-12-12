@@ -2,7 +2,6 @@
 !>    @brief This subroutine packs up a data field using simple packing
 !>    algorithm.
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
 
 !>    This subroutine packs up a data field using a simple packing
 !>    algorithm as defined in the GRIB2 documention. It also fills in
@@ -32,7 +31,6 @@
 !>    @param[out] lcpack length of packed field cpack.
 !>
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
       subroutine simpack(fld,ndpts,idrstmpl,cpack,lcpack)
 
       use intmath

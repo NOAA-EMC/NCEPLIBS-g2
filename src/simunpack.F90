@@ -1,7 +1,6 @@
 !>    @file
 !>    @brief This subroutine packs up a data field.
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
 
 !>    This subroutine unpacks a data field that was packed using a
 !>    simple packing algorithm as defined in the GRIB2 documention,
@@ -15,8 +14,6 @@
 !>    @param[out] fld Contains the unpacked data values.
 !>
 !>    @author Stephen Gilbert @date 2000-06-21
-!>
-
       subroutine simunpack(cpack,len,idrstmpl,ndpts,fld)
 
       character(len=1),intent(in) :: cpack(len)
@@ -50,7 +47,6 @@
            fld(j)=ref
          enddo
       endif
-
 
       return
       end
