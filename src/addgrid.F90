@@ -46,8 +46,8 @@
 !>    - 5 Could not find requested Grid Definition Template.
 !>
 !>    @author Stephen Gilbert @date 2000-05-01
-      subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen,
-     &     ideflist, idefnum, ierr)
+      subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
+           ideflist, idefnum, ierr)
 
       use gridtemplates
 
@@ -69,8 +69,8 @@
       do i = 1, 4
           if (cgrib(i) /= grib(i:i)) then
               print *, 'addgrid: GRIB not found in given message.'
-              print *, 'addgrid: Call to routine gribcreate required',
-     &             ' to initialize GRIB messge.'
+              print *, 'addgrid: Call to routine gribcreate required', &
+                   ' to initialize GRIB messge.'
  10           format('"', 4A1, '" /= "GRIB"')
               print 10, cgrib(1:4)
               ierr = 1
@@ -82,11 +82,11 @@
       call g2_gbytec(cgrib, lencurr, 96, 32)
 
 !     Check to see if GRIB message is already complete.
-      ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // cgrib(lencurr
-     $     - 1) // cgrib(lencurr)
+      ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // cgrib(lencurr &
+           - 1) // cgrib(lencurr)
       if (ctemp .eq. c7777) then
-          print *, 'addgrid: GRIB message already complete.  Cannot',
-     &         ' add new section.'
+          print *, 'addgrid: GRIB message already complete.  Cannot', &
+               ' add new section.'
           ierr = 2
           return
       endif
@@ -108,23 +108,21 @@
 !         If byte count for each section doesn't match current
 !         total length, then there is a problem.
           if (len .gt. lencurr) then
-              print *, 'addgrid: Section byte counts don''t add ' //
-     $             'to total.'
+              print *, 'addgrid: Section byte counts don''t add to total.'
               print *, 'addgrid: Sum of section byte counts = ', len
-              print *, 'addgrid: Total byte count in Section 0 = ',
-     $             lencurr
+              print *, 'addgrid: Total byte count in Section 0 = ', lencurr
               ierr = 3
               return
           endif
       enddo
 
 !     Section 3 can only be added after sections 1, 2 and 7.
-      if ((isecnum .ne. 1) .and. (isecnum .ne. 2) .and.
-     &     (isecnum .ne. 7)) then
-          print *, 'addgrid: Section 3 can only be added after Section', 
-     &         ' 1, 2 or 7.'
-          print *, 'addgrid: Section ', isecnum,
-     $         ' was the last found in given GRIB message.'
+      if ((isecnum .ne. 1) .and. (isecnum .ne. 2) .and. &
+           (isecnum .ne. 7)) then
+          print *, 'addgrid: Section 3 can only be added after Section',  &
+               ' 1, 2 or 7.'
+          print *, 'addgrid: Section ', isecnum, &
+               ' was the last found in given GRIB message.'
           ierr = 4
           return
       endif
@@ -154,8 +152,8 @@
 
 !     Get Grid Definition Template.
       if (igds(1) .eq. 0) then
-          call getgridtemplate(igds(5), mapgridlen, mapgrid, needext,
-     &         iret)
+          call getgridtemplate(igds(5), mapgridlen, mapgrid, needext, &
+               iret)
           if (iret .ne. 0) then
               ierr = 5
               return
@@ -165,8 +163,8 @@
 !         of values in a specific template may vary depending on data
 !         specified in the "static" part of the template.
           if (needext) then
-              call extgridtemplate(igds(5), igdstmpl, mapgridlen,
-     $             mapgrid)
+              call extgridtemplate(igds(5), igdstmpl, mapgridlen, &
+                   mapgrid)
           endif
       else
           mapgridlen = 0
@@ -181,8 +179,8 @@
               call g2_sbytec(cgrib, igdstmpl(i), iofst, nbits)
           else
               call g2_sbytec(cgrib, one, iofst, 1)
-              call g2_sbytec(cgrib, iabs(igdstmpl(i)), iofst + 1, nbits
-     $             - 1)
+              call g2_sbytec(cgrib, iabs(igdstmpl(i)), iofst + 1, nbits &
+                   - 1)
           endif
           iofst = iofst + nbits
       enddo
