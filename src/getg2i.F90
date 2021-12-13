@@ -31,7 +31,7 @@
 !>
 !>    ### Program History Log
 !>    Date | Programmer | Comments
-!>    -----|------------|--------- 
+!>    -----|------------|---------
 !>    1995-10-31 | Mark Iredell | Initial.
 !>    1996-10-31 | Mark Iredell | Augmented optional definitions to byte 320.
 !>    2002-01-03 | Stephen Gilbert | Modified from getgi to work with grib2.
@@ -54,34 +54,34 @@
 !>    Do not engage the same logical unit from more than one processor.
 !>
 !>    @author Mark Iredell @date 2000-05-26
-      SUBROUTINE GETG2I(LUGI,CBUF,NLEN,NNUM,IRET)
+SUBROUTINE GETG2I(LUGI,CBUF,NLEN,NNUM,IRET)
 
-      CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-      INTEGER,INTENT(IN) :: LUGI
-      INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
-      CHARACTER CHEAD*162
+  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
+  INTEGER,INTENT(IN) :: LUGI
+  INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
+  CHARACTER CHEAD*162
 
-      IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
+  IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
 
-      NLEN=0
-      NNUM=0
-      IRET=4
-      CALL BAREAD(LUGI,0,162,LHEAD,CHEAD)
-      IF(LHEAD.EQ.162.AND.CHEAD(42:47).EQ.'GB2IX1') THEN
-        READ(CHEAD(82:162),'(8X,3I10,2X,A40)',IOSTAT=IOS) NSKP,NLEN,NNUM
-        IF(IOS.EQ.0) THEN
-          
-          ALLOCATE(CBUF(NLEN),STAT=ISTAT)    ! ALLOCATE SPACE FOR CBUF
-          IF (ISTAT.NE.0) THEN
-             IRET=2
-             RETURN
-          ENDIF
-          IRET=0
-          CALL BAREAD(LUGI,NSKP,NLEN,LBUF,CBUF)
-          IF(LBUF.NE.NLEN) IRET=3
+  NLEN=0
+  NNUM=0
+  IRET=4
+  CALL BAREAD(LUGI,0,162,LHEAD,CHEAD)
+  IF(LHEAD.EQ.162.AND.CHEAD(42:47).EQ.'GB2IX1') THEN
+     READ(CHEAD(82:162),'(8X,3I10,2X,A40)',IOSTAT=IOS) NSKP,NLEN,NNUM
+     IF(IOS.EQ.0) THEN
 
+        ALLOCATE(CBUF(NLEN),STAT=ISTAT)    ! ALLOCATE SPACE FOR CBUF
+        IF (ISTAT.NE.0) THEN
+           IRET=2
+           RETURN
         ENDIF
-      ENDIF
+        IRET=0
+        CALL BAREAD(LUGI,NSKP,NLEN,LBUF,CBUF)
+        IF(LBUF.NE.NLEN) IRET=3
 
-      RETURN
-      END
+     ENDIF
+  ENDIF
+
+  RETURN
+END SUBROUTINE GETG2I

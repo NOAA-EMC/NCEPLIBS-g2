@@ -12,10 +12,10 @@
  * ICHAR(a) does not return the expected bit value.
  *
  * This function can be used for all values 0 <= ICHAR(a) <= 255.
- * 
+ *
  * @param[in] a - Character*1 variable that holds the bitstring to extract
  * @return - > mova2i - Integer value of the bitstring in character a
- * 
+ *
  * @author Stephen Gilbert @date 2002-08-15
  * */
 
