@@ -69,3 +69,7 @@ add_test(creategrib creategrib)
 add_executable(test_getgb2 test_getgb2.f90)
 target_link_libraries(test_getgb2 g2_d)
 add_test(test_getgb2 test_getgb2)
+
+add_executable(test_g2grids test_g2grids.f90)
+target_link_libraries(test_g2grids g2_d)
+add_test(test_g2grids test_g2grids)
