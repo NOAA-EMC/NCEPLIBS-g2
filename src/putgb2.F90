@@ -14,7 +14,7 @@
 !>    include the line "use grib_mod" in their calling routine. Each
 !>    component of the gribfield type is described in the input argument
 !>    list section below.
-!>    
+!>
 !>    PROGRAM HISTORY LOG:
 !>    - 2002-04-22 Stephen Gilbert
 !>    - 2005-02-28 Stephen Gilbert Changed dimension of array cgrib to be
@@ -22,7 +22,7 @@
 !>    - 2009-03-10Boi Vuong Initialize variable coordlist.
 !>    - 2011-06-09Boi Vuong Initialize variable gfld%list_opt.
 !>    - 2012-02-28Boi Vuong Initialize variable ilistopt.
-!>    
+!>
 !>    @param[in] LUGB integer unit of the unblocked grib data file.
 !>    file must be opened with baopen or baopenw before calling this
 !>    routine.
@@ -154,7 +154,7 @@
 !>    - 11 No Grid Definition Template info available.
 !>    - 12 Missing some required data field info.
 !>
-!>    @note That derived type gribfield contains pointers to 
+!>    @note That derived type gribfield contains pointers to
 !>    many arrays of data. The memory for these arrays is allocated
 !>    when the values in the arrays are set, to help minimize problems
 !>    with array overloading. Because of this users are encouraged to
@@ -162,98 +162,98 @@
 !>    call to subroutine gf_free().
 !>
 !>    @author Stephen Gilbert @date 2002-04-22
-      SUBROUTINE PUTGB2(LUGB,GFLD,IRET)
+SUBROUTINE PUTGB2(LUGB,GFLD,IRET)
 
-      USE GRIB_MOD
+  USE GRIB_MOD
 
-      INTEGER,INTENT(IN) :: LUGB
-      TYPE(GRIBFIELD),INTENT(IN) :: GFLD
-      INTEGER,INTENT(OUT) :: IRET
+  INTEGER,INTENT(IN) :: LUGB
+  TYPE(GRIBFIELD),INTENT(IN) :: GFLD
+  INTEGER,INTENT(OUT) :: IRET
 
-      CHARACTER(LEN=1),ALLOCATABLE,DIMENSION(:) :: CGRIB
-      integer :: listsec0(2)
-      integer :: igds(5)
-      real    :: coordlist
-      integer :: ilistopt
+  CHARACTER(LEN=1),ALLOCATABLE,DIMENSION(:) :: CGRIB
+  integer :: listsec0(2)
+  integer :: igds(5)
+  real    :: coordlist
+  integer :: ilistopt
 
-      listsec0=(/0,2/)
-      igds=(/0,0,0,0,0/)
-      coordlist=0.0
-      ilistopt=0
+  listsec0=(/0,2/)
+  igds=(/0,0,0,0,0/)
+  coordlist=0.0
+  ilistopt=0
 
-!  ALLOCATE ARRAY FOR GRIB2 FIELD
-      lcgrib=gfld%ngrdpts*4
-      allocate(cgrib(lcgrib),stat=is)
-      if ( is.ne.0 ) then
-         print *,'putgb2: cannot allocate memory. ',is
-         iret=2
-      endif
+  !  ALLOCATE ARRAY FOR GRIB2 FIELD
+  lcgrib=gfld%ngrdpts*4
+  allocate(cgrib(lcgrib),stat=is)
+  if ( is.ne.0 ) then
+     print *,'putgb2: cannot allocate memory. ',is
+     iret=2
+  endif
 
-!  CREATE NEW MESSAGE
-      listsec0(1)=gfld%discipline
-      listsec0(2)=gfld%version
-      if ( associated(gfld%idsect) ) then
-         call gribcreate(cgrib,lcgrib,listsec0,gfld%idsect,ierr)
-         if (ierr.ne.0) then
-            write(6,*) 'putgb2: ERROR creating new GRIB2 field = ',ierr
-         endif
-      else
-         print *,'putgb2: No Section 1 info available. '
-         iret=10
-         deallocate(cgrib)
-         return
-      endif
+  !  CREATE NEW MESSAGE
+  listsec0(1)=gfld%discipline
+  listsec0(2)=gfld%version
+  if ( associated(gfld%idsect) ) then
+     call gribcreate(cgrib,lcgrib,listsec0,gfld%idsect,ierr)
+     if (ierr.ne.0) then
+        write(6,*) 'putgb2: ERROR creating new GRIB2 field = ',ierr
+     endif
+  else
+     print *,'putgb2: No Section 1 info available. '
+     iret=10
+     deallocate(cgrib)
+     return
+  endif
 
-!  ADD LOCAL USE SECTION TO GRIB2 MESSAGE
-      if ( associated(gfld%local).AND.gfld%locallen.gt.0 ) then
-         call addlocal(cgrib,lcgrib,gfld%local,gfld%locallen,ierr)
-         if (ierr.ne.0) then
-            write(6,*) 'putgb2: ERROR adding local info = ',ierr
-         endif
-      endif
+  !  ADD LOCAL USE SECTION TO GRIB2 MESSAGE
+  if ( associated(gfld%local).AND.gfld%locallen.gt.0 ) then
+     call addlocal(cgrib,lcgrib,gfld%local,gfld%locallen,ierr)
+     if (ierr.ne.0) then
+        write(6,*) 'putgb2: ERROR adding local info = ',ierr
+     endif
+  endif
 
-!  ADD GRID TO GRIB2 MESSAGE
-      igds(1)=gfld%griddef
-      igds(2)=gfld%ngrdpts
-      igds(3)=gfld%numoct_opt
-      igds(4)=gfld%interp_opt
-      igds(5)=gfld%igdtnum
-      if ( associated(gfld%igdtmpl) ) then
-         call addgrid(cgrib,lcgrib,igds,gfld%igdtmpl,gfld%igdtlen, &
-              ilistopt,gfld%num_opt,ierr)
-         if (ierr.ne.0) then
-            write(6,*) 'putgb2: ERROR adding grid info = ',ierr
-         endif
-      else
-         print *,'putgb2: No GDT info available. '
-         iret=11
-         deallocate(cgrib)
-         return
-      endif
+  !  ADD GRID TO GRIB2 MESSAGE
+  igds(1)=gfld%griddef
+  igds(2)=gfld%ngrdpts
+  igds(3)=gfld%numoct_opt
+  igds(4)=gfld%interp_opt
+  igds(5)=gfld%igdtnum
+  if ( associated(gfld%igdtmpl) ) then
+     call addgrid(cgrib,lcgrib,igds,gfld%igdtmpl,gfld%igdtlen, &
+          ilistopt,gfld%num_opt,ierr)
+     if (ierr.ne.0) then
+        write(6,*) 'putgb2: ERROR adding grid info = ',ierr
+     endif
+  else
+     print *,'putgb2: No GDT info available. '
+     iret=11
+     deallocate(cgrib)
+     return
+  endif
 
-!  ADD DATA FIELD TO GRIB2 MESSAGE
-      if ( associated(gfld%ipdtmpl).AND. &
-           associated(gfld%idrtmpl).AND. &
-           associated(gfld%fld) ) then
-         call addfield(cgrib,lcgrib,gfld%ipdtnum,gfld%ipdtmpl, &
-              gfld%ipdtlen,coordlist,gfld%num_coord, &
-              gfld%idrtnum,gfld%idrtmpl,gfld%idrtlen, &
-              gfld%fld,gfld%ngrdpts,gfld%ibmap,gfld%bmap, &
-              ierr)
-         if (ierr.ne.0) then
-            write(6,*) 'putgb2: ERROR adding data field = ',ierr
-         endif
-      else
-         print *,'putgb2: Missing some field info. '
-         iret=12
-         deallocate(cgrib)
-         return
-      endif
+  !  ADD DATA FIELD TO GRIB2 MESSAGE
+  if ( associated(gfld%ipdtmpl).AND. &
+       associated(gfld%idrtmpl).AND. &
+       associated(gfld%fld) ) then
+     call addfield(cgrib,lcgrib,gfld%ipdtnum,gfld%ipdtmpl, &
+          gfld%ipdtlen,coordlist,gfld%num_coord, &
+          gfld%idrtnum,gfld%idrtmpl,gfld%idrtlen, &
+          gfld%fld,gfld%ngrdpts,gfld%ibmap,gfld%bmap, &
+          ierr)
+     if (ierr.ne.0) then
+        write(6,*) 'putgb2: ERROR adding data field = ',ierr
+     endif
+  else
+     print *,'putgb2: Missing some field info. '
+     iret=12
+     deallocate(cgrib)
+     return
+  endif
 
-!  CLOSE GRIB2 MESSAGE AND WRITE TO FILE
-      call gribend(cgrib,lcgrib,lengrib,ierr)
-      call wryte(lugb,lengrib,cgrib)
+  !  CLOSE GRIB2 MESSAGE AND WRITE TO FILE
+  call gribend(cgrib,lcgrib,lengrib,ierr)
+  call wryte(lugb,lengrib,cgrib)
 
-      deallocate(cgrib)
-      RETURN
-      END
+  deallocate(cgrib)
+  RETURN
+END SUBROUTINE PUTGB2

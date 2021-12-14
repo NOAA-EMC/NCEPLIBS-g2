@@ -9,49 +9,48 @@
 !>    @param[out] a Output array of real values.
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
-      subroutine rdieee(rieee,a,num)
+subroutine rdieee(rieee,a,num)
 
-      real(4),intent(in) :: rieee(num)
-      real,intent(out) :: a(num)
-      integer,intent(in) :: num
+  real(4),intent(in) :: rieee(num)
+  real,intent(out) :: a(num)
+  integer,intent(in) :: num
 
-      integer(4) :: ieee
+  integer(4) :: ieee
 
-      real,parameter :: two23=scale(1.0,-23)
-      real,parameter :: two126=scale(1.0,-126)
+  real,parameter :: two23=scale(1.0,-23)
+  real,parameter :: two126=scale(1.0,-126)
 
-      do j=1,num
-!
-!  Transfer IEEE bit string to integer variable
-!
-        ieee=transfer(rieee(j),ieee)
-!
-!  Extract sign bit, exponent, and mantissa
-!
-        isign=ibits(ieee,31,1)
-        iexp=ibits(ieee,23,8)
-        imant=ibits(ieee,0,23)
-        sign=1.0
-        if (isign.eq.1) sign=-1.0
-        
-        if ( (iexp.gt.0).and.(iexp.lt.255) ) then
-          temp=2.0**(iexp-127)
-          a(j)=sign*temp*(1.0+(two23*real(imant)))
+  do j=1,num
+     !
+     !  Transfer IEEE bit string to integer variable
+     !
+     ieee=transfer(rieee(j),ieee)
+     !
+     !  Extract sign bit, exponent, and mantissa
+     !
+     isign=ibits(ieee,31,1)
+     iexp=ibits(ieee,23,8)
+     imant=ibits(ieee,0,23)
+     sign=1.0
+     if (isign.eq.1) sign=-1.0
 
-        elseif ( iexp.eq.0 ) then
-          if ( imant.ne.0 ) then
-            a(j)=sign*two126*two23*real(imant)
-          else
-            a(j)=sign*0.0
-          endif
+     if ( (iexp.gt.0).and.(iexp.lt.255) ) then
+        temp=2.0**(iexp-127)
+        a(j)=sign*temp*(1.0+(two23*real(imant)))
 
-        elseif ( iexp.eq.255 ) then
-          a(j)=sign*huge(a(j))
-
+     elseif ( iexp.eq.0 ) then
+        if ( imant.ne.0 ) then
+           a(j)=sign*two126*two23*real(imant)
+        else
+           a(j)=sign*0.0
         endif
 
-      enddo
+     elseif ( iexp.eq.255 ) then
+        a(j)=sign*huge(a(j))
 
-      return
-      end
+     endif
 
+  enddo
+
+  return
+end subroutine rdieee
