@@ -6,9 +6,9 @@
 !>    This subroutine finds and unpacks a grib message. It reads
 !>    a grib index file (or optionally the grib file itself) to
 !>    get the index buffer (i.e. table of contents) for the grib file.
-!>      
+!>
 !>    Find in the index buffer a reference to the grib field requested.
-!>      
+!>
 !>    The grib field request specifies the number of fields to skip
 !>    and the unpacked identification section, grid definition template
 !>    and product defintion section parameters. (A requested parameter
@@ -21,15 +21,15 @@
 !>    will be nonzero.
 !>
 !>    The decoded information for the selected GRIB field is returned
-!>    in a derived type variable, gfld. Gfld is of type gribfield, 
-!>    which is defined in module grib_mod, so users of this routine 
-!>    will need to include the line "USE GRIB_MOD" in their calling 
-!>    routine. Each component of the gribfield type is described in 
+!>    in a derived type variable, gfld. Gfld is of type gribfield,
+!>    which is defined in module grib_mod, so users of this routine
+!>    will need to include the line "USE GRIB_MOD" in their calling
+!>    routine. Each component of the gribfield type is described in
 !>    the OUTPUT ARGUMENT LIST section below.
 !>
 !>    ### Program History Log
 !>    Date | Programmer | Comments
-!>    -----|------------|--------- 
+!>    -----|------------|---------
 !>    1994-04-01 | Mark Iredell | Initial.
 !>    1995-10-31 | Mark Iredell | modularized code into subprograms, allowed for unspecified index file,
 !>    2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with grib2
@@ -112,55 +112,55 @@
 !>    subroutine gf_free().
 !>
 !>    @author Mark Iredell @date 1994-04-01
-      SUBROUTINE GETGB2(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
-           UNPACK,K,GFLD,IRET)
-      USE GRIB_MOD
+SUBROUTINE GETGB2(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
+     UNPACK,K,GFLD,IRET)
+  USE GRIB_MOD
 
-      INTEGER,INTENT(IN) :: LUGB,LUGI,J,JDISC,JPDTN,JGDTN
-      INTEGER,DIMENSION(:) :: JIDS(*),JPDT(*),JGDT(*)
-      LOGICAL,INTENT(IN) :: UNPACK
-      INTEGER,INTENT(OUT) :: K,IRET
-      TYPE(GRIBFIELD),INTENT(OUT) :: GFLD
+  INTEGER,INTENT(IN) :: LUGB,LUGI,J,JDISC,JPDTN,JGDTN
+  INTEGER,DIMENSION(:) :: JIDS(*),JPDT(*),JGDT(*)
+  LOGICAL,INTENT(IN) :: UNPACK
+  INTEGER,INTENT(OUT) :: K,IRET
+  TYPE(GRIBFIELD),INTENT(OUT) :: GFLD
 
-      CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
+  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
 
 
-!  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)
-      INTERFACE
-         SUBROUTINE GETIDX(LUGB,LUGI,CBUF,NLEN,NNUM,IRGI)
-            CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-            INTEGER,INTENT(IN) :: LUGB,LUGI
-            INTEGER,INTENT(OUT) :: NLEN,NNUM,IRGI
-         END SUBROUTINE GETIDX
-      END INTERFACE
+  !  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)
+  INTERFACE
+     SUBROUTINE GETIDX(LUGB,LUGI,CBUF,NLEN,NNUM,IRGI)
+       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
+       INTEGER,INTENT(IN) :: LUGB,LUGI
+       INTEGER,INTENT(OUT) :: NLEN,NNUM,IRGI
+     END SUBROUTINE GETIDX
+  END INTERFACE
 
-!  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
-      IRGI=0
-      CALL GETIDX(LUGB,LUGI,CBUF,NLEN,NNUM,IRGI)
-      IF(IRGI.GT.1) THEN
-        IRET=96
-        RETURN
-      ENDIF
+  !  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
+  IRGI=0
+  CALL GETIDX(LUGB,LUGI,CBUF,NLEN,NNUM,IRGI)
+  IF(IRGI.GT.1) THEN
+     IRET=96
+     RETURN
+  ENDIF
 
-!  SEARCH INDEX BUFFER
-      CALL GETGB2S(CBUF,NLEN,NNUM,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
-           JK,GFLD,LPOS,IRGS)
-      IF(IRGS.NE.0) THEN
-        IRET=99
-        CALL GF_FREE(GFLD)
-        RETURN
-      ENDIF
+  !  SEARCH INDEX BUFFER
+  CALL GETGB2S(CBUF,NLEN,NNUM,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
+       JK,GFLD,LPOS,IRGS)
+  IF(IRGS.NE.0) THEN
+     IRET=99
+     CALL GF_FREE(GFLD)
+     RETURN
+  ENDIF
 
-!  READ LOCAL USE SECTION, IF AVAILABLE
-      CALL GETGB2L(LUGB,CBUF(LPOS),GFLD,IRET)
+  !  READ LOCAL USE SECTION, IF AVAILABLE
+  CALL GETGB2L(LUGB,CBUF(LPOS),GFLD,IRET)
 
-!  READ AND UNPACK GRIB RECORD
-      IF (UNPACK) THEN
-    !    NUMFLD=GFLD%IFLDNUM
-    !    CALL GF_FREE(GFLD)
-        CALL GETGB2R(LUGB,CBUF(LPOS),GFLD,IRET)
-      ENDIF
-      K=JK
+  !  READ AND UNPACK GRIB RECORD
+  IF (UNPACK) THEN
+     !    NUMFLD=GFLD%IFLDNUM
+     !    CALL GF_FREE(GFLD)
+     CALL GETGB2R(LUGB,CBUF(LPOS),GFLD,IRET)
+  ENDIF
+  K=JK
 
-      RETURN
-      END
+  RETURN
+END SUBROUTINE GETGB2

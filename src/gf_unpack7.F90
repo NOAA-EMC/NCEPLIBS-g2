@@ -8,7 +8,7 @@
 !>
 !>    ### Program History Log
 !>    Date | Programmer | Comments
-!>    -----|------------|--------- 
+!>    -----|------------|---------
 !>    2000-05-26 | Stephen Gilbert | Initial development.
 !>    2002-12-17 | Stephen Gilbert | New templates using PNG and JPEG2000 algorithms/templates.
 !>    2002-12-29 | Stephen Gilbert | Added check on comunpack return code.
@@ -44,74 +44,74 @@
 !>    - 7 corrupt section 7.
 !>
 !>    @author Stephen Gilbert @date 2002-01-24
-      subroutine gf_unpack7(cgrib,lcgrib,iofst,igdsnum,igdstmpl, &
-           idrsnum,idrstmpl,ndpts,fld,ierr)
+subroutine gf_unpack7(cgrib,lcgrib,iofst,igdsnum,igdstmpl, &
+     idrsnum,idrstmpl,ndpts,fld,ierr)
 
-      character(len=1),intent(in) :: cgrib(lcgrib)
-      integer,intent(in) :: lcgrib,ndpts,igdsnum,idrsnum
-      integer,intent(inout) :: iofst
-      integer,pointer,dimension(:) :: igdstmpl,idrstmpl
-      integer,intent(out) :: ierr
-      real,pointer,dimension(:) :: fld
-
-
-      ierr=0
-      nullify(fld)
-
-      call g2_gbytec(cgrib,lensec,iofst,32) ! Get Length of Section
-      iofst=iofst+32
-      iofst=iofst+8 ! skip section number
-
-      ipos=(iofst/8)+1
-      istat=0
-      allocate(fld(ndpts),stat=istat)
-      if (istat.ne.0) then
-         ierr=6
-         return
-      endif
-
-      if (idrsnum.eq.0) then
-        call simunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
-      elseif (idrsnum.eq.2.or.idrsnum.eq.3) then
-        call comunpack(cgrib(ipos),lensec-5,lensec,idrsnum,idrstmpl, &
-             ndpts,fld,ier)
-        if ( ier .NE. 0 ) then
-           ierr=7
-           return
-        endif
-      elseif (idrsnum.eq.50) then ! Spectral simple
-        call simunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts-1, &
-             fld(2))
-        ieee=idrstmpl(5)
-        call rdieee(ieee,fld(1),1)
-      elseif (idrsnum.eq.51) then ! Spectral complex
-        if (igdsnum.ge.50.AND.igdsnum.le.53) then
-          call specunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts, &
-               igdstmpl(1),igdstmpl(2),igdstmpl(3),fld)
-        else
-          print *,'gf_unpack7: Cannot use GDT 3.',igdsnum, &
-               ' to unpack Data Section 5.51.'
-          ierr=5
-          nullify(fld)
-          return
-        endif
-
-      elseif (idrsnum.eq.40 .OR. idrsnum.eq.40000) then
-        call jpcunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
+  character(len=1),intent(in) :: cgrib(lcgrib)
+  integer,intent(in) :: lcgrib,ndpts,igdsnum,idrsnum
+  integer,intent(inout) :: iofst
+  integer,pointer,dimension(:) :: igdstmpl,idrstmpl
+  integer,intent(out) :: ierr
+  real,pointer,dimension(:) :: fld
 
 
-      elseif (idrsnum.eq.41 .OR. idrsnum.eq.40010) then
-        call pngunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
+  ierr=0
+  nullify(fld)
 
-      else
-        print *,'gf_unpack7: Data Representation Template ',idrsnum, &
-             ' not yet implemented.'
-        ierr=4
+  call g2_gbytec(cgrib,lensec,iofst,32) ! Get Length of Section
+  iofst=iofst+32
+  iofst=iofst+8 ! skip section number
+
+  ipos=(iofst/8)+1
+  istat=0
+  allocate(fld(ndpts),stat=istat)
+  if (istat.ne.0) then
+     ierr=6
+     return
+  endif
+
+  if (idrsnum.eq.0) then
+     call simunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
+  elseif (idrsnum.eq.2.or.idrsnum.eq.3) then
+     call comunpack(cgrib(ipos),lensec-5,lensec,idrsnum,idrstmpl, &
+          ndpts,fld,ier)
+     if ( ier .NE. 0 ) then
+        ierr=7
+        return
+     endif
+  elseif (idrsnum.eq.50) then ! Spectral simple
+     call simunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts-1, &
+          fld(2))
+     ieee=idrstmpl(5)
+     call rdieee(ieee,fld(1),1)
+  elseif (idrsnum.eq.51) then ! Spectral complex
+     if (igdsnum.ge.50.AND.igdsnum.le.53) then
+        call specunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts, &
+             igdstmpl(1),igdstmpl(2),igdstmpl(3),fld)
+     else
+        print *,'gf_unpack7: Cannot use GDT 3.',igdsnum, &
+             ' to unpack Data Section 5.51.'
+        ierr=5
         nullify(fld)
         return
-      endif
+     endif
 
-      iofst=iofst+(8*lensec)
+  elseif (idrsnum.eq.40 .OR. idrsnum.eq.40000) then
+     call jpcunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
 
-      return
-    end subroutine gf_unpack7
+
+  elseif (idrsnum.eq.41 .OR. idrsnum.eq.40010) then
+     call pngunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
+
+  else
+     print *,'gf_unpack7: Data Representation Template ',idrsnum, &
+          ' not yet implemented.'
+     ierr=4
+     nullify(fld)
+     return
+  endif
+
+  iofst=iofst+(8*lensec)
+
+  return
+end subroutine gf_unpack7
