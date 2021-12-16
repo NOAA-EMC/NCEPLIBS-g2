@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: install-dependencies
       run: |
+        find /Library/Frameworks/ -name "png*"
+        sudo rm -rf /Library/Frameworks/Mono.framework
         brew update
         brew install libpng
 
