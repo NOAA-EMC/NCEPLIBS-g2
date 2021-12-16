@@ -24,11 +24,7 @@ endif()
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
 find_package(Jasper 2.0.25 REQUIRED)
-
-# Need to find PNG this way or it doesn't work on MacOS.
-include(FindPkgConfig)
-pkg_check_modules(PNG libpng16 REQUIRED)
-#find_package(PNG REQUIRED)
+find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
 
 add_subdirectory(src)
