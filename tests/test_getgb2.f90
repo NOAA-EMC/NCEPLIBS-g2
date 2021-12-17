@@ -147,14 +147,12 @@ program test_getgb2
   if (gfld%idrtlen .ne. 5) stop 190
 
   ! NOT WORKING
-  do i = 1, 5
-    print *, gfld%idrtmpl(i), idrstmpl(i)
-    ! if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
-  end do
+  ! do i = 1, 5
+  !   print *, gfld%idrtmpl(i), idrstmpl(i)
+  !   ! if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
+  ! end do
 
   if (gfld%unpacked .neqv. .false.) stop 201
-
-  if (gfld%expanded .neqv. .false.) stop 202
 
   if (gfld%ibmap .ne. 255) stop 203
 
