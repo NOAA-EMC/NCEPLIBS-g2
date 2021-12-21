@@ -122,11 +122,11 @@
         
        if (iret .ne. 0) stop 103
 
-       do i =0,2
+       do i =1,3
          if (listsec0(i) .ne. listsec0_ok(i)) stop 104
        end do
 
-       do i =0,12
+       do i =1,13
          if (listsec1(i) .ne. listsec1_ok(i)) stop 105
        end do
 
