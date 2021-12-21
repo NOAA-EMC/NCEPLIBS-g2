@@ -1,7 +1,7 @@
 !>    This test is a test for the NCEPLIBS-g2 library.
-!>    It fully decode all grib2 message. Code referenced to g2c test by Dusan.
+!>    It fully decode all grib2 message. Code referenced to the g2c test by Dusan.
 !>    Extra functions and code for fortran are added. Data was designed for 
-!>    a typical grib2 file in fortran, with zero values to the cariables. 
+!>    a typical grib2 file in fortran, with zero values to the variables. 
 !>    
 !>    Hang Lei 2021-11-21
 !>
@@ -21,6 +21,7 @@
        integer, dimension(13) :: listsec1, listsec1_ok
        type(gribfield) :: gfld
        integer :: k1, k2, k3, k4, k5, k6, k7, k8, k9, k10
+       integer :: n1, n2, n3
 
        print *,"Testing decoding full grib2 message.\n"
 
@@ -38,8 +39,13 @@
        Nan=9999                     ! Missing value
        fgrib_len=269                ! Grib message length
 
+       ! Large numbers in message initials
+       n1=229
+       n2=254
+       n3=255
+
        ! The grib message for a typical grib2 file in fortran.
-       fgrib(:)=(/                                                   &
+       fgrib(:)=(/                                                    &
        ! section 0
      & "G", "R", "I", "B", achar(0), achar(0),                        &
      & achar(0), achar(2), achar(0), achar(0), achar(0), achar(0),    &
@@ -47,11 +53,11 @@
        ! section 1
      & achar(0), achar(0), achar(0), achar(21), achar(1), achar(0),   &
      & achar(8), achar(0), achar(0), achar(1), achar(0), achar(1),    &
-     & achar(7), achar(229), achar(11), achar(15), achar(10),         &
+     & achar(7), achar(n1), achar(11), achar(15), achar(10),          &
      & achar(10), achar(10), achar(0), achar(1),                      &
        ! section 2
      & achar(0), achar(0), achar(0), achar(11), achar(2),             &
-     & achar(1), "H", "K", "RW", "A", "ZR",                           &
+     & achar(1), "H", "K", "T", "A", "R",                             &
        ! section 3
      & achar(0), achar(0), achar(0), achar(81), achar(3), achar(0),   &
      & achar(0), achar(0), achar(0), achar(k10), achar(0), achar(0),  &
@@ -76,8 +82,8 @@
      & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
      & achar(0), achar(0), achar(0),  achar(0), achar(0), achar(0),   &
      & achar(1), achar(0), achar(0), achar(0), achar(0), achar(0),    &
-     & achar(3), achar(0), achar(0), achar(0), achar(254), achar(7),  &
-     & achar(229), achar(11), achar(15), achar(12), achar(20),        &
+     & achar(3), achar(0), achar(0), achar(0), achar(n2), achar(7),   & 
+     & achar(n1), achar(11), achar(15), achar(12), achar(20),         &
      & achar(10), achar(1), achar(0), achar(0), achar(0), achar(0),   &
      & achar(1), achar(0), achar(1), achar(0), achar(0), achar(0),    &
      & achar(12), achar(1), achar(0), achar(0), achar(0), achar(0),   &
@@ -91,7 +97,7 @@
      & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
      & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
        ! section 6
-     & achar(0), achar(0), achar(0), achar(6), achar(6),  achar(255), &
+     & achar(0), achar(0), achar(0), achar(6), achar(6),  achar(n3),  &
        ! section 7
      & achar(0), achar(0), achar(0), achar(12), achar(7),  achar(1),  &
      & achar(0), achar(0), achar(0), achar(0), achar(0),  achar(0),   &
