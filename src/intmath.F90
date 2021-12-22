@@ -50,7 +50,7 @@ contains
     integer(kind = 8), value :: ival
     integer(kind = 8)::i1log2_8
     integer(kind = 8), parameter :: one = 1
-    if (ival + one<ival) then
+    if (ival + one < ival) then
        i1log2_8 = ilog2_8(ival)
     else
        i1log2_8 = ilog2_8(ival + one)
@@ -68,7 +68,7 @@ contains
     integer(kind = 4), value :: ival
     integer(kind = 4)::i1log2_4
     integer(kind = 4), parameter :: one = 1
-    if (ival + one<ival) then
+    if (ival + one < ival) then
        i1log2_4 = ilog2_4(ival)
     else
        i1log2_4 = ilog2_4(ival + one)
@@ -86,7 +86,7 @@ contains
     integer(kind = 2), value :: ival
     integer(kind = 2)::i1log2_2
     integer(kind = 2), parameter :: one = 1
-    if (ival + one<ival) then
+    if (ival + one < ival) then
        i1log2_2 = ilog2_2(ival)
     else
        i1log2_2 = ilog2_2(ival + one)
@@ -104,7 +104,7 @@ contains
     integer(kind = 1), value :: ival
     integer(kind = 1)::i1log2_1
     integer(kind = 1), parameter :: one = 1
-    if (ival + one<ival) then
+    if (ival + one < ival) then
        i1log2_1 = ilog2_1(ival)
     else
        i1log2_1 = ilog2_1(ival + one)
@@ -122,7 +122,7 @@ contains
     integer(kind = 8)::ilog2_8, i
     ilog2_8 = 0
     i = i_in
-    if (i<=0) return
+    if (i <= 0) return
     if (iand(i, i-1) /= 0) then
        !write(0, *) 'iand i-1'
        ilog2_8 = 1
@@ -170,7 +170,7 @@ contains
     integer(kind = 4)::ilog2_4, i
     ilog2_4 = 0
     i = i_in
-    if (i<=0) return
+    if (i <= 0) return
     if (iand(i, i-1) /= 0) then
        !write(0, *) 'iand i-1'
        ilog2_4 = 1
@@ -213,7 +213,7 @@ contains
     integer(kind = 2)::ilog2_2, i
     ilog2_2 = 0
     i = i_in
-    if (i<=0) return
+    if (i <= 0) return
     if (iand(i, int(i-1, kind = 2)) /= 0) then
        !write(0, *) 'iand i-1'
        ilog2_2 = 1
@@ -251,7 +251,7 @@ contains
     integer(kind = 1)::ilog2_1, i
     ilog2_1 = 0
     i = i_in
-    if (i<=0) return
+    if (i <= 0) return
     if (iand(i, int(i-1, kind=1)) /= 0) then
        !write(0, *) 'iand i-1'
        ilog2_1 = 1
