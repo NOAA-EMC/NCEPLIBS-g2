@@ -14,6 +14,10 @@ add_executable(test_g2_encode test_g2_encode.f90)
 target_link_libraries(test_g2_encode g2_d ${PNG_LIBRARIES})
 add_test(test_g2_encode test_g2_encode)
 
+add_executable(test_g2_decode test_g2_decode.f90)
+target_link_libraries(test_g2_decode g2_d ${PNG_LIBRARIES})
+add_test(test_g2_decode test_g2_decode)
+
 add_executable(test_gridtemplates test_gridtemplates.f90)
 target_link_libraries(test_gridtemplates g2_d ${PNG_LIBRARIES})
 add_test(test_gridtemplates test_gridtemplates)
@@ -77,3 +81,4 @@ add_test(test_getdim test_getdim)
 add_executable(test_getpoly test_getpoly.f90)
 target_link_libraries(test_getpoly g2_d)
 add_test(test_getpoly test_getpoly)
+
