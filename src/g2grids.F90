@@ -121,8 +121,8 @@ contains
        !nullify(gtemp%next)              ! defines end of linked list.
        if ( count .eq. 1 ) then
           gridlist => gtemp
-       else                       ! make sure previous entry in list
-          prev%next => gtemp      ! points to the new entry,
+       !else                       ! make sure previous entry in list
+       !   prev%next => gtemp      ! points to the new entry,
        endif
        prev => gtemp
        
