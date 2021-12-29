@@ -117,6 +117,7 @@ contains
        gtemp%gdt_len=igdtlen
        gtemp%gridtmpl=igdtmpl
        gtemp%cdesc=desc
+       gtemp%next => NULL()
        !nullify(gtemp%next)              ! defines end of linked list.
        if ( count .eq. 1 ) then
           gridlist => gtemp
