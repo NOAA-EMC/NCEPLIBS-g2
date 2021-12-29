@@ -124,7 +124,7 @@ contains
           prev%next => gtemp      ! points to the new entry,
        endif
        prev => gtemp
-       deallocate(gtemp)
+       gtemp => NULL()
     enddo
 
 999 backspace(lunit)
