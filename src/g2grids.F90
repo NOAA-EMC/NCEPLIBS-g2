@@ -125,7 +125,7 @@ contains
           prev%next => gtemp      ! points to the new entry,
        endif
        prev => gtemp
-       deallocate(prev)
+       deallocate(gridlist)
     enddo
     
 999 backspace(lunit)
