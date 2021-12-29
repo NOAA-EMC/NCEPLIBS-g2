@@ -89,6 +89,10 @@ add_executable(test_getpoly test_getpoly.f90)
 target_link_libraries(test_getpoly g2_d)
 add_test(test_getpoly test_getpoly)
 
+add_executable(test_intmath test_intmath.f90)
+target_link_libraries(test_intmath g2_d)
+add_test(test_intmath test_intmath)
+
 add_executable(test_g2grids test_g2grids.f90)
 target_link_libraries(test_g2grids g2_d)
 add_test(test_g2grids test_g2grids)
