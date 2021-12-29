@@ -57,7 +57,7 @@
        open(id2, file = 'testdata_g2grids', status = 'old')
 
        num_grid = readgrids(id2)
-       if (num_grid .ne. 3) stop 108
+       if (num_grid .ne. 1) stop 108
        close(id2)
 
        print *,"SUCCESS!\n"
