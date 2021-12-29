@@ -67,7 +67,7 @@ contains
     integer  ient,igdtn,igdtmpl(200),igdtlen
     integer :: pos1,pos2,pos3,pos4
 
-    type(g2grid),pointer :: gtemp
+    type(g2grid),pointer :: gtemp => NULL()
     type(g2grid),pointer :: prev => NULL()
     integer count
 
@@ -110,7 +110,7 @@ contains
        !
        !  Allocate new type(g2grid) variable to store the GDT
        !
-       allocate(gtemp)
+       !allocate(gtemp)
        count=count+1
        gtemp%grid_num=ient
        gtemp%gdt_num=igdtn
@@ -121,8 +121,8 @@ contains
        !nullify(gtemp%next)              ! defines end of linked list.
        if ( count .eq. 1 ) then
           gridlist => gtemp
-       !else                       ! make sure previous entry in list
-       !   prev%next => gtemp      ! points to the new entry,
+       else                       ! make sure previous entry in list
+          prev%next => gtemp      ! points to the new entry,
        endif
        prev => gtemp
        
