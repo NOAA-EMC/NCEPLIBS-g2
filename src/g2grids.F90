@@ -124,9 +124,9 @@ contains
           prev%next => gtemp      ! points to the new entry,
        endif
        prev => gtemp
-       
+       deallocate(gtemp,stat=iom)
     enddo
-    deallocate(gtemp)
+    
 999 backspace(lunit)
     readgrids=count
     return
