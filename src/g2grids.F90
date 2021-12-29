@@ -127,7 +127,8 @@ contains
 
     enddo
 
-999 readgrids=count
+999 backspace(lunit)
+    readgrids=count
     return
 
   end function readgrids
