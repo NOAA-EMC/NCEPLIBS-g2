@@ -86,3 +86,6 @@ add_executable(test_intmath test_intmath.f90)
 target_link_libraries(test_intmath g2_d)
 add_test(test_intmath test_intmath)
 
+add_executable(test_putgb2 test_putgb2.f90)
+target_link_libraries(test_putgb2 g2_d)
+add_test(test_putgb2 test_putgb2)
