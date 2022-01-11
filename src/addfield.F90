@@ -82,6 +82,9 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
      idrstmplen, fld, ngrdpts, ibmap, bmap, ierr)
   use pdstemplates
   use drstemplates
+
+  implicit none
+
   logical :: match
   character(len = 1), intent(inout) :: cgrib(lcgrib)
   integer, intent(in) :: ipdsnum, ipdstmpl(*)
@@ -106,6 +109,15 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   integer :: width, height, ndpts
   integer :: lensec3, lensec4, lensec5, lensec6, lensec7
   logical :: issec3, needext, isprevbmap
+
+  ! implicit none additions
+  integer :: nsize, newlen, nbits
+  integer :: ii, i  ! iterators
+  integer :: ibmprev, ilen, isecnum
+  integer :: ioctet, iscan, istat
+  integer :: iret, left
+  integer :: lcpack, itemp
+  integer :: jj, kk, mm  ! poly items
 
   allones = Z'FFFFFFFF'
   ierr = 0
@@ -269,12 +281,12 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   if (ibmap .eq. 0 .or. ibmap .eq. 254) then
      allocate(pfld(max(2, ngrdpts)))
      ndpts = 0;
-     do jj = 1, ngrdpts
-        intbmap(jj) = 0
-        if (bmap(jj)) then
-           intbmap(jj) = 1
+     do ii = 1, ngrdpts
+        intbmap(ii) = 0
+        if (bmap(ii)) then
+           intbmap(ii) = 1
            ndpts = ndpts + 1
-           pfld(ndpts) = fld(jj);
+           pfld(ndpts) = fld(ii);
         endif
      enddo
      if (ndpts == 0 .and. ngrdpts > 0) then
