@@ -6,7 +6,6 @@ program test_getgb2
   use bacio_module
   implicit none
 
-  ! Define what I need
   integer, parameter :: lugb = 1
   integer :: lugi = lugb
   integer, parameter :: j = 0
@@ -17,16 +16,12 @@ program test_getgb2
   integer :: jpdt(ipdstmplen)
   integer, parameter :: jgdtn = 0
   integer, parameter :: igdstmplen = 19
-  integer :: idrstmpl(5)
   integer :: jgdt(igdstmplen) = (/ 0, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 45, 91, 0, 55, 101, 5, 5, 0 /)
-  logical, parameter :: unpack = .false.
+  logical, parameter :: unpack = .true.
   integer :: k
   type(gribfield) :: gfld
   integer :: iret
   integer :: i
-  integer, parameter :: lcsec2 = 3
-  character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
-  real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   jpdt(1) = 0
   jpdt(2) = 0
@@ -77,6 +72,8 @@ program test_getgb2
       print *, 'baclose failed with iret value: ', iret
       stop 5
   end if
+
+  print *, 'gfdl%fld from getgb2 is: ', gfld%fld
 
   print *, 'Testing open/write/close of GRIB2 file'
 
