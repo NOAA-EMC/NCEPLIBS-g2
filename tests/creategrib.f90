@@ -36,8 +36,8 @@ program creategrib
   integer, parameter :: idrstmplen = 5
   integer :: idrstmpl(idrstmplen)
   integer, parameter :: ngrdpts = 4, ibmap = 255
-  logical :: bmap(1)
-  real(8) :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
+  logical :: bmap(1) = .false.
+  real(8), target :: fld(ngrdpts) = (/ 1.1d0, 1.2d0, 1.3d0, 1.4d0 /)
 
   ! Section 8
   integer :: lengrib
@@ -111,8 +111,8 @@ program creategrib
 
   ! Add a field.
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-       & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-       & ngrdpts, ibmap, bmap, ierr)
+       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       ngrdpts, ibmap, bmap, ierr)
   if (ierr .ne. 0) stop 140
 
   ! End the grib message by adding section 8.w
