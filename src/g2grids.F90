@@ -127,7 +127,7 @@ contains
        prev => gtemp
        !deallocate(gridlist)
     enddo
-    deallocate(prev)
+!    deallocate(prev)
 999 backspace(lunit)
     readgrids=count
     return
