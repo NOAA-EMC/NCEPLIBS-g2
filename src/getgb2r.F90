@@ -1,12 +1,12 @@
 !> @file
-!> @brief This subroutine read and unpack sections 6 and 7 from ah
+!> @brief This subroutine read and unpack sections 6 and 7 from a
 !> grib2 message.
 !> @author Stephen Gilbert @date 2002-01-11
 
-!> This subroutine read and unpack sections 6 and 7 from a grib2
+!> This subroutine reads and unpacks sections 6 and 7 from a grib2
 !> message.
 !>
-!> It assumes that the "metadata" for this field already exists in
+!> It assumes that the metadata for this field already exists in
 !> derived type @ref grib_mod::gribfield. Specifically, it requires
 !> gfld\%ibmap, gfld\%ngrdpts, gfld\%idrtnum, gfld\%idrtmpl, and
 !> gfld\%ndpts.
@@ -17,6 +17,9 @@
 !> line "use grib_mod" in their calling routine.
 !>
 !> @param[in] LUGB integer unit of the unblocked grib data file.
+!> File must be opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
+!> this routine.
 !> @param[in] CINDEX index record of the grib field (see 
 !> subroutine ixgb2() for description of an index record.)
 !> @param[out] GFLD derived type @ref grib_mod::gribfield.
