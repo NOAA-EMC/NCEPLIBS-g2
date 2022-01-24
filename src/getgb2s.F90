@@ -1,122 +1,121 @@
-!>    @file
-!>    @brief This subroutine find a reference to the grib field
-!>    requested in the index file.
-!>    @author Stephen Gilbert @date 2002-01-15
-!>
+!> @file
+!> @brief This subroutine find a reference to the grib field
+!> requested in the index file.
+!> @author Stephen Gilbert @date 2002-01-15
 
-!>    This subroutine find in the index file for a reference to the grib
-!>    field requested. The grib field request specifies the number of
-!>    messages to skip and the unpacked identification section, grid
-!>    definition template and product defintion section parameters.
-!>    (a requested parameter of -9999 means to allow any value of this
-!>    parameter to be found.)
-!>    Each index record has the following form:
-!>    - byte 001 - 004 length of index record
-!>    - byte 005 - 008 bytes to skip in data file before grib message
-!>    - byte 009 - 012 bytes to skip in message before lus (local use)
-!>    set = 0, if no local use section in grib2 message.
-!>    - byte 013 - 016 bytes to skip in message before gds
-!>    - byte 017 - 020 bytes to skip in message before pds
-!>    - byte 021 - 024 bytes to skip in message before drs
-!>    - byte 025 - 028 bytes to skip in message before bms
-!>    - byte 029 - 032 bytes to skip in message before data section
-!>    - byte 033 - 040 bytes total in the message
-!>    - byte 041 - 041 grib version number ( currently 2 )
-!>    - byte 042 - 042 message discipline
-!>    - byte 043 - 044 field number within grib2 message
-!>    - byte 045 -  ii identification section (ids)
-!>    - byte ii+1-  jj grid definition section (gds)
-!>    - byte jj+1-  kk product definition section (pds)
-!>    - byte kk+1-  ll the data representation section (drs)
-!>    - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
-!>    Most of the decoded information for the selected grib field is
-!>    returned in a derived type variable, GFLD. GFLD is of type
-!>    gribfield, which is defined in module grib_mod, so users of this
-!>    routine will need to include the line "use grib_mod" in their
-!>    calling routine. Each component of the gribfield type is described
-!>    in the output argument list section below. Only the unpacked
-!>    bitmap and data field components are not set by this routine.
+!> This subroutine find in the index file for a reference to the grib
+!> field requested. The grib field request specifies the number of
+!> messages to skip and the unpacked identification section, grid
+!> definition template and product defintion section parameters.
+!> (a requested parameter of -9999 means to allow any value of this
+!> parameter to be found.)
+!> Each index record has the following form:
+!> - byte 001 - 004 length of index record
+!> - byte 005 - 008 bytes to skip in data file before grib message
+!> - byte 009 - 012 bytes to skip in message before lus (local use)
+!> set = 0, if no local use section in grib2 message.
+!> - byte 013 - 016 bytes to skip in message before gds
+!> - byte 017 - 020 bytes to skip in message before pds
+!> - byte 021 - 024 bytes to skip in message before drs
+!> - byte 025 - 028 bytes to skip in message before bms
+!> - byte 029 - 032 bytes to skip in message before data section
+!> - byte 033 - 040 bytes total in the message
+!> - byte 041 - 041 grib version number ( currently 2 )
+!> - byte 042 - 042 message discipline
+!> - byte 043 - 044 field number within grib2 message
+!> - byte 045 -  ii identification section (ids)
+!> - byte ii+1-  jj grid definition section (gds)
+!> - byte jj+1-  kk product definition section (pds)
+!> - byte kk+1-  ll the data representation section (drs)
+!> - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
+!> Most of the decoded information for the selected grib field is
+!> returned in a derived type variable, GFLD. GFLD is of type
+!> gribfield, which is defined in module grib_mod, so users of this
+!> routine will need to include the line "use grib_mod" in their
+!> calling routine. Each component of the gribfield type is described
+!> in the output argument list section below. Only the unpacked
+!> bitmap and data field components are not set by this routine.
+!> 
+!> Program History log:
+!> - 1995-10-31  Mark Iredell Initial development
+!> - 2002-01-02  Stephen Gilbert Modified from getg1s to work with grib2
+!> - 2011-06-24  Boi Vuong initialize variable gfld%idsect and gfld%local
+!> 
+!> @param[in] CBUF character*1 (nlen) buffer containing index data.
+!> @param[in] NLEN integer total length of all index records.
+!> @param[in] NNUM integer number of index records.
+!> @param[in] J integer number of fields to skip
+!> (=0 to search from beginning)
+!> @param[in] JDISC grib2 discipline number of requested field
+!> (if = -1, accept any discipline see code table 0.0)
+!> - 0 meteorological products
+!> - 1 hydrological products
+!> - 2 land surface products
+!> - 3 space products
+!> - 10 oceanographic products
+!> @param[in] JIDS integer array of values in the identification section
+!> (=-9999 for wildcard)
+!> - JIDS(1) identification of originating centre
+!> (see common code table c-1)
+!> - JIDS(2) identification of originating sub-centre
+!> - JIDS(3) grib master tables version number
+!> (see code table 1.0)
+!> - 0 experimental
+!> - 1 initial operational version number.
+!> - JIDS(4) grib local tables version number (see code table 1.1)
+!> - 0 local tables not used
+!> - 1-254 number of local tables version used.
+!> - JIDS(5) significance of reference time (code table 1.2)
+!> - 0 analysis
+!> - 1 start of forecast
+!> - 2 verifying time of forecast
+!> - 3 observation time
+!> - JIDS(6) year (4 digits)
+!> - JIDS(7) month
+!> - JIDS(8) day
+!> - JIDS(9) hour
+!> - JIDS(10) minute
+!> - JIDS(11) second
+!> - JIDS(12) production status of processed data (see code table 1.3)
+!> - 0 operational products
+!> - 1 operational test products;
+!> - 2 research products
+!> - 3 re-analysis products.
+!> - JIDS(13) type of processed data (see code table 1.4)
+!> - 0 analysis products
+!> - 1 forecast products
+!> - 2 analysis and forecast products
+!> - 3 control forecast products
+!> - 4 perturbed forecast products
+!> - 5 control and perturbed forecast products
+!> - 6 processed satellite observations
+!> - 7 processed radar observations.
+!> @param[in] JPDTN integer product definition template number (n)
+!> (if = -1, don't bother matching pdt - accept any)
+!> @param[in] JPDT integer array of values defining the product definition
+!> template 4.n of the field for which to search (=-9999 for wildcard)
+!> @param[in] JGDTN integer grid definition template number (m)
+!> (if = -1, don't bother matching gdt - accept any )
+!> @param[in] JGDT integer array of values defining the grid definition
+!> template 3.m of the field for which to search (=-9999 for wildcard)
+!> @param[out] K integer field number unpacked.
+!> @param[out] GFLD derived type @ref grib_mod::gribfield.
+!> @param[out] LPOS starting position of the found index record
+!> within the complete index buffer, CBUF. = 0, if request not found.
+!> @param[out] IRET integer return code
+!> - 0 all ok
+!> - 97 error reading grib file
+!> - other gf_getfld grib2 unpacker return code
+!> 
+!> @note This subprogram is intended for private use by getgb2
+!> routines only. Note that derived type gribfield contains
+!> pointers to many arrays of data. The memory for these arrays is
+!> allocated when the values in the arrays are set, to help
+!> minimize problems with array overloading. Users should free this
+!> memory, when it is no longer needed, by a call to subroutine
+!> gf_free().
 !>
-!>    Program History log:
-!>    - 1995-10-31  Mark Iredell Initial development
-!>    - 2002-01-02  Stephen Gilbert Modified from getg1s to work with grib2
-!>    - 2011-06-24  Boi Vuong initialize variable gfld%idsect and gfld%local
-!>
-!>    @param[in] CBUF character*1 (nlen) buffer containing index data.
-!>    @param[in] NLEN integer total length of all index records.
-!>    @param[in] NNUM integer number of index records.
-!>    @param[in] J integer number of fields to skip
-!>    (=0 to search from beginning)
-!>    @param[in] JDISC grib2 discipline number of requested field
-!>    (if = -1, accept any discipline see code table 0.0)
-!>    - 0 meteorological products
-!>    - 1 hydrological products
-!>    - 2 land surface products
-!>    - 3 space products
-!>    - 10 oceanographic products
-!>    @param[in] JIDS integer array of values in the identification section
-!>    (=-9999 for wildcard)
-!>    - JIDS(1) identification of originating centre
-!>    (see common code table c-1)
-!>    - JIDS(2) identification of originating sub-centre
-!>    - JIDS(3) grib master tables version number
-!>    (see code table 1.0)
-!>     - 0 experimental
-!>     - 1 initial operational version number.
-!>    - JIDS(4) grib local tables version number (see code table 1.1)
-!>     - 0 local tables not used
-!>     - 1-254 number of local tables version used.
-!>    - JIDS(5) significance of reference time (code table 1.2)
-!>     - 0 analysis
-!>     - 1 start of forecast
-!>     - 2 verifying time of forecast
-!>     - 3 observation time
-!>    - JIDS(6) year (4 digits)
-!>    - JIDS(7) month
-!>    - JIDS(8) day
-!>    - JIDS(9) hour
-!>    - JIDS(10) minute
-!>    - JIDS(11) second
-!>    - JIDS(12) production status of processed data (see code table 1.3)
-!>     - 0 operational products
-!>     - 1 operational test products;
-!>     - 2 research products
-!>     - 3 re-analysis products.
-!>    - JIDS(13) type of processed data (see code table 1.4)
-!>     - 0 analysis products
-!>     - 1 forecast products
-!>     - 2 analysis and forecast products
-!>     - 3 control forecast products
-!>     - 4 perturbed forecast products
-!>     - 5 control and perturbed forecast products
-!>     - 6 processed satellite observations
-!>     - 7 processed radar observations.
-!>    @param[in] JPDTN integer product definition template number (n)
-!>    (if = -1, don't bother matching pdt - accept any)
-!>    @param[in] JPDT integer array of values defining the product definition
-!>    template 4.n of the field for which to search (=-9999 for wildcard)
-!>    @param[in] JGDTN integer grid definition template number (m)
-!>    (if = -1, don't bother matching gdt - accept any )
-!>    @param[in] JGDT integer array of values defining the grid definition
-!>    template 3.m of the field for which to search (=-9999 for wildcard)
-!>    @param[out] K integer field number unpacked.
-!>    @param[out] GFLD derived type @ref grib_mod::gribfield.
-!>    @param[out] LPOS starting position of the found index record
-!>    within the complete index buffer, CBUF. = 0, if request not found.
-!>    @param[out] IRET integer return code
-!>    - 0 all ok
-!>    - 97 error reading grib file
-!>    - other gf_getfld grib2 unpacker return code
-!>
-!>    @note This subprogram is intended for private use by getgb2
-!>    routines only. Note that derived type gribfield contains
-!>    pointers to many arrays of data. The memory for these arrays is
-!>    allocated when the values in the arrays are set, to help
-!>    minimize problems with array overloading. Users should free this
-!>    memory, when it is no longer needed, by a call to subroutine
-!>    gf_free().
-!>
-!>    @author Stephen Gilbert @date 2002-01-15
+!> @author Stephen Gilbert @date 2002-01-15
 SUBROUTINE GETGB2S(CBUF,NLEN,NNUM,J,JDISC,JIDS,JPDTN,JPDT,JGDTN, &
      JGDT,K,GFLD,LPOS,IRET)
 

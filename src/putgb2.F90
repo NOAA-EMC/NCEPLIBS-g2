@@ -1,47 +1,47 @@
-!>    @file
-!>    @brief This subroutine read and unpack sections 6 and 7 from ah
-!>    grib2 message.
-!>    @author Stephen Gilbert @date 2002-01-11
-
-!>    This subroutine packs a single field into a grib2 message and
-!>    writes out that message to the file associated with unit lugb.
-!>    Note that file/unit lugb should be opened woth a call to
-!>    subroutine baopenw() before this routine is called.
-!>
-!>    The information to be packed into the grib field is stored in a
-!>    derived type variable, gfld. gfld is of type gribfield, which is
-!>    defined in module grib_mod, so users of this routine will need to
-!>    include the line "use grib_mod" in their calling routine. Each
-!>    component of the gribfield type is described in the input argument
-!>    list section below.
-!>
-!>    ### Program History Log
-!>    Date | Programmer | Comments
-!>    -----|------------|---------
-!>    2002-04-22 | Stephen Gilbert | Initial.
-!>    2005-02-28 | Stephen Gilbert | Changed dim of array cgrib to be a multiple of gfld%ngrdpts instead of gfld%ndpts.
-!>    2009-03-10 | Boi Vuong | Initialize variable coordlist.
-!>    2011-06-09 | Boi Vuong | Initialize variable gfld%list_opt.
-!>    2012-02-28 | Boi Vuong | Initialize variable ilistopt.
-!>
-!>    @param[in] LUGB integer unit of the unblocked grib data file.
-!>    File must be opened with baopen() or baopenw() before calling
-!>    this routine.
-!>    @param[in] GFLD derived type @ref grib_mod::gribfield.
-!>    @param[out] IRET integer return code
-!>    - 0 all ok.
-!>    - 2 Memory allocation error.
-!>    - 10 No Section 1 info available.
-!>    - 11 No Grid Definition Template info available.
-!>    - 12 Missing some required data field info.
-!>
-!>    @note That derived type gribfield contains pointers to many
-!>    arrays of data. The memory for these arrays is allocated when
-!>    the values in the arrays are set, to help minimize problems with
-!>    array overloading. Users must free up this memory, when it is no
-!>    longer needed, by a call to subroutine gf_free().
-!>
-!>    @author Stephen Gilbert @date 2002-04-22
+!> @file
+!> @brief This subroutine read and unpack sections 6 and 7 from ah
+!> grib2 message.
+!> @author Stephen Gilbert @date 2002-01-11
+ 
+!> This subroutine packs a single field into a grib2 message and
+!> writes out that message to the file associated with unit lugb.
+!> Note that file/unit lugb should be opened woth a call to
+!> subroutine baopenw() before this routine is called.
+!> 
+!> The information to be packed into the grib field is stored in a
+!> derived type variable, gfld. gfld is of type gribfield, which is
+!> defined in module grib_mod, so users of this routine will need to
+!> include the line "use grib_mod" in their calling routine. Each
+!> component of the gribfield type is described in the input argument
+!> list section below.
+!> 
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2002-04-22 | Stephen Gilbert | Initial.
+!> 2005-02-28 | Stephen Gilbert | Changed dim of array cgrib to be a multiple of gfld%ngrdpts instead of gfld%ndpts.
+!> 2009-03-10 | Boi Vuong | Initialize variable coordlist.
+!> 2011-06-09 | Boi Vuong | Initialize variable gfld%list_opt.
+!> 2012-02-28 | Boi Vuong | Initialize variable ilistopt.
+!> 
+!> @param[in] LUGB integer unit of the unblocked grib data file.
+!> File must be opened with baopen() or baopenw() before calling
+!> this routine.
+!> @param[in] GFLD derived type @ref grib_mod::gribfield.
+!> @param[out] IRET integer return code
+!> - 0 all ok.
+!> - 2 Memory allocation error.
+!> - 10 No Section 1 info available.
+!> - 11 No Grid Definition Template info available.
+!> - 12 Missing some required data field info.
+!> 
+!> @note That derived type gribfield contains pointers to many
+!> arrays of data. The memory for these arrays is allocated when
+!> the values in the arrays are set, to help minimize problems with
+!> array overloading. Users must free up this memory, when it is no
+!> longer needed, by a call to subroutine gf_free().
+!> 
+!> @author Stephen Gilbert @date 2002-04-22
 SUBROUTINE PUTGB2(LUGB,GFLD,IRET)
 
   USE GRIB_MOD
