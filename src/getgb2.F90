@@ -93,7 +93,7 @@
 !>    - .TRUE. unpack bitmap and data values
 !>    - .FALSE. do not unpack bitmap and data values
 !>    @param[out] K integer field number unpacked
-!>    @param[out] GFLD derived type gribfield (defined in module grib_mod)
+!>    @param[out] GFLD derived type @ref grib_mod::gribfield.
 !>    @param[out] IRET integer return code
 !>    - 0 all ok
 !>    - 96 error reading index

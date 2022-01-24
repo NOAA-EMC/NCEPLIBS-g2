@@ -1,21 +1,20 @@
-!>    @file
-!>    @brief This subroutine frees up memory in derived type gribfield.
-!>    @author Stephen Gilbert @date 2000-05-26
-!>
+!> @file
+!> @brief This subroutine frees up memory in derived type gribfield.
+!> @author Stephen Gilbert @date 2000-05-26
 
-!>    This subroutine frees up memory that was used to store
-!>    array values in derived type gribfield.
+!> This subroutine frees up memory that was used to store
+!> array values in derived type gribfield.
 !>
-!>    ### Program History Log
-!>    Date | Programmer | Comments
-!>    -----|------------|---------
-!>    2000-05-26 | Stephen Gilbert | Modified from getg1s to work with grib2
-!>    2012-12-11 | Boi Vuong | initialize an undefine pointers
-!>    2015-10-29 | Boi Vuong | Deallocate pointers in derived type gribfield
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-05-26 | Stephen Gilbert | Modified from getg1s to work with grib2
+!> 2012-12-11 | Boi Vuong | initialize an undefine pointers
+!> 2015-10-29 | Boi Vuong | Deallocate pointers in derived type gribfield
 !>
-!>    @param gfld derived type gribfield (defined in module grib_mod).
+!> @param gfld derived type @ref grib_mod::gribfield.
 !>
-!>    @author Stephen Gilbert @date 2000-05-26
+!> @author Stephen Gilbert @date 2000-05-26
 subroutine gf_free(gfld)
 
   use grib_mod
