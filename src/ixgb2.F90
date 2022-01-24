@@ -2,7 +2,6 @@
 !>    @brief This subroutine generates an index record for each field in
 !>    a grib2 message.
 !>    @author Mark Iredell @date 1995-10-31
-!>
 
 !>    This subroutine generates an index record for each field in
 !>    a grib2 message. The index records are written to index buffer
@@ -35,7 +34,7 @@
 !>    2002-01-31 | Stephen Gilbert | added identification section to index record.
 !>
 !>    @param[in] LUGB Unit of the unblocked grib file. Must
-!>     be opened by [baopen() or baopenr()]
+!>    be opened by [baopen() or baopenr()]
 !>    (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !>    @param[in] LSKIP Number of bytes to skip before grib message.
 !>    @param[in] LGRIB Number of bytes in grib message.

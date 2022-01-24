@@ -1,7 +1,6 @@
 !>    @file
 !>    @brief This subroutine finds and unpacks a grib file.
 !>    @author Mark Iredell @date 1994-04-01
-!>
 
 !>    This subroutine finds and unpacks a grib message. It reads
 !>    a grib index file (or optionally the grib file itself) to
@@ -102,14 +101,14 @@
 !>    - 99 request not found
 !>    - other gf_getfld grib2 unpacker return code
 !>
-!>    @note Specify an index file if feasible to increase speed.  Do not
-!>    engage the same logical unit from more than one processor.  Note
-!>    that derived type gribfield contains pointers to many arrays of
-!>    data. The memory for these arrays is allocated when the values in
-!>    the arrays are set, to help minimize problems with array
-!>    overloading. Because of this users are encouraged to free up this
-!>    memory, when it is no longer needed, by an explicit call to
-!>    subroutine gf_free().
+!>    @note Specify an index file if feasible to increase speed. Do
+!>    not engage the same logical unit from more than one
+!>    processor. Note that derived type gribfield contains pointers to
+!>    many arrays of data. The memory for these arrays is allocated
+!>    when the values in the arrays are set, to help minimize problems
+!>    with array overloading. Because of this users should free this
+!>    memory, when it is no longer needed, by a call to subroutine
+!>    gf_free().
 !>
 !>    @author Mark Iredell @date 1994-04-01
 SUBROUTINE GETGB2(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
