@@ -1,7 +1,6 @@
 !>    @file
 !>    @brief This subroutine read a GRIB file and return its index content.
 !>    @author Mark Iredell @date 1995-10-31
-!>
 
 !>    This subroutine read a GRIB file and return its index content.
 !>    The index buffer returned contains index records with the internal format:
@@ -27,12 +26,12 @@
 !>    ### Program History Log
 !>    Date | Programmer | Comments
 !>    -----|------------|---------
-!>    1995-10-31 | Mark Iredell
+!>    1995-10-31 | Mark Iredell | Initial
 !>    1996-10-31 | Mark Iredell | augmented optional definitions to byte 320
 !>    2002-01-02 | Stephen Gilbert | modified from getgir to create grib2 indexes
 !>
 !>    @param[in] lugb Unit of the unblocked grib file. Must
-!>     be opened by [baopen() or baopenr()]
+!>    be opened by [baopen() or baopenr()]
 !>    (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !>    @param[in] msk1 Number of bytes to search for first message.
 !>    @param[in] msk2 Number of bytes to search for other messages.
@@ -53,8 +52,6 @@
 !>    Do not engage the same logical unit from more than one processor.
 !>
 !>    @author Mark Iredell @date 1995-10-31
-!>
-
 SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,NMESS,IRET)
 
   USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
