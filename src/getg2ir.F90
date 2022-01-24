@@ -22,14 +22,14 @@
 !> - byte jj+1-  kk product definition section (pds)
 !> - byte kk+1-  ll the data representation section (drs)
 !> - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
-!> 
+!>
 !> ### Program History Log
 !> Date | Programmer | Comments
 !> -----|------------|---------
 !> 1995-10-31 | Mark Iredell | Initial
 !> 1996-10-31 | Mark Iredell | augmented optional definitions to byte 320
 !> 2002-01-02 | Stephen Gilbert | modified from getgir to create grib2 indexes
-!> 
+!>
 !> @param[in] lugb Unit of the unblocked grib file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
@@ -47,7 +47,7 @@
 !> - 0 all ok
 !> - 1 not enough memory available to hold full index buffer
 !> - 2 not enough memory to allocate initial index buffer
-!> 
+!>
 !> @note Subprogram can be called from a multiprocessing environment.
 !> Do not engage the same logical unit from more than one processor.
 !>

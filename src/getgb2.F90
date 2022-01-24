@@ -5,9 +5,9 @@
 !> This subroutine finds and unpacks a grib message. It reads
 !> a grib index file (or optionally the grib file itself) to
 !> get the index buffer (i.e. table of contents) for the grib file.
-!> 
+!>
 !> Find in the index buffer a reference to the grib field requested.
-!> 
+!>
 !> The grib field request specifies the number of fields to skip
 !> and the unpacked identification section, grid definition template
 !> and product defintion section parameters. (A requested parameter
@@ -18,14 +18,14 @@
 !> the data values are unpacked only if argument "unpack" is set to
 !> true. If the grib field is not found, then the return code
 !> will be nonzero.
-!> 
+!>
 !> The decoded information for the selected GRIB field is returned
 !> in a derived type variable, gfld. Gfld is of type gribfield,
 !> which is defined in module grib_mod, so users of this routine
 !> will need to include the line "USE GRIB_MOD" in their calling
 !> routine. Each component of the gribfield type is described in
 !> the OUTPUT ARGUMENT LIST section below.
-!> 
+!>
 !> ### Program History Log
 !> Date | Programmer | Comments
 !> -----|------------|---------
@@ -33,7 +33,7 @@
 !> 1995-10-31 | Mark Iredell | modularized code into subprograms, allowed for unspecified index file,
 !> 2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with grib2
 !> 2015-11-10 | Boi Vuong | modified doc block for gfld\%ngrdpts and gfld\%ndpts
-!> 
+!>
 !> @param[in] LUGB integer unit of the unblocked grib data file.
 !> File must be opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
@@ -100,7 +100,7 @@
 !> - 97 error reading grib file
 !> - 99 request not found
 !> - other gf_getfld grib2 unpacker return code
-!> 
+!>
 !> @note Specify an index file if feasible to increase speed. Do
 !> not engage the same logical unit from more than one
 !> processor. Note that derived type gribfield contains pointers to

@@ -2,7 +2,7 @@
 !> @brief This subroutine generates an index record for each field in
 !> a grib2 message.
 !> @author Mark Iredell @date 1995-10-31
- 
+
 !> This subroutine generates an index record for each field in
 !> a grib2 message. The index records are written to index buffer
 !> pointed to by cbuf.
@@ -24,7 +24,7 @@
 !> - byte jj+1 - kk product definition section (pds)
 !> - byte kk+1 - ll the data representation section (drs)
 !> - byte ll+1 - ll+6 first 6 bytes of the bit map section (bms)
-!> 
+!>
 !> ### Program History Log
 !> Date | Programmer | Comments
 !> -----|------------|---------
@@ -32,7 +32,7 @@
 !> 1996-10-31 | Mark Iredell | augmented optional definitions to byte 320.
 !> 2001-12-10 | Stephen Gilbert | modified from ixgb to create grib2 indexes.
 !> 2002-01-31 | Stephen Gilbert | added identification section to index record.
-!> 
+!>
 !> @param[in] LUGB Unit of the unblocked grib file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).

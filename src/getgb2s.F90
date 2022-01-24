@@ -35,12 +35,12 @@
 !> calling routine. Each component of the gribfield type is described
 !> in the output argument list section below. Only the unpacked
 !> bitmap and data field components are not set by this routine.
-!> 
+!>
 !> Program History log:
 !> - 1995-10-31  Mark Iredell Initial development
 !> - 2002-01-02  Stephen Gilbert Modified from getg1s to work with grib2
 !> - 2011-06-24  Boi Vuong initialize variable gfld%idsect and gfld%local
-!> 
+!>
 !> @param[in] CBUF character*1 (nlen) buffer containing index data.
 !> @param[in] NLEN integer total length of all index records.
 !> @param[in] NNUM integer number of index records.
@@ -106,7 +106,7 @@
 !> - 0 all ok
 !> - 97 error reading grib file
 !> - other gf_getfld grib2 unpacker return code
-!> 
+!>
 !> @note This subprogram is intended for private use by getgb2
 !> routines only. Note that derived type gribfield contains
 !> pointers to many arrays of data. The memory for these arrays is

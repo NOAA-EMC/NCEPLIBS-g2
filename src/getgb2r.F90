@@ -20,7 +20,7 @@
 !> File must be opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
 !> this routine.
-!> @param[in] CINDEX index record of the grib field (see 
+!> @param[in] CINDEX index record of the grib field (see
 !> subroutine ixgb2() for description of an index record.)
 !> @param[out] GFLD derived type @ref grib_mod::gribfield.
 !> @param[out] IRET integer return code
