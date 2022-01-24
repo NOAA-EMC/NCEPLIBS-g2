@@ -1,21 +1,21 @@
-!>    @file
-!>    @brief This subroutine packs up a spectral data field.
-!>    @author Stephen Gilbert @date 2002-12-19
+!> @file
+!> @brief This subroutine packs up a spectral data field.
+!> @author Stephen Gilbert @date 2002-12-19
 
-!>    This subroutine packs a spectral data field using the complex
-!>    packing algorithm for spherical harmonic data as defined in the
-!>    GRIB2 Data Representation Template 5.51.
-!>    @param[in] fld Contains the data values to pack.
-!>    @param[in] ndpts The number of data values in array fld.
-!>    @param[in] JJ J pentagonal resolution parameter.
-!>    @param[in] KK K pentagonal resolution parameter.
-!>    @param[in] MM M pentagonal resolution parameter.
-!>    @param[in] idrstmpl Contains the array of values for Data
-!>    Representation Template 5.51.
-!>    @param[out] cpack The packed data field (character*1 array).
-!>    @param[out] lcpack length of packed field cpack.
+!> This subroutine packs a spectral data field using the complex
+!> packing algorithm for spherical harmonic data as defined in the
+!> GRIB2 Data Representation Template 5.51.
+!> @param[in] fld Contains the data values to pack.
+!> @param[in] ndpts The number of data values in array fld.
+!> @param[in] JJ J pentagonal resolution parameter.
+!> @param[in] KK K pentagonal resolution parameter.
+!> @param[in] MM M pentagonal resolution parameter.
+!> @param[in] idrstmpl Contains the array of values for Data
+!> Representation Template 5.51.
+!> @param[out] cpack The packed data field (character*1 array).
+!> @param[out] lcpack length of packed field cpack.
 !>
-!>    @author Stephen Gilbert @date 2002-12-19
+!> @author Stephen Gilbert @date 2002-12-19
 subroutine specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)
 
   real,intent(in) :: fld(ndpts)
