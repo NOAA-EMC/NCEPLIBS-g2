@@ -2,12 +2,11 @@
 !>    @brief This subroutine finds, reads or generates a grib2 index for
 !>    the grib2 file associated with unit lugb.
 !>    @author Stephen Gilbert @date 2005-03-15
-!>
 
 !>    This subroutine finds, reads or generates a grib2 index for
 !>    the grib2 file associated with unit lugb. If the index already
-!>    exists, it is returned. otherwise, the index is (1) read from an
-!>    existing indexfile associated with unit LUGI. or (2) generated
+!>    exists, it is returned, otherwise, the index is (1) read from an
+!>    existing indexfile associated with unit LUGI or (2) generated
 !>    from the grib2file LUGI. Users can force a regeneration of an
 !>    index. If LUGI equals LUGB, the index will be regenerated from
 !>    the data in file LUGB. If LUGI is less than zero, then the index
