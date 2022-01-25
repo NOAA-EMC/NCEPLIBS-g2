@@ -1,34 +1,32 @@
-!>    @file
-!>    @brief This subroutine adds a Local Use Section (Section 2) to
-!>    a GRIB2 message.
-!>    @author Stephen Gilbert @date 2000-05-01
-!>
+!> @file
+!> @brief This subroutine adds a Local Use Section (Section 2) to
+!> a GRIB2 message.
+!> @author Stephen Gilbert @date 2000-05-01
 
-!>    This subroutine adds a [Local Use Section (Section
-!>    2)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml)
-!>    to a GRIB2 message. This routine is used with routines
-!>    gribcreate(), addlocal(), addfield(), and gribend() to create a
-!>    complete GRIB2 message. Subroutine gribcreate must be called first
-!>    to initialize a new GRIB2 message.
+!> This subroutine adds a [Local Use Section (Section
+!> 2)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml)
+!> to a GRIB2 message. This routine is used with routines
+!> gribcreate(), addlocal(), addfield(), and gribend() to create a
+!> complete GRIB2 message. Subroutine gribcreate must be called first
+!> to initialize a new GRIB2 message.
 !>
-!>    @param[inout] cgrib Character array to contain the GRIB2 message.
-!>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
-!>    @param[in] csec2 Character array containing information to be
-!>    added to Section 2.
-!>    @param[in] lcsec2 Number of bytes of character array csec2 to be
-!>    added to Section 2.
-!>    @param[out] ierr Error return code.
-!>    - 0 no error
-!>    - 1 GRIB message was not initialized. Need to call routine gribcreate first.
-!>    - 2 GRIB message already complete. Cannot add new section.
-!>    - 3 Sum of Section byte counts doesn't add to total byte count.
-!>    - 4 Previous Section was not 1 or 7.
+!> @param[inout] cgrib Character array to contain the GRIB2 message.
+!> @param[in] lcgrib Maximum length (bytes) of array cgrib.
+!> @param[in] csec2 Character array containing information to be
+!> added to Section 2.
+!> @param[in] lcsec2 Number of bytes of character array csec2 to be
+!> added to Section 2.
+!> @param[out] ierr Error return code.
+!> - 0 no error
+!> - 1 GRIB message was not initialized. Need to call routine gribcreate first.
+!> - 2 GRIB message already complete. Cannot add new section.
+!> - 3 Sum of Section byte counts doesn't add to total byte count.
+!> - 4 Previous Section was not 1 or 7.
 !>
-!>    @note Note that the Local Use Section (Section 2) can only follow
-!>    Section 1 or Section 7 in a GRIB2 message.
+!> @note Note that the Local Use Section (Section 2) can only follow
+!> Section 1 or Section 7 in a GRIB2 message.
 !>
-!>    @author Stephen Gilbert @date 2000-05-01
-!>
+!> @author Stephen Gilbert @date 2000-05-01
 subroutine addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
 
   character(len=1), intent(inout) :: cgrib(lcgrib)

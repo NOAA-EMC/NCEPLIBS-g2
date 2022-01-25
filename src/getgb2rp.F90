@@ -1,35 +1,35 @@
-!>    @file
-!>    @brief This subroutine find and extracts the index for the
-!>    requested field from a grib file.
-!>    @author Stephen Gilbert @date 2003-12-31
-!>
+!> @file
+!> @brief This subroutine find and extracts the index for the
+!> requested field from a GRIB2 file.
+!> @author Stephen Gilbert @date 2003-12-31
 
-!>    This subroutine find and extracts a grib message from a file given
-!>    the index for the requested field. The grib message returned can
-!>    contain only the requested field (extract=.true.). or the complete
-!>    grib message originally containing the desired field can be
-!>    returned (extract=.false.) even if other fields were included in
-!>    the grib message. If the grib field is not found, then the return
-!>    code will be nonzero.
-
-!>    @param[in] LUGB integer unit of the unblocked grib data file.
-!>    file must be opened with baopen or baopenr before calling
-!>    this routine.
-!>    @param[in] CINDEX index record of the grib field (see docblock of
-!>    subroutine ixgb2() for description of an index record.)
-!>    @param[in] EXTRACT logical value indicating whether to return a
-!>    grib2 message with just the requested field, or the entire
-!>    grib2 message containing the requested field.
-!>    - .true. = return grib2 message containing only the requested field.
-!>    - .false. = return entire grib2 message containing the requested field.
-!>    @param[out] GRIBM returned grib message.
-!>    @param[out] LENG length of returned grib message in bytes.
-!>    @param[out] IRET integer return code
-!>    - 0 all ok
-!>    - 97 error reading grib file
+!> This subroutine find and extracts a grib message from a GRIB2 file
+!> given the index for the requested field.
 !>
-!>    @author Stephen Gilbert @date 2003-12-31
+!> The grib message returned can contain only the requested field
+!> (extract=.true.). or the complete grib message originally
+!> containing the desired field can be returned (extract=.false.) even
+!> if other fields were included in the grib message. If the grib
+!> field is not found, then the return code will be nonzero.
 !>
+!> @param[in] LUGB integer unit of the unblocked grib data file.  file
+!> must be opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> routine.
+!> @param[in] CINDEX index record of the grib field (see docblock of
+!> subroutine ixgb2() for description of an index record.)
+!> @param[in] EXTRACT logical value indicating whether to return a
+!> grib2 message with just the requested field, or the entire
+!> grib2 message containing the requested field.
+!> - .true. = return grib2 message containing only the requested field.
+!> - .false. = return entire grib2 message containing the requested field.
+!> @param[out] GRIBM returned grib message.
+!> @param[out] LENG length of returned grib message in bytes.
+!> @param[out] IRET integer return code
+!> - 0 all ok
+!> - 97 error reading grib file
+!>
+!> @author Stephen Gilbert @date 2003-12-31
 SUBROUTINE GETGB2RP(LUGB,CINDEX,EXTRACT,GRIBM,LENG,IRET)
 
   INTEGER,INTENT(IN) :: LUGB

@@ -1,36 +1,38 @@
-!>    @file
-!>    @brief This subroutine read and unpack a local use section from a
-!>    grib2 message.
-!>    @author Stephen Gilbert @date 2002-05-07
-!>
+!> @file
+!> @brief This subroutine reads and unpacks a local use section from a
+!> GRIB2 message.
+!> @author Stephen Gilbert @date 2002-05-07
 
-!>    This subroutine read and unpack a local use section from a grib2
-!>    message. It decoded information for the selected grib field and
-!>    returned it in a derived type variable, gfld. gfld is of type
-!>    gribfield, which is defined in module grib_mod, so users of this
-!>    routine will need to include the line "use grib_mod" in their
-!>    calling routine. Each component of the gribfield type is described
-!>    in the output argument list section below.
+!> This subroutine reads and unpacks a local use section from a GRIB2
+!> message.
 !>
-!>    @param[in] LUGB integer unit of the unblocked grib data file.
-!>    @param[in] CINDEX index record of the grib field (see docblock of
-!>    subroutine ixgb2 for description of an index record.)
-!>    @param[out] GFLD derived type gribfield @ref grib_mod::gribfield.
-!>    @param[out] IRET integer return code
-!>    - 0 all ok
-!>    - 97 error reading grib file
-!>    - other gf_getfld grib2 unpacker return code
+!> This subroutine decodes information for the selected grib field and
+!> returns it in a derived type variable, gfld. gfld is of type @ref
+!> grib_mod::gribfield. Users of this routine will need to include the
+!> line "use grib_mod" in their calling routine.
 !>
-!>    @note do not engage the same logical unit from more than one
-!>    processor. This subprogram is intended for private use by getgb2
-!>    routines only. Note that derived type gribfield contains pointers
-!>    to many arrays of data. The memory for these arrays is allocated
-!>    when the values in the arrays are set, to help minimize problems
-!>    with array overloading. Because of this users are encouraged to
-!>    free up this memory, when it is no longer needed, by an explicit
-!>    call to subroutine gf_free.
+!> This subprogram is intended for private use by getgb2 routines
+!> only.
 !>
-!>    @author Stephen Gilbert @date 2002-05-07
+!> Note that derived type gribfield contains pointers to many arrays
+!> of data. The memory for these arrays is allocated when the values
+!> in the arrays are set, to help minimize problems with array
+!> overloading. Because of this users should free this memory, when it
+!> is no longer needed, by an explicit call to subroutine gf_free().
+!>
+!> @param[in] LUGB integer unit of the unblocked grib data file.
+!> @param[in] CINDEX index record of the grib field (see docblock of
+!> subroutine ixgb2 for description of an index record.)
+!> @param[out] GFLD derived type gribfield @ref grib_mod::gribfield.
+!> @param[out] IRET integer return code
+!> - 0 all ok
+!> - 97 error reading grib file
+!> - other gf_getfld grib2 unpacker return code
+!>
+!> @note Do not engage the same logical unit from more than one
+!> processor.
+!>
+!> @author Stephen Gilbert @date 2002-05-07
 SUBROUTINE GETGB2L(LUGB,CINDEX,GFLD,IRET)
 
   USE GRIB_MOD
