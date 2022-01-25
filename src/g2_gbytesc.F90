@@ -1,24 +1,21 @@
-!>    @file
-!>    @brief This Fortran module extract or store arbitrary size values
-!>    between packed bit string and unpacked array.
-!>    @author Stephen Gilbert @date 2004-04-27
-!>
+!> @file
+!> @brief This Fortran module extract or store arbitrary size values
+!> between packed bit string and unpacked array.
+!> @author Stephen Gilbert @date 2004-04-27
 
-!>    This subrountine is to extract arbitrary size values from a
-!>    packed bit string, right justifying each value in the unpacked
-!>    array without skip and interations.
+!> This subrountine is to extract arbitrary size values from a
+!> packed bit string, right justifying each value in the unpacked
+!> array without skip and interations.
 !>
-!>    This should be used when input array IN has only one element. If IN
-!>    has more elements, use G2_SBYTESC().
+!> This should be used when input array IN has only one element. If IN
+!> has more elements, use G2_SBYTESC().
 !>
-!>    @param[in] IN Array input.
-!>    @param[out] IOUT Unpacked array output.
-!>    @param[in] ISKIP Initial number of bits to skip.
-!>    @param[in] NBYTE Number of bits of each integer in IN to take.
+!> @param[in] IN Array input.
+!> @param[out] IOUT Unpacked array output.
+!> @param[in] ISKIP Initial number of bits to skip.
+!> @param[in] NBYTE Number of bits of each integer in IN to take.
 !>
-!>    @author Stephen Gilbert @date 2004-04-27
-!>
-
+!> @author Stephen Gilbert @date 2004-04-27
 SUBROUTINE G2_GBYTEC(IN,IOUT,ISKIP,NBYTE)
   character*1 in(*)
   integer iout(*)
@@ -26,21 +23,19 @@ SUBROUTINE G2_GBYTEC(IN,IOUT,ISKIP,NBYTE)
   RETURN
 END SUBROUTINE G2_GBYTEC
 
-!>    This subrountine is to put arbitrary size values into a packed bit
-!>    string, taking the low order bits from each value in the unpacked
-!>    array without skip and interation.
+!> This subrountine is to put arbitrary size values into a packed bit
+!> string, taking the low order bits from each value in the unpacked
+!> array without skip and interation.
 !>
-!>    This should be used when input array IN has only one element. If IN
-!>    has more elements, use G2_SBYTESC().
+!> This should be used when input array IN has only one element. If IN
+!> has more elements, use G2_SBYTESC().
 !>
-!>    @param[out] OUT packed array output
-!>    @param[in] IN unpacked array input
-!>    @param[in] ISKIP initial number of bits to skip
-!>    @param[in] NBYTE Number of bits of each integer in OUT to fill.
+!> @param[out] OUT packed array output
+!> @param[in] IN unpacked array input
+!> @param[in] ISKIP initial number of bits to skip
+!> @param[in] NBYTE Number of bits of each integer in OUT to fill.
 !>
-!>    @author Stephen Gilbert @date 2004-04-27
-!>
-
+!> @author Stephen Gilbert @date 2004-04-27
 SUBROUTINE G2_SBYTEC(OUT,IN,ISKIP,NBYTE)
   character*1 out(*)
   integer in(*)
@@ -48,20 +43,18 @@ SUBROUTINE G2_SBYTEC(OUT,IN,ISKIP,NBYTE)
   RETURN
 END SUBROUTINE G2_SBYTEC
 
-!>    This subrountine is to extract arbitrary size values from a
-!>    packed bit string, right justifying each value in the unpacked
-!>    array with skip and interation options.
+!> This subrountine is to extract arbitrary size values from a
+!> packed bit string, right justifying each value in the unpacked
+!> array with skip and interation options.
 !>
-!>    @param[in] IN array input
-!>    @param[out] IOUT unpacked array output
-!>    @param[in] ISKIP initial number of bits to skip
-!>    @param[in] NBYTE Number of bits of each integer in IN to take.
-!>    @param[in] NSKIP Additional number of bits to skip on each iteration.
-!>    @param[in] N Number of integers to extract.
+!> @param[in] IN array input
+!> @param[out] IOUT unpacked array output
+!> @param[in] ISKIP initial number of bits to skip
+!> @param[in] NBYTE Number of bits of each integer in IN to take.
+!> @param[in] NSKIP Additional number of bits to skip on each iteration.
+!> @param[in] N Number of integers to extract.
 !>
-!>    @author Stephen Gilbert @date 2004-04-27
-!>
-
+!> @author Stephen Gilbert @date 2004-04-27
 SUBROUTINE G2_GBYTESC(IN,IOUT,ISKIP,NBYTE,NSKIP,N)
 
   character*1 in(*)
@@ -103,20 +96,18 @@ SUBROUTINE G2_GBYTESC(IN,IOUT,ISKIP,NBYTE,NSKIP,N)
   RETURN
 END SUBROUTINE G2_GBYTESC
 
-!>    This subrountine is to put arbitrary size values into a packed bit
-!>    string, taking the low order bits from each value in the unpacked
-!>    array with skip and interation options.
+!> This subrountine is to put arbitrary size values into a packed bit
+!> string, taking the low order bits from each value in the unpacked
+!> array with skip and interation options.
 !>
-!>    @param[out] OUT Packed array output.
-!>    @param[in] IN Unpacked array input.
-!>    @param[in] ISKIP Initial number of bits to skip.
-!>    @param[in] NBYTE Number of bits of each integer in OUT to fill.
-!>    @param[in] NSKIP Additional number of bits to skip on each iteration.
-!>    @param[in] N Number of iterations.
+!> @param[out] OUT Packed array output.
+!> @param[in] IN Unpacked array input.
+!> @param[in] ISKIP Initial number of bits to skip.
+!> @param[in] NBYTE Number of bits of each integer in OUT to fill.
+!> @param[in] NSKIP Additional number of bits to skip on each iteration.
+!> @param[in] N Number of iterations.
 !>
-!>    @author Stephen Gilbert @date 2004-04-27
-!>
-
+!> @author Stephen Gilbert @date 2004-04-27
 SUBROUTINE G2_SBYTESC(OUT,IN,ISKIP,NBYTE,NSKIP,N)
 
   character*1 out(*)
