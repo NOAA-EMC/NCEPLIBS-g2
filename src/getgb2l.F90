@@ -30,7 +30,7 @@
 !> - other gf_getfld grib2 unpacker return code
 !>
 !> @note Do not engage the same logical unit from more than one
-!> processor. 
+!> processor.
 !>
 !> @author Stephen Gilbert @date 2002-05-07
 SUBROUTINE GETGB2L(LUGB,CINDEX,GFLD,IRET)
