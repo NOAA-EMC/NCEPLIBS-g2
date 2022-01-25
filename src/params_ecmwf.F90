@@ -1,21 +1,21 @@
-!>    @file
-!>    @brief This Fortran Module contains info on all the available
-!>    ECMWF GRIB Parameters.
-!>    @author Brent Gordon @date 2006-09-07
+!> @file
+!> @brief This Fortran Module contains info on all the available
+!> ECMWF GRIB Parameters.
+!> @author Brent Gordon @date 2006-09-07
 
-!>    This Fortran Module contains info on all the available
-!>    ECMWF GRIB Parameters.
+!> This Fortran Module contains info on all the available
+!> ECMWF GRIB Parameters.
 !>
-!>    ### Program History Log
-!>    Date | Programmer | Comments
-!>    -----|------------|---------
-!>    2006-09-07 | Brent Gordon | Modified from Steve Gilbert's params.f for NCEP GRIB data
-!>    2007-04-20 | Boi Vuong | Add more parameters
-!>    2007-10-11 | Boi Vuong | Add more parameters
-!>    2011-11-16 | Boi Vuong | Add parameters MAX and MIN temperature
-!>    2013-07-24 | Boi Vuong | Removed sape in abbreviation
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2006-09-07 | Brent Gordon | Modified from Steve Gilbert's params.f for NCEP GRIB data
+!> 2007-04-20 | Boi Vuong | Add more parameters
+!> 2007-10-11 | Boi Vuong | Add more parameters
+!> 2011-11-16 | Boi Vuong | Add parameters MAX and MIN temperature
+!> 2013-07-24 | Boi Vuong | Removed sape in abbreviation
 !>
-!>    @author Brent Gordon @date 2006-09-07
+!> @author Brent Gordon @date 2006-09-07
 module params_ecmwf
 
   integer,parameter :: MAXPARAM=179 !< maximum number of ECMWF GRIB parameters.

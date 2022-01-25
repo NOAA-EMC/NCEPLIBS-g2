@@ -1,35 +1,35 @@
-!>    @file
-!>    @brief This Fortran Module contains info on all the available GRIB
-!>    Parameters.
-!>    @author Stephen Gilbert @date 2001-06-05
+!> @file
+!> @brief This Fortran Module contains info on all the available GRIB
+!> Parameters.
+!> @author Stephen Gilbert @date 2001-06-05
 
-!>    This Fortran Module contains info on all the available GRIB
-!>    Parameters.
+!> This Fortran Module contains info on all the available GRIB
+!> Parameters.
 !>
-!>    ### Program History Log
-!>    Date | Programmer | Comments
-!>    -----|------------|---------
-!>    2000-05-11 | Stephen Gilbert |
-!>    2003-08-07 | Stephen Gilbert | Added more parameters
-!>    2003-09-26 | Stephen Gilbert | Added more parameters
-!>    2005-11-17 | Brent Gordon | Added more parameters for the Wave & Smoke models
-!>    2007-03-28 | Boi Vuong | Added more parameters
-!>    2007-10-10 | Boi Vuong | Added more parameters
-!>    2008-03-12 | Boi Vuong | Added more parameters
-!>    2008-06-30 | Boi Vuong | Reformat paramlist from 1 to 173, Added more parameters and table 131
-!>    2008-11-21 | Boi Vuong | Added more parameters
-!>    2009-06-02 | Boi Vuong | Added more parameters
-!>    2009-12-14 | Boi Vuong | Correction VEGT(4.2-0-210)
-!>    2010-07-27 | Boi Vuong | Added more parameters
-!>    2010-12-06 | Boi Vuong | Added more parameters
-!>    2011-05-24 | Boi Vuong | Added more parameters
-!>    2011-09-12 | Boi Vuong | Added more parameters
-!>    2012-09-12 | Boi Vuong | Added more parameters, change HINDEX to parameter from 3 to 2 and RHPW from Dis 0 cat 19 to 1
-!>    2013-07-24 | Boi Vuong | Added more parameters, removed spaces in abbreviation
-!>    2016-03-30 | Boi Vuong | Added parameter Heat Exchange Coefficient (CH)
-!>    2020-05-20 | Boi Vuong | Added parameters
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-05-11 | Stephen Gilbert |
+!> 2003-08-07 | Stephen Gilbert | Added more parameters
+!> 2003-09-26 | Stephen Gilbert | Added more parameters
+!> 2005-11-17 | Brent Gordon | Added more parameters for the Wave & Smoke models
+!> 2007-03-28 | Boi Vuong | Added more parameters
+!> 2007-10-10 | Boi Vuong | Added more parameters
+!> 2008-03-12 | Boi Vuong | Added more parameters
+!> 2008-06-30 | Boi Vuong | Reformat paramlist from 1 to 173, Added more parameters and table 131
+!> 2008-11-21 | Boi Vuong | Added more parameters
+!> 2009-06-02 | Boi Vuong | Added more parameters
+!> 2009-12-14 | Boi Vuong | Correction VEGT(4.2-0-210)
+!> 2010-07-27 | Boi Vuong | Added more parameters
+!> 2010-12-06 | Boi Vuong | Added more parameters
+!> 2011-05-24 | Boi Vuong | Added more parameters
+!> 2011-09-12 | Boi Vuong | Added more parameters
+!> 2012-09-12 | Boi Vuong | Added more parameters, change HINDEX to parameter from 3 to 2 and RHPW from Dis 0 cat 19 to 1
+!> 2013-07-24 | Boi Vuong | Added more parameters, removed spaces in abbreviation
+!> 2016-03-30 | Boi Vuong | Added parameter Heat Exchange Coefficient (CH)
+!> 2020-05-20 | Boi Vuong | Added parameters
 !>
-!>    @author Stephen Gilbert @date 2001-06-05
+!> @author Stephen Gilbert @date 2001-06-05
 module params
 
   integer,parameter :: MAXPARAM=2000 !< maximum number of GRIB parameters.
