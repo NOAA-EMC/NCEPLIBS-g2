@@ -1,23 +1,25 @@
-!>    @file
-!>    @brief This subroutine unpacks Section 2 ([Local Use Section]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml)).
-!>    @author Stephen Gilbert @date 2002-04-09
+!> @file
+!> @brief This subroutine unpacks Section 2 ([Local Use Section]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml))
+!> of a GRIB2 message.
+!> @author Stephen Gilbert @date 2002-04-09
 
-!>    This subroutine unpacks Section 2 ([Local Use Section]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml)).
+!> This subroutine unpacks Section 2 ([Local Use Section]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml))
+!> of a GRIB2 message.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message.
-!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning/end (returned) of
-!>    Section 2.
-!>    @param[out] lencsec2 Length (in octets) of Local Use data.
-!>    @param[out] csec2 Pointer to a character*1 array containing local use data.
-!>    @param[out] ierr Error return code.
-!>    - 0 no error.
-!>    - 2 Array passed is not section 2.
-!>    - 6 memory allocation error.
+!> @param[in] cgrib Character array that contains the GRIB2 message.
+!> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!> @param[inout] iofst Bit offset of the beginning/end (returned) of
+!> Section 2.
+!> @param[out] lencsec2 Length (in octets) of Local Use data.
+!> @param[out] csec2 Pointer to a character*1 array containing local use data.
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 2 Array passed is not section 2.
+!> - 6 memory allocation error.
 !>
-!>    @author Stephen Gilbert @date 2002-04-09
+!> @author Stephen Gilbert @date 2002-04-09
 subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
 
   character(len = 1), intent(in) :: cgrib(lcgrib)

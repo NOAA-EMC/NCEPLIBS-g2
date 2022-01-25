@@ -1,42 +1,46 @@
-!>    @file
-!>    @brief This subroutine determines groups of variable size.
-!>    @author Harry Glahn @date 2001-11-01
+!> @file
+!> @brief This subroutine determines groups of variable size.
+!> @author Harry Glahn @date 2001-11-01
 
-!>    This subroutine determines whether the number of groups should be
-!>    increased in order to reduce the size of the large groups, and to
-!>    make that adjustment. By reducing the size of the large groups,
-!>    less bits may be necessary for packing the group sizes and all the
-!>    information about the groups. The reference for NOV was removed in
-!>    the calling routine so that kbit could be determined. This
-!>    furnishes a starting point for the iterations in reduce.
-!>    
-!>    @param[in] KFILDO unit number for output/print file.
-!>    @param[inout] JMIN the minimum of each group (j=1,lx). JMIN is
-!>    really the group reference and doesn't have to be the smallest
-!>    value.
-!>    @param[inout] JMAX the maximum of each group (j=1,lx).
-!>    @param[inout] LBIT the number of bits necessary to pack each group
-!>    (j=1,lx).
-!>    @param[inout] NOV the number of values in each group (j=1,lx).
-!>    @param[inout] LX the number of groups. This will be increased, if
-!>    groups are split.
-!>    @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
-!>    @param[in] IBIT the number of bits necessary to pack the JMIN(j)
-!>    values, j=1,LX.
-!>    @param[in] JBIT the number of bits necessary to pack the LBIT(j)
-!>    values, j=1,LX.
-!>    @param[inout] KBIT the number of bits necessary to pack the NOV(j)
-!>    values, j=1,LX. If the groups are split, kbit is reduced.
-!>    @param[in] NOVREF reference value for NOV.
-!>    @param[in] IBXX2 ibxx2(j) = 2**j (j=0,30).
-!>    @param[out] IER error return.
-!>    - 0 good return.
-!>    - 714 error in reduce--non-fatal
-!>    - 715 ngp not large enough in reduce--non-fatal
+!> This subroutine determines whether the number of groups should be
+!> increased in order to reduce the size of the large groups, and to
+!> make that adjustment.
 !>
-!>    @author Harry Glahn @date 2001-11-01
+!> By reducing the size of the large groups, less bits may be
+!> necessary for packing the group sizes and all the information about
+!> the groups.
+!>
+!> The reference for NOV was removed in the calling routine so that
+!> kbit could be determined. This furnishes a starting point for the
+!> iterations in reduce.
+!>
+!> @param[in] KFILDO unit number for output/print file.
+!> @param[inout] JMIN the minimum of each group (j=1,lx). JMIN is
+!> really the group reference and doesn't have to be the smallest
+!> value.
+!> @param[inout] JMAX the maximum of each group (j=1,lx).
+!> @param[inout] LBIT the number of bits necessary to pack each group
+!> (j=1,lx).
+!> @param[inout] NOV the number of values in each group (j=1,lx).
+!> @param[inout] LX the number of groups. This will be increased, if
+!> groups are split.
+!> @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
+!> @param[in] IBIT the number of bits necessary to pack the JMIN(j)
+!> values, j=1,LX.
+!> @param[in] JBIT the number of bits necessary to pack the LBIT(j)
+!> values, j=1,LX.
+!> @param[inout] KBIT the number of bits necessary to pack the NOV(j)
+!> values, j=1,LX. If the groups are split, kbit is reduced.
+!> @param[in] NOVREF reference value for NOV.
+!> @param[in] IBXX2 ibxx2(j) = 2**j (j=0,30).
+!> @param[out] IER error return.
+!> - 0 good return.
+!> - 714 error in reduce--non-fatal
+!> - 715 ngp not large enough in reduce--non-fatal
+!>
+!> @author Harry Glahn @date 2001-11-01
       SUBROUTINE REDUCE(KFILDO,JMIN,JMAX,LBIT,NOV,LX,NDG,IBIT,JBIT,KBIT, &
-           NOVREF,IBXX2,IER)            
+           NOVREF,IBXX2,IER)
 
       CHARACTER*1 CFEED
 !
@@ -112,13 +116,13 @@
 !                 THE +M-1 IS NECESSARY.  FOR INSTANCE, 15 WILL FIT
 !                 INTO A BOX 4 BITS WIDE, BUT WON'T DIVIDE INTO
 !                 TWO BOXES 3 BITS WIDE EACH.
-!      
+!
                IF(NOVL.LT.IBXX2(J))THEN
                   GO TO 185
                ELSE
                   M=M+1
 !***                  WRITE(KFILDO,135)L,NOV(L),NOVL,M,J,IBXX2(J)
-!*** 135              FORMAT(/' AT 135--L,NOV(L),NOVL,M,J,IBXX2(J)',6I10)               
+!*** 135              FORMAT(/' AT 135--L,NOV(L),NOVL,M,J,IBXX2(J)',6I10)
                   GO TO 130
                ENDIF
 !
@@ -155,9 +159,9 @@
 !    3             /' *****************************************')
 !           WRITE(KFILDO,198) (NEWBOX(L),L=1,LX)
 !198        FORMAT(/' '20I6/(' '20I6))
-    
+
          ENDIF
-!        
+!
 !205     WRITE(KFILDO,209)KBIT,IORIGB
 !209     FORMAT(/' ORIGINAL BITS WITH KBIT OF',I5,' =',I10)
 !        WRITE(KFILDO,210)(N,N=2,10),(IBXX2(N),N=2,10),
@@ -197,7 +201,7 @@
 !
          LXNKP=LX+NEWBOXTP
 !           LXNKP = THE NEW NUMBER OF BOXES
-!  
+!
          IF(LXNKP.GT.NDG)THEN
 !              DIMENSIONS NOT LARGE ENOUGH.  PROBABLY AN ERROR
 !              OF SOME SORT.  ABORT.
@@ -208,7 +212,7 @@
 !    2              ' GROUPS =',I8,'.  ABORT REDUCE.')
             IER=715
             GO TO 410
-!              AN ABORT CAUSES THE CALLING PROGRAM TO REEXECUTE 
+!              AN ABORT CAUSES THE CALLING PROGRAM TO REEXECUTE
 !              WITHOUT CALLING REDUCE.
          ENDIF
 !
@@ -254,7 +258,7 @@
 !2870          FORMAT(/' AN ERROR IN REDUCE ALGORITHM.  ABORT REDUCE.')
                IER=714
                GO TO 410
-!                 AN ABORT CAUSES THE CALLING PROGRAM TO REEXECUTE 
+!                 AN ABORT CAUSES THE CALLING PROGRAM TO REEXECUTE
 !                 WITHOUT CALLING REDUCE.
                ENDIF
 !
@@ -278,7 +282,7 @@
 !*** 292           FORMAT(' AT 292 IN REDUCE--L,LXN,MOVE,LXNKP,',
 !***     1                'IBXX2(JJ),LEFT,NOV(L),MOVMIN'/8I12)
             ENDIF
-!     
+!
  300     CONTINUE
 !
          LX=LXNKP
@@ -305,4 +309,4 @@
 !
  410  RETURN
       END
-      
+
