@@ -38,8 +38,7 @@
 !>    data points for each "1" in the bitmap. This argument is ignored
 !>    if unpack == 0 OR if the returned field does not contain a
 !>    bit-map.
-!>    @param[out] gfld derived type gribfield (defined in module
-!>    grib_mod).
+!>    @param[out] gfld derived type @ref grib_mod::gribfield.
 !>    @param[out] ierr Error return code.
 !>    - 0 no error.
 !>    - 1 Beginning characters "GRIB" not found.
