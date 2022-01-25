@@ -105,13 +105,14 @@ contains
        !
        !  Allocate new type(g2grid) variable to store the GDT
        !
-       allocate(gtemp,stat=iom)
+       allocate(gtemp)
        count=count+1
        gtemp%grid_num=ient
        gtemp%gdt_num=igdtn
        gtemp%gdt_len=igdtlen
        gtemp%gridtmpl=igdtmpl
        gtemp%cdesc=desc
+       !gtemp%next => NULL()
        nullify(gtemp%next)              ! defines end of linked list.
        if ( count .eq. 1 ) then
           gridlist => gtemp
@@ -119,10 +120,11 @@ contains
           prev%next => gtemp      ! points to the new entry,
        endif
        prev => gtemp
-
+       !deallocate(gridlist)
     enddo
-
-999 readgrids=count
+!    deallocate(prev)
+999 backspace(lunit)
+    readgrids=count
     return
 
   end function readgrids

@@ -6,6 +6,13 @@
 # This is needed for macos to work on GitHub CI.
 link_directories("/usr/local/lib")
 
+# Copy test data file to the build directory.
+function(copy_test_data name)
+  file(COPY "${CMAKE_SOURCE_DIR}/tests/${name}"
+    DESTINATION ${CMAKE_BINARY_DIR}/tests
+    FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+endfunction()
+
 add_executable(test_g2 test_g2.f90)
 target_link_libraries(test_g2 g2_d ${PNG_LIBRARIES})
 add_test(test_g2 test_g2)
@@ -86,3 +93,9 @@ add_executable(test_intmath test_intmath.f90)
 target_link_libraries(test_intmath g2_d)
 add_test(test_intmath test_intmath)
 
+add_executable(test_g2grids test_g2grids.f90)
+target_link_libraries(test_g2grids g2_d)
+add_test(test_g2grids test_g2grids)
+
+#copy test data files
+copy_test_data(testdata_g2grids)
