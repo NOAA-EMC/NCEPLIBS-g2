@@ -1,52 +1,52 @@
-!>    @file
-!>    @brief This Fortran Module contains info on all the available
-!>    GRIB2 Product Definition Templates used in Section 4 - the Product
-!>    Definition Section (PDS).
-!>    @author Stephen Gilbert @date 2000-05-11
+!> @file
+!> @brief This Fortran Module contains info on all the available
+!> GRIB2 Product Definition Templates used in Section 4 - the Product
+!> Definition Section (PDS).
+!> @author Stephen Gilbert @date 2000-05-11
 
-!>    This Fortran Module contains info on all the available GRIB2
-!>    Product Definition Templates used in [Section 4 - the Product
-!>    Definition Section
-!>    (PDS)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml). Each
-!>    Template has three parts: The number of entries in the template
-!>    (mapppdslen); A map of the template (mappds), which contains the
-!>    number of octets in which to pack each of the template values; and
-!>    a logical value (needext) that indicates whether the Template
-!>    needs to be extended. In some cases the number of entries in a
-!>    template can vary depending upon values specified in the static
-!>    part of the template. (Template 4.3 as an example).
+!> This Fortran Module contains info on all the available GRIB2
+!> Product Definition Templates used in [Section 4 - the Product
+!> Definition Section
+!> (PDS)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml). Each
+!> Template has three parts: The number of entries in the template
+!> (mapppdslen); A map of the template (mappds), which contains the
+!> number of octets in which to pack each of the template values; and
+!> a logical value (needext) that indicates whether the Template
+!> needs to be extended. In some cases the number of entries in a
+!> template can vary depending upon values specified in the static
+!> part of the template. (Template 4.3 as an example).
 !>
-!>    This module also contains two subroutines.
-!>    - getpdstemplate() returns the octet map for a specified
-!>    Template number.
-!>    - extpdstemplate() will calculate the extended octet map of an
-!>    appropriate template given values for the static part of the
-!>    template.
+!> This module also contains two subroutines.
+!> - getpdstemplate() returns the octet map for a specified
+!> Template number.
+!> - extpdstemplate() will calculate the extended octet map of an
+!> appropriate template given values for the static part of the
+!> template.
 !>
-!>    ### Program History Log
-!>    Date | Programmer | Comments
-!>    -----|------------|---------
-!>    2000-05-11 Stephen Gilbert |
-!>    2001-12-04 Stephen Gilbert | Added Templates 4.12, 4.12, 4.14, 4.1000, 4.1001, 4.1002, 4.1100 and 4.1101
-!>    2009-05-21 Boi Vuong | Allow negative scale factors and limits for Templates 4.5 and 4.9
-!>    2009-12-14 Boi Vuong | Added Templates (Satellite Product) 4.31 Added Templates (ICAO WAFS) 4.15
-!>    2010-08-03 Boi Vuong | Added Templates 4.40,4.41,4.42,.4.43
-!>    2010-12-08 Boi Vuong | Corrected Product Definition Template 4.42 and 4.43
-!>    2012-02-07 Boi Vuong | Added Templates 4.44,4.45,4.46,4.47,4.48,4.50,4.51,4.91,4.32 and 4.52
-!>    2013-07-29 Boi Vuong | Corrected 4.91 and added Templates 4.33,4.34,4.53,4.54
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-05-11 Stephen Gilbert |
+!> 2001-12-04 Stephen Gilbert | Added Templates 4.12, 4.12, 4.14, 4.1000, 4.1001, 4.1002, 4.1100 and 4.1101
+!> 2009-05-21 Boi Vuong | Allow negative scale factors and limits for Templates 4.5 and 4.9
+!> 2009-12-14 Boi Vuong | Added Templates (Satellite Product) 4.31 Added Templates (ICAO WAFS) 4.15
+!> 2010-08-03 Boi Vuong | Added Templates 4.40,4.41,4.42,.4.43
+!> 2010-12-08 Boi Vuong | Corrected Product Definition Template 4.42 and 4.43
+!> 2012-02-07 Boi Vuong | Added Templates 4.44,4.45,4.46,4.47,4.48,4.50,4.51,4.91,4.32 and 4.52
+!> 2013-07-29 Boi Vuong | Corrected 4.91 and added Templates 4.33,4.34,4.53,4.54
 !>
-!>    @note Array mapgrid contains the number of octets in which the
-!>    corresponding template values will be stored. A negative value in
-!>    mapgrid is used to indicate that the corresponding template entry
-!>    can contain negative values. This information is used later when
-!>    packing (or unpacking) the template data values. Negative data
-!>    values in GRIB are stored with the left most bit set to one, and
-!>    a negative number of octets value in mapgrid indicates that this
-!>    possibility should be considered. The number of octets used to
-!>    store the data value in this case would be the absolute value of
-!>    the negative value in mapgrid.
+!> @note Array mapgrid contains the number of octets in which the
+!> corresponding template values will be stored. A negative value in
+!> mapgrid is used to indicate that the corresponding template entry
+!> can contain negative values. This information is used later when
+!> packing (or unpacking) the template data values. Negative data
+!> values in GRIB are stored with the left most bit set to one, and
+!> a negative number of octets value in mapgrid indicates that this
+!> possibility should be considered. The number of octets used to
+!> store the data value in this case would be the absolute value of
+!> the negative value in mapgrid.
 !>
-!>    @author Stephen Gilbert @date 2000-05-11
+!> @author Stephen Gilbert @date 2000-05-11
 module pdstemplates
 
   integer,parameter :: MAXLEN=200 !< MAXLEN max length of entries
