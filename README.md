@@ -27,7 +27,7 @@ The NCEPLIBS-g2 library is used by:
 
 ## Authors
 
-Stephen Gilbert, NCEP/EMC Developers
+Stephen Gilbert, Mark Iredell, Boi Vuong, other NCEP/EMC Developers
 
 Code Manager : Hang Lei, Edward Hartnett
 
