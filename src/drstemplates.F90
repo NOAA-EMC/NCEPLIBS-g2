@@ -1,41 +1,39 @@
-!>    @file
-!>    @brief This Fortran Module contains info on all the available
-!>    GRIB2 Data Representation Templates used in Section 5 - the Data
-!>    Representation Section (DRS).
-!>    @author Stephen Gilbert @date 2001-04-03
-!>
+!> @file
+!> @brief This Fortran Module contains info on all the available GRIB2
+!> Data Representation Templates used in Section 5 - the Data
+!> Representation Section (DRS).
+!> @author Stephen Gilbert @date 2001-04-03
 
-!>    This Fortran Module contains info on all the available GRIB2 Data
-!>    Representation Templates used in Section 5 - the Data
-!>    Representation Section (DRS). (See
-!>    https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect5.shtml.)
+!> This Fortran Module contains info on all the available GRIB2 Data
+!> Representation Templates used in Section 5 - the Data
+!> Representation Section (DRS). (See
+!> https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect5.shtml.)
 !>
-!>    Each Template has three parts: The number of entries in the
-!>    template (mapdrslen); A map of the template (mapdrs), which
-!>    contains the number of octets in which to pack each of the
-!>    template values; and a logical value (needext) that indicates
-!>    whether the Template needs to be extended.
+!> Each Template has three parts:
+!> 1. The number of entries in the template (mapdrslen);
+!> 2. A map of the template (mapdrs), which contains the number of
+!> octets in which to pack each of the template values;
+!> 3. A logical value (needext) that indicates whether the Template
+!> needs to be extended.
 !>
-!>    This module also contains two subroutines. Subroutine
-!>    getdrstemplate returns the octet map for a specified Template
-!>    number, and subroutine extdrstemplate will calculate the extended
-!>    octet map of an appropriate template given values for the "static"
-!>    part of the template. See docblocks below for the arguments and
-!>    usage of these routines.
+!> This module also contains two subroutines. Subroutine
+!> getdrstemplate() returns the octet map for a specified Template
+!> number, and subroutine extdrstemplate() will calculate the extended
+!> octet map of an appropriate template given values for the "static"
+!> part of the template.
 !>
-!>    @note Array mapdrs contains the number of octets in which the
-!>    corresponding template values will be stored. A negative value in
-!>    mapdrs is used to indicate that the corresponding template entry
-!>    can contain negative values. This information is used later when
-!>    packing (or unpacking) the template data values. Negative data
-!>    values in GRIB are stored with the left most bit set to one, and a
-!>    negative number of octets value in mapdrs indicates that this
-!>    possibility should be considered. The number of octets used to
-!>    store the data value in this case would be the absolute value of
-!>    the negative value in mapdrs.
+!> @note Array mapdrs contains the number of octets in which the
+!> corresponding template values will be stored. A negative value in
+!> mapdrs is used to indicate that the corresponding template entry
+!> can contain negative values. This information is used later when
+!> packing (or unpacking) the template data values. Negative data
+!> values in GRIB are stored with the left most bit set to one, and a
+!> negative number of octets value in mapdrs indicates that this
+!> possibility should be considered. The number of octets used to
+!> store the data value in this case would be the absolute value of
+!> the negative value in mapdrs.
 !>
-!>    @author Stephen Gilbert @date 2001-04-03
-!>
+!> @author Stephen Gilbert @date 2001-04-03
 module drstemplates
 
   integer,parameter :: MAXLEN=200 !< maximum number of octets in mapdrs

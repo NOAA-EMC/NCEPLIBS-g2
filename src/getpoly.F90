@@ -1,25 +1,22 @@
-!>    @file
-!>    @brief This subroutine returns the J, K, and M pentagonal
-!>    resolution parameters specified in a GRIB Grid Definition Section.
-!>    @author Stephen Gilbert @date 2002-12-11
-!>
+!> @file
+!> @brief This subroutine returns the J, K, and M pentagonal
+!> resolution parameters specified in a GRIB2 Grid Definition Section.
+!> @author Stephen Gilbert @date 2002-12-11
 
-!>    This subroutine returns the J, K, and M pentagonal resolution
-!>    parameters specified in a GRIB Grid Definition Section used
-!>    spherical harmonic coefficients using GDT 5.50 through 5.53.
+!> This subroutine returns the J, K, and M pentagonal resolution
+!> parameters specified in a GRIB2 Grid Definition Section used
+!> spherical harmonic coefficients using GDT 5.50 through 5.53.
 !>
-!>    @param[in] csec3 Character array containing the packed GRIB2 GDS
-!>    @param[in] lcsec3 Length (in octets) of section 3
-!>    @param[out] JJ =J pentagonal resolution parameter
-!>    @param[out] KK =K pentagonal resolution parameter
-!>    @param[out] MM =M pentagonal resolution parameter
+!> @param[in] csec3 Character array containing the packed GRIB2 GDS
+!> @param[in] lcsec3 Length (in octets) of section 3
+!> @param[out] JJ =J pentagonal resolution parameter
+!> @param[out] KK =K pentagonal resolution parameter
+!> @param[out] MM =M pentagonal resolution parameter
 !>
-!>    @note Returns JJ, KK, and MM set to zero, if grid template not
-!>    recognized.
+!> @note Returns JJ, KK, and MM set to zero, if grid template not
+!> recognized.
 !>
-!>    @author Stephen Gilbert @date 2002-12-11
-!>
-
+!> @author Stephen Gilbert @date 2002-12-11
 subroutine getpoly(csec3,lcsec3,jj,kk,mm)
 
   !      use grib_mod
