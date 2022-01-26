@@ -1,25 +1,25 @@
-!>    @file
-!>    @brief This Fortran Module contains the declaration of derived
-!>    type gribfield.
-!>    @author Stephen Gilbert @date 2002-01-23
+!> @file
+!> @brief This Fortran module contains the declaration of derived
+!> type gribfield.
+!> @author Stephen Gilbert @date 2002-01-23
 
-!>    This Fortran Module contains the declaration of derived type
-!>    gribfield.
+!> This Fortran module contains the declaration of derived type
+!> gribfield.
 !>
-!>    ### Program History Log
-!>    Date | Programmer | Comments
-!>    -----|------------|---------
-!>    2002-01-23 | Stephen Gilbert | Initial.
-!>    2007-04-24 | Boi Vuong | Added GDT 3.204 Curvilinear Orthogonal Grids
-!>    2008-05-29 | Boi Vuong | Added GDT 3.32768 Rotate Lat/Lon E-grid
-!>    2009-02-17 | Boi Vuong | Allow negative scale factors and limits for Templates 4.5 and 4.9
-!>    2009-12-14 | Boi Vuong | Fixed bug in getidx.f, increase length of seek(512), Added Templates (Satellite Product) 4.31, (ICAO WAFS) 4.15
-!>    2013-05-07 | Boi Vuong | Initialized all pointers to null()
-!>    2013-08-29 | Boi Vuong | Changed version number 2.5.0
-!>    2015-11-01 | Boi Vuong | Changed version number 2.6.0
-!>    2017-18-01 | Boi Vuong | Changed version number 3.1.0
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2002-01-23 | Stephen Gilbert | Initial.
+!> 2007-04-24 | Boi Vuong | Added GDT 3.204 Curvilinear Orthogonal Grids
+!> 2008-05-29 | Boi Vuong | Added GDT 3.32768 Rotate Lat/Lon E-grid
+!> 2009-02-17 | Boi Vuong | Allow negative scale factors and limits for Templates 4.5 and 4.9
+!> 2009-12-14 | Boi Vuong | Fixed bug in getidx.f, increase length of seek(512), Added Templates (Satellite Product) 4.31, (ICAO WAFS) 4.15
+!> 2013-05-07 | Boi Vuong | Initialized all pointers to null()
+!> 2013-08-29 | Boi Vuong | Changed version number 2.5.0
+!> 2015-11-01 | Boi Vuong | Changed version number 2.6.0
+!> 2017-18-01 | Boi Vuong | Changed version number 3.1.0
 !>
-!>    @author Stephen Gilbert @date 2002-01-23
+!> @author Stephen Gilbert @date 2002-01-23
 module grib_mod
 
   character(len = 12) :: G2_VERSION = "g2lib-@pVersion@" !< Library version.
@@ -27,190 +27,186 @@ module grib_mod
   type gribfield
      integer :: version        !< GRIB edition number (currently 2).
 
-     !>     Message Discipline (see [Code Table 0.0]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml)).
+     !>  Message Discipline (see [Code Table 0.0]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml)).
      integer :: discipline
 
-     !>    Contains the entries in the Identification Section (Section
-     !>    1).
-     !>    - idsect(1) Identification of originating Centre
-     !>    (see Common Code Table C-1) 7 US National Weather Service. ([Table 0]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html)).
-     !>    - idsect(2) Identification of originating Sub-centre ([Table C]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html)).
-     !>    - idsect(3) GRIB Master Tables Version Number. ([Table 1.0]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml))
-     !>    0 Experimental; 1 Initial operational version number
-     !>    - idsect(4) GRIB Local Tables Version Number ([Table 1.1]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml)).
-     !>     - 0 Local tables not used
-     !>     - 0 1-254 Number of local tables version used
-     !>    - idsect(5) Significance of Reference Time ([Table 1.2]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml)).
-     !>     - 0 Analysis
-     !>     - 1 Start of forecast
-     !>     - 2 Verifying time of forecast
-     !>     - 3 Observation time
-     !>    - idsect(6) Year (4 digits)
-     !>    - idsect(7) Month
-     !>    - idsect(8) Day
-     !>    - idsect(9) Hour
-     !>    - idsect(10) Minute
-     !>    - idsect(11) Second
-     !>    - idsect(12) Production status of processed data (see [Table 1.3]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml))
-     !>     - 0 Operational products
-     !>     - 1 Operational test products
-     !>     - 2 Research products
-     !>     - 3 Re-analysis products
-     !>    - idsect(13) Type of processed data ([Table 1.4]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml))
-     !>     - 0 Analysis products
-     !>     - 1 Forecast products
-     !>     - 2 Analysis and forecast products
-     !>     - 3 Control forecast products
-     !>     - 4 Perturbed forecast products
-     !>     - 5 Control and perturbed forecast products
-     !>     - 6 Processed satellite observations
-     !>     - 7 Processed radar observations
+     !> Contains the entries in the Identification Section (Section
+     !> 1).
+     !> - idsect(1) Identification of originating Centre
+     !> (see Common Code Table C-1) 7 US National Weather Service. ([Table 0]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html)).
+     !> - idsect(2) Identification of originating Sub-centre ([Table C]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html)).
+     !> - idsect(3) GRIB Master Tables Version Number. ([Table 1.0]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml))
+     !> 0 Experimental; 1 Initial operational version number
+     !> - idsect(4) GRIB Local Tables Version Number ([Table 1.1]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml)).
+     !>  - 0 Local tables not used
+     !>  - 0 1-254 Number of local tables version used
+     !> - idsect(5) Significance of Reference Time ([Table 1.2]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml)).
+     !>  - 0 Analysis
+     !>  - 1 Start of forecast
+     !>  - 2 Verifying time of forecast
+     !>  - 3 Observation time
+     !> - idsect(6) Year (4 digits)
+     !> - idsect(7) Month
+     !> - idsect(8) Day
+     !> - idsect(9) Hour
+     !> - idsect(10) Minute
+     !> - idsect(11) Second
+     !> - idsect(12) Production status of processed data (see [Table 1.3]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml))
+     !>  - 0 Operational products
+     !>  - 1 Operational test products
+     !>  - 2 Research products
+     !>  - 3 Re-analysis products
+     !> - idsect(13) Type of processed data ([Table 1.4]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml))
+     !>  - 0 Analysis products
+     !>  - 1 Forecast products
+     !>  - 2 Analysis and forecast products
+     !>  - 3 Control forecast products
+     !>  - 4 Perturbed forecast products
+     !>  - 5 Control and perturbed forecast products
+     !>  - 6 Processed satellite observations
+     !>  - 7 Processed radar observations
      integer, pointer, dimension(:) :: idsect => null()
 
-     !>    Number of elements in idsect (always 13).
+     !> Number of elements in idsect (always 13).
      integer :: idsectlen
 
-     !>    Pointer to character array containing contents
-     !>    of Local Section 2, if included.
+     !> Pointer to character array containing contents of Local
+     !> Section 2, if included.
      character(len = 1), pointer, dimension(:) :: local => null()
 
-     !>    Length of array local.
+     !> Length of array local.
      integer :: locallen
 
-     !>    Field number within GRIB message.
+     !> Field number within GRIB message.
      integer :: ifldnum
 
-     !>    Source of grid definition (see [Code Table 3.0]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml))
-     !>     - 0 Specified in field igdtnum (as defined in [Code table 3.1]
-     !>     (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml).
-     !>     - 1 Predetermined grid Defined by originating centre.
+     !> Source of grid definition (see [Code Table 3.0]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml))
+     !> - 0 Specified in field igdtnum (as defined in [Code table 3.1]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml).
+     !> - 1 Predetermined grid Defined by originating centre.
      integer :: griddef
 
-     !>    Number of grid points in the defined grid. Note that the number of
-     !>    actual data values returned from getgb2() (in ndpts) may be less
-     !>    than this value if a logical bitmap is in use with grid points
-     !>    that are being masked out.
+     !> Number of grid points in the defined grid. Note that the
+     !> number of actual data values returned from getgb2() (in ndpts)
+     !> may be less than this value if a logical bitmap is in use with
+     !> grid points that are being masked out.
      integer :: ngrdpts
 
-     !>    Number of octets needed for each additional grid points
-     !>    definition. Used to define number of points in each row
-     !>    (or column) for non-regular grids. Equal to 0, if using
-     !>    regular grid.
+     !> Number of octets needed for each additional grid points
+     !> definition. Used to define number of points in each row (or
+     !> column) for non-regular grids. Equal to 0, if using regular
+     !> grid.
      integer :: numoct_opt
 
-     !>    Interpretation of list of numbers at end of section
-     !>    3 - the Grid Definiton Section. (See [Code Table 3.11]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
+     !> Interpretation of list of numbers at end of section 3 - the
+     !> Grid Definiton Section. (See [Code Table 3.11]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
      integer :: interp_opt
 
-     !>    (Used if numoct_opt .ne. 0.) The number of entries in
-     !>    array ideflist. i.e. number of rows (or columns) for
-     !>    which optional grid points are defined. This value is
-     !>    set to zero, if umoct_opt = 0.
+     !> (Used if numoct_opt .ne. 0.) The number of entries in array
+     !> ideflist. i.e. number of rows (or columns) for which optional
+     !> grid points are defined. This value is set to zero, if
+     !> umoct_opt = 0.
      integer :: num_opt
 
-     !>    (Used if numoct_opt .ne. 0.) This array contains the
-     !>    number of grid points contained in each row (or
-     !>    column) (part of Section 3), This element is actually a
-     !>    pointer to an array that holds the data. This pointer is
-     !>    null if numoct_opt equals 0.
+     !> (Used if numoct_opt .ne. 0.) This array contains the number of
+     !> grid points contained in each row (or column) (part of Section
+     !> 3), This element is actually a pointer to an array that holds
+     !> the data. This pointer is null if numoct_opt equals 0.
      integer, pointer, dimension(:) :: list_opt => null()
 
-     !>    Grid Definition Template Number ([Code Table 3.1]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
+     !> Grid Definition Template Number ([Code Table 3.1]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
      integer :: igdtnum
 
-     !>    Number of elements in the Grid Defintion Template
-     !>    specified by igdtnum.
+     !> Number of elements in the Grid Defintion Template specified by
+     !> igdtnum.
      integer :: igdtlen
 
-     !>    Contains the data values for the Grid Definition
-     !>    Template specified by igdtnum. This element is actually
-     !>    a pointer to an array that holds the data.
+     !> Contains the data values for the Grid Definition Template
+     !> specified by igdtnum. This element is actually a pointer to an
+     !> array that holds the data.
      integer, pointer, dimension(:) :: igdtmpl => null()
 
-     !>    Product Definition Template Number ([Code Table 4.0]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
+     !> Product Definition Template Number ([Code Table 4.0]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
      integer :: ipdtnum
 
-     !>    Number of elements in the Product Defintion Template
-     !>    specified by ipdtnum.
+     !> Number of elements in the Product Defintion Template specified
+     !> by ipdtnum.
      integer :: ipdtlen
 
-     !>    Contains the data values for the Product Definition
-     !>    Template specified by ipdtnum. This element is actually
-     !>    a pointer to an array that holds the data.
+     !> Contains the data values for the Product Definition Template
+     !> specified by ipdtnum. This element is actually a pointer to an
+     !> array that holds the data.
      integer, pointer, dimension(:) :: ipdtmpl => null()
 
-     !>    Number of values in array coord_list. This is part of
-     !>    Section 3 - the Grid Definition Section.
+     !> Number of values in array coord_list. This is part of Section
+     !> 3 - the Grid Definition Section.
      integer :: num_coord
 
-     !>    Real array containing floating point values intended to
-     !>    document the vertical discretisation associated to model
-     !>    data on hybrid coordinate vertical levels (part of
-     !>    Section 3 - the Grid Definition Section). This element
-     !>    is actually a pointer to an array that holds the data.
+     !> Real array containing floating point values intended to
+     !> document the vertical discretisation associated to model data
+     !> on hybrid coordinate vertical levels (part of Section 3 - the
+     !> Grid Definition Section). This element is actually a pointer
+     !> to an array that holds the data.
      real, pointer, dimension(:) :: coord_list => null()
 
-     !>    Number of data points unpacked and returned. Note that
-     !>    this number may be different from the value of ngrdpts
-     !>    if a logical bitmap is in use with grid points that are
-     !>    being masked out.
+     !> Number of data points unpacked and returned. Note that this
+     !> number may be different from the value of ngrdpts if a logical
+     !> bitmap is in use with grid points that are being masked out.
      integer :: ndpts
 
-     !>    Data Representation Template Number ([Code Table 5.0]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml)).
+     !> Data Representation Template Number ([Code Table 5.0]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml)).
      integer :: idrtnum
 
-     !>    Number of elements in the Data Representation Template
-     !>    array specified by idrtnum.
+     !> Number of elements in the Data Representation Template array
+     !> specified by idrtnum.
      integer :: idrtlen
 
-     !>    Contains the data values for the Data Representation
-     !>    Template specified by idrtnum. This element is actually
-     !>    a pointer to an array that holds the data.
+     !> Contains the data values for the Data Representation Template
+     !> specified by idrtnum. This element is actually a pointer to an
+     !> array that holds the data.
      integer, pointer, dimension(:) :: idrtmpl => null()
 
-     !>    Logical value indicating whether the bitmap and data
-     !>    values were unpacked. If false, bmap and fld pointers
-     !>    are null.
+     !> Logical value indicating whether the bitmap and data values
+     !> were unpacked. If false, bmap and fld pointers are null.
      logical :: unpacked
 
-     !>    Logical value indicating whether the data field was
-     !>    expanded to the grid in the case where a bit-map is
-     !>    present. If true, the data points in fld match the grid
-     !>    points and zeros were inserted at grid points where data
-     !>    was bit-mapped out. If false, the data values in fld
-     !>    were not expanded to the grid and are just a consecutive
-     !>    array of data points corresponding to each value of "1"
-     !>    in bmap.
+     !> Logical value indicating whether the data field was expanded
+     !> to the grid in the case where a bit-map is present. If true,
+     !> the data points in fld match the grid points and zeros were
+     !> inserted at grid points where data was bit-mapped out. If
+     !> false, the data values in fld were not expanded to the grid
+     !> and are just a consecutive array of data points corresponding
+     !> to each value of "1" in bmap.
      logical :: expanded
 
-     !>    Bitmap indicator (see [Code Table 6.0]
-     !>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
-     !>     - 0 bitmap applies and is included in Section 6.
-     !>     - 1-253 Predefined bitmap applies.
-     !>     - 254 Previously defined bitmap applies to this field.
-     !>     - 255 Bit map does not apply to this product.
+     !> Bitmap indicator (see [Code Table 6.0]
+     !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
+     !>  - 0 bitmap applies and is included in Section 6.
+     !>  - 1-253 Predefined bitmap applies.
+     !>  - 254 Previously defined bitmap applies to this field.
+     !>  - 255 Bit map does not apply to this product.
      integer :: ibmap
 
-     !>    Logical*1 array containing decoded bitmap, if ibmap
-     !>    equals 0 or 254 - otherwise null. This element is
-     !>    actually a pointer to an array that holds the data.
+     !> Logical*1 array containing decoded bitmap, if ibmap equals 0
+     !> or 254 - otherwise null. This element is actually a pointer to
+     !> an array that holds the data.
      logical*1, pointer, dimension(:) :: bmap => null()
 
-     !>    Array of ndpts unpacked data points. This element is
-     !>    actually a pointer to an array that holds the data.
+     !> Array of ndpts unpacked data points. This element is actually
+     !> a pointer to an array that holds the data.
      real, pointer, dimension(:) :: fld => null()
   end type gribfield
 

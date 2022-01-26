@@ -1,15 +1,16 @@
-!>    @file
-!>    @brief This subroutine stores real values in floating point.
-!>    @author Stephen Gilbert @date 2000-05-09
+!> @file
+!> @brief This subroutine stores real values in floating point.
+!> @author Stephen Gilbert @date 2000-05-09
 
-!>    This subroutine stores a list of real values in 32-bit IEEE
-!>    floating point format.
-!>    @param[in] a Input array of floating point values.
-!>    @param[in] num Number of floating point values to convert.
-!>    @param[out] rieee Output array of floating point values in 32-bit
-!>    IEEE format.
+!> This subroutine stores a list of real values in 32-bit IEEE
+!> floating point format.
 !>
-!>    @author Stephen Gilbert @date 2000-05-09
+!> @param[in] a Input array of floating point values.
+!> @param[in] num Number of floating point values to convert.
+!> @param[out] rieee Output array of floating point values in 32-bit
+!> IEEE format.
+!>
+!> @author Stephen Gilbert @date 2000-05-09
 subroutine mkieee(a,rieee,num)
 
   real(4),intent(in) :: a(num)
