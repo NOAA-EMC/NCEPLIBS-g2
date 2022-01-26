@@ -1,37 +1,37 @@
-!>    @file
-!>    @brief Contains subroutines packs up a data field into a JPEG2000
-!>    code stream.
-!>    @author Stephen Gilbert @date 2002-12-17
+!> @file
+!> @brief Contains subroutines packs up a data field into a JPEG2000
+!> code stream.
+!> @author Stephen Gilbert @date 2002-12-17
 
-!>    This subroutine packs up a data field into a JPEG2000 code stream.
-!>    After the data field is scaled, and the reference value is
-!>    subtracted out, it is treated as a grayscale image and passed
-!>    to a JPEG2000 encoder. It also fills in GRIB2 Data Representation
-!>    Template 5.40 or 5.40000 with the appropriate values.
+!> This subroutine packs up a data field into a JPEG2000 code stream.
+!> After the data field is scaled, and the reference value is
+!> subtracted out, it is treated as a grayscale image and passed
+!> to a JPEG2000 encoder. It also fills in GRIB2 Data Representation
+!> Template 5.40 or 5.40000 with the appropriate values.
 !>
-!>    Program history log:
-!>    - 2002-12-17 Stephen Gilbert Initial Development.
-!>    - 2002-12-29 Stephen Gilbert Added check on whether the jpeg2000
-!>    encoding was successful. If not, try again with different encoder
-!>    options.
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2002-12-17 | Stephen Gilbert | Initial Development.
+!> 2002-12-29 | Stephen Gilbert | check jpeg2000 encoding for success. If not, try again.
 !>
-!>    @param[in] fld Contains the data values to pack
-!>    @param[in] width number of points in the x direction
-!>    @param[in] height number of points in the y direction
-!>    @param[inout] idrstmpl Contains the array of values for Data
-!>    Representation Template 5.2 or 5.3
-!>    - idrstmpl(1) Reference value - ignored on input.
-!>    - idrstmpl(2) Binary Scale Factor.
-!>    - idrstmpl(3) Decimal Scale Factor.
-!>    - idrstmpl(4) Number of bits containing each grayscale pixel value
-!>    - idrstmpl(5) Original field type, currently set = 0 on output
-!>    Data values assumed to be reals.
-!>    - idrstmpl(6) = 0 use lossless compression; = 1 use lossy compression.
-!>    - idrstmpl(7) Desired compression ratio, if idrstmpl(6)=1.
-!>    @param[out] cpack The packed data field (character*1 array)
-!>    @param[out] lcpack length of packed field cpack.
+!> @param[in] fld Contains the data values to pack
+!> @param[in] width number of points in the x direction
+!> @param[in] height number of points in the y direction
+!> @param[inout] idrstmpl Contains the array of values for Data
+!> Representation Template 5.2 or 5.3
+!> - idrstmpl(1) Reference value - ignored on input.
+!> - idrstmpl(2) Binary Scale Factor.
+!> - idrstmpl(3) Decimal Scale Factor.
+!> - idrstmpl(4) Number of bits containing each grayscale pixel value
+!> - idrstmpl(5) Original field type, currently set = 0 on output
+!> Data values assumed to be reals.
+!> - idrstmpl(6) = 0 use lossless compression; = 1 use lossy compression.
+!> - idrstmpl(7) Desired compression ratio, if idrstmpl(6)=1.
+!> @param[out] cpack The packed data field (character*1 array)
+!> @param[out] lcpack length of packed field cpack.
 !>
-!>    @author Stephen Gilbert @date 2002-12-17
+!> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
 
   integer,intent(in) :: width,height
