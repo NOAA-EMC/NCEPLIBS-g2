@@ -41,8 +41,8 @@ if(CMAKE_C_COMPILER_ID MATCHES "^(Intel)$")
 elseif(CMAKE_C_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
   set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
   set(CMAKE_C_FLAGS_DEBUG "-ggdb -Wall")
-  set(CMAKE_Fortran_FLAGS "-g -fno-range-check -funroll-loops ${CMAKE_Fortran_FLAGS}")
-  set(CMAKE_Fortran_FLAGS_DEBUG "-ggdb -Wall")
+  set(CMAKE_Fortran_FLAGS "-g -fno-range-check -funroll-loops -fsanitize=address ${CMAKE_Fortran_FLAGS}")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-ggdb -Wall -fsanitize=address")
   set(fortran_d_flags "-fdefault-real-8")
 endif()
 
@@ -69,9 +69,9 @@ foreach(kind ${kinds})
 
   add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
   if(bacio_VERSION GREATER_EQUAL 2.5.0)
-    target_link_libraries(${lib_name} PUBLIC bacio::bacio ${PNG_LIBRARIES} ${JASPER_LIBRARIES})
+    target_link_libraries(${lib_name} PUBLIC bacio::bacio -fsanitize=address ${PNG_LIBRARIES} ${JASPER_LIBRARIES})
   else()
-    target_link_libraries(${lib_name} PUBLIC bacio::bacio_4 ${PNG_LIBRARIES} ${JASPER_LIBRARIES})
+    target_link_libraries(${lib_name} PUBLIC bacio::bacio_4 -fsanitize=address ${PNG_LIBRARIES} ${JASPER_LIBRARIES})
   endif()
   target_include_directories(${lib_name} INTERFACE
     $<BUILD_INTERFACE:${module_dir}>
