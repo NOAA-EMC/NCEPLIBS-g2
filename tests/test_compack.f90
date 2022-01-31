@@ -6,7 +6,7 @@ program test_compack
   implicit none
 
   integer, parameter :: ndpts = 4
-  real(8) :: fld_orig(ndpts), fld(ndpts), fld_in(ndpts)
+  real(kind=8) :: fld_orig(ndpts), fld(ndpts), fld_in(ndpts)
   integer :: idrstmpl(16)
   integer :: idrsnum
   character*1, dimension(50) :: cpack
@@ -17,7 +17,7 @@ program test_compack
   lensec = ndpts
 
   print *, 'Testing simple call to compack...'
-  fld_orig = (/42.3, 43.2, 44.1, 45.0/)
+  fld_orig = (/cmplx(42, 3), cmplx(43, 2), cmplx(44, 1), cmplx(45, 0)/)
   fld = fld_orig
   ! idrstmpl = (/42, 1, 1, 0, 0, 0/)
   idrstmpl(1) = 42
