@@ -1,78 +1,77 @@
-!>    @file
-!>    @brief Contains subroutines returns the Grid Definition, and
-!>    Product Definition for a given data field.
-!>    @author Stephen Gilbert @date 2000-05-26
+!> @file
+!> @brief Contains subroutines returns the Grid Definition, and
+!> Product Definition for a given data field.
+!> @author Stephen Gilbert @date 2000-05-26
 
-!>    This subroutine returns the Grid Definition, Product Definition,
-!>    Bit-map (if applicable), and the unpacked data for a given data
-!>    field. All of the information returned is stored in a derived type
-!>    variable, gfld. Gfld is of type gribfield, which is defined in
-!>    module grib_mod, so users of this routine will need to include the
-!>    line "USE GRIB_MOD" in their calling routine.
+!> This subroutine returns the Grid Definition, Product Definition,
+!> Bit-map (if applicable), and the unpacked data for a given data
+!> field. All of the information returned is stored in a derived type
+!> variable, gfld. Gfld is of type gribfield, which is defined in
+!> module grib_mod, so users of this routine will need to include the
+!> line "USE GRIB_MOD" in their calling routine.
 !>
-!>    Since there can be multiple data fields packed into a GRIB2
-!>    message, the calling routine indicates which field is being
-!>    requested with the ifldnum argument.
+!> Since there can be multiple data fields packed into a GRIB2
+!> message, the calling routine indicates which field is being
+!> requested with the ifldnum argument.
 !>
-!>    ### Program History Log
-!>    Date | Programmer | Comments
-!>    -----|------------|---------
-!>    2000-05-26 | Stephen Gilbert | Initial.
-!>    2002-01-24 | Stephen Gilbert | Pass back derived type gribfield variable through argument list.
-!>    2004-05-20 | Stephen Gilbert | Check if previous a bit-map is specified, but none was found.
-!>    2015-10-29 | Boi Vuong | Initial all pointers in derive type gribfield.
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-05-26 | Stephen Gilbert | Initial.
+!> 2002-01-24 | Stephen Gilbert | Pass back derived type gribfield variable through argument list.
+!> 2004-05-20 | Stephen Gilbert | Check if previous a bit-map is specified, but none was found.
+!> 2015-10-29 | Boi Vuong | Initial all pointers in derive type gribfield.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message.
-!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[in] ifldnum Specifies which field in the GRIB2 message to
-!>    return.
-!>    @param[in] unpack Logical value indicating whether to unpack
-!>    bitmap/data. .true. = unpack bitmap and data values; .false. = do
-!>    not unpack bitmap and data values.
-!>    @param[in] expand Boolean value indicating whether the data points
-!>    should be expanded to the correspond grid, if a bit-map is
-!>    present.
-!>    - 1 if possible, expand data field to grid, inserting zero
-!>    values at gridpoints that are bitmapped out.
-!>    - 0 do not expand data field, leaving it an array of consecutive
-!>    data points for each "1" in the bitmap. This argument is ignored
-!>    if unpack == 0 OR if the returned field does not contain a
-!>    bit-map.
-!>    @param[out] gfld derived type gribfield (defined in module
-!>    grib_mod).
-!>    @param[out] ierr Error return code.
-!>    - 0 no error.
-!>    - 1 Beginning characters "GRIB" not found.
-!>    - 2 GRIB message is not Edition 2.
-!>    - 3 The data field request number was not positive.
-!>    - 4 End string "7777" found, but not where expected.
-!>    - 5 End string "7777" not found at end of message.
-!>    - 6 GRIB message did not contain the requested number of data fields.
-!>    - 7 End string "7777" not found at end of message.
-!>    - 9 Data Representation Template 5.NN not yet implemented.
-!>    - 10 Error unpacking Section 3.
-!>    - 11 Error unpacking Section 4.
-!>    - 12 Error unpacking Section 5.
-!>    - 13 Error unpacking Section 6.
-!>    - 14 Error unpacking Section 7.
-!>    - 17 Previous bitmap specified, but none exists.
+!> @param[in] cgrib Character array that contains the GRIB2 message.
+!> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!> @param[in] ifldnum Specifies which field in the GRIB2 message to
+!> return.
+!> @param[in] unpack Logical value indicating whether to unpack
+!> bitmap/data. .true. = unpack bitmap and data values; .false. = do
+!> not unpack bitmap and data values.
+!> @param[in] expand Boolean value indicating whether the data points
+!> should be expanded to the correspond grid, if a bit-map is
+!> present.
+!> - 1 if possible, expand data field to grid, inserting zero
+!> values at gridpoints that are bitmapped out.
+!> - 0 do not expand data field, leaving it an array of consecutive
+!> data points for each "1" in the bitmap. This argument is ignored
+!> if unpack == 0 OR if the returned field does not contain a
+!> bit-map.
+!> @param[out] gfld derived type @ref grib_mod::gribfield.
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 1 Beginning characters "GRIB" not found.
+!> - 2 GRIB message is not Edition 2.
+!> - 3 The data field request number was not positive.
+!> - 4 End string "7777" found, but not where expected.
+!> - 5 End string "7777" not found at end of message.
+!> - 6 GRIB message did not contain the requested number of data fields.
+!> - 7 End string "7777" not found at end of message.
+!> - 9 Data Representation Template 5.NN not yet implemented.
+!> - 10 Error unpacking Section 3.
+!> - 11 Error unpacking Section 4.
+!> - 12 Error unpacking Section 5.
+!> - 13 Error unpacking Section 6.
+!> - 14 Error unpacking Section 7.
+!> - 17 Previous bitmap specified, but none exists.
 !>
-!>    @note Note that derived type gribfield contains pointers to many
-!>    arrays of data. The memory for these arrays is allocated when the
-!>    values in the arrays are set, to help minimize problems with array
-!>    overloading. Because of this users must free up this
-!>    memory, when it is no longer needed, by an explicit call to
-!>    subroutine gf_free(). Subroutine gb_info() can be used to first
-!>    determine how many data fields exist in a given GRIB message.
+!> @note Note that derived type @ref grib_mod::gribfield contains
+!> pointers to many arrays of data. The memory for these arrays is
+!> allocated when the values in the arrays are set, to help minimize
+!> problems with array overloading. Because of this users should free
+!> this memory, when it is no longer needed, by a call to subroutine
+!> gf_free(). Subroutine gb_info() can be used to first determine how
+!> many data fields exist in a given GRIB message.
 !>
-!>    It may not always be possible to expand a bit-mapped data
-!>    field. If a pre-defined bit-map is used and not included in the
-!>    GRIB2 message itself, this routine would not have the necessary
-!>    information to expand the data. In this case, gfld\%expanded would
-!>    be set to 0 (false), regardless of the value of input argument
-!>    expand.
+!> It may not always be possible to expand a bit-mapped data
+!> field. If a pre-defined bit-map is used and not included in the
+!> GRIB2 message itself, this routine would not have the necessary
+!> information to expand the data. In this case, gfld\%expanded would
+!> be set to 0 (false), regardless of the value of input argument
+!> expand.
 !>
-!>    @author Stephen Gilbert @date 2000-05-26
+!> @author Stephen Gilbert @date 2000-05-26
 subroutine gf_getfld(cgrib, lcgrib, ifldnum, unpack, expand, gfld, ierr)
 
   use grib_mod

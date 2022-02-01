@@ -1,155 +1,145 @@
-!>    @file
-!>    @brief This subroutine determines groups of variable size.
-!>    @author Harry Glahn @date 1994-02-01
+!> @file
+!> @brief This subroutine determines groups of variable size.
+!> @author Harry Glahn @date 1994-02-01
 !>
 
-!>    This subroutine determines groups of variable size, but at least
-!>    of size minpk, the associated max(JMAX) and min(JMIN), the number
-!>    of bits necessary to hold the values in each group LBIT, the
-!>    number of values in each group NOV, the number of bits necessary
-!>    to pack the JMIN values IBIT, the number of bits necessary to pack
-!>    the LBIT values JBIT, and the number of bits necessary to pack the
-!>    NOV values KBIT. The routine is designed to determine the groups
-!>    such that a small number of bits is necessary to pack the data
-!>    without excessive computations. If all values in the group are
-!>    zero, the number of bits to use in packing is defined as zero when
-!>    there can be no missing values; when there can be missing values,
-!>    the number of bits must be at least 1 to have the capability to
-!>    recognize the missing value. However, if all values in a group are
-!>    missing, the number of bits needed is 0, and the unpacker recognizes
-!>    this. All variables are integer. even though the groups are
-!>    initially of size minpk or larger, an adjustment between two groups
-!>    (the lookback procedure) may make a group smaller than minpk. The
-!>    control on group size is that the sum of the sizes of the two
-!>    consecutive groups, each of size minpk or larger, is not decreased.
-!>    When determining the number of bits necessary for packing, the
-!>    largest value that can be accommodated in, say mbits is 2**mbits-1
-!>    this largest value (and the next smallest value) is reserved for
-!>    the missing value indicator (only) when is523 ne 0. If the
-!>    dimension NDG is not large enough to hold all the groups, the
-!>    local value of minpk is increased by 50 percent. this is repeated
-!>    until ndg will suffice. A diagnostic is printed whenever this
-!>    happens, which should be very rarely. If it happens often, NDG in
-!>    subroutine pack should be increased and a corresponding increase
-!>    in subroutine unpack made. Considerable code is provided so that
-!>    no more checking for missing values within loops is done than
-!>    necessary; the added efficiency of this is relatively minor,
-!>    but does no harm. For grib2, the reference value for the length
-!>    of groups in nov and for the number of bits necessary to pack
-!>    group values are determined, and subtracted before jbit and kbit
-!>    are determined. When 1 or more groups are large compared to the
-!>    others, the width of all groups must be as large as the largest.
-!>    A subroutine reduce breaks up large groups into 2 or more to reduce
-!>    total bits required. If reduce should abort, pack_gp will be
-!>    executed again without the call to reduce.
+!> This subroutine determines groups of variable size, but at least of
+!> size minpk, the associated max(JMAX) and min(JMIN), the number of
+!> bits necessary to hold the values in each group LBIT, the number of
+!> values in each group NOV, the number of bits necessary to pack the
+!> JMIN values IBIT, the number of bits necessary to pack the LBIT
+!> values JBIT, and the number of bits necessary to pack the NOV
+!> values KBIT.
 !>
-!>    PROGRAM HISTORY LOG:
-!>    - 1994-02-01 Harry Glahn tdl mos-2000.
-!>    - 1995-06-01 Harry Glahn modified for lmiss error.
-!>    - 1996-07-01 Harry Glahn added misss.
-!>    - 1997-02-01 Harry Glahn removed 4 redundant tests for missp.eq.0;
-!>    inserted a test to better handle a string of 9999's.
-!>    - 1997-02-01 Harry Glahn added loops to eliminate test for misss
-!>    when misss = 0.
-!>    - 1997-03-01 Harry Glahn corrected for secondary missing value.
-!>    - 1997-03-01 Harry Glahn corrected for use of local value of minpk.
-!>    - 1997-03-01 Harry Glahn corrected for secondary missing value.
-!>    - 1997-03-01 Harry Glahn changed calculating number of bits
-!>    through exponents to an array (improved overall packing performance
-!>    by about 35 percent). Allowed 0 bit for packing JMIN, LBIT, and NOV.
-!>    - 1997-05-01 Harry Glahn a number of changes for efficiency. mod
-!>    functions eliminated and one ifthen added. Jount removed.
-!>    Recomputation of bits not made unless necessary after moving points
-!>    from one group to another. Nendb adjusted to eliminate possibility
-!>    of very small group at the end. About 8 percent improvement in
-!>    overall packing. ISKIPA removed; There is always a group b that can
-!>    become group A. Control on size of group b (statement below 150)
-!>    added. Added adda, and use of ge and le instead of gt and lt in
-!>    loop between 150 and 160. IBITBS added to shorten trip through loop.
-!>    - 2000-03-01 Harry Glahn modified for grib2; changed name from
-!>    packgp.
-!>    - 2001-01-01 Harry Glahn Add comments; ier = 706 substituted for
-!>    stops; added return; removed statement number 110; added ier.
-!>    - 2001-11-01 Harry Glahn changed some diagnostic formats to
-!>    allow printing larger numbers
-!>    - 2001-11-01 Harry Glahn added misslx to put maximum value into JMIN
-!>    when all values missing to agree with grib standard.
-!>    - 2001-11-01 Harry Glahn changed two tests on missp and misss eq 0
-!>    to tests on is523. However, missp and misss cannot in general be 0.
-!>    - 2001-11-01 Harry Glahn added call to reduce; defined itest
-!>    before loops to reduce computation; started large group when all
-!>    same value.
-!>    - 2001-12-01 Harry Glahn modified and added a few comments.
-!>    - 2002-01-01 Harry Glahn removed loop before 150 to determine
-!>    a group of all same value.
-!>    - 2002-01-01 Harry Glahn changed mallow from 9999999 to 2**30+1,
-!>    and made it a parameter.
-!>    - 2002-03-01 Harry Glahn added non fatal ier = 716, 717; removed
-!>    nendb=nxy above 150; added iersav=0.
+!> The routine is designed to determine the groups such that a small
+!> number of bits is necessary to pack the data without excessive
+!> computations. If all values in the group are zero, the number of
+!> bits to use in packing is defined as zero when there can be no
+!> missing values; when there can be missing values, the number of
+!> bits must be at least 1 to have the capability to recognize the
+!> missing value. However, if all values in a group are missing, the
+!> number of bits needed is 0, and the unpacker recognizes this.
 !>
-!>    @param[in] KFILDO unit number for output/print file.
-!>    @param[in] IC array to hold data for packing. The values do not
-!>    have to be positive at this point, but must be in the range
-!>    -2**30 to +2**30 (the value of mallow). These integer values
-!>    will be retained exactly through packing and unpacking.
-!>    @param[in] NXY number of values in IC. also treated as
-!>    its dimension.
-!>    @param[in] IS523 missing value management 0=data contains no
-!>    missing values: 1 data contains primary missing values; 2=data
-!>    contains primary and secondary missing values.
-!>    @param[in] MINPK the minimum size of each group, except possibly
-!>    the last one.
-!>    @param[in] INC the number of values to add to an already existing
-!>    group in determining whether or not to start a new group. Ideally,
-!>    this would be 1, but each time inc values are attempted, the max
-!>    and min of the next minpk values must be found. This is "a loop
-!>    within a loop," and a slightly larger value may give about as good
-!>    results with slightly less computational time. If inc is le 0, 1
-!>    is used, and a diagnostic is output. note: it is expected that
-!>    INC will equal 1. The code uses inc primarily in the loops
-!>    starting at statement 180. If INC were 1, there would not need
-!>    to be loops as such. However, kinc (the local value of INC) is
-!>    set ge 1 when near the end of the data to forestall a very small
-!>    group at the end.
-!>    @param[in] MISSP when missing points can be present in the data,
-!>    they will have the value missp or misss. missp is the primary
-!>    missing value and misss is the secondary missing value. These
-!>    must not be values that would occur with subtracting the minimum
-!>    (reference) value or scaling. for example, missp = 0 would not
-!>    be advisable.
-!>    @param[in] MISSS secondary missing value indicator (see missp).
-!>    @param[out] JMIN the minimum of each group (j=1,lx).
-!>    @param[out] JMAX the maximum of each group (j=1,lx). This is not
-!>    really needed, but since the max of each group must be found,
-!>    saving it here is cheap in case the user wants it.
-!>    @param[out] LBIT the number of bits necessary to pack each group
-!>    (j=1,lx). It is assumed the minimum of each group will be removed
-!>    before packing, and the values to pack will, therefore, all be
-!>    positive. However, IC does not necessarily contain all positive
-!>    values. If the overall minimum has been removed (the usual case),
-!>    then IC will contain only positive values.
-!>    @param[out] NOV the number of values in each group (j=1,lx).
-!>    @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
-!>    @param[out] LX the number of groups determined.
-!>    @param[out] IBIT the number of bits necessary to pack the JMIN(j)
-!>    values, j=1,LX.
-!>    @param[out] JBIT the number of bits necessary to pack the LBIT(j)
-!>    values, j=1,LX.
-!>    @param[out] KBIT the number of bits necessary to pack the NOV(j)
-!>    values, j=1,LX.
-!>    @param[out] NOVREF reference value for NOV.
-!>    @param[out] LBITREF reference value for LBIT.
-!>    @param[out] IER error return.
-!>    - 706 value will not pack in 30 bits--fatal
-!>    - 714 error in reduce--non-fatal
-!>    - 715 ngp not large enough in reduce--non-fatal
-!>    - 716 minpk inceased--non-fatal
-!>    - 717 inc set = 1--non-fatal
+!> All variables are integer, even though the groups are initially of
+!> size minpk or larger, an adjustment between two groups (the
+!> lookback procedure) may make a group smaller than minpk. The
+!> control on group size is that the sum of the sizes of the two
+!> consecutive groups, each of size minpk or larger, is not decreased.
 !>
-!>    @author Harry Glahn @date 1994-02-01
+!> When determining the number of bits necessary for packing, the
+!> largest value that can be accommodated in, say mbits is 2**mbits-1
+!> this largest value (and the next smallest value) is reserved for
+!> the missing value indicator (only) when is 523 ne 0.
+!>
+!> If the dimension NDG is not large enough to hold all the groups,
+!> the local value of minpk is increased by 50 percent. this is
+!> repeated until ndg will suffice. A diagnostic is printed whenever
+!> this happens, which should be very rarely. If it happens often, NDG
+!> in subroutine pack should be increased and a corresponding increase
+!> in subroutine unpack made.
+!>
+!> Considerable code is provided so that no more checking for missing
+!> values within loops is done than necessary; the added efficiency of
+!> this is relatively minor, but does no harm.
+!>
+!> For grib2, the reference value for the length of groups in nov and
+!> for the number of bits necessary to pack group values are
+!> determined, and subtracted before jbit and kbit are
+!> determined. When 1 or more groups are large compared to the others,
+!> the width of all groups must be as large as the largest.  A
+!> subroutine reduce breaks up large groups into 2 or more to reduce
+!> total bits required. If reduce() should abort, pack_gp() will be
+!> executed again without the call to reduce.
+!>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 1994-02-01 | Harry Glahn | tdl mos-2000.
+!> 1995-06-01 | Harry Glahn | modified for lmiss error.
+!> 1996-07-01 | Harry Glahn | added misss.
+!> 1997-02-01 | Harry Glahn | removed 4 redundant tests for missp.eq.0; inserted a test to better handle a string of 9999's.
+!> 1997-02-01 | Harry Glahn | added loops to eliminate test for misss when misss = 0.
+!> 1997-03-01 | Harry Glahn | corrected for secondary missing value.
+!> 1997-03-01 | Harry Glahn | corrected for use of local value of minpk.
+!> 1997-03-01 | Harry Glahn | corrected for secondary missing value.
+!> 1997-03-01 | Harry Glahn | changed calculating number of bits through exponents to an array (improved overall packing performance by about 35 percent). Allowed 0 bit for packing JMIN, LBIT, and NOV.
+!> 1997-05-01 | Harry Glahn | a number of changes for efficiency. mod functions eliminated and one ifthen added. Jount removed. Recomputation of bits not made unless necessary after moving points from one group to another.
+!> 1997-05-01 | Harry Glahn | Nendb adjusted to eliminate possibility of very small group at the end. About 8 percent improvement in overall packing. ISKIPA removed; There is always a group b that can become group A. Control on size of group b (statement below 150) added.
+!> 1997-05-01 | Harry Glahn | Added adda, and use of ge and le instead of gt and lt in loop between 150 and 160. IBITBS added to shorten trip through loop.
+!> 2000-03-01 | Harry Glahn | modified for grib2; changed name from packgp.
+!> 2001-01-01 | Harry Glahn | Add comments; ier = 706 substituted for stops; added return; removed statement number 110; added ier.
+!> 2001-11-01 | Harry Glahn | changed some diagnostic formats to allow printing larger numbers
+!> 2001-11-01 | Harry Glahn | added misslx to put maximum value into JMIN when all values missing to agree with grib standard.
+!> 2001-11-01 | Harry Glahn | changed two tests on missp and misss eq 0 to tests on is523. However, missp and misss cannot in general be 0.
+!> 2001-11-01 | Harry Glahn | added call to reduce; defined itest before loops to reduce computation; started large group when all same value.
+!> 2001-12-01 | Harry Glahn | modified and added a few comments.
+!> 2002-01-01 | Harry Glahn | removed loop before 150 to determine a group of all same value.
+!> 2002-01-01 | Harry Glahn | changed mallow from 9999999 to 2**30+1, and made it a parameter.
+!> 2002-03-01 | Harry Glahn | added non fatal ier = 716, 717; removed nendb=nxy above 150; added iersav=0.
+!>
+!> @param[in] KFILDO unit number for output/print file.
+!> @param[in] IC array to hold data for packing. The values do not
+!> have to be positive at this point, but must be in the range
+!> -2**30 to +2**30 (the value of mallow). These integer values
+!> will be retained exactly through packing and unpacking.
+!> @param[in] NXY number of values in IC. also treated as
+!> its dimension.
+!> @param[in] IS523 missing value management 0=data contains no
+!> missing values: 1 data contains primary missing values; 2=data
+!> contains primary and secondary missing values.
+!> @param[in] MINPK the minimum size of each group, except possibly
+!> the last one.
+!> @param[in] INC the number of values to add to an already existing
+!> group in determining whether or not to start a new group. Ideally,
+!> this would be 1, but each time inc values are attempted, the max
+!> and min of the next minpk values must be found. This is "a loop
+!> within a loop," and a slightly larger value may give about as good
+!> results with slightly less computational time. If inc is le 0, 1
+!> is used, and a diagnostic is output. note: it is expected that
+!> INC will equal 1. The code uses inc primarily in the loops
+!> starting at statement 180. If INC were 1, there would not need
+!> to be loops as such. However, kinc (the local value of INC) is
+!> set ge 1 when near the end of the data to forestall a very small
+!> group at the end.
+!> @param[in] MISSP when missing points can be present in the data,
+!> they will have the value missp or misss. missp is the primary
+!> missing value and misss is the secondary missing value. These
+!> must not be values that would occur with subtracting the minimum
+!> (reference) value or scaling. for example, missp = 0 would not
+!> be advisable.
+!> @param[in] MISSS secondary missing value indicator (see missp).
+!> @param[out] JMIN the minimum of each group (j=1,lx).
+!> @param[out] JMAX the maximum of each group (j=1,lx). This is not
+!> really needed, but since the max of each group must be found,
+!> saving it here is cheap in case the user wants it.
+!> @param[out] LBIT the number of bits necessary to pack each group
+!> (j=1,lx). It is assumed the minimum of each group will be removed
+!> before packing, and the values to pack will, therefore, all be
+!> positive. However, IC does not necessarily contain all positive
+!> values. If the overall minimum has been removed (the usual case),
+!> then IC will contain only positive values.
+!> @param[out] NOV the number of values in each group (j=1,lx).
+!> @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
+!> @param[out] LX the number of groups determined.
+!> @param[out] IBIT the number of bits necessary to pack the JMIN(j)
+!> values, j=1,LX.
+!> @param[out] JBIT the number of bits necessary to pack the LBIT(j)
+!> values, j=1,LX.
+!> @param[out] KBIT the number of bits necessary to pack the NOV(j)
+!> values, j=1,LX.
+!> @param[out] NOVREF reference value for NOV.
+!> @param[out] LBITREF reference value for LBIT.
+!> @param[out] IER error return.
+!> - 706 value will not pack in 30 bits--fatal
+!> - 714 error in reduce--non-fatal
+!> - 715 ngp not large enough in reduce--non-fatal
+!> - 716 minpk inceased--non-fatal
+!> - 717 inc set = 1--non-fatal
+!>
+!> @author Harry Glahn @date 1994-02-01
 SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
      JMIN,JMAX,LBIT,NOV,NDG,LX,IBIT,JBIT,KBIT, &
-     NOVREF,LBITREF,IER)            
+     NOVREF,LBITREF,IER)
 
       PARAMETER (MALLOW=2**30+1)
 !
@@ -160,13 +150,13 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
       DIMENSION JMIN(NDG),JMAX(NDG),LBIT(NDG),NOV(NDG)
       DIMENSION MISSLX(NDG)
 !        MISSLX( ) IS AN AUTOMATIC ARRAY.
-      INTEGER, PARAMETER :: IBXX2(0:30) = (/ 1, 2, 4, 8, 16, 32, 64,    & 
-           128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536,  & 
-           131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608,  & 
-           16777216, 33554432, 67108864, 134217728, 268435456,          & 
+      INTEGER, PARAMETER :: IBXX2(0:30) = (/ 1, 2, 4, 8, 16, 32, 64,    &
+           128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536,  &
+           131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608,  &
+           16777216, 33554432, 67108864, 134217728, 268435456,          &
            536870912, 1073741824 /)
 !
-      
+
       PARAMETER IFEED=12
 !
       IER=0
@@ -222,15 +212,15 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !        WILL INCREASE IN SIZE IN INCREMENTS OF INC UNTIL A NEW
 !        GROUP IS STARTED.  THE DEFINITION OF GROUP A IS DONE HERE
 !        ONLY ONCE (UPON INITIAL ENTRY), BECAUSE A GROUP B CAN ALWAYS
-!        BECOME A NEW GROUP A AFTER A IS PACKED, EXCEPT IF LMINPK 
+!        BECOME A NEW GROUP A AFTER A IS PACKED, EXCEPT IF LMINPK
 !        HAS TO BE INCREASED BECAUSE NDG IS TOO SMALL.  THEREFORE,
 !        THE SEPARATE LOOPS FOR MISSING AND NON-MISSING HERE BUYS
 !        ALMOST NOTHING.
 !
       NENDA=MIN(KSTART+LMINPK-1,NXY)
       IF(NXY-NENDA.LE.LMINPK/2)NENDA=NXY
-!        ABOVE STATEMENT GUARANTEES THE LAST GROUP IS GT LMINPK/2 BY 
-!        MAKING THE ACTUAL GROUP LARGER.  IF A PROVISION LIKE THIS IS 
+!        ABOVE STATEMENT GUARANTEES THE LAST GROUP IS GT LMINPK/2 BY
+!        MAKING THE ACTUAL GROUP LARGER.  IF A PROVISION LIKE THIS IS
 !        NOT INCLUDED, THERE WILL MANY TIMES BE A VERY SMALL GROUP
 !        AT THE END.  USE SEPARATE LOOPS FOR MISSING AND NO MISSING
 !        VALUES FOR EFFICIENCY.
@@ -265,7 +255,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !              THIS LOOP IS FOR PRIMARY MISSING VALUES ONLY.
 !
             DO 112 K=KSTART+1,NXY
-!        
+!
                IF(IC(K).NE.MISSP)THEN
 !
                   IF(IC(K).NE.IC(KSTART))THEN
@@ -284,7 +274,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !              THIS LOOP IS FOR PRIMARY AND SECONDARY MISSING VALUES.
 !
             DO 113 K=KSTART+1,NXY
-!        
+!
                IF(IC(K).NE.MISSP.AND.IC(K).NE.MISSS)THEN
 !
                   IF(IC(K).NE.IC(KSTART))THEN
@@ -363,7 +353,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !        OTHERWISE, IBITA MUST BE CALCULATED.
 !
  125  ITEST=MAXA-MINA+LMISS
-!  
+!
       DO 126 IBITA=0,30
       IF(ITEST.LT.IBXX2(IBITA))GO TO 130
 !***        THIS TEST IS THE SAME AS:
@@ -380,7 +370,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !
 !***D     WRITE(KFILDO,131)KOUNTA,KTOTAL,MINA,MAXA,IBITA,MISLLA
 !***D131  FORMAT(' AT 130, KOUNTA ='I8,'  KTOTAL ='I8,'  MINA ='I8,
-!***D    1       '  MAXA ='I8,'  IBITA ='I3,'  MISLLA ='I3) 
+!***D    1       '  MAXA ='I8,'  IBITA ='I3,'  MISLLA ='I3)
 !
  133  IF(KTOTAL.GE.NXY)GO TO 200
 !
@@ -423,13 +413,13 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
          ENDIF
 !
       ENDIF
-!         
+!
  150  NENDB=MAX(NENDB,MIN(KTOTAL+LMINPK,NXY))
 !**** 150  NENDB=MIN(KTOTAL+LMINPK,NXY)
 !
       IF(NXY-NENDB.LE.LMINPK/2)NENDB=NXY
-!        ABOVE STATEMENT GUARANTEES THE LAST GROUP IS GT LMINPK/2 BY 
-!        MAKING THE ACTUAL GROUP LARGER.  IF A PROVISION LIKE THIS IS 
+!        ABOVE STATEMENT GUARANTEES THE LAST GROUP IS GT LMINPK/2 BY
+!        MAKING THE ACTUAL GROUP LARGER.  IF A PROVISION LIKE THIS IS
 !        NOT INCLUDED, THERE WILL MANY TIMES BE A VERY SMALL GROUP
 !        AT THE END.  USE SEPARATE LOOPS FOR MISSING AND NO MISSING
 !
@@ -437,11 +427,11 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !        FOR EFFICIENCY.
 !
       IF(IS523.EQ.0)THEN
-!              
+!
          DO 155 K=MSTART,NENDB
          IF(IC(K).LE.MINB)THEN
             MINB=IC(K)
-!              NOTE LE, NOT LT.  LT COULD BE USED BUT THEN A 
+!              NOTE LE, NOT LT.  LT COULD BE USED BUT THEN A
 !              RECOMPUTE OVER THE WHOLE GROUP WOULD BE NEEDED
 !              MORE OFTEN.  SAME REASONING FOR GE AND OTHER
 !              LOOPS BELOW.
@@ -518,7 +508,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !***D    1                               MINB,MAXB,IBITB,MISLLB
 !***D171  FORMAT(' AT 171, KOUNTA ='I8,'  KTOTAL ='I8,'  MINA ='I8,
 !***D    1       '  MAXA ='I8,'  IBITA ='I3,'  MISLLA ='I3,
-!***D    2       '  MINB ='I8,'  MAXB ='I8,'  IBITB ='I3,'  MISLLB ='I3)  
+!***D    2       '  MINB ='I8,'  MAXB ='I8,'  IBITB ='I3,'  MISLLB ='I3)
 !
       IF(IBITB.GE.IBITA)GO TO 180
       IF(ADDA)GO TO 200
@@ -542,7 +532,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !        FOR EFFICIENCY.
 !
       IF(IS523.EQ.0)THEN
-! 
+!
          DO 1715 K=KTOTAL,KSTART,-1
 !           START WITH THE END OF THE GROUP AND WORK BACKWARDS.
          IF(IC(K).LT.MINB)THEN
@@ -560,9 +550,9 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
          MAXBK=MAXTSTK
          KOUNTA=KOUNTA-1
 !           THERE IS ONE LESS POINT NOW IN A.
- 1715    CONTINUE  
+ 1715    CONTINUE
 !
-      ELSEIF(IS523.EQ.1)THEN            
+      ELSEIF(IS523.EQ.1)THEN
 !
          DO 1719 K=KTOTAL,KSTART,-1
 !           START WITH THE END OF THE GROUP AND WORK BACKWARDS.
@@ -584,9 +574,9 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !           WHEN THE POINT IS NON MISSING, MISLLB SET = 0.
  1718    KOUNTA=KOUNTA-1
 !           THERE IS ONE LESS POINT NOW IN A.
- 1719    CONTINUE  
+ 1719    CONTINUE
 !
-      ELSE             
+      ELSE
 !
          DO 173 K=KTOTAL,KSTART,-1
 !           START WITH THE END OF THE GROUP AND WORK BACKWARDS.
@@ -608,7 +598,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !           WHEN THE POINT IS NON MISSING, MISLLB SET = 0.
  1729    KOUNTA=KOUNTA-1
 !           THERE IS ONE LESS POINT NOW IN A.
- 173     CONTINUE  
+ 173     CONTINUE
 !
       ENDIF
 !
@@ -632,7 +622,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
       KTOTAL=KTOTAL-NOUTA
       KOUNTB=KOUNTB+NOUTA
       IF(NENDA-NOUTA.GT.MINAK.AND.NENDA-NOUTA.GT.MAXAK)GO TO 200
-!        WHEN THE ABOVE TEST IS MET, THE MIN AND MAX OF THE 
+!        WHEN THE ABOVE TEST IS MET, THE MIN AND MAX OF THE
 !        CURRENT GROUP A WERE WITHIN THE OLD GROUP A, SO THE
 !        RANGE AND IBITA DO NOT NEED TO BE RECOMPUTED.
 !        NOTE THAT MINAK AND MAXAK ARE NO LONGER NEEDED.
@@ -644,7 +634,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !        FOR EFFICIENCY.
 !
       IF(IS523.EQ.0)THEN
-! 
+!
          DO 1742 K=KSTART,NENDA-NOUTA
          IF(IC(K).LT.MINA)THEN
             MINA=IC(K)
@@ -654,7 +644,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
          ENDIF
  1742    CONTINUE
 !
-      ELSEIF(IS523.EQ.1)THEN 
+      ELSEIF(IS523.EQ.1)THEN
 !
          DO 1744 K=KSTART,NENDA-NOUTA
          IF(IC(K).EQ.MISSP)GO TO 1744
@@ -666,7 +656,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
          ENDIF
  1744    CONTINUE
 !
-      ELSE 
+      ELSE
 !
          DO 175 K=KSTART,NENDA-NOUTA
          IF(IC(K).EQ.MISSP.OR.IC(K).EQ.MISSS)GO TO 175
@@ -790,7 +780,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !***D191  FORMAT(' AT 191, KOUNTA ='I8,'  KTOTAL ='I8,'  MINA ='I8,
 !***D    1       '  MAXA ='I8,'  IBITA ='I3,'  MISLLA ='I3,
 !***D    2       '  MINC ='I8,'  MAXC ='I8,
-!***D    3       '  NOUNT ='I5,'  IC(KTOTAL) ='I9,'  IC(KTOTAL+1) =',I9) 
+!***D    3       '  NOUNT ='I5,'  IC(KTOTAL) ='I9,'  IC(KTOTAL+1) =',I9)
 !
 !        IF THE NUMBER OF BITS NEEDED FOR GROUP C IS GT IBITA,
 !        THEN THIS GROUP A IS A GROUP TO PACK.
@@ -815,7 +805,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !        BITS NECESSARY FOR GROUP A.  ADD THIS POINT(S) TO GROUP A.
 !        COMPUTE THE NEXT GROUP B, ETC., UNLESS ALL POINTS HAVE BEEN
 !        USED.
-! 
+!
  195  KTOTAL=KTOTAL+NOUNT
       KOUNTA=KOUNTA+NOUNT
       MINA=MINC
@@ -874,7 +864,7 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !***D    1                 LBIT(LX),NOV(LX),MISSLX(LX)
 !***D206  FORMAT(' AT 206,  MISLLA ='I2,'  IC(KTOTAL) ='I5,'  KTOTAL ='I8,
 !***D    1       '  LX ='I6,'  JMIN(LX) ='I8,'  JMAX(LX) ='I8,
-!***D    2       '  LBIT(LX) ='I5,'  NOV(LX) ='I8,'  MISSLX(LX) =',I7) 
+!***D    2       '  LBIT(LX) ='I5,'  NOV(LX) ='I8,'  MISSLX(LX) =',I7)
 !
       IF(KTOTAL.GE.NXY)GO TO 209
 !
@@ -908,13 +898,13 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
  220  CONTINUE
 !
 !        INSERT THE VALUE IN JMIN( ) TO BE USED FOR ALL MISSING
-!        VALUES WHEN LBIT( ) = 0.  WHEN SECONDARY MISSING 
+!        VALUES WHEN LBIT( ) = 0.  WHEN SECONDARY MISSING
 !        VALUES CAN BE PRESENT, LBIT(L) WILL NOT = 0.
 !
       IF(IS523.EQ.1)THEN
 !
          DO 226 L=1,LX
-!   
+!
          IF(LBIT(L).EQ.0)THEN
 !
             IF(MISSLX(L).EQ.MISSP)THEN
@@ -1031,14 +1021,14 @@ SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS, &
 !
          IF(IER.EQ.714.OR.IER.EQ.715)THEN
 !              REDUCE HAS ABORTED.  REEXECUTE PACK_GP WITHOUT REDUCE.
-!              PROVIDE FOR A NON FATAL RETURN FROM REDUCE.  
+!              PROVIDE FOR A NON FATAL RETURN FROM REDUCE.
             IERSAV=IER
             IRED=1
             IER=0
-            GO TO 102 
+            GO TO 102
          ENDIF
 !
-      ENDIF         
+      ENDIF
 !
 !     CALL TIMPR(KFILDO,KFILDO,'END   PACK_GP        ')
       IF(IERSAV.NE.0)THEN

@@ -1,37 +1,36 @@
-!>    @file
-!>    @brief This subroutine returns the contents of Section 2 from a
-!>    grib2 message.
-!>    @author Stephen Gilbert @date 2000-05-25
-!>
+!> @file
+!> @brief This subroutine returns the contents of Section 2 from a
+!> GRIB2 message.
+!> @author Stephen Gilbert @date 2000-05-25
 
-!>    This subroutine returns the contents of Section 2 from a GRIB2 message.
-!>    Since there can be multiple occurrences of Section 2 within a GRIB
-!>    message, the calling routine indicates which occurrence is being
-!>    requested with the localnum argument.
+!> This subroutine returns the contents of Section 2 from a GRIB2
+!> message.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message.
-!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[in] localnum The nth occurrence of Section 2 requested.
-!>    @param[out] csec2 Character array containing information read from
-!>    Section 2. The dimension of this array can be obtained in advance
-!>    from argument maxlocal, which is returned from subroutine gb_info().
-!>    @param[out] lcsec2 Number of bytes of character array csec2 read
-!>    from Section 2.
-!>    @param[out] ierr Error return code.
-!>    - 0 no error.
-!>    - 1 Beginning characters "GRIB" not found.
-!>    - 2 GRIB message is not Edition 2.
-!>    - 3 The data field request number was not positive.
-!>    - 4 End string "7777" found, but not where expected.
-!>    - 5 End string "7777" not found at end of message.
-!>    - 6 GRIB message did not contain the requested number of data fields.
+!> Since there can be multiple occurrences of Section 2 within a GRIB
+!> message, the calling routine indicates which occurrence is being
+!> requested with the localnum argument.
 !>
-!>    @note Note that subroutine gb_info can be used to first determine
-!>    how many Local Use sections exist in a given GRIB message.
+!> @param[in] cgrib Character array that contains the GRIB2 message.
+!> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!> @param[in] localnum The nth occurrence of Section 2 requested.
+!> @param[out] csec2 Character array containing information read from
+!> Section 2. The dimension of this array can be obtained in advance
+!> from argument maxlocal, which is returned from subroutine gb_info().
+!> @param[out] lcsec2 Number of bytes of character array csec2 read
+!> from Section 2.
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 1 Beginning characters "GRIB" not found.
+!> - 2 GRIB message is not Edition 2.
+!> - 3 The data field request number was not positive.
+!> - 4 End string "7777" found, but not where expected.
+!> - 5 End string "7777" not found at end of message.
+!> - 6 GRIB message did not contain the requested number of data fields.
 !>
-!>    @author Stephen Gilbert @date 2000-05-25
+!> @note Note that subroutine gb_info() can be used to first determine
+!> how many Local Use sections exist in a given GRIB message.
 !>
-
+!> @author Stephen Gilbert @date 2000-05-25
 subroutine getlocal(cgrib,lcgrib,localnum,csec2,lcsec2,ierr)
 
   character(len=1),intent(in) :: cgrib(lcgrib)
