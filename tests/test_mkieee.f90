@@ -16,13 +16,13 @@ program test_mkieee
     call mkieee(a, rieee, num)
 
     do i = 1, num
-        if (abs(a(i) - rieee(i)) .gt. .01) stop 10
+        if (abs(a(i) - rieee(i)) .gt. .00001) stop 10
     end do
 
     call rdieee(rieee, b, num)
 
     do i = 1, num
-        if (abs(a(i) - b(i)) .gt. .01) stop 20
+        if (abs(a(i) - b(i)) .gt. .00001) stop 20
     end do
 
     print *, '... Success!'
