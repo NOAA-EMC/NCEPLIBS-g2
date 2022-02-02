@@ -103,3 +103,7 @@ copy_test_data(testdata_g2grids)
 add_executable(test_cmplxpack test_cmplxpack.f90)
 target_link_libraries(test_cmplxpack g2_d)
 add_test(test_cmplxpack test_cmplxpack)
+
+add_executable(test_mkieee test_mkieee.f90)
+target_link_libraries(test_mkieee g2_d)
+add_test(test_mkieee test_mkieee)
