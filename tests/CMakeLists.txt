@@ -107,3 +107,10 @@ add_test(test_cmplxpack test_cmplxpack)
 add_executable(test_mkieee test_mkieee.f90)
 target_link_libraries(test_mkieee g2_d)
 add_test(test_mkieee test_mkieee)
+
+add_executable(test_getg2i test_getg2i.f90)
+target_link_libraries(test_getg2i g2_d)
+add_test(test_getg2i test_getg2i)
+
+#copy test data files
+copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2.idx)
