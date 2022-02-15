@@ -45,6 +45,7 @@ create_test(test_intmath g2_d)
 create_test(test_g2grids g2_d)
 create_test(test_cmplxpack g2_d)
 create_test(test_mkieee g2_d)
+create_test(test_getlocal g2_d)
 
 
 # g2_4 tests
