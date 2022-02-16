@@ -25,6 +25,18 @@ program test_getlocal
         if (csec2(i) .ne. csec2_comp(i)) stop 5
     end do
 
+    localnum = 0
+    print *, 'Testing call to getlocal with localnum=0, it should return ierr=3'
+    call getlocal(cgrib, lengrib, localnum, csec2, lcsec2, ierr)
+
+    if (ierr .ne. 3) stop 6
+
+    localnum = 3
+    print *, 'Testing call to getlocal with localnum=3, it should return ierr=6'
+    call getlocal(cgrib, lengrib, localnum, csec2, lcsec2, ierr)
+
+    if (ierr .ne. 6) stop 7
+
     print *, 'SUCCESS!!!...'
 
 end program test_getlocal
