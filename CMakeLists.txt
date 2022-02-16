@@ -26,7 +26,10 @@ endif()
 find_package(Jasper 2.0.25 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
-
+if(bacio_VERSION LESS 2.5.0)
+  add_library(bacio::bacio ALIAS bacio::bacio_4)
+endif()
+  
 add_subdirectory(src)
 
 include(CTest)

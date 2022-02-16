@@ -4,6 +4,7 @@
 program test_getgb2
   use grib_mod
   use bacio_module
+  use creategrib
   implicit none
 
   ! Define what I need
@@ -73,6 +74,7 @@ program test_getgb2
   !#jgdt = igdstmpl
 
   print *, 'Testing open/read/close of GRIB2 file created with creategrib.f90..'
+  call write_grib2_file()
   call baopenr(1, "testgrib.grb2", iret)
   if (iret .ne. 0) then
       print *, 'baopenr failed with iret value: ', iret

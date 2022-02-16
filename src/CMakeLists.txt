@@ -68,11 +68,9 @@ foreach(kind ${kinds})
   target_link_libraries(${lib_name}_c PRIVATE ${PNG_LIBRARIES})
 
   add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
-  if(bacio_VERSION GREATER_EQUAL 2.5.0)
-    target_link_libraries(${lib_name} PUBLIC bacio::bacio ${PNG_LIBRARIES} ${JASPER_LIBRARIES})
-  else()
-    target_link_libraries(${lib_name} PUBLIC bacio::bacio_4 ${PNG_LIBRARIES} ${JASPER_LIBRARIES})
-  endif()
+
+  target_link_libraries(${lib_name} PUBLIC bacio::bacio ${PNG_LIBRARIES} ${JASPER_LIBRARIES})
+  
   target_include_directories(${lib_name} INTERFACE
     $<BUILD_INTERFACE:${module_dir}>
     $<INSTALL_INTERFACE:include_${kind}>)
