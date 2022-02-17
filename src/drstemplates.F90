@@ -39,7 +39,7 @@ module drstemplates
 
     integer, parameter :: MAXLEN = 200 !< maximum number of octets in mapdrs
     integer, parameter :: MAXTEMP = 9 !< maximum number of entries in the template
-    integer :: j
+    integer :: j !< loop iterator
 
     !> This type holds information about a DRS template.
     type drstemplate
