@@ -33,61 +33,65 @@
 !> processor.
 !>
 !> @author Stephen Gilbert @date 2002-05-07
-SUBROUTINE GETGB2L(LUGB,CINDEX,GFLD,IRET)
+subroutine getgb2l(lugb, cindex, gfld, iret)
 
-  USE GRIB_MOD
+    use grib_mod
+    implicit none
 
-  INTEGER,INTENT(IN) :: LUGB
-  CHARACTER(LEN=1),INTENT(IN) :: CINDEX(*)
-  INTEGER,INTENT(OUT) :: IRET
-  TYPE(GRIBFIELD) :: GFLD
+    integer, intent(in) :: lugb
+    character(len = 1), intent(in) :: cindex(*)
+    integer, intent(out) :: iret
+    type(gribfield) :: gfld
 
-  INTEGER :: LSKIP,SKIP2
-  CHARACTER(LEN=1):: CSIZE(4)
-  CHARACTER(LEN=1),ALLOCATABLE :: CTEMP(:)
+    integer :: lskip, skip2
+    character(len = 1):: csize(4)
+    character(len = 1), allocatable :: ctemp(:)
 
-  interface
-     subroutine gf_unpack2(cgrib,lcgrib,iofst,lencsec2,csec2,ierr)
-       character(len=1),intent(in) :: cgrib(lcgrib)
-       integer,intent(in) :: lcgrib
-       integer,intent(inout) :: iofst
-       integer,intent(out) :: lencsec2
-       integer,intent(out) :: ierr
-       character(len=1),pointer,dimension(:) :: csec2
-     end subroutine gf_unpack2
-  end interface
+    !implicit none additions
+    integer :: iskip, lread, ilen, iofst, ierr
 
-  !  GET INFO
-  NULLIFY(gfld%local)
-  IRET=0
-  CALL G2_GBYTEC(CINDEX,LSKIP,4*8,4*8)
-  CALL G2_GBYTEC(CINDEX,SKIP2,8*8,4*8)
+    interface
+        subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
+            character(len=1), intent(in) :: cgrib(lcgrib)
+            integer, intent(in) :: lcgrib
+            integer, intent(inout) :: iofst
+            integer, intent(out) :: lencsec2
+            integer, intent(out) :: ierr
+            character(len = 1), pointer, dimension(:) :: csec2
+        end subroutine gf_unpack2
+    end interface
+
+    !  get info
+    nullify(gfld%local)
+    iret = 0
+    call g2_gbytec(cindex, lskip, 4 * 8, 4 * 8)
+    call g2_gbytec(cindex, skip2, 8 * 8, 4 * 8)
 
 
-  !  READ AND UNPACK LOCAL USE SECTION, IF PRESENT
-  IF ( SKIP2.NE.0 ) THEN
-     ISKIP=LSKIP+SKIP2
-     CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
-     CALL G2_GBYTEC(CSIZE,ILEN,0,32)
-     ALLOCATE(CTEMP(ILEN))
-     CALL BAREAD(LUGB,ISKIP,ILEN,LREAD,CTEMP)  ! READ IN SECTION
-     IF (ILEN.NE.LREAD) THEN
-        IRET=97
-        DEALLOCATE(CTEMP)
-        RETURN
-     ENDIF
-     IOFST=0
-     CALL GF_UNPACK2(CTEMP,ILEN,IOFST,gfld%locallen, &
-          gfld%local,ierr)
-     IF (IERR.NE.0) THEN
-        IRET=98
-        DEALLOCATE(CTEMP)
-        RETURN
-     ENDIF
-     DEALLOCATE(CTEMP)
-  ELSE
-     gfld%locallen=0
-  ENDIF
+    !  read and unpack local use section, if present
+    if ( skip2 .ne. 0 ) then
+        iskip = lskip + skip2
+        call baread(lugb, iskip, 4, lread, csize)    ! get length of section
+        call g2_gbytec(csize, ilen, 0, 32)
+        allocate(ctemp(ilen))
+        call baread(lugb, iskip, ilen, lread, ctemp)  ! read in section
+        if (ilen .ne. lread) then
+            iret = 97
+            deallocate(ctemp)
+            return
+        endif
+        iofst = 0
+        call gf_unpack2(ctemp, ilen, iofst, gfld%locallen, &
+            gfld%local, ierr)
+        if (ierr .ne. 0) then
+            iret = 98
+            deallocate(ctemp)
+            return
+        endif
+        deallocate(ctemp)
+    else
+        gfld%locallen = 0
+    endif
 
-  RETURN
-END SUBROUTINE GETGB2L
+    return
+end subroutine getgb2l
