@@ -67,7 +67,8 @@ subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, &
   integer, intent(out) :: ierr, idefnum
 
   integer, allocatable :: mapgrid(:)
-  integer :: mapgridlen, ibyttem
+  integer, intent(out) :: mapgridlen
+  integer :: ibyttem
   logical needext
 
   ierr=0

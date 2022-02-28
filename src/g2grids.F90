@@ -29,226 +29,232 @@
 !>
 !> @author Stephen Gilbert @date 2004-04-27
 module g2grids
+    implicit none
+    integer, parameter :: MAXTEMP = 200 !< maximum template number for grid definition.
 
-  integer,parameter :: MAXTEMP=200 !< maximum template number for grid definition.
+    type,private :: g2grid
+        integer :: grid_num
+        integer :: gdt_num
+        integer :: gdt_len
+        integer, dimension(MAXTEMP) :: gridtmpl
+        character(len = 8) :: cdesc
+        type(g2grid), pointer :: next
+    end type g2grid
 
-  type,private :: g2grid
-     integer :: grid_num
-     integer :: gdt_num
-     integer :: gdt_len
-     integer,dimension(MAXTEMP) :: gridtmpl
-     character(len=8) :: cdesc
-     type(g2grid),pointer :: next
-  end type g2grid
-
-  type(g2grid),pointer,private :: gridlist
-  integer :: num_grids=0 !< the number of grids.
+    type(g2grid), pointer, private :: gridlist
+    integer :: num_grids = 0 !< the number of grids.
 
 contains
 
-  !> This function reads the list of GDT entries in the file
-  !> associated with fortran unit, lunit. All the entries are stored in a
-  !> linked list called gridlist.
-  !>
-  !> @param[in] lunit Fortran unit number associated the the GDT file.
-  !> @return The number of Grid Definition Templates read in.
-  !> @author Stephen Gilbert  @date 2001-06-28
-  integer function readgrids(lunit)
-    integer,intent(in) :: lunit
+    !> This function reads the list of GDT entries in the file
+    !> associated with fortran unit, lunit. All the entries are stored in a
+    !> linked list called gridlist.
+    !>
+    !> @param[in] lunit Fortran unit number associated the the GDT file.
+    !> @return The number of Grid Definition Templates read in.
+    !> @author Stephen Gilbert  @date 2001-06-28
+    integer function readgrids(lunit)
+        implicit none
 
-    integer,parameter :: linelen=1280
-    character(len=8) :: desc
-    character(len=linelen) :: cline
-    integer  ient,igdtn,igdtmpl(200),igdtlen
-    integer :: pos1,pos2,pos3,pos4
+        integer, intent(in) :: lunit
 
-    type(g2grid),pointer :: gtemp
-    type(g2grid),pointer :: prev => NULL()
-    integer count
+        integer, parameter :: linelen = 1280
+        character(len = 8) :: desc
+        character(len = linelen) :: cline
+        integer :: ient, igdtn, igdtmpl(200), igdtlen
+        integer :: pos1, pos2, pos3, pos4
 
-    count=0
+        type(g2grid), pointer :: gtemp
+        type(g2grid), pointer :: prev => NULL()
+        integer :: count
 
-    !   For each line in the file....
-    DO
-       !  Read line into buffer
-       !
-       cline(1:linelen)=' '
-       read(lunit,end=999,fmt='(a)') cline
+        !implicit none additions
+        integer :: j
 
-       !
-       !  Skip line if commented out
-       !
-       if (cline(1:1).eq.'#') cycle
+        count = 0
 
-       !
-       !  find positions of delimiters, ":"
-       !
-       pos1=index(cline,':')
-       cline(pos1:pos1)=';'
-       pos2=index(cline,':')
-       cline(pos2:pos2)=';'
-       pos3=index(cline,':')
-       cline(pos3:pos3)=';'
-       pos4=index(cline,':')
-       if ( pos1.eq.0 .or. pos2.eq.0 .or. pos3.eq.0 .or.  &
-            pos4.eq.0) cycle
+        !   For each line in the file....
+        do
+            !  Read line into buffer
+            !
+            cline(1 : linelen) = ' '
+            read(lunit, end = 999, fmt = '(a)') cline
 
-       !
-       !  Read each of the five fields.
-       !
-       read(cline(1:pos1-1),*) ient
-       read(cline(pos1+1:pos2-1),*) desc
-       read(cline(pos2+1:pos3-1),*) igdtn
-       read(cline(pos3+1:pos4-1),*) igdtlen
-       read(cline(pos4+1:linelen),*) (igdtmpl(j),j=1,igdtlen)
+            !
+            !  Skip line if commented out
+            !
+            if (cline(1 : 1) .eq. '#') cycle
 
-       !
-       !  Allocate new type(g2grid) variable to store the GDT
-       !
-       allocate(gtemp)
-       count=count+1
-       gtemp%grid_num=ient
-       gtemp%gdt_num=igdtn
-       gtemp%gdt_len=igdtlen
-       gtemp%gridtmpl=igdtmpl
-       gtemp%cdesc=desc
-       !gtemp%next => NULL()
-       nullify(gtemp%next)              ! defines end of linked list.
-       if ( count .eq. 1 ) then
-          gridlist => gtemp
-       else                       ! make sure previous entry in list
-          prev%next => gtemp      ! points to the new entry,
-       endif
-       prev => gtemp
-       !deallocate(gridlist)
-    enddo
-!    deallocate(prev)
-999 backspace(lunit)
-    readgrids=count
-    return
+            !
+            !  find positions of delimiters, ":"
+            !
+            pos1 = index(cline, ':')
+            cline(pos1 : pos1) = ';'
+            pos2 = index(cline, ':')
+            cline(pos2 : pos2) = ';'
+            pos3 = index(cline, ':')
+            cline(pos3 : pos3) = ';'
+            pos4 = index(cline, ':')
+            if ( pos1 .eq. 0 .or. pos2 .eq. 0 .or. pos3 .eq. 0 .or.  &
+                    pos4 .eq. 0) cycle
 
-  end function readgrids
+            !
+            !  Read each of the five fields.
+            !
+            read(cline(1 : pos1 - 1), *) ient
+            read(cline(pos1 + 1 : pos2 - 1), *) desc
+            read(cline(pos2 + 1 : pos3 - 1), *) igdtn
+            read(cline(pos3 + 1 : pos4 - 1), *) igdtlen
+            read(cline(pos4 + 1 : linelen), *) (igdtmpl(j), j = 1, igdtlen)
 
-  !> This subroutine searches a file referenced by fortran unit lunit
-  !> for a Grid Definition Template assigned to the requested number.
-  !> The input file format is described at the top of this module.
-  !>
-  !> @param[in] lunit Unit number of file containing Grid definitions
-  !> @param[in] number Grid number of the requested Grid definition
-  !> @param[out] igdtn NN, indicating the number of the Grid Definition
-  !> Template 3.NN
-  !> @param[out] igdtmpl An array containing the values of each entry in
-  !> the Grid Definition Template.
-  !> @param[out] iret Error return code.
-  !> - 0 no error
-  !> - -1 Undefined Grid number.
-  !> - 3 Could not read any grids from file.
-  !>
-  !> @author Stephen Gilbert @date 2004-04-26
-  subroutine getgridbynum(lunit,number,igdtn,igdtmpl,iret)
+            !
+            !  Allocate new type(g2grid) variable to store the GDT
+            !
+            allocate(gtemp)
+            count = count + 1
+            gtemp%grid_num = ient
+            gtemp%gdt_num = igdtn
+            gtemp%gdt_len = igdtlen
+            gtemp%gridtmpl = igdtmpl
+            gtemp%cdesc = desc
+            !gtemp%next => NULL()
+            nullify(gtemp%next)              ! defines end of linked list.
+            if ( count .eq. 1 ) then
+                gridlist => gtemp
+            else                       ! make sure previous entry in list
+                prev%next => gtemp      ! points to the new entry,
+            endif
+            prev => gtemp
+            !deallocate(gridlist)
+        enddo
+    !    deallocate(prev)
+    999 backspace(lunit)
+        readgrids = count
+        return
 
-    integer,intent(in) :: lunit,number
-    integer,intent(out) :: igdtn,igdtmpl(*),iret
+    end function readgrids
 
-    type(g2grid),pointer :: tempgrid
+    !> This subroutine searches a file referenced by fortran unit lunit
+    !> for a Grid Definition Template assigned to the requested number.
+    !> The input file format is described at the top of this module.
+    !>
+    !> @param[in] lunit Unit number of file containing Grid definitions
+    !> @param[in] number Grid number of the requested Grid definition
+    !> @param[out] igdtn NN, indicating the number of the Grid Definition
+    !> Template 3.NN
+    !> @param[out] igdtmpl An array containing the values of each entry in
+    !> the Grid Definition Template.
+    !> @param[out] iret Error return code.
+    !> - 0 no error
+    !> - -1 Undefined Grid number.
+    !> - 3 Could not read any grids from file.
+    !>
+    !> @author Stephen Gilbert @date 2004-04-26
+    subroutine getgridbynum(lunit, number, igdtn, igdtmpl, iret)
+        implicit none
 
-    iret=0
-    igdtn=-1
-    !igdtmpl=0
+        integer, intent(in) :: lunit, number
+        integer, intent(out) :: igdtn, igdtmpl(*), iret
 
-    !
-    !  If no grids in list, try reading them from the file.
-    !
-    if ( num_grids .eq. 0 ) then
-       num_grids=readgrids(lunit)
-    endif
+        type(g2grid), pointer :: tempgrid
 
-    if ( num_grids .eq. 0 ) then
-       iret=3                         ! problem reading file
-       return
-    endif
+        iret = 0
+        igdtn = -1
+        !igdtmpl=0
 
-    tempgrid => gridlist
+        !
+        !  If no grids in list, try reading them from the file.
+        !
+        if ( num_grids .eq. 0 ) then
+            num_grids = readgrids(lunit)
+        endif
 
-    !
-    !  Search through list
-    !
-    do while ( associated(tempgrid) )
-       if ( number .eq. tempgrid%grid_num ) then
-          igdtn=tempgrid%gdt_num
-          igdtmpl(1:tempgrid%gdt_len)= &
-               tempgrid%gridtmpl(1:tempgrid%gdt_len)
-          return
-       else
-          tempgrid => tempgrid%next
-       endif
-    enddo
+        if ( num_grids .eq. 0 ) then
+            iret = 3                         ! problem reading file
+            return
+        endif
 
-    iret=-1
-    return
+        tempgrid => gridlist
 
-  end subroutine getgridbynum
+        !
+        !  Search through list
+        !
+        do while ( associated(tempgrid) )
+            if ( number .eq. tempgrid%grid_num ) then
+                igdtn = tempgrid%gdt_num
+                igdtmpl(1 : tempgrid%gdt_len) = &
+                    tempgrid%gridtmpl(1 : tempgrid%gdt_len)
+                return
+            else
+                tempgrid => tempgrid%next
+            endif
+        enddo
 
-  !> This subroutine searches a file referenced by fortran unit lunit
-  !> for a Grid Definition Template assigned to the requested name.
-  !> The input file format is described at the top of this module.
-  !>
-  !> @param[in] lunit Unit number of file containing Grid definitions
-  !> @param[in] name Grid name of the requested Grid definition
-  !> @param[out] igdtn NN, indicating the number of the Grid Definition
-  !> Template 3.NN
-  !> @param[out] igdtmpl An array containing the values of each entry in
-  !> the Grid Definition Template.
-  !> @param[out] iret Error return code.
-  !> - 0 no error
-  !> - -1 Undefined Grid name.
-  !> - 3 Could not read any grids from file.
-  !>
-  !> @author Stephen Gilbert @date 2004-04-26
-  subroutine getgridbyname(lunit,name,igdtn,igdtmpl,iret)
+        iret = -1
+        return
 
-    integer,intent(in) :: lunit
-    character(len=8),intent(in) :: name
-    integer,intent(out) :: igdtn,igdtmpl(*),iret
+    end subroutine getgridbynum
 
-    type(g2grid),pointer :: tempgrid
+    !> This subroutine searches a file referenced by fortran unit lunit
+    !> for a Grid Definition Template assigned to the requested name.
+    !> The input file format is described at the top of this module.
+    !>
+    !> @param[in] lunit Unit number of file containing Grid definitions
+    !> @param[in] name Grid name of the requested Grid definition
+    !> @param[out] igdtn NN, indicating the number of the Grid Definition
+    !> Template 3.NN
+    !> @param[out] igdtmpl An array containing the values of each entry in
+    !> the Grid Definition Template.
+    !> @param[out] iret Error return code.
+    !> - 0 no error
+    !> - -1 Undefined Grid name.
+    !> - 3 Could not read any grids from file.
+    !>
+    !> @author Stephen Gilbert @date 2004-04-26
+    subroutine getgridbyname(lunit, name, igdtn, igdtmpl, iret)
 
-    iret=0
-    igdtn=-1
-    !igdtmpl=0
+        integer,intent(in) :: lunit
+        character(len=8),intent(in) :: name
+        integer,intent(out) :: igdtn,igdtmpl(*),iret
 
-    !
-    !  If no grids in list, try reading them from the file.
-    !
-    if ( num_grids .eq. 0 ) then
-       num_grids=readgrids(lunit)
-    endif
+        type(g2grid),pointer :: tempgrid
 
-    if ( num_grids .eq. 0 ) then
-       iret=3                         ! problem reading file
-       return
-    endif
+        iret=0
+        igdtn=-1
+        !igdtmpl=0
 
-    tempgrid => gridlist
+        !
+        !  If no grids in list, try reading them from the file.
+        !
+        if ( num_grids .eq. 0 ) then
+            num_grids=readgrids(lunit)
+        endif
 
-    !
-    !  Search through list
-    !
-    do while ( associated(tempgrid) )
-       if ( name .eq. tempgrid%cdesc ) then
-          igdtn=tempgrid%gdt_num
-          igdtmpl(1:tempgrid%gdt_len)= &
-               tempgrid%gridtmpl(1:tempgrid%gdt_len)
-          return
-       else
-          tempgrid => tempgrid%next
-       endif
-    enddo
+        if ( num_grids .eq. 0 ) then
+            iret=3                         ! problem reading file
+            return
+        endif
 
-    iret=-1
-    return
+        tempgrid => gridlist
 
-  end subroutine getgridbyname
+        !
+        !  Search through list
+        !
+        do while ( associated(tempgrid) )
+            if ( name .eq. tempgrid%cdesc ) then
+                igdtn=tempgrid%gdt_num
+                igdtmpl(1:tempgrid%gdt_len)= &
+                    tempgrid%gridtmpl(1:tempgrid%gdt_len)
+                return
+            else
+                tempgrid => tempgrid%next
+            endif
+        enddo
+
+        iret=-1
+        return
+
+    end subroutine getgridbyname
 
 
 end module g2grids
