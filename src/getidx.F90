@@ -40,99 +40,104 @@
 !> the grib index will automatically generate the index file.
 !>
 !> @author Stephen Gilbert @date 2005-03-15
-SUBROUTINE GETIDX(LUGB,LUGI,CINDEX,NLEN,NNUM,IRET)
+subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
+    implicit none
 
-  INTEGER,INTENT(IN) :: LUGB,LUGI
-  INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
-  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CINDEX
+    integer, intent(in) :: lugb, lugi
+    integer, intent(out) :: nlen, nnum, iret
+    character(len = 1), pointer, dimension(:) :: cindex
 
-  INTEGER,PARAMETER :: MAXIDX=10000
-  INTEGER,PARAMETER :: MSK1=32000,MSK2=4000
+    integer, parameter :: maxidx = 10000
+    integer, parameter :: msk1 = 32000, msk2 = 4000
 
-  TYPE GINDEX
-     integer :: nlen
-     integer :: nnum
-     character(len=1),pointer,dimension(:) :: cbuf
-  END TYPE GINDEX
+    !implicit none additions
+    integer :: lux
+    integer :: irgi, mskp, nmess 
 
-  TYPE(GINDEX), save :: IDXLIST(10000)
+    type gindex
+        integer :: nlen
+        integer :: nnum
+        character(len = 1), pointer, dimension(:) :: cbuf
+    end type gindex
 
-  DATA LUX/0/
+    type(gindex), save :: idxlist(10000)
 
-  !  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)
-  INTERFACE
-     SUBROUTINE GETG2I(LUGI,CBUF,NLEN,NNUM,IRET)
-       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-       INTEGER,INTENT(IN) :: LUGI
-       INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
-     END SUBROUTINE GETG2I
-     SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM, &
-          NMESS,IRET)
-       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-       INTEGER,INTENT(IN) :: LUGB,MSK1,MSK2,MNUM
-       INTEGER,INTENT(OUT) :: NLEN,NNUM,NMESS,IRET
-     END SUBROUTINE GETG2IR
-  END INTERFACE
+    data lux/0/
 
-  !  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
-  LUX=0
-  IRET=0
-  IF ( LUGB.LE.0 .OR. LUGB.GT.9999 ) THEN
-     PRINT*,' '
-     PRINT *,' FILE UNIT NUMBER OUT OF RANGE'
-     PRINT *,' USE UNIT NUMBERS IN RANGE: 0 - 9999 '
-     PRINT*,' '
-     IRET=90
-     RETURN
-  ENDIF
-  IF (LUGI.EQ.LUGB) THEN      ! Force regeneration of index from GRIB2 File
-     IF ( ASSOCIATED( IDXLIST(LUGB)%CBUF ) )  &
-          DEALLOCATE(IDXLIST(LUGB)%CBUF)
-     NULLIFY(IDXLIST(LUGB)%CBUF)
-     IDXLIST(LUGB)%NLEN=0
-     IDXLIST(LUGB)%NNUM=0
-     LUX=0
-  ENDIF
+    !  declare interfaces (required for cbuf pointer)
+    interface
+        subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
+            character(len = 1), pointer, dimension(:) :: cbuf
+            integer, intent(in) :: lugi
+            integer, intent(out) :: nlen, nnum, iret
+        end subroutine getg2i
+        subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, &
+            nmess, iret)
+            character(len = 1), pointer, dimension(:) :: cbuf
+            integer, intent(in) :: lugb, msk1, msk2, mnum
+            integer, intent(out) :: nlen, nnum, nmess, iret
+        end subroutine getg2ir
+    end interface
 
-  IF (LUGI.LT.0) THEN      ! Force re-read of index from indexfile
-     ! associated with unit abs(lugi)
-     IF ( ASSOCIATED( IDXLIST(LUGB)%CBUF ) )  &
-          DEALLOCATE(IDXLIST(LUGB)%CBUF)
-     NULLIFY(IDXLIST(LUGB)%CBUF)
-     IDXLIST(LUGB)%NLEN=0
-     IDXLIST(LUGB)%NNUM=0
-     LUX=ABS(LUGI)
-  ENDIF
+    !  determine whether index buffer needs to be initialized
+    lux = 0
+    iret = 0
+    if ( lugb .le. 0 .or. lugb .gt. 9999 ) then
+        print *, ' '
+        print *, ' file unit number out of range'
+        print *, ' use unit numbers in range: 0 - 9999 '
+        print *, ' '
+        iret = 90
+        return
+    endif
+    if (lugi .eq. lugb) then      ! force regeneration of index from grib2 file
+        if ( associated( idxlist(lugb)%cbuf ) )  &
+            deallocate(idxlist(lugb)%cbuf)
+        nullify(idxlist(lugb)%cbuf)
+        idxlist(lugb)%nlen = 0
+        idxlist(lugb)%nnum = 0
+        lux = 0
+    endif
 
-  !  Check if index already exists in memory
-  IF ( ASSOCIATED( IDXLIST(LUGB)%CBUF ) ) THEN
-     CINDEX => IDXLIST(LUGB)%CBUF
-     NLEN = IDXLIST(LUGB)%NLEN
-     NNUM = IDXLIST(LUGB)%NNUM
-     RETURN
-  ENDIF
+    if (lugi .lt. 0) then      ! force re-read of index from indexfile
+        ! associated with unit abs(lugi)
+        if ( associated( idxlist(lugb)%cbuf ) )  &
+            deallocate(idxlist(lugb)%cbuf)
+        nullify(idxlist(lugb)%cbuf)
+        idxlist(lugb)%nlen = 0
+        idxlist(lugb)%nnum = 0
+        lux = abs(lugi)
+    endif
 
-  IRGI=0
-  IF(LUX.GT.0) THEN
-     CALL GETG2I(LUX,IDXLIST(LUGB)%CBUF,NLEN,NNUM,IRGI)
-  ELSEIF(LUX.LE.0) THEN
-     MSKP=0
-     CALL GETG2IR(LUGB,MSK1,MSK2,MSKP,IDXLIST(LUGB)%CBUF, &
-          NLEN,NNUM,NMESS,IRGI)
-  ENDIF
-  IF(IRGI.EQ.0) THEN
-     CINDEX => IDXLIST(LUGB)%CBUF
-     IDXLIST(LUGB)%NLEN = NLEN
-     IDXLIST(LUGB)%NNUM = NNUM
-  ELSE
-     NLEN = 0
-     NNUM = 0
-     PRINT*,' '
-     PRINT *,' ERROR READING INDEX FILE '
-     PRINT*,' '
-     IRET=96
-     RETURN
-  ENDIF
+    !  check if index already exists in memory
+    if ( associated( idxlist(lugb)%cbuf ) ) then
+        cindex => idxlist(lugb)%cbuf
+        nlen = idxlist(lugb)%nlen
+        nnum = idxlist(lugb)%nnum
+        return
+    endif
 
-  RETURN
-END SUBROUTINE GETIDX
+    irgi = 0
+    if(lux .gt. 0) then
+        call getg2i(lux, idxlist(lugb)%cbuf, nlen, nnum, irgi)
+    elseif(lux .le. 0) then
+        mskp = 0
+        call getg2ir(lugb, msk1, msk2, mskp, idxlist(lugb)%cbuf, &
+            nlen, nnum, nmess, irgi)
+    endif
+    if(irgi .eq. 0) then
+        cindex => idxlist(lugb)%cbuf
+        idxlist(lugb)%nlen = nlen
+        idxlist(lugb)%nnum = nnum
+    else
+        nlen = 0
+        nnum = 0
+        print *, ' '
+        print *, ' error reading index file '
+        print *, ' '
+        iret = 96
+        return
+    endif
+
+    return
+end subroutine getidx
