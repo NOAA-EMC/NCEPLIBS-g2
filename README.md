@@ -13,7 +13,9 @@ Documentation see
 https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/.
 
 For a C implementation of the GRIB 2 functions, see project
-[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c).
+[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c). For a
+collection of GRIB1 and GRIB2 utilities used at NOAA, see
+[NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util).
 
 ### Users
 
