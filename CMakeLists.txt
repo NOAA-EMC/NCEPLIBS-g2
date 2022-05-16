@@ -29,7 +29,10 @@ find_package(bacio REQUIRED)
 if(bacio_VERSION LESS 2.5.0)
   add_library(bacio::bacio ALIAS bacio::bacio_4)
 endif()
-  
+
+option(BUILD_4 "Build libg2_4.a" ON)
+option(BUILD_D "Build libg2_d.a" ON)
+
 add_subdirectory(src)
 
 include(CTest)

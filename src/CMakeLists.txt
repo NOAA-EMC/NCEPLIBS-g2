@@ -51,7 +51,16 @@ endif()
 
 # Build a _4 and _d version of the library, for 4-byte real, and
 # 8-byte real.
-set(kinds "4" "d")
+if(BUILD_4 AND BUILD_D)
+  set(kinds "4" "d")
+elseif(BUILD_4 AND NOT BUILD_D)
+  set(kinds "4")
+elseif(BUILD_D AND NOT BUILD_4)
+  set(kinds "d")
+else()
+  message(FATAL_ERROR "At least one of BUILD_4 or BUILD_D must be turned on")
+endif()
+
 foreach(kind ${kinds})
   set(lib_name ${PROJECT_NAME}_${kind})
   set(module_dir ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
