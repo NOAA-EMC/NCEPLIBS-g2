@@ -14,8 +14,8 @@ target_link_libraries(g2_test_lib PRIVATE bacio::bacio)
 
 # Copy test data file to the build directory.
 function(copy_test_data name)
-  file(COPY "${CMAKE_SOURCE_DIR}/tests/${name}"
-    DESTINATION ${CMAKE_BINARY_DIR}/tests
+  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${name}"
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 endfunction()
 
