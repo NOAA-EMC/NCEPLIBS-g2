@@ -33,47 +33,51 @@
 !>
 !> @author Stephen Gilbert @date 2000-05-26
 subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
+    implicit none
 
-  character(len = 1), intent(in) :: cgrib(lcgrib)
-  integer, intent(in) :: lcgrib, ngpts
-  integer, intent(inout) :: iofst
-  integer, intent(out) :: ibmap
-  integer, intent(out) :: ierr
-  logical*1, pointer, dimension(:) :: bmap
+    character(len = 1), intent(in) :: cgrib(lcgrib)
+    integer, intent(in) :: lcgrib, ngpts
+    integer, intent(inout) :: iofst
+    integer, intent(out) :: ibmap
+    integer, intent(out) :: ierr
+    logical*1, pointer, dimension(:) :: bmap
 
-  integer :: intbmap(ngpts)
+    integer :: intbmap(ngpts)
 
-  ierr = 0
-  nullify(bmap)
+    !implicit none additions
+    integer :: istat, j
 
-  iofst = iofst + 32            ! skip Length of Section
-  iofst = iofst + 8             ! skip section number
+    ierr = 0
+    nullify(bmap)
 
-  call g2_gbytec(cgrib, ibmap, iofst, 8) ! Get bit-map indicator
-  iofst = iofst + 8
+    iofst = iofst + 32            ! skip Length of Section
+    iofst = iofst + 8             ! skip section number
 
-  if (ibmap .eq. 0) then      ! Unpack bitmap
-     istat = 0
-     if (ngpts .gt. 0) allocate(bmap(ngpts), stat = istat)
-     if (istat .ne. 0) then
-        ierr = 6
-        nullify(bmap)
-        return
-     endif
-     call g2_gbytesc(cgrib, intbmap, iofst, 1, 0, ngpts)
-     iofst = iofst + ngpts
-     do j = 1, ngpts
-        bmap(j) = .true.
-        if (intbmap(j) .eq. 0) bmap(j) = .false.
-     enddo
-     !      elseif (ibmap .eq. 254) then               ! Use previous bitmap
-     !        return
-     !      elseif (ibmap .eq. 255) then               ! No bitmap in message
-     !        bmap(1:ngpts) = .true.
-     !      else
-     !        print *, 'gf_unpack6: Predefined bitmap ', ibmap, ' not recognized.'
-     !        ierr = 4
-  endif
+    call g2_gbytec(cgrib, ibmap, iofst, 8) ! Get bit-map indicator
+    iofst = iofst + 8
 
-  return
+    if (ibmap .eq. 0) then      ! Unpack bitmap
+        istat = 0
+        if (ngpts .gt. 0) allocate(bmap(ngpts), stat = istat)
+        if (istat .ne. 0) then
+            ierr = 6
+            nullify(bmap)
+            return
+        endif
+        call g2_gbytesc(cgrib, intbmap, iofst, 1, 0, ngpts)
+        iofst = iofst + ngpts
+        do j = 1, ngpts
+            bmap(j) = .true.
+            if (intbmap(j) .eq. 0) bmap(j) = .false.
+        enddo
+        !      elseif (ibmap .eq. 254) then               ! Use previous bitmap
+        !        return
+        !      elseif (ibmap .eq. 255) then               ! No bitmap in message
+        !        bmap(1:ngpts) = .true.
+        !      else
+        !        print *, 'gf_unpack6: Predefined bitmap ', ibmap, ' not recognized.'
+        !        ierr = 4
+    endif
+
+    return
 end subroutine gf_unpack6

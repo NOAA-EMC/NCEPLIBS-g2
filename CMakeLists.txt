@@ -1,7 +1,7 @@
 # This is the main CMake file for NCEPLIBS-g2.
 #
 # Mark Potts, Kyle Gerheiser
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.18)
 
 file(STRINGS "VERSION" pVersion)
 
@@ -26,6 +26,13 @@ endif()
 find_package(Jasper 2.0.25 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
+if(bacio_VERSION LESS 2.5.0)
+  add_library(bacio::bacio ALIAS bacio::bacio_4)
+endif()
+find_package(w3emc 2.9.0 REQUIRED)
+
+option(BUILD_4 "Build libg2_4.a" ON)
+option(BUILD_D "Build libg2_d.a" ON)
 
 add_subdirectory(src)
 
@@ -42,4 +49,33 @@ option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
 if(ENABLE_DOCS)
   find_package(Doxygen REQUIRED)
 endif()
-add_subdirectory(docs)  
+add_subdirectory(docs)
+
+### Package config
+include(CMakePackageConfigHelpers)
+set(CONFIG_INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+
+export(EXPORT ${PROJECT_NAME}Exports
+  NAMESPACE ${PROJECT_NAME}::
+  FILE ${PROJECT_NAME}-targets.cmake)
+
+# g2-config.cmake
+configure_package_config_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/PackageConfig.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  INSTALL_DESTINATION ${CONFIG_INSTALL_DESTINATION})
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+  DESTINATION ${CONFIG_INSTALL_DESTINATION})
+
+# g2-config-version.cmake
+write_basic_package_version_file(
+  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY AnyNewerVersion)
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+  DESTINATION ${CONFIG_INSTALL_DESTINATION})
+
+# g2-targets.cmake and g2-targets-<build-type>.cmake
+install(EXPORT ${PROJECT_NAME}Exports
+  NAMESPACE ${PROJECT_NAME}::
+  FILE ${PROJECT_NAME}-targets.cmake
+  DESTINATION ${CONFIG_INSTALL_DESTINATION})
