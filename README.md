@@ -1,4 +1,4 @@
-![Status](https://github.com/NOAA-EMC/NCEPLIBS-sp/workflows/Build%20and%20Test/badge.svg)
+![Status](https://github.com/NOAA-EMC/NCEPLIBS-g2/workflows/Build%20and%20Test/badge.svg)
 
 # NCEPLIBS-g2 GRIB2 Fortran Library
 
@@ -51,9 +51,6 @@ Code Manager : Hang Lei, Edward Hartnett
 
 - [NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio) - This library
   does binary file I/O.
-
-- [NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip) - This library
-  does interpolation between nearly all grids used at NCEP. .
 
 - [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc) - This library
   contains Fortran 90 decoder/encoder routines for GRIB edition 1.
