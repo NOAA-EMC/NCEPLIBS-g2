@@ -55,6 +55,9 @@ Code Manager : Hang Lei, Edward Hartnett
 - [NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip) - This library
   does interpolation between nearly all grids used at NCEP. .
 
+- [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc) - This library
+  contains Fortran 90 decoder/encoder routines for GRIB edition 1.
+
 ## Building
 
 Download the tarball from the release page and unpack it, and cd into
