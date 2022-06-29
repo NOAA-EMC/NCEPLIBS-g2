@@ -1,6 +1,6 @@
 ![Status](https://github.com/NOAA-EMC/NCEPLIBS-sp/workflows/Build%20and%20Test/badge.svg)
 
-# NCEPLIBS G2 Library
+# NCEPLIBS-g2 GRIB2 Fortran Library
 
 Utilities for coding/decoding GRIB2 messages. This library contains
 Fortran 90 decoder/encoder routines for GRIB edition 2, as well as
