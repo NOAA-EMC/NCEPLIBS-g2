@@ -52,6 +52,9 @@ Code Manager : Hang Lei, Edward Hartnett
 - [NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio) - This library
   does binary file I/O.
 
+- [NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip) - This library
+  does interpolation between nearly all grids used at NCEP. .
+
 ## Building
 
 Download the tarball from the release page and unpack it, and cd into
