@@ -13,6 +13,7 @@ include(CMakeFindDependencyMacro)
 
 find_dependency(PNG)
 find_dependency(bacio)
+find_dependency(w3emc)
 
 get_target_property(@PROJECT_NAME@_BUILD_TYPES @PROJECT_NAME@::@PROJECT_NAME@_4 IMPORTED_CONFIGURATIONS)
 
