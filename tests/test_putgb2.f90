@@ -1,7 +1,7 @@
 ! This program creates a grib file to use in testing other source files
 !
 ! Brian Curtis 11/26/2021
-program test_getgb2
+program test_putgb2
   use grib_mod
   use bacio_module
   implicit none
@@ -73,7 +73,8 @@ program test_getgb2
      stop 5
   end if
 
-  print *, 'gfdl%fld from getgb2 is: ', gfld%fld
+  print *, 'gfld%ngrdpts from getgb2 is: ', gfld%ngrdpts
+  print *, 'gfld%fld from getgb2 is: ', gfld%fld
 
   print *, 'Testing open/write/close of GRIB2 file'
 
@@ -97,4 +98,4 @@ program test_getgb2
 
   print *, 'SUCCESS!'
 
-end program test_getgb2
+end program test_putgb2
