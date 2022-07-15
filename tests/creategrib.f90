@@ -1,5 +1,5 @@
 ! This module provides subroutines that create a cgrib variable for other tests
-! or writes a grib2 file for use in other tests
+! or writes a grib2 file for use in other tests.
 !
 ! Brian Curtis 11/12/21 (bring in code from test_gribcreate)
 ! Brian Curtis 11/26/2021 (modify to just create GRIB message)
@@ -41,7 +41,7 @@ contains
           integer, parameter :: idrstmplen = 5
           integer :: idrstmpl(idrstmplen)
           integer, parameter :: ngrdpts = 4, ibmap = 255
-          logical :: bmap(1)
+          logical :: bmap(1) = .false.
           real(8) :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
           ! Section 8
