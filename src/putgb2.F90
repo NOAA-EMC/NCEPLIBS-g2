@@ -5,8 +5,10 @@
 
 !> This subroutine packs a single field into a grib2 message and
 !> writes out that message to the file associated with unit lugb.
-!> Note that file/unit lugb should be opened woth a call to
-!> subroutine baopenw() before this routine is called.
+!> Note that file/unit lugb should be opened with a call to subroutine
+!> [baopen() or baopenw()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before this routine is
+!> called.
 !>
 !> The information to be packed into the grib field is stored in a
 !> derived type variable, gfld. gfld is of type gribfield, which is
@@ -23,45 +25,63 @@
 !> 2009-03-10 | Boi Vuong | Initialize variable coordlist.
 !> 2011-06-09 | Boi Vuong | Initialize variable gfld%list_opt.
 !> 2012-02-28 | Boi Vuong | Initialize variable ilistopt.
+!> 2022-07-19 | Ed Hartnett | Fixed memory problem.
 !>
-!> @param[in] LUGB integer unit of the unblocked grib data file.
-!> File must be opened with baopen() or baopenw() before calling
-!> this routine.
-!> @param[in] GFLD derived type @ref grib_mod::gribfield.
-!> @param[out] IRET integer return code
-!> - 0 all ok.
+!> @param[in] lugb integer unit of the unblocked grib data file.  File
+!> must be opened with [baopen() or baopenw()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> routine.
+!> @param[in] gfld derived type @ref grib_mod::gribfield.
+!> @param[out] iret integer return code
+!> - 0 No error.
 !> - 2 Memory allocation error.
 !> - 10 No Section 1 info available.
 !> - 11 No Grid Definition Template info available.
 !> - 12 Missing some required data field info.
 !>
-!> @note That derived type gribfield contains pointers to many
-!> arrays of data. The memory for these arrays is allocated when
-!> the values in the arrays are set, to help minimize problems with
-!> array overloading. Users must free up this memory, when it is no
-!> longer needed, by a call to subroutine gf_free().
+!> @note Derived type gribfield contains pointers to many arrays of
+!> data (See @ref grib_mod::gribfield). The memory for these arrays is
+!> allocated when the values in the arrays are set, to help minimize
+!> problems with array overloading. Users must free up this memory,
+!> when it is no longer needed, by a call to subroutine gf_free().
 !>
 !> @author Stephen Gilbert @date 2002-04-22
-SUBROUTINE PUTGB2(LUGB, GFLD, IRET)
-  USE GRIB_MOD
+subroutine putgb2(lugb, gfld, iret)
+  use grib_mod
+  implicit none
 
-  INTEGER, INTENT(IN) :: LUGB
-  TYPE(GRIBFIELD), INTENT(IN) :: GFLD
-  INTEGER, INTENT(OUT) :: IRET
+  integer, intent(in) :: lugb
+  type(gribfield), intent(in) :: gfld
+  integer, intent(out) :: iret
 
-  CHARACTER(LEN = 1), ALLOCATABLE, DIMENSION(:) :: CGRIB
+  character(len = 1), allocatable, dimension(:) :: cgrib
   integer :: listsec0(2)
   integer :: igds(5)
   real    :: coordlist
   integer :: ilistopt
+  integer :: ierr, is, lcgrib, lengrib
 
   listsec0 = (/0, 2/)
   igds = (/0, 0, 0, 0, 0/)
   coordlist = 0.0
   ilistopt = 0
 
+  ! Figure out the maximum length of the GRIB2 message.
+  lcgrib = 16 + 21 + 4 ! Sections 0, 1, and 8.
+  ! Check for Section 2.
+  if (associated(gfld%local) .AND. gfld%locallen .gt. 0) then
+     lcgrib = lcgrib + gfld%locallen * 4
+  endif
+  ! Maximum size for Sections 3, 4, and 5 < 512 each.
+  lcgrib = lcgrib + 512 + 512 + 512
+  ! Is there a section 6?
+  if (gfld%ibmap .eq. 0) then
+     lcgrib = lcgrib + gfld%ngrdpts
+  endif
+  ! Section 7 holds the data.
+  lcgrib = lcgrib + gfld%ngrdpts * 4
+  
   ! Allocate array for grib2 field.
-  lcgrib = gfld%ngrdpts * 4
   allocate(cgrib(lcgrib), stat = is)
   if (is .ne. 0) then
      print *, 'putgb2: cannot allocate memory. ', is
@@ -134,5 +154,5 @@ SUBROUTINE PUTGB2(LUGB, GFLD, IRET)
   call wryte(lugb, lengrib, cgrib)
 
   deallocate(cgrib)
-  RETURN
-END SUBROUTINE PUTGB2
+  return
+end subroutine putgb2
