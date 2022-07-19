@@ -1,3 +1,8 @@
+! This is a test program for the NCEPLIBS-g2 project.
+!
+! This program tests the g2_gbytesc.F90 code.
+!
+! Ed Hartnett, Nov. 12, 2021
 program test_gbytec
   implicit none
 
@@ -12,7 +17,7 @@ program test_gbytec
   integer, parameter :: n5 = 5
   integer :: in5(n5)
   integer :: iskip = 0
-  integer :: nbyte = 8
+  integer :: nbits = 8
   integer :: nskip = 0
   integer :: i
 
@@ -21,13 +26,13 @@ program test_gbytec
   print *, 'Testing g2_sbytec()...'
   in(1) = 3
   out(1) = char(0)
-  call g2_sbytec(out, in, iskip, nbyte)
+  call g2_sbytec(out, in, iskip, nbits)
   if (ichar(out(1)) .ne. in(1)) stop 10
 
   print *, 'Testing g2_sbytesc()...'
   in(1) = 3
   out(1) = char(0)
-  call g2_sbytesc(out, in, iskip, nbyte, nskip, n)
+  call g2_sbytesc(out, in, iskip, nbits, nskip, n)
   if (ichar(out(1)) .ne. in(1)) stop 20
 
   ! This will pack the numbers 1 and 2 into the first two chars of the
@@ -38,8 +43,8 @@ program test_gbytec
   do i = 1, 8
      out2(i) = char(0)
   end do
-  nbyte = 8
-  call g2_sbytesc(out2, in2, iskip, nbyte, nskip, n2)
+  nbits = 8
+  call g2_sbytesc(out2, in2, iskip, nbits, nskip, n2)
   do i = 1, 8
      if (i .le. 2) then
         if (ichar(out2(i)) .ne. in2(i)) stop 30;
@@ -55,12 +60,12 @@ program test_gbytec
   in5(3) = 3
   in5(4) = 4
   in5(5) = 5
-  nbyte = 8
+  nbits = 8
   nskip = 0
   do i = 1, 5
      out5(i) = char(0)
   end do
-  call g2_sbytesc(out5, in5, iskip, nbyte, nskip, n5)
+  call g2_sbytesc(out5, in5, iskip, nbits, nskip, n5)
   do i = 1, 5
      if (ichar(out5(i)) .ne. in5(i)) stop 40;     
   end do
@@ -68,12 +73,12 @@ program test_gbytec
   ! Now pack 5 values into the 10 character array out10. Skip every
   ! other byte in the output.
   print *, 'Testing g2_sbytesc() packing 5 values, skipping every other byte...'
-  nbyte = 8
+  nbits = 8
   nskip = 0
   do i = 1, 10
      out10(i) = char(0)
   end do
-  call g2_sbytesc(out10, in5, iskip, nbyte, 8, 5)
+  call g2_sbytesc(out10, in5, iskip, nbits, 8, 5)
   do i = 1, 10
      ! print '(z2.2)', out10(i)
      if (mod(i, 2) .gt. 0) then
