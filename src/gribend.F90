@@ -31,7 +31,7 @@ subroutine gribend(cgrib, lcgrib, lengrib, ierr)
 
   character(len = 4), parameter :: grib = 'GRIB', c7777 = '7777'
   character(len = 4):: ctemp
-  integer iofst, ibeg, lencurr, len
+  integer iofst, lencurr, len
 
   ierr = 0
 

@@ -123,14 +123,14 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
     character(len = 4), parameter :: grib = 'GRIB', c7777 = '7777'
     character(len = 4) :: ctemp
     integer :: listsec0(2)
-    integer :: iofst, ibeg, istart
+    integer :: iofst, istart
     integer(4) :: ieee
     logical :: have3, have4, have5, have6, have7
 
     !implicit none additions
     integer, intent(out) :: igdslen, ipdslen, idrslen
     integer :: numfld, j, lengrib, lensec0, ipos
-    integer :: lensec, isecnum, jerr, ave6, ier, numlocal
+    integer :: lensec, isecnum, jerr, ier, numlocal
 
     have3 = .false.
     have4 = .false.
