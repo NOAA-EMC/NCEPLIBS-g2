@@ -4,7 +4,6 @@
 program test_intmath
   use intmath
   implicit none
-  real(kind = 16) :: temp
   real(kind = 16), parameter :: alog2 = log(2.0_16)
   integer(kind = 8) :: ival8 = 10, iret8
   integer(kind = 4) :: ival4 = 10, iret4

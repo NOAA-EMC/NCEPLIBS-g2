@@ -4,7 +4,6 @@
 !>
 !>    Hang Lei 2021-12-27
 !>
-
 program tst_g2grids
   use grib_mod
   use g2grids
@@ -12,7 +11,7 @@ program tst_g2grids
   use gridtemplates
   implicit none
 
-  integer :: num_pd, num_grid
+  integer :: num_grid
   integer :: id, id2
   integer :: igdt, ierr, i
   integer, dimension(19) :: igdtmp, vdata

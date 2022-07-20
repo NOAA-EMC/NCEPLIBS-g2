@@ -87,8 +87,7 @@ subroutine gf_getfld(cgrib, lcgrib, ifldnum, unpack, expand, gfld, ierr)
     character(len = 4) :: ctemp
     real, pointer, dimension(:) :: newfld
     integer:: listsec0(2), igds(5)
-    integer iofst, ibeg, istart
-    integer(4) :: ieee
+    integer iofst, istart
     logical*1, pointer, dimension(:) :: bmpsave
     logical have3, have4, have5, have6, have7
 

@@ -21,7 +21,6 @@ program test_putgb2
   integer :: k
   type(gribfield) :: gfld
   integer :: iret
-  integer :: i
 
   jpdt(1) = 0
   jpdt(2) = 0
