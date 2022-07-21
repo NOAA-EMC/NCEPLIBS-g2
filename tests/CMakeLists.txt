@@ -45,7 +45,8 @@ function(create_test name g2_kind)
   add_test(${name} ${name})
 endfunction()
 
-# Get test data from the EMC FTP site.
+# If the user is running the tests on the data files from the EMC FTP
+# site, then get the files.
 if(FTP_TEST_FILES)
   set(G2_FTP_URL "https://ftp.emc.ncep.noaa.gov/static_files/public/NCEPLIBS-g2")
   set(WW3_WEST_FILE "WW3_Regional_US_West_Coast_20220718_0000.grib2")
@@ -55,7 +56,7 @@ if(FTP_TEST_FILES)
   endforeach()
 endif()
 
-#copy test data files
+# Copy test data files that are in the repo to the build directory.
 copy_test_data(testdata_g2grids)
 
 # These tests link to the g2_d library.
