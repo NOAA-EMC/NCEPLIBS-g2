@@ -365,8 +365,10 @@ contains
   !>
   !>    @author  Stephen Gilbert  @date 2001-06-28
   integer function getpdsindex(number)
-
+    implicit none
+    
     integer,intent(in) :: number
+    integer :: j
 
     getpdsindex=-1
 
@@ -455,7 +457,7 @@ contains
     
     integer,intent(in) :: number,list(*)
     integer,intent(out) :: nummap,map(*)
-    integer :: i, index, k, n
+    integer :: i, index, k, n, j
 
     index=getpdsindex(number)
     if (index.eq.-1) return
