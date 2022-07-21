@@ -1,11 +1,12 @@
 !> @file
-!> @brief Define math functions used by other code.
+!> @brief Define math functions used by compack(),
+!> simpack(), and misspack().
 !> @author Stephen Gilbert @date 2000-06-21
 
-!> This module defines integer math functions used by compack,
-!> simpack, and misspack.
+!> @brief Define math functions used by compack(),
+!> simpack(), and misspack().
 !>
-!> It include following functions:
+!> This module includes the following functions:
 !> - ilog2 Calculate log(x)/log(2).
 !>   - ilog2_8 for 8 bit integer numbers.
 !>   - ilog2_4 for 4 bit integer numbers.
@@ -49,7 +50,7 @@ contains
     implicit none
     integer(kind = 8), value :: ival
     integer(kind = 8)::i1log2_8
-    integer(kind = 8), parameter :: one = 1
+    integer(kind = 8), parameter :: one = 1_8
     if (ival + one < ival) then
        i1log2_8 = ilog2_8(ival)
     else
@@ -85,7 +86,7 @@ contains
     implicit none
     integer(kind = 2), value :: ival
     integer(kind = 2)::i1log2_2
-    integer(kind = 2), parameter :: one = 1
+    integer(kind = 2), parameter :: one = 1_2
     if (ival + one < ival) then
        i1log2_2 = ilog2_2(ival)
     else
@@ -103,7 +104,7 @@ contains
     implicit none
     integer(kind = 1), value :: ival
     integer(kind = 1)::i1log2_1
-    integer(kind = 1), parameter :: one = 1
+    integer(kind = 1), parameter :: one = 1_1
     if (ival + one < ival) then
        i1log2_1 = ilog2_1(ival)
     else
@@ -211,30 +212,30 @@ contains
     implicit none
     integer(kind = 2), value :: i_in
     integer(kind = 2)::ilog2_2, i
-    ilog2_2 = 0
+    ilog2_2 = 0_2
     i = i_in
     if (i <= 0) return
     if (iand(i, int(i-1, kind = 2)) /= 0) then
        !write(0, *) 'iand i-1'
-       ilog2_2 = 1
+       ilog2_2 = 1_2
     endif
     if (iand(i, Z'FF00') /= 0) then
-       ilog2_2 = ilog2_2 + 8
+       ilog2_2 = ilog2_2 + 8_2
        i = ishft(i, -8)
        !write(0, *) 'iand ff', i, ilog2_2
     endif
     if (iand(i, Z'00F0') /= 0) then
-       ilog2_2 = ilog2_2 + 4
+       ilog2_2 = ilog2_2 + 4_2
        i = ishft(i, -4)
        !write(0, *) 'iand f', i, ilog2_2
     endif
     if (iand(i, Z'000C') /= 0) then
-       ilog2_2 = ilog2_2 + 2
+       ilog2_2 = ilog2_2 + 2_2
        i = ishft(i, -2)
        !write(0, *) 'iand c', i, ilog2_2
     endif
     if (iand(i, Z'0002') /= 0) then
-       ilog2_2 = ilog2_2 + 1
+       ilog2_2 = ilog2_2 + 1_2
        i = ishft(i, -1)
        !write(0, *) 'iand 2', i, ilog2_2
     endif
@@ -249,25 +250,25 @@ contains
     implicit none
     integer(kind = 1), value :: i_in
     integer(kind = 1)::ilog2_1, i
-    ilog2_1 = 0
+    ilog2_1 = 0_1
     i = i_in
     if (i <= 0) return
     if (iand(i, int(i-1, kind=1)) /= 0) then
        !write(0, *) 'iand i-1'
-       ilog2_1 = 1
+       ilog2_1 = 1_1
     endif
     if (iand(i, Z'F0') /= 0) then
-       ilog2_1 = ilog2_1 + 4
+       ilog2_1 = ilog2_1 + 4_1
        i = ishft(i, -4)
        !write(0, *) 'iand f', i, ilog2_1
     endif
     if (iand(i, Z'0C') /= 0) then
-       ilog2_1 = ilog2_1 + 2
+       ilog2_1 = ilog2_1 + 2_1
        i = ishft(i, -2)
        !write(0, *) 'iand c', i, ilog2_1
     endif
     if (iand(i, Z'02') /= 0) then
-       ilog2_1 = ilog2_1 + 1
+       ilog2_1 = ilog2_1 + 1_1
        i = ishft(i, -1)
        !write(0, *) 'iand 2', i, ilog2_1
     endif
