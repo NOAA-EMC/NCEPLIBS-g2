@@ -76,6 +76,8 @@ create_test(test_g2grids g2_d)
 create_test(test_cmplxpack g2_d)
 create_test(test_mkieee g2_d)
 create_test(test_getlocal g2_d)
+create_test(test_putgb2 g2_d)
+create_test(test_realloc g2_d)
 
 # These tests link to the g2_4 library.
 create_test(test_simpack g2_4)
