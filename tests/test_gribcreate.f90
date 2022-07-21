@@ -43,45 +43,45 @@ program test_gribcreate
   integer :: lengrib
 
   ! This is the GRIB2 message we expect to get.
-  character :: expected_cgrib(lcgrib) = (/  achar( 71), achar( 82),&
-       & achar( 73), achar( 66), achar(  0), achar(  0), achar(  0),&
-       & achar(  2), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(191), achar(  0),&
-       & achar(  0), achar(  0), achar( 21), achar(  1), achar(  0),&
-       & achar(  7), achar(  0), achar(  4), achar(  2), achar( 24),&
-       & achar(  0), achar(  7), achar(229), achar( 11), achar( 13),&
-       & achar( 15), achar( 59), achar( 59), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  8), achar(  2),&
-       & achar(  1), achar(  2), achar(  3), achar(  0), achar(  0),&
-       & achar(  0), achar( 72), achar(  3), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  4), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  0), achar(  0),&
-       & achar(  0), achar(  2), achar(  0), achar(  0), achar(  0),&
-       & achar(  2), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar( 45), achar(  0), achar(  0),&
-       & achar(  0), achar( 91), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar( 55), achar(  0), achar(  0), achar(  0),&
-       & achar(101), achar(  0), achar(  0), achar(  0), achar(  5),&
-       & achar(  0), achar(  0), achar(  0), achar(  5), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar( 34), achar(  4),&
-       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar( 12), achar( 59), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  2), achar(  1),&
-       & achar(  0), achar(  0), achar(  0), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar( 21), achar(  5), achar(  0),&
-       & achar(  0), achar(  0), achar(  4), achar(  0), achar(  0),&
-       & achar( 65), achar( 48), achar(  0), achar(  0), achar(  0),&
-       & achar(  1), achar(  0), achar(  1), achar(  8), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  6), achar(  6),&
-       & achar(255), achar(  0), achar(  0), achar(  0), achar(  9),&
-       & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2),&
-       & achar( 55), achar( 55), achar( 55), achar( 55) /)
+  character :: expected_cgrib(lcgrib) = (/  char( 71), char( 82),&
+       & char( 73), char( 66), char(  0), char(  0), char(  0),&
+       & char(  2), char(  0), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char(  0), char(191), char(  0),&
+       & char(  0), char(  0), char( 21), char(  1), char(  0),&
+       & char(  7), char(  0), char(  4), char(  2), char( 24),&
+       & char(  0), char(  7), char(229), char( 11), char( 13),&
+       & char( 15), char( 59), char( 59), char(  1), char(  0),&
+       & char(  0), char(  0), char(  0), char(  8), char(  2),&
+       & char(  1), char(  2), char(  3), char(  0), char(  0),&
+       & char(  0), char( 72), char(  3), char(  0), char(  0),&
+       & char(  0), char(  0), char(  4), char(  0), char(  0),&
+       & char(  0), char(  0), char(  0), char(  1), char(  0),&
+       & char(  0), char(  0), char(  1), char(  1), char(  0),&
+       & char(  0), char(  0), char(  1), char(  1), char(  0),&
+       & char(  0), char(  0), char(  1), char(  0), char(  0),&
+       & char(  0), char(  2), char(  0), char(  0), char(  0),&
+       & char(  2), char(  0), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char( 45), char(  0), char(  0),&
+       & char(  0), char( 91), char(  0), char(  0), char(  0),&
+       & char(  0), char( 55), char(  0), char(  0), char(  0),&
+       & char(101), char(  0), char(  0), char(  0), char(  5),&
+       & char(  0), char(  0), char(  0), char(  5), char(  0),&
+       & char(  0), char(  0), char(  0), char( 34), char(  4),&
+       & char(  0), char(  0), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char(  0), char(  0), char(  0),&
+       & char( 12), char( 59), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char(  1), char(  1), char(  0),&
+       & char(  0), char(  0), char(  1), char(  2), char(  1),&
+       & char(  0), char(  0), char(  0), char(  1), char(  0),&
+       & char(  0), char(  0), char( 21), char(  5), char(  0),&
+       & char(  0), char(  0), char(  4), char(  0), char(  0),&
+       & char( 65), char( 48), char(  0), char(  0), char(  0),&
+       & char(  1), char(  0), char(  1), char(  8), char(  0),&
+       & char(  0), char(  0), char(  0), char(  6), char(  6),&
+       & char(255), char(  0), char(  0), char(  0), char(  9),&
+       & char(  7), char(  0), char(  1), char(  1), char(  2),&
+       & char( 55), char( 55), char( 55), char( 55) /)
   
   character :: old_val
   integer :: i, ierr
@@ -152,7 +152,7 @@ program test_gribcreate
   ! Change the first byte of the message, then try to add local - will
   ! not work.
   old_val = cgrib(1)
-  cgrib(1) = achar(0)
+  cgrib(1) = char(0)
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   if (ierr .ne. 1) stop 30
   cgrib(1) = old_val
@@ -160,7 +160,7 @@ program test_gribcreate
   ! Change the section count, then try to add local - will
   ! not work.
   old_val = cgrib(16)
-  cgrib(16) = achar(10)
+  cgrib(16) = char(10)
   call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   if (ierr .ne. 3) stop 35
   cgrib(16) = old_val
@@ -176,7 +176,7 @@ program test_gribcreate
   ! Change the first byte of the message, then try to add grid - will
   ! not work.
   old_val = cgrib(1)
-  cgrib(1) = achar(0)
+  cgrib(1) = char(0)
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
   if (ierr .ne. 1) stop 50
@@ -185,7 +185,7 @@ program test_gribcreate
   ! Change the section count, then try to add grid - will
   ! not work.
   old_val = cgrib(16)
-  cgrib(16) = achar(10)
+  cgrib(16) = char(10)
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)
   if (ierr .ne. 3) stop 60
@@ -239,7 +239,7 @@ program test_gribcreate
   ! Change the first byte of the message, then try to add field - will
   ! not work.
   old_val = cgrib(1)
-  cgrib(1) = achar(0)
+  cgrib(1) = char(0)
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        & ngrdpts, ibmap, bmap, ierr)
@@ -263,7 +263,7 @@ program test_gribcreate
   ! Change the first byte of the message, then try to end message - will
   ! not work.
   old_val = cgrib(1)
-  cgrib(1) = achar(0)
+  cgrib(1) = char(0)
   call gribend(cgrib, lcgrib, lengrib, ierr)
   if (ierr .ne. 1) stop 145
   cgrib(1) = old_val
@@ -271,7 +271,7 @@ program test_gribcreate
   ! Change the section count, then try to end message - will
   ! not work.
   old_val = cgrib(16)
-  cgrib(16) = achar(10)
+  cgrib(16) = char(10)
   call gribend(cgrib, lcgrib, lengrib, ierr)
   if (ierr .ne. 3) stop 35
   cgrib(16) = old_val
@@ -293,7 +293,7 @@ program test_gribcreate
 
   ! Check the results.
   do i = 1, lcgrib
-!     write(*, fmt='(a6i3a3)', advance="no") 'achar(', ichar(cgrib(i)), '), '
+!     write(*, fmt='(a6i3a3)', advance="no") 'char(', ichar(cgrib(i)), '), '
      if (cgrib(i) .ne. expected_cgrib(i)) stop 200
   enddo
 
