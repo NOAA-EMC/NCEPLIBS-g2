@@ -58,7 +58,7 @@ endif()
 #copy test data files
 copy_test_data(testdata_g2grids)
 
-# g2_d tests
+# These tests link to the g2_d library.
 create_test(test_g2 g2_d)
 create_test(test_g2_encode g2_d)
 create_test(test_g2_decode g2_d)
@@ -77,7 +77,7 @@ create_test(test_cmplxpack g2_d)
 create_test(test_mkieee g2_d)
 create_test(test_getlocal g2_d)
 
-# g2_4 tests
+# These tests link to the g2_4 library.
 create_test(test_simpack g2_4)
 create_test(test_gbytec g2_4)
 create_test(test_gribcreate g2_4)
