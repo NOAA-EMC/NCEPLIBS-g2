@@ -33,6 +33,7 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
+  implicit none
   
   integer,intent(in) :: width,height
   real,intent(in) :: fld(width*height)
@@ -42,7 +43,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
 
   integer :: imax, imin, j, maxdif, nbits
   integer :: nbytes, ndpts, nsize
-  real :: temp
+  real :: temp, bscale, dscale
   real(4) :: ref,rmin4
   real(8) :: rmin,rmax
   integer(4) :: iref

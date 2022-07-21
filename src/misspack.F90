@@ -44,13 +44,21 @@
 !>
 !> @author Stephen Gilbert @date 2000-06-21
 subroutine misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
-
   use intmath
+  implicit none
+  
   integer,intent(in) :: ndpts,idrsnum
   real,intent(in) :: fld(ndpts)
   character(len=1),intent(out) :: cpack(*)
   integer,intent(inout) :: idrstmpl(*)
   integer,intent(out) :: lcpack
+  real :: bscale, dscale, rmin, rmissp, rmisss, temp
+  integer :: i, ibit, ier, igmax, ij, ilmax, imax, imin, inc, iofst, isd
+  integer :: itemp, ival1, ival2, iwmax, j, jbit, kbit, kfildo, kk
+  integer :: lbitref, left, lg, maxgrps, maxorig, minpk, minsd, miss1
+  integer miss2, missopt, mtemp, n, nbitorig, nbitsd, nbitsglen
+  integer nbitsgref, nbitsgwidth, ng, nglenlast, nglenref, ngroups
+  integer :: ngwidthref, nonmiss, novref, num0, num1, num2
 
   real(4) :: ref, rmin4
   integer(4) :: iref
