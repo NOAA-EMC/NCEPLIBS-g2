@@ -1,13 +1,12 @@
 !> @file
-!> @brief Define math functions used by other code.
+!> @brief Define math functions used by compack(),
+!> simpack(), and misspack().
 !> @author Stephen Gilbert @date 2000-06-21
 
-!> @brief Define math functions used by other code.
-!>
-!> This module defines integer math functions used by compack(),
+!> @brief Define math functions used by compack(),
 !> simpack(), and misspack().
 !>
-!> It includes the following functions:
+!> This module includes the following functions:
 !> - ilog2 Calculate log(x)/log(2).
 !>   - ilog2_8 for 8 bit integer numbers.
 !>   - ilog2_4 for 4 bit integer numbers.
