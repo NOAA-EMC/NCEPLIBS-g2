@@ -33,8 +33,6 @@ contains
   !> @param[in] m dimension for allocatable array. This is the size
   !> the array will be after the allocation of memory.
   !> @param[out] istat scalar INTEGER variable for allocate.
-  !>
-  !> @return
   !> - 0 No error.
   !> - 10 Incorrect dimension.
   !> - other Allocation error.
@@ -82,8 +80,6 @@ contains
   !> @param[in] m dimension for allocatable array. This is the size
   !> the array will be after the allocation of memory.
   !> @param[out] istat scalar INTEGER variable for allocate.
-  !>
-  !> @return
   !> - 0 No error.
   !> - 10 Incorrect dimension.
   !> - other Allocation error.
@@ -131,8 +127,6 @@ contains
   !> @param[in] m dimension for allocatable array. This is the size
   !> the array will be after the allocation of memory.
   !> @param[out] istat scalar INTEGER variable for allocate.
-  !>
-  !> @return
   !> - 0 No error.
   !> - 10 Incorrect dimension.
   !> - other Allocation error.
