@@ -31,11 +31,16 @@ if(bacio_VERSION LESS 2.5.0)
 endif()
 find_package(w3emc 2.9.0 REQUIRED)
 
+# Handle user build options.
+option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
 
+# Build the code in the source directory.
 add_subdirectory(src)
 
+# Unit testing.
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
@@ -45,7 +50,6 @@ if(BUILD_TESTING)
 endif()
 
 # Determine whether or not to generate documentation.
-option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
 if(ENABLE_DOCS)
   find_package(Doxygen REQUIRED)
 endif()
