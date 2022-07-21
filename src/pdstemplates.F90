@@ -404,10 +404,12 @@ contains
   !>
   !>    @author  Stephen Gilbert  @date 2000-05-11
   subroutine getpdstemplate(number,nummap,map,needext,iret)
-
+    implicit none
+    
     integer,intent(in) :: number
     integer,intent(out) :: nummap,map(*),iret
     logical,intent(out) :: needext
+    integer :: index
 
     iret=0
 
@@ -449,9 +451,11 @@ contains
   !>
   !>    @author Stephen Gilbert @date 2000-05-11
   subroutine extpdstemplate(number,list,nummap,map)
-
+    implicit none
+    
     integer,intent(in) :: number,list(*)
     integer,intent(out) :: nummap,map(*)
+    integer :: i, index, k, n
 
     index=getpdsindex(number)
     if (index.eq.-1) return
@@ -679,8 +683,10 @@ contains
   !>
   !>    @author Stephen Gilbert @date 2004-05-11
   integer function getpdtlen(number)
-
+    implicit none
+    
     integer,intent(in) :: number
+    integer :: index
 
     getpdtlen=0
 

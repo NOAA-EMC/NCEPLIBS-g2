@@ -26,12 +26,15 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-21
 subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
-
+  implicit none
+  
   integer, intent(in) :: width, height
   real, intent(in) :: fld(width * height)
   character(len = 1), intent(out) :: cpack(*)
   integer, intent(inout) :: idrstmpl(*)
   integer, intent(out) :: lcpack
+  real :: bscale, dd, dscale, temp
+  integer :: imax, imin, j, maxdif, nbytes, ndpts
 
   real(4) :: ref, rmin4
   real(8) :: rmin, rmax
