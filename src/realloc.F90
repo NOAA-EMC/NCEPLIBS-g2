@@ -6,16 +6,15 @@
 !> @brief This module contains routines to reallocate memory and
 !> reorganize the data in memory.
 !>
-!> This module contains three subroutines to reorganize the integer,
-!> real and character data in memory into one dimensional array and
-!> back to memory.
+!> This module contains two subroutines to reallocate integer, and
+!> character arrays in memory, preseving the existing contents of the
+!> array.
 !>
 !> @author Stephen Gilbert @date 2000-10-01
 module re_alloc
 
-  !> This interface calls the correct subroutines to reorganize the
-  !> integer, real and character data in memory into one dimensional
-  !> array and back to memory.
+  !> This interface calls the correct subroutines to reallocate
+  !> integer or character.
   interface realloc
      module procedure realloc_c1
      module procedure realloc_i
@@ -23,8 +22,8 @@ module re_alloc
 
 contains
 
-  !> This subroutine reorganizes character type data in memory
-  !> into one one-dimensional array.
+  !> This subroutine reallocates a character array, preserving its
+  !> contents.
   !>
   !> @param[inout] c pointer for data in memory.
   !> @param[in] n dimension for data in memory. This is how much data
@@ -70,8 +69,8 @@ contains
     return
   end subroutine realloc_c1
 
-  !> This subroutine reorganizes integer type data in memory into
-  !> one one-dimensional array.
+  !> This subroutine reallocates an integer array, preserving its
+  !> contents.
   !>
   !> @param[inout] c pointer for data in memory.
   !> @param[in] n dimension for data in memory. This is how much data
