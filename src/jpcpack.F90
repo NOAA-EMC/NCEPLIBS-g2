@@ -33,13 +33,16 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
-
+  
   integer,intent(in) :: width,height
   real,intent(in) :: fld(width*height)
   character(len=1),intent(out) :: cpack(*)
   integer,intent(inout) :: idrstmpl(*)
   integer,intent(inout) :: lcpack
 
+  integer :: imax, imin, j, maxdif, nbits
+  integer :: nbytes, ndpts, nsize
+  real :: temp
   real(4) :: ref,rmin4
   real(8) :: rmin,rmax
   integer(4) :: iref

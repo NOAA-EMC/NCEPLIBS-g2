@@ -57,11 +57,12 @@
 !>
 !> @author Mark Iredell @date 2000-05-26
 SUBROUTINE GETG2I(LUGI,CBUF,NLEN,NNUM,IRET)
-
+  implicit none
   CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
   INTEGER,INTENT(IN) :: LUGI
   INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
   CHARACTER CHEAD*162
+  integer :: ios, istat, lbuf, lhead, nskp
 
   IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
 

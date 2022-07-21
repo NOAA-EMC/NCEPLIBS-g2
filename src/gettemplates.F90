@@ -66,7 +66,8 @@
 subroutine gettemplates(cgrib,lcgrib,ifldnum,igds,igdstmpl, &
      igdslen,ideflist,idefnum,ipdsnum,ipdstmpl, &
      ipdslen,coordlist,numcoord,ierr)
-
+  implicit none
+  
   character(len=1),intent(in) :: cgrib(lcgrib)
   integer,intent(in) :: lcgrib,ifldnum
   integer,intent(out) :: igds(*),igdstmpl(*),ideflist(*)
@@ -74,6 +75,7 @@ subroutine gettemplates(cgrib,lcgrib,ifldnum,igds,igdstmpl, &
   integer,intent(out) :: idefnum,numcoord
   integer,intent(out) :: ierr
   real,intent(out) :: coordlist(*)
+  integer :: igdslen, ipdslen, ipos, isecnum, j, jerr, lengrib, lensec, lensec0, numfld, numlocal
 
   character(len=4),parameter :: grib='GRIB',c7777='7777'
   character(len=4) :: ctemp
