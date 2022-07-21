@@ -3,19 +3,22 @@
 !> a grib2 message.
 !> @author Mark Iredell @date 1995-10-31
 
-!> This subroutine searches a file for the next grib 1 message. A grib
-!> 1 message is identified by its indicator section, i.e. an 8-byte
-!> sequence with 'grib' in bytes 1-4 and 1 in byte 8. If found, the
-!> length of the message is decoded from bytes 5-7. The search is
-!> done over a given section of the file. The search is terminated if
-!> an eof or i/o error is encountered.
-!> PROGRAM HISTORY LOG:
-!> - 1993-11-22 Mark Iredell
-!> - 1995-10-31 Mark Iredell add call to baread.
-!> - 1997-03-14 Mark Iredell check for '7777'.
-!> - 2001-12-05 Stephen Gilbert modified to also look for grib2
-!> messages.
-!> - 2009-12-14 Boi Vuong modified to increase length of seek (512).
+!> Search a file for the next GRIB1 or GRIB2 message.
+!>
+!> A grib message is identified by its indicator section,
+!> i.e. an 8-byte sequence with 'GRIB' in bytes 1-4 and a '1' or '2'
+!> in byte 8. If found, the length of the message is decoded from
+!> bytes 5-7. The search is done over a given section of the file. The
+!> search is terminated if an eof or i/o error is encountered.
+!>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 1993-11-22 | Mark Iredell | Initial.
+!> 1995-10-31 | Mark Iredell | add call to baread.
+!> 1997-03-14 | Mark Iredell | check for '7777'.
+!> 2001-12-05 | Stephen Gilbert | modified to also look for grib2 messages.
+!> 2009-12-14 | Boi Vuong | modified to increase length of seek (512).
 !>
 !> @param[in] LUGB integer unit of the unblocked grib file.
 !> @param[in] ISEEK integer number of bytes to skip before search.
@@ -26,10 +29,7 @@
 !>
 !> @author Mark Iredell @date 1995-10-31
 SUBROUTINE SKGB(LUGB,ISEEK,MSEEK,LSKIP,LGRIB)
-  implicit none
-  
-  integer lseek, lugb, iseek, mseek, lskip, lgrib, i1, i4
-  integer k, k4, kg, km, kn, ks, kz
+
   PARAMETER(LSEEK=512)
   CHARACTER Z(LSEEK)
   CHARACTER Z4(4)
