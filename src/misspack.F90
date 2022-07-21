@@ -56,8 +56,8 @@ subroutine misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
   integer :: i, ibit, ier, igmax, ij, ilmax, imax, imin, inc, iofst, isd
   integer :: itemp, ival1, ival2, iwmax, j, jbit, kbit, kfildo, kk
   integer :: lbitref, left, lg, maxgrps, maxorig, minpk, minsd, miss1
-  integer miss2, missopt, mtemp, n, nbitorig, nbitsd, nbitsglen
-  integer nbitsgref, nbitsgwidth, ng, nglenlast, nglenref, ngroups
+  integer :: miss2, missopt, mtemp, n, nbitorig, nbitsd, nbitsglen
+  integer :: nbitsgref, nbitsgwidth, ng, nglenlast, nglenref, ngroups
   integer :: ngwidthref, nonmiss, novref, num0, num1, num2
 
   real(4) :: ref, rmin4
