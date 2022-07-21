@@ -32,13 +32,16 @@
 !>
 !> @author Stephen Gilbert @date 2000-06-21
 subroutine simpack(fld,ndpts,idrstmpl,cpack,lcpack)
-
   use intmath
+  implicit none
+  
   integer,intent(in) :: ndpts
   real,intent(in) :: fld(ndpts)
   character(len=1),intent(out) :: cpack(*)
   integer,intent(inout) :: idrstmpl(*)
   integer,intent(out) :: lcpack
+  real :: bscale, dscale, rmax, rmin, temp
+  integer :: imax, imin, j, left, maxdif, maxnum, nbits, nbittot
 
   real(4) :: ref,rmin4
   !     real(8) :: rmin,rmax

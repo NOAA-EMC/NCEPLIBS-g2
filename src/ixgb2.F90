@@ -55,7 +55,14 @@
 SUBROUTINE IXGB2(LUGB,LSKIP,LGRIB,CBUF,NUMFLD,MLEN,IRET)
 
   USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
+  implicit none
   CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
+  integer linmax, ixskp, mxskp, lugb, lskip, lgrib, numfld
+  integer mlen, iret, ibread, ibskip, ilndrs, ilnpds, indbmp
+  integer init, istat, ixds, ixfld, ixids, ixlen, ixlus, ixsbm, ixsdr, ixspd
+  integer ixsgd, lbread, lensec, lensec1, lindex, mbuf
+  integer mxbms, mxds, mxfld, mxlen, mxlus, mxsbm, mxsdr, mxsgd
+  integer mxspd, newsize, next, numsec, mova2i
   PARAMETER(LINMAX=5000,INIT=50000,NEXT=10000)
   PARAMETER(IXSKP=4,IXLUS=8,IXSGD=12,IXSPD=16,IXSDR=20,IXSBM=24, &
        IXDS=28,IXLEN=36,IXFLD=42,IXIDS=44)

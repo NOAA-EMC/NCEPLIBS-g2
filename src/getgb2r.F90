@@ -40,7 +40,8 @@
 SUBROUTINE GETGB2R(LUGB,CINDEX,GFLD,IRET)
 
   USE GRIB_MOD
-
+  implicit none
+  
   INTEGER,INTENT(IN) :: LUGB
   CHARACTER(LEN=1),INTENT(IN) :: CINDEX(*)
   INTEGER,INTENT(OUT) :: IRET
@@ -50,6 +51,7 @@ SUBROUTINE GETGB2R(LUGB,CINDEX,GFLD,IRET)
   CHARACTER(LEN=1):: CSIZE(4)
   CHARACTER(LEN=1),ALLOCATABLE :: CTEMP(:)
   real,pointer,dimension(:) :: newfld
+  integer :: idum, ierr, ilen, iofst, iskip, j, lread, n
 
   interface
      subroutine gf_unpack6(cgrib,lcgrib,iofst,ngpts,ibmap, &

@@ -15,11 +15,13 @@
 !>
 !> @author Stephen Gilbert @date 2000-06-21
 subroutine simunpack(cpack,len,idrstmpl,ndpts,fld)
-
+  implicit none
+  
   character(len=1),intent(in) :: cpack(len)
   integer,intent(in) :: ndpts,len
   integer,intent(in) :: idrstmpl(*)
   real,intent(out) :: fld(ndpts)
+  integer :: itype, j, nbits
 
   integer :: ifld(ndpts)
   integer(4) :: ieee

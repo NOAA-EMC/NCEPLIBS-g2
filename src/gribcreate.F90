@@ -52,12 +52,14 @@
 !>
 !> @author Stephen Gilbert @date 2000-04-28
 subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
-
+  implicit none
+  
   character(len = 1), intent(inout) :: cgrib(lcgrib)
   integer, intent(in) :: listsec0(*), listsec1(*)
   integer, intent(in) :: lcgrib
   integer, intent(out) :: ierr
 
+  integer :: i, lensec1, nbits
   character(len = 4), parameter :: grib = 'GRIB'
   integer, parameter :: zero = 0, one = 1
   integer, parameter :: mapsec1len = 13

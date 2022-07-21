@@ -19,12 +19,15 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-19
 subroutine specunpack(cpack,len,idrstmpl,ndpts,JJ,KK,MM,fld)
-
+  implicit none
+  
   character(len=1),intent(in) :: cpack(len)
   integer,intent(in) :: ndpts,len,JJ,KK,MM
   integer,intent(in) :: idrstmpl(*)
   real,intent(out) :: fld(ndpts)
 
+  integer :: inc, incp, incu, iofst, Js, Ks, m, Ms, n, nbits, Nm, Ns
+  real :: tscale
   integer :: ifld(ndpts),Ts
   integer(4) :: ieee
   real :: ref,bscale,dscale,unpk(ndpts)

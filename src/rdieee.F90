@@ -11,10 +11,13 @@
 !>
 !> @author Stephen Gilbert @date 2000-05-09
 subroutine rdieee(rieee,a,num)
-
+  implicit none
+  
   real(4),intent(in) :: rieee(num)
   real,intent(out) :: a(num)
   integer,intent(in) :: num
+  integer :: iexp, imant, isign, j, sign
+  real :: temp
 
   integer(4) :: ieee
 

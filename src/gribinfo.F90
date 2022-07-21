@@ -76,12 +76,16 @@
 !> @author Stephen Gilbert @date 2000-05-25
 subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
      numlocal, numfields, maxvals, ierr)
-
+  implicit none
+  
   character(len = 1), intent(in) :: cgrib(lcgrib)
   integer, intent(in) :: lcgrib
   integer, intent(out) :: listsec0(3), listsec1(13), maxvals(7)
   integer, intent(out) :: numlocal, numfields, ierr
 
+  integer :: i, ipos, isecnum, j, lengrib, lenposs, lensec, lensec0, lensec1
+  integer :: maxcoordlist, maxdeflist, maxdrstmpl, maxgridpts, maxpdstmpl, maxgdstmpl
+  integer :: maxsec2len, nbits, nbyte, ngdpts, numcoord
   character(len = 4), parameter :: grib = 'GRIB', c7777 = '7777'
   character(len = 4) :: ctemp
   integer, parameter :: zero = 0, one = 1
