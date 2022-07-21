@@ -11,45 +11,45 @@ program test_getfield
 
   ! This is a copy of the GRIB2 message generated in
   ! test_gribcreate.f90.
-  character :: cgrib(lcgrib) = (/  achar( 71), achar( 82),&
-       & achar( 73), achar( 66), achar(  0), achar(  0), achar(  0),&
-       & achar(  2), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(191), achar(  0),&
-       & achar(  0), achar(  0), achar( 21), achar(  1), achar(  0),&
-       & achar(  7), achar(  0), achar(  4), achar(  2), achar( 24),&
-       & achar(  0), achar(  7), achar(229), achar( 11), achar( 13),&
-       & achar( 15), achar( 59), achar( 59), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  8), achar(  2),&
-       & achar(  1), achar(  2), achar(  3), achar(  0), achar(  0),&
-       & achar(  0), achar( 72), achar(  3), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  4), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  0), achar(  0),&
-       & achar(  0), achar(  2), achar(  0), achar(  0), achar(  0),&
-       & achar(  2), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar( 45), achar(  0), achar(  0),&
-       & achar(  0), achar( 91), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar( 55), achar(  0), achar(  0), achar(  0),&
-       & achar(101), achar(  0), achar(  0), achar(  0), achar(  5),&
-       & achar(  0), achar(  0), achar(  0), achar(  5), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar( 34), achar(  4),&
-       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  0), achar(  0),&
-       & achar( 12), achar( 59), achar(  0), achar(  0), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar(  1), achar(  2), achar(  1),&
-       & achar(  0), achar(  0), achar(  0), achar(  1), achar(  0),&
-       & achar(  0), achar(  0), achar( 21), achar(  5), achar(  0),&
-       & achar(  0), achar(  0), achar(  4), achar(  0), achar(  0),&
-       & achar( 65), achar( 48), achar(  0), achar(  0), achar(  0),&
-       & achar(  1), achar(  0), achar(  1), achar(  8), achar(  0),&
-       & achar(  0), achar(  0), achar(  0), achar(  6), achar(  6),&
-       & achar(255), achar(  0), achar(  0), achar(  0), achar(  9),&
-       & achar(  7), achar(  0), achar(  1), achar(  1), achar(  2),&
-       & achar( 55), achar( 55), achar( 55), achar( 55) /)
+  character :: cgrib(lcgrib) = (/  char( 71), char( 82),&
+       & char( 73), char( 66), char(  0), char(  0), char(  0),&
+       & char(  2), char(  0), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char(  0), char(191), char(  0),&
+       & char(  0), char(  0), char( 21), char(  1), char(  0),&
+       & char(  7), char(  0), char(  4), char(  2), char( 24),&
+       & char(  0), char(  7), char(229), char( 11), char( 13),&
+       & char( 15), char( 59), char( 59), char(  1), char(  0),&
+       & char(  0), char(  0), char(  0), char(  8), char(  2),&
+       & char(  1), char(  2), char(  3), char(  0), char(  0),&
+       & char(  0), char( 72), char(  3), char(  0), char(  0),&
+       & char(  0), char(  0), char(  4), char(  0), char(  0),&
+       & char(  0), char(  0), char(  0), char(  1), char(  0),&
+       & char(  0), char(  0), char(  1), char(  1), char(  0),&
+       & char(  0), char(  0), char(  1), char(  1), char(  0),&
+       & char(  0), char(  0), char(  1), char(  0), char(  0),&
+       & char(  0), char(  2), char(  0), char(  0), char(  0),&
+       & char(  2), char(  0), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char( 45), char(  0), char(  0),&
+       & char(  0), char( 91), char(  0), char(  0), char(  0),&
+       & char(  0), char( 55), char(  0), char(  0), char(  0),&
+       & char(101), char(  0), char(  0), char(  0), char(  5),&
+       & char(  0), char(  0), char(  0), char(  5), char(  0),&
+       & char(  0), char(  0), char(  0), char( 34), char(  4),&
+       & char(  0), char(  0), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char(  0), char(  0), char(  0),&
+       & char( 12), char( 59), char(  0), char(  0), char(  0),&
+       & char(  0), char(  0), char(  1), char(  1), char(  0),&
+       & char(  0), char(  0), char(  1), char(  2), char(  1),&
+       & char(  0), char(  0), char(  0), char(  1), char(  0),&
+       & char(  0), char(  0), char( 21), char(  5), char(  0),&
+       & char(  0), char(  0), char(  4), char(  0), char(  0),&
+       & char( 65), char( 48), char(  0), char(  0), char(  0),&
+       & char(  1), char(  0), char(  1), char(  8), char(  0),&
+       & char(  0), char(  0), char(  0), char(  6), char(  6),&
+       & char(255), char(  0), char(  0), char(  0), char(  9),&
+       & char(  7), char(  0), char(  1), char(  1), char(  2),&
+       & char( 55), char( 55), char( 55), char( 55) /)
 
   ! Section 0.
   integer :: listsec0(3)
@@ -60,7 +60,7 @@ program test_getfield
 
   ! Section 2.
   integer, parameter :: lcsec2 = 3
-  character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
+  character :: csec2(lcsec2) = (/ char(1), char(2), char(3) /)
   integer :: numlocal
   
   ! Section 3.
@@ -115,7 +115,7 @@ program test_getfield
 
   ! Change first char of message and try to get a field - won't work.
   old_val = cgrib(1)
-  cgrib(1) = achar(0)
+  cgrib(1) = char(0)
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
@@ -125,7 +125,7 @@ program test_getfield
 
   ! Change grib version number and try to get a field - won't work.
   old_val = cgrib(8)
-  cgrib(8) = achar(0)
+  cgrib(8) = char(0)
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
@@ -145,10 +145,10 @@ program test_getfield
   old_val_arr(2) = cgrib(18)
   old_val_arr(3) = cgrib(19)
   old_val_arr(4) = cgrib(20)
-  cgrib(17) = achar(55)
-  cgrib(18) = achar(55)
-  cgrib(19) = achar(55)
-  cgrib(20) = achar(55)
+  cgrib(17) = char(55)
+  cgrib(18) = char(55)
+  cgrib(19) = char(55)
+  cgrib(20) = char(55)
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
@@ -161,7 +161,7 @@ program test_getfield
 
   ! Mess up section 3 and try to get a field - won't work.
   old_val = cgrib(58)
-  cgrib(58) = achar(99)
+  cgrib(58) = char(99)
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
@@ -171,7 +171,7 @@ program test_getfield
 
   ! Mess up section 4 and try to get a field - won't work.
   old_val = cgrib(125)
-  cgrib(125) = achar(99)
+  cgrib(125) = char(99)
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
@@ -181,7 +181,7 @@ program test_getfield
 
   ! Mess up section 5 and try to get a field - won't work.
   old_val = cgrib(161)
-  cgrib(161) = achar(99)
+  cgrib(161) = char(99)
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
@@ -191,7 +191,7 @@ program test_getfield
 
   ! Mess up section 6 and try to get a field - won't work.
   old_val = cgrib(178)
-  cgrib(178) = achar(99)
+  cgrib(178) = char(99)
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
@@ -201,7 +201,7 @@ program test_getfield
 
   ! Mess up end of message and call getfield - will not work.
   old_val = cgrib(16)
-  cgrib(16) = achar(0)
+  cgrib(16) = char(0)
   call getfield(cgrib, lcgrib, 1, igds, igdstmpl, igdslen,&
        & ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist,&
        & numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap,&
@@ -249,14 +249,14 @@ program test_getfield
 
   ! Mess up first char and try to read - won't work.
   old_val = cgrib(1)
-  cgrib(1) = achar(0)
+  cgrib(1) = char(0)
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 1) stop 510
   cgrib(1) = old_val
 
   ! Change grib version number and try to get a field - won't work.
   old_val = cgrib(8)
-  cgrib(8) = achar(0)
+  cgrib(8) = char(0)
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 2) stop 520
   cgrib(8) = old_val  
@@ -266,10 +266,10 @@ program test_getfield
   old_val_arr(2) = cgrib(18)
   old_val_arr(3) = cgrib(19)
   old_val_arr(4) = cgrib(20)
-  cgrib(17) = achar(55)
-  cgrib(18) = achar(55)
-  cgrib(19) = achar(55)
-  cgrib(20) = achar(55)
+  cgrib(17) = char(55)
+  cgrib(18) = char(55)
+  cgrib(19) = char(55)
+  cgrib(20) = char(55)
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 4) stop 545
   cgrib(17) = old_val_arr(1)
@@ -279,42 +279,42 @@ program test_getfield
 
   ! Mess up section 3 and try to get a field - won't work.
   old_val = cgrib(58)
-  cgrib(58) = achar(99)
+  cgrib(58) = char(99)
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 10) stop 547
   cgrib(58) = old_val
 
   ! Mess up section 4 and try to get a field - won't work.
   old_val = cgrib(125)
-  cgrib(125) = achar(99)
+  cgrib(125) = char(99)
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 11) stop 548
   cgrib(125) = old_val
 
   ! Mess up section 5 and try to get a field - won't work.
   old_val = cgrib(161)
-  cgrib(161) = achar(99)
+  cgrib(161) = char(99)
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 12) stop 549
   cgrib(161) = old_val
 
   ! ! Mess up section 6 and try to get a field - won't work.
   ! old_val = cgrib(178)
-  ! cgrib(178) = achar(99)
+  ! cgrib(178) = char(99)
   ! call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   ! if (ierr .ne. 13) stop 550
   ! cgrib(178) = old_val
 
   ! Mess up end of message and call getfield - will not work.
   old_val = cgrib(16)
-  cgrib(16) = achar(0)
+  cgrib(16) = char(0)
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 7) stop 551
   cgrib(16) = old_val
 
   ! Mess up section number and call getfield - will not work.
   old_val = cgrib(21)
-  cgrib(21) = achar(0)
+  cgrib(21) = char(0)
   call gf_getfld(cgrib, lcgrib, 1, .true., .true., gfld, ierr)
   if (ierr .ne. 8) stop 552
   cgrib(21) = old_val
@@ -361,7 +361,7 @@ program test_getfield
 
   ! Mess up first char and try to read - won't work.
   old_val = cgrib(1)
-  cgrib(1) = achar(0)
+  cgrib(1) = char(0)
   call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
        numfields, maxvals, ierr)
   if (ierr .ne. 1) stop 510
@@ -369,7 +369,7 @@ program test_getfield
 
   ! Change grib version number and try to get a field - won't work.
   old_val = cgrib(8)
-  cgrib(8) = achar(0)
+  cgrib(8) = char(0)
   call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
        numfields, maxvals, ierr)
   if (ierr .ne. 2) stop 520
@@ -380,10 +380,10 @@ program test_getfield
   old_val_arr(2) = cgrib(39)
   old_val_arr(3) = cgrib(40)
   old_val_arr(4) = cgrib(41)
-  cgrib(38) = achar(55)
-  cgrib(39) = achar(55)
-  cgrib(40) = achar(55)
-  cgrib(41) = achar(55)
+  cgrib(38) = char(55)
+  cgrib(39) = char(55)
+  cgrib(40) = char(55)
+  cgrib(41) = char(55)
   call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
        numfields, maxvals, ierr)
   if (ierr .ne. 4) stop 521
@@ -394,7 +394,7 @@ program test_getfield
 
   ! Mess up section length end of message and call getfield - will not work.
   old_val = cgrib(40)
-  cgrib(40) = achar(99)
+  cgrib(40) = char(99)
   call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, &
        numfields, maxvals, ierr)
   if (ierr .ne. 5) stop 522

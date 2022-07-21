@@ -1,3 +1,8 @@
+! This is a test program for NCEPLIBS-g2.
+!
+! This program tests the version string.
+!
+! Ed Hartnett 9/30/21
 program test_g2
   use grib_mod, only: G2_VERSION
   implicit none
