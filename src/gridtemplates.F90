@@ -266,6 +266,7 @@ contains
   integer function getgridindex(number)
     implicit none
     integer,intent(in) :: number
+    integer :: j
 
     getgridindex=-1
 
