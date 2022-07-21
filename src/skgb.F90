@@ -26,7 +26,10 @@
 !>
 !> @author Mark Iredell @date 1995-10-31
 SUBROUTINE SKGB(LUGB,ISEEK,MSEEK,LSKIP,LGRIB)
-
+  implicit none
+  
+  integer lseek, lugb, iseek, mseek, lskip, lgrib, i1, i4
+  integer k, k4, kg, km, kn, ks, kz
   PARAMETER(LSEEK=512)
   CHARACTER Z(LSEEK)
   CHARACTER Z4(4)
