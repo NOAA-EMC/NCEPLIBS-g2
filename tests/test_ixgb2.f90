@@ -19,12 +19,12 @@ program test_ixgb2
   end interface
 
   ! This will not work, because it's not a GRIB2 file.
-  ! call baopenr(lugi, "testdata_g2grids", iret)
-  ! if (iret .ne. 0) stop 3
-  ! call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
-  ! if (iret .ne. 3) stop 4
-  ! call baclose(lugi, iret)
-  ! if (iret .ne. 0) stop 5
+  call baopenr(lugi, "testdata_g2grids", iret)
+  if (iret .ne. 0) stop 3
+  call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
+  if (iret .ne. 3) stop 4
+  call baclose(lugi, iret)
+  if (iret .ne. 0) stop 5
   
   ! Now open a real GRIB2 file.
   call baopenr(lugi, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
