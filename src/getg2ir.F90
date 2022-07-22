@@ -56,7 +56,7 @@
 !>
 !> @author Mark Iredell @date 1995-10-31
 subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
-  use re_alloc          ! needed for subroutine realloc
+  use re_alloc ! Needed for subroutine realloc.
   implicit none
 
   integer, parameter :: init = 50000, next = 10000
@@ -64,11 +64,9 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   integer, intent(in) :: lugb, msk1, msk2, mnum
   integer, intent(out) :: nlen, nnum, nmess, iret
   character(len = 1), pointer, dimension(:) :: cbuftmp
-
-  !implicit none additions
   integer :: mbuf, istat, iseek, lskip, lgrib, m, numfld, nbytes, iret1, newsize
 
-  interface      ! required for cbuf pointer
+  interface ! Required for ixbg2 function, which has a cbuf pointer.
      subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
        integer, intent(in) :: lugb, lskip, lgrib
        character(len = 1), pointer, dimension(:) :: cbuf
@@ -80,7 +78,7 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   iret = 0
   if (associated(cbuf)) nullify(cbuf)
   mbuf = init
-  allocate(cbuf(mbuf), stat = istat)    ! allocate initial space for cbuf
+  allocate(cbuf(mbuf), stat = istat)    ! Allocate initial space for cbuf.
   if (istat .ne. 0) then
      iret = 2
      return
@@ -103,8 +101,9 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   do while(iret .eq. 0 .and. lgrib .gt. 0)
      call ixgb2(lugb, lskip, lgrib, cbuftmp, numfld, nbytes, iret1)
      if (iret1 .ne. 0) print *, ' sagt ', numfld, nbytes, iret1
-     if((nbytes + nlen) .gt. mbuf) then             ! allocate more space, if
-        ! necessary
+
+     ! Allocate more space, if necessary.     
+     if (nbytes + nlen .gt. mbuf) then 
         newsize = max(mbuf + next, mbuf + nbytes)
         call realloc(cbuf, nlen, newsize, istat)
         if ( istat .ne. 0 ) then
