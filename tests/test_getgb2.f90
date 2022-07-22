@@ -27,7 +27,7 @@ program test_getgb2
   integer :: i
   integer, parameter :: lcsec2 = 3
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
-  real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+!  real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   jpdt(1) = 0
   jpdt(2) = 0
