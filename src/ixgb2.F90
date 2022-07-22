@@ -93,6 +93,7 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
      iret = 2
      return
   endif
+  print *, cbread(8)
   if (cbread(8) .ne. char(2)) then ! Not GRIB edition 2.
      iret = 3
      return
