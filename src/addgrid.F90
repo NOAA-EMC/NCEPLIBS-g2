@@ -48,8 +48,8 @@
 !> @author Stephen Gilbert @date 2000-05-01
 subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      ideflist, idefnum, ierr)
-
   use gridtemplates
+  implicit none
 
   character(len = 1), intent(inout) :: cgrib(lcgrib)
   integer, intent(in) :: igds(*), igdstmpl(*), ideflist(idefnum)
@@ -62,6 +62,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   integer, parameter :: one = 1, three = 3
   integer lensec3, iofst, ibeg, lencurr, len, mapgridlen
   logical needext
+  integer :: i, ilen, iret, isecnum, nbits
 
   ierr = 0
 
