@@ -33,23 +33,23 @@
 !> 2001-12-10 | Stephen Gilbert | modified from ixgb to create grib2 indexes.
 !> 2002-01-31 | Stephen Gilbert | added identification section to index record.
 !>
-!> @param[in] LUGB Unit of the unblocked grib file. Must
+!> @param[in] lugb Unit of the unblocked grib file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
-!> @param[in] LSKIP Number of bytes to skip before grib message.
-!> @param[in] LGRIB Number of bytes in grib message.
-!> @param[out] CBUF Pointer to a buffer that contains
-!> index records users should free memory that cbuf points to
+!> @param[in] lskip Number of bytes to skip before grib message.
+!> @param[in] lgrib Number of bytes in grib message.
+!> @param[out] cbuf Pointer to a buffer that will get
+!> index records. Users should free memory that cbuf points to
 !> using deallocate(cbuf) when cbuf is no longer needed.
-!> @param[out] NUMFLD Number of index records created.
-!> @param[out] MLEN Total length of all index records.
-!> @param[out] IRET Return code
-!> - 0 all ok
-!> - 1 not enough memory available to hold full index buffer
-!> - 2 i/o error in read
-!> - 3 grib message is not edition 2
-!> - 4 not enough memory to allocate extent to index buffer
-!> - 5 unidentified grib section encountered
+!> @param[out] numfld Number of index records created.
+!> @param[out] mlen Total length of all index records.
+!> @param[out] iret Return code
+!> - 0 No error
+!> - 1 Not enough memory available to hold full index buffer.
+!> - 2 I/O error in read.
+!> - 3 GRIB message is not edition 2.
+!> - 4 Not enough memory to allocate extent to index buffer.
+!> - 5 Unidentified GRIB section encountered.
 !>
 !> @author Mark Iredell @date 1995-10-31
 subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
@@ -63,16 +63,16 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   integer ixsgd, lbread, lensec, lensec1, lindex, mbuf
   integer mxbms, mxds, mxfld, mxlen, mxlus, mxsbm, mxsdr, mxsgd
   integer mxspd, newsize, next, numsec, mova2i
-  parameter(linmax = 5000,init = 50000,next = 10000)
-  parameter(ixskp = 4,ixlus = 8,ixsgd = 12,ixspd = 16,ixsdr = 20,ixsbm = 24, &
-       ixds = 28,ixlen = 36,ixfld = 42,ixids = 44)
-  parameter(mxskp = 4,mxlus = 4,mxsgd = 4,mxspd = 4,mxsdr = 4,mxsbm = 4, &
-       mxds = 4,mxlen = 4,mxfld = 2,mxbms = 6)
-  character cbread(linmax),cindex(linmax)
-  character cver,cdisc
-  character cids(linmax),cgds(linmax)
+  parameter(linmax = 5000, init = 50000, next = 10000)
+  parameter(ixskp = 4, ixlus = 8, ixsgd = 12, ixspd = 16, ixsdr = 20, ixsbm = 24, &
+       ixds = 28, ixlen = 36, ixfld = 42, ixids = 44)
+  parameter(mxskp = 4, mxlus = 4, mxsgd = 4, mxspd = 4, mxsdr = 4, mxsbm = 4, &
+       mxds = 4, mxlen = 4, mxfld = 2, mxbms = 6)
+  character cbread(linmax), cindex(linmax)
+  character cver, cdisc
+  character cids(linmax), cgds(linmax)
   character(len = 4) :: ctemp
-  integer loclus,locgds,lengds,locbms
+  integer loclus, locgds, lengds, locbms
 
   loclus = 0
   iret = 0
@@ -80,20 +80,20 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   numfld = 0
   if (associated(cbuf)) nullify(cbuf)
   mbuf = init
-  allocate(cbuf(mbuf),stat = istat)    ! allocate initial space for cbuf
-  if (istat.ne.0) then
+  allocate(cbuf(mbuf), stat = istat)    ! Allocate initial space for cbuf.
+  if (istat .ne. 0) then
      iret = 1
      return
   endif
 
-  !  read sections 0 and 1 for versin number and discipline
-  ibread = min(lgrib,linmax)
-  call baread(lugb,lskip,ibread,lbread,cbread)
+  ! Read sections 0 and 1 for versin number and discipline.
+  ibread = min(lgrib, linmax)
+  call baread(lugb, lskip, ibread, lbread, cbread)
   if (lbread .ne. ibread) then
      iret = 2
      return
   endif
-  if (cbread(8) .ne. char(2)) then          !  not grib edition 2
+  if (cbread(8) .ne. char(2)) then ! Not GRIB edition 2.
      iret = 3
      return
   endif
@@ -104,7 +104,7 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   cids(1:lensec1) = cbread(17:16 + lensec1)
   ibskip = lskip + 16 + lensec1
 
-  !  loop through remaining sections creating an index for each field
+  ! Loop through remaining sections creating an index for each field.
   ibread = max(5, mxbms)
   do
      call baread(lugb, ibskip, ibread, lbread, cbread)
@@ -159,10 +159,10 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
            return
         endif
         !   cindex(lindex+1:lindex+ilndrs) = cbread(1:ilndrs)
-        lindex = lindex+ilndrs
+        lindex = lindex + ilndrs
      elseif (numsec .eq. 6) then                 ! found bms
         indbmp = mova2i(cbread(6))
-        if ( indbmp .lt. 254 ) then
+        if (indbmp .lt. 254) then
            locbms = ibskip - lskip
            call g2_sbytec(cindex, locbms, 8 * ixsbm, 8 * mxsbm)  ! loc. of bms
         elseif ( indbmp .eq. 254 ) then

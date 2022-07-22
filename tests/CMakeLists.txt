@@ -45,15 +45,19 @@ function(create_test name g2_kind)
   add_test(${name} ${name})
 endfunction()
 
-# If the user is running the tests on the data files from the EMC FTP
-# site, then get the files.
+# Does the user want to get extra test files from the FTP site, and
+# run extra tests on them?
 if(FTP_TEST_FILES)
+  # Get the files from the FTP site.
   set(G2_FTP_URL "https://ftp.emc.ncep.noaa.gov/static_files/public/NCEPLIBS-g2")
   set(WW3_WEST_FILE "WW3_Regional_US_West_Coast_20220718_0000.grib2")
   set(WW3_EAST_FILE "WW3_Regional_US_East_Coast_20220717_0600.grib2")
   foreach(THE_FILE IN LISTS WW3_WEST_FILE WW3_EAST_FILE) 
     PULL_DATA(${G2_FTP_URL} ${THE_FILE})
   endforeach()
+
+  # Add tests for these files.
+  create_test(test_ixgb2 g2_d)  
 endif()
 
 # Copy test data files that are in the repo to the build directory.
