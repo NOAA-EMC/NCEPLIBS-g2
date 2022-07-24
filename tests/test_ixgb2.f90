@@ -53,15 +53,16 @@ program test_ixgb2
   deallocate(cbuf)
 
   ! This will not work, because it's not a GRIB2 file.
-  ! print *, 'Trying to index a non-GRIB2 file...'
-  ! lgrib = 96
-  ! call baopenr(lugi, "testdata_g2grids", iret)
-  ! if (iret .ne. 0) stop 10
-  ! call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
-  ! if (iret .ne. 3) stop 11
-  ! call baclose(lugi, iret)
-  ! if (iret .ne. 0) stop 12
-  ! deallocate(cbuf)
+  print *, 'Trying to index a non-GRIB2 file...'
+  lgrib = 96
+  call baopenr(lugi, "testdata_g2grids", iret)
+  if (iret .ne. 0) stop 10
+  call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
+  print *, 'iret = ', iret
+  if (iret .ne. 3) stop 11
+  call baclose(lugi, iret)
+  if (iret .ne. 0) stop 12
+  deallocate(cbuf)
 
   ! Now open a real GRIB2 file.
 !   print *, 'Indexing a real GRIB2 file...'
