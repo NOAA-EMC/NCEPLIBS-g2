@@ -84,9 +84,6 @@ jobs:
         cd build
         cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"
         make -j2 VERBOSE=1
-        cd tests
-        ls -l
-        ./test_ixgb2
 
     - name: test
       run: |
