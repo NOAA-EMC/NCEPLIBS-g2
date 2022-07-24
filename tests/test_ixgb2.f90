@@ -42,15 +42,15 @@ program test_ixgb2
        char(0),  char(255),  char(0),  char(0),  char(17),  char(203),  char(6),  char(0) /)
 
   ! This will not work, because we try to read more bytes than the file holds.
-  ! print *, 'Trying to read too many bytes...'
-  ! lgrib = 1000
-  ! call baopenr(lugi, "testdata_g2grids", iret)
-  ! if (iret .ne. 0) stop 3
-  ! call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
-  ! if (iret .ne. 2) stop 4
-  ! call baclose(lugi, iret)
-  ! if (iret .ne. 0) stop 5
-  ! deallocate(cbuf)
+  print *, 'Trying to read too many bytes...'
+  lgrib = 1000
+  call baopenr(lugi, "testdata_g2grids", iret)
+  if (iret .ne. 0) stop 3
+  call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
+  if (iret .ne. 2) stop 4
+  call baclose(lugi, iret)
+  if (iret .ne. 0) stop 5
+  deallocate(cbuf)
 
   ! This will not work, because it's not a GRIB2 file.
   print *, 'Trying to index a non-GRIB2 file...'
