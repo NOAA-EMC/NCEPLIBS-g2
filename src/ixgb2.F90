@@ -74,6 +74,8 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   character(len = 4) :: ctemp
   integer loclus, locgds, lengds, locbms
 
+  print *, 'ixbg2 ', lugb, lskip, lgrib
+
   loclus = 0
   iret = 0
   mlen = 0
