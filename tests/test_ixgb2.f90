@@ -54,7 +54,7 @@ program test_ixgb2
 
   ! This will not work, because it's not a GRIB2 file.
   print *, 'Trying to index a non-GRIB2 file...'
-  lgrib = 96
+  lgrib = 95
   call baopenr(lugi, "testdata_g2grids", iret)
   if (iret .ne. 0) stop 10
   call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
