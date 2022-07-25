@@ -75,7 +75,7 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   integer loclus, locgds, lengds, locbms
   integer i
 
-  print *, 'ixbg2 ', lugb, lskip, lgrib
+  !print *, 'ixbg2 ', lugb, lskip, lgrib
 
   loclus = 0
   iret = 0
@@ -91,12 +91,12 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
 
   ! Read sections 0 and 1 for version number and discipline.
   ibread = min(lgrib, linmax)
-  print *, 'ibread = ', ibread
+  !print *, 'ibread = ', ibread
   call baread(lugb, lskip, ibread, lbread, cbread)
-  do i = 1, 20
-     print *, ichar(cbread(i))
-  end do
-  print *, 'lbread = ', lbread, ' ibread = ', ibread
+  ! do i = 1, 20
+  !    print *, ichar(cbread(i))
+  ! end do
+  !print *, 'lbread = ', lbread, ' ibread = ', ibreadz
   if (lbread .ne. ibread) then
      iret = 2
      return
