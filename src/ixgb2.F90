@@ -96,6 +96,7 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   do i = 1, 20
      print *, ichar(cbread(i))
   end do
+  print *, lbread, ibread
   if (lbread .ne. ibread) then
      iret = 2
      return
