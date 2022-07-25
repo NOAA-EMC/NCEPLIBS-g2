@@ -67,20 +67,20 @@ program test_ixgb2
   deallocate(cbuf)
 
   ! Now open a real GRIB2 file.
-!   print *, 'Indexing a real GRIB2 file...'
-!   call baopenr(lugi, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
-!   if (iret .ne. 0) stop 100
+  print *, 'Indexing a real GRIB2 file...'
+  call baopenr(lugi, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
+  if (iret .ne. 0) stop 100
 
-!   ! Skip the first 202 bytes of the test file.
-!   lskip = 202
-!   call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
-!   if (iret .ne. 0) stop 101
-!   if (numfld .ne. 1 .or. mlen .ne. 200) stop 102
-!   do i = 1, mlen
-! !     print *, 'char(', ichar(cbuf(i)), '), '
-!      if (cbuf(i) .ne. expected_cbuf(i)) stop 103
-!   end do
-!   deallocate(cbuf)
+  ! Skip the first 202 bytes of the test file.
+  lskip = 202
+  call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
+  if (iret .ne. 0) stop 101
+  if (numfld .ne. 1 .or. mlen .ne. 200) stop 102
+  do i = 1, mlen
+!     print *, 'char(', ichar(cbuf(i)), '), '
+     if (cbuf(i) .ne. expected_cbuf(i)) stop 103
+  end do
+  deallocate(cbuf)
   
   call baclose(lugi, iret)
   if (iret .ne. 0) stop 199
