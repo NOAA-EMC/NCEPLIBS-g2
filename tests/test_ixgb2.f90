@@ -77,7 +77,7 @@ program test_ixgb2
   if (iret .ne. 0) stop 101
   if (numfld .ne. 1 .or. mlen .ne. 200) stop 102
   do i = 1, mlen
-!     print *, 'char(', ichar(cbuf(i)), '), '
+     print *, 'char(', ichar(cbuf(i)), '), '
      if (cbuf(i) .ne. expected_cbuf(i)) stop 103
   end do
   deallocate(cbuf)
