@@ -24,7 +24,7 @@ program test_ixgb2
        char(202),  char(0),  char(0),  char(0),  char(0),  char(0),  char(0),  char(0),  char(37),  char(0),  &
        char(0),  char(0),  char(109),  char(0),  char(0),  char(0),  char(143),  char(0),  char(0),  char(0),  &
        char(166),  char(0),  char(0),  char(18),  char(113),  char(0),  char(0),  char(0),  char(0),  char(0),  &
-       char(0),  char(0),  char(96),  char(2),  char(10),  char(0),  char(1),  char(0),  char(0),  char(0),  &
+       char(0),  char(0),  char(95),  char(2),  char(10),  char(0),  char(1),  char(0),  char(0),  char(0),  &
        char(21),  char(1),  char(0),  char(7),  char(0),  char(0),  char(2),  char(1),  char(1),  char(7),  &
        char(230),  char(7),  char(18),  char(0),  char(0),  char(0),  char(0),  char(1),  char(0),  char(0),  &
        char(0),  char(72),  char(3),  char(0),  char(0),  char(0),  char(142),  char(39),  char(0),  char(0),  &
