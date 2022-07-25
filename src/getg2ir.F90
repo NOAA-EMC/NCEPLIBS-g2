@@ -1,9 +1,12 @@
 !> @file
-!> @brief This subroutine read a GRIB file and return its index content.
+!> @brief This subroutine reads a GRIB file and returns its index
+!> content.
 !> @author Mark Iredell @date 1995-10-31
 
-!> This subroutine read a GRIB file and return its index content.
-!> The index buffer returned contains index records with the internal format:
+!> This subroutine reads a GRIB file and returns its index content.
+!>
+!> The index buffer returned contains index records with the internal
+!> format:
 !> - byte 001 - 004 length of index record
 !> - byte 005 - 008 bytes to skip in data file before grib message
 !> - byte 009 - 012 bytes to skip in message before lus (local use)
@@ -36,9 +39,9 @@
 !> @param[in] msk1 Number of bytes to search for first message.
 !> @param[in] msk2 Number of bytes to search for other messages.
 !> @param[in] mnum Number of grib messages to skip (usually 0).
-!> @param[out] cbuf Pointer to a buffer that contains index
-!> records. Users should free memory that cbuf points to, using
-!> deallocate(cbuf) when cbuf is no longer needed.
+!> @param[out] cbuf Pointer to a buffer that will get the index
+!> records. Users should free memory that cbuf points to when cbuf is
+!> no longer needed.
 !> @param[out] nlen Total length of index record buffer in bytes.
 !> @param[out] nnum Number of index records, =0 if no grib
 !> messages are found).
@@ -53,83 +56,82 @@
 !>
 !> @author Mark Iredell @date 1995-10-31
 subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
-    use re_alloc          ! needed for subroutine realloc
-    implicit none
+  use re_alloc ! Needed for subroutine realloc.
+  implicit none
 
-    integer, parameter :: init = 50000, next = 10000
-    character(len = 1), pointer, dimension(:) :: cbuf
-    integer, intent(in) :: lugb, msk1, msk2, mnum
-    integer, intent(out) :: nlen, nnum, nmess, iret
-    character(len = 1), pointer, dimension(:) :: cbuftmp
+  integer, parameter :: init = 50000, next = 10000
+  character(len = 1), pointer, dimension(:) :: cbuf
+  integer, intent(in) :: lugb, msk1, msk2, mnum
+  integer, intent(out) :: nlen, nnum, nmess, iret
+  character(len = 1), pointer, dimension(:) :: cbuftmp
+  integer :: mbuf, istat, iseek, lskip, lgrib, m, numfld, nbytes, iret1, newsize
 
-    !implicit none additions
-    integer :: mbuf, istat, iseek, lskip, lgrib, m, numfld, nbytes, iret1, newsize
+  interface ! Required for ixbg2 function, which has a cbuf pointer.
+     subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
+       integer, intent(in) :: lugb, lskip, lgrib
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: numfld, mlen, iret
+     end subroutine ixgb2
+  end interface
 
-    interface      ! required for cbuf pointer
-        subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
-            integer, intent(in) :: lugb, lskip, lgrib
-            character(len = 1), pointer, dimension(:) :: cbuf
-            integer, intent(out) :: numfld, mlen, iret
-        end subroutine ixgb2
-    end interface
+  ! Initialize.
+  iret = 0
+  if (associated(cbuf)) nullify(cbuf)
+  mbuf = init
+  allocate(cbuf(mbuf), stat = istat)    ! Allocate initial space for cbuf.
+  if (istat .ne. 0) then
+     iret = 2
+     return
+  endif
 
-    !  initialize
-    iret = 0
-    if (associated(cbuf)) nullify(cbuf)
-    mbuf = init
-    allocate(cbuf(mbuf), stat = istat)    ! allocate initial space for cbuf
-    if (istat .ne. 0) then
-        iret = 2
-        return
-    endif
-
-    !  search for first grib message
-    iseek = 0
-    call skgb(lugb, iseek, msk1, lskip, lgrib)
-    do m = 1, mnum
-        if(lgrib .gt. 0) then
-            iseek = lskip + lgrib
-            call skgb(lugb, iseek, msk2, lskip, lgrib)
-        endif
-    enddo
-
-    !  get index records for every grib message found
-    nlen = 0
-    nnum = 0
-    nmess = mnum
-    do while(iret .eq. 0 .and. lgrib .gt. 0)
-        call ixgb2(lugb, lskip, lgrib, cbuftmp, numfld, nbytes, iret1)
-        if (iret1 .ne. 0) print *, ' sagt ', numfld, nbytes, iret1
-        if((nbytes + nlen) .gt. mbuf) then             ! allocate more space, if
-            ! necessary
-            newsize = max(mbuf + next, mbuf + nbytes)
-            call realloc(cbuf, nlen, newsize, istat)
-            if ( istat .ne. 0 ) then
-            iret = 1
-            return
-            endif
-            mbuf = newsize
-        endif
-        !
-        !  if index records were returned in cbuftmp from ixgb2,
-        !  copy cbuftmp into cbuf, then deallocate cbuftmp when done
-        !
-        if ( associated(cbuftmp) ) then
-            cbuf(nlen + 1 : nlen + nbytes) = cbuftmp(1 : nbytes)
-            deallocate(cbuftmp, stat = istat)
-            if (istat .ne. 0) then
-            print *, ' deallocating cbuftmp ... ', istat
-            stop 99
-            endif
-            nullify(cbuftmp)
-            nnum = nnum + numfld
-            nlen = nlen + nbytes
-            nmess = nmess + 1
-        endif
-        !      look for next grib message
+  ! Search for first grib message.
+  iseek = 0
+  call skgb(lugb, iseek, msk1, lskip, lgrib)
+  do m = 1, mnum
+     if(lgrib .gt. 0) then
         iseek = lskip + lgrib
         call skgb(lugb, iseek, msk2, lskip, lgrib)
-    enddo
+     endif
+  enddo
 
-    return
+  ! Get index records for every grib message found.
+  nlen = 0
+  nnum = 0
+  nmess = mnum
+  do while(iret .eq. 0 .and. lgrib .gt. 0)
+     call ixgb2(lugb, lskip, lgrib, cbuftmp, numfld, nbytes, iret1)
+     if (iret1 .ne. 0) print *, ' sagt ', numfld, nbytes, iret1
+
+     ! Allocate more space, if necessary.     
+     if (nbytes + nlen .gt. mbuf) then 
+        newsize = max(mbuf + next, mbuf + nbytes)
+        call realloc(cbuf, nlen, newsize, istat)
+        if ( istat .ne. 0 ) then
+           iret = 1
+           return
+        endif
+        mbuf = newsize
+     endif
+
+     ! If index records were returned in cbuftmp from ixgb2, copy
+     ! cbuftmp into cbuf, then deallocate cbuftmp when done.
+     if (associated(cbuftmp)) then
+        cbuf(nlen + 1 : nlen + nbytes) = cbuftmp(1 : nbytes)
+        deallocate(cbuftmp, stat = istat)
+        if (istat .ne. 0) then
+           print *, ' deallocating cbuftmp ... ', istat
+           stop 99
+        endif
+        nullify(cbuftmp)
+        nnum = nnum + numfld
+        nlen = nlen + nbytes
+        nmess = nmess + 1
+     endif
+
+     ! Look for next grib message.
+     iseek = lskip + lgrib
+     call skgb(lugb, iseek, msk2, lskip, lgrib)
+  enddo
+
+  return
 end subroutine getg2ir
