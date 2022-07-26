@@ -102,95 +102,76 @@
 !> Do not engage the same logical unit from more than one processor.
 !>
 !> @author Mark Iredell @date 1994-04-01
-SUBROUTINE GETGB2P(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
-     EXTRACT,K,GRIBM,LENG,IRET)
-
-  USE GRIB_MOD
+subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+     extract, k, gribm, leng, iret)
+  use grib_mod
   implicit none
 
-  INTEGER,INTENT(IN) :: LUGB,LUGI,J,JDISC,JPDTN,JGDTN
-  INTEGER,DIMENSION(:) :: JIDS(*),JPDT(*),JGDT(*)
-  LOGICAL,INTENT(IN) :: EXTRACT
-  INTEGER,INTENT(OUT) :: K,IRET,LENG
-  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: GRIBM
+  integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
+  integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
+  logical, intent(in) :: extract
+  integer, intent(out) :: k, iret, leng
+  character(len = 1), pointer, dimension(:) :: gribm
 
-  TYPE(GRIBFIELD) :: GFLD
+  type(gribfield) :: gfld
   integer :: msk1, irgi, irgs, jk, lpos, lux, msk2, mskp, nlen, nmess, nnum
 
-  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-  PARAMETER(MSK1=32000,MSK2=4000)
+  character(len = 1), pointer, dimension(:) :: cbuf
+  parameter(msk1 = 32000, msk2 = 4000)
 
+  save cbuf, nlen, nnum
+  data lux/0/
 
-  SAVE CBUF,NLEN,NNUM
-  DATA LUX/0/
+  !  declare interfaces (required for cbuf pointer)
+  interface
+     subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(in) :: lugi
+       integer, intent(out) :: nlen, nnum, iret
+     end subroutine getg2i
+     subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum,  &
+          nmess, iret)
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(in) :: lugb, msk1, msk2, mnum
+       integer, intent(out) :: nlen, nnum, nmess, iret
+     end subroutine getg2ir
+     subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
+       integer, intent(in) :: lugb
+       character(len = 1), intent(in) :: cindex(*)
+       logical, intent(in) :: extract
+       integer, intent(out) :: leng, iret
+       character(len = 1), pointer, dimension(:) :: gribm
+     end subroutine getgb2rp
+  end interface
 
-  !  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)
-  INTERFACE
-     SUBROUTINE GETG2I(LUGI,CBUF,NLEN,NNUM,IRET)
-       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-       INTEGER,INTENT(IN) :: LUGI
-       INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
-     END SUBROUTINE GETG2I
-     SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM, &
-          NMESS,IRET)
-       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-       INTEGER,INTENT(IN) :: LUGB,MSK1,MSK2,MNUM
-       INTEGER,INTENT(OUT) :: NLEN,NNUM,NMESS,IRET
-     END SUBROUTINE GETG2IR
-     SUBROUTINE GETGB2RP(LUGB,CINDEX,EXTRACT,GRIBM,LENG,IRET)
-       INTEGER,INTENT(IN) :: LUGB
-       CHARACTER(LEN=1),INTENT(IN) :: CINDEX(*)
-       LOGICAL,INTENT(IN) :: EXTRACT
-       INTEGER,INTENT(OUT) :: LENG,IRET
-       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: GRIBM
-     END SUBROUTINE GETGB2RP
-  END INTERFACE
+  !  determine whether index buffer needs to be initialized
+  irgi = 0
+  if (lugi .gt. 0 .and. lugi .ne. lux) then
+     call getg2i(lugi, cbuf, nlen, nnum, irgi)
+     lux = lugi
+  elseif (lugi .le. 0 .and. lugb .ne. lux) then
+     mskp = 0
+     call getg2ir(lugb, msk1, msk2, mskp, cbuf, nlen, nnum, nmess, irgi)
+     lux = lugb
+  endif
+  if (irgi .gt. 1) then
+     iret = 96
+     lux = 0
+     return
+  endif
 
-  !  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
-  IRGI=0
-  IF(LUGI.GT.0.AND.LUGI.NE.LUX) THEN
-     CALL GETG2I(LUGI,CBUF,NLEN,NNUM,IRGI)
-     LUX=LUGI
-  ELSEIF(LUGI.LE.0.AND.LUGB.NE.LUX) THEN
-     MSKP=0
-     CALL GETG2IR(LUGB,MSK1,MSK2,MSKP,CBUF,NLEN,NNUM,NMESS,IRGI)
-     LUX=LUGB
-  ENDIF
-  IF(IRGI.GT.1) THEN
-     IRET=96
-     LUX=0
-     RETURN
-  ENDIF
+  !  search index buffer
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+       jk, gfld, lpos, irgs)
+  if (irgs .ne. 0) then
+     iret = 99
+     call gf_free(gfld)
+     return
+  endif
 
-  !  SEARCH INDEX BUFFER
-  CALL GETGB2S(CBUF,NLEN,NNUM,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
-       JK,GFLD,LPOS,IRGS)
-  IF(IRGS.NE.0) THEN
-     IRET=99
-     CALL GF_FREE(GFLD)
-     RETURN
-  ENDIF
-  ! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  !  EXTRACT GRIB MESSAGE FROM FILE
-  CALL GETGB2RP(LUGB,CBUF(LPOS:),EXTRACT,GRIBM,LENG,IRET)
-  !      IF ( EXTRACT ) THEN
-  !         PRINT *,'NOT SUPPOSED TO BE HERE.'
-  !      ELSE
-  !         IPOS=(LPOS+3)*8
-  !         CALL G2_GBYTEC(CBUF,ISKIP,IPOS,32)     ! BYTES TO SKIP IN FILE
-  !         IPOS=IPOS+(32*8)
-  !         CALL G2_GBYTEC(CBUF,LENG,IPOS,32)      ! LENGTH OF GRIB MESSAGE
-  !         IF (.NOT. ASSOCIATED(GRIBM)) ALLOCATE(GRIBM(LENG))
-  !         CALL BAREAD(LUGB,ISKIP,LENG,LREAD,GRIBM)
-  !         IF ( LENG .NE. LREAD ) THEN
-  !            IRET=97
-  !            CALL GF_FREE(GFLD)
-  !            RETURN
-  !         ENDIF
-  !      ENDIF
+  !  extract grib message from file
+  call getgb2rp(lugb, cbuf(lpos:), extract, gribm, leng, iret)
 
-  K=JK
-  CALL GF_FREE(GFLD)
-
-  RETURN
-END SUBROUTINE GETGB2P
+  k = jk
+  call gf_free(gfld)
+end subroutine getgb2p
