@@ -39,11 +39,11 @@
 !> @param[in] lskip Number of bytes to skip before grib message.
 !> @param[in] lgrib Number of bytes in grib message.
 !> @param[out] cbuf Pointer to a buffer that will get the index
-!> records. Users should free memory that cbuf points to when cbuf is
-!> no longer needed. If any memory is associated with cbuf when this
-!> subroutine is called, cbuf will be nullified in the
-!> subroutine. Initially cbuf will get an allocation of 5000
-!> bytes. realloc() will be used to increase the size if necessary.
+!> records. If any memory is associated with cbuf when this subroutine
+!> is called, cbuf will be nullified in the subroutine. Initially cbuf
+!> will get an allocation of 5000 bytes. realloc() will be used to
+!> increase the size if necessary. Users must free memory that cbuf
+!> points to when cbuf is no longer needed.
 !> @param[out] numfld Number of index records created.
 !> @param[out] mlen Total length of all index records.
 !> @param[out] iret Return code
