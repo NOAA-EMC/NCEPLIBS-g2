@@ -49,11 +49,12 @@ program test_getgb2rp
 
   ! Extract the whole message.
   extract = .false.
+  nullify(gribm)
   call getgb2rp(lugb, cbuf, extract, gribm, leng, iret)
   print *, 'leng ', leng
   if (leng .ne. 11183) stop 110
   ! Deallocate buffer that got GRIB message.
-  deallocate(gribm)
+!  deallocate(gribm)
   
   ! ! Extract just the field (same result).
   ! extract = .true.
