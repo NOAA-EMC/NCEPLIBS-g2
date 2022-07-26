@@ -7,10 +7,12 @@
 !> the GRIB2 file associated with unit lugb. If the index already
 !> exists, it is returned, otherwise, the index is (1) read from an
 !> existing indexfile associated with unit LUGI or (2) generated
-!> from the grib2file LUGI. Users can force a regeneration of an
-!> index. If LUGI equals LUGB, the index will be regenerated from
-!> the data in file LUGB. If LUGI is less than zero, then the index
-!> is re read from index file abs(lugi).
+!> from the grib2file lugi.
+!>
+!> Users can force a regeneration of an index: if lugi equals lugb,
+!> the index will be regenerated from the data in file LUGB. If LUGI
+!> is less than zero, then the index is re read from index file
+!> abs(lugi).
 !>
 !> ### Program History Log
 !> Date | Programmer | Comments
@@ -27,7 +29,7 @@
 !> If nonzero, file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before
 !> calling this routine. Set to 0 to get index buffer from the grib file.
-!> @param[out] cindex character*1 pointer to a buffer that contains
+!> @param[out] cindex character*1 pointer to a buffer that will get
 !> index records.
 !> @param[out] nlen integer total length of all index records
 !> @param[out] nnum integer number of index records
@@ -136,6 +138,4 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      iret = 96
      return
   endif
-
-  return
 end subroutine getidx

@@ -34,64 +34,60 @@
 !>
 !> @author Stephen Gilbert @date 2002-05-07
 subroutine getgb2l(lugb, cindex, gfld, iret)
+  use grib_mod
+  implicit none
 
-    use grib_mod
-    implicit none
+  integer, intent(in) :: lugb
+  character(len = 1), intent(in) :: cindex(*)
+  integer, intent(out) :: iret
+  type(gribfield) :: gfld
 
-    integer, intent(in) :: lugb
-    character(len = 1), intent(in) :: cindex(*)
-    integer, intent(out) :: iret
-    type(gribfield) :: gfld
+  integer :: lskip, skip2
+  character(len = 1):: csize(4)
+  character(len = 1), allocatable :: ctemp(:)
 
-    integer :: lskip, skip2
-    character(len = 1):: csize(4)
-    character(len = 1), allocatable :: ctemp(:)
+  integer :: iskip, lread, ilen, iofst, ierr
 
-    !implicit none additions
-    integer :: iskip, lread, ilen, iofst, ierr
+  ! Interface is needed due to the pointer parameter.
+  interface
+     subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
+       character(len=1), intent(in) :: cgrib(lcgrib)
+       integer, intent(in) :: lcgrib
+       integer, intent(inout) :: iofst
+       integer, intent(out) :: lencsec2
+       integer, intent(out) :: ierr
+       character(len = 1), pointer, dimension(:) :: csec2
+     end subroutine gf_unpack2
+  end interface
 
-    interface
-        subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
-            character(len=1), intent(in) :: cgrib(lcgrib)
-            integer, intent(in) :: lcgrib
-            integer, intent(inout) :: iofst
-            integer, intent(out) :: lencsec2
-            integer, intent(out) :: ierr
-            character(len = 1), pointer, dimension(:) :: csec2
-        end subroutine gf_unpack2
-    end interface
+  ! Get info.
+  nullify(gfld%local)
+  iret = 0
+  call g2_gbytec(cindex, lskip, 4 * 8, 4 * 8)
+  call g2_gbytec(cindex, skip2, 8 * 8, 4 * 8)
 
-    !  get info
-    nullify(gfld%local)
-    iret = 0
-    call g2_gbytec(cindex, lskip, 4 * 8, 4 * 8)
-    call g2_gbytec(cindex, skip2, 8 * 8, 4 * 8)
-
-
-    !  read and unpack local use section, if present
-    if ( skip2 .ne. 0 ) then
-        iskip = lskip + skip2
-        call baread(lugb, iskip, 4, lread, csize)    ! get length of section
-        call g2_gbytec(csize, ilen, 0, 32)
-        allocate(ctemp(ilen))
-        call baread(lugb, iskip, ilen, lread, ctemp)  ! read in section
-        if (ilen .ne. lread) then
-            iret = 97
-            deallocate(ctemp)
-            return
-        endif
-        iofst = 0
-        call gf_unpack2(ctemp, ilen, iofst, gfld%locallen, &
-            gfld%local, ierr)
-        if (ierr .ne. 0) then
-            iret = 98
-            deallocate(ctemp)
-            return
-        endif
+  ! Read and unpack local use section, if present.
+  if (skip2 .ne. 0) then
+     iskip = lskip + skip2
+     call baread(lugb, iskip, 4, lread, csize)    ! get length of section
+     call g2_gbytec(csize, ilen, 0, 32)
+     allocate(ctemp(ilen))
+     call baread(lugb, iskip, ilen, lread, ctemp)  ! read in section
+     if (ilen .ne. lread) then
+        iret = 97
         deallocate(ctemp)
-    else
-        gfld%locallen = 0
-    endif
-
-    return
+        return
+     endif
+     iofst = 0
+     call gf_unpack2(ctemp, ilen, iofst, gfld%locallen, &
+          gfld%local, ierr)
+     if (ierr .ne. 0) then
+        iret = 98
+        deallocate(ctemp)
+        return
+     endif
+     deallocate(ctemp)
+  else
+     gfld%locallen = 0
+  endif
 end subroutine getgb2l
