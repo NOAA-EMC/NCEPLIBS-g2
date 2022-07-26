@@ -61,6 +61,7 @@ if(FTP_TEST_FILES)
   # Add tests that use the data downloaded from FTP.
   create_test(test_ixgb2 g2_d)  
   create_test(test_getg2ir g2_d)  
+  create_test(test_getidx g2_d)  
 endif()
 
 # Copy test data files that are in the repo to the build directory.
