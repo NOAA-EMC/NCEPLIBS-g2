@@ -54,7 +54,7 @@ program test_getgb2rp
   print *, 'leng ', leng
   if (leng .ne. 11183) stop 110
   ! Deallocate buffer that got GRIB message.
-!  deallocate(gribm)
+  deallocate(gribm)
   
   ! ! Extract just the field (same result).
   ! extract = .true.
