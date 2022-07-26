@@ -8,30 +8,27 @@ program test_getgb2p
   implicit none
 
   integer :: lugi
-  character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: lugb = 3
-  integer :: nlen, nnum, iret
-  logical :: extract
+  integer :: iret
   integer :: leng
   character(len=1), pointer, dimension(:) :: gribm
+  integer :: j, jdisc, jpdtn, jgdtn
+  integer :: jids(13), jpdt(100), jgdt(250)
+  logical :: extract
+  integer :: k
+  integer :: i
   
   ! Interfaces are needed due to pointers in the parameter lists.
   interface
-     subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
-       integer, intent(in) :: lugb, lugi
-       integer, intent(out) :: nlen, nnum, iret
-       character(len = 1), pointer, dimension(:) :: cindex
-     end subroutine getidx
-  end interface
-
-  interface
-     subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
-       integer, intent(in) :: lugb
-       character(len=1), intent(in) :: cindex(*)
+     subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+          extract, k, gribm, leng, iret)
+       integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
+       integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
        logical, intent(in) :: extract
-       character(len=1), pointer, dimension(:) :: gribm       
-       integer, intent(out) :: leng, iret
-     end subroutine getgb2rp
+       integer, intent(out) :: k
+       character(len = 1), pointer, dimension(:) :: gribm       
+       integer, intent(out) :: iret, leng
+     end subroutine getgb2p
   end interface
 
   print *, 'Testing the getgb2p() subroutine - expect and ignore error messages during test...'
@@ -42,30 +39,27 @@ program test_getgb2p
   if (iret .ne. 0) stop 100
 
   lugi = 0
-  call getidx(lugb, lugi, cbuf, nlen, nnum, iret)
-  if (iret .ne. 0) stop 101
-  if (nlen .ne. 137600 .or. nnum .ne. 688) stop 102
-  print *, 'nlen, nnum: ', nlen, nnum
-
-  ! Extract the whole message.
+  j = 0
+  jdisc = -1
+  do i = 1, 13
+     jids(i) = -9999
+  end do
+  jpdtn = -1
+  do i = 1, 100
+     jpdt(i) = -9999
+  end do
+  jgdtn = -1
+  do i = 1, 250
+     jgdt(i) = -9999
+  end do
   extract = .false.
-  nullify(gribm)
-  call getgb2rp(lugb, cbuf, extract, gribm, leng, iret)
-  print *, 'leng ', leng
-  if (leng .ne. 11183) stop 110
+  call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+       extract, k, gribm, leng, iret)
+  if (iret .ne. 0) stop 101
+  if (k .ne. 1 .or. leng .ne. 11183) stop 110
+
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
-  
-  ! Extract just the field (same result).
-  extract = .true.
-  call getgb2rp(lugb, cbuf, extract, gribm, leng, iret)
-  print *, 'leng ', leng
-  if (leng .ne. 11183) stop 110
-  ! Deallocate buffer that got GRIB message.
-  deallocate(gribm)
-  
-  ! Deallocate the buffer that holds index.
-  deallocate(cbuf)
   
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
