@@ -23,6 +23,8 @@ program test_getg2ir
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   integer :: total_bytes, grib_version, discipline, field_number
 
+  print *, 'Testing the getg2ir() subroutine - expect and ignore error messages during test...'
+
   ! Open a real GRIB2 file.
   print *, 'Indexing a real GRIB2 file...'
   call baopenr(lugi, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
