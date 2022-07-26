@@ -28,46 +28,46 @@
 !> found)
 !>
 !> @author Mark Iredell @date 1995-10-31
-SUBROUTINE SKGB(LUGB,ISEEK,MSEEK,LSKIP,LGRIB)
+subroutine skgb(lugb, iseek, mseek, lskip, lgrib)
+  implicit none
 
-  PARAMETER(LSEEK=512)
-  CHARACTER Z(LSEEK)
-  CHARACTER Z4(4)
+  integer lseek, lugb, iseek, mseek, lskip, lgrib, i1, i4, k, k4, kg, km, ks, kz, kn
+  parameter(lseek = 512)
+  character z(lseek)
+  character z4(4)
 
-  LGRIB=0
-  KS=ISEEK
-  KN=MIN(LSEEK,MSEEK)
-  KZ=LSEEK
+  lgrib = 0
+  ks = iseek
+  kn = min(lseek, mseek)
+  kz = lseek
 
-  !  LOOP UNTIL GRIB MESSAGE IS FOUND
-  DO WHILE(LGRIB.EQ.0.AND.KN.GE.8.AND.KZ.EQ.LSEEK)
-     !  READ PARTIAL SECTION
-     CALL BAREAD(LUGB,KS,KN,KZ,Z)
-     KM=KZ-8+1
-     K=0
-     !  LOOK FOR 'GRIB...1' IN PARTIAL SECTION
-     DO WHILE(LGRIB.EQ.0.AND.K.LT.KM)
-        CALL G2_GBYTEC(Z,I4,(K+0)*8,4*8)
-        CALL G2_GBYTEC(Z,I1,(K+7)*8,1*8)
-        IF(I4.EQ.1196575042.AND.(I1.EQ.1.OR.I1.EQ.2)) THEN
-           !  LOOK FOR '7777' AT END OF GRIB MESSAGE
-           IF (I1.EQ.1) CALL G2_GBYTEC(Z,KG,(K+4)*8,3*8)
-           IF (I1.EQ.2) CALL G2_GBYTEC(Z,KG,(K+12)*8,4*8)
-           CALL BAREAD(LUGB,KS+K+KG-4,4,K4,Z4)
-           IF(K4.EQ.4) THEN
-              CALL G2_GBYTEC(Z4,I4,0,4*8)
-              IF(I4.EQ.926365495) THEN
-                 !  GRIB MESSAGE FOUND
-                 LSKIP=KS+K
-                 LGRIB=KG
-              ENDIF
-           ENDIF
-        ENDIF
-        K=K+1
-     ENDDO
-     KS=KS+KM
-     KN=MIN(LSEEK,ISEEK+MSEEK-KS)
-  ENDDO
-
-  RETURN
-END SUBROUTINE SKGB
+  !  loop until grib message is found
+  do while (lgrib .eq. 0 .and. kn .ge. 8 .and. kz .eq. lseek)
+     !  read partial section
+     call baread(lugb, ks, kn, kz, z)
+     km = kz - 8 + 1
+     k = 0
+     !  look for 'grib...1' in partial section
+     do while (lgrib .eq. 0 .and. k .lt. km)
+        call g2_gbytec(z, i4, (k + 0) * 8, 4 * 8)
+        call g2_gbytec(z, i1, (k + 7) * 8, 1 * 8)
+        if (i4 .eq. 1196575042 .and. (i1 .eq. 1 .or. i1 .eq. 2)) then
+           !  look for '7777' at end of grib message
+           if (i1 .eq. 1) call g2_gbytec(z, kg, (k + 4) * 8, 3 * 8)
+           if (i1 .eq. 2) call g2_gbytec(z, kg, (k + 12) * 8, 4 * 8)
+           call baread(lugb, ks + k + kg-4, 4, k4, z4)
+           if (k4 .eq. 4) then
+              call g2_gbytec(z4, i4, 0, 4 * 8)
+              if (i4 .eq. 926365495) then
+                 !  grib message found
+                 lskip = ks + k
+                 lgrib = kg
+              endif
+           endif
+        endif
+        k = k + 1
+     enddo
+     ks = ks + km
+     kn = min(lseek, iseek + mseek - ks)
+  enddo
+end subroutine skgb
