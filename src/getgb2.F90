@@ -1,22 +1,23 @@
 !> @file
-!> @brief This subroutine finds and unpacks a grib file.
+!> @brief This subroutine finds and unpacks a GRIB2 file.
 !> @author Mark Iredell @date 1994-04-01
 
-!> This subroutine finds and unpacks a grib message. It reads
-!> a grib index file (or optionally the grib file itself) to
-!> get the index buffer (i.e. table of contents) for the grib file.
+!> This subroutine finds and unpacks a GRIB2 message. It reads
+!> a GRIB index file (or optionally the GRIB file itself) to
+!> get the index buffer (i.e. table of contents) for the GRIB file.
 !>
-!> Find in the index buffer a reference to the grib field requested.
+!> Find in the index buffer a reference to the GRIB field requested.
 !>
-!> The grib field request specifies the number of fields to skip
+!> The GRIB field request specifies the number of fields to skip
 !> and the unpacked identification section, grid definition template
 !> and product defintion section parameters. (A requested parameter
 !> of -9999 means to allow any value of this parameter to be found.)
-!> If the requested grib field is found, then it is read from the
-!> grib file and unpacked. Its number is returned along with
-!> the associated unpacked parameters. the bitmap (if any), and
+!>
+!> If the requested GRIB field is found, then it is read from the
+!> GRIB file and unpacked. Its number is returned along with
+!> the associated unpacked parameters. the bitmap (if any);
 !> the data values are unpacked only if argument "unpack" is set to
-!> true. If the grib field is not found, then the return code
+!> true. If the GRIB field is not found, then the return code
 !> will be nonzero.
 !>
 !> The decoded information for the selected GRIB field is returned

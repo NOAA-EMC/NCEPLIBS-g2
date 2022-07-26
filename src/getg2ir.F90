@@ -40,8 +40,11 @@
 !> @param[in] msk2 Number of bytes to search for other messages.
 !> @param[in] mnum Number of grib messages to skip (usually 0).
 !> @param[out] cbuf Pointer to a buffer that will get the index
-!> records. Users should free memory that cbuf points to when cbuf is
-!> no longer needed.
+!> records. If any memory is associated with cbuf when this subroutine
+!> is called, cbuf will be nullified in the subroutine. Initially cbuf
+!> will get an allocation of 5000 bytes. realloc() will be used to
+!> increase the size if necessary. Users must free memory that cbuf
+!> points to when cbuf is no longer needed.
 !> @param[out] nlen Total length of index record buffer in bytes.
 !> @param[out] nnum Number of index records, =0 if no grib
 !> messages are found).
@@ -88,7 +91,7 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   iseek = 0
   call skgb(lugb, iseek, msk1, lskip, lgrib)
   do m = 1, mnum
-     if(lgrib .gt. 0) then
+     if (lgrib .gt. 0) then
         iseek = lskip + lgrib
         call skgb(lugb, iseek, msk2, lskip, lgrib)
      endif
@@ -102,8 +105,8 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
      call ixgb2(lugb, lskip, lgrib, cbuftmp, numfld, nbytes, iret1)
      if (iret1 .ne. 0) print *, ' sagt ', numfld, nbytes, iret1
 
-     ! Allocate more space, if necessary.     
-     if (nbytes + nlen .gt. mbuf) then 
+     ! Allocate more space, if necessary.
+     if (nbytes + nlen .gt. mbuf) then
         newsize = max(mbuf + next, mbuf + nbytes)
         call realloc(cbuf, nlen, newsize, istat)
         if ( istat .ne. 0 ) then
