@@ -56,13 +56,13 @@ program test_getgb2rp
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
   
-  ! ! Extract just the field (same result).
-  ! extract = .true.
-  ! call getgb2rp(lugb, cbuf, extract, gribm, leng, iret)
-  ! print *, 'leng ', leng
-  ! if (leng .ne. 11183) stop 110
-  ! ! Deallocate buffer that got GRIB message.
-  ! deallocate(gribm)
+  ! Extract just the field (same result).
+  extract = .true.
+  call getgb2rp(lugb, cbuf, extract, gribm, leng, iret)
+  print *, 'leng ', leng
+  if (leng .ne. 11183) stop 110
+  ! Deallocate buffer that got GRIB message.
+  deallocate(gribm)
   
   ! Deallocate the buffer that holds index.
   deallocate(cbuf)
