@@ -59,7 +59,7 @@ program test_getgb2p
   if (k .ne. 1 .or. leng .ne. 11183) stop 110
 
   ! Deallocate buffer that got GRIB message.
-  deallocate(gribm)
+!  deallocate(gribm)
   
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
