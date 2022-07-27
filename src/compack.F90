@@ -439,5 +439,4 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         idrstmpl(18) = nbitsd / 8      ! num bits used for extra spatial
         ! differencing values
     endif
-
 end subroutine compack

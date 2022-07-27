@@ -67,6 +67,4 @@ subroutine getpoly(csec3, lcsec3, jj, kk, mm)
     !
     if (associated(igdstmpl)) deallocate(igdstmpl)
     if (associated(list_opt)) deallocate(list_opt)
-
-    return
 end subroutine getpoly

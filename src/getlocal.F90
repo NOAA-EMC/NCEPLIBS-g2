@@ -152,6 +152,4 @@ subroutine getlocal(cgrib, lcgrib, localnum, csec2, lcsec2, ierr)
     print *, 'getlocal: The request was for the ', localnum, &
             ' occurrence.'
     ierr = 6
-
-    return
 end subroutine getlocal

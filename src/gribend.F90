@@ -100,6 +100,4 @@ subroutine gribend(cgrib, lcgrib, lengrib, ierr)
   !     Update current byte total of message in Section 0
   lengrib = lencurr + 4
   call g2_sbytec(cgrib, lengrib, 96, 32)
-
-  return
 end subroutine gribend

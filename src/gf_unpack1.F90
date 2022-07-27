@@ -83,6 +83,4 @@ subroutine gf_unpack1(cgrib, lcgrib, iofst, ids, idslen, ierr)
      call g2_gbytec(cgrib, ids(i), iofst, nbits)
      iofst = iofst + nbits
   enddo
-
-  return
 end subroutine gf_unpack1

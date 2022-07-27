@@ -748,6 +748,4 @@ subroutine unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
             ' not recognized.'
         ierr = 4
     endif
-
-    return                    ! End of Section 6 processing
 end subroutine unpack6

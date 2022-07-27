@@ -109,6 +109,4 @@ subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   ! Put current byte total of message into Section 0.
   call g2_sbytec(cgrib, zero, 64, 32)
   call g2_sbytec(cgrib, lensec0 + lensec1, 96, 32)
-
-  return
 end subroutine gribcreate

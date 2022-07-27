@@ -338,6 +338,4 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
             ipos = ipos + inlen
         endif
     enddo
-
-    return
 end subroutine getgb2s

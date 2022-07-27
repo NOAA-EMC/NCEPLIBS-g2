@@ -92,6 +92,4 @@ subroutine mkieee(a,rieee,num)
      !       write(6,fmt='(f20.10,5x,b32)') rieee,rieee
 
   enddo
-
-  return
 end subroutine mkieee

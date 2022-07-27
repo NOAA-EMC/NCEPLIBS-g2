@@ -42,6 +42,4 @@ subroutine cmplxpack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         print *, 'cmplxpack: Do not recognize Missing value option.'
         lcpack = -1
     endif
-
-    return
 end subroutine cmplxpack

@@ -59,6 +59,4 @@ subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
 
     csec2(1:lencsec2) = cgrib(ipos:ipos + lencsec2 - 1)
     iofst = iofst + (lencsec2 * 8)
-
-    return
 end subroutine gf_unpack2

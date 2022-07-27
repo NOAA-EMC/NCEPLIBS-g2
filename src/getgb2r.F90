@@ -149,6 +149,4 @@ SUBROUTINE GETGB2R(LUGB,CINDEX,GFLD,IRET)
   else
      gfld%expanded=.true.
   endif
-
-  RETURN
 END SUBROUTINE GETGB2R

@@ -229,6 +229,4 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
   maxvals(5) = maxcoordlist
   maxvals(6) = maxdrstmpl
   maxvals(7) = maxgridpts
-
-  return
 end subroutine gribinfo

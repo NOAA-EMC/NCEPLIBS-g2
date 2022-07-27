@@ -55,6 +55,4 @@ subroutine rdieee(rieee,a,num)
      endif
 
   enddo
-
-  return
 end subroutine rdieee

@@ -374,6 +374,4 @@ subroutine gdt2gds(igds,igdstmpl,idefnum,ideflist,kgds, &
         return
      endif
   enddo
-
-  return
 end subroutine gdt2gds

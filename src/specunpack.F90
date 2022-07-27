@@ -91,6 +91,4 @@ subroutine specunpack(cpack,len,idrstmpl,ndpts,JJ,KK,MM,fld)
      fld=0.0
      return
   endif
-
-  return
 end subroutine specunpack

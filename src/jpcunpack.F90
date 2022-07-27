@@ -46,7 +46,4 @@ subroutine jpcunpack(cpack,len,idrstmpl,ndpts,fld)
         fld(j)=ref
      enddo
   endif
-
-
-  return
 end subroutine jpcunpack

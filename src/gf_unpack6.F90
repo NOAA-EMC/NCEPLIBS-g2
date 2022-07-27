@@ -78,6 +78,4 @@ subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
         !        print *, 'gf_unpack6: Predefined bitmap ', ibmap, ' not recognized.'
         !        ierr = 4
     endif
-
-    return
 end subroutine gf_unpack6

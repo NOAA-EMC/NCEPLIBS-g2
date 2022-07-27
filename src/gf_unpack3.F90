@@ -176,6 +176,4 @@ subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, &
         idefnum=0
         nullify(ideflist)
     endif
-
-    return
 end subroutine gf_unpack3

@@ -158,6 +158,4 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   idrstmpl(4)=nbits
   idrstmpl(5)=0         ! original data were reals
   if (idrstmpl(6).eq.0) idrstmpl(7)=255       ! lossy not used
-
-  return
 end subroutine jpcpack

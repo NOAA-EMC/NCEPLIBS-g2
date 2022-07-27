@@ -66,7 +66,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
 
   ierr = 0
 
-  !     Check to see if beginning of GRIB message exists.
+  ! Check to see if beginning of GRIB message exists.
   do i = 1, 4
      if (cgrib(i) /= grib(i:i)) then
         print *, 'addgrid: GRIB not found in given message.'
@@ -79,10 +79,10 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      endif
   enddo
 
-  !     Get current length of GRIB message.
+  ! Get current length of GRIB message.
   call g2_gbytec(cgrib, lencurr, 96, 32)
 
-  !     Check to see if GRIB message is already complete.
+  ! Check to see if GRIB message is already complete.
   ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // cgrib(lencurr &
        - 1) // cgrib(lencurr)
   if (ctemp .eq. c7777) then
@@ -92,22 +92,22 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      return
   endif
 
-  !     Loop through all current sections of the GRIB message to find the
-  !     last section number.
+  ! Loop through all current sections of the GRIB message to find the
+  ! last section number.
   len = 16                  ! length of Section 0
   do
-     !         Get length and section number of next section.
+     ! Get length and section number of next section.
      iofst = len * 8
      call g2_gbytec(cgrib, ilen, iofst, 32)
      iofst = iofst + 32
      call g2_gbytec(cgrib, isecnum, iofst, 8)
      len = len + ilen
 
-     !         Exit loop if last section reached.
+     ! Exit loop if last section reached.
      if (len .eq. lencurr) exit
 
-     !         If byte count for each section doesn't match current
-     !         total length, then there is a problem.
+     ! If byte count for each section doesn't match current
+     ! total length, then there is a problem.
      if (len .gt. lencurr) then
         print *, 'addgrid: Section byte counts don''t add to total.'
         print *, 'addgrid: Sum of section byte counts = ', len
@@ -117,7 +117,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      endif
   enddo
 
-  !     Section 3 can only be added after sections 1, 2 and 7.
+  ! Section 3 can only be added after sections 1, 2 and 7.
   if ((isecnum .ne. 1) .and. (isecnum .ne. 2) .and. &
        (isecnum .ne. 7)) then
      print *, 'addgrid: Section 3 can only be added after Section',  &
@@ -128,7 +128,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      return
   endif
 
-  !     Add Section 3  - Grid Definition Section.
+  ! Add Section 3  - Grid Definition Section.
   ibeg = lencurr * 8        !   Calculate offset for beginning of section 3
   iofst = ibeg + 32         !   leave space for length of section
   call g2_sbytec(cgrib, three, iofst, 8) ! Store section number (3)
@@ -142,8 +142,8 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   call g2_sbytec(cgrib, igds(4), iofst, 8) ! Store interp. of extra octets.
   iofst = iofst + 8
 
-  !     If Octet 6 is not equal to zero, Grid Definition Template may not
-  !     be supplied.
+  ! If Octet 6 is not equal to zero, Grid Definition Template may not
+  ! be supplied.
   if (igds(1) .eq. 0) then
      call g2_sbytec(cgrib, igds(5), iofst, 16) ! Store Grid Def Template num.
   else
@@ -151,7 +151,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   endif
   iofst = iofst + 16
 
-  !     Get Grid Definition Template.
+  ! Get Grid Definition Template.
   if (igds(1) .eq. 0) then
      call getgridtemplate(igds(5), mapgridlen, mapgrid, needext, &
           iret)
@@ -160,9 +160,9 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
         return
      endif
 
-     !         Extend the Grid Definition Template, if necessary. The number
-     !         of values in a specific template may vary depending on data
-     !         specified in the "static" part of the template.
+     ! Extend the Grid Definition Template, if necessary. The number
+     ! of values in a specific template may vary depending on data
+     ! specified in the "static" part of the template.
      if (needext) then
         call extgridtemplate(igds(5), igdstmpl, mapgridlen, &
              mapgrid)
@@ -171,9 +171,9 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      mapgridlen = 0
   endif
 
-  !     Pack up each input value in array igdstmpl into the the
-  !     appropriate number of octets, which are specified in corresponding
-  !     entries in array mapgrid.
+  ! Pack up each input value in array igdstmpl into the the
+  ! appropriate number of octets, which are specified in corresponding
+  ! entries in array mapgrid.
   do i = 1, mapgridlen
      nbits = iabs(mapgrid(i)) * 8
      if ((mapgrid(i) .ge. 0) .or. (igdstmpl(i) .ge. 0)) then
@@ -186,22 +186,20 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      iofst = iofst + nbits
   enddo
 
-  !     If requested, insert optional list of numbers defining number of
-  !     points in each row or column. This is used for non regular grids.
+  ! If requested, insert optional list of numbers defining number of
+  ! points in each row or column. This is used for non regular grids.
   if (igds(3) .ne. 0) then
      nbits = igds(3) * 8
      call g2_sbytesc(cgrib, ideflist, iofst, nbits, 0, idefnum)
      iofst = iofst + (nbits * idefnum)
   endif
 
-  !     Calculate length of section 3 and store it in octets 1-4 of
-  !     section 3.
+  ! Calculate length of section 3 and store it in octets 1-4 of
+  ! section 3.
   lensec3 = (iofst - ibeg) / 8
   call g2_sbytec(cgrib, lensec3, ibeg, 32)
 
 
-  !     Update current byte total of message in Section 0.
+  ! Update current byte total of message in Section 0.
   call g2_sbytec(cgrib, lencurr + lensec3, 96, 32)
-
-  return
 end subroutine addgrid

@@ -154,5 +154,4 @@ subroutine putgb2(lugb, gfld, iret)
   call wryte(lugb, lengrib, cgrib)
 
   deallocate(cgrib)
-  return
 end subroutine putgb2

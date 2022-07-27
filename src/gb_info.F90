@@ -51,7 +51,6 @@
 !> @author Stephen Gilbert @date 2000-05-25
 subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
      numfields, numlocal, maxlocal, ierr)
-
     implicit none
 
     character(len = 1), intent(in) :: cgrib(lcgrib)
@@ -66,8 +65,6 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
     integer,parameter ::  &
             mapsec1(mapsec1len) = (/ 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1 /)
     integer iofst, istart
-
-    !implicit none additions
     integer :: j, lensec0, ipos, lengrib, lensec1, isecnum
     integer :: i, nbits, lensec, lenposs
 
@@ -75,9 +72,8 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
     numlocal = 0
     numfields = 0
     maxlocal = 0
-    !
+
     !  Check for beginning of GRIB message in the first 100 bytes
-    !
     istart = 0
     do j = 1, 100
         ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j + 3)
@@ -91,9 +87,8 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
         ierr = 1
         return
     endif
-    !
+
     !  Unpack Section 0 - Indicator Section
-    !
     iofst=8 * (istart + 5)
     call g2_gbytec(cgrib, listsec0(1), iofst, 8)     ! Discipline
     iofst = iofst + 8
@@ -105,17 +100,15 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
     listsec0(3) = lengrib
     lensec0 = 16
     ipos = istart + lensec0
-    !
+
     !  Currently handles only GRIB Edition 2.
-    !
     if (listsec0(2) .ne. 2) then
         print *, 'gb_info: can only decode GRIB edition 2.'
         ierr = 2
         return
     endif
-    !
+
     !  Unpack Section 1 - Identification Section
-    !
     call g2_gbytec(cgrib, lensec1, iofst, 32)        ! Length of Section 1
     iofst = iofst + 32
     call g2_gbytec(cgrib, isecnum, iofst, 8)         ! Section number ( 1 )
@@ -125,22 +118,20 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
         ierr = 3
         return
     endif
-    !
+
     !   Unpack each input value in array listsec1 into the
     !   the appropriate number of octets, which are specified in
     !   corresponding entries in array mapsec1.
-    !
     do i = 1, mapsec1len
         nbits = mapsec1(i) * 8
         call g2_gbytec(cgrib, listsec1(i), iofst, nbits)
         iofst = iofst + nbits
     enddo
     ipos = ipos + lensec1
-    !
+
     !  Loop through the remaining sections to see if they are valid.
     !  Also count the number of times Section 2
     !  and Section 4 appear.
-    !
     do
         ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // cgrib(ipos + 3)
         if (ctemp .eq. c7777 ) then
@@ -181,6 +172,4 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
         endif
 
     enddo
-
-    return
 end subroutine gb_info

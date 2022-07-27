@@ -85,6 +85,4 @@ subroutine gf_free(gfld)
         ! print *,'gfld%fld: ',is
     endif
     nullify(gfld%fld)
-
-    return
 end subroutine gf_free
