@@ -76,7 +76,7 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   character cids(linmax), cgds(linmax)
   character(len = 4) :: ctemp
   integer loclus, locgds, lengds, locbms
-  integer i
+  ! integer i
 
   !print *, 'ixbg2 ', lugb, lskip, lgrib
 

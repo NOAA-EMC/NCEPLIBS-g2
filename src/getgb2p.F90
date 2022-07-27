@@ -34,161 +34,145 @@
 !> 2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with grib2
 !> 2003-12-17 | Stephen Gilbert | modified from getgb2 to return packed grib2 message
 !>
-!> @param[in] LUGB integer unit of the unblocked grib data file.  file
-!> must be opened with [baopen() or baopenr()]
+!> @param[in] lugb Unit of the unblocked grib data file. The
+!> file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
 !> routine.
-!> @param[in] LUGI integer unit of the unblocked grib index file.  if
-!> nonzero, file must be opened with [baopen() or baopenr()]
+!> @param[in] lugi Unit of the unblocked grib index file. If
+!> nonzero, file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
-!> routine. (set to 0 to get index buffer from the grib file),
-!> @param[in] J integer number of fields to skip (set to 0 to search
-!> from beginning)
-!> @param[in] JDISC grib2 discipline number of requested field (if =
-!> -1, accept any discipline see code table 0.0)
-!> - 0 meteorological products
-!> - 1 hydrological products
-!> - 2 land surface products
-!> - 3 space products
-!> - 10 oceanographic products
-!> @param[in] JIDS integer array of values in the identification
-!> section (set to -9999 for wildcard).
-!> - JIDS(1) identification of originating centre
-!> (see common code table c-1)
-!> - JIDS(2) identification of originating sub-centre
-!> - JIDS(3) grib master tables version number
-!> (see code table 1.0) 0 experimental;1 initial operational version number.
-!> - JIDS(4) grib local tables version number (see code table 1.1)
-!> 0 local tables not used; 1-254 number of local tables version used.
-!> - JIDS(5) significance of reference time (code table 1.2)
-!> 0 analysis; 1 start of forecast; 2 verifying time of forecast; 3 observation time
-!> - JIDS(6) year (4 digits)
-!> - JIDS(7) month
-!> - JIDS(8) day
-!> - JIDS(9) hour
-!> - JIDS(10) minute
-!> - JIDS(11) second
-!> - JIDS(12) production status of processed data (see code table 1.3)
-!> 0 operational products; 1 operational test products;
-!> 2 research products; 3 re-analysis products.
-!> - JIDS(13) type of processed data (see code table 1.4)
-!> 0 analysis products; 1 forecast products; 2 analysis and forecast
-!> products; 3 control forecast products; 4 perturbed forecast products;
-!> 5 control and perturbed forecast products; 6 processed satellite
-!> observations; 7 processed radar observations.
-!> @param[in] JPDTN integer product definition template number (n)
-!> (if = -1, don't bother matching pdt - accept any)
-!> @param[in] JPDT integer array of values defining the product definition
-!> template 4.n of the field for which to search (=-9999 for wildcard)
-!> @param[in] JGDTN integer grid definition template number (m)
-!> (if = -1, don't bother matching gdt - accept any )
-!> @param[in] JGDT integer array of values defining the grid definition
-!> template 3.m of the field for which to search (=-9999 for wildcard)
-!> @param[in] EXTRACT logical value indicating whether to return a
-!> grib2 message with just the requested field, or the entire
-!> grib2 message containing the requested field.
-!> - .true. = return grib2 message containing only the requested field.
-!> - .false. = return entire grib2 message containing the requested field.
-!> @param[out] K integer field number unpacked.
-!> @param[out] GRIBM returned grib message.
-!> @param[out] LENG length of returned grib message in bytes.
-!> @param[out] IRET integer return code
-!> - 0 all ok
-!> - 96 error reading index
-!> - 97 error reading grib file
-!> - 99 request not found
+!> subroutine. Set to 0 to get index buffer from the grib file.
+!> @param[in] J Number of fields to skip (set to 0 to search
+!> from beginning).
+!> @param[in] jdisc GRIB2 discipline number of requested field. See
+!> [GRIB2 - TABLE 0.0 -
+!> DISCIPLINE](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml).
+!> Use -1 to accept any discipline.
+!> @param[in] jids Array of values in the identification
+!> section. (Set to -9999 for wildcard.)
+!> - jids(1) Identification of originating centre. See [TABLE 0 -
+!>   NATIONAL/INTERNATIONAL ORIGINATING
+!>   CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html).
+!> - jids(2) Identification of originating sub-centre. See [TABLE C -
+!>   NATIONAL
+!>   SUB-CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html).
+!> - jids(3) GRIB master tables version number. See [GRIB2 - TABLE 1.0
+!>   - GRIB Master Tables Version
+!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml).
+!> - jids(4) GRIB local tables version number. See [GRIB2 - TABLE 1.1
+!>   - GRIB Local Tables Version
+!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml).
+!> - jids(5) Significance of reference time. See [GRIB2 - TABLE 1.2 -
+!>   Significance of Reference
+!>   Time](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-2.shtml).
+!> - jids(6) year (4 digits)
+!> - jids(7) month
+!> - jids(8) day
+!> - jids(9) hour
+!> - jids(10) minute
+!> - jids(11) second
+!> - jids(12) Production status of processed data. See [GRIB2 - TABLE
+!>   1.3 - Production Status of
+!>   Data](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml).
+!> - jids(13) Type of processed data. See [GRIB2 - TABLE 1.4 - TYPE OF
+!>   DATA](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml).
+!> @param[in] jpdtn Product Definition Template (PDT) number (n)
+!> (if = -1, don't bother matching PDT - accept any)
+!> @param[in] jpdt Array of values defining the Product Definition
+!> Template 4.n of the field for which to search (=-9999 for wildcard).
+!> @param[in] jgdtn Grid Definition Template number (if = -1, don't
+!> bother matching gdt - accept any).
+!> @param[in] jgdt array of values defining the Grid Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] extract value indicating whether to return a
+!> GRIB2 message with just the requested field, or the entire
+!> GRIB2 message containing the requested field.
+!> - .true. return grib2 message containing only the requested field.
+!> - .false. return entire grib2 message containing the requested field.
+!> @param[out] k field number unpacked.
+!> @param[out] gribm returned grib message.
+!> @param[out] leng length of returned grib message in bytes.
+!> @param[out] iret integer return code
+!> - 0 No error.
+!> - 96 Error reading index.
+!> - 97 Error reading grib file.
+!> - 99 Request not found.
 !>
 !> @note Specify an index file if feasible to increase speed.
 !> Do not engage the same logical unit from more than one processor.
 !>
 !> @author Mark Iredell @date 1994-04-01
-SUBROUTINE GETGB2P(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
-     EXTRACT,K,GRIBM,LENG,IRET)
-
-  USE GRIB_MOD
+subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+     extract, k, gribm, leng, iret)
+  use grib_mod
   implicit none
 
-  INTEGER,INTENT(IN) :: LUGB,LUGI,J,JDISC,JPDTN,JGDTN
-  INTEGER,DIMENSION(:) :: JIDS(*),JPDT(*),JGDT(*)
-  LOGICAL,INTENT(IN) :: EXTRACT
-  INTEGER,INTENT(OUT) :: K,IRET,LENG
-  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: GRIBM
+  integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
+  integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
+  logical, intent(in) :: extract
+  integer, intent(out) :: k, iret, leng
+  character(len = 1), pointer, dimension(:) :: gribm
 
-  TYPE(GRIBFIELD) :: GFLD
+  type(gribfield) :: gfld
   integer :: msk1, irgi, irgs, jk, lpos, lux, msk2, mskp, nlen, nmess, nnum
 
-  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-  PARAMETER(MSK1=32000,MSK2=4000)
+  character(len = 1), pointer, dimension(:) :: cbuf
+  parameter(msk1 = 32000, msk2 = 4000)
 
+  save cbuf, nlen, nnum
+  data lux/0/
 
-  SAVE CBUF,NLEN,NNUM
-  DATA LUX/0/
+  !  declare interfaces (required for cbuf pointer)
+  interface
+     subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(in) :: lugi
+       integer, intent(out) :: nlen, nnum, iret
+     end subroutine getg2i
+     subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum,  &
+          nmess, iret)
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(in) :: lugb, msk1, msk2, mnum
+       integer, intent(out) :: nlen, nnum, nmess, iret
+     end subroutine getg2ir
+     subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
+       integer, intent(in) :: lugb
+       character(len = 1), intent(in) :: cindex(*)
+       logical, intent(in) :: extract
+       integer, intent(out) :: leng, iret
+       character(len = 1), pointer, dimension(:) :: gribm
+     end subroutine getgb2rp
+  end interface
 
-  !  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)
-  INTERFACE
-     SUBROUTINE GETG2I(LUGI,CBUF,NLEN,NNUM,IRET)
-       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-       INTEGER,INTENT(IN) :: LUGI
-       INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
-     END SUBROUTINE GETG2I
-     SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM, &
-          NMESS,IRET)
-       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-       INTEGER,INTENT(IN) :: LUGB,MSK1,MSK2,MNUM
-       INTEGER,INTENT(OUT) :: NLEN,NNUM,NMESS,IRET
-     END SUBROUTINE GETG2IR
-     SUBROUTINE GETGB2RP(LUGB,CINDEX,EXTRACT,GRIBM,LENG,IRET)
-       INTEGER,INTENT(IN) :: LUGB
-       CHARACTER(LEN=1),INTENT(IN) :: CINDEX(*)
-       LOGICAL,INTENT(IN) :: EXTRACT
-       INTEGER,INTENT(OUT) :: LENG,IRET
-       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: GRIBM
-     END SUBROUTINE GETGB2RP
-  END INTERFACE
+  ! Determine whether index buffer needs to be initialized.
+  irgi = 0
+  if (lugi .gt. 0 .and. lugi .ne. lux) then
+     call getg2i(lugi, cbuf, nlen, nnum, irgi)
+     lux = lugi
+  elseif (lugi .le. 0 .and. lugb .ne. lux) then
+     mskp = 0
+     call getg2ir(lugb, msk1, msk2, mskp, cbuf, nlen, nnum, nmess, irgi)
+     lux = lugb
+  endif
+  if (irgi .gt. 1) then
+     iret = 96
+     lux = 0
+     return
+  endif
 
-  !  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
-  IRGI=0
-  IF(LUGI.GT.0.AND.LUGI.NE.LUX) THEN
-     CALL GETG2I(LUGI,CBUF,NLEN,NNUM,IRGI)
-     LUX=LUGI
-  ELSEIF(LUGI.LE.0.AND.LUGB.NE.LUX) THEN
-     MSKP=0
-     CALL GETG2IR(LUGB,MSK1,MSK2,MSKP,CBUF,NLEN,NNUM,NMESS,IRGI)
-     LUX=LUGB
-  ENDIF
-  IF(IRGI.GT.1) THEN
-     IRET=96
-     LUX=0
-     RETURN
-  ENDIF
+  ! Search index buffer.
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+       jk, gfld, lpos, irgs)
+  if (irgs .ne. 0) then
+     iret = 99
+     call gf_free(gfld)
+     return
+  endif
 
-  !  SEARCH INDEX BUFFER
-  CALL GETGB2S(CBUF,NLEN,NNUM,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT, &
-       JK,GFLD,LPOS,IRGS)
-  IF(IRGS.NE.0) THEN
-     IRET=99
-     CALL GF_FREE(GFLD)
-     RETURN
-  ENDIF
-  ! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  !  EXTRACT GRIB MESSAGE FROM FILE
-  CALL GETGB2RP(LUGB,CBUF(LPOS:),EXTRACT,GRIBM,LENG,IRET)
-  !      IF ( EXTRACT ) THEN
-  !         PRINT *,'NOT SUPPOSED TO BE HERE.'
-  !      ELSE
-  !         IPOS=(LPOS+3)*8
-  !         CALL G2_GBYTEC(CBUF,ISKIP,IPOS,32)     ! BYTES TO SKIP IN FILE
-  !         IPOS=IPOS+(32*8)
-  !         CALL G2_GBYTEC(CBUF,LENG,IPOS,32)      ! LENGTH OF GRIB MESSAGE
-  !         IF (.NOT. ASSOCIATED(GRIBM)) ALLOCATE(GRIBM(LENG))
-  !         CALL BAREAD(LUGB,ISKIP,LENG,LREAD,GRIBM)
-  !         IF ( LENG .NE. LREAD ) THEN
-  !            IRET=97
-  !            CALL GF_FREE(GFLD)
-  !            RETURN
-  !         ENDIF
-  !      ENDIF
+  ! Extract grib message from file.
+  nullify(gribm)
+  call getgb2rp(lugb, cbuf(lpos:), extract, gribm, leng, iret)
 
-  K=JK
-  CALL GF_FREE(GFLD)
-END SUBROUTINE GETGB2P
+  k = jk
+  call gf_free(gfld)
+end subroutine getgb2p
