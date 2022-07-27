@@ -33,168 +33,176 @@
 !> 2001-12-10 | Stephen Gilbert | modified from ixgb to create grib2 indexes.
 !> 2002-01-31 | Stephen Gilbert | added identification section to index record.
 !>
-!> @param[in] LUGB Unit of the unblocked grib file. Must
+!> @param[in] lugb Unit of the unblocked grib file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
-!> @param[in] LSKIP Number of bytes to skip before grib message.
-!> @param[in] LGRIB Number of bytes in grib message.
-!> @param[out] CBUF Pointer to a buffer that contains
-!> index records users should free memory that cbuf points to
-!> using deallocate(cbuf) when cbuf is no longer needed.
-!> @param[out] NUMFLD Number of index records created.
-!> @param[out] MLEN Total length of all index records.
-!> @param[out] IRET Return code
-!> - 0 all ok
-!> - 1 not enough memory available to hold full index buffer
-!> - 2 i/o error in read
-!> - 3 grib message is not edition 2
-!> - 4 not enough memory to allocate extent to index buffer
-!> - 5 unidentified grib section encountered
+!> @param[in] lskip Number of bytes to skip before grib message.
+!> @param[in] lgrib Number of bytes in grib message.
+!> @param[out] cbuf Pointer to a buffer that will get the index
+!> records. If any memory is associated with cbuf when this subroutine
+!> is called, cbuf will be nullified in the subroutine. Initially cbuf
+!> will get an allocation of 5000 bytes. realloc() will be used to
+!> increase the size if necessary. Users must free memory that cbuf
+!> points to when cbuf is no longer needed.
+!> @param[out] numfld Number of index records created.
+!> @param[out] mlen Total length of all index records.
+!> @param[out] iret Return code
+!> - 0 No error
+!> - 1 Not enough memory available to hold full index buffer.
+!> - 2 I/O error in read.
+!> - 3 GRIB message is not edition 2.
+!> - 4 Not enough memory to allocate extent to index buffer.
+!> - 5 Unidentified GRIB section encountered.
 !>
 !> @author Mark Iredell @date 1995-10-31
-SUBROUTINE IXGB2(LUGB,LSKIP,LGRIB,CBUF,NUMFLD,MLEN,IRET)
+subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
 
-  USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
+  use re_alloc          ! needed for subroutine realloc
   implicit none
-  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
+  character(len = 1),pointer,dimension(:) :: cbuf
   integer linmax, ixskp, mxskp, lugb, lskip, lgrib, numfld
   integer mlen, iret, ibread, ibskip, ilndrs, ilnpds, indbmp
   integer init, istat, ixds, ixfld, ixids, ixlen, ixlus, ixsbm, ixsdr, ixspd
   integer ixsgd, lbread, lensec, lensec1, lindex, mbuf
   integer mxbms, mxds, mxfld, mxlen, mxlus, mxsbm, mxsdr, mxsgd
   integer mxspd, newsize, next, numsec, mova2i
-  PARAMETER(LINMAX=5000,INIT=50000,NEXT=10000)
-  PARAMETER(IXSKP=4,IXLUS=8,IXSGD=12,IXSPD=16,IXSDR=20,IXSBM=24, &
-       IXDS=28,IXLEN=36,IXFLD=42,IXIDS=44)
-  PARAMETER(MXSKP=4,MXLUS=4,MXSGD=4,MXSPD=4,MXSDR=4,MXSBM=4, &
-       MXDS=4,MXLEN=4,MXFLD=2,MXBMS=6)
-  CHARACTER CBREAD(LINMAX),CINDEX(LINMAX)
-  CHARACTER CVER,CDISC
-  CHARACTER CIDS(LINMAX),CGDS(LINMAX)
-  CHARACTER(LEN=4) :: CTEMP
-  INTEGER LOCLUS,LOCGDS,LENGDS,LOCBMS
+  parameter(linmax = 5000, init = 50000, next = 10000)
+  parameter(ixskp = 4, ixlus = 8, ixsgd = 12, ixspd = 16, ixsdr = 20, ixsbm = 24, &
+       ixds = 28, ixlen = 36, ixfld = 42, ixids = 44)
+  parameter(mxskp = 4, mxlus = 4, mxsgd = 4, mxspd = 4, mxsdr = 4, mxsbm = 4, &
+       mxds = 4, mxlen = 4, mxfld = 2, mxbms = 6)
+  character cbread(linmax), cindex(linmax)
+  character cver, cdisc
+  character cids(linmax), cgds(linmax)
+  character(len = 4) :: ctemp
+  integer loclus, locgds, lengds, locbms
+  integer i
 
-  LOCLUS=0
-  IRET=0
-  MLEN=0
-  NUMFLD=0
-  IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
-  MBUF=INIT
-  ALLOCATE(CBUF(MBUF),STAT=ISTAT)    ! ALLOCATE INITIAL SPACE FOR CBUF
-  IF (ISTAT.NE.0) THEN
-     IRET=1
-     RETURN
-  ENDIF
+  !print *, 'ixbg2 ', lugb, lskip, lgrib
 
-  !  READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
-  IBREAD=MIN(LGRIB,LINMAX)
-  CALL BAREAD(LUGB,LSKIP,IBREAD,LBREAD,CBREAD)
-  IF(LBREAD.NE.IBREAD) THEN
-     IRET=2
-     RETURN
-  ENDIF
-  IF(CBREAD(8).NE.CHAR(2)) THEN          !  NOT GRIB EDITION 2
-     IRET=3
-     RETURN
-  ENDIF
-  CVER=CBREAD(8)
-  CDISC=CBREAD(7)
-  CALL G2_GBYTEC(CBREAD,LENSEC1,16*8,4*8)
-  LENSEC1=MIN(LENSEC1,IBREAD)
-  CIDS(1:LENSEC1)=CBREAD(17:16+LENSEC1)
-  IBSKIP=LSKIP+16+LENSEC1
+  loclus = 0
+  iret = 0
+  mlen = 0
+  numfld = 0
+  if (associated(cbuf)) nullify(cbuf)
+  mbuf = init
+  allocate(cbuf(mbuf), stat = istat)    ! Allocate initial space for cbuf.
+  if (istat .ne. 0) then
+     iret = 1
+     return
+  endif
 
-  !  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
-  IBREAD=MAX(5,MXBMS)
-  DO
-     CALL BAREAD(LUGB,IBSKIP,IBREAD,LBREAD,CBREAD)
-     CTEMP=CBREAD(1)//CBREAD(2)//CBREAD(3)//CBREAD(4)
-     IF (CTEMP.EQ.'7777') RETURN        ! END OF MESSAGE FOUND
-     IF(LBREAD.NE.IBREAD) THEN
-        IRET=2
-        RETURN
-     ENDIF
-     CALL G2_GBYTEC(CBREAD,LENSEC,0*8,4*8)
-     CALL G2_GBYTEC(CBREAD,NUMSEC,4*8,1*8)
+  ! Read sections 0 and 1 for version number and discipline.
+  ibread = min(lgrib, linmax)
+  !print *, 'ibread = ', ibread
+  call baread(lugb, lskip, ibread, lbread, cbread)
+  ! do i = 1, 20
+  !    print *, ichar(cbread(i))
+  ! end do
+  !print *, 'lbread = ', lbread, ' ibread = ', ibreadz
+  if (lbread .ne. ibread) then
+     iret = 2
+     return
+  endif
+  if (cbread(8) .ne. char(2)) then ! Not GRIB edition 2.
+     iret = 3
+     return
+  endif
+  cver = cbread(8)
+  cdisc = cbread(7)
+  call g2_gbytec(cbread, lensec1, 16 * 8, 4 * 8)
+  lensec1 = min(lensec1, ibread)
+  cids(1:lensec1) = cbread(17:16 + lensec1)
+  ibskip = lskip + 16 + lensec1
 
-     IF (NUMSEC.EQ.2) THEN                 ! SAVE LOCAL USE LOCATION
-        LOCLUS=IBSKIP-LSKIP
-     ELSEIF (NUMSEC.EQ.3) THEN                 ! SAVE GDS INFO
-        LENGDS=LENSEC
-        CGDS=CHAR(0)
-        CALL BAREAD(LUGB,IBSKIP,LENGDS,LBREAD,CGDS)
-        IF(LBREAD.NE.LENGDS) THEN
-           IRET=2
-           RETURN
-        ENDIF
-        LOCGDS=IBSKIP-LSKIP
-     ELSEIF (NUMSEC.EQ.4) THEN                 ! FOUND PDS
-        CINDEX=CHAR(0)
-        CALL G2_SBYTEC(CINDEX,LSKIP,8*IXSKP,8*MXSKP)    ! BYTES TO SKIP
-        CALL G2_SBYTEC(CINDEX,LOCLUS,8*IXLUS,8*MXLUS)   ! LOCATION OF LOCAL USE
-        CALL G2_SBYTEC(CINDEX,LOCGDS,8*IXSGD,8*MXSGD)   ! LOCATION OF GDS
-        CALL G2_SBYTEC(CINDEX,IBSKIP-LSKIP,8*IXSPD,8*MXSPD)  ! LOCATION OF PDS
-        CALL G2_SBYTEC(CINDEX,LGRIB,8*IXLEN,8*MXLEN)    ! LEN OF GRIB2
-        CINDEX(41)=CVER
-        CINDEX(42)=CDISC
-        CALL G2_SBYTEC(CINDEX,NUMFLD+1,8*IXFLD,8*MXFLD)   ! FIELD NUM
-        CINDEX(IXIDS+1:IXIDS+LENSEC1)=CIDS(1:LENSEC1)
-        LINDEX=IXIDS+LENSEC1
-        CINDEX(LINDEX+1:LINDEX+LENGDS)=CGDS(1:LENGDS)
-        LINDEX=LINDEX+LENGDS
-        ILNPDS=LENSEC
-        CALL BAREAD(LUGB,IBSKIP,ILNPDS,LBREAD,CINDEX(LINDEX+1))
-        IF(LBREAD.NE.ILNPDS) THEN
-           IRET=2
-           RETURN
-        ENDIF
-        !   CINDEX(LINDEX+1:LINDEX+ILNPDS)=CBREAD(1:ILNPDS)
-        LINDEX=LINDEX+ILNPDS
-     ELSEIF (NUMSEC.EQ.5) THEN                 ! FOUND DRS
-        CALL G2_SBYTEC(CINDEX,IBSKIP-LSKIP,8*IXSDR,8*MXSDR)  ! LOCATION OF DRS
-        ILNDRS=LENSEC
-        CALL BAREAD(LUGB,IBSKIP,ILNDRS,LBREAD,CINDEX(LINDEX+1))
-        IF(LBREAD.NE.ILNDRS) THEN
-           IRET=2
-           RETURN
-        ENDIF
-        !   CINDEX(LINDEX+1:LINDEX+ILNDRS)=CBREAD(1:ILNDRS)
-        LINDEX=LINDEX+ILNDRS
-     ELSEIF (NUMSEC.EQ.6) THEN                 ! FOUND BMS
-        INDBMP=MOVA2I(CBREAD(6))
-        IF ( INDBMP.LT.254 ) THEN
-           LOCBMS=IBSKIP-LSKIP
-           CALL G2_SBYTEC(CINDEX,LOCBMS,8*IXSBM,8*MXSBM)  ! LOC. OF BMS
-        ELSEIF ( INDBMP.EQ.254 ) THEN
-           CALL G2_SBYTEC(CINDEX,LOCBMS,8*IXSBM,8*MXSBM)  ! LOC. OF BMS
-        ELSEIF ( INDBMP.EQ.255 ) THEN
-           CALL G2_SBYTEC(CINDEX,IBSKIP-LSKIP,8*IXSBM,8*MXSBM)  ! LOC. OF BMS
-        ENDIF
-        CINDEX(LINDEX+1:LINDEX+MXBMS)=CBREAD(1:MXBMS)
-        LINDEX=LINDEX+MXBMS
-        CALL G2_SBYTEC(CINDEX,LINDEX,0,8*4)    ! NUM BYTES IN INDEX RECORD
-     ELSEIF (NUMSEC.EQ.7) THEN                 ! FOUND DATA SECTION
-        CALL G2_SBYTEC(CINDEX,IBSKIP-LSKIP,8*IXDS,8*MXDS)   ! LOC. OF DATA SEC.
-        NUMFLD=NUMFLD+1
-        IF ((LINDEX+MLEN).GT.MBUF) THEN        ! ALLOCATE MORE SPACE IF
-           ! NECESSARY
-           NEWSIZE=MAX(MBUF+NEXT,MBUF+LINDEX)
-           CALL REALLOC(CBUF,MLEN,NEWSIZE,ISTAT)
-           IF ( ISTAT .NE. 0 ) THEN
-              NUMFLD=NUMFLD-1
-              IRET=4
-              RETURN
-           ENDIF
-           MBUF=NEWSIZE
-        ENDIF
-        CBUF(MLEN+1:MLEN+LINDEX)=CINDEX(1:LINDEX)
-        MLEN=MLEN+LINDEX
-     ELSE                           ! UNRECOGNIZED SECTION
-        IRET=5
-        RETURN
-     ENDIF
-     IBSKIP=IBSKIP+LENSEC
-  ENDDO
+  ! Loop through remaining sections creating an index for each field.
+  ibread = max(5, mxbms)
+  do
+     call baread(lugb, ibskip, ibread, lbread, cbread)
+     ctemp = cbread(1) // cbread(2) // cbread(3) // cbread(4)
+     if (ctemp .eq. '7777') return        ! end of message found
+     if (lbread .ne. ibread) then
+        iret = 2
+        return
+     endif
+     call g2_gbytec(cbread, lensec, 0*8, 4*8)
+     call g2_gbytec(cbread, numsec, 4*8, 1*8)
 
-  RETURN
-END SUBROUTINE IXGB2
+     if (numsec .eq. 2) then                 ! save local use location
+        loclus = ibskip - lskip
+     elseif (numsec .eq. 3) then                 ! save gds info
+        lengds = lensec
+        cgds = char(0)
+        call baread(lugb, ibskip, lengds, lbread, cgds)
+        if (lbread .ne. lengds) then
+           iret = 2
+           return
+        endif
+        locgds = ibskip - lskip
+     elseif (numsec .eq. 4) then                 ! found pds
+        cindex = char(0)
+        call g2_sbytec(cindex, lskip, 8 * ixskp, 8 * mxskp)    ! bytes to skip
+        call g2_sbytec(cindex, loclus, 8 * ixlus, 8 * mxlus)   ! location of local use
+        call g2_sbytec(cindex, locgds, 8 * ixsgd, 8 * mxsgd)   ! location of gds
+        call g2_sbytec(cindex, ibskip - lskip, 8 * ixspd, 8 * mxspd)  ! location of pds
+        call g2_sbytec(cindex, lgrib, 8 * ixlen, 8 * mxlen)    ! len of grib2
+        cindex(41) = cver
+        cindex(42) = cdisc
+        call g2_sbytec(cindex, numfld + 1, 8 * ixfld, 8 * mxfld)   ! field num
+        cindex(ixids + 1:ixids + lensec1) = cids(1:lensec1)
+        lindex = ixids + lensec1
+        cindex(lindex + 1:lindex + lengds) = cgds(1:lengds)
+        lindex = lindex + lengds
+        ilnpds = lensec
+        call baread(lugb, ibskip, ilnpds, lbread, cindex(lindex + 1))
+        if (lbread .ne. ilnpds) then
+           iret = 2
+           return
+        endif
+        !   cindex(lindex+1:lindex+ilnpds) = cbread(1:ilnpds)
+        lindex = lindex + ilnpds
+     elseif (numsec .eq. 5) then                 ! found drs
+        call g2_sbytec(cindex, ibskip-lskip, 8 * ixsdr, 8 * mxsdr)  ! location of drs
+        ilndrs = lensec
+        call baread(lugb, ibskip, ilndrs, lbread, cindex(lindex+1))
+        if (lbread .ne. ilndrs) then
+           iret = 2
+           return
+        endif
+        !   cindex(lindex+1:lindex+ilndrs) = cbread(1:ilndrs)
+        lindex = lindex + ilndrs
+     elseif (numsec .eq. 6) then                 ! found bms
+        indbmp = mova2i(cbread(6))
+        if (indbmp .lt. 254) then
+           locbms = ibskip - lskip
+           call g2_sbytec(cindex, locbms, 8 * ixsbm, 8 * mxsbm)  ! loc. of bms
+        elseif ( indbmp .eq. 254 ) then
+           call g2_sbytec(cindex, locbms, 8 * ixsbm, 8 * mxsbm)  ! loc. of bms
+        elseif ( indbmp .eq. 255 ) then
+           call g2_sbytec(cindex, ibskip-lskip, 8 * ixsbm, 8 * mxsbm)  ! loc. of bms
+        endif
+        cindex(lindex + 1:lindex + mxbms) = cbread(1:mxbms)
+        lindex = lindex + mxbms
+        call g2_sbytec(cindex, lindex, 0, 8 * 4)    ! num bytes in index record
+     elseif (numsec .eq. 7) then                 ! found data section
+        call g2_sbytec(cindex, ibskip-lskip, 8 * ixds, 8 * mxds)   ! loc. of data sec.
+        numfld = numfld + 1
+        if ((lindex + mlen) .gt. mbuf) then        ! allocate more space if necessary.
+           newsize = max(mbuf + next, mbuf + lindex)
+           call realloc(cbuf, mlen, newsize, istat)
+           if ( istat .ne. 0 ) then
+              numfld = numfld - 1
+              iret = 4
+              return
+           endif
+           mbuf = newsize
+        endif
+        cbuf(mlen + 1:mlen + lindex) = cindex(1:lindex)
+        mlen = mlen + lindex
+     else                           ! unrecognized section
+        iret = 5
+        return
+     endif
+     ibskip = ibskip + lensec
+  enddo
+end subroutine ixgb2

@@ -1,11 +1,11 @@
 !> @file
-!> @brief This Fortran module extracts or stores arbitrary size values
-!> between packed bit string and unpacked array.
+!> @brief Extract or store arbitrary size values between packed bit
+!> string and unpacked array.
 !> @author Stephen Gilbert @date 2004-04-27
 
-!> This subrountine is to extract arbitrary size values from a
-!> packed bit string, right justifying each value in the unpacked
-!> array without skip and interations.
+!> Extract arbitrary size values from a packed bit string, right
+!> justifying each value in the unpacked array without skip and
+!> interations.
 !>
 !> This should be used when input array IN has only one element. If in
 !> has more elements, use g2_sbytesc().
@@ -23,12 +23,11 @@ subroutine g2_gbytec(in, iout, iskip, nbits)
   integer, intent(inout) :: iout(*)
   integer, intent(in) :: iskip, nbits
   call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
-  return
 end subroutine g2_gbytec
 
-!> This subrountine is to put arbitrary size values into a packed bit
-!> string, taking the low order bits from each value in the unpacked
-!> array without skip and interation.
+!> Put arbitrary size values into a packed bit string, taking the low
+!> order bits from each value in the unpacked array without skip and
+!> interation.
 !>
 !> This should be used when input array IN has only one element. If IN
 !> has more elements, use G2_SBYTESC().
@@ -46,12 +45,11 @@ subroutine g2_sbytec(out, in, iskip, nbits)
   integer, intent(in) :: in(*)
   integer, intent(in) :: iskip, nbits
   call g2_sbytesc(out, in, iskip, nbits, 0, 1)
-  return
 end subroutine g2_sbytec
 
-!> This subrountine is to extract arbitrary size values from a
-!> packed bit string, right justifying each value in the unpacked
-!> array with skip and interation options.
+!> Extract arbitrary size values from a packed bit string, right
+!> justifying each value in the unpacked array with skip and
+!> interation options.
 !>
 !> @param[in] in array input
 !> @param[out] iout unpacked array output
@@ -70,7 +68,6 @@ subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)
   integer :: tbit, bitcnt
   integer, parameter :: ones(8) = (/ 1, 3, 7, 15, 31, 63, 127, 255 /)
 
-  ! implicit none additions
   integer :: nbit, i, index, ibit, itmp
   integer, external :: mova2i
 
@@ -105,12 +102,11 @@ subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)
      iout(i) = itmp
   enddo
 
-  return
 end subroutine g2_gbytesc
 
-!> This subrountine is to put arbitrary size values into a packed bit
-!> string, taking the low order bits from each value in the unpacked
-!> array with skip and interation options.
+!> Put arbitrary size values into a packed bit string, taking the low
+!> order bits from each value in the unpacked array with skip and
+!> interation options.
 !>
 !> @param[out] out Packed array output.
 !> @param[in] in Unpacked array input.
@@ -126,15 +122,14 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
   character*1, intent(out) :: out(*)
   integer, intent(in) :: in(n)
   integer :: bitcnt, tbit
-  integer, parameter :: ones(8)=(/ 1,  3,  7, 15, 31, 63,127,255/)
+  integer, parameter :: ones(8)=(/ 1,  3,  7, 15, 31, 63, 127, 255/)
 
-  !implicit none additions
   integer, intent(in) :: iskip, nbits, nskip, n
   integer :: nbit, i, itmp, index, ibit, imask, itmp2, itmp3
   integer, external :: mova2i
 
-  !     number bits from zero to ...
-  !     nbit is the last bit of the field to be filled
+  ! number bits from zero to ...
+  ! nbit is the last bit of the field to be filled
   nbit = iskip + nbits - 1
   do i = 1, n
      itmp = in(i)
@@ -143,7 +138,7 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
      ibit = mod(nbit, 8)
      nbit = nbit + nbits + nskip
 
-     !        make byte aligned
+     ! make byte aligned
      if (ibit .ne. 7) then
         tbit = min(bitcnt, ibit + 1)
         imask = ishft(ones(tbit), 7 - ibit)
@@ -155,9 +150,9 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
         index = index - 1
      endif
 
-     !        now byte aligned
+     ! now byte aligned
 
-     !        do by bytes
+     ! do by bytes
      do while (bitcnt .ge. 8)
         out(index) = char(iand(itmp, 255))
         itmp = ishft(itmp, -8)
@@ -165,7 +160,7 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
         index = index - 1
      enddo
 
-     !        do last byte
+     ! do last byte
      if (bitcnt .gt. 0) then
         itmp2 = iand(itmp, ones(bitcnt))
         itmp3 = iand(mova2i(out(index)), 255 - ones(bitcnt))
@@ -173,5 +168,4 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
      endif
   enddo
 
-  return
 end subroutine g2_sbytesc

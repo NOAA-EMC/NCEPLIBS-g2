@@ -1,9 +1,9 @@
 !> @file
-!> @brief This subroutine read and unpack sections 6 and 7 from a
-!> grib2 message.
+!> @brief This subroutine reads and unpacks sections 6 and 7 from a
+!> GRIB2 message.
 !> @author Stephen Gilbert @date 2002-01-11
 
-!> This subroutine reads and unpacks sections 6 and 7 from a grib2
+!> This subroutine reads and unpacks sections 6 and 7 from a GRIB2
 !> message.
 !>
 !> It assumes that the metadata for this field already exists in
