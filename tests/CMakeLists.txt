@@ -67,6 +67,7 @@ endif()
 
 # Copy test data files that are in the repo to the build directory.
 copy_test_data(testdata_g2grids)
+copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2.idx)
 
 # These tests link to the g2_d library.
 create_test(test_g2 g2_d)
@@ -87,6 +88,7 @@ create_test(test_cmplxpack g2_d)
 create_test(test_mkieee g2_d)
 create_test(test_getlocal g2_d)
 create_test(test_putgb2 g2_d)
+create_test(test_getg2i g2_d)
 create_test(test_realloc g2_d)
 
 # These tests link to the g2_4 library.
