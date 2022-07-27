@@ -170,6 +170,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   endif
 
   ! Extract grib message from file.
+  nullify(gribm)
   call getgb2rp(lugb, cbuf(lpos:), extract, gribm, leng, iret)
 
   k = jk
