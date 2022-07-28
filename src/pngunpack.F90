@@ -53,7 +53,4 @@ subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
         fld(j) = ref
      enddo
   endif
-
-
-  return
 end subroutine pngunpack

@@ -416,8 +416,5 @@ contains
     if (index.ne.-1) then
        getgdtlen=templates(index)%mapgridlen
     endif
-
   end function getgdtlen
-
-
 end module gridtemplates

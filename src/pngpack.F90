@@ -134,6 +134,4 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   idrstmpl(1) = iref
   idrstmpl(4) = nbits
   idrstmpl(5) = 0         ! original data were reals
-
-  return
 end subroutine pngpack

@@ -164,6 +164,4 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
         call getgb2r(lugb, cbuf(lpos), gfld, iret)
     endif
     k = jk
-
-    return
 end subroutine getgb2

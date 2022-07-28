@@ -218,6 +218,4 @@ subroutine gettemplates(cgrib,lcgrib,ifldnum,igds,igdstmpl, &
   print *,'gettemplates: The request was for the ',ifldnum, &
        ' field.'
   ierr=6
-
-  return
 end subroutine gettemplates

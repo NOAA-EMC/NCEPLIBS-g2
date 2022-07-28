@@ -135,6 +135,4 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
      iseek = lskip + lgrib
      call skgb(lugb, iseek, msk2, lskip, lgrib)
   enddo
-
-  return
 end subroutine getg2ir

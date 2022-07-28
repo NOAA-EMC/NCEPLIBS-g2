@@ -327,7 +327,6 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         ' field.'
     ierr = 6
 
-    return
 end subroutine getfield
 
 !>    This subroutine unpacks Section 3 (Grid Definition Section)
@@ -473,7 +472,6 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
         idefnum = 0
     endif
     if (allocated(mapgrid)) deallocate(mapgrid)
-    return                    ! End of Section 3 processing
 end subroutine unpack3
 
 !>    This subroutine unpacks Section 4 (Product Definition Section)
@@ -587,7 +585,6 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
         iofst = iofst + (32*numcoord)
     endif
     if (allocated(mappds)) deallocate(mappds)
-    return                    ! End of Section 4 processing
 end subroutine unpack4
 
 !>    This subroutine unpacks Section 5 (Data Representation Section)
@@ -685,7 +682,6 @@ subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
         mapdrslen = newmapdrslen
     endif
     if (allocated(mapdrs)) deallocate(mapdrs)
-    return                    ! End of Section 5 processing
 end subroutine unpack5
 
 !>    This subroutine unpacks Section 6 (Bit-Map Section) starting at
@@ -748,6 +744,4 @@ subroutine unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
             ' not recognized.'
         ierr = 4
     endif
-
-    return                    ! End of Section 6 processing
 end subroutine unpack6

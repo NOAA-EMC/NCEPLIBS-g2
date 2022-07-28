@@ -113,6 +113,4 @@ subroutine gf_unpack7(cgrib,lcgrib,iofst,igdsnum,igdstmpl, &
   endif
 
   iofst=iofst+(8*lensec)
-
-  return
 end subroutine gf_unpack7

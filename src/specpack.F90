@@ -107,6 +107,4 @@ subroutine specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)
   idrstmpl(4)=tmplsim(4)
   idrstmpl(9)=Ts
   idrstmpl(10)=1         ! Unpacked spectral data is 32-bit IEEE
-
-  return
 end subroutine specpack

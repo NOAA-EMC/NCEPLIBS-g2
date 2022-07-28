@@ -324,5 +324,4 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
     !  print *,i,fldo(i),fld(i),fldo(i)-fld(i)
     !enddo
 
-    return
 end subroutine comunpack

@@ -438,6 +438,4 @@ subroutine gf_getfld(cgrib, lcgrib, ifldnum, unpack, expand, gfld, ierr)
         ' field.'
     ierr = 6
     call gf_free(gfld)
-
-    return
 end subroutine gf_getfld

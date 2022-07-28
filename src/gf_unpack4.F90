@@ -146,6 +146,4 @@ subroutine gf_unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
         deallocate(coordieee)
         iofst = iofst + (32 * numcoord)
     endif
-
-    return
 end subroutine gf_unpack4

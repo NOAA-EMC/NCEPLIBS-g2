@@ -125,6 +125,4 @@ subroutine gf_unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, idrstmpl, &
         mapdrslen = newmapdrslen
     endif
     if( allocated(mapdrs) ) deallocate(mapdrs)
-
-    return    ! End of Section 5 processing
 end subroutine gf_unpack5

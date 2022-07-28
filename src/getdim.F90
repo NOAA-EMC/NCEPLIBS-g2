@@ -90,6 +90,4 @@ subroutine getdim(csec3, lcsec3, width, height, iscan)
     !
     if (associated(igdstmpl)) deallocate(igdstmpl)
     if (associated(list_opt)) deallocate(list_opt)
-
-    return
 end subroutine getdim

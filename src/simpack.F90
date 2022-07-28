@@ -169,6 +169,4 @@ subroutine simpack(fld,ndpts,idrstmpl,cpack,lcpack)
   idrstmpl(1)=iref
   idrstmpl(4)=nbits
   idrstmpl(5)=0         ! original data were reals
-
-  return
 end subroutine simpack
