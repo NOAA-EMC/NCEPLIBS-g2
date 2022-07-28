@@ -85,10 +85,9 @@ users must free this memory with subroutine gf_free().
 # Extracting GRIB2 Fields from a GRIB2 file
 
 Subroutine getgb2() can be used to extract a specified field from a
-file containing many GRIB2 messages. getgb2() searches an index to
-find the location of the user specified field. The index can be
-supplied from a seperate GRIB2 index file, or it can be generated
-internally.
+file containing many GRIB2 messages. It searches an index to find the
+location of the user specified field. The index can be supplied from a
+seperate GRIB2 index file, or it can be generated internally.
 
 The GRIB2 file (and the index file, if supplied) must be opened with a
 call to subroutine [baopen() or
