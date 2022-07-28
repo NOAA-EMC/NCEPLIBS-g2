@@ -4,22 +4,18 @@
 !
 ! Ed Hartnett 7/28/22
 program test_gdt2gds
-  use grib_mod, only: G2_VERSION
   implicit none
+  
+  integer :: idefnum = 0
+  integer :: igds(5), igdstmpl(19), ideflist(1)
+  integer :: kgds(200), igrid, iret
 
-  character(len=5) :: version_in
+  print *, 'Testing gdt2gds()...'
 
-  print *, 'Testing version string...'
-  print *, G2_VERSION
-
-  ! Open the VERSION file and get the value.
-  open(20, file = 'VERSION', status = 'old')
-  read(20,'(A5)') version_in
-  close(20)
-  print *, G2_VERSION, 'g2lib-' // version_in
-
-  ! Check the value of G2_VERSION.
-  if (G2_VERSION .ne. 'g2lib-' // version_in) stop 2
+  ! Lat/lon grid.
+  igds(5) = 0
+  call gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds,  &
+     igrid, iret)
   
   print *, 'SUCCESS!'
 end program test_gdt2gds
