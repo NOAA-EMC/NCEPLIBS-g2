@@ -21,6 +21,11 @@ program test_getgb2s
   character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: msk1, msk2, mnum
   integer :: nmess
+  integer :: expected_idsect(13) = (/ 7, 0, 2, 1, 1, 2022, 7, 18, 0, 0, 0, 0, 1 /)
+  integer :: expected_igdtmpl(19) = (/ 6, 0, 0, 0, 0, 0, 0, 241, 151, 0, 0, 50000000, &
+       210000000, 48, 25000000, 250000000, 166667, 166667, 0 /)
+  integer :: expected_ipdtmpl(15) = (/ 0, 5, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_idrtmpl(7) = (/ 1099431936, 0, 2, 9, 0, 0, 255 /)
 
   ! Interfaces are needed due to pointers in the parameter lists.
   interface
@@ -79,6 +84,28 @@ program test_getgb2s
   call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jgdt, k, gfld, lpos, iret)
   if (iret .ne. 0) stop 101
+  if (gfld%version .ne. 2 .or. gfld%discipline .ne. 10) stop 102
+  if (gfld%idsectlen .ne. 13) stop 103
+  if (gfld%ifldnum .ne. 1) stop 105
+  if (gfld%griddef .ne. 0) stop 106
+  if (gfld%ngrdpts .ne. 36391) stop 107
+  if (gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. gfld%num_opt .ne. 0) stop 108
+  if (gfld%igdtnum .ne. 0 .or. gfld%igdtlen .ne. 19) stop 109
+  if (gfld%ipdtnum .ne. 0 .or. gfld%ipdtlen .ne. 15 .or. gfld%num_coord .ne. 0) stop 110
+  if (gfld%unpacked .neqv. .FALSE. .or. gfld%expanded .neqv. .FALSE. .or. gfld%ibmap .ne. 0) stop 111
+  do i = 1, gfld%idsectlen
+     if (gfld%idsect(i) .ne. expected_idsect(i)) stop 200
+  end do
+  do i = 1, gfld%igdtlen
+     if (gfld%igdtmpl(i) .ne. expected_igdtmpl(i)) stop 201
+  end do
+  do i = 1, gfld%ipdtlen
+     if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i)) stop 202
+  end do
+  do i = 1, gfld%idrtlen
+     if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 203
+  end do
+  
 
   ! Free memory.
   deallocate(cbuf)
