@@ -112,7 +112,6 @@
 !> @author Stephen Gilbert @date 2002-01-15
 subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jgdt, k, gfld, lpos, iret)
-
   use grib_mod
   implicit none
 
