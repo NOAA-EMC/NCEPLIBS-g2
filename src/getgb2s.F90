@@ -86,8 +86,6 @@
 !>   DATA](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml).
 !> @param[in] jpdtn Product Definition Template (PDT) number (n)
 !> (if = -1, don't bother matching PDT - accept any)
-!> @param[in] jpdtn Product Definition Template (PDT) number (n)
-!> (if = -1, don't bother matching PDT - accept any)
 !> @param[in] jgdtn Grid Definition Template (GDT) number (if = -1,
 !> don't bother matching GDT - accept any).
 !> @param[in] jgdt array of values defining the Grid Definition
@@ -178,18 +176,18 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
   nullify(gfld%coord_list, gfld%idrtmpl, gfld%bmap, gfld%fld)
 
   ! Search for request.
-  do while(iret .ne. 0 .and. k .lt. nnum)
+  do while (iret .ne. 0 .and. k .lt. nnum)
      k = k + 1
      call g2_gbytec(cbuf, inlen, ipos * 8, 4 * 8)    ! get length of current
      ! index record
-     if ( k .le. j ) then           ! skip this index
+     if (k .le. j) then           ! skip this index
         ipos = ipos + inlen
         cycle
      endif
 
      ! Check if grib2 discipline is a match.
      call g2_gbytec(cbuf, gfld%discipline, (ipos + 41) * 8, 1 * 8)
-     if ( (jdisc .ne. -1) .and. (jdisc .ne. gfld%discipline) ) then
+     if ((jdisc .ne. -1) .and. (jdisc .ne. gfld%discipline)) then
         ipos = ipos + inlen
         cycle
      endif
@@ -200,17 +198,17 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      iof = 0
      call gf_unpack1(cbuf(ipos + 45), lsec1, iof, gfld%idsect, &
           gfld%idsectlen, icnd)
-     if ( icnd .eq. 0 ) then
+     if (icnd .eq. 0) then
         match1 = .true.
         do i = 1, gfld%idsectlen
-           if ( (jids(i) .ne. -9999) .and. &
-                (jids(i) .ne. gfld%idsect(i)) ) then
+           if ((jids(i) .ne. -9999) .and. &
+                (jids(i) .ne. gfld%idsect(i))) then
               match1 = .false.
               exit
            endif
         enddo
      endif
-     if ( .not. match1 ) then
+     if (.not. match1) then
         deallocate(gfld%idsect)
         ipos = ipos + inlen
         cycle
@@ -220,19 +218,19 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jpos = ipos + 44 + lsec1
      match3 = .false.
      call g2_gbytec(cbuf, lsec3, jpos * 8, 4 * 8)  ! get length of gds
-     if ( jgdtn .eq. -1 ) then
+     if (jgdtn .eq. -1) then
         match3 = .true.
      else
         call g2_gbytec(cbuf, numgdt, (jpos + 12) * 8, 2 * 8)  ! get gdt template no.
-        if ( jgdtn .eq. numgdt ) then
+        if (jgdtn .eq. numgdt) then
            iof = 0
            call gf_unpack3(cbuf(jpos + 1), lsec3, iof, kgds, gfld%igdtmpl, &
                 gfld%igdtlen, gfld%list_opt, gfld%num_opt, icnd)
-           if ( icnd .eq. 0 ) then
+           if (icnd .eq. 0) then
               match3 = .true.
               do i = 1, gfld%igdtlen
-                 if ( (jgdt(i) .ne. -9999) .and. &
-                      (jgdt(i) .ne. gfld%igdtmpl(i)) ) then
+                 if ((jgdt(i) .ne. -9999) .and. &
+                      (jgdt(i) .ne. gfld%igdtmpl(i))) then
                     match3 = .false.
                     exit
                  endif
@@ -240,7 +238,7 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
            endif
         endif
      endif
-     if ( .not. match3 ) then
+     if (.not. match3) then
         if (associated(gfld%igdtmpl)) deallocate(gfld%igdtmpl)
         if (associated(gfld%list_opt)) deallocate(gfld%list_opt)
         ipos = ipos + inlen
@@ -257,20 +255,20 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jpos = jpos + lsec3
      match4 = .false.
      call g2_gbytec(cbuf, lsec4, jpos * 8, 4 * 8)  ! get length of pds
-     if ( jpdtn .eq. -1 ) then
+     if (jpdtn .eq. -1) then
         match4 = .true.
      else
         call g2_gbytec(cbuf, numpdt, (jpos + 7) * 8, 2 * 8)  ! get pdt template no.
-        if ( jpdtn .eq. numpdt ) then
+        if (jpdtn .eq. numpdt) then
            iof = 0
            call gf_unpack4(cbuf(jpos + 1), lsec4, iof, gfld%ipdtnum, &
                 gfld%ipdtmpl, gfld%ipdtlen, &
                 gfld%coord_list, gfld%num_coord, icnd)
-           if ( icnd .eq. 0 ) then
+           if (icnd .eq. 0) then
               match4 = .true.
               do i = 1, gfld%ipdtlen
-                 if ( (jpdt(i) .ne. -9999) .and. &
-                      (jpdt(i) .ne. gfld%ipdtmpl(i)) ) then
+                 if ((jpdt(i) .ne. -9999) .and. &
+                      (jpdt(i) .ne. gfld%ipdtmpl(i))) then
                     match4 = .false.
                     exit
                  endif
@@ -278,19 +276,19 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
            endif
         endif
      endif
-     if ( .not. match4 ) then
+     if (.not. match4) then
         if (associated(gfld%ipdtmpl)) deallocate(gfld%ipdtmpl)
         if (associated(gfld%coord_list)) deallocate(gfld%coord_list)
      endif
 
      ! If request is found set values for derived type gfld and return.
-     if(match1 .and. match3 .and. match4) then
+     if (match1 .and. match3 .and. match4) then
         lpos = ipos + 1
         call g2_gbytec(cbuf, gfld%version, (ipos + 40) * 8, 1 * 8)
         call g2_gbytec(cbuf, gfld%ifldnum, (ipos + 42) * 8, 2 * 8)
         gfld%unpacked = .false.
         jpos = ipos + 44 + lsec1
-        if ( jgdtn .eq. -1 ) then     ! unpack gds, if not done before
+        if (jgdtn .eq. -1) then     ! unpack gds, if not done before
            iof = 0
            call gf_unpack3(cbuf(jpos + 1), lsec3, iof, kgds, gfld%igdtmpl, &
                 gfld%igdtlen, gfld%list_opt, gfld%num_opt, icnd)
@@ -301,7 +299,7 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
            gfld%igdtnum = kgds(5)
         endif
         jpos = jpos + lsec3
-        if ( jpdtn .eq. -1 ) then     ! unpack pds, if not done before
+        if (jpdtn .eq. -1 ) then     ! unpack pds, if not done before
            iof = 0
            call gf_unpack4(cbuf(jpos + 1), lsec4, iof, gfld%ipdtnum, &
                 gfld%ipdtmpl, gfld%ipdtlen, &
