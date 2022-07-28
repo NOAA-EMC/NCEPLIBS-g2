@@ -109,7 +109,7 @@ program test_getgb2s
 
   ! Free memory.
   deallocate(cbuf)
-!  call gf_free(gfld)
+  call gf_free(gfld)
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
