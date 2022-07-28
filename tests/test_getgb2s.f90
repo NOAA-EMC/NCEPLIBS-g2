@@ -11,17 +11,26 @@ program test_getgb2s
   integer :: lugi
   integer :: lugb = 3
   integer :: leng
-  character(len=1), pointer, dimension(:) :: gribm
   integer :: j, jdisc, jpdtn, jgdtn
   integer :: jids(13), jpdt(100), jgdt(250)
   logical :: extract
   integer :: i
-  character(len = 1) :: cbuf(5000)
   integer :: nlen, nnum
   integer :: k, lpos, iret
   type(gribfield) :: gfld
-  
+  character(len=1), pointer, dimension(:) :: cbuf(:)
+  integer :: msk1, msk2, mnum
+  integer :: nmess
+
   ! Interfaces are needed due to pointers in the parameter lists.
+  interface
+     subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+       integer, intent(in) :: lugb, msk1, msk2, mnum
+       character(len = 1),pointer,dimension(:) :: cbuf
+       integer, intent(out) :: nlen, nnum, nmess, iret
+     end subroutine getg2ir
+  end interface
+  
   interface
      subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
           jgdt, k, gfld, lpos, iret)
@@ -40,6 +49,15 @@ program test_getgb2s
   print *, 'Indexing a real GRIB2 file WW3_Regional_US_West_Coast_20220718_0000.grib2...'
   call baopenr(lugb, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
+
+  msk1 = 1000
+  msk2 = 1000
+  mnum = 0
+  nullify(cbuf)
+  call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+  if (iret .ne. 0) stop 101
+  if (nlen .ne. 137600 .or. nnum .ne. 688 .or. nmess .ne. 688) stop 102
+  print *, 'nlen, nnum, nmess: ', nlen, nnum, nmess
 
   lugi = 0
   j = 0
@@ -63,6 +81,7 @@ program test_getgb2s
 !  if (k .ne. 1 .or. leng .ne. 11183) stop 110
 
   ! Free memory.
+  deallocate(cbuf)
 !  call gf_free(gfld)
 
   call baclose(lugb, iret)
