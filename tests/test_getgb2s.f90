@@ -50,6 +50,7 @@ program test_getgb2s
   call baopenr(lugb, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
 
+  ! Get the index information for the GRIB2 file.
   msk1 = 1000
   msk2 = 1000
   mnum = 0
@@ -59,6 +60,7 @@ program test_getgb2s
   if (nlen .ne. 137600 .or. nnum .ne. 688 .or. nmess .ne. 688) stop 102
   print *, 'nlen, nnum, nmess: ', nlen, nnum, nmess
 
+  ! Now learn about a field.
   lugi = 0
   j = 0
   jdisc = -1
@@ -74,11 +76,9 @@ program test_getgb2s
      jgdt(i) = -9999
   end do
   nlen = 5000
-
-  ! call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
-  !    jgdt, k, gfld, lpos, iret)
-  ! if (iret .ne. 0) stop 101
-!  if (k .ne. 1 .or. leng .ne. 11183) stop 110
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+     jgdt, k, gfld, lpos, iret)
+  if (iret .ne. 0) stop 101
 
   ! Free memory.
   deallocate(cbuf)
