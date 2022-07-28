@@ -1,22 +1,21 @@
 !> @file
-!> @brief This subroutine finds and extracts a GRIB2 message from a
-!> file.
+!> @brief Find and extract a GRIB2 message from a file.
 !> @author Mark Iredell @date 1994-04-01
 
-!> This subroutine finds and extracts a GRIB2 message from a file.
+!> Find and extract a GRIB2 message from a file.
 !>
-!> This subroutine reads a grib index file (or optionally the grib
+!> This subroutine reads a GRIB index file (or optionally the GRIB
 !> file itself) to get the index buffer (i.e. table of contents) for
-!> the grib file.  It finds in the index buffer a reference to the
-!> grib field requested.
+!> the GRIB file. It finds in the index buffer a reference to the
+!> GRIB field requested.
 !>
-!> The grib field request specifies the number of fields to skip and
+!> The GRIB field request specifies the number of fields to skip and
 !> the unpacked identification section, grid definition template and
 !> product defintion section parameters. (A requested parameter of
 !> -9999 means to allow any value of this parameter to be found.)
 !>
-!> If the requested grib field is found, then it is read from the grib
-!> file and unpacked. If the grib field is not found, then the return
+!> If the requested GRIB field is found, then it is read from the GRIB
+!> file and unpacked. If the GRIB field is not found, then the return
 !> code will be nonzero.
 !>
 !> Note that derived type @ref grib_mod::gribfield contains pointers
@@ -31,17 +30,17 @@
 !> -----|------------|---------
 !> 1994-04-01 | Mark Iredell | Initial
 !> 1995-10-31 | Mark Iredell | modularized portions of code into subprograms and allowed for unspecified index file
-!> 2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with grib2
-!> 2003-12-17 | Stephen Gilbert | modified from getgb2 to return packed grib2 message
+!> 2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with GRIB2
+!> 2003-12-17 | Stephen Gilbert | modified from getgb2 to return packed GRIB2 message
 !>
-!> @param[in] lugb Unit of the unblocked grib data file. The
+!> @param[in] lugb Unit of the unblocked GRIB data file. The
 !> file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
 !> routine.
-!> @param[in] lugi Unit of the unblocked grib index file. If
+!> @param[in] lugi Unit of the unblocked GRIB index file. If
 !> nonzero, file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
-!> subroutine. Set to 0 to get index buffer from the grib file.
+!> subroutine. Set to 0 to get index buffer from the GRIB file.
 !> @param[in] J Number of fields to skip (set to 0 to search
 !> from beginning).
 !> @param[in] jdisc GRIB2 discipline number of requested field. See
@@ -87,15 +86,15 @@
 !> @param[in] extract value indicating whether to return a
 !> GRIB2 message with just the requested field, or the entire
 !> GRIB2 message containing the requested field.
-!> - .true. return grib2 message containing only the requested field.
-!> - .false. return entire grib2 message containing the requested field.
+!> - .true. return GRIB2 message containing only the requested field.
+!> - .false. return entire GRIB2 message containing the requested field.
 !> @param[out] k field number unpacked.
-!> @param[out] gribm returned grib message.
-!> @param[out] leng length of returned grib message in bytes.
+!> @param[out] gribm returned GRIB message.
+!> @param[out] leng length of returned GRIB message in bytes.
 !> @param[out] iret integer return code
 !> - 0 No error.
 !> - 96 Error reading index.
-!> - 97 Error reading grib file.
+!> - 97 Error reading GRIB file.
 !> - 99 Request not found.
 !>
 !> @note Specify an index file if feasible to increase speed.
