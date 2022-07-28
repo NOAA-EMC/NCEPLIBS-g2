@@ -10,10 +10,8 @@ program test_getgb2s
 
   integer :: lugi
   integer :: lugb = 3
-  integer :: leng
   integer :: j, jdisc, jpdtn, jgdtn
   integer :: jids(13), jpdt(100), jgdt(250)
-  logical :: extract
   integer :: i
   integer :: nlen, nnum
   integer :: k, lpos, iret
