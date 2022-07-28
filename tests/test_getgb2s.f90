@@ -92,7 +92,6 @@ program test_getgb2s
   if (gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. gfld%num_opt .ne. 0) stop 108
   if (gfld%igdtnum .ne. 0 .or. gfld%igdtlen .ne. 19) stop 109
   if (gfld%ipdtnum .ne. 0 .or. gfld%ipdtlen .ne. 15 .or. gfld%num_coord .ne. 0) stop 110
-!  if (gfld%expanded .neqv. .FALSE.) stop 111
   if (gfld%unpacked .neqv. .FALSE.) stop 112
   if (gfld%ibmap .ne. 0) stop 113
   do i = 1, gfld%idsectlen
