@@ -78,9 +78,9 @@
 !> @param[in] jpdtn Product Definition Template (PDT) number (n)
 !> (if = -1, don't bother matching PDT - accept any)
 !> @param[in] jpdt Array of values defining the Product Definition
-!> Template 4.n of the field for which to search (=-9999 for wildcard).
-!> @param[in] jgdtn Grid Definition Template number (if = -1, don't
-!> bother matching gdt - accept any).
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] jgdtn Grid Definition Template (GDT) number (if = -1,
+!> don't bother matching GDT - accept any).
 !> @param[in] jgdt array of values defining the Grid Definition
 !> Template of the field for which to search (=-9999 for wildcard).
 !> @param[in] extract value indicating whether to return a
