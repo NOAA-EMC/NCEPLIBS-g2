@@ -1,45 +1,18 @@
 !> @file
-!> @brief Find a reference to the GRIB field requested in the index
-!> file.
+!> @brief Find information about a GRIB field from the index.
+!> file and fill a @ref grib_mod::gribfield.
 !> @author Stephen Gilbert @date 2002-01-15
 
-!> Find a reference to the GRIB field requested in the index
-!> file.
+!> Find information about a GRIB field from the index and fill a @ref
+!> grib_mod::gribfield.
 !>
-!> The grib field request specifies the number of
-!> messages to skip and the unpacked identification section, grid
-!> definition template and product defintion section parameters.
-!> (A requested parameter of -9999 means to allow any value of this
-!> parameter to be found.)
+!> For a description of the index record see getg2i().
 !>
-!> Each index record has the following form:
-!> - byte 001 - 004 length of index record
-!> - byte 005 - 008 bytes to skip in data file before grib message
-!> - byte 009 - 012 bytes to skip in message before lus (local use)
-!> set = 0, if no local use section in grib2 message.
-!> - byte 013 - 016 bytes to skip in message before gds
-!> - byte 017 - 020 bytes to skip in message before pds
-!> - byte 021 - 024 bytes to skip in message before drs
-!> - byte 025 - 028 bytes to skip in message before bms
-!> - byte 029 - 032 bytes to skip in message before data section
-!> - byte 033 - 040 bytes total in the message
-!> - byte 041 - 041 grib version number ( currently 2 )
-!> - byte 042 - 042 message discipline
-!> - byte 043 - 044 field number within grib2 message
-!> - byte 045 -  ii identification section (ids)
-!> - byte ii+1-  jj grid definition section (gds)
-!> - byte jj+1-  kk product definition section (pds)
-!> - byte kk+1-  ll the data representation section (drs)
-!> - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
+!> Users of this routine will need to include the line "use grib_mod"
+!> in their calling routine.
 !>
-!> Most of the decoded information for the selected grib field is
-!> returned in a derived type variable, gfld. gfld is of type @ref
-!> grib_mod::gribfield. Users of this routine will need to include the
-!> line "use grib_mod" in their calling routine.
-!>
-!> Each component of the gribfield type is described in the output
-!> argument list section below. Only the unpacked bitmap and data
-!> field components are not set by this routine.
+!> The unpacked bitmap and bitmap data field are the only components
+!> of the @ref grib_mod::gribfield type not set by this routine.
 !>
 !> ### Program History Log
 !> Date | Programmer | Comments

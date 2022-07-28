@@ -73,16 +73,14 @@ Subroutine getlocal() will return the requested occurrence of Section
 
 gf_getfld() can be used to get all information pertaining to the nth
 data field in the message. The subroutine returns all the unpacked
-values for each Section and Template in a Fortran 90 derived type
-gribfield, which is defined in module GRIB_MOD. An option exists that
-lets the user decide if the subroutine should unpack the Bit-map (if
-applicable) and the data values or just return the field description
-information.
+values for each Section and Template in a Fortran 90 derived type @ref
+grib_mod::gribfield. An option exists that lets the user decide if the
+subroutine should unpack the Bit-map (if applicable) and the data
+values or just return the field description information.
 
-Note that derived type gribfield contains pointers to dynamically
-allocated space that holds the contents of all arrays, and users are
-encouraged to free up this memory, when it is no longer needed, by an
-explicit call to subroutine gf_free().
+Note that derived type @ref grib_mod::gribfield contains pointers to
+dynamically allocated space that holds the contents of all arrays, and
+users must free this memory with subroutine gf_free().
 
 # Extracting GRIB2 Fields from a GRIB2 file
 
@@ -93,19 +91,19 @@ supplied from a seperate GRIB2 index file, or it can be generated
 internally.
 
 The GRIB2 file (and the index file, if supplied) must be opened with a
-call to subroutine baopen() prior to the call to getgb2().
+call to subroutine [baopen() or
+baopenr()](https://noaa-emc.github.io/NCEPLIBS-bacio/) prior to the
+call to getgb2().
 
 The decoded information for the selected GRIB field is returned in a
-derived type variable, gfld. Gfld is of type gribfield, which is
-defined in module grib_mod, so users of this routine will need to
-include the line "USE GRIB_MOD" in their calling routine.
+derived type variable of type @ref grib_mod::gribfield. Users of this
+routine will need to include the line 'use grib_mod' in their calling
+routine.
 
-Note that derived type gribfield contains pointers to many arrays of
-data. The memory for these arrays is allocated when the values in the
-arrays are set, to help minimize problems with array
-overloading. Because of this, users are encouraged to free up this
-memory, when it is no longer needed, by an explicit call to subroutine
-gf_free().
+Note that derived type @ref grib_mod::gribfield contains pointers to
+many arrays of data. The memory for these arrays is allocated when the
+values in the arrays are set. Users must free this memory, when it is
+no longer needed, with gf_free().
 
 Example usage:
 
