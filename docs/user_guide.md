@@ -89,10 +89,9 @@ file containing many GRIB2 messages. It searches an index to find the
 location of the user specified field. The index can be supplied from a
 seperate GRIB2 index file, or it can be generated internally.
 
-The GRIB2 file (and the index file, if supplied) must be opened with a
-call to subroutine [baopen() or
-baopenr()](https://noaa-emc.github.io/NCEPLIBS-bacio/) prior to the
-call to getgb2().
+The GRIB2 file (and the index file, if supplied) must have been opened with 
+[baopen() or
+baopenr()](https://noaa-emc.github.io/NCEPLIBS-bacio/).
 
 The decoded information for the selected GRIB field is returned in a
 derived type variable of type @ref grib_mod::gribfield. Users of this
