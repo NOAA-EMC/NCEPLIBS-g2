@@ -1,12 +1,13 @@
 !> @file
-!> @brief This routine converts grid information from a GRIB2 grid
+!> @brief Convert grid information from a GRIB2 grid
 !> to GRIB1 GDS info.
 !> @author Stephen Gilbert @date 2003-06-17
 
-!> This routine converts grid information from a GRIB2
-!> Grid Description Section as well as its Grid Definition
-!> Template to GRIB1 GDS info. In addition, a check is made
-!> to determine if the grid is a NCEP predefined grid.
+!> Convert grid information from a GRIB2 Grid Description Section as
+!> well as its Grid Definition Template to GRIB1 GDS info.
+!>
+!> In addition, a check is made to determine if the grid is a NCEP
+!> predefined grid.
 !>
 !> ### Program History Log
 !> Date | Programmer | Comments
