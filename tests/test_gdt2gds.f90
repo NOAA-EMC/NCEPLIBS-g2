@@ -27,7 +27,7 @@ program test_gdt2gds
 
   print *, 'Testing gdt2gds(), expect and ignore error messages...'
 
-  do i = 1, 4
+  do i = 1, 5
      igds(i) = 0
   end do
 
