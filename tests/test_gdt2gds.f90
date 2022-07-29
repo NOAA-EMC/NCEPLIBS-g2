@@ -27,6 +27,10 @@ program test_gdt2gds
 
   print *, 'Testing gdt2gds(), expect and ignore error messages...'
 
+  do i = 1, 4
+     igds(i) = 0
+  end do
+
   print *, 'testing with incorrect grid number...'
   igds(5) = 999
   do i = 1, MAXIGDS
