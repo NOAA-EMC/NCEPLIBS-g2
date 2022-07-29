@@ -92,6 +92,7 @@ create_test(test_getlocal g2_d)
 create_test(test_putgb2 g2_d)
 create_test(test_getg2i g2_d)
 create_test(test_realloc g2_d)
+create_test(test_gdt2gds g2_d)
 
 # These tests link to the g2_4 library.
 create_test(test_simpack g2_4)
