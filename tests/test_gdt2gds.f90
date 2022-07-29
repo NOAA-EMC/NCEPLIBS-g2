@@ -25,7 +25,7 @@ program test_gdt2gds
   integer :: rotatei_kgds(MAXKGDS) = (/ 203, 65535, 1, 1, 1, 136, 1, 1, 65535, 1, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0 /)
   integer :: rotate2_kgds(MAXKGDS) = (/ 205, 1000, 1000, 1, 1, 136, 1, 1, 1, 1, 1000, 1, 1, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
 
-  print *, 'Testing gdt2gds()...'
+  print *, 'Testing gdt2gds(), expect and ignore error messages...'
 
   print *, 'testing with incorrect grid number...'
   igds(5) = 999
@@ -65,7 +65,7 @@ program test_gdt2gds
        igrid, iret)
   if (iret .ne. 0) stop 41
   do i = 1, MAXIGDS
-     !print *, i, kgds(i), latloni_kgds(i)
+     print *, i, kgds(i), latloni_kgds(i)
      if (kgds(i) .ne. latloni_kgds(i)) stop 101
   end do
   idefnum = 0
