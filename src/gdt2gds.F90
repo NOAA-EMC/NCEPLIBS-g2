@@ -90,7 +90,7 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds,  &
      kgds(22) = 0
 
      ! Process irreg grid stuff,  if necessary.
-     if (idefnum.ne.0) then
+     if (idefnum .ne. 0) then
         if (igdstmpl(8) .eq. -1) then
            kgds(2) = 65535
            kgds(9) = 65535
@@ -101,8 +101,8 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds,  &
         endif
         kgds(19) = 0
         kgds(20) = 33
-        if (kgds(1) .eq. 1.OR.kgds(1) .eq. 3) kgds(20) = 43
-        kgds(21) = igds(2)                   ! num of grid points
+        if (kgds(1) .eq. 1 .OR. kgds(1) .eq. 3) kgds(20) = 43
+        kgds(21) = igds(2) ! num of grid points
         do j = 1, idefnum
            kgds(21 + j) = ideflist(j)
         enddo
