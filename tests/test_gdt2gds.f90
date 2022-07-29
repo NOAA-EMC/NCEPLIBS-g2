@@ -14,15 +14,15 @@ program test_gdt2gds
   integer :: kgds(200), igrid, iret
   integer :: i
   integer :: latlon_kgds(MAXKGDS) = (/ 0, 1000, 1000, 1, 1, 136, 1, 1, 1, 1, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
-  integer :: latloni_kgds(MAXKGDS) = (/ 0, 1000, 1, 1, 1, 136, 1, 1, 1, 1, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0 /)
+  integer :: latloni_kgds(MAXKGDS) = (/ 0, 65535, 1, 1, 1, 136, 1, 1, 65535, 1, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0 /)
   integer :: mercator_kgds(MAXKGDS) = (/ 1, 1000, 1000, 1, 1, 136, 1, 1, 1, 0, 1000, 1, 1, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
   integer :: lambert_kgds(MAXKGDS) = (/ 3, 1000, 1000, 1, 1, 136, 1, 1, 1, 1000, 1000, 1, 1, 1, 1, 0, 0, 0, 0, 255, 0, 0 /)
   integer :: gaussian_kgds(MAXKGDS) = (/ 4, 1000, 1000, 1, 1, 136, 1, 1, 1, 1000, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
   integer :: polar_kgds(MAXKGDS) = (/ 5, 1000, 1000, 1, 1, 136, 1, 1, 1, 1000, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
   integer :: curvilinear_kgds(MAXKGDS) = (/ 204, 1000, 1000, 0, 0, 136, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
-  integer :: curvilineari_kgds(MAXKGDS) = (/ 204, 1000, 1, 0, 0, 136, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0 /)
+  integer :: curvilineari_kgds(MAXKGDS) = (/ 204, 65535, 1, 0, 0, 136, 0, 0, 65535, 0, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0 /)
   integer :: rotate_kgds(MAXKGDS) = (/ 203, 1000, 1000, 1, 1, 136, 1, 1, 1, 1, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
-  integer :: rotatei_kgds(MAXKGDS) = (/ 203, 1000, 1, 1, 1, 136, 1, 1, 1, 1, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0 /)
+  integer :: rotatei_kgds(MAXKGDS) = (/ 203, 65535, 1, 1, 1, 136, 1, 1, 65535, 1, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 33, 0, 0 /)
   integer :: rotate2_kgds(MAXKGDS) = (/ 205, 1000, 1000, 1, 1, 136, 1, 1, 1, 1, 1000, 1, 1, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
 
   print *, 'Testing gdt2gds()...'
@@ -58,13 +58,14 @@ program test_gdt2gds
   do i = 1, MAXIGDS
      igdstmpl(i) = 1000
   end do
+  igdstmpl(8) = -1
   igdstmpl(9) = 1
   idefnum = 1
   call gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds,  &
        igrid, iret)
   if (iret .ne. 0) stop 41
   do i = 1, MAXIGDS
-!     print *, i, kgds(i), latloni_kgds(i)
+     !print *, i, kgds(i), latloni_kgds(i)
      if (kgds(i) .ne. latloni_kgds(i)) stop 101
   end do
   idefnum = 0
@@ -139,6 +140,7 @@ program test_gdt2gds
   do i = 1, MAXIGDS
      igdstmpl(i) = 1000
   end do
+  igdstmpl(8) = -1
   igdstmpl(9) = 1
   idefnum = 1
   call gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds,  &
@@ -168,6 +170,7 @@ program test_gdt2gds
   do i = 1, MAXIGDS
      igdstmpl(i) = 1000
   end do
+  igdstmpl(8) = -1
   igdstmpl(9) = 1
   idefnum = 1
   call gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds,  &
