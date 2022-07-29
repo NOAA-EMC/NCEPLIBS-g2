@@ -39,7 +39,8 @@
 !> defined.
 !> @param[in] ideflist Optional integer array containing the number of
 !> grid points contained in each row (or column).
-!> @param[out] kgds GRIB1 GDS as described in w3fi63 format.
+!> @param[out] kgds GRIB1 GDS as described in [NCEPLIBS-w3emc w3fi63()
+!> function](https://noaa-emc.github.io/NCEPLIBS-w3emc/w3fi63_8f.html).
 !> @param[out] igrid NCEP predefined GRIB1 grid number. Set to 255, if
 !> not an NCEP grid.
 !> @param[out] iret Error return value:
