@@ -1,8 +1,9 @@
+! This is a test program for project NCEPLIBS-g2.
+!
 ! This program tests getg2i.F90
 !
 ! Brian Curtis 02/07/2022
 program test_getg2i
-  !    use grib_mod
   use bacio_module
   implicit none
 
