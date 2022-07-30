@@ -53,6 +53,7 @@ program test_pdstemplates
 
   print *, 'testing extpdstemplate() some more...'
   call extpdstemplate(3, list, nummap, map)
+  print *, 'nummap = ', nummap
   if (nummap .ne. 32) stop 20
   
   print *, 'SUCCESS'
