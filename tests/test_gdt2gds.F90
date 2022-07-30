@@ -65,6 +65,7 @@ program test_gdt2gds
   igdstmpl(8) = -1
   igdstmpl(9) = 1
   idefnum = 1
+  ideflist(1) = 0
   call gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds,  &
        igrid, iret)
   if (iret .ne. 0) stop 41

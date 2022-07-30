@@ -20,7 +20,7 @@
 !> @author Stephen Gilbert @date 2002-12-19
 subroutine specunpack(cpack,len,idrstmpl,ndpts,JJ,KK,MM,fld)
   implicit none
-  
+
   character(len=1),intent(in) :: cpack(len)
   integer,intent(in) :: ndpts,len,JJ,KK,MM
   integer,intent(in) :: idrstmpl(*)

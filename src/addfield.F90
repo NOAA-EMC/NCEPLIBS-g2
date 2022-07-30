@@ -1,21 +1,21 @@
 !> @file
-!> @brief Contains a subroutine which packs up Sections 4 through 7
-!> for a given field and adds them to a GRIB2 message.
+!> @brief Pack up Sections 4 through 7 for a given field and add them
+!> to a GRIB2 message.
 !> @author Stephen Gilbert @date 2000-05-02
 
-!> This subroutine packs up Sections 4 through 7 for a given field
-!> and adds them to a GRIB2 message. They are Product Definition
-!> Section, Data Representation Section, Bit-Map Section and Data
-!> Section, respectively.
+!> Pack up Sections 4 through 7 for a given field and add them to a
+!> GRIB2 message.
+!>
+!> They are the Product Definition Section, Data Representation
+!> Section, Bit-Map Section and Data Sections.
 !>
 !> This routine is used with routines gribcreate(), addlocal(),
 !> addgrid(), and gribend() to create a complete GRIB2
-!> message. Subroutine gribcreate() must be called first to
-!> initialize a new GRIB2 message. Also, subroutine addgrid() must be
-!> called after gribcreate and before this routine to add the
-!> appropriate grid description to the GRIB2 message. Also, a call to
-!> gribend() is required to complete GRIB2 message after all fields
-!> have been added.
+!> message. Subroutine gribcreate() must be called first to initialize
+!> a new GRIB2 message. Subroutine addgrid() must be called after
+!> gribcreate() and before this routine to add the appropriate grid
+!> description to the GRIB2 message. A call to gribend() is required
+!> to complete GRIB2 message after all fields have been added.
 !>
 !> ### Program History Log
 !> Date | Programmer | Comments

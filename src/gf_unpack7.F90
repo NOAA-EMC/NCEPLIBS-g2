@@ -47,7 +47,7 @@
 subroutine gf_unpack7(cgrib,lcgrib,iofst,igdsnum,igdstmpl, &
      idrsnum,idrstmpl,ndpts,fld,ierr)
   implicit none
-  
+
   character(len=1),intent(in) :: cgrib(lcgrib)
   integer,intent(in) :: lcgrib,ndpts,igdsnum,idrsnum
   integer,intent(inout) :: iofst

@@ -34,7 +34,7 @@
 subroutine simpack(fld,ndpts,idrstmpl,cpack,lcpack)
   use intmath
   implicit none
-  
+
   integer,intent(in) :: ndpts
   real,intent(in) :: fld(ndpts)
   character(len=1),intent(out) :: cpack(*)

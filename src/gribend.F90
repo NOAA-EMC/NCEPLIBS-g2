@@ -25,7 +25,7 @@
 !> @author Stephen Gilbert @date 2000-05-02
 subroutine gribend(cgrib, lcgrib, lengrib, ierr)
   implicit none
-  
+
   character(len = 1), intent(inout) :: cgrib(lcgrib)
   integer, intent(in) :: lcgrib
   integer, intent(out) :: lengrib, ierr

@@ -7,7 +7,7 @@
 link_directories("/usr/local/lib")
 
 # Common functions used for testing
-set(lib_src creategrib.f90)
+set(lib_src creategrib.F90)
 add_library(g2_test_lib STATIC ${lib_src})
 target_link_libraries(g2_test_lib PRIVATE bacio::bacio)
 
@@ -40,7 +40,7 @@ endfunction()
 
 # This function builds, links, and runs a test program.
 function(create_test name g2_kind)
-  add_executable(${name} ${name}.f90)
+  add_executable(${name} ${name}.F90)
   target_link_libraries(${name} PRIVATE g2_test_lib ${g2_kind} PNG::PNG)
   add_test(${name} ${name})
 endfunction()
@@ -65,6 +65,8 @@ if(FTP_TEST_FILES)
   create_test(test_getgb2rp g2_d)  
   create_test(test_getgb2s g2_d)  
   create_test(test_getgb2p g2_d)  
+  create_test(test_getgb2r g2_d)  
+  create_test(test_getgb2ir g2_d)  
 endif()
 
 # Copy test data files that are in the repo to the build directory.

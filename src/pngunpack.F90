@@ -17,7 +17,7 @@
 !> @author Stephen Gilbert @date 2000-06-21
 subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
   implicit none
-  
+
   character(len = 1), intent(in) :: cpack(len)
   integer, intent(in) :: ndpts, len
   integer, intent(in) :: idrstmpl(*)
