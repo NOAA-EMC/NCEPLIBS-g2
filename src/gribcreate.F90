@@ -53,7 +53,7 @@
 !> @author Stephen Gilbert @date 2000-04-28
 subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   implicit none
-  
+
   character(len = 1), intent(inout) :: cgrib(lcgrib)
   integer, intent(in) :: listsec0(*), listsec1(*)
   integer, intent(in) :: lcgrib

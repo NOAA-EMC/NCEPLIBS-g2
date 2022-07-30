@@ -18,7 +18,7 @@
 !> @author Stephen Gilbert @date 2002-12-19
 subroutine specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)
   implicit none
-  
+
   real,intent(in) :: fld(ndpts)
   integer,intent(in) :: ndpts,JJ,KK,MM
   integer,intent(inout) :: idrstmpl(*)

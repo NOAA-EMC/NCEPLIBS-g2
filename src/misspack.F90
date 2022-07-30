@@ -46,7 +46,7 @@
 subroutine misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
   use intmath
   implicit none
-  
+
   integer,intent(in) :: ndpts,idrsnum
   real,intent(in) :: fld(ndpts)
   character(len=1),intent(out) :: cpack(*)

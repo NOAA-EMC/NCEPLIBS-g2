@@ -34,7 +34,7 @@
 !> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   implicit none
-  
+
   integer,intent(in) :: width,height
   real,intent(in) :: fld(width*height)
   character(len=1),intent(out) :: cpack(*)

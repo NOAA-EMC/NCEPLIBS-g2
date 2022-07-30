@@ -39,90 +39,90 @@
 subroutine gf_unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, idrstmpl, &
      mapdrslen, ierr)
 
-    use drstemplates
-    use re_alloc        !  needed for subroutine realloc
-    implicit none
+  use drstemplates
+  use re_alloc        !  needed for subroutine realloc
+  implicit none
 
-    character(len = 1),intent(in) :: cgrib(lcgrib)
-    integer, intent(in) :: lcgrib
-    integer, intent(inout) :: iofst
-    integer, intent(out) :: ndpts, idrsnum
-    integer, pointer, dimension(:) :: idrstmpl
-    integer, intent(out) :: ierr
+  character(len = 1),intent(in) :: cgrib(lcgrib)
+  integer, intent(in) :: lcgrib
+  integer, intent(inout) :: iofst
+  integer, intent(out) :: ndpts, idrsnum
+  integer, pointer, dimension(:) :: idrstmpl
+  integer, intent(out) :: ierr
 
-    integer, allocatable :: mapdrs(:)
-    integer :: mapdrslen
-    logical needext
+  integer, allocatable :: mapdrs(:)
+  integer :: mapdrslen
+  logical needext
 
-    !implicit none additions
-    integer :: lensec, iret, istat, i, nbits, isign, newmapdrslen
+  !implicit none additions
+  integer :: lensec, iret, istat, i, nbits, isign, newmapdrslen
 
-    ierr = 0
-    nullify(idrstmpl)
+  ierr = 0
+  nullify(idrstmpl)
 
-    call g2_gbytec(cgrib, lensec, iofst, 32)        ! Get Length of Section
-    iofst = iofst + 32
-    iofst = iofst + 8     ! skip section number
-    allocate(mapdrs(lensec))
+  call g2_gbytec(cgrib, lensec, iofst, 32)        ! Get Length of Section
+  iofst = iofst + 32
+  iofst = iofst + 8     ! skip section number
+  allocate(mapdrs(lensec))
 
-    call g2_gbytec(cgrib, ndpts, iofst, 32)    ! Get num of data points
-    iofst = iofst + 32
-    call g2_gbytec(cgrib, idrsnum, iofst, 16)     ! Get Data Rep Template Num.
-    iofst = iofst + 16
-    !   Gen Data Representation Template
-    call getdrstemplate(idrsnum, mapdrslen, mapdrs, needext, iret)
-    if (iret .ne. 0) then
-        ierr = 7
-        if( allocated(mapdrs) ) deallocate(mapdrs)
-        return
-    endif
-    !
-    !   Unpack each value into array ipdstmpl from the
-    !   the appropriate number of octets, which are specified in
-    !   corresponding entries in array mappds.
-    !
-    istat = 0
-    if (mapdrslen .gt. 0) allocate(idrstmpl(mapdrslen), stat = istat)
-    if (istat .ne. 0) then
-        ierr = 6
-        nullify(idrstmpl)
-        if( allocated(mapdrs) ) deallocate(mapdrs)
-        return
-    endif
-    do i = 1, mapdrslen
+  call g2_gbytec(cgrib, ndpts, iofst, 32)    ! Get num of data points
+  iofst = iofst + 32
+  call g2_gbytec(cgrib, idrsnum, iofst, 16)     ! Get Data Rep Template Num.
+  iofst = iofst + 16
+  !   Gen Data Representation Template
+  call getdrstemplate(idrsnum, mapdrslen, mapdrs, needext, iret)
+  if (iret .ne. 0) then
+     ierr = 7
+     if( allocated(mapdrs) ) deallocate(mapdrs)
+     return
+  endif
+  !
+  !   Unpack each value into array ipdstmpl from the
+  !   the appropriate number of octets, which are specified in
+  !   corresponding entries in array mappds.
+  !
+  istat = 0
+  if (mapdrslen .gt. 0) allocate(idrstmpl(mapdrslen), stat = istat)
+  if (istat .ne. 0) then
+     ierr = 6
+     nullify(idrstmpl)
+     if( allocated(mapdrs) ) deallocate(mapdrs)
+     return
+  endif
+  do i = 1, mapdrslen
+     nbits = iabs(mapdrs(i)) * 8
+     if ( mapdrs(i).ge.0 ) then
+        call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
+     else
+        call g2_gbytec(cgrib, isign, iofst, 1)
+        call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits - 1)
+        if (isign .eq. 1) idrstmpl(i) = -idrstmpl(i)
+     endif
+     iofst = iofst + nbits
+  enddo
+  !
+  !   Check to see if the Data Representation Template needs to be
+  !   extended.
+  !   The number of values in a specific template may vary
+  !   depending on data specified in the "static" part of the
+  !   template.
+  !
+  if ( needext ) then
+     call extdrstemplate(idrsnum, idrstmpl, newmapdrslen, mapdrs)
+     call realloc(idrstmpl, mapdrslen, newmapdrslen, istat)
+     !   Unpack the rest of the Data Representation Template
+     do i = mapdrslen + 1, newmapdrslen
         nbits = iabs(mapdrs(i)) * 8
-        if ( mapdrs(i).ge.0 ) then
-            call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
+        if ( mapdrs(i) .ge. 0 ) then
+           call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
         else
-            call g2_gbytec(cgrib, isign, iofst, 1)
-            call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits - 1)
-            if (isign .eq. 1) idrstmpl(i) = -idrstmpl(i)
+           call g2_gbytec(cgrib, isign, iofst, 1)
+           call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits - 1)
+           if (isign .eq. 1) idrstmpl(i) = -idrstmpl(i)
         endif
         iofst = iofst + nbits
-    enddo
-    !
-    !   Check to see if the Data Representation Template needs to be
-    !   extended.
-    !   The number of values in a specific template may vary
-    !   depending on data specified in the "static" part of the
-    !   template.
-    !
-    if ( needext ) then
-        call extdrstemplate(idrsnum, idrstmpl, newmapdrslen, mapdrs)
-        call realloc(idrstmpl, mapdrslen, newmapdrslen, istat)
-        !   Unpack the rest of the Data Representation Template
-        do i = mapdrslen + 1, newmapdrslen
-            nbits = iabs(mapdrs(i)) * 8
-            if ( mapdrs(i) .ge. 0 ) then
-                call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
-            else
-                call g2_gbytec(cgrib, isign, iofst, 1)
-                call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits - 1)
-                if (isign .eq. 1) idrstmpl(i) = -idrstmpl(i)
-            endif
-            iofst = iofst + nbits
-        enddo
-        mapdrslen = newmapdrslen
-    endif
-    if( allocated(mapdrs) ) deallocate(mapdrs)
+     enddo
+     mapdrslen = newmapdrslen
+  endif
+  if( allocated(mapdrs) ) deallocate(mapdrs)
 end subroutine gf_unpack5

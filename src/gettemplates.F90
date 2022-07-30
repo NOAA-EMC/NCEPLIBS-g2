@@ -67,7 +67,7 @@ subroutine gettemplates(cgrib,lcgrib,ifldnum,igds,igdstmpl, &
      igdslen,ideflist,idefnum,ipdsnum,ipdstmpl, &
      ipdslen,coordlist,numcoord,ierr)
   implicit none
-  
+
   character(len=1),intent(in) :: cgrib(lcgrib)
   integer,intent(in) :: lcgrib,ifldnum
   integer,intent(out) :: igds(*),igdstmpl(*),ideflist(*)

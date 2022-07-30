@@ -77,7 +77,7 @@
 subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
      numlocal, numfields, maxvals, ierr)
   implicit none
-  
+
   character(len = 1), intent(in) :: cgrib(lcgrib)
   integer, intent(in) :: lcgrib
   integer, intent(out) :: listsec0(3), listsec1(13), maxvals(7)

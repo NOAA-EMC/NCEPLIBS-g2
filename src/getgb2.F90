@@ -113,55 +113,55 @@
 !>
 !> @author Mark Iredell @date 1994-04-01
 subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
-        unpack, k, gfld, iret)
-    use grib_mod
-    implicit none
+     unpack, k, gfld, iret)
+  use grib_mod
+  implicit none
 
-    integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
-    integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
-    logical, intent(in) :: unpack
-    integer, intent(out) :: k, iret
-    type(gribfield), intent(out) :: gfld
+  integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
+  integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
+  logical, intent(in) :: unpack
+  integer, intent(out) :: k, iret
+  type(gribfield), intent(out) :: gfld
 
-    character(len =1), pointer, dimension(:) :: cbuf
+  character(len =1), pointer, dimension(:) :: cbuf
 
-    !implicit none additions
-    integer :: irgi, irgs, jk, lpos, nlen, nnum
+  !implicit none additions
+  integer :: irgi, irgs, jk, lpos, nlen, nnum
 
-    !  declare interfaces (required for cbuf pointer)
-    interface
-        subroutine getidx(lugb, lugi, cbuf, nlen, nnum, irgi)
-        character(len = 1), pointer, dimension(:) :: cbuf
-        integer, intent(in) :: lugb, lugi
-        integer, intent(out) :: nlen, nnum, irgi
-        end subroutine getidx
-    end interface
+  !  declare interfaces (required for cbuf pointer)
+  interface
+     subroutine getidx(lugb, lugi, cbuf, nlen, nnum, irgi)
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(in) :: lugb, lugi
+       integer, intent(out) :: nlen, nnum, irgi
+     end subroutine getidx
+  end interface
 
-    !  determine whether index buffer needs to be initialized
-    irgi = 0
-    call getidx(lugb, lugi, cbuf, nlen, nnum, irgi)
-    if(irgi .gt. 1) then
-        iret = 96
-        return
-    endif
+  !  determine whether index buffer needs to be initialized
+  irgi = 0
+  call getidx(lugb, lugi, cbuf, nlen, nnum, irgi)
+  if(irgi .gt. 1) then
+     iret = 96
+     return
+  endif
 
-    !  search index buffer
-    call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
-        jk, gfld, lpos, irgs)
-    if(irgs .ne. 0) then
-        iret = 99
-        call gf_free(gfld)
-        return
-    endif
+  !  search index buffer
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
+       jk, gfld, lpos, irgs)
+  if(irgs .ne. 0) then
+     iret = 99
+     call gf_free(gfld)
+     return
+  endif
 
-    !  read local use section, if available
-    call getgb2l(lugb, cbuf(lpos), gfld, iret)
+  !  read local use section, if available
+  call getgb2l(lugb, cbuf(lpos), gfld, iret)
 
-    !  read and unpack grib record
-    if (unpack) then
-        !    numfld=gfld%ifldnum
-        !    call gf_free(gfld)
-        call getgb2r(lugb, cbuf(lpos), gfld, iret)
-    endif
-    k = jk
+  !  read and unpack grib record
+  if (unpack) then
+     !    numfld=gfld%ifldnum
+     !    call gf_free(gfld)
+     call getgb2r(lugb, cbuf(lpos), gfld, iret)
+  endif
+  k = jk
 end subroutine getgb2

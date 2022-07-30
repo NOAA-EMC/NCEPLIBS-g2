@@ -52,7 +52,7 @@
 subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds,  &
      igrid, iret)
   implicit none
-  
+
   integer, intent(in) :: idefnum
   integer, intent(in) :: igds(*), igdstmpl(*), ideflist(*)
   integer, intent(out) :: kgds(*), igrid, iret
