@@ -1,5 +1,8 @@
-! Test pdstemplates
-! Brian Curtis 11/09/2021
+! This is a test for the NCEPLIBS-g2 project.
+!
+! This program tests pdstemplates.F90.
+!
+! Brian Curtis 11/09/2021, Ed Hartnett
 program test_pdstemplates
   use pdstemplates
   implicit none
@@ -11,19 +14,18 @@ program test_pdstemplates
   logical :: needext
   integer :: pdtlen
 
-  print *, 'Testing pdstemplates'
+  print *, 'Testing pdstemplates...'
+
   print *, 'Testing getpdsindex() ...'
   ! Fortran is base 1, so index 0 should = 1
   idx = getpdsindex(0)
   if (idx .ne. 1) stop 3
-
   ! Index -1 will still equal -1 because it doesn't exist
   idx = getpdsindex(-1)
   if (idx .ne. -1) stop 4
   print *, 'OK!'
 
   print *, 'testing getpdstemplate() ...'
-  print *, 'testing with template 0...'
   pdtlen = getpdtlen(0)
   if (pdtlen .ne. 15) stop 5
   map_comp = (/ 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4/)
@@ -36,9 +38,12 @@ program test_pdstemplates
   if (needext) stop 9
   print *, 'OK!'
 
-  print *, 'testing with template -1 (nonexistent)...'
+  print *, 'testing getpdtlen() with template -1 (nonexistent)...'
   pdtlen = getpdtlen(-1)
   if (pdtlen .ne. 0) stop 10
+  print *, 'OK!'
+
+  print *, 'testing getpdstemplate() with template -1 (nonexistent)...'  
   call getpdstemplate(-1, nummap, map, needext, iret)
   if (iret .eq. 0) stop 11
   if (pdtlen .ne. nummap) stop 12
@@ -48,6 +53,7 @@ program test_pdstemplates
   print *, 'testing extpdstemplate(0) ...'
   call extpdstemplate(0, list, nummap, map)
   if (nummap .ne. 0) stop 14
-
+  print *, 'OK!'
+  
   print *, 'SUCCESS'
 end program test_pdstemplates
