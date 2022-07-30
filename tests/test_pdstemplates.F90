@@ -10,11 +10,12 @@ program test_pdstemplates
   integer :: idx
   integer :: nummap
   integer :: iret, i
-  integer, dimension(15) :: map, map_comp, list
+  integer, dimension(15) :: map_comp, list
+  integer, dimension(MAXLEN) :: map
   logical :: needext
   integer :: pdtlen
 
-  print *, 'Testing pdstemplates...'
+  print *, 'Testing pdstemplates, expect and ignore error messages...'
 
   print *, 'Testing getpdsindex() ...'
   ! Fortran is base 1, so index 0 should = 1
@@ -23,7 +24,6 @@ program test_pdstemplates
   ! Index -1 will still equal -1 because it doesn't exist
   idx = getpdsindex(-1)
   if (idx .ne. -1) stop 4
-  print *, 'OK!'
 
   print *, 'testing getpdstemplate() ...'
   pdtlen = getpdtlen(0)
@@ -36,24 +36,24 @@ program test_pdstemplates
       if (map(i) .ne. map_comp(i)) stop 8
   end do
   if (needext) stop 9
-  print *, 'OK!'
 
   print *, 'testing getpdtlen() with template -1 (nonexistent)...'
   pdtlen = getpdtlen(-1)
   if (pdtlen .ne. 0) stop 10
-  print *, 'OK!'
 
   print *, 'testing getpdstemplate() with template -1 (nonexistent)...'  
   call getpdstemplate(-1, nummap, map, needext, iret)
   if (iret .eq. 0) stop 11
   if (pdtlen .ne. nummap) stop 12
   if (needext) stop 13
-  print *, 'OK!'
 
-  print *, 'testing extpdstemplate(0) ...'
+  print *, 'testing extpdstemplate()...'
   call extpdstemplate(0, list, nummap, map)
   if (nummap .ne. 0) stop 14
-  print *, 'OK!'
+
+  print *, 'testing extpdstemplate() some more...'
+  call extpdstemplate(3, list, nummap, map)
+  if (nummap .ne. 32) stop 20
   
   print *, 'SUCCESS'
 end program test_pdstemplates
