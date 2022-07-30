@@ -12,6 +12,7 @@ program test_pdstemplates
   integer :: iret, i
   integer, dimension(15) :: map_comp, list
   integer, dimension(MAXLEN) :: map
+  integer, dimension(MAXLEN) :: map1
   logical :: needext
   integer :: pdtlen
 
@@ -51,10 +52,15 @@ program test_pdstemplates
   call extpdstemplate(0, list, nummap, map)
   if (nummap .ne. 0) stop 14
 
-  print *, 'testing extpdstemplate() some more...'
-  call extpdstemplate(3, list, nummap, map)
-  print *, 'nummap = ', nummap
-  if (nummap .ne. 32) stop 20
+  ! print *, 'testing extpdstemplate() some more...'
+  ! pdtlen = getpdtlen(3)
+  ! if (pdtlen .ne. 31) stop 5
+  ! call getpdstemplate(3, nummap, map, needext, iret)
+  ! if (iret .ne. 0) stop 6
+  ! if (nummap .ne. 31) stop 20
+  ! call extpdstemplate(3, map, nummap, map1)
+  ! print *, 'nummap = ', nummap
+  ! if (nummap .ne. 32) stop 20
   
   print *, 'SUCCESS'
 end program test_pdstemplates
