@@ -18,7 +18,8 @@ program test_cmplxpack
   
     print *, "Shape of fld_orig", shape(cmplx(22, 4))
     print *, 'Testing simple call to compack...'
-    fld_orig = (/cmplx(42, 3), cmplx(43, 2), cmplx(44, 1), cmplx(99, 0)/)
+!    fld_orig = (/cmplx(42, 3), cmplx(43, 2), cmplx(44, 1), cmplx(99, 0)/)
+    fld_orig = (/ 42.0, 43.0, 44.0, 99.0 /)
     fld = fld_orig
     ! idrstmpl = (/42, 1, 1, 0, 0, 0/)
     idrstmpl(1) = 0
