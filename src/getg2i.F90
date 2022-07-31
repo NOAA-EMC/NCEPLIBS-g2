@@ -56,33 +56,33 @@
 !> Do not engage the same logical unit from more than one processor.
 !>
 !> @author Mark Iredell @date 2000-05-26
-SUBROUTINE GETG2I(LUGI,CBUF,NLEN,NNUM,IRET)
+subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
   implicit none
-  CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-  INTEGER,INTENT(IN) :: LUGI
-  INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
-  CHARACTER CHEAD*162
+  character(len=1), pointer, dimension(:) :: cbuf
+  integer, intent(in) :: lugi
+  integer, intent(out) :: nlen, nnum, iret
+  character chead*162
   integer :: ios, istat, lbuf, lhead, nskp
 
-  IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
+  if (associated(cbuf)) nullify(cbuf)
 
-  NLEN=0
-  NNUM=0
-  IRET=4
-  CALL BAREAD(LUGI,0,162,LHEAD,CHEAD)
-  IF(LHEAD.EQ.162.AND.CHEAD(42:47).EQ.'GB2IX1') THEN
-     READ(CHEAD(82:162),'(8X,3I10,2X,A40)',IOSTAT=IOS) NSKP,NLEN,NNUM
-     IF(IOS.EQ.0) THEN
+  nlen = 0
+  nnum = 0
+  iret = 4
+  call baread(lugi, 0, 162, lhead, chead)
+  if(lhead.eq.162.and.chead(42:47).eq.'gb2ix1') then
+     read(chead(82:162), '(8x, 3i10, 2x, a40)', iostat = ios) nskp, nlen, nnum
+     if(ios.eq.0) then
 
-        ALLOCATE(CBUF(NLEN),STAT=ISTAT)    ! ALLOCATE SPACE FOR CBUF
-        IF (ISTAT.NE.0) THEN
-           IRET=2
-           RETURN
-        ENDIF
-        IRET=0
-        CALL BAREAD(LUGI,NSKP,NLEN,LBUF,CBUF)
-        IF(LBUF.NE.NLEN) IRET=3
+        allocate(cbuf(nlen), stat = istat)    ! allocate space for cbuf
+        if (istat.ne.0) then
+           iret = 2
+           return
+        endif
+        iret = 0
+        call baread(lugi, nskp, nlen, lbuf, cbuf)
+        if(lbuf.ne.nlen) iret = 3
 
-     ENDIF
-  ENDIF
-END SUBROUTINE GETG2I
+     endif
+  endif
+end subroutine getg2i

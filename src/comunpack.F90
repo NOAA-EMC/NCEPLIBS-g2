@@ -1,14 +1,18 @@
 !> @file
-!> @brief This subroutine unpacks a data field that was packed using
-!> a complex packing algorithm as defined in the GRIB2 documention.
+!> @brief Unpack a data field that was packed using a complex packing
+!> algorithm as defined in the GRIB2 documention.
 !> @author Stephen Gilbert @date 2000-06-21
 
-!> This subroutine unpacks a GRIB2 data field that was packed using a
-!> complex packing algorithm, using info from the GRIB2 Data
-!> Representation Template 5.2 or 5.3.
+!> Unpack a data field that was packed using a complex packing
+!> algorithm as defined in the GRIB2 documention.
 !>
 !> This subroutine Supports GRIB2 complex packing templates with or
-!> without spatial differences (i.e. DRTs 5.2 and 5.3).
+!> without spatial differences: It supports GRIB2 complex packing
+!> templates with or without spatial differences: Data Representation
+!> Tables [5.2]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-2.shtml)
+!> and
+!> [5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-3.shtml)).
 !>
 !> ### Program History Log
 !> Date | Programmer | Comments
@@ -18,16 +22,16 @@
 !> 2016-02-26 | ???             | update unpacking for template 5.3
 !>
 !> @param[in] cpack The packed data field (character*1 array).
-!> @param[in] len length of packed field cpack.
-!> @param[in] lensec length of section 7 (used for error checking).
+!> @param[in] len Length of packed field cpack.
+!> @param[in] lensec Length of section 7 (used for error checking).
 !> @param[in] idrsnum Data Representation Template number 5.N. Must
 !> equal 2 or 3.
-!> @param[in] idrstmpl Contains the array of values for Data
-!> Representation Template 5.2 or 5.3.
+!> @param[in] idrstmpl The array of values for Data Representation
+!> Template 5.2 or 5.3.
 !> @param[in] ndpts The number of data values to unpack.
 !> @param[out] fld Contains the unpacked data values.
 !> @param[out] ier Error return:
-!> - 0 = OK
+!> - 0 = No error.
 !> - 1 = Problem - inconsistent group lengths of widths.
 !>
 !> @author Stephen Gilbert @date 2000-06-21
@@ -83,9 +87,8 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
   !print *,'ALLOC gref: ',is
   allocate(gwidth(ngroups), stat = is)
   !print *,'ALLOC gwidth: ',is
-  !
-  !  Get missing values, if supplied
-  !
+
+  ! Get missing values, if supplied.
   if (idrstmpl(7) .eq. 1) then
      if (itype .eq. 0) then
         call rdieee(idrstmpl(8), rmiss1, 1)
@@ -102,9 +105,8 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
      endif
   endif
   !print *,'RMISSs: ',rmiss1,rmiss2,ref
-  !
-  !  Extract Spatial differencing values, if using DRS Template 5.3
-  !
+
+  ! Extract Spatial differencing values, if using DRS Template 5.3.
   if (idrsnum .eq. 3) then
      if (nbitsd .ne. 0) then
         call g2_gbytec(cpack, ival1, iofst, nbitsd)
@@ -125,9 +127,8 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
      endif
      !print *,'SDu ',ival1,ival2,minsd,nbitsd
   endif
-  !
-  !  Extract Each Group's reference value
-  !
+
+  ! Extract Each Group's reference value.
   !print *,'SAG1: ',nbitsgref,ngroups,iofst
   if (nbitsgref.ne.0) then
      call g2_gbytesc(cpack, gref, iofst, nbitsgref, 0, ngroups)
@@ -138,9 +139,8 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
      gref(1 : ngroups) = 0
   endif
   !write(78,*)'GREFs: ',(gref(j),j=1,ngroups)
-  !
-  !  Extract Each Group's bit width
-  !
+
+  ! Extract Each Group's bit width.
   !print *,'SAG2: ',nbitsgwidth,ngroups,iofst,idrstmpl(11)
   if (nbitsgwidth .ne. 0) then
      call g2_gbytesc(cpack, gwidth, iofst, nbitsgwidth, 0, ngroups)
@@ -154,9 +154,8 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
      gwidth(j) = gwidth(j) + idrstmpl(11)
   enddo
   !write(78,*)'GWIDTHs: ',(gwidth(j),j=1,ngroups)
-  !
-  !  Extract Each Group's length (number of values in each group)
-  !
+
+  ! Extract Each Group's length (number of values in each group).
   allocate(glen(ngroups), stat = is)
   !print *,'ALLOC glen: ',is
   !print *,'SAG3: ',nbitsglen,ngroups,iofst,idrstmpl(14),idrstmpl(13)
@@ -174,10 +173,9 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
   glen(ngroups) = idrstmpl(15)
   !write(78,*)'GLENs: ',(glen(j),j=1,ngroups)
   !print *,'GLENsum: ',sum(glen)
-  !
-  !  Test to see if the group widths and lengths are consistent with number of
-  !  values, and length of section 7.
-  !
+
+  ! Test to see if the group widths and lengths are consistent with
+  ! number of values, and length of section 7.
   totBit = 0
   totLen = 0
   do j = 1, ngroups
@@ -192,9 +190,8 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
      ier = 1
      return
   endif
-  !
-  !  For each group, unpack data values
-  !
+
+  ! For each group, unpack data values.
   if (idrstmpl(7) .eq. 0) then        ! no missing values
      n = 1
      do j = 1, ngroups
@@ -259,10 +256,9 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
   if (allocated(gref)) deallocate(gref)
   if (allocated(gwidth)) deallocate(gwidth)
   if (allocated(glen)) deallocate(glen)
-  !
-  !  If using spatial differences, add overall min value, and
-  !  sum up recursively
-  !
+
+  ! If using spatial differences, add overall min value, and
+  ! sum up recursively.
   if (idrsnum .eq. 3) then         ! spatial differencing
      if (idrstmpl(17) .eq. 1) then      ! first order
         ifld(1) = ival1
@@ -290,9 +286,8 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
      endif
      !write(78,*)'IFLDs: ',(ifld(j),j=1,ndpts)
   endif
-  !
-  !  Scale data back to original form
-  !
+
+  ! Scale data back to original form.
   !print *,'SAGT: ',ref,bscale,dscale
   if (idrstmpl(7) .eq. 0) then        ! no missing values
      do n = 1, ndpts
