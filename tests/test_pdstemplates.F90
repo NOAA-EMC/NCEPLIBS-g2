@@ -12,7 +12,7 @@ program test_pdstemplates
   integer :: iret, i
   integer, dimension(15) :: map_comp, list
   integer, dimension(MAXLEN) :: map
-  integer, dimension(MAXLEN) :: map1
+  !integer, dimension(MAXLEN) :: map1
   logical :: needext
   integer :: pdtlen
 
