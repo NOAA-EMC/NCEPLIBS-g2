@@ -88,10 +88,9 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      call rdieee(idrstmpl(8), rmissp, 1)
      if (missopt.eq.2) call rdieee(idrstmpl(9), rmisss, 1)
   endif
-  !
+
   !  Find min value of non-missing values in the data, 
   !  AND set up missing value mapping of the field.
-  !
   allocate(ifldmiss(ndpts))
   !     rmin = huge(rmin)
 
@@ -136,7 +135,6 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
   !         are primary missing (1),  sencondary missing (2) or non-missing (0).
   !        -jfld(j), j = 1, nonmiss is a subarray of just the non-missing values from
   !         the original field.
-  !
   !if (rmin.ne.rmax) then
   iofst = 0
   allocate(ifld(ndpts))
@@ -144,9 +142,8 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
   allocate(gref(ndpts))
   allocate(gwidth(ndpts))
   allocate(glen(ndpts))
-  !
-  !  Scale original data
-  !
+
+  ! Scale original data.
   nonmiss = 0
   if (idrstmpl(2).eq.0) then        !  No binary scaling
      imin = nint(rmin*dscale)
@@ -154,8 +151,8 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      rmin = real(imin)
      do j = 1, ndpts
         if (ifldmiss(j).eq.0) then
-           nonmiss = nonmiss+1
-           jfld(nonmiss) = max(0, nint(fld(j)*dscale)-imin)
+           nonmiss = nonmiss + 1
+           jfld(nonmiss) = max(0, nint(fld(j)*dscale) - imin)
         endif
      enddo
   else                              !  Use binary scaling factor
@@ -163,14 +160,13 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      !rmax = rmax*dscale
      do j = 1, ndpts
         if (ifldmiss(j).eq.0) then
-           nonmiss = nonmiss+1
-           jfld(nonmiss) = max(0, nint(((fld(j)*dscale)-rmin)*bscale))
+           nonmiss = nonmiss + 1
+           jfld(nonmiss) = max(0, nint(((fld(j)*dscale) - rmin)*bscale))
         endif
      enddo
   endif
-  !
-  !  Calculate Spatial differences,  if using DRS Template 5.3
-  !
+
+  ! Calculate Spatial differences,  if using DRS Template 5.3.
   if (idrsnum.eq.3) then        ! spatial differences
      if (idrstmpl(17).ne.1.and.idrstmpl(17).ne.2) idrstmpl(17) = 2
      if (idrstmpl(17).eq.1) then      ! first order
@@ -180,7 +176,7 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
            ival1 = jfld(1)
         endif
         do j = nonmiss, 2, -1
-           jfld(j) = jfld(j)-jfld(j-1)
+           jfld(j) = jfld(j) - jfld(j - 1)
         enddo
         if (nonmiss > 0)             jfld(1) = 0
      elseif (idrstmpl(17) .eq. 2) then      ! second order
@@ -195,85 +191,80 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
            ival2 = jfld(2)
         endif
         do j = nonmiss, 3, -1
-           jfld(j) = jfld(j)-(2*jfld(j-1))+jfld(j-2)
+           jfld(j) = jfld(j) - (2*jfld(j - 1)) + jfld(j - 2)
         enddo
         if (nonmiss >= 1) jfld(1) = 0
         if (nonmiss >= 2) jfld(2) = 0
      endif
-     !
-     !  subtract min value from spatial diff field
-     !
-     isd = idrstmpl(17)+1
+
+     ! Subtract min value from spatial diff field.
+     isd = idrstmpl(17) + 1
      minsd = minval(jfld(isd:nonmiss))
      do j = isd, nonmiss
-        jfld(j) = jfld(j)-minsd
+        jfld(j) = jfld(j) - minsd
      enddo
-     !
-     !   find num of bits need to store minsd and add 1 extra bit
-     !   to indicate sign
-     !
+
+     ! Find num of bits need to store minsd and add 1 extra bit
+     ! to indicate sign.
      temp = i1log2(abs(minsd))
-     nbitsd = ceiling(temp)+1
-     !
-     !   find num of bits need to store ifld(1) (and ifld(2)
-     !   if using 2nd order differencing)
-     !
+     nbitsd = ceiling(temp) + 1
+
+     ! Find num of bits need to store ifld(1) (and ifld(2)
+     ! if using 2nd order differencing).
      maxorig = ival1
      if (idrstmpl(17) .eq. 2 .and. ival2 .gt. ival1) maxorig = ival2
      temp = i1log2(maxorig)
-     nbitorig = ceiling(temp)+1
+     nbitorig = ceiling(temp) + 1
      if (nbitorig .gt. nbitsd) nbitsd = nbitorig
      !   increase number of bits to even multiple of 8 (octet)
-     if (mod(nbitsd, 8) .ne. 0) nbitsd = nbitsd+(8-mod(nbitsd, 8))
-     !
-     !  Store extra spatial differencing info into the packed
-     !  data section.
-     !
+     if (mod(nbitsd, 8) .ne. 0) nbitsd = nbitsd + (8 - mod(nbitsd, 8))
+
+     ! Store extra spatial differencing info into the packed
+     ! data section.
      if (nbitsd .ne. 0) then
         !   pack first original value
         if (ival1 .ge. 0) then
            call g2_sbytec(cpack, ival1, iofst, nbitsd)
-           iofst = iofst+nbitsd
+           iofst = iofst + nbitsd
         else
            call g2_sbytec(cpack, 1, iofst, 1)
-           iofst = iofst+1
-           call g2_sbytec(cpack, iabs(ival1), iofst, nbitsd-1)
-           iofst = iofst+nbitsd-1
+           iofst = iofst + 1
+           call g2_sbytec(cpack, iabs(ival1), iofst, nbitsd - 1)
+           iofst = iofst + nbitsd - 1
         endif
         if (idrstmpl(17) .eq. 2) then
            !  pack second original value
            if (ival2 .ge. 0) then
               call g2_sbytec(cpack, ival2, iofst, nbitsd)
-              iofst = iofst+nbitsd
+              iofst = iofst + nbitsd
            else
               call g2_sbytec(cpack, 1, iofst, 1)
-              iofst = iofst+1
-              call g2_sbytec(cpack, iabs(ival2), iofst, nbitsd-1)
-              iofst = iofst+nbitsd-1
+              iofst = iofst + 1
+              call g2_sbytec(cpack, iabs(ival2), iofst, nbitsd - 1)
+              iofst = iofst + nbitsd - 1
            endif
         endif
         !  pack overall min of spatial differences
         if (minsd .ge. 0) then
            call g2_sbytec(cpack, minsd, iofst, nbitsd)
-           iofst = iofst+nbitsd
+           iofst = iofst + nbitsd
         else
            call g2_sbytec(cpack, 1, iofst, 1)
-           iofst = iofst+1
-           call g2_sbytec(cpack, iabs(minsd), iofst, nbitsd-1)
-           iofst = iofst+nbitsd-1
+           iofst = iofst + 1
+           call g2_sbytec(cpack, iabs(minsd), iofst, nbitsd - 1)
+           iofst = iofst + nbitsd - 1
         endif
      endif
      !print *, 'SDp ', ival1, ival2, minsd, nbitsd
   endif     !  end of spatial diff section
-  !
-  !  Expand non-missing data values to original grid.
-  !
-  miss1 = minval(jfld(1:nonmiss))-1
-  miss2 = miss1-1
+
+  ! Expand non-missing data values to original grid.
+  miss1 = minval(jfld(1:nonmiss)) - 1
+  miss2 = miss1 - 1
   n = 0
   do j = 1, ndpts
      if (ifldmiss(j) .eq. 0) then
-        n = n+1
+        n = n + 1
         ifld(j) = jfld(n)
      elseif (ifldmiss(j) .eq. 1) then
         ifld(j) = miss1
@@ -282,9 +273,8 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      endif
   enddo
   if (ndpts < 2) simple_alg = .true.
-  !
-  !   Determine Groups to be used.
-  !
+
+  ! Determine Groups to be used.
   if (simple_alg) then
      !  set group length to 10 :  calculate number of groups
      !  and length of last group
@@ -292,16 +282,15 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      glen(1:ngroups) = 10
      itemp = mod(ndpts, 10)
      if (itemp .ne. 0) then
-        ngroups = ngroups+1
+        ngroups = ngroups + 1
         glen(ngroups) = itemp
      endif
   else
      ! Use Dr. Glahn's algorithm for determining grouping.
-     !
      kfildo = 6
      minpk = 10
      inc = 1
-     maxgrps = (ndpts/minpk)+1
+     maxgrps = (ndpts/minpk) + 1
      allocate(jmin(maxgrps))
      allocate(jmax(maxgrps))
      allocate(lbit(maxgrps))
@@ -310,22 +299,21 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
           kbit, novref, lbitref, ier)
      !print *, 'SAGier  =  ', ier, ibit, jbit, kbit, novref, lbitref
      do ng = 1, ngroups
-        glen(ng) = glen(ng)+novref
+        glen(ng) = glen(ng) + novref
      enddo
      deallocate(jmin)
      deallocate(jmax)
      deallocate(lbit)
   endif
-  !
-  !  For each group,  find the group's reference value (min)
-  !  and the number of bits needed to hold the remaining values
-  !
+
+  ! For each group,  find the group's reference value (min)
+  ! and the number of bits needed to hold the remaining values.
   n = 1
   do ng = 1, ngroups
      !  how many of each type?
-     num0 = count(ifldmiss(n:n+glen(ng)-1) .EQ. 0)
-     num1 = count(ifldmiss(n:n+glen(ng)-1) .EQ. 1)
-     num2 = count(ifldmiss(n:n+glen(ng)-1) .EQ. 2)
+     num0 = count(ifldmiss(n:n + glen(ng) - 1) .EQ. 0)
+     num1 = count(ifldmiss(n:n + glen(ng) - 1) .EQ. 1)
+     num2 = count(ifldmiss(n:n + glen(ng) - 1) .EQ. 2)
      if (num0 .eq. 0) then      ! all missing values
         if (num1 .eq. 0) then       ! all secondary missing
            gref(ng) = -2
@@ -340,20 +328,20 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      else                       ! contains some non-missing data
         !    find max and min values of group
         gref(ng) = huge(n)
-        imax = -1*huge(n)
+        imax = -1 * huge(n)
         j = n
         do lg = 1, glen(ng)
            if (ifldmiss(j) .eq. 0) then
               if (ifld(j) .lt. gref(ng)) gref(ng) = ifld(j)
               if (ifld(j) .gt. imax) imax = ifld(j)
            endif
-           j = j+1
+           j = j + 1
         enddo
-        if (missopt .eq. 1) imax = imax+1
-        if (missopt .eq. 2) imax = imax+2
+        if (missopt .eq. 1) imax = imax + 1
+        if (missopt .eq. 2) imax = imax + 2
         !   calc num of bits needed to hold data
         if (gref(ng) .ne. imax) then
-           temp = i1log2(imax-gref(ng))
+           temp = i1log2(imax - gref(ng))
            gwidth(ng) = ceiling(temp)
         else
            gwidth(ng) = 0
@@ -364,135 +352,131 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      mtemp = 2**gwidth(ng)
      do lg = 1, glen(ng)
         if (ifldmiss(j) .eq. 0) then       ! non-missing
-           ifld(j) = ifld(j)-gref(ng)
+           ifld(j) = ifld(j) - gref(ng)
         elseif (ifldmiss(j) .eq. 1) then    ! primary missing
-           ifld(j) = mtemp-1
+           ifld(j) = mtemp - 1
         elseif (ifldmiss(j) .eq. 2) then    ! secondary missing
-           ifld(j) = mtemp-2
+           ifld(j) = mtemp - 2
         endif
-        j = j+1
+        j = j + 1
      enddo
      !   increment fld array counter
-     n = n+glen(ng)
+     n = n + glen(ng)
   enddo
-  !
-  !  Find max of the group references and calc num of bits needed
-  !  to pack each groups reference value,  then
-  !  pack up group reference values
-  !
+
+  ! Find max of the group references and calc num of bits needed
+  ! to pack each groups reference value,  then
+  ! pack up group reference values.
   !write(77, *)'GREFS: ', (gref(j), j = 1, ngroups)
   igmax = maxval(gref(1:ngroups))
-  if (missopt .eq. 1) igmax = igmax+1
-  if (missopt .eq. 2) igmax = igmax+2
+  if (missopt .eq. 1) igmax = igmax + 1
+  if (missopt .eq. 2) igmax = igmax + 2
   if (igmax .ne. 0) then
      temp = i1log2(igmax)
      nbitsgref = ceiling(temp)
      ! restet the ref values of any "missing only" groups.
      mtemp = 2**nbitsgref
      do j = 1, ngroups
-        if (gref(j) .eq. -1) gref(j) = mtemp-1
-        if (gref(j) .eq. -2) gref(j) = mtemp-2
+        if (gref(j) .eq. -1) gref(j) = mtemp - 1
+        if (gref(j) .eq. -2) gref(j) = mtemp - 2
      enddo
      call g2_sbytesc(cpack, gref, iofst, nbitsgref, 0, ngroups)
      itemp = nbitsgref*ngroups
-     iofst = iofst+itemp
+     iofst = iofst + itemp
      !         Pad last octet with Zeros,  if necessary, 
      if (mod(itemp, 8) .ne. 0) then
-        left = 8-mod(itemp, 8)
+        left = 8 - mod(itemp, 8)
         call g2_sbytec(cpack, zero, iofst, left)
-        iofst = iofst+left
+        iofst = iofst + left
      endif
   else
      nbitsgref = 0
   endif
-  !
-  !  Find max/min of the group widths and calc num of bits needed
-  !  to pack each groups width value,  then
-  !  pack up group width values
-  !
+
+  ! Find max/min of the group widths and calc num of bits needed
+  ! to pack each groups width value,  then
+  ! pack up group width values.
   !write(77, *)'GWIDTHS: ', (gwidth(j), j = 1, ngroups)
   iwmax = maxval(gwidth(1:ngroups))
   ngwidthref = minval(gwidth(1:ngroups))
   if (iwmax .ne. ngwidthref) then
-     temp = i1log2(iwmax-ngwidthref)
+     temp = i1log2(iwmax - ngwidthref)
      nbitsgwidth = ceiling(temp)
      do i = 1, ngroups
-        gwidth(i) = gwidth(i)-ngwidthref
+        gwidth(i) = gwidth(i) - ngwidthref
      enddo
      call g2_sbytesc(cpack, gwidth, iofst, nbitsgwidth, 0, ngroups)
      itemp = nbitsgwidth*ngroups
-     iofst = iofst+itemp
+     iofst = iofst + itemp
      !         Pad last octet with Zeros,  if necessary, 
      if (mod(itemp, 8) .ne. 0) then
-        left = 8-mod(itemp, 8)
+        left = 8 - mod(itemp, 8)
         call g2_sbytec(cpack, zero, iofst, left)
-        iofst = iofst+left
+        iofst = iofst + left
      endif
   else
      nbitsgwidth = 0
      gwidth(1:ngroups) = 0
   endif
-  !
-  !  Find max/min of the group lengths and calc num of bits needed
-  !  to pack each groups length value,  then
-  !  pack up group length values
-  !
+
+  ! Find max/min of the group lengths and calc num of bits needed
+  ! to pack each groups length value,  then
+  ! pack up group length values.
   !write(77, *)'GLENS: ', (glen(j), j = 1, ngroups)
-  ilmax = maxval(glen(1:ngroups-1))
-  nglenref = minval(glen(1:ngroups-1))
+  ilmax = maxval(glen(1:ngroups - 1))
+  nglenref = minval(glen(1:ngroups - 1))
   if (ngroups > 0) then
      nglenlast = glen(ngroups)
   else
      nglenlast = 0
   endif
   if (ilmax .ne. nglenref) then
-     temp = i1log2(ilmax-nglenref)
+     temp = i1log2(ilmax - nglenref)
      nbitsglen = ceiling(temp)
-     do i = 1, ngroups-1
-        glen(i) = glen(i)-nglenref
+     do i = 1, ngroups - 1
+        glen(i) = glen(i) - nglenref
      enddo
      call g2_sbytesc(cpack, glen, iofst, nbitsglen, 0, ngroups)
      itemp = nbitsglen*ngroups
-     iofst = iofst+itemp
+     iofst = iofst + itemp
      !         Pad last octet with Zeros,  if necessary, 
      if (mod(itemp, 8) .ne. 0) then
-        left = 8-mod(itemp, 8)
+        left = 8 - mod(itemp, 8)
         call g2_sbytec(cpack, zero, iofst, left)
-        iofst = iofst+left
+        iofst = iofst + left
      endif
   else
      nbitsglen = 0
      glen(1:ngroups) = 0
   endif
-  !
-  !  For each group,  pack data values
-  !
+
+  ! For each group,  pack data values.
   !write(77, *)'IFLDS: ', (ifld(j), j = 1, ndpts)
   n = 1
   ij = 0
   do ng = 1, ngroups
-     glength = glen(ng)+nglenref
+     glength = glen(ng) + nglenref
      if (ng .eq. ngroups) glength = nglenlast
-     grpwidth = gwidth(ng)+ngwidthref
+     grpwidth = gwidth(ng) + ngwidthref
      !write(77, *)'NGP ', ng, grpwidth, glength, gref(ng)
      if (grpwidth .ne. 0) then
         call g2_sbytesc(cpack, ifld(n), iofst, grpwidth, 0, glength)
-        iofst = iofst+(grpwidth*glength)
+        iofst = iofst + (grpwidth*glength)
      endif
      do kk = 1, glength
-        ij = ij+1
+        ij = ij + 1
         !write(77, *)'SAG ', ij, fld(ij), ifld(ij), gref(ng), bscale, rmin, dscale
      enddo
-     n = n+glength
+     n = n + glength
   enddo
-  !         Pad last octet with Zeros,  if necessary, 
+  ! Pad last octet with Zeros,  if necessary, 
   if (mod(iofst, 8) .ne. 0) then
-     left = 8-mod(iofst, 8)
+     left = 8 - mod(iofst, 8)
      call g2_sbytec(cpack, zero, iofst, left)
-     iofst = iofst+left
+     iofst = iofst + left
   endif
   lcpack = iofst/8
-  !
+
   if (allocated(ifld)) deallocate(ifld)
   if (allocated(jfld)) deallocate(jfld)
   if (allocated(ifldmiss)) deallocate(ifldmiss)
@@ -506,9 +490,7 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
   !  ngroups = 0
   !endif
 
-  !
-  !  Fill in ref value and number of bits in Template 5.2
-  !
+  ! Fill in ref value and number of bits in Template 5.2.
   rmin4  =  rmin
   call mkieee(rmin4, ref, 1)   ! ensure reference value is IEEE format
   !      call g2_gbytec(ref, idrstmpl(1), 0, 32)
