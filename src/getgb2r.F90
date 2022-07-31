@@ -143,7 +143,7 @@ SUBROUTINE GETGB2R(LUGB, CINDEX, GFLD, IRET)
         endif
      enddo
      deallocate(gfld%fld);
-     gfld%fld = >newfld;
+     gfld%fld =>newfld;
      gfld%expanded = .true.
   else
      gfld%expanded = .true.
