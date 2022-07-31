@@ -58,10 +58,9 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
 
   bscale = 2.0 ** real(-idrstmpl(2))
   dscale = 10.0 ** real(idrstmpl(3))
-  !
-  !  Find max and min values in the data
-  !
-  if(ndpts > 0) then
+
+  ! Find max and min values in the data.
+  if (ndpts > 0) then
      rmax = fld(1)
      rmin = fld(1)
   else
@@ -73,21 +72,19 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      if (fld(j) .gt. rmax) rmax = fld(j)
      if (fld(j) .lt. rmin) rmin = fld(j)
   enddo
-  !
-  !  If max and min values are not equal, pack up field.
-  !  If they are equal, we have a constant field, and the reference
-  !  value (rmin) is the value for each point in the field and
-  !  set nbits to 0.
-  !
+
+  ! If max and min values are not equal, pack up field.
+  ! If they are equal, we have a constant field, and the reference
+  ! value (rmin) is the value for each point in the field and
+  ! set nbits to 0.
   multival: if (rmin .ne. rmax) then
      iofst = 0
      allocate(ifld(ndpts))
      allocate(gref(ndpts))
      allocate(gwidth(ndpts))
      allocate(glen(ndpts))
-     !
-     !  Scale original data
-     !
+
+     ! Scale original data.
      if (idrstmpl(2) .eq. 0) then        !  No binary scaling
         imin = nint(rmin * dscale)
         !imax = nint(rmax * dscale)
@@ -102,14 +99,13 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
            ifld(j) = max(0, nint(((fld(j) * dscale) - rmin) * bscale))
         enddo
      endif
-     !
-     !  Calculate Spatial differences, if using DRS Template 5.3
-     !
+
+     ! Calculate Spatial differences, if using DRS Template 5.3.
      alg3: if (idrsnum .eq. 3) then        ! spatial differences
         if (idrstmpl(17) .ne. 1 .and. idrstmpl(17) .ne. 2) idrstmpl(17) = 2
         if (idrstmpl(17) .eq. 1) then      ! first order
            ival1 = ifld(1)
-           if(ival1 < 0) then
+           if (ival1 < 0) then
               print *, 'G2: negative ival1', ival1
               stop 101
            endif
@@ -120,11 +116,11 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         elseif (idrstmpl(17) .eq. 2) then      ! second order
            ival1 = ifld(1)
            ival2 = ifld(2)
-           if(ival1 < 0) then
+           if (ival1 < 0) then
               print *, 'G2: negative ival1', ival1
               stop 11
            endif
-           if(ival2 < 0) then
+           if (ival2 < 0) then
               print *, 'G2: negative ival2', ival2
               stop 12
            endif
@@ -134,33 +130,29 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
            ifld(1) = 0
            ifld(2) = 0
         endif
-        !
-        !  subtract min value from spatial diff field
-        !
+
+        ! Subtract min value from spatial diff field.
         isd = idrstmpl(17) + 1
         minsd = minval(ifld(isd : ndpts))
         do j = isd, ndpts
            ifld(j) = ifld(j) - minsd
         enddo
-        !
-        !   find num of bits need to store minsd and add 1 extra bit
-        !   to indicate sign
-        !
+
+        ! Find num of bits need to store minsd and add 1 extra bit
+        ! to indicate sign.
         nbitsd = i1log2(abs(minsd)) +1
-        !
-        !   find num of bits need to store ifld(1) ( and ifld(2)
-        !   if using 2nd order differencing )
-        !
+
+        ! Find num of bits need to store ifld(1) (and ifld(2)
+        ! if using 2nd order differencing).
         maxorig = ival1
         if (idrstmpl(17) .eq. 2 .and. ival2 .gt. ival1) maxorig = ival2
         nbitorig = i1log2(maxorig) + 1
         if (nbitorig .gt. nbitsd) nbitsd = nbitorig
-        !   increase number of bits to even multiple of 8 ( octet )
+        !   increase number of bits to even multiple of 8 (octet)
         if (mod(nbitsd, 8) .ne. 0) nbitsd = nbitsd + (8 - mod(nbitsd, 8))
-        !
-        !  Store extra spatial differencing info into the packed
-        !  data section.
-        !
+
+        ! Store extra spatial differencing info into the packed
+        ! data section.
         if (nbitsd .ne. 0) then
            !   pack first original value
            if (ival1 .ge. 0) then
@@ -186,7 +178,7 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
               endif
            endif
 
-           !  pack overall min of spatial differences
+           ! Pack overall min of spatial differences.
            if (minsd .ge. 0) then
               call g2_sbytec(cpack, minsd, iofst, nbitsd)
               iofst = iofst + nbitsd
@@ -199,10 +191,9 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         endif
         !print *,'SDp ',ival1,ival2,minsd,nbitsd
      endif alg3              !  end of spatial diff section
-     !
-     !   Determine Groups to be used.
-     !
-     simplealg: if ( simple_alg ) then
+
+     ! Determine Groups to be used.
+     simplealg: if (simple_alg) then
         !  set group length to 10 :  calculate number of groups
         !  and length of last group
         print *, 'G2: use simple algorithm'
@@ -215,7 +206,6 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         endif
      else
         ! Use Dr. Glahn's algorithm for determining grouping.
-        !
         kfildo = 6
         minpk = 10
         inc = 1
@@ -227,7 +217,7 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         call pack_gp(kfildo, ifld, ndpts, missopt, minpk, inc, miss1, miss2, &
              jmin, jmax, lbit, glen, maxgrps, ngroups, ibit, jbit, &
              kbit, novref, lbitref, ier)
-        if(ier .ne. 0) then
+        if (ier .ne. 0) then
            ! Dr. Glahn's algorithm failed; use simple packing method instead.
 1099       format('G2: fall back to simple algorithm (glahn ier=', I0, ')')
            print 1099, ier
@@ -238,7 +228,7 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
               ngroups = ngroups + 1
               glen(ngroups) = itemp
            endif
-        elseif(ngroups .lt. 1) then
+        elseif (ngroups .lt. 1) then
            ! Dr. Glahn's algorithm failed; use simple packing method instead.
            print *,'Glahn algorithm failed; use simple packing'
            ngroups = ndpts / 10
@@ -258,10 +248,9 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
            deallocate(lbit)
         endif
      endif simplealg
-     !
-     !  For each group, find the group's reference value
-     !  and the number of bits needed to hold the remaining values
-     !
+
+     ! For each group, find the group's reference value
+     ! and the number of bits needed to hold the remaining values.
      n = 1
      do ng = 1, ngroups
         !    find max and min values of group
@@ -274,7 +263,7 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
            j = j + 1
         enddo
         !   calc num of bits needed to hold data
-        if ( gref(ng) .ne. imax ) then
+        if (gref(ng) .ne. imax ) then
            gwidth(ng) = i1log2(imax - gref(ng))
         else
            gwidth(ng) = 0
@@ -288,11 +277,10 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         !   increment fld array counter
         n = n + glen(ng)
      enddo
-     !
-     !  Find max of the group references and calc num of bits needed
-     !  to pack each groups reference value, then
-     !  pack up group reference values
-     !
+
+     ! Find max of the group references and calc num of bits needed
+     ! to pack each groups reference value, then
+     ! pack up group reference values.
      !write(77,*)'GREFS: ',(gref(j),j=1,ngroups)
      igmax = maxval(gref(1 : ngroups))
      if (igmax .ne. 0) then
@@ -308,11 +296,10 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      else
         nbitsgref = 0
      endif
-     !
-     !  Find max/min of the group widths and calc num of bits needed
-     !  to pack each groups width value, then
-     !  pack up group width values
-     !
+
+     ! Find max/min of the group widths and calc num of bits needed
+     ! to pack each groups width value, then
+     ! pack up group width values.
      !write(77,*)'GWIDTHS: ',(gwidth(j),j=1,ngroups)
      iwmax = maxval(gwidth(1 : ngroups))
      ngwidthref = minval(gwidth(1 : ngroups))
@@ -320,7 +307,7 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         nbitsgwidth = i1log2(iwmax - ngwidthref)
         do i = 1, ngroups
            gwidth(i) = gwidth(i) - ngwidthref
-           if(gwidth(i) .lt. 0) then
+           if (gwidth(i) .lt. 0) then
               write(0, *) 'i,gw,ngw=', i, gwidth(i), ngwidthref
               stop 9
            endif
@@ -338,11 +325,10 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         nbitsgwidth = 0
         gwidth(1 : ngroups) = 0
      endif
-     !
-     !  Find max/min of the group lengths and calc num of bits needed
-     !  to pack each groups length value, then
-     !  pack up group length values
-     !
+
+     ! Find max/min of the group lengths and calc num of bits needed
+     ! to pack each groups length value, then
+     ! pack up group length values.
      !write(77,*)'GLENS: ',(glen(j),j=1,ngroups)
      ilmax = maxval(glen(1 : ngroups - 1))
      nglenref = minval(glen(1 : ngroups - 1))
@@ -351,7 +337,7 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         nbitsglen = i1log2(ilmax - nglenref)
         do i = 1, ngroups - 1
            glen(i) = glen(i) - nglenref
-           if(glen(i) .lt. 0) then
+           if (glen(i) .lt. 0) then
               write(0,*) 'i,glen(i) = ', i, glen(i)
               stop 23
            endif
@@ -369,9 +355,8 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         nbitsglen = 0
         glen(1 : ngroups) = 0
      endif
-     !
-     !  For each group, pack data values
-     !
+
+     ! For each group, pack data values.
      !write(77,*)'IFLDS: ',(ifld(j),j=1,ndpts)
      n = 1
      ij = 0
@@ -397,7 +382,7 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
         iofst = iofst + left
      endif
      lcpack = iofst / 8
-     !
+
      if (allocated(ifld)) deallocate(ifld)
      if (allocated(gref)) deallocate(gref)
      if (allocated(gwidth)) deallocate(gwidth)
@@ -414,9 +399,7 @@ subroutine compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
      nbitsd = 0
   endif multival
 
-  !
-  !  Fill in ref value and number of bits in Template 5.2
-  !
+  ! Fill in ref value and number of bits in Template 5.2.
   rmin4 = rmin
   call mkieee(rmin4, ref, 1)   ! ensure reference value is IEEE format
   !    call g2_gbytec(ref,idrstmpl(1),0,32)
