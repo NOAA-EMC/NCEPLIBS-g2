@@ -49,7 +49,7 @@ contains
   function i1log2_8(ival)
     implicit none
     integer(kind = 8), value :: ival
-    integer(kind = 8)::i1log2_8
+    integer(kind = 8) :: i1log2_8
     integer(kind = 8), parameter :: one = 1_8
     if (ival + one < ival) then
        i1log2_8 = ilog2_8(ival)
@@ -67,7 +67,7 @@ contains
   function i1log2_4(ival)
     implicit none
     integer(kind = 4), value :: ival
-    integer(kind = 4)::i1log2_4
+    integer(kind = 4) :: i1log2_4
     integer(kind = 4), parameter :: one = 1
     if (ival + one < ival) then
        i1log2_4 = ilog2_4(ival)
@@ -85,7 +85,7 @@ contains
   function i1log2_2(ival)
     implicit none
     integer(kind = 2), value :: ival
-    integer(kind = 2)::i1log2_2
+    integer(kind = 2) :: i1log2_2
     integer(kind = 2), parameter :: one = 1_2
     if (ival + one < ival) then
        i1log2_2 = ilog2_2(ival)
@@ -103,7 +103,7 @@ contains
   function i1log2_1(ival)
     implicit none
     integer(kind = 1), value :: ival
-    integer(kind = 1)::i1log2_1
+    integer(kind = 1) :: i1log2_1
     integer(kind = 1), parameter :: one = 1_1
     if (ival + one < ival) then
        i1log2_1 = ilog2_1(ival)
@@ -120,7 +120,7 @@ contains
   function ilog2_8(i_in)
     implicit none
     integer(kind = 8), value :: i_in
-    integer(kind = 8)::ilog2_8, i
+    integer(kind = 8) :: ilog2_8, i
     ilog2_8 = 0
     i = i_in
     if (i <= 0) return
@@ -168,7 +168,7 @@ contains
   function ilog2_4(i_in)
     implicit none
     integer(kind = 4), value :: i_in
-    integer(kind = 4)::ilog2_4, i
+    integer(kind = 4) :: ilog2_4, i
     ilog2_4 = 0
     i = i_in
     if (i <= 0) return
@@ -211,7 +211,7 @@ contains
   function ilog2_2(i_in)
     implicit none
     integer(kind = 2), value :: i_in
-    integer(kind = 2)::ilog2_2, i
+    integer(kind = 2) :: ilog2_2, i
     ilog2_2 = 0_2
     i = i_in
     if (i <= 0) return
@@ -249,7 +249,7 @@ contains
   function ilog2_1(i_in)
     implicit none
     integer(kind = 1), value :: i_in
-    integer(kind = 1)::ilog2_1, i
+    integer(kind = 1) :: ilog2_1, i
     ilog2_1 = 0_1
     i = i_in
     if (i <= 0) return
