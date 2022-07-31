@@ -22,13 +22,13 @@
 !> 2 or 3.
 !> @param[inout] idrstmpl Contains the array of values for Data
 !> Representation Template 5.2 or 5.3
-!> - (1) = Reference value - ignored on input set by compack routine.
-!> - (2) = Binary Scale Factor
-!> - (3) = Decimal Scale Factor
-!> - (7) = Missing value management
-!> - (8) = Primary missing value
-!> - (9) = Secondary missing value
-!> - (17) = Order of Spatial Differencing  ( 1 or 2 )
+!> - 1 Reference value - ignored on input
+!> - 2 Binary Scale Factor
+!> - 3 Decimal Scale Factor
+!> - 7 Missing value management
+!> - 8 Primary missing value
+!> - 9 Secondary missing value
+!> - 17 Order of Spatial Differencing  (1 or 2)
 !> @param[out] cpack The packed data field (character*1 array).
 !> @param[out] lcpack Length of packed field cpack. -1 is returned if
 !> idrstmpl(7) is not set correctly.
