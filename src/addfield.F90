@@ -110,7 +110,6 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   integer :: lensec3, lensec4, lensec5, lensec6, lensec7
   logical :: issec3, needext, isprevbmap
 
-  ! implicit none additions
   integer :: nsize, newlen, nbits
   integer :: ii, i  ! iterators
   integer :: ibmprev, ilen, isecnum
