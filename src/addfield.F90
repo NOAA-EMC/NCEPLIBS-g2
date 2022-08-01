@@ -119,7 +119,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   integer :: jj, kk, mm  ! poly items
 
   allones_16 = int(Z'FFFFFFFF', 16)
-  allones = int(allones_16, 4)
+  allones = int(allones_16, kind(4))
   ierr = 0
 
   ! Check to see if beginning of GRIB message exists
