@@ -44,73 +44,73 @@
 !> - 7 corrupt section 7.
 !>
 !> @author Stephen Gilbert @date 2002-01-24
-subroutine gf_unpack7(cgrib,lcgrib,iofst,igdsnum,igdstmpl, &
-     idrsnum,idrstmpl,ndpts,fld,ierr)
+subroutine gf_unpack7(cgrib, lcgrib, iofst, igdsnum, igdstmpl,  &
+     idrsnum, idrstmpl, ndpts, fld, ierr)
   implicit none
 
-  character(len=1),intent(in) :: cgrib(lcgrib)
-  integer,intent(in) :: lcgrib,ndpts,igdsnum,idrsnum
-  integer,intent(inout) :: iofst
-  integer,pointer,dimension(:) :: igdstmpl,idrstmpl
-  integer,intent(out) :: ierr
-  real,pointer,dimension(:) :: fld
+  character(len=1), intent(in) :: cgrib(lcgrib)
+  integer, intent(in) :: lcgrib, ndpts, igdsnum, idrsnum
+  integer, intent(inout) :: iofst
+  integer, pointer, dimension(:) :: igdstmpl, idrstmpl
+  integer, intent(out) :: ierr
+  real, pointer, dimension(:) :: fld
   integer :: ieee, ier, ipos, istat, lensec
 
-  ierr=0
+  ierr = 0
   nullify(fld)
 
-  call g2_gbytec(cgrib,lensec,iofst,32) ! Get Length of Section
-  iofst=iofst+32
-  iofst=iofst+8 ! skip section number
+  call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+  iofst = iofst + 32
+  iofst = iofst + 8 ! skip section number
 
-  ipos=(iofst/8)+1
-  istat=0
-  allocate(fld(ndpts),stat=istat)
+  ipos = (iofst/8) + 1
+  istat = 0
+  allocate(fld(ndpts), stat = istat)
   if (istat.ne.0) then
-     ierr=6
+     ierr = 6
      return
   endif
 
-  if (idrsnum.eq.0) then
-     call simunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
-  elseif (idrsnum.eq.2.or.idrsnum.eq.3) then
-     call comunpack(cgrib(ipos),lensec-5,lensec,idrsnum,idrstmpl, &
-          ndpts,fld,ier)
+  if (idrsnum .eq. 0) then
+     call simunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts, fld)
+  elseif (idrsnum .eq. 2.or.idrsnum .eq. 3) then
+     call comunpack(cgrib(ipos), lensec-5, lensec, idrsnum, idrstmpl, &
+          ndpts, fld, ier)
      if ( ier .NE. 0 ) then
-        ierr=7
+        ierr = 7
         return
      endif
-  elseif (idrsnum.eq.50) then ! Spectral simple
-     call simunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts-1, &
+  elseif (idrsnum .eq. 50) then ! Spectral simple
+     call simunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts-1, &
           fld(2))
-     ieee=idrstmpl(5)
-     call rdieee(ieee,fld(1),1)
-  elseif (idrsnum.eq.51) then ! Spectral complex
+     ieee = idrstmpl(5)
+     call rdieee(ieee, fld(1), 1)
+  elseif (idrsnum .eq. 51) then ! Spectral complex
      if (igdsnum.ge.50.AND.igdsnum.le.53) then
-        call specunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts, &
-             igdstmpl(1),igdstmpl(2),igdstmpl(3),fld)
+        call specunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts, &
+             igdstmpl(1), igdstmpl(2), igdstmpl(3), fld)
      else
-        print *,'gf_unpack7: Cannot use GDT 3.',igdsnum, &
+        print *, 'gf_unpack7: Cannot use GDT 3.', igdsnum, &
              ' to unpack Data Section 5.51.'
-        ierr=5
+        ierr = 5
         nullify(fld)
         return
      endif
 
-  elseif (idrsnum.eq.40 .OR. idrsnum.eq.40000) then
-     call jpcunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
+  elseif (idrsnum .eq. 40 .OR. idrsnum .eq. 40000) then
+     call jpcunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts, fld)
 
 
-  elseif (idrsnum.eq.41 .OR. idrsnum.eq.40010) then
-     call pngunpack(cgrib(ipos),lensec-5,idrstmpl,ndpts,fld)
+  elseif (idrsnum .eq. 41 .OR. idrsnum .eq. 40010) then
+     call pngunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts, fld)
 
   else
-     print *,'gf_unpack7: Data Representation Template ',idrsnum, &
+     print *, 'gf_unpack7: Data Representation Template ', idrsnum,  &
           ' not yet implemented.'
-     ierr=4
+     ierr = 4
      nullify(fld)
      return
   endif
 
-  iofst=iofst+(8*lensec)
+  iofst = iofst + (8 * lensec)
 end subroutine gf_unpack7

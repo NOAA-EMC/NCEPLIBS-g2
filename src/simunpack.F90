@@ -14,39 +14,39 @@
 !> @param[out] fld Contains the unpacked data values.
 !>
 !> @author Stephen Gilbert @date 2000-06-21
-subroutine simunpack(cpack,len,idrstmpl,ndpts,fld)
+subroutine simunpack(cpack, len, idrstmpl, ndpts, fld)
   implicit none
 
-  character(len=1),intent(in) :: cpack(len)
-  integer,intent(in) :: ndpts,len
-  integer,intent(in) :: idrstmpl(*)
-  real,intent(out) :: fld(ndpts)
-  integer :: itype, j, nbits
+  character(len=1), intent(in) :: cpack(len)
+  integer, intent(in) :: ndpts, len
+  integer, intent(in) :: idrstmpl(*)
+  real, intent(out) :: fld(ndpts)
+  integer :: itype,  j,  nbits
 
   integer :: ifld(ndpts)
   integer(4) :: ieee
-  real :: ref,bscale,dscale
+  real :: ref, bscale, dscale
 
   ieee = idrstmpl(1)
-  call rdieee(ieee,ref,1)
+  call rdieee(ieee, ref, 1)
   bscale = 2.0**real(idrstmpl(2))
   dscale = 10.0**real(-idrstmpl(3))
   nbits = idrstmpl(4)
   itype = idrstmpl(5)
   !
-  !  if nbits equals 0, we have a constant field where the reference value
+  !  if nbits equals 0,  we have a constant field where the reference value
   !  is the data value at each gridpoint
   !
-  if (nbits.ne.0) then
-     call g2_gbytesc(cpack,ifld,0,nbits,0,ndpts)
-     do j=1,ndpts
-        fld(j)=((real(ifld(j))*bscale)+ref)*dscale
+  if (nbits .ne. 0) then
+     call g2_gbytesc(cpack, ifld, 0, nbits, 0, ndpts)
+     do j = 1, ndpts
+        fld(j) = ((real(ifld(j)) * bscale) + ref) * dscale
      enddo
   else
-     !print *,'unpack ref ',ref
-     !print *,'unpack ndpts ',ndpts
-     do j=1,ndpts
-        fld(j)=ref
+     !print *, 'unpack ref ', ref
+     !print *, 'unpack ndpts ', ndpts
+     do j = 1, ndpts
+        fld(j) = ref
      enddo
   endif
 end subroutine simunpack

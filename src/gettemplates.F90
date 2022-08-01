@@ -63,159 +63,149 @@
 !> how many data fields exist in a given GRIB message.
 !>
 !> @author Stephen Gilbert @date 2000-05-26
-subroutine gettemplates(cgrib,lcgrib,ifldnum,igds,igdstmpl, &
-     igdslen,ideflist,idefnum,ipdsnum,ipdstmpl, &
-     ipdslen,coordlist,numcoord,ierr)
+subroutine gettemplates(cgrib, lcgrib, ifldnum, igds, igdstmpl,  &
+     igdslen, ideflist, idefnum, ipdsnum, ipdstmpl,  &
+     ipdslen, coordlist, numcoord, ierr)
   implicit none
 
-  character(len=1),intent(in) :: cgrib(lcgrib)
-  integer,intent(in) :: lcgrib,ifldnum
-  integer,intent(out) :: igds(*),igdstmpl(*),ideflist(*)
-  integer,intent(out) :: ipdsnum,ipdstmpl(*)
-  integer,intent(out) :: idefnum,numcoord
-  integer,intent(out) :: ierr
-  real,intent(out) :: coordlist(*)
+  character(len=1), intent(in) :: cgrib(lcgrib)
+  integer, intent(in) :: lcgrib, ifldnum
+  integer, intent(out) :: igds(*), igdstmpl(*), ideflist(*)
+  integer, intent(out) :: ipdsnum, ipdstmpl(*)
+  integer, intent(out) :: idefnum, numcoord
+  integer, intent(out) :: ierr
+  real, intent(out) :: coordlist(*)
   integer :: igdslen, ipdslen, ipos, isecnum, j, jerr, lengrib, lensec, lensec0, numfld, numlocal
 
-  character(len=4),parameter :: grib='GRIB',c7777='7777'
-  character(len=4) :: ctemp
+  character(len = 4), parameter :: grib = 'GRIB', c7777 = '7777'
+  character(len = 4) :: ctemp
   integer:: listsec0(2)
-  integer iofst,istart
-  logical have3,have4
+  integer iofst, istart
+  logical have3, have4
 
-  have3=.false.
-  have4=.false.
-  ierr=0
-  numfld=0
-  !
-  !  Check for valid request number
-  !
-  if (ifldnum.le.0) then
-     print *,'gettemplates: Request for field number must be ', &
+  have3 = .false.
+  have4 = .false.
+  ierr = 0
+  numfld = 0
+
+  !  Check for valid request number.
+  if (ifldnum .le. 0) then
+     print *, 'gettemplates: Request for field number must be ', &
           'positive.'
-     ierr=3
+     ierr = 3
      return
   endif
-  !
-  !  Check for beginning of GRIB message in the first 100 bytes
-  !
-  istart=0
-  do j=1,100
-     ctemp=cgrib(j)//cgrib(j+1)//cgrib(j+2)//cgrib(j+3)
-     if (ctemp.eq.grib ) then
-        istart=j
+
+  ! Check for beginning of GRIB message in the first 100 bytes.
+  istart = 0
+  do j = 1, 100
+     ctemp = cgrib(j)//cgrib(j+1)//cgrib(j+2)//cgrib(j+3)
+     if (ctemp .eq. grib) then
+        istart = j
         exit
      endif
   enddo
-  if (istart.eq.0) then
+  if (istart .eq. 0) then
      print *,'gettemplates:  Beginning characters GRIB not found.'
-     ierr=1
+     ierr = 1
      return
   endif
-  !
-  !  Unpack Section 0 - Indicator Section
-  !
-  iofst=8*(istart+5)
-  call g2_gbytec(cgrib,listsec0(1),iofst,8)     ! Discipline
-  iofst=iofst+8
-  call g2_gbytec(cgrib,listsec0(2),iofst,8)     ! GRIB edition number
-  iofst=iofst+8
-  iofst=iofst+32
-  call g2_gbytec(cgrib,lengrib,iofst,32)        ! Length of GRIB message
-  iofst=iofst+32
-  lensec0=16
-  ipos=istart+lensec0
-  !
+
+  ! Unpack Section 0 - Indicator Section.
+  iofst = 8*(istart+5)
+  call g2_gbytec(cgrib, listsec0(1), iofst, 8)     ! Discipline
+  iofst = iofst+8
+  call g2_gbytec(cgrib, listsec0(2), iofst, 8)     ! GRIB edition number
+  iofst = iofst+8
+  iofst = iofst+32
+  call g2_gbytec(cgrib, lengrib, iofst, 32)        ! Length of GRIB message
+  iofst = iofst+32
+  lensec0 = 16
+  ipos = istart+lensec0
+
   !  Currently handles only GRIB Edition 2.
-  !
-  if (listsec0(2).ne.2) then
-     print *,'gettemplates: can only decode GRIB edition 2.'
-     ierr=2
+  if (listsec0(2) .ne. 2) then
+     print *, 'gettemplates: can only decode GRIB edition 2.'
+     ierr = 2
      return
   endif
-  !
-  !  Loop through the remaining sections keeping track of the
-  !  length of each.  Also keep the latest Grid Definition Section info.
-  !  Unpack the requested field number.
-  !
+
+  ! Loop through the remaining sections keeping track of the
+  ! length of each. Also keep the latest Grid Definition Section info.
+  ! Unpack the requested field number.
   do
      !    Check to see if we are at end of GRIB message
-     ctemp=cgrib(ipos)//cgrib(ipos+1)//cgrib(ipos+2)//cgrib(ipos+3)
-     if (ctemp.eq.c7777 ) then
-        ipos=ipos+4
+     ctemp = cgrib(ipos) // cgrib(ipos+1) // cgrib(ipos+2) // cgrib(ipos+3)
+     if (ctemp .eq. c7777) then
+        ipos = ipos+4
         !    If end of GRIB message not where expected, issue error
-        if (ipos.ne.(istart+lengrib)) then
-           print *,'gettemplates: "7777" found, but not where ', &
+        if (ipos .ne. (istart + lengrib)) then
+           print *, 'gettemplates: "7777" found, but not where ', &
                 'expected.'
-           ierr=4
+           ierr = 4
            return
         endif
         exit
      endif
      !     Get length of Section and Section number
-     iofst=(ipos-1)*8
-     call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
-     iofst=iofst+32
-     call g2_gbytec(cgrib,isecnum,iofst,8)         ! Get Section number
-     iofst=iofst+8
-     !print *,' lensec= ',lensec,'    secnum= ',isecnum
-     !
-     !   If found Section 3, unpack the GDS info using the
-     !   appropriate template.  Save in case this is the latest
-     !   grid before the requested field.
-     !
-     if (isecnum.eq.3) then
-        iofst=iofst-40       ! reset offset to beginning of section
-        call unpack3(cgrib,lcgrib,iofst,igds,igdstmpl,igdslen, &
-             ideflist,idefnum,jerr)
-        if (jerr.eq.0) then
-           have3=.true.
+     iofst = (ipos-1)*8
+     call g2_gbytec(cgrib, lensec, iofst, 32)        ! Get Length of Section
+     iofst = iofst+32
+     call g2_gbytec(cgrib, isecnum, iofst, 8)         ! Get Section number
+     iofst = iofst+8
+     !print *,' lensec =  ',lensec,'    secnum =  ',isecnum
+
+     ! If found Section 3, unpack the GDS info using the
+     ! appropriate template. Save in case this is the latest
+     ! grid before the requested field.
+     if (isecnum .eq. 3) then
+        iofst = iofst-40       ! reset offset to beginning of section
+        call unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, igdslen, &
+             ideflist, idefnum, jerr)
+        if (jerr .eq. 0) then
+           have3 = .true.
         else
-           ierr=10
+           ierr = 10
            return
         endif
      endif
-     !
-     !   If found Section 4, check to see if this field is the
-     !   one requested.
-     !
-     if (isecnum.eq.4) then
-        numfld=numfld+1
-        if (numfld.eq.ifldnum) then
-           iofst=iofst-40       ! reset offset to beginning of section
-           call unpack4(cgrib,lcgrib,iofst,ipdsnum,ipdstmpl,ipdslen, &
-                coordlist,numcoord,jerr)
-           if (jerr.eq.0) then
-              have4=.true.
+
+     ! If found Section 4, check to see if this field is the
+     ! one requested.
+     if (isecnum .eq. 4) then
+        numfld = numfld+1
+        if (numfld .eq. ifldnum) then
+           iofst = iofst-40       ! reset offset to beginning of section
+           call unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, ipdslen, &
+                coordlist, numcoord, jerr)
+           if (jerr .eq. 0) then
+              have4 = .true.
            else
-              ierr=11
+              ierr = 11
               return
            endif
         endif
      endif
-     !
-     !   Check to see if we read pass the end of the GRIB
-     !   message and missed the terminator string '7777'.
-     !
-     ipos=ipos+lensec                 ! Update beginning of section pointer
-     if (ipos.gt.(istart+lengrib)) then
-        print *,'gettemplates: "7777"  not found at end of GRIB ', &
+
+     ! Check to see if we read pass the end of the GRIB
+     ! message and missed the terminator string '7777'.
+     ipos = ipos+lensec                 ! Update beginning of section pointer
+     if (ipos .gt. (istart + lengrib)) then
+        print *, 'gettemplates: "7777"  not found at end of GRIB ', &
              'message.'
-        ierr=7
+        ierr = 7
         return
      endif
 
-     if (have3.and.have4) return
+     if (have3 .and. have4) return
 
   enddo
 
-  !
-  !  If exited from above loop, the end of the GRIB message was reached
-  !  before the requested field was found.
-  !
-  print *,'gettemplates: GRIB message contained ',numlocal, &
+  ! If exited from above loop, the end of the GRIB message was reached
+  ! before the requested field was found.
+  print *, 'gettemplates: GRIB message contained ', numlocal, &
        ' different fields.'
-  print *,'gettemplates: The request was for the ',ifldnum, &
+  print *, 'gettemplates: The request was for the ', ifldnum,  &
        ' field.'
-  ierr=6
+  ierr = 6
 end subroutine gettemplates
