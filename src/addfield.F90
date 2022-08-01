@@ -101,6 +101,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   real, pointer, dimension(:) :: pfld
   real(4) :: coordieee(numcoord), re00
   integer(4) :: ire00, allones
+  integer(16) :: allones_16
   integer :: mappds(ipdstmplen), intbmap(ngrdpts), mapdrs(idrstmplen)
   integer, parameter :: zero = 0, one = 1, four = 4, five = 5, six = 6, seven = 7
   integer, parameter :: minsize = 50000
@@ -118,7 +119,8 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   integer :: lcpack, itemp
   integer :: jj, kk, mm  ! poly items
 
-  allones = int(Z'FFFFFFFF')
+  allones_16 = int(Z'FFFFFFFF', 16)
+  allones = int(allones_16, 4)
   ierr = 0
 
   ! Check to see if beginning of GRIB message exists
