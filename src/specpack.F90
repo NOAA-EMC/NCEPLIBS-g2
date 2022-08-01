@@ -22,7 +22,7 @@ subroutine specpack(fld, ndpts, JJ, KK, MM, idrstmpl, cpack, lcpack)
   real, intent(in) :: fld(ndpts)
   integer, intent(in) :: ndpts, JJ, KK, MM
   integer, intent(inout) :: idrstmpl(*)
-  character(len=1), intent(out) :: cpack(*)
+  character(len = 1), intent(out) :: cpack(*)
   integer, intent(out) :: lcpack
 
   integer :: inc, incp, incu, Js, Ks, m, Ms, n, nbits, Nm, Ns, ipos

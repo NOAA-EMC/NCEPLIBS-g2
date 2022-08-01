@@ -118,7 +118,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   integer :: lcpack, itemp
   integer :: jj, kk, mm  ! poly items
 
-  allones = Z'FFFFFFFF'
+  allones = int(Z'FFFFFFFF')
   ierr = 0
 
   ! Check to see if beginning of GRIB message exists

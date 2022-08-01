@@ -46,14 +46,14 @@ subroutine specunpack(cpack, len, idrstmpl, ndpts, JJ, KK, MM, fld)
   if (idrstmpl(10) .eq. 1) then           ! unpacked floats are 32-bit IEEE
      !call g2_gbytesc(cpack, ifld, 0, 32, 0, Ts)
      call rdieee(cpack, unpk, Ts)          ! read IEEE unpacked floats
-     iofst = 32*Ts
-     call g2_gbytesc(cpack, ifld, iofst, nbits, 0, ndpts-Ts)  ! unpack scaled data
+     iofst = 32 * Ts
+     call g2_gbytesc(cpack, ifld, iofst, nbits, 0, ndpts - Ts)  ! unpack scaled data
 
      ! Calculate Laplacian scaling factors for each possible wave number.
      allocate(pscale(JJ + MM))
-     tscale = real(idrstmpl(5))*1E-6
+     tscale = real(idrstmpl(5)) * 1E-6
      do n = Js, JJ + MM
-        pscale(n) = real(n*(n + 1))**(-tscale)
+        pscale(n) = real(n* (n + 1))**(-tscale)
      enddo
 
      ! Assemble spectral coeffs back to original order.
@@ -72,7 +72,7 @@ subroutine specunpack(cpack, len, idrstmpl, ndpts, JJ, KK, MM, fld)
               inc = inc + 2
               incu = incu + 2
            else                         ! Calc coeff from packed value
-              fld(inc) = ((real(ifld(incp)) * bscale) + ref) * dscale*pscale(n) ! real part
+              fld(inc) = ((real(ifld(incp)) * bscale) + ref) * dscale * pscale(n) ! real part
               fld(inc + 1) = ((real(ifld(incp + 1)) * bscale) + ref) * dscale * pscale(n) ! imaginary part
               inc = inc + 2
               incp = incp + 2
