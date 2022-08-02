@@ -113,13 +113,15 @@ program test_gbytec
   nbits = 32
   nskip = 0
   num = 1
-  r_in(1) = 1
+  r_in(1) = 1 
   call g2_sbytesc(out4, r_in, iskip, nbits, nskip, num)
-  !if (ichar(out4(1)) .ne. 0 .and. ichar(out4(2)) .ne. 0 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 1) stop 50
-  print '(z2.2)', out4(1)  
-  print '(z2.2)', out4(2)  
-  print '(z2.2)', out4(3)  
-  print '(z2.2)', out4(4)  
+  ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
+  ! decimal for 3f is 63, the decimal for 80 is 128.
+  if (ichar(out4(1)) .ne. 63 .and. ichar(out4(2)) .ne. 128 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 0) stop 50
+  ! print '(z2.2)', out4(1)  
+  ! print '(z2.2)', out4(2)  
+  ! print '(z2.2)', out4(3)  
+  ! print '(z2.2)', out4(4)
 
   print *, 'SUCCESS!'
 
