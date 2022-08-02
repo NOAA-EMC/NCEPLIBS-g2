@@ -121,10 +121,10 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
 
   character*1, intent(out) :: out(*)
   integer, intent(in) :: in(n)
+  integer, intent(in) :: iskip, nbits, nskip, n
+  
   integer :: bitcnt, tbit
   integer, parameter :: ones(8)=(/ 1,  3,  7, 15, 31, 63, 127, 255/)
-
-  integer, intent(in) :: iskip, nbits, nskip, n
   integer :: nbit, i, itmp, index, ibit, imask, itmp2, itmp3
   integer, external :: mova2i
 

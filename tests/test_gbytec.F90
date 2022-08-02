@@ -7,6 +7,7 @@ program test_gbytec
   implicit none
 
   character*1 :: out(1)
+  character*1 :: out4(4)
   character*1 :: out5(5)
   character*1 :: out2(8)
   character*1 :: out10(10)
@@ -20,7 +21,8 @@ program test_gbytec
   integer :: nbits = 8
   integer :: nskip = 0
   integer :: i
-
+  integer :: num
+  
   print *, 'Testing g2_gbytesc.f subroutines.'
 
   print *, 'Testing g2_sbytec()...'
@@ -92,8 +94,18 @@ program test_gbytec
   in(1) = 1
   out(1) = char(0)
   call g2_sbytec(out, in, 1, 6)
-  print '(z2.2)', out(1)  
+  ! print '(z2.2)', out(1)  
   if (ichar(out(1)) .ne. 2) stop 20
+
+  print *, 'Testing g2_sbytesc() with a real array instead of an int array...'
+  iskip = 0
+  nbits = 32
+  nskip = 0
+  num = 1
+  in(1) = 1
+  call g2_sbytesc(out4, in, iskip, nbits, nskip, num)
+  if (ichar(out4(1)) .ne. 0 .and. ichar(out4(2)) .ne. 0 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 1) stop 50
+  !print '(z2.2)', out4(1)  
 
   print *, 'SUCCESS!'
 
