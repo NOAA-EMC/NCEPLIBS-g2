@@ -13,6 +13,7 @@ program test_gbytec
   character*1 :: out10(10)
   integer, parameter :: n = 1
   integer :: in(n)
+  real :: r_in(n)
   integer, parameter :: n2 = 2
   integer :: in2(n2)
   integer, parameter :: n5 = 5
@@ -97,7 +98,7 @@ program test_gbytec
   ! print '(z2.2)', out(1)  
   if (ichar(out(1)) .ne. 2) stop 20
 
-  print *, 'Testing g2_sbytesc() with a real array instead of an int array...'
+  print *, 'Testing g2_sbytesc() with a small array...'
   iskip = 0
   nbits = 32
   nskip = 0
@@ -106,6 +107,19 @@ program test_gbytec
   call g2_sbytesc(out4, in, iskip, nbits, nskip, num)
   if (ichar(out4(1)) .ne. 0 .and. ichar(out4(2)) .ne. 0 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 1) stop 50
   !print '(z2.2)', out4(1)  
+
+  print *, 'Testing g2_sbytesc() with a real array instead of an int array...'
+  iskip = 0
+  nbits = 32
+  nskip = 0
+  num = 1
+  r_in(1) = 1
+  call g2_sbytesc(out4, r_in, iskip, nbits, nskip, num)
+  !if (ichar(out4(1)) .ne. 0 .and. ichar(out4(2)) .ne. 0 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 1) stop 50
+  print '(z2.2)', out4(1)  
+  print '(z2.2)', out4(2)  
+  print '(z2.2)', out4(3)  
+  print '(z2.2)', out4(4)  
 
   print *, 'SUCCESS!'
 
