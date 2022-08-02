@@ -7,20 +7,24 @@ program test_gbytec
   implicit none
 
   character*1 :: out(1)
+  character*1 :: out4(4)
   character*1 :: out5(5)
-  character*1 :: out2(8)
+  character*1 :: out8(8)
   character*1 :: out10(10)
   integer, parameter :: n = 1
   integer :: in(n)
+  real :: r_in(n)
   integer, parameter :: n2 = 2
   integer :: in2(n2)
+  real :: r_in2(n2)
   integer, parameter :: n5 = 5
   integer :: in5(n5)
   integer :: iskip = 0
   integer :: nbits = 8
   integer :: nskip = 0
   integer :: i
-
+  integer :: num
+  
   print *, 'Testing g2_gbytesc.f subroutines.'
 
   print *, 'Testing g2_sbytec()...'
@@ -41,15 +45,15 @@ program test_gbytec
   in2(1) = 1
   in2(2) = 2
   do i = 1, 8
-     out2(i) = char(0)
+     out8(i) = char(0)
   end do
   nbits = 8
-  call g2_sbytesc(out2, in2, iskip, nbits, nskip, n2)
+  call g2_sbytesc(out8, in2, iskip, nbits, nskip, n2)
   do i = 1, 8
      if (i .le. 2) then
-        if (ichar(out2(i)) .ne. in2(i)) stop 30;
+        if (ichar(out8(i)) .ne. in2(i)) stop 30;
      else
-        if (ichar(out2(i)) .ne. 0) stop 31;
+        if (ichar(out8(i)) .ne. 0) stop 31;
      endif
   end do
 
@@ -92,8 +96,85 @@ program test_gbytec
   in(1) = 1
   out(1) = char(0)
   call g2_sbytec(out, in, 1, 6)
-  print '(z2.2)', out(1)  
+  ! print '(z2.2)', out(1)  
   if (ichar(out(1)) .ne. 2) stop 20
+
+  print *, 'Testing g2_sbytesc() with a small array...'
+  iskip = 0
+  nbits = 32
+  nskip = 0
+  num = 1
+  in(1) = 1
+  call g2_sbytesc(out4, in, iskip, nbits, nskip, num)
+  if (ichar(out4(1)) .ne. 0 .and. ichar(out4(2)) .ne. 0 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 1) stop 50
+  !print '(z2.2)', out4(1)  
+
+  ! For this test to pass the -fallow-argument-mismatch flag must be
+  ! used, because I am passing in a real array instead of an int array
+  ! for the in parameter. This is how g2_sbytesc() is called in
+  ! addfield.F90.
+  print *, 'Testing g2_sbytesc() with a real array (size 1) instead of an int array...'
+  iskip = 0
+  nbits = 32
+  nskip = 0
+  num = 1
+  r_in(1) = 1 
+  call g2_sbytesc(out4, r_in, iskip, nbits, nskip, num)
+  ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
+  ! decimal for 3f is 63, the decimal for 80 is 128.
+  if (ichar(out4(1)) .ne. 63 .and. ichar(out4(2)) .ne. 128 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 0) stop 50
+  ! print '(z2.2)', out4(1)  
+  ! print '(z2.2)', out4(2)  
+  ! print '(z2.2)', out4(3)  
+  ! print '(z2.2)', out4(4)
+
+  ! This test is the same as above, but does not require the -fallow-argument-mismatch flag.
+  print *, 'Testing g2_sbytesc() with a real array (size 1) instead of an int array, using transfer() intrinsic...'
+  iskip = 0
+  nbits = 32
+  nskip = 0
+  num = 1
+  r_in(1) = 1
+  in = transfer(r_in, in)
+  call g2_sbytesc(out4, in, iskip, nbits, nskip, num)
+  ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
+  ! decimal for 3f is 63, the decimal for 80 is 128.
+  if (ichar(out4(1)) .ne. 63 .and. ichar(out4(2)) .ne. 128 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 0) stop 50
+  ! print '(z2.2)', out4(1)  
+
+  ! For this test to pass the -fallow-argument-mismatch flag must be
+  ! used, because I am passing in a real array instead of an int array
+  ! for the in parameter. This is how g2_sbytesc() is called in
+  ! addfield.F90.
+  print *, 'Testing g2_sbytesc() with a real array instead of an int array...'
+  iskip = 0
+  nbits = 32
+  nskip = 0
+  num = 2
+  r_in2(1) = 1 
+  r_in2(2) = 1 
+  call g2_sbytesc(out8, r_in2, iskip, nbits, nskip, num)
+  ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
+  ! decimal for 3f is 63, the decimal for 80 is 128.
+  if (ichar(out8(1)) .ne. 63 .and. ichar(out8(2)) .ne. 128 .and. ichar(out8(3)) .ne. 0 .and. ichar(out8(4)) .ne. 0) stop 50
+  if (ichar(out8(5)) .ne. 63 .and. ichar(out8(6)) .ne. 128 .and. ichar(out8(7)) .ne. 0 .and. ichar(out8(8)) .ne. 0) stop 50
+  ! print '(z2.2)', out8(1)  
+
+  ! This test is the same as above, but does not require the -fallow-argument-mismatch flag.
+  print *, 'Testing g2_sbytesc() with a real array instead of an int array, using transfer() intrinsic...'
+  iskip = 0
+  nbits = 32
+  nskip = 0
+  num = 2
+  r_in2(1) = 1 
+  r_in2(2) = 1 
+  in = transfer(r_in2, in2)
+  call g2_sbytesc(out8, in2, iskip, nbits, nskip, num)
+  ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
+  ! decimal for 3f is 63, the decimal for 80 is 128.
+  if (ichar(out4(1)) .ne. 63 .and. ichar(out4(2)) .ne. 128 .and. ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 0) stop 50
+  if (ichar(out8(5)) .ne. 63 .and. ichar(out8(6)) .ne. 128 .and. ichar(out8(7)) .ne. 0 .and. ichar(out8(8)) .ne. 0) stop 50
+  ! print '(z2.2)', out4(1)  
 
   print *, 'SUCCESS!'
 
