@@ -22,14 +22,14 @@
 !> - idrstmpl(6) = 0 use lossless compression; = 1 use lossy compression.
 !> - idrstmpl(7) Desired compression ratio, if idrstmpl(6)=1.
 !> @param[out] cpack The packed data field (character*1 array)
-!> @param[out] lcpack length of packed field cpack.
+!> @param[out] lcpack The length of packed field cpack.
 !>
 !> @author Stephen Gilbert @date 2002-12-21
 subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   implicit none
 
   integer, intent(in) :: width, height
-  real, intent(in) :: fld(width * height)
+  real, intent(in) :: fld(*)
   character(len = 1), intent(out) :: cpack(*)
   integer, intent(inout) :: idrstmpl(*)
   integer, intent(out) :: lcpack
@@ -37,7 +37,7 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   integer(kind = 8) :: width8, height8, lcpack8
   integer(kind = 8) :: idrstmpl8(7)
   integer :: i
-  
+
   interface
 #if KIND == 4
      subroutine pngpack_c(fld, width, height, idrstmpl, cpack, lcpack) bind(c, name="pngpack")
@@ -45,14 +45,14 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
      subroutine pngpack_c(fld, width, height, idrstmpl, cpack, lcpack) bind(c, name="pngpackd")
 #endif
        use iso_c_binding
-       integer(c_size_t), intent(in) :: width, height
+       integer(c_size_t), value :: width, height
 #if KIND == 4
-       real(c_float), intent(in) :: fld(width * height)
-#else       
-       real(c_double), intent(in) :: fld(width * height)
+       real(c_float), intent(in) :: fld(*)
+#else
+       real(c_double), intent(in) :: fld(*)
 #endif
-       integer(kind = c_size_t), intent(in) :: idrstmpl(*)              
-       character(kind = c_char), intent(in) :: cpack(*)              
+       integer(kind = c_size_t), intent(in) :: idrstmpl(*)
+       character(kind = c_char), intent(in) :: cpack(*)
        integer(c_size_t), intent(out) :: lcpack
      end subroutine pngpack_c
   end interface
@@ -67,13 +67,13 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   do i = 1, 7
      idrstmpl8(i) = idrstmpl(i)
   end do
-
+  
   ! Call the C function.
   call pngpack_c(fld, width8, height8, idrstmpl8, cpack, lcpack8)
-
+  
   ! Need to copy idrstmpl array from 8-byte back to 4-byte.
   do i = 1, 7
      idrstmpl(i) = int(idrstmpl8(i))
   end do
-  lcpack = lcpack8
+  lcpack = int(lcpack8)
 end subroutine pngpack

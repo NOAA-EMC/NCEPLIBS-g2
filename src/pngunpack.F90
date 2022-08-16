@@ -28,15 +28,15 @@ subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
 
   interface
 #if KIND == 4
-     subroutine pngunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="pngunpack")
+     subroutine pngunpack_c(cpack, len8, idrstmpl, ndpts, fld) bind(c, name="pngunpack")
 #else
-     subroutine pngunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="pngunpackd")
+     subroutine pngunpack_c(cpack, len8, idrstmpl, ndpts, fld) bind(c, name="pngunpackd")
 #endif
        use iso_c_binding
-       character(kind = c_char), intent(in) :: cpack(*)
-       integer(c_size_t), intent(in) :: len       
+       integer(c_size_t), value :: len8       
+       character(kind = c_char), intent(in) :: cpack(len8)
        integer(kind = c_size_t), intent(in) :: idrstmpl(*)              
-       integer(c_size_t), intent(in) :: ndpts       
+       integer(c_size_t), value :: ndpts       
 #if KIND == 4
        real(c_float), intent(out) :: fld(*)
 #else       

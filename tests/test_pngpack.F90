@@ -7,12 +7,13 @@ program test_pngpack
     implicit none
 
     integer, parameter :: width=2, height=2, ndpts=4
-    real(kind=8), parameter :: delta = 0.00000000001
-    real(kind=8) :: fld(ndpts), fld2(ndpts)
+    real, parameter :: delta = 0.00000000001
+    real :: fld(ndpts), fld2(ndpts)
     integer :: idrstmpl(7)
     character(len=1) :: cpack(100)
-    integer :: lcpack
+    integer :: lcpack = 100
     integer :: i
+    integer :: g2_set_log_level
 
     ! Create the fld variable with data to pack
     fld = (/1.0, 2.0, 3.0, 4.0/)
@@ -26,6 +27,8 @@ program test_pngpack
     idrstmpl(6)=0
     idrstmpl(7)=1
 
+    i = g2_set_log_level(3)
+    
     ! Testing pngpack
     call pngpack(fld, width, height, idrstmpl, cpack, lcpack)
     print *, 'lcpack: ', lcpack
