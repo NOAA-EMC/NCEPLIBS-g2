@@ -17,7 +17,7 @@ realloc.F90 reduce.F90 simpack.F90 simunpack.F90 skgb.F90 specpack.F90
 specunpack.F90)
 
 # These are the C source files.
-set(c_src dec_jpeg2000.c dec_png.c enc_jpeg2000.c enc_png.c mova2i.c)
+set(c_src mova2i.c)
 
 # Create this fortran file, which has the contents of the VERSION file
 # substituted in.
@@ -31,8 +31,7 @@ elseif(UNIX)
   add_compile_definitions(LINUX)
 endif()
 
-# Build a _4 and _d version of the library, for 4-byte real, and
-# 8-byte real.
+# Figure whether user wants a _4, a _d, or both libraries.
 if(BUILD_4 AND BUILD_D)
   set(kinds "4" "d")
 elseif(BUILD_4 AND NOT BUILD_D)
@@ -43,29 +42,42 @@ else()
   message(FATAL_ERROR "At least one of BUILD_4 or BUILD_D must be turned on")
 endif()
 
+# Build a _4 and _d version of the library, for 4-byte real, and
+# 8-byte real.
 foreach(kind ${kinds})
+
+  # Figure out the library name and the include directory.
   set(lib_name ${PROJECT_NAME}_${kind})
   set(module_dir ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
 
+  # Build the fortran code.
   add_library(${lib_name}_f OBJECT ${fortran_src})
   set_target_properties(${lib_name}_f PROPERTIES COMPILE_FLAGS
     "${fortran_${kind}_flags}")
   set_target_properties(${lib_name}_f PROPERTIES Fortran_MODULE_DIRECTORY
     ${module_dir})
 
+  # Set preprocessor define so code can know what kind of library is
+  # being built.
+  target_compile_definitions(${lib_name}_f PUBLIC KIND=${kind})
+
+  # Build the C code.
   add_library(${lib_name}_c OBJECT ${c_src})
   target_include_directories(${lib_name}_c PRIVATE ${JASPER_INCLUDE_DIR} ${PNG_INCLUDE_DIRS})
   target_link_libraries(${lib_name}_c PRIVATE ${PNG_LIBRARIES})
 
+  # Assemble the library.
   add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
 
-  target_link_libraries(${lib_name} PUBLIC bacio::bacio ${PNG_LIBRARIES} ${JASPER_LIBRARIES} w3emc::w3emc_${kind})
+  # Link to bacio, jasper, and w3emc.
+  target_link_libraries(${lib_name} PUBLIC bacio::bacio ${PNG_LIBRARIES} ${JASPER_LIBRARIES} w3emc::w3emc_${kind} g2c::g2c)
 
   target_include_directories(${lib_name} INTERFACE
     $<BUILD_INTERFACE:${module_dir}>
     $<INSTALL_INTERFACE:include_${kind}>)
   list(APPEND LIB_TARGETS ${lib_name})
 
+  # Install the library.
   install(DIRECTORY ${module_dir} DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 endforeach()

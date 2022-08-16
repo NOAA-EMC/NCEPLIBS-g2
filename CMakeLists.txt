@@ -3,6 +3,7 @@
 # Mark Potts, Kyle Gerheiser
 cmake_minimum_required(VERSION 3.18)
 
+# Read the current version number from file VERSION.
 file(STRINGS "VERSION" pVersion)
 
 project(
@@ -12,6 +13,7 @@ project(
 
 include(GNUInstallDirs)
 
+# Handle build type.
 if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
   message(STATUS "Setting build type to 'Release' as none was specified.")
   set(CMAKE_BUILD_TYPE
@@ -40,8 +42,15 @@ if(${CMAKE_Fortran_COMPILER_ID} MATCHES "^(GNU)$" AND ${CMAKE_Fortran_COMPILER_V
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -w -fallow-argument-mismatch")
 endif()
 
+# Handle user build options.
+option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
+option(BUILD_4 "Build libg2_4.a" ON)
+option(BUILD_D "Build libg2_d.a" ON)
+
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
+find_package(g2c 1.7.0 REQUIRED)
 find_package(Jasper 2.0.25 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
@@ -49,12 +58,6 @@ if(bacio_VERSION LESS 2.5.0)
   add_library(bacio::bacio ALIAS bacio::bacio_4)
 endif()
 find_package(w3emc 2.9.0 REQUIRED)
-
-# Handle user build options.
-option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
-option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
-option(BUILD_4 "Build libg2_4.a" ON)
-option(BUILD_D "Build libg2_d.a" ON)
 
 # Build the code in the source directory.
 add_subdirectory(src)

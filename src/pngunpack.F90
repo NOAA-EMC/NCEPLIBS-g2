@@ -22,35 +22,40 @@ subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
   integer, intent(in) :: ndpts, len
   integer, intent(in) :: idrstmpl(*)
   real, intent(out) :: fld(ndpts)
-  integer :: iret, itype, j, nbits
+  integer(kind = 8) :: ndpts8, len8
+  integer(kind = 8) :: idrstmpl8(7)
+  integer :: i
 
-  integer :: ifld(ndpts)
-  character(len = 1), allocatable :: ctemp(:)
-  integer(4) :: ieee
-  real :: ref, bscale, dscale
-  integer :: dec_png, width, height
+  interface
+#if KIND == 4
+     subroutine pngunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="pngunpack")
+#else
+     subroutine pngunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="pngunpackd")
+#endif
+       use iso_c_binding
+       character(kind = c_char), intent(in) :: cpack(*)
+       integer(c_size_t), intent(in) :: len       
+       integer(kind = c_size_t), intent(in) :: idrstmpl(*)              
+       integer(c_size_t), intent(in) :: ndpts       
+#if KIND == 4
+       real(c_float), intent(out) :: fld(*)
+#else       
+       real(c_double), intent(out) :: fld(*)
+#endif
+     end subroutine pngunpack_c
+  end interface
 
-  ieee = idrstmpl(1)
-  call rdieee(ieee, ref, 1)
-  bscale = 2.0**real(idrstmpl(2))
-  dscale = 10.0**real(-idrstmpl(3))
-  nbits = idrstmpl(4)
-  itype = idrstmpl(5)
-  !
-  !  if nbits equals 0, we have a constant field where the reference value
-  !  is the data value at each gridpoint
-  !
-  if (nbits .ne. 0) then
-     allocate(ctemp(ndpts * 4))
-     iret = dec_png(cpack, width, height, ctemp)
-     call g2_gbytesc(ctemp, ifld, 0, nbits, 0, ndpts)
-     deallocate(ctemp)
-     do j = 1, ndpts
-        fld(j) = ((real(ifld(j)) * bscale) + ref) * dscale
-     enddo
-  else
-     do j = 1, ndpts
-        fld(j) = ref
-     enddo
-  endif
+  ! We need these parameters as 8-byte ints for the C function.
+  ndpts8 = ndpts
+  len8 = len
+
+  ! Need to copy idrstmpl array to 8-byte int array for the C
+  ! function.
+  do i = 1, 7
+     idrstmpl8(i) = idrstmpl(i)
+  end do
+
+  ! Call the C function.
+  call pngunpack_c(cpack, len8, idrstmpl8, ndpts8, fld)
+  
 end subroutine pngunpack

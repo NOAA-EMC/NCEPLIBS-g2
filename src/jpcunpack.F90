@@ -18,34 +18,49 @@
 !> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
 
+  integer, intent(in) :: len
   character(len = 1), intent(in) :: cpack(len)
-  integer, intent(in) :: ndpts, len
+  integer, intent(in) :: ndpts
   integer, intent(in) :: idrstmpl(*)
   real, intent(out) :: fld(ndpts)
-
+  integer(kind = 8) :: ndpts8, len8
+  integer(kind = 8) :: idrstmpl8(7)
+  
   integer :: ifld(ndpts)
   integer(4) :: ieee
   real :: ref, bscale, dscale
   integer :: dec_jpeg2000
 
-  ieee = idrstmpl(1)
-  call rdieee(ieee, ref, 1)
-  bscale = 2.0**real(idrstmpl(2))
-  dscale = 10.0**real(-idrstmpl(3))
-  nbits = idrstmpl(4)
-  !
-  !  if nbits equals 0,  we have a constant field where the reference value
-  !  is the data value at each gridpoint
-  !
-  if (nbits .ne. 0) then
-     !         call g2_gbytesc(cpack, ifld, 0, nbits, 0, ndpts)
-     iret = dec_jpeg2000(cpack, len, ifld)
-     do j = 1, ndpts
-        fld(j) = ((real(ifld(j)) * bscale) + ref) * dscale
-     enddo
-  else
-     do j = 1, ndpts
-        fld(j) = ref
-     enddo
-  endif
+  interface
+#if KIND == 4
+     subroutine jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpack")
+#else
+     subroutine jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackd")
+#endif
+       use iso_c_binding
+       integer(c_size_t), intent(in) :: len       
+       character(kind = c_char), intent(in) :: cpack(len)
+       integer(kind = c_size_t), intent(in) :: idrstmpl(*)              
+       integer(c_size_t), intent(in) :: ndpts       
+#if KIND == 4
+       real(c_float), intent(out) :: fld(*)
+#else       
+       real(c_double), intent(out) :: fld(*)
+#endif
+     end subroutine jpcunpack_c
+  end interface
+
+  ! We need these parameters as 8-byte ints for the C function.
+  ndpts8 = ndpts
+  len8 = len
+
+  ! Need to copy idrstmpl array to 8-byte int array for the C
+  ! function.
+  do i = 1, 7
+     idrstmpl8(i) = idrstmpl(i)
+  end do
+
+  ! Call the C function.
+  call jpcunpack_c(cpack, len8, idrstmpl8, ndpts8, fld)
+  
 end subroutine jpcunpack
