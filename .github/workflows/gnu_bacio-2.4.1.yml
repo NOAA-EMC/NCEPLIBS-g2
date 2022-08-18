@@ -8,7 +8,7 @@ jobs:
       FC: gfortran
       CC: gcc
       CXX: g++
-      LD_LIBRARY_PATH: ~/Jasper/lib
+      LD_LIBRARY_PATH: /home/runner/Jasper/lib
 
     steps:
 
@@ -46,6 +46,9 @@ jobs:
 
     - name: build-w3emc
       run: |
+        set
+        ls ~
+        ls ~/Jasper/lib
         cd w3emc
         mkdir build
         cd build
