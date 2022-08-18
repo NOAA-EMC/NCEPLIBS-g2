@@ -46,10 +46,6 @@ jobs:
 
     - name: build-w3emc
       run: |
-        set
-        ls ~
-        ls ~/Jasper/lib
-        cd w3emc
         mkdir build
         cd build
         cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
@@ -112,4 +108,6 @@ jobs:
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
+	echo $LD_LIBRARY_PATH
+        export LD_LIBRARY_PATH=/home/runner/Jasper/lib
         ctest --verbose --output-on-failure
