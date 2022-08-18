@@ -8,6 +8,7 @@ jobs:
       FC: gfortran
       CC: gcc
       CXX: g++
+      LD_LIBRARY_PATH: ~/Jasper/lib
 
     steps:
 
