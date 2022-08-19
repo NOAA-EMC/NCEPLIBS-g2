@@ -8,6 +8,7 @@ jobs:
       FC: gfortran
       CC: gcc
       CXX: g++
+      LD_LIBRARY_PATH: /home/runner/Jasper/lib
 
     steps:
 
@@ -45,7 +46,6 @@ jobs:
 
     - name: build-w3emc
       run: |
-        cd w3emc
         mkdir build
         cd build
         cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
@@ -74,6 +74,21 @@ jobs:
         make -j2
         make install
 
+    - name: checkout-g2c
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-g2c
+        path: g2c
+        ref: develop
+
+    - name: build-g2c
+      run: |
+        cd g2c
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_PREFIX_PATH=~/Jasper -DCMAKE_INSTALL_PREFIX=~/g2c
+        make -j2
+        make install
     - name: checkout
       uses: actions/checkout@v2
       with:
@@ -87,17 +102,12 @@ jobs:
         doxygen --version
         ls ~/bacio
         cd build
-        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0"
+        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc;~/g2c" -DENABLE_DOCS=Yes
         make -j2 VERBOSE=1 
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
+	echo $LD_LIBRARY_PATH
+        export LD_LIBRARY_PATH=/home/runner/Jasper/lib
         ctest --verbose --output-on-failure
-        gcovr -r .. -v  --html-details -o test-coverage.html
-
-    - name: upload-test-coverage
-      uses: actions/upload-artifact@v2
-      with:
-        name: g2-test-coverage
-        path: g2/build/*.html
