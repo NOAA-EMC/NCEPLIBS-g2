@@ -33,7 +33,9 @@ order noted above. Unrepeated sections remain in effect until
 redefined.
 
 For detailed information on GRIB2 see the [NCEP WMO GRIB2
-Documentation](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/).
+Documentation](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/). For
+the WMO GRIB2 templates and tables see [WMO Information Management
+GRIB2 GitHub repository](https://github.com/wmo-im/GRIB2).
 
 # GRIB2 Encoding Routines
 
