@@ -2,15 +2,16 @@
 
 # NCEPLIBS-g2 GRIB2 Fortran Library
 
-Utilities for coding/decoding GRIB2 messages. This library contains
-Fortran 90 decoder/encoder routines for GRIB edition 2, as well as
-indexing/searching utility routines. This is part of the
-[NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
+This library contains Fortran 90 decoder/encoder routines for GRIB
+edition 2, as well as indexing/searching utility routines. This is
+part of the [NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
 
-For more detailed documentation see
-https://noaa-emc.github.io/NCEPLIBS-g2/. For the NCEP WMO GRIB2
-Documentation see
-https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/.
+For more detail see the [NCEPLIBS-g2
+documentation](https://noaa-emc.github.io/NCEPLIBS-g2/). For GRIB2
+information see the [NCEP WMO GRIB2
+Documentation](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/). For
+the WMO GRIB2 templates and tables see [WMO Information Management
+GRIB2 GitHub repository](https://github.com/wmo-im/GRIB2).
 
 ## Related NCEPLIBS Projects
 
@@ -18,7 +19,7 @@ Repository | Notes
 -----------|------
 [NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) | C implementation of the GRIB 2 functions
 [NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util) | A collection of GRIB1 and GRIB2 utilities
-[NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl) | Utilities for GRIB2 templates
+[NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl) | Utilities for GRIB2 codes and templates
 
 ### Users
 
@@ -37,6 +38,9 @@ Stephen Gilbert, Mark Iredell, Boi Vuong, other NCEP/EMC Developers
 Code Manager : Hang Lei, Edward Hartnett
 
 ## Prerequisites
+
+- [NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) - The GRIB2
+  C library.
 
 - [libjasper.a](http://www.ece.uvic.ca/~mdadams/jasper/) - This
   library is a C implementation of the JPEG-2000 Part-1 standard
@@ -66,7 +70,7 @@ CMAKE_PREFIX_PATH (where the build will look for dependencies):
 <pre>
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr/local/NCEPLIBS-g2 -DCMAKE_PREFIX_PATH=/usr/local/jasper-2.0.22 ..
+cmake -DCMAKE_PREFIX_PATH="/usr/local/NCEPLIBS-g2c-1.7.0;/usr/local/jasper-3.0.3;/usr/local/NCEPLIBS-bacio-2.5.0;/usr/local/NCEPLIBS-w3emc-2.9.2" -DCMAKE_INSTALL_PREFIX=/usr/local/NCEPLIBS-g2 ..
 make
 make test
 make install
