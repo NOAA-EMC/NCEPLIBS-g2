@@ -4,10 +4,10 @@ var indexSectionsWithContent =
   1: "dgipr",
   2: "dgipr",
   3: "acdegijmprs",
-  4: "acegijmprsu",
-  5: "abcdefgilmnptuv",
+  4: "acdefgijmprsu",
+  5: "abcdefgijlmnptuv",
   6: "gp",
-  7: "jm"
+  7: "m"
 };
 
 var indexSectionNames =

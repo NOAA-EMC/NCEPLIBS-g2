@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['list_5fopt_430',['list_opt',['../namespacegrib__mod.html#a011889e72231119ee21d012d7d81a41d',1,'grib_mod::gribfield']]],
-  ['local_431',['local',['../namespacegrib__mod.html#a86fe795815ca4e649ddfe257a6d10bc9',1,'grib_mod::gribfield']]],
-  ['locallen_432',['locallen',['../namespacegrib__mod.html#a8b0fd057c75b18274da1922fc4f6ef38',1,'grib_mod::gribfield']]]
+  ['j_438',['j',['../namespacedrstemplates.html#a87cca61b7a6c9caaf531713823b6ecef',1,'drstemplates']]]
 ];
