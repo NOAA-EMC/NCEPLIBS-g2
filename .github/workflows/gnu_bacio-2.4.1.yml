@@ -108,6 +108,6 @@ jobs:
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-	echo $LD_LIBRARY_PATH
+        echo $LD_LIBRARY_PATH
         export LD_LIBRARY_PATH=/home/runner/Jasper/lib
         ctest --verbose --output-on-failure
