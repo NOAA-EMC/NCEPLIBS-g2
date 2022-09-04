@@ -102,7 +102,7 @@ jobs:
         doxygen --version
         ls ~/bacio
         cd build
-        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc;~/g2c" -DENABLE_DOCS=Yes
+        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc;~/g2c" -DENABLE_DOCS=Yes ..
         make -j2 VERBOSE=1 
 
     - name: test
