@@ -17,6 +17,12 @@ jobs:
         sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
         python3 -m pip install gcovr
 
+    - name: cache-bacio
+      id: cache-bacio
+      uses: actions/cache@v2
+      with:
+        path: ~/bacio
+        key: bacio-${{ runner.os }}-2.4.1-1
     - name: checkout-bacio
       uses: actions/checkout@v2
       with:
@@ -25,6 +31,7 @@ jobs:
         ref: v2.4.1
 
     - name: build-bacio
+      if: steps.cache-bacio.outputs.cache-hit != 'true'
       run: |
         cd bacio
         mkdir build
