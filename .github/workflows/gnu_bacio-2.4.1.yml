@@ -48,7 +48,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
+        cmake -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc .. 
         make -j2
         make install
     - name: checkout-jasper
