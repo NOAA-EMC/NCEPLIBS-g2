@@ -40,9 +40,9 @@ endfunction()
 
 # This function builds, links, and runs a test program.
 function(create_test name g2_kind)
-  add_executable(${name} ${name}.F90)
-  target_link_libraries(${name} PRIVATE g2_test_lib ${g2_kind} PNG::PNG)
-  add_test(${name} ${name})
+  add_executable(${name}_${g2_kind} ${name}.F90)
+  target_link_libraries(${name}_${g2_kind} PRIVATE g2_test_lib ${g2_kind} PNG::PNG)
+  add_test(NAME ${name}_${g2_kind} COMMAND ${name}_${g2_kind})
 endfunction()
 
 # Does the user want to get extra test files from the FTP site, and
@@ -101,6 +101,7 @@ endif()
 
 # These tests link to the g2_4 library.
 if (BUILD_4)
+  create_test(test_g2 g2_4)
   create_test(test_simpack g2_4)
   create_test(test_gbytec g2_4)
   create_test(test_gribcreate g2_4)
