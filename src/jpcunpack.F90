@@ -16,13 +16,14 @@
 !> @param[out] fld Contains the unpacked data values.
 !>
 !> @author Stephen Gilbert @date 2002-12-17
-subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
+subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld, ierr)
 
   integer, intent(in) :: len
   character(len = 1), intent(in) :: cpack(len)
   integer, intent(in) :: ndpts
   integer, intent(in) :: idrstmpl(*)
   real, intent(out) :: fld(ndpts)
+  integer, optional, intent(out) :: ierr
   integer(kind = 8) :: ndpts8, len8
   integer(kind = 8) :: idrstmpl8(7)
   
@@ -33,9 +34,9 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
 
   interface
 #if KIND == 4
-     subroutine jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpack")
+     integer(c_int) function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackf")
 #else
-     subroutine jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackd")
+     integer(c_int) function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackd")
 #endif
        use iso_c_binding
        integer(c_size_t), intent(in) :: len       
@@ -47,7 +48,7 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
 #else       
        real(c_double), intent(out) :: fld(*)
 #endif
-     end subroutine jpcunpack_c
+     end function jpcunpack_c
   end interface
 
   ! We need these parameters as 8-byte ints for the C function.
@@ -61,6 +62,6 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
   end do
 
   ! Call the C function.
-  call jpcunpack_c(cpack, len8, idrstmpl8, ndpts8, fld)
+  ierr = jpcunpack_c(cpack, len8, idrstmpl8, ndpts8, fld)
   
 end subroutine jpcunpack
