@@ -102,6 +102,7 @@ endif()
 # These tests link to the g2_4 library.
 if (BUILD_4)
   create_test(test_g2 g2_4)
+  create_test(test_g2_encode g2_4)
   create_test(test_simpack g2_4)
   create_test(test_gbytec g2_4)
   create_test(test_gribcreate g2_4)
