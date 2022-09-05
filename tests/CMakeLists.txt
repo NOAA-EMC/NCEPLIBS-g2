@@ -45,6 +45,9 @@ function(create_test name g2_kind)
   add_test(NAME ${name}_${g2_kind} COMMAND ${name}_${g2_kind})
 endfunction()
 
+# Copy the VERSION file, it's needed in a test.
+FILE(COPY ${CMAKE_SOURCE_DIR}/VERSION DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 # Does the user want to get extra test files from the FTP site, and
 # run extra tests on them?
 if(FTP_TEST_FILES)
@@ -90,7 +93,7 @@ if (BUILD_D)
   create_test(test_getpoly g2_d)
   create_test(test_intmath g2_d)
   create_test(test_g2grids g2_d)
-  create_test(test_cmplxpack g2_d)
+#  create_test(test_cmplxpack g2_d)
   create_test(test_mkieee g2_d)
   create_test(test_getlocal g2_d)
   create_test(test_putgb2 g2_d)
@@ -119,7 +122,7 @@ if (BUILD_4)
   create_test(test_getpoly g2_4)
   create_test(test_intmath g2_4)
   create_test(test_g2grids g2_4)
- # create_test(test_cmplxpack g2_4)
+  create_test(test_cmplxpack g2_4)
   create_test(test_mkieee g2_4)
   create_test(test_getlocal g2_4)
   create_test(test_putgb2 g2_4)

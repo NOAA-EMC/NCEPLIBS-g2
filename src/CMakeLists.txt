@@ -23,25 +23,6 @@ set(c_src mova2i.c)
 # substituted in.
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gribmod.F90.in" "${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90" @ONLY)
 
-# Set compiler definitions.
-add_compile_definitions(__64BIT__)
-if(APPLE)
-  add_compile_definitions(APPLE)
-elseif(UNIX)
-  add_compile_definitions(LINUX)
-endif()
-
-# Figure whether user wants a _4, a _d, or both libraries.
-if(BUILD_4 AND BUILD_D)
-  set(kinds "4" "d")
-elseif(BUILD_4 AND NOT BUILD_D)
-  set(kinds "4")
-elseif(BUILD_D AND NOT BUILD_4)
-  set(kinds "d")
-else()
-  message(FATAL_ERROR "At least one of BUILD_4 or BUILD_D must be turned on")
-endif()
-
 # Build a _4 and _d version of the library, for 4-byte real, and
 # 8-byte real.
 foreach(kind ${kinds})

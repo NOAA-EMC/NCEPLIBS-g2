@@ -6,7 +6,7 @@ program test_cmplxpack
     implicit none
   
     integer, parameter :: ndpts = 4
-    real(kind=8) :: fld_orig(ndpts), fld(ndpts), fld_ina(ndpts), fld_inb(ndpts)
+    real :: fld_orig(ndpts), fld(ndpts), fld_ina(ndpts), fld_inb(ndpts)
     integer :: idrstmpl(17)
     integer :: idrsnum
     character*1, dimension(50) :: cpack
