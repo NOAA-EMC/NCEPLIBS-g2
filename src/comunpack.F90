@@ -130,7 +130,7 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
 
   ! Extract Each Group's reference value.
   !print *,'SAG1: ',nbitsgref,ngroups,iofst
-  if (nbitsgref.ne.0) then
+  if (nbitsgref .ne. 0) then
      call g2_gbytesc(cpack, gref, iofst, nbitsgref, 0, ngroups)
      itemp = nbitsgref * ngroups
      iofst = iofst + (itemp)
@@ -262,7 +262,7 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
   if (idrsnum .eq. 3) then         ! spatial differencing
      if (idrstmpl(17) .eq. 1) then      ! first order
         ifld(1) = ival1
-        if ( idrstmpl(7) .eq. 0 ) then        ! no missing values
+        if (idrstmpl(7) .eq. 0) then        ! no missing values
            itemp = ndpts
         else
            itemp = non - 1
@@ -274,7 +274,7 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
      elseif (idrstmpl(17) .eq. 2) then    ! second order
         ifld(1) = ival1
         ifld(2) = ival2
-        if ( idrstmpl(7) .eq. 0 ) then        ! no missing values
+        if (idrstmpl(7) .eq. 0) then        ! no missing values
            itemp = ndpts
         else
            itemp = non - 1

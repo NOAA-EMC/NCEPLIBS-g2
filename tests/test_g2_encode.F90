@@ -1,6 +1,6 @@
 ! This is a test for the NCEPLIBS-g2 library.
 !
-! In this test we try out the encode() subroutine.
+! In this test we try out the g2_encode() subroutine.
 !
 ! Ed Hartnett 9/29/21
 
