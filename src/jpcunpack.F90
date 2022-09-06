@@ -33,9 +33,9 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
   
   interface
 #if KIND == 4
-     function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpack")
+     function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="g2c_jpcunpackf")
 #else
-     function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackd")
+     function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="g2c_jpcunpackd")
 #endif
        use iso_c_binding
        integer(c_size_t), value, intent(in) :: len       
@@ -47,7 +47,7 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
 #else       
        real(c_double), intent(out) :: fld(*)
 #endif
-       integer(c_size_t) :: jpcunpack_c
+       integer(c_int) :: jpcunpack_c
      end function jpcunpack_c
   end interface
 

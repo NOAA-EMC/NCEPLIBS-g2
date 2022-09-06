@@ -44,16 +44,18 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
   
   integer(kind = 8) :: width8, height8, lcpack8
   integer(kind = 8) :: idrstmpl8(7)
-  integer :: i
+  integer :: i, ierr
   
   interface
 #if KIND == 4
-     subroutine jpcpack_c(fld, my_width, height, idrstmpl, cpack, lcpack) bind(c, name="jpcpack")
+     function jpcpack_c(fld, my_width, height, idrstmpl, cpack, lcpack) &
+          bind(c, name="g2c_jpcpackf")
 #else
-     subroutine jpcpack_c(fld, my_width, height, idrstmpl, cpack, lcpack) bind(c, name="jpcpackd")
+     function jpcpack_c(fld, my_width, height, idrstmpl, cpack, lcpack) &
+          bind(c, name="g2c_jpcpackd")
 #endif
        use iso_c_binding
-       integer(c_size_t), intent(in) :: my_width, height
+       integer(c_size_t), value, intent(in) :: my_width, height
 #if KIND == 4
        real(c_float), intent(in) :: fld(my_width * height)
 #else       
@@ -62,7 +64,8 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
        integer(kind = c_size_t), intent(in) :: idrstmpl(*)              
        character(kind = c_char), intent(in) :: cpack(*)              
        integer(c_size_t), value :: lcpack
-     end subroutine jpcpack_c
+       integer(c_int) :: jpcpack_c
+     end function jpcpack_c
   end interface
 
   ! We need these parameters as 8-byte ints for the C function.
@@ -77,7 +80,7 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
   end do
 
   ! Call the C function.
-  call jpcpack_c(fld, width8, height8, idrstmpl8, cpack, lcpack8)
+  ierr = jpcpack_c(fld, width8, height8, idrstmpl8, cpack, lcpack8)
 
   ! Need to copy idrstmpl array from 8-byte back to 4-byte.
   do i = 1, 7
