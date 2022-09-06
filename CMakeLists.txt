@@ -59,6 +59,25 @@ if(bacio_VERSION LESS 2.5.0)
 endif()
 find_package(w3emc 2.9.0 REQUIRED)
 
+# Set compiler definitions.
+add_compile_definitions(__64BIT__)
+if(APPLE)
+  add_compile_definitions(APPLE)
+elseif(UNIX)
+  add_compile_definitions(LINUX)
+endif()
+
+# Figure whether user wants a _4, a _d, or both libraries.
+if(BUILD_4 AND BUILD_D)
+  set(kinds "4" "d")
+elseif(BUILD_4 AND NOT BUILD_D)
+  set(kinds "4")
+elseif(BUILD_D AND NOT BUILD_4)
+  set(kinds "d")
+else()
+  message(FATAL_ERROR "At least one of BUILD_4 or BUILD_D must be turned on")
+endif()
+
 # Build the code in the source directory.
 add_subdirectory(src)
 
@@ -66,9 +85,6 @@ add_subdirectory(src)
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
-
-  # Copy the VERSION file, it's needed in a test.
-  FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/VERSION DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/tests)
 endif()
 
 # Determine whether or not to generate documentation.

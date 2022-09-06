@@ -1,14 +1,13 @@
-name: bacio-2.4.1 build
+name: bacio-2.4.1 build 2
 on: [push, pull_request]
 
 jobs:
-  bacio-2_4_1-build:
+  build:
     runs-on: ubuntu-20.04
     env:
       FC: gfortran
       CC: gcc
       CXX: g++
-      LD_LIBRARY_PATH: /home/runner/Jasper/lib
 
     steps:
 
@@ -24,14 +23,17 @@ jobs:
       with:
         path: ~/bacio
         key: bacio-${{ runner.os }}-2.4.1-1
+    - name: checkout-bacio
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-bacio
+        path: bacio
+        ref: v2.4.1
 
     - name: build-bacio
       if: steps.cache-bacio.outputs.cache-hit != 'true'
       run: |
-        set -x
-        wget https://github.com/NOAA-EMC/NCEPLIBS-bacio/archive/refs/tags/v2.4.1.tar.gz &> /dev/null
-        tar zxf v2.4.1.tar.gz && ls -l
-        cd NCEPLIBS-bacio-2.4.1
+        cd bacio
         mkdir build
         cd build
         cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
@@ -46,6 +48,7 @@ jobs:
 
     - name: build-w3emc
       run: |
+        cd w3emc
         mkdir build
         cd build
         cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
@@ -56,7 +59,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-2.0.25
+        ref: version-2.0.33
 
     - name: cache-jasper
       id: cache-jasper
@@ -86,7 +89,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_PREFIX_PATH=~/Jasper -DCMAKE_INSTALL_PREFIX=~/g2c
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper 
         make -j2
         make install
     - name: checkout
@@ -94,20 +97,28 @@ jobs:
       with:
         path: g2
 
-    - name: build
+    - name:  ${{ matrix.config.name }}
       run: |
         set -x
         cd g2
         mkdir build
         doxygen --version
-        ls ~/bacio
         cd build
-        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc;~/g2c" -DENABLE_DOCS=Yes
-        make -j2 VERBOSE=1 
+        cmake .. ${{ matrix.config.options }} -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"
+        make -j2 VERBOSE=1
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-	echo $LD_LIBRARY_PATH
-        export LD_LIBRARY_PATH=/home/runner/Jasper/lib
         ctest --verbose --output-on-failure
+        ctest --rerun-failed --output-on-failure
+        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html
+
+    - name: upload-test-coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: g2-test-coverage
+        path: |
+          g2/build/*.html
+          g2/build/*.css
+
