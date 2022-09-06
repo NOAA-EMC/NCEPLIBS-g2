@@ -33,7 +33,7 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
   
   interface
 #if KIND == 4
-     function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackf")
+     function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpack")
 #else
      function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackd")
 #endif
