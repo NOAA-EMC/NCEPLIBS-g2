@@ -1,6 +1,5 @@
 !> @file
-!> @brief This Fortran Module contains info on all the available GRIB
-!> Parameters.
+!> @brief Info on all the available GRIB Parameters.
 !> @author Stephen Gilbert @date 2001-06-05
 
 !> This Fortran Module contains info on all the available GRIB
@@ -9,7 +8,7 @@
 !> ### Program History Log
 !> Date | Programmer | Comments
 !> -----|------------|---------
-!> 2000-05-11 | Stephen Gilbert |
+!> 2000-05-11 | Stephen Gilbert | Initial
 !> 2003-08-07 | Stephen Gilbert | Added more parameters
 !> 2003-09-26 | Stephen Gilbert | Added more parameters
 !> 2005-11-17 | Brent Gordon | Added more parameters for the Wave & Smoke models
@@ -30,18 +29,19 @@
 !> 2020-05-20 | Boi Vuong | Added parameters
 !>
 !> @author Stephen Gilbert @date 2001-06-05
+!> @author Brent Gordon, Boi Vuong
 module params
 
-  integer, parameter :: MAXPARAM=2000 !< maximum number of GRIB parameters.
+  integer, parameter :: MAXPARAM = 2000 !< maximum number of GRIB parameters.
 
   !> This type holds information about GRIB parameters.
   type gribparam
-     integer :: g1tblver !< Grib1 table version.
-     integer :: grib1val !< Grib1 value.
+     integer :: g1tblver !< GRIB1 table version.
+     integer :: grib1val !< GRIB1 value.
      integer :: grib2dsc !< GRIB2 discipline category.
      integer :: grib2cat !< GRIB2 category number.
      integer :: grib2num !< GRIB2 parameter number.
-     character(len=8) :: abbrev !< Abbreviation.
+     character(len = 8) :: abbrev !< Abbreviation.
   end type gribparam
 
   type(gribparam), dimension(MAXPARAM) :: paramlist !< list of GRIB parameters.
@@ -173,10 +173,9 @@ module params
   data paramlist(125) /gribparam(2, 125, 0, 2, 18, 'VFLX')/
   data paramlist(126) /gribparam(2, 126, 0, 2, 19, 'WMIXE')/
   data paramlist(127) /gribparam(2, 127, 255, 255, 255, 'IMGD')/
-  !
-  !  GRIB1 parameters in NCEP Local Table version 2
-  !  Added 8/07/2003
-  !
+
+  ! GRIB1 parameters in NCEP Local Table version 2
+  ! Added 8/07/2003
   data paramlist(128) /gribparam(2, 229, 0, 0, 192, 'SNOHF')/
   data paramlist(129) /gribparam(2, 153, 0, 1, 22, 'CLWMR')/
   data paramlist(130) /gribparam(2, 140, 0, 1, 192, 'CRAIN')/
@@ -1082,21 +1081,19 @@ module params
 
 contains
 
-  !>    This subroutine returns the corresponding GRIB2 Discipline
-  !>    Category and Number for a given GRIB1 parameter value and table
-  !>    version.
+  !> This subroutine returns the corresponding GRIB2 Discipline
+  !> Category and Number for a given GRIB1 parameter value and table
+  !> version.
   !>
-  !>    @param[in] g1val GRIB1 parameter number for which discipline is
-  !>    requested.
-  !>    @param[in] g1ver GRIB1 parameter table version number.
-  !>    @param[out] g2disc corresponding GRIB2 Discipline number.
-  !>    @param[out] g2cat corresponding GRIB2 Category number.
-  !>    @param[out] g2num corresponding GRIB2 Parameter number within
-  !>    Category g2cat.
+  !> @param[in] g1val GRIB1 parameter number for which discipline is
+  !> requested.
+  !> @param[in] g1ver GRIB1 parameter table version number.
+  !> @param[out] g2disc corresponding GRIB2 Discipline number.
+  !> @param[out] g2cat corresponding GRIB2 Category number.
+  !> @param[out] g2num corresponding GRIB2 Parameter number within
+  !> Category g2cat.
   !>
-  !>    @author Stephen Gilbert @date 2001-06-05
-  !>
-
+  !> @author Stephen Gilbert @date 2001-06-05
   subroutine param_g1_to_g2(g1val, g1ver, g2disc, g2cat, g2num)
 
     integer, intent(in) :: g1val, g1ver
@@ -1121,18 +1118,16 @@ contains
     return
   end subroutine param_g1_to_g2
 
-  !>    This function returns the parameter abbreviation for
-  !>    a given GRIB2 Discipline, Category and Parameter number.
+  !> This function returns the parameter abbreviation for
+  !> a given GRIB2 Discipline, Category and Parameter number.
   !>
-  !>    @param[in] g2disc GRIB2 discipline number (See Code Table 0.0).
-  !>    @param[in] g2cat corresponding GRIB2 Category number.
-  !>    @param[in] g2num corresponding GRIB2 Parameter number within
-  !>    Category g2cat.
-  !>    @return parameter abbreviation for GRIB2 info.
+  !> @param[in] g2disc GRIB2 discipline number (See Code Table 0.0).
+  !> @param[in] g2cat corresponding GRIB2 Category number.
+  !> @param[in] g2num corresponding GRIB2 Parameter number within
+  !> Category g2cat.
+  !> @return parameter abbreviation for GRIB2 info.
   !>
-  !>    @author Stephen Gilbert @date 2002-01-04
-  !>
-
+  !> @author Stephen Gilbert @date 2002-01-04
   character(len = 8) function param_get_abbrev(g2disc, g2cat, g2num)
 
     integer, intent(in) :: g2disc, g2cat, g2num
@@ -1153,20 +1148,18 @@ contains
     return
   end function param_get_abbrev
 
-  !>    This subroutine returns the GRIB 1 parameter number for
-  !>    a given GRIB2 Discipline, Category and Parameter number.
+  !> This subroutine returns the GRIB 1 parameter number for
+  !> a given GRIB2 Discipline, Category and Parameter number.
   !>
-  !>    @param[in] g2disc GRIB2 Discipline number (See Code Table 0.0).
-  !>    @param[in] g2cat corresponding GRIB2 Category number.
-  !>    @param[in] g2num corresponding GRIB2 Parameter number within
-  !>    Category g2cat.
-  !>    @param[out] g1val GRIB1 parameter number for which discipline is
-  !>    requested.
-  !>    @param[out] g1ver GRIB1 parameter table version number.
+  !> @param[in] g2disc GRIB2 Discipline number (See Code Table 0.0).
+  !> @param[in] g2cat corresponding GRIB2 Category number.
+  !> @param[in] g2num corresponding GRIB2 Parameter number within
+  !> Category g2cat.
+  !> @param[out] g1val GRIB1 parameter number for which discipline is
+  !> requested.
+  !> @param[out] g1ver GRIB1 parameter table version number.
   !>
-  !>    @author Stephen Gilbert @date 2002-01-04
-  !>
-
+  !> @author Stephen Gilbert @date 2002-01-04
   subroutine param_g2_to_g1(g2disc, g2cat, g2num, g1val, g1ver)
 
     integer, intent(in) :: g2disc, g2cat, g2num
