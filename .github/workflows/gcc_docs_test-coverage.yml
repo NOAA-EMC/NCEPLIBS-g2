@@ -9,6 +9,22 @@ jobs:
       CC: gcc
       CXX: g++
 
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {
+            name: "build d",
+            options: "-DBUILD_4=OFF"
+          }
+        - {
+            name: "build 4",
+            options: "-DBUILD_D=OFF"
+          }
+        - {
+            name: "buiild 4 and d with docs and FTP test files",
+            options: "-DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes "
+          }
     steps:
 
     - name: install-dependencies
@@ -90,14 +106,14 @@ jobs:
       with:
         path: g2
 
-    - name: build
+    - name:  ${{ matrix.config.name }}
       run: |
         set -x
         cd g2
         mkdir build
         doxygen --version
         cd build
-        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"
+        cmake .. ${{ matrix.config.options }} -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"
         make -j2 VERBOSE=1
 
     - name: test

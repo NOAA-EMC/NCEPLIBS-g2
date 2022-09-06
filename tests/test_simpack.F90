@@ -6,8 +6,8 @@ program test_simpack
   implicit none
 
   integer, parameter :: ndpts = 4
-  real(4) :: fld(ndpts)
-  real(4) :: fld_in(ndpts)
+  real :: fld(ndpts)
+  real :: fld_in(ndpts)
   integer :: idrstmpl(5)
   character, dimension(10) :: cpack
   character, dimension(4) :: expected_cpack

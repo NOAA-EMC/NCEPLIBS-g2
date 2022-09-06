@@ -1,6 +1,6 @@
 ! This is a test for the NCEPLIBS-g2 library.
 !
-! In this test we try out the encode() subroutine.
+! In this test we try out the g2_encode() subroutine.
 !
 ! Ed Hartnett 9/29/21
 
@@ -103,11 +103,11 @@ program test_g2_encode
   integer, parameter :: my_pds_tmpl_maplen = 35 ! 29 plus 6 extra
   integer :: ipdstmpl(my_pds_tmpl_maplen)
   integer, parameter :: numcoord = 3
-  real :: coordlist(numcoord)
   integer :: idrsnum
   integer, parameter :: my_drs_tmpl_maplen = 5
   integer :: idrstmpl(my_drs_tmpl_maplen)
   integer, parameter :: ngrdpts = 4
+  real :: coordlist(numcoord)
   real :: fld(10)
   integer :: ibmap
   logical*1 :: bmap(ngrdpts)
@@ -271,7 +271,8 @@ program test_g2_encode
   if (gfld%num_opt .ne. 0) stop 135
   if (gfld%num_coord .ne. numcoord) stop 136
   do i = 1, gfld%num_coord
-     if (coordlist(i) .ne. gfld%coord_list(i)) stop 131
+     print *, i, coordlist(i), gfld%coord_list(i)
+     if (coordlist(i) .ne. gfld%coord_list(i)) stop 137
   end do
 
   ! Section 4 - Product Definition.
