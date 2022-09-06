@@ -16,38 +16,38 @@
 !> @param[out] fld Contains the unpacked data values.
 !>
 !> @author Stephen Gilbert @date 2002-12-17
-subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld, ierr)
-
+subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
+  use iso_c_binding
+  implicit none
+  
   integer, intent(in) :: len
   character(len = 1), intent(in) :: cpack(len)
   integer, intent(in) :: ndpts
   integer, intent(in) :: idrstmpl(*)
   real, intent(out) :: fld(ndpts)
-  integer, optional, intent(out) :: ierr
+  
   integer(kind = 8) :: ndpts8, len8
   integer(kind = 8) :: idrstmpl8(7)
+  integer(kind = 8) :: my_ierr
+  integer :: i
   
-  integer :: ifld(ndpts)
-  integer(4) :: ieee
-  real :: ref, bscale, dscale
-  integer :: dec_jpeg2000
-
   interface
 #if KIND == 4
-     integer(c_int) function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackf")
+     function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackf")
 #else
-     integer(c_int) function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackd")
+     function jpcunpack_c(cpack, len, idrstmpl, ndpts, fld) bind(c, name="jpcunpackd")
 #endif
        use iso_c_binding
-       integer(c_size_t), intent(in) :: len       
-       character(kind = c_char), intent(in) :: cpack(len)
+       integer(c_size_t), value, intent(in) :: len       
+       character(kind = c_char), intent(in) :: cpack(*)
        integer(kind = c_size_t), intent(in) :: idrstmpl(*)              
-       integer(c_size_t), intent(in) :: ndpts       
+       integer(c_size_t), value, intent(in) :: ndpts       
 #if KIND == 4
        real(c_float), intent(out) :: fld(*)
 #else       
        real(c_double), intent(out) :: fld(*)
 #endif
+       integer(c_size_t) :: jpcunpack_c
      end function jpcunpack_c
   end interface
 
@@ -62,6 +62,6 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld, ierr)
   end do
 
   ! Call the C function.
-  ierr = jpcunpack_c(cpack, len8, idrstmpl8, ndpts8, fld)
-  
+  my_ierr = jpcunpack_c(cpack, len8, idrstmpl8, ndpts8, fld)
+
 end subroutine jpcunpack
