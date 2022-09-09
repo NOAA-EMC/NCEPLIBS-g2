@@ -28,8 +28,7 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
   
   integer(kind = 8) :: ndpts8, len8
   integer(kind = 8) :: idrstmpl8(7)
-  integer(kind = 8) :: my_ierr
-  integer :: i
+  integer :: i, ierr
   
   interface
 #if KIND == 4
@@ -40,7 +39,7 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
        use iso_c_binding
        integer(c_size_t), value, intent(in) :: len       
        character(kind = c_char), intent(in) :: cpack(*)
-       integer(kind = c_size_t), intent(in) :: idrstmpl(*)              
+       integer(kind = c_int), intent(in) :: idrstmpl(*)              
        integer(c_size_t), value, intent(in) :: ndpts       
 #if KIND == 4
        real(c_float), intent(out) :: fld(*)
@@ -55,13 +54,7 @@ subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)
   ndpts8 = ndpts
   len8 = len
 
-  ! Need to copy idrstmpl array to 8-byte int array for the C
-  ! function.
-  do i = 1, 7
-     idrstmpl8(i) = idrstmpl(i)
-  end do
-
   ! Call the C function.
-  my_ierr = jpcunpack_c(cpack, len8, idrstmpl8, ndpts8, fld)
+  ierr = jpcunpack_c(cpack, len8, idrstmpl, ndpts8, fld)
 
 end subroutine jpcunpack

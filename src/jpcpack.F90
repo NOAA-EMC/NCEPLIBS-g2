@@ -42,26 +42,26 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
   integer, intent(inout) :: idrstmpl(*)
   integer, intent(inout) :: lcpack
   
-  integer(kind = 8) :: width8, height8, lcpack8
-  integer(kind = 8) :: idrstmpl8(7)
+  integer(kind = 8) :: lcpack8
+  integer(kind = 8) :: width8, height8
   integer :: i, ierr
   
   interface
 #if KIND == 4
-     function jpcpack_c(fld, my_width, height, idrstmpl, cpack, lcpack) &
+     function jpcpack_c(fld, width, height, idrstmpl, cpack, lcpack) &
           bind(c, name="g2c_jpcpackf")
 #else
-     function jpcpack_c(fld, my_width, height, idrstmpl, cpack, lcpack) &
+     function jpcpack_c(fld, width, height, idrstmpl, cpack, lcpack) &
           bind(c, name="g2c_jpcpackd")
 #endif
        use iso_c_binding
-       integer(c_size_t), value, intent(in) :: my_width, height
+       integer(c_size_t), value, intent(in) :: width, height
 #if KIND == 4
-       real(c_float), intent(in) :: fld(my_width * height)
+       real(c_float), intent(in) :: fld(width * height)
 #else       
-       real(c_double), intent(in) :: fld(my_width * height)
+       real(c_double), intent(in) :: fld(width * height)
 #endif
-       integer(kind = c_size_t), intent(in) :: idrstmpl(*)              
+       integer(kind = c_int), intent(in) :: idrstmpl(*)              
        character(kind = c_char), intent(in) :: cpack(*)              
        integer(c_size_t), value :: lcpack
        integer(c_int) :: jpcpack_c
@@ -69,23 +69,13 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
   end interface
 
   ! We need these parameters as 8-byte ints for the C function.
+  lcpack8 = lcpack
   width8 = width
   height8 = height
-  lcpack8 = lcpack
   
-  ! Need to copy idrstmpl array to 8-byte int array for the C
-  ! function.
-  do i = 1, 7
-     idrstmpl8(i) = idrstmpl(i)
-  end do
-
   ! Call the C function.
-  ierr = jpcpack_c(fld, width8, height8, idrstmpl8, cpack, lcpack8)
+  ierr = jpcpack_c(fld, width8, height8, idrstmpl, cpack, lcpack8)
 
-  ! Need to copy idrstmpl array from 8-byte back to 4-byte.
-  do i = 1, 7
-     idrstmpl(i) = int(idrstmpl8(i))
-  end do
   lcpack = int(lcpack8)
   
 end subroutine jpcpack

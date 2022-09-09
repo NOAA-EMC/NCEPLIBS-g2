@@ -35,14 +35,13 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   integer, intent(out) :: lcpack
 
   integer(kind = 8) :: width8, height8, lcpack8
-  integer(kind = 8) :: idrstmpl8(7)
-  integer :: i
+  integer :: i, ierr
 
   interface
 #if KIND == 4
-     subroutine pngpack_c(fld, width, height, idrstmpl, cpack, lcpack) bind(c, name="pngpack")
+     function pngpack_c(fld, width, height, idrstmpl, cpack, lcpack) bind(c, name="g2c_pngpackf")
 #else
-     subroutine pngpack_c(fld, width, height, idrstmpl, cpack, lcpack) bind(c, name="pngpackd")
+     function pngpack_c(fld, width, height, idrstmpl, cpack, lcpack) bind(c, name="g2c_pngpackd")
 #endif
        use iso_c_binding
        integer(c_size_t), value :: width, height
@@ -51,10 +50,11 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
 #else
        real(c_double), intent(in) :: fld(*)
 #endif
-       integer(kind = c_size_t), intent(in) :: idrstmpl(*)
+       integer(kind = c_int), intent(in) :: idrstmpl(*)
        character(kind = c_char), intent(in) :: cpack(*)
        integer(c_size_t), intent(out) :: lcpack
-     end subroutine pngpack_c
+       integer(c_int) :: pngpack_c
+     end function pngpack_c
   end interface
 
   ! We need these parameters as 8-byte ints for the C function.
@@ -62,18 +62,8 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   height8 = height
   lcpack8 = lcpack
   
-  ! Need to copy idrstmpl array to 8-byte int array for the C
-  ! function.
-  do i = 1, 7
-     idrstmpl8(i) = idrstmpl(i)
-  end do
-  
   ! Call the C function.
-  call pngpack_c(fld, width8, height8, idrstmpl8, cpack, lcpack8)
+  ierr = pngpack_c(fld, width8, height8, idrstmpl, cpack, lcpack8)
   
-  ! Need to copy idrstmpl array from 8-byte back to 4-byte.
-  do i = 1, 7
-     idrstmpl(i) = int(idrstmpl8(i))
-  end do
   lcpack = int(lcpack8)
 end subroutine pngpack
