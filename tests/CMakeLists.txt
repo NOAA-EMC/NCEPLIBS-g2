@@ -82,6 +82,7 @@ endif()
 # Copy test data files that are in the repo to the build directory.
 copy_test_data(testdata_g2grids)
 copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2.idx)
+copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 
 # Build a _4 and _d version of each test and link them to the _4 and
 # _d builds of the library, for 4-byte real, and 8-byte real.
@@ -111,4 +112,6 @@ foreach(kind ${kinds})
   create_test(test_gribcreate ${kind})
   create_test(test_getfield ${kind})
   create_test(test_pngpack ${kind})
+  create_test(test_files ${kind})
 endforeach()
+
