@@ -8,6 +8,8 @@ program test_params
 
   integer :: g2disc, g2cat, g2num, g1val, g1ver
   character(len=8) :: abbrev
+  integer :: LU = 10;
+  integer :: ios
 
   print *, 'Testing the params module.'
 
@@ -28,6 +30,15 @@ program test_params
   if (g1val .ne. 2 .or. g1ver .ne. 2) stop 6
   call param_g2_to_g1(0, 2, 0, g1val, g1ver)
   if (g1val .ne. 31 .or. g1ver .ne. 2) stop 7
+
+  print *, 'Writing a CSV file with all parameters...'
+  open(LU, FILE='noaa_grib2_params.csv', IOSTAT = ios)
+  if (ios .ne. 0) stop 10
+
+  write(LU, *, IOSTAT = ios) 'GRIB1_version, GRIB1_value, GRIB2_discipline, GRIB2_category, GRIB2_parameter'
+  if (ios .ne. 0) stop 11
+
+  close(LU)
   
   print *, 'SUCCESS!'
   
