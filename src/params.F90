@@ -1192,8 +1192,9 @@ contains
   !> Return all the information about a parameter.
   !>
   !> @param[in] param_idx Index to the paramlist array. If there is no
-  !> parameter with this index, then 255 is returned for all integer
-  !> parameters, and 'UNKNOWN ' for the abbreviation.
+  !> parameter with this index, then 0 is returned for all integer
+  !> parameters. If the index is outside the range of 1-2000, then 255
+  !> is returned for all values.
   !> @param[out] g1_table_version GRIB1 table version.
   !> @param[out] g1_val GRIB1 value.
   !> @param[out] g2_discipline GRIB2 discipline.
