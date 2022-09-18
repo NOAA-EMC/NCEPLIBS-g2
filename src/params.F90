@@ -1191,7 +1191,9 @@ contains
 
   !> Return all the information about a parameter.
   !>
-  !> @param[in] param_idx Index to the paramlist array.
+  !> @param[in] param_idx Index to the paramlist array. If there is no
+  !> parameter with this index, then 255 is returned for all integer
+  !> parameters, and 'UNKNOWN ' for the abbreviation.
   !> @param[out] g1_table_version GRIB1 table version.
   !> @param[out] g1_val GRIB1 value.
   !> @param[out] g2_discipline GRIB2 discipline.
@@ -1216,7 +1218,7 @@ contains
     g2_param_num = 255
     g2_abbrev = 'UNKNOWN '
 
-    if (param_idx .le. MAXPARAM) then
+    if (param_idx .ge. 1 .and. param_idx .le. MAXPARAM) then
        g1_table_version = paramlist(param_idx)%g1tblver
        g1_val = paramlist(param_idx)%grib1val
        g2_discipline = paramlist(param_idx)%grib2dsc
