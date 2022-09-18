@@ -1095,9 +1095,11 @@ contains
   !>
   !> @author Stephen Gilbert @date 2001-06-05
   subroutine param_g1_to_g2(g1val, g1ver, g2disc, g2cat, g2num)
+    implicit none
 
     integer, intent(in) :: g1val, g1ver
     integer, intent(out) :: g2disc, g2cat, g2num
+    integer :: n
 
     g2disc = 255
     g2cat = 255
@@ -1129,8 +1131,10 @@ contains
   !>
   !> @author Stephen Gilbert @date 2002-01-04
   character(len = 8) function param_get_abbrev(g2disc, g2cat, g2num)
+    implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
+    integer :: n
 
     param_get_abbrev = 'UNKNOWN '
 
@@ -1161,9 +1165,11 @@ contains
   !>
   !> @author Stephen Gilbert @date 2002-01-04
   subroutine param_g2_to_g1(g2disc, g2cat, g2num, g1val, g1ver)
+    implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer, intent(out) :: g1val, g1ver
+    integer :: n
 
     g1val = 255
     g1ver = 255
@@ -1182,5 +1188,43 @@ contains
          g2num, ' not found.'
     return
   end subroutine param_g2_to_g1
+
+  !> Return all the information about a parameter.
+  !>
+  !> @param[in] param_idx Index to the paramlist array.
+  !> @param[out] g1_table_version GRIB1 table version.
+  !> @param[out] g1_val GRIB1 value.
+  !> @param[out] g2_discipline GRIB2 discipline.
+  !> @param[out] g2_category GRIB2 Category number.
+  !> @param[out] g2_param_num GRIB2 Parameter number within category g2cat.
+  !> @param[out] g2_abbrev NOAA abbreviation for this parameter._
+  !>
+  !> @author Ed Hartnett, 9/18/22
+  subroutine param_all(param_idx, g1_table_version, g1_val, g2_discipline, g2_category, &
+       g2_param_num, g2_abbrev)
+    implicit none
+    
+    integer, intent(in) :: param_idx
+    integer, intent(out) :: g1_table_version, g1_val, g2_discipline, g2_category, &
+         g2_param_num
+    character(len = 8), intent(out) :: g2_abbrev
+
+    g1_table_version = 255
+    g1_val = 255
+    g2_discipline = 255
+    g2_category = 255
+    g2_param_num = 255
+    g2_abbrev = 'UNKNOWN '
+
+    if (param_idx .le. MAXPARAM) then
+       g1_table_version = paramlist(param_idx)%g1tblver
+       g1_val = paramlist(param_idx)%grib1val
+       g2_discipline = paramlist(param_idx)%grib2dsc
+       g2_category = paramlist(param_idx)%grib2cat
+       g2_param_num = paramlist(param_idx)%grib2num
+       g2_abbrev = paramlist(param_idx)%abbrev
+    endif
+
+  end subroutine param_all
 
 end module params

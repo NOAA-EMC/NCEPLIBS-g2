@@ -9,6 +9,8 @@ program test_params
   integer :: g2disc, g2cat, g2num, g1val, g1ver
   character(len=8) :: abbrev
   integer :: LU = 10;
+  integer :: g1_table_version, g1_val, g2_discipline, g2_category, g2_param_num
+  character(len = 8) :: g2_abbrev
   integer :: ios
 
   print *, 'Testing the params module.'
@@ -31,6 +33,10 @@ program test_params
   call param_g2_to_g1(0, 2, 0, g1val, g1ver)
   if (g1val .ne. 31 .or. g1ver .ne. 2) stop 7
 
+  print *, 'Testing param_all...'
+  call param_all(0, g1_table_version, g1_val, g2_discipline, g2_category, &
+       g2_param_num, g2_abbrev)
+  
   print *, 'Writing a CSV file with all parameters...'
   open(LU, FILE='noaa_grib2_params.csv', IOSTAT = ios)
   if (ios .ne. 0) stop 10
