@@ -11,7 +11,7 @@ program test_params
   integer :: LU = 10;
   integer :: g1_table_version, g1_val, g2_discipline, g2_category, g2_param_num
   character(len = 8) :: g2_abbrev
-  integer :: ios
+  integer :: ios, i
 
   print *, 'Testing the params module.'
 
@@ -59,6 +59,16 @@ program test_params
 
   write(LU, *, IOSTAT = ios) 'GRIB1_version, GRIB1_value, GRIB2_discipline, GRIB2_category, GRIB2_parameter'
   if (ios .ne. 0) stop 70
+
+  ! Send a CSV list of params to a file.
+  do i = 1, 2000
+     call param_all(i, g1_table_version, g1_val, g2_discipline, g2_category, &
+          g2_param_num, g2_abbrev)
+     if (g1_table_version .eq. 0 .and. g1_val .eq. 0 .and. g2_discipline .eq. 0 .and.  g2_category .eq. 0 .and. &
+          g2_param_num .eq. 0) cycle
+     write(LU, *, IOSTAT = ios) g1_table_version, ',', g1_val, ',', g2_discipline, ',', g2_category, ',', &
+          g2_param_num, ', ', g2_abbrev
+  end do
 
   close(LU)
   
