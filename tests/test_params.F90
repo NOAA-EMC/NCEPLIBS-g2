@@ -66,8 +66,8 @@ program test_params
           g2_param_num, g2_abbrev)
      if (g1_table_version .eq. 0 .and. g1_val .eq. 0 .and. g2_discipline .eq. 0 .and.  g2_category .eq. 0 .and. &
           g2_param_num .eq. 0) cycle
-     write(LU, *, IOSTAT = ios) g1_table_version, ',', g1_val, ',', g2_discipline, ',', g2_category, ',', &
-          g2_param_num, ', ', g2_abbrev
+     write(LU, '(i6, a, i6, a, i6, a, i6, a, i6, a, a8)', IOSTAT = ios) g1_table_version, ',', g1_val, ',', &
+          g2_discipline, ',', g2_category, ',', g2_param_num, ', ', g2_abbrev
   end do
 
   close(LU)
