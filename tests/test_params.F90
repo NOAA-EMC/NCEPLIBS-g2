@@ -2086,16 +2086,1535 @@ program test_params
   abbrev = param_get_abbrev(2, 3, 5)
   if (abbrev .ne. 'SOILL') stop 5
 
- call param_all(1019, g1_table_version, g1_val, g2_discipline, g2_category, &
+  print *, 'Testing all parameters with param_g1_to_g2()...'
+  call param_g1_to_g2(1, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  print *, 'Testing param_all()...'
+  call param_all(1019, g1_table_version, g1_val, g2_discipline, g2_category, &
        g2_param_num, g2_abbrev)
   if (g1_table_version .ne. 130 .or. g1_val .ne. 160 .or. g2_discipline .ne. 2 .or. &
        g2_category .ne. 3 .or. g2_param_num .ne. 5 .or. g2_abbrev .ne. 'SOILL') stop 10
+
+  call param_g1_to_g2(1, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(1, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(2, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(3, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(4, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 14) stop 21
+  call param_g1_to_g2(5, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(6, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(7, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(8, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(9, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(10, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(11, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(12, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(13, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(14, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(15, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(16, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(17, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(18, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(19, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(20, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(21, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 15 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(22, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 15 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(23, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 15 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(24, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(25, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(26, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(27, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(28, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(29, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(30, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(31, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(32, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(33, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(34, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(35, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(36, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(37, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(38, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(39, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(40, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(41, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(42, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(43, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(44, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(45, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 15) stop 21
+  call param_g1_to_g2(46, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 16) stop 21
+  call param_g1_to_g2(47, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(48, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(49, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(50, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(51, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(52, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(53, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(54, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(55, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(56, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(57, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(58, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(59, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(60, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(61, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(62, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(63, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(64, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(65, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(66, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(67, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(68, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(69, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(70, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(71, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(72, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(73, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(74, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(75, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(76, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(77, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(78, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 14) stop 21
+  call param_g1_to_g2(79, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 15) stop 21
+  call param_g1_to_g2(80, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(81, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(82, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(83, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(84, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(85, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(86, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(87, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(88, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(89, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(90, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(91, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(92, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(93, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(94, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(95, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(96, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(97, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(98, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(99, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 16) stop 21
+  call param_g1_to_g2(100, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(101, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(102, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(103, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(104, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(105, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(106, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(107, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(108, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(109, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(110, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(111, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(112, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(113, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(114, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(115, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(116, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(117, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(118, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(119, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(120, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(121, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(122, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(123, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 20) stop 21
+  call param_g1_to_g2(124, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 17) stop 21
+  call param_g1_to_g2(125, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 18) stop 21
+  call param_g1_to_g2(126, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 19) stop 21
+  call param_g1_to_g2(127, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
+  call param_g1_to_g2(229, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(153, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 22) stop 21
+  call param_g1_to_g2(140, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(141, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(142, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(143, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(214, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(135, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(194, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 1 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(228, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(136, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(172, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(196, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(197, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(252, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(253, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(130, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(204, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(211, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(205, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(212, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(213, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(132, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(157, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(156, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(190, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(131, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(158, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(176, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(177, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(234, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 0 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(235, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 0 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(144, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(155, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(207, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(208, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(223, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(226, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(154, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(222, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(145, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(146, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(147, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(148, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(221, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(230, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(160, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(171, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(219, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(222, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(224, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(225, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(230, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(231, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(238, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(240, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(131, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(132, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(133, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(134, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(135, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(136, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(137, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(138, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 204) stop 21
+  call param_g1_to_g2(139, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 205) stop 21
+  call param_g1_to_g2(140, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(159, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(170, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(170, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 24) stop 21
+  call param_g1_to_g2(171, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 25) stop 21
+  call param_g1_to_g2(181, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(203, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(246, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(247, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(248, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 204) stop 21
+  call param_g1_to_g2(249, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 205) stop 21
+  call param_g1_to_g2(254, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(190, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 1 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(191, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 1 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(171, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(180, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(181, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(193, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 1 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(195, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 1 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(180, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 22) stop 21
+  call param_g1_to_g2(31, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(32, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(33, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(34, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(100, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(101, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(103, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(107, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(108, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(109, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(110, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(156, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 13 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(157, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 13 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(11, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(129, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(163, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 13 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(164, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 13 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(178, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 23) stop 21
+  call param_g1_to_g2(179, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 32) stop 21
+  call param_g1_to_g2(186, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 206) stop 21
+  call param_g1_to_g2(187, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 17 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(188, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 206) stop 21
+  call param_g1_to_g2(189, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 15) stop 21
+  call param_g1_to_g2(198, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 207) stop 21
+  call param_g1_to_g2(239, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 208) stop 21
+  call param_g1_to_g2(128, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(137, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(141, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(200, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(201, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(201, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 207) stop 21
+  call param_g1_to_g2(209, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 204) stop 21
+  call param_g1_to_g2(216, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(211, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 16 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(212, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 16 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(161, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(168, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 209) stop 21
+  call param_g1_to_g2(169, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 210) stop 21
+  call param_g1_to_g2(181, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(182, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(183, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(184, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 204) stop 21
+  call param_g1_to_g2(254, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(91, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(49, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(50, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(80, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(82, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(88, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(49, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(50, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(80, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(88, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(40, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(67, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(2, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(7, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(130, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(217, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(218, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 27) stop 21
+  call param_g1_to_g2(161, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 29) stop 21
+  call param_g1_to_g2(165, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 16 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(166, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 16 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(167, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 16 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(192, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(193, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(188, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(189, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(207, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(208, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(198, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(33, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(34, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(2, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(7, 1, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(186, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(187, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(177, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(178, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(179, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(183, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(184, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(179, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 205) stop 21
+  call param_g1_to_g2(185, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 206) stop 21
+  call param_g1_to_g2(186, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 207) stop 21
+  call param_g1_to_g2(187, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 208) stop 21
+  call param_g1_to_g2(177, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 209) stop 21
+  call param_g1_to_g2(178, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 210) stop 21
+  call param_g1_to_g2(189, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 211) stop 21
+  call param_g1_to_g2(190, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 212) stop 21
+  call param_g1_to_g2(191, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 213) stop 21
+  call param_g1_to_g2(192, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 214) stop 21
+  call param_g1_to_g2(149, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(188, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 211) stop 21
+  call param_g1_to_g2(192, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 205) stop 21
+  call param_g1_to_g2(219, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(220, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(179, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 228) stop 21
+  call param_g1_to_g2(198, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 212) stop 21
+  call param_g1_to_g2(199, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(200, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 229) stop 21
+  call param_g1_to_g2(210, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 230) stop 21
+  call param_g1_to_g2(182, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 204) stop 21
+  call param_g1_to_g2(241, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(242, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(168, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 20) stop 21
+  call param_g1_to_g2(169, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 20) stop 21
+  call param_g1_to_g2(170, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 21) stop 21
+  call param_g1_to_g2(171, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 21) stop 21
+  call param_g1_to_g2(172, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 22) stop 21
+  call param_g1_to_g2(173, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 22) stop 21
+  call param_g1_to_g2(174, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 25) stop 21
+  call param_g1_to_g2(175, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
+  call param_g1_to_g2(176, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
+  call param_g1_to_g2(177, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
+  call param_g1_to_g2(178, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
+  call param_g1_to_g2(179, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(180, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(181, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
+  call param_g1_to_g2(182, 140, g2disc, g2cat, g2num)
+  if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
+  call param_g1_to_g2(76, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(104, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(105, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(106, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(102, 0, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(213, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(214, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(215, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(216, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(221, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(222, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(228, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(229, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(149, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 14) stop 21
+  call param_g1_to_g2(150, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(151, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(152, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(202, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(33, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(34, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(40, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(124, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 17) stop 21
+  call param_g1_to_g2(125, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 18) stop 21
+  call param_g1_to_g2(8, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(13, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(88, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(49, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(50, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(215, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(217, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(154, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(250, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(251, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(160, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(162, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(163, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(164, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(165, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(166, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(167, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(168, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(169, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(206, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(219, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(220, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 206) stop 21
+  call param_g1_to_g2(244, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(246, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(243, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 213) stop 21
+  call param_g1_to_g2(245, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 214) stop 21
+  call param_g1_to_g2(249, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 215) stop 21
+  call param_g1_to_g2(247, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 208) stop 21
+  call param_g1_to_g2(248, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 209) stop 21
+  call param_g1_to_g2(202, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(232, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 204) stop 21
+  call param_g1_to_g2(233, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 205) stop 21
+  call param_g1_to_g2(231, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(202, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(203, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 232) stop 21
+  call param_g1_to_g2(238, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(66, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(133, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(134, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(191, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(195, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(171, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(180, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(193, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(194, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(190, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(185, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(199, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(197, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(159, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 216) stop 21
+  call param_g1_to_g2(175, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(223, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 65) stop 21
+  call param_g1_to_g2(224, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 66) stop 21
+  call param_g1_to_g2(225, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 67) stop 21
+  call param_g1_to_g2(226, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 68) stop 21
+  call param_g1_to_g2(227, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(87, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(130, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 1 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(240, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(164, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(165, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(166, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(167, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(168, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(169, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(203, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(206, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(220, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(234, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 192 .or. g2num .ne. 14) stop 21
+  call param_g1_to_g2(201, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(195, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 218) stop 21
+  call param_g1_to_g2(204, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 219) stop 21
+  call param_g1_to_g2(205, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 220) stop 21
+  call param_g1_to_g2(181, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 210) stop 21
+  call param_g1_to_g2(182, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 211) stop 21
+  call param_g1_to_g2(183, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 212) stop 21
+  call param_g1_to_g2(184, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 213) stop 21
+  call param_g1_to_g2(236, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 214) stop 21
+  call param_g1_to_g2(154, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 215) stop 21
+  call param_g1_to_g2(196, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 216) stop 21
+  call param_g1_to_g2(197, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 217) stop 21
+  call param_g1_to_g2(202, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 207) stop 21
+  call param_g1_to_g2(209, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 208) stop 21
+  call param_g1_to_g2(219, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 209) stop 21
+  call param_g1_to_g2(173, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 217) stop 21
+  call param_g1_to_g2(174, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(175, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(188, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(139, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(239, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(185, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 208) stop 21
+  call param_g1_to_g2(186, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 209) stop 21
+  call param_g1_to_g2(193, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 218) stop 21
+  call param_g1_to_g2(229, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(194, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 204) stop 21
+  call param_g1_to_g2(185, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 219) stop 21
+  call param_g1_to_g2(182, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(173, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 210) stop 21
+  call param_g1_to_g2(174, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 218) stop 21
+  call param_g1_to_g2(1, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(2, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(3, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(4, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 14) stop 21
+  call param_g1_to_g2(5, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(6, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(7, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(8, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(9, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(10, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(11, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(12, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(13, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(14, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(15, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(16, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(17, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(18, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(19, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(20, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(21, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 15 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(22, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 15 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(23, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 15 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(24, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(25, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(26, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(27, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(28, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(29, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(30, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(31, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(32, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(33, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(34, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(35, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(36, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(37, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(38, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(39, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(40, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(41, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(42, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(43, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(44, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(45, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 15) stop 21
+  call param_g1_to_g2(46, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 16) stop 21
+  call param_g1_to_g2(47, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(48, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(49, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(50, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 1 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(51, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(52, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(53, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(54, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(55, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(56, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(57, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(58, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(59, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(60, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(61, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(62, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(63, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(64, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(65, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(66, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(67, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(68, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(69, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(70, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(71, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(72, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(73, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(74, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(75, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(76, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(77, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(78, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 14) stop 21
+  call param_g1_to_g2(79, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 15) stop 21
+  call param_g1_to_g2(80, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(81, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(82, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(83, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(84, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(85, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(86, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(87, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(88, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(89, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(90, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(91, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(92, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(93, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(94, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(95, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(96, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(97, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(98, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 2 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(99, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 16) stop 21
+  call param_g1_to_g2(100, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(101, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(102, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(103, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(104, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(105, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(106, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(107, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(108, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(109, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(110, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(111, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(112, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(113, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(114, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(115, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(116, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(117, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(118, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(119, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(120, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(121, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(122, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(123, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 20) stop 21
+  call param_g1_to_g2(124, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 17) stop 21
+  call param_g1_to_g2(125, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 18) stop 21
+  call param_g1_to_g2(126, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 19) stop 21
+  call param_g1_to_g2(127, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
+  call param_g1_to_g2(128, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(130, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(131, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(132, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(134, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 212) stop 21
+  call param_g1_to_g2(135, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(136, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(137, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 219) stop 21
+  call param_g1_to_g2(140, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(141, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(142, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(143, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(144, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(145, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(146, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 210) stop 21
+  call param_g1_to_g2(147, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(148, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(149, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(150, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 211) stop 21
+  call param_g1_to_g2(151, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 212) stop 21
+  call param_g1_to_g2(152, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 213) stop 21
+  call param_g1_to_g2(153, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 22) stop 21
+  call param_g1_to_g2(155, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(156, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(157, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(158, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(159, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(160, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(161, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 29) stop 21
+  call param_g1_to_g2(162, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 221) stop 21
+  call param_g1_to_g2(163, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 214) stop 21
+  call param_g1_to_g2(164, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 215) stop 21
+  call param_g1_to_g2(165, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 222) stop 21
+  call param_g1_to_g2(166, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(167, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(168, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(169, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(170, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(171, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(172, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(173, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 210) stop 21
+  call param_g1_to_g2(174, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 218) stop 21
+  call param_g1_to_g2(175, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(176, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(177, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(178, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 23) stop 21
+  call param_g1_to_g2(179, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 228) stop 21
+  call param_g1_to_g2(180, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 17) stop 21
+  call param_g1_to_g2(181, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(182, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(183, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 216) stop 21
+  call param_g1_to_g2(184, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 19) stop 21
+  call param_g1_to_g2(187, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 217) stop 21
+  call param_g1_to_g2(188, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 206) stop 21
+  call param_g1_to_g2(189, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 218) stop 21
+  call param_g1_to_g2(190, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(191, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(192, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 191 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(194, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 1 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(196, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(197, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(198, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 212) stop 21
+  call param_g1_to_g2(199, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(200, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 229) stop 21
+  call param_g1_to_g2(202, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 223) stop 21
+  call param_g1_to_g2(203, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(204, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(205, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(206, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 224) stop 21
+  call param_g1_to_g2(207, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(208, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(210, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 230) stop 21
+  call param_g1_to_g2(211, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(212, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(213, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(214, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(216, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(218, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 211) stop 21
+  call param_g1_to_g2(219, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(220, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(221, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(222, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(223, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(224, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(225, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(226, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(227, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 219) stop 21
+  call param_g1_to_g2(228, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(229, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(230, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 195) stop 21
+  call param_g1_to_g2(231, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(232, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 220) stop 21
+  call param_g1_to_g2(233, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 221) stop 21
+  call param_g1_to_g2(234, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 0 .or. g2num .ne. 192) stop 21
+  call param_g1_to_g2(235, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 1 .or. g2cat .ne. 0 .or. g2num .ne. 193) stop 21
+  call param_g1_to_g2(237, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 222) stop 21
+  call param_g1_to_g2(238, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(239, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 208) stop 21
+  call param_g1_to_g2(240, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(241, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 223) stop 21
+  call param_g1_to_g2(242, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 224) stop 21
+  call param_g1_to_g2(243, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 225) stop 21
+  call param_g1_to_g2(244, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 226) stop 21
+  call param_g1_to_g2(245, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 227) stop 21
+  call param_g1_to_g2(246, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(247, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(248, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 204) stop 21
+  call param_g1_to_g2(249, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 205) stop 21
+  call param_g1_to_g2(250, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 4 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(251, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 5 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(252, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 196) stop 21
+  call param_g1_to_g2(253, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(254, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 194) stop 21
+  call param_g1_to_g2(62, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(63, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(220, 131, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(231, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 200) stop 21
+  call param_g1_to_g2(232, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(240, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 16 .or. g2num .ne. 197) stop 21
+  call param_g1_to_g2(191, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 6 .or. g2num .ne. 201) stop 21
+  call param_g1_to_g2(233, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 202) stop 21
+  call param_g1_to_g2(234, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 14 .or. g2num .ne. 203) stop 21
+  call param_g1_to_g2(242, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 242) stop 21
+  call param_g1_to_g2(243, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 243) stop 21
+  call param_g1_to_g2(244, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 244) stop 21
+  call param_g1_to_g2(245, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 245) stop 21
+  call param_g1_to_g2(246, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 246) stop 21
+  call param_g1_to_g2(247, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 247) stop 21
+  call param_g1_to_g2(248, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 248) stop 21
+  call param_g1_to_g2(249, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 3 .or. g2num .ne. 249) stop 21
+  call param_g1_to_g2(1, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 3 .or. g2num .ne. 0) stop 21
+  call param_g1_to_g2(52, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(63, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(61, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(41, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(100, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(101, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(103, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(104, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(105, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(107, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 10) stop 21
+  call param_g1_to_g2(108, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 11) stop 21
+  call param_g1_to_g2(109, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(110, 3, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 0 .or. g2num .ne. 13) stop 21
+  call param_g1_to_g2(192, 133, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 191 .or. g2num .ne. 1) stop 21
+  call param_g1_to_g2(193, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 225) stop 21
+  call param_g1_to_g2(194, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 227) stop 21
+  call param_g1_to_g2(195, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 241) stop 21
+  call param_g1_to_g2(196, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 0 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(195, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 4) stop 21
+  call param_g1_to_g2(196, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 5) stop 21
+  call param_g1_to_g2(197, 128, g2disc, g2cat, g2num)
+  if (g2disc .ne. 10 .or. g2cat .ne. 4 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(64, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 12) stop 21
+  call param_g1_to_g2(241, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 6) stop 21
+  call param_g1_to_g2(242, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 7) stop 21
+  call param_g1_to_g2(243, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 8) stop 21
+  call param_g1_to_g2(244, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 3 .or. g2cat .ne. 192 .or. g2num .ne. 9) stop 21
+  call param_g1_to_g2(235, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 16 .or. g2num .ne. 198) stop 21
+  call param_g1_to_g2(236, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 7 .or. g2num .ne. 199) stop 21
+  call param_g1_to_g2(237, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 220) stop 21
+  call param_g1_to_g2(238, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 221) stop 21
+  call param_g1_to_g2(253, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 222) stop 21
+  call param_g1_to_g2(254, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 223) stop 21
+  call param_g1_to_g2(241, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 2 .or. g2num .ne. 224) stop 21
+  call param_g1_to_g2(250, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 2 .or. g2cat .ne. 4 .or. g2num .ne. 2) stop 21
+  call param_g1_to_g2(175, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 234) stop 21
+  call param_g1_to_g2(176, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 233) stop 21
+  call param_g1_to_g2(236, 2, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 19 .or. g2num .ne. 217) stop 21
+  call param_g1_to_g2(230, 129, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 242) stop 21
+  call param_g1_to_g2(206, 130, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 15 .or. g2num .ne. 3) stop 21
+  call param_g1_to_g2(255, 255, g2disc, g2cat, g2num)
+  if (g2disc .ne. 0 .or. g2cat .ne. 0 .or. g2num .ne. 255) stop 21
+  ! call param_g1_to_g2(240, 129, g2disc, g2cat, g2num)
+  ! if (g2disc .ne. 0 .or. g2cat .ne. 16 .or. g2num .ne. 3) stop 21
+  ! call param_g1_to_g2(234, 2, g2disc, g2cat, g2num)
+  ! if (g2disc .ne. 1 .or. g2cat .ne. 0 .or. g2num .ne. 5) stop 21
+  ! call param_g1_to_g2(235, 2, g2disc, g2cat, g2num)
+  ! if (g2disc .ne. 1 .or. g2cat .ne. 0 .or. g2num .ne. 6) stop 21
+  ! call param_g1_to_g2(160, 130, g2disc, g2cat, g2num)
+  ! if (g2disc .ne. 2 .or. g2cat .ne. 3 .or. g2num .ne. 5) stop 21
 
   print *, 'Writing a CSV file with all parameters...'
   open(LU, FILE='noaa_grib2_params.csv', IOSTAT = ios)
   if (ios .ne. 0) stop 50
 
-  write(LU, *, IOSTAT = ios) 'Index, GRIB1_version, GRIB1_value, GRIB2_discipline, GRIB2_category, GRIB2_parameter'
+  write(LU, *, IOSTAT = ios) 'Index, GRIB1_value, GRIB1_version, GRIB2_discipline, GRIB2_category, GRIB2_parameter'
   if (ios .ne. 0) stop 70
 
   ! Send a CSV list of params to a file.
@@ -2104,8 +3623,8 @@ program test_params
           g2_param_num, g2_abbrev)
      if (g1_table_version .eq. 0 .and. g1_val .eq. 0 .and. g2_discipline .eq. 0 .and.  g2_category .eq. 0 .and. &
           g2_param_num .eq. 0) cycle
-     write(LU, '(i4, a, i6, a, i6, a, i6, a, i6, a, i6, a, a8)', IOSTAT = ios) i, ',', g1_table_version, ',', &
-          g1_val, ',', g2_discipline, ',', g2_category, ',', g2_param_num, ', ', g2_abbrev
+     write(LU, '(i4, a, i6, a, i6, a, i6, a, i6, a, i6, a, a8)', IOSTAT = ios) i, ',', g1_val, ',', &
+          g1_table_version, ',', g2_discipline, ',', g2_category, ',', g2_param_num, ', ', g2_abbrev
   end do
 
   close(LU)
