@@ -2049,8 +2049,8 @@ program test_params
   if (abbrev .ne. 'SETUP') stop 5
   abbrev = param_get_abbrev(10, 3, 208)
   if (abbrev .ne. 'SWASH') stop 5
-  ! abbrev = param_get_abbrev(10, 3, 200)
-  ! if (abbrev .ne. 'TWLDT') stop 5
+  abbrev = param_get_abbrev(10, 3, 209)
+  if (abbrev .ne. 'TWLDT') stop 5
   abbrev = param_get_abbrev(10, 3, 210)
   if (abbrev .ne. 'TWLDC') stop 5
   abbrev = param_get_abbrev(10, 3, 250)
