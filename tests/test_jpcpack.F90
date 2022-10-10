@@ -7,18 +7,21 @@ program test_jpcpack
     implicit none
 
     integer, parameter :: width = 2, height = 2, ndpts = 4
-    real(8), parameter :: delta = 0.1
-    real(8) :: fld_orig(ndpts)
-    real(8) :: fld(ndpts)
-    real(8) :: fld2(ndpts)
+    real, parameter :: delta = 0.1
+    real :: fld_orig(ndpts)
+    real :: fld(ndpts)
+    real :: fld2(ndpts)
     integer :: idrstmpl(16)
     character*1 :: cpack(200)
-    integer :: lcpack
-    integer :: ii
+    integer :: lcpack = 200
+    integer :: ii, ierr
+    integer :: g2_set_log_level
 
     ! Create the fld variable with data to pack
     fld_orig = (/1.1, 2.2, 3.3, 4.4/)
     fld = fld_orig
+
+    ierr = g2_set_log_level(10)
 
     idrstmpl(1) = 0
     idrstmpl(2) = 1
@@ -39,7 +42,7 @@ program test_jpcpack
     print *, fld2
     do ii = 1, ndpts
         print *, fld_orig(ii)
-        if (dabs(fld_orig(ii) - fld2(ii)) .gt. delta) then
+        if (abs(fld_orig(ii) - fld2(ii)) .gt. delta) then
             print *, fld_orig(ii), fld2(ii), 'do not match'
             stop 4
         end if

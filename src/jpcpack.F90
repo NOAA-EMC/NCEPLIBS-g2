@@ -30,7 +30,9 @@
 !> - idrstmpl(6) = 0 use lossless compression; = 1 use lossy compression.
 !> - idrstmpl(7) Desired compression ratio, if idrstmpl(6)=1.
 !> @param[out] cpack The packed data field (character*1 array).
-!> @param[out] lcpack length of packed field cpack.
+!> @param[inout] lcpack When function is called, contains the length
+!> of buffer cpack. After functions returns, contains the length of
+!> the packed data in bytes.
 !>
 !> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
@@ -57,13 +59,13 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
        use iso_c_binding
        integer(c_size_t), value, intent(in) :: width, height
 #if KIND == 4
-       real(c_float), intent(in) :: fld(width * height)
+       real(c_float), intent(in) :: fld(*)
 #else       
-       real(c_double), intent(in) :: fld(width * height)
+       real(c_double), intent(in) :: fld(*)
 #endif
        integer(kind = c_int), intent(in) :: idrstmpl(*)              
        character(kind = c_char), intent(in) :: cpack(*)              
-       integer(c_size_t), value :: lcpack
+       integer(c_size_t), intent(out) :: lcpack
        integer(c_int) :: jpcpack_c
      end function jpcpack_c
   end interface
