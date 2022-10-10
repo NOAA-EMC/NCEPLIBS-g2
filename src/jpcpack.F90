@@ -57,15 +57,15 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
           bind(c, name="g2c_jpcpackd")
 #endif
        use iso_c_binding
-       integer(c_size_t), value, intent(in) :: width, height
 #if KIND == 4
        real(c_float), intent(in) :: fld(*)
 #else       
        real(c_double), intent(in) :: fld(*)
 #endif
-       integer(kind = c_int), intent(in) :: idrstmpl(*)              
-       character(kind = c_char), intent(in) :: cpack(*)              
-       integer(c_size_t), intent(out) :: lcpack
+       integer(c_size_t), value, intent(in) :: width, height
+       integer(kind = c_int), intent(inout) :: idrstmpl(*)              
+       character(kind = c_char), intent(inout) :: cpack(*)              
+       integer(c_size_t), intent(inout) :: lcpack
        integer(c_int) :: jpcpack_c
      end function jpcpack_c
   end interface
