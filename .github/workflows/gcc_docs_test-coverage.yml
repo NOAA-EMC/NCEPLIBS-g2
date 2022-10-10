@@ -68,7 +68,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-2.0.33
+        ref: version-2.0.25
 
     - name: cache-jasper
       id: cache-jasper
