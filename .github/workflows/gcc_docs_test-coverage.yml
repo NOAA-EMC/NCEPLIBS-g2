@@ -32,10 +32,6 @@ jobs:
             name: "buiild 4 and d with docs and FTP test files",
             options: "-DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes "
           }
-        - {
-            name: "older jasper",
-            options: "-DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes "
-          }
     steps:
 
     - name: install-dependencies
