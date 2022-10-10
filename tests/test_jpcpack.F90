@@ -8,18 +8,16 @@ program test_jpcpack
 
     integer, parameter :: width = 2, height = 2, ndpts = 4
     real, parameter :: delta = 0.1
-    real :: fld_orig(ndpts)
     real :: fld(ndpts)
     real :: fld2(ndpts)
-    integer :: idrstmpl(16)
+    integer :: idrstmpl(7)
     character*1 :: cpack(200)
     integer :: lcpack = 200
     integer :: ii, ierr
     integer :: g2_set_log_level
 
     ! Create the fld variable with data to pack
-    fld_orig = (/1.1, 2.2, 3.3, 4.4/)
-    fld = fld_orig
+    fld = (/1.1, 2.2, 3.3, 4.4/)
 
     ierr = g2_set_log_level(10)
 
@@ -29,6 +27,7 @@ program test_jpcpack
     idrstmpl(4) = 32
     idrstmpl(5) = 0
     idrstmpl(6) = 0
+    idrstmpl(7) = 1
 
     ! Testing jpcpack
     call jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
