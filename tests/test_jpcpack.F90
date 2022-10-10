@@ -39,7 +39,6 @@ program test_jpcpack
     print *, fld
     print *, fld2
     do ii = 1, ndpts
-        print *, fld_orig(ii)
         if (abs(fld(ii) - fld2(ii)) .gt. delta) then
             print *, fld(ii), fld2(ii), 'do not match'
             stop 4
