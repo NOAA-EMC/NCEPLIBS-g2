@@ -28,7 +28,6 @@ jobs:
         - {
             name: "older jasper",
             options: "-DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes "
-            jasper-version: [2.0.33, 3.0.3]
           }
     steps:
 
@@ -103,7 +102,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper 
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper
         make -j2
         make install
     - name: checkout
