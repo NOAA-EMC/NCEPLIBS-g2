@@ -8,9 +8,6 @@ jobs:
       FC: gfortran
       CC: gcc
       CXX: g++
-    strategy:
-      matrix:
-        jasper-version: [2.0.33, 3.0.3]
 
     strategy:
       fail-fast: false
@@ -27,6 +24,11 @@ jobs:
         - {
             name: "buiild 4 and d with docs and FTP test files",
             options: "-DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes "
+          }
+        - {
+            name: "older jasper",
+            options: "-DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes "
+            jasper-version: [2.0.33, 3.0.3]
           }
     steps:
 
