@@ -34,7 +34,7 @@ program test_jpcpack
     call jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
     print *, 'lcpack: ', lcpack
     ! Testing jpcunpack
-    call jpcunpack(cpack, lcpack, idrstmpl, ndpts, fld2)
+!    call jpcunpack(cpack, lcpack, idrstmpl, ndpts, fld2)
 
     ! ! Compare each value to see match, remember, comparing reals
     ! print *, fld_orig
