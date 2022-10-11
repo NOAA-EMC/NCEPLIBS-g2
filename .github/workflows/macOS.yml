@@ -1,5 +1,11 @@
 name: macOS Build
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 jobs:
   macOS-build:
@@ -8,6 +14,10 @@ jobs:
       FC: gfortran-9
       CC: gcc-9
 
+    strategy:
+      fail-fast: true
+      matrix:
+        jasper-version: [2.0.33, 3.0.3]
     steps:
     - name: install-dependencies
       run: |
@@ -52,7 +62,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-2.0.33
+        ref: version-${{ matrix.jasper-version }}
 
     - name: cache-jasper
       id: cache-jasper

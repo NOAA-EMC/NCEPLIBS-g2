@@ -1,5 +1,11 @@
 name: GCC Build, docs, test coverage
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 jobs:
   build:
@@ -10,8 +16,9 @@ jobs:
       CXX: g++
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
+        jasper-version: [2.0.33, 3.0.3]
         config:
         - {
             name: "build d",
@@ -68,7 +75,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-2.0.33
+        ref: version-${{ matrix.jasper-version }}
 
     - name: cache-jasper
       id: cache-jasper
@@ -98,7 +105,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper 
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper
         make -j2
         make install
     - name: checkout

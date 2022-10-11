@@ -1,5 +1,11 @@
 name: Intel Build
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 # Use custom shell with -l so .bash_profile is sourced which loads intel/oneapi/setvars.sh
 # without having to do it in manually every step

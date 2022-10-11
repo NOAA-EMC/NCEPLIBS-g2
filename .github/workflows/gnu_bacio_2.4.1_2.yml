@@ -1,5 +1,11 @@
 name: bacio-2.4.1 build 2
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 jobs:
   build:
