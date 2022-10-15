@@ -81,7 +81,7 @@ endif()
 
 # Copy test data files that are in the repo to the build directory.
 copy_test_data(testdata_g2grids)
-copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2.idx)
+copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.grb2index)
 copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 
 # Build a _4 and _d version of each test and link them to the _4 and
