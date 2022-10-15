@@ -14,8 +14,7 @@
 !> and has the internal format:
 !> - byte 001 - 004 length of index record
 !> - byte 005 - 008 bytes to skip in data file before grib message
-!> - byte 009 - 012 bytes to skip in message before lus (local use)
-!> set = 0, if no local use section in grib2 message.
+!> - byte 009 - 012 bytes to skip in message before lus (local use) set = 0, if no local section.
 !> - byte 013 - 016 bytes to skip in message before gds
 !> - byte 017 - 020 bytes to skip in message before pds
 !> - byte 021 - 024 bytes to skip in message before drs
