@@ -75,19 +75,17 @@ subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
   nnum = 0
   iret = 4
   call baread(lugi, 0, 162, lhead, chead)
-  if(lhead.eq.162.and.chead(42:47).eq.'gb2ix1') then
+  if (lhead .eq. 162 .and. chead(42:47) .eq. 'GB2IX1') then
      read(chead(82:162), '(8x, 3i10, 2x, a40)', iostat = ios) nskp, nlen, nnum
-     if(ios.eq.0) then
-
+     if (ios .eq. 0) then
         allocate(cbuf(nlen), stat = istat)    ! allocate space for cbuf
-        if (istat.ne.0) then
+        if (istat .ne. 0) then
            iret = 2
            return
         endif
         iret = 0
         call baread(lugi, nskp, nlen, lbuf, cbuf)
-        if(lbuf.ne.nlen) iret = 3
-
+        if (lbuf .ne. nlen) iret = 3
      endif
   endif
 end subroutine getg2i
