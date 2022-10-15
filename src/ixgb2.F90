@@ -10,25 +10,27 @@
 !> This subroutine is called by getg2ir(), which packages the index
 !> records into an index file.
 !>
-!> The format of each index record:
+!> This function is called by function getg2ir().
+!>
+!> The index buffer returned contains index records with the internal
+!> format:
 !> - byte 001 - 004 length of index record
 !> - byte 005 - 008 bytes to skip in data file before GRIB message
-!> - byte 009 - 012 bytes to skip in message before lus (local use)
-!> set = 0, if no local use section in GRIB2 message.
+!> - byte 009 - 012 bytes to skip in message before lus (local use) set = 0, if no local section.
 !> - byte 013 - 016 bytes to skip in message before gds
 !> - byte 017 - 020 bytes to skip in message before pds
 !> - byte 021 - 024 bytes to skip in message before drs
 !> - byte 025 - 028 bytes to skip in message before bms
 !> - byte 029 - 032 bytes to skip in message before data section
 !> - byte 033 - 040 bytes total in the message
-!> - byte 041 - 041 GRIB version number (currently 2)
+!> - byte 041 - 041 GRIB version number (2)
 !> - byte 042 - 042 message discipline
 !> - byte 043 - 044 field number within GRIB2 message
-!> - byte 045 - ii identification section (ids)
-!> - byte ii+1 - jj grid definition section (gds)
-!> - byte jj+1 - kk product definition section (pds)
-!> - byte kk+1 - ll the data representation section (drs)
-!> - byte ll+1 - ll+6 first 6 bytes of the bit map section (bms)
+!> - byte 045 -  ii identification section (ids)
+!> - byte ii+1-  jj grid definition section (gds)
+!> - byte jj+1-  kk product definition section (pds)
+!> - byte kk+1-  ll the data representation section (drs)
+!> - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
 !>
 !> ### Program History Log
 !> Date | Programmer | Comments
