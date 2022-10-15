@@ -8,7 +8,7 @@
 !> The index buffer returned contains index records with the internal
 !> format:
 !> - byte 001 - 004 length of index record
-!> - byte 005 - 008 bytes to skip in data file before grib message
+!> - byte 005 - 008 bytes to skip in data file before GRIB message
 !> - byte 009 - 012 bytes to skip in message before lus (local use) set = 0, if no local section.
 !> - byte 013 - 016 bytes to skip in message before gds
 !> - byte 017 - 020 bytes to skip in message before pds
@@ -16,9 +16,9 @@
 !> - byte 025 - 028 bytes to skip in message before bms
 !> - byte 029 - 032 bytes to skip in message before data section
 !> - byte 033 - 040 bytes total in the message
-!> - byte 041 - 041 grib version number (currently 2)
+!> - byte 041 - 041 GRIB version number (2)
 !> - byte 042 - 042 message discipline
-!> - byte 043 - 044 field number within grib2 message
+!> - byte 043 - 044 field number within GRIB2 message
 !> - byte 045 -  ii identification section (ids)
 !> - byte ii+1-  jj grid definition section (gds)
 !> - byte jj+1-  kk product definition section (pds)
@@ -30,14 +30,14 @@
 !> -----|------------|---------
 !> 1995-10-31 | Mark Iredell | Initial
 !> 1996-10-31 | Mark Iredell | augmented optional definitions to byte 320
-!> 2002-01-02 | Stephen Gilbert | modified from getgir to create grib2 indexes
+!> 2002-01-02 | Stephen Gilbert | modified from getgir to create GRIB2 indexes
 !>
-!> @param[in] lugb Unit of the unblocked grib file. Must
+!> @param[in] lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !> @param[in] msk1 Number of bytes to search for first message.
 !> @param[in] msk2 Number of bytes to search for other messages.
-!> @param[in] mnum Number of grib messages to skip (usually 0).
+!> @param[in] mnum Number of GRIB messages to skip (usually 0).
 !> @param[out] cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
@@ -45,9 +45,9 @@
 !> increase the size if necessary. Users must free memory that cbuf
 !> points to when cbuf is no longer needed.
 !> @param[out] nlen Total length of index record buffer in bytes.
-!> @param[out] nnum Number of index records, =0 if no grib
+!> @param[out] nnum Number of index records, =0 if no GRIB
 !> messages are found).
-!> @param[out] nmess Last grib message in file successfully processed
+!> @param[out] nmess Last GRIB message in file successfully processed
 !> @param[out] iret Return code.
 !> - 0 all ok
 !> - 1 not enough memory available to hold full index buffer

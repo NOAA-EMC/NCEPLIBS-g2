@@ -3,17 +3,17 @@
 !> content.
 !> @author Mark Iredell @date 1995-10-31
 
-!> Read a grib2 index file and return its contents.
+!> Read a GRIB2 index file and return its contents.
 !>
 !> Version 1 of the index file has the following format:
 !> 81-byte s.lord header with 'gb2ix1' in columns 42-47 followed by
 !> 81-byte header with number of bytes to skip before index records,
 !> total length in bytes of the index records, number of index records,
-!> and grib file basename written in format ('ix1form:',3i10,2x,a40).
-!> Each following index record corresponds to a grib message
+!> and GRIB file basename written in format ('ix1form:',3i10,2x,a40).
+!> Each following index record corresponds to a GRIB message
 !> and has the internal format:
 !> - byte 001 - 004 length of index record
-!> - byte 005 - 008 bytes to skip in data file before grib message
+!> - byte 005 - 008 bytes to skip in data file before GRIB message
 !> - byte 009 - 012 bytes to skip in message before lus (local use) set = 0, if no local section.
 !> - byte 013 - 016 bytes to skip in message before gds
 !> - byte 017 - 020 bytes to skip in message before pds
@@ -21,9 +21,9 @@
 !> - byte 025 - 028 bytes to skip in message before bms
 !> - byte 029 - 032 bytes to skip in message before data section
 !> - byte 033 - 040 bytes total in the message
-!> - byte 041 - 041 grib version number (currently 2)
+!> - byte 041 - 041 GRIB version number (2)
 !> - byte 042 - 042 message discipline
-!> - byte 043 - 044 field number within grib2 message
+!> - byte 043 - 044 field number within GRIB2 message
 !> - byte 045 -  ii identification section (ids)
 !> - byte ii+1-  jj grid definition section (gds)
 !> - byte jj+1-  kk product definition section (pds)
@@ -35,9 +35,9 @@
 !> -----|------------|---------
 !> 1995-10-31 | Mark Iredell | Initial.
 !> 1996-10-31 | Mark Iredell | Augmented optional definitions to byte 320.
-!> 2002-01-03 | Stephen Gilbert | Modified from getgi to work with grib2.
+!> 2002-01-03 | Stephen Gilbert | Modified from getgi to work with GRIB2.
 !>
-!> @param[in] lugi Integer unit of the unblocked grib index file. Must
+!> @param[in] lugi Integer unit of the unblocked GRIB index file. Must
 !>  be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !> @param[out] cbuf Pointer to a buffer that contains index
