@@ -30,6 +30,9 @@ program test_getg2i
   call getg2i(lugi, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 4
 
+  ! Feee memory.
+  deallocate(cbuf)
+
   ! Check results.
   if (nlen .ne. 3800 .or. nnum .ne. 19) stop 5
 
