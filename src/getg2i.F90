@@ -46,13 +46,14 @@
 !> @param[in] lugi Integer unit of the unblocked GRIB index file. Must
 !>  be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
-!> @param[out] cbuf Pointer to a buffer that contains index
-!> records. Users should free memory that cbuf points to, using
-!> deallocate(cbuf) when cbuf is no longer needed.
+!> @param[out] cbuf Pointer to a buffer that will get the index
+!> records. Memory will be allocated within this function, so callers
+!> must free the memory that cbuf points to, using deallocate(cbuf)
+!> when cbuf is no longer needed.
 !> @param[out] nlen Total length of all index records.
 !> @param[out] nnum Number of index records.
 !> @param[out] iret Return code.
-!> - 0 all ok
+!> - 0 No error.
 !> - 2 not enough memory to hold index buffer
 !> - 3 error reading index file buffer
 !> - 4 error reading index file header
