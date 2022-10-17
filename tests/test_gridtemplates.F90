@@ -13,6 +13,7 @@ program test_gridtemplates
   integer :: nummap
   integer, parameter :: lat_lon_mapgridlen = 19
   integer :: map(lat_lon_mapgridlen)
+  integer :: list_4(lat_lon_mapgridlen) 
   logical :: needext
   integer :: gdtlen
   integer :: iret
@@ -29,9 +30,25 @@ program test_gridtemplates
   call getgridtemplate(0, nummap, map, needext, iret)
   if (nummap .ne. lat_lon_mapgridlen .or. needext) stop 3
 
+  print *, 'Testing getgridtemplate 4, which needs extension...'
+  ! An extra 6 values are added to the map.
+  call getgridtemplate(4, nummap, map, needext, iret)
+  if (nummap .ne. 13 .or. .not. needext) stop 4
+  print *, nummap
+!  print *, map
+  list_4(8) = 2
+  list_4(9) = 2
+  call extgridtemplate(4, list_4, nummap, map)
+  print *, nummap
+  print *, map(13:nummap)
+  
+  print *, 'Testing getgridtemplate 5, which needs extension...'
+  call getgridtemplate(5, nummap, map, needext, iret)
+  if (nummap .ne. 16 .or. .not. needext) stop 4
+
   print *, 'Testing getgdtlen...'
   gdtlen = getgdtlen(0)
-  if (gdtlen .ne. lat_lon_mapgridlen) stop 4
+  if (gdtlen .ne. lat_lon_mapgridlen) stop 40
   
   print *, 'SUCCESS!'
   
