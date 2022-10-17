@@ -323,10 +323,10 @@ contains
   end subroutine getgridtemplate
 
   !> Generate the remaining byte map for a given Grid Definition
-  !> Template,  if required.
+  !> Template, if required.
   !>
   !> Some Templates can vary depending on data values given in an
-  !> earlier part of the Template,  and it is necessary to know some of
+  !> earlier part of the Template, and it is necessary to know some of
   !> the earlier entry values to generate the full octet map of the
   !> Template.
   !>
