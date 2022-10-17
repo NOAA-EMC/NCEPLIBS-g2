@@ -53,6 +53,19 @@ program test_gridtemplates
   gdtlen = getgdtlen(0)
   if (gdtlen .ne. lat_lon_mapgridlen) stop 400
   
+  print *, 'Testing getgridtemplate 5, which needs extension...'
+  call getgridtemplate(5, nummap, map, needext, iret)
+  if (nummap .ne. 16 .or. .not. needext) stop 40
+  list_4(8) = 2
+  list_4(9) = 2
+  call extgridtemplate(5, list_4, nummap, map)
+  if (nummap .ne. 20) stop 50
+  if (map(17) .ne. 4 .or. map(18) .ne. 4 .or. map(19) .ne. -4 .or. map(20) .ne. -4) stop 60
+
+  print *, 'Testing getgdtlen...'
+  gdtlen = getgdtlen(0)
+  if (gdtlen .ne. lat_lon_mapgridlen) stop 400
+  
   print *, 'SUCCESS!'
   
 end program test_gridtemplates
