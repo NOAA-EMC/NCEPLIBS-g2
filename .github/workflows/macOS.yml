@@ -26,6 +26,7 @@ jobs:
         brew update
         brew install libpng
         brew install jpeg-turbo
+        brew install gfortran
 
     - name: checkout-bacio
       uses: actions/checkout@v2
