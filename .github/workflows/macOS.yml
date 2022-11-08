@@ -11,8 +11,8 @@ jobs:
   macOS-build:
     runs-on: macos-latest
     env:
-      FC: gfortran-10
-      CC: gcc-10
+      FC: gfortran
+      CC: gcc
 
     strategy:
       fail-fast: true
