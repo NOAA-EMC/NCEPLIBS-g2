@@ -275,5 +275,17 @@ program test_pdstemplates
      if (map(m) .ne. expected_map_47(m)) stop 100
   end do
 
+  call getpdstemplate(51, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 16 .or. .not. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_51(m)) stop 100
+  end do
+
+  call getpdstemplate(91, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 36 .or. .not. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_91(m)) stop 100
+  end do
+
   print *, 'SUCCESS'
 end program test_pdstemplates
