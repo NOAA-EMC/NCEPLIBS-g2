@@ -18,8 +18,6 @@ program test_pdstemplates
 
   print *, 'Testing pdstemplates complete contents...'
 
-  print *, 'Testing getpdsindex() ...'
-
   print *, 'testing getpdstemplate()...'  
   call getpdstemplate(0, nummap, map, needext, iret)
   if (iret .ne. 0) stop 11
