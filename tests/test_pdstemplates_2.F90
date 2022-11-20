@@ -57,6 +57,7 @@ program test_pdstemplates
        2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
   integer, dimension(38) :: expected_map_47 = (/ 1, 1, 1, 2, 1, -1, -4, -1, -4, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, &
        1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
+  integer, dimension(21) :: expected_map_50 = (/ 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4, 1, 1, 4, 4, 4, 4 /)
   integer, dimension(16) :: expected_map_51 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1 /)
   integer, dimension(36) :: expected_map_91 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, -1, -4, -1, &
        -4, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
@@ -299,11 +300,11 @@ program test_pdstemplates
      if (map(m) .ne. expected_map_48(m)) stop 100
   end do
 
-  ! call getpdstemplate(50, nummap, map, needext, iret)
-  ! if (iret .ne. 0 .or. nummap .ne. 21 .or. needext) stop 99
-  ! do m = 1, nummap
-  !    if (map(m) .ne. expected_map_50(m)) stop 100
-  ! end do
+  call getpdstemplate(50, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 21 .or. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_50(m)) stop 100
+  end do
 
   call getpdstemplate(52, nummap, map, needext, iret)
   if (iret .ne. 0 .or. nummap .ne. 15 .or. needext) stop 99
