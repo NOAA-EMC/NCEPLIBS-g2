@@ -287,5 +287,53 @@ program test_pdstemplates
      if (map(m) .ne. expected_map_91(m)) stop 100
   end do
 
+  call getpdstemplate(32, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 10 .or. .not. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_32(m)) stop 100
+  end do
+
+  call getpdstemplate(48, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 26 .or. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_48(m)) stop 100
+  end do
+
+  ! call getpdstemplate(50, nummap, map, needext, iret)
+  ! if (iret .ne. 0 .or. nummap .ne. 21 .or. needext) stop 99
+  ! do m = 1, nummap
+  !    if (map(m) .ne. expected_map_50(m)) stop 100
+  ! end do
+
+  call getpdstemplate(52, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 15 .or. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_52(m)) stop 100
+  end do
+
+  call getpdstemplate(33, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 18 .or. .not. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_33(m)) stop 100
+  end do
+
+  call getpdstemplate(34, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 32 .or. .not. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_34(m)) stop 100
+  end do
+
+  call getpdstemplate(53, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 19 .or. .not. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_53(m)) stop 100
+  end do
+
+  call getpdstemplate(54, nummap, map, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 22 .or. .not. needext) stop 99
+  do m = 1, nummap
+     if (map(m) .ne. expected_map_54(m)) stop 100
+  end do
+
   print *, 'SUCCESS'
 end program test_pdstemplates
