@@ -7,14 +7,12 @@ program test_pdstemplates
   use pdstemplates
   implicit none
 
-  integer :: idx
   integer :: nummap
-  integer :: iret, i
-  integer, dimension(15) :: map_comp, list
   integer, dimension(MAXLEN) :: map
-  !integer, dimension(MAXLEN) :: map1
+  integer, dimension(15) :: expected_map = (/1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4/)
   logical :: needext
-  integer :: pdtlen
+  integer :: m
+  integer :: iret
 
   print *, 'Testing pdstemplates complete contents...'
 
@@ -23,6 +21,12 @@ program test_pdstemplates
   if (iret .ne. 0) stop 11
   if (nummap .ne. 15) stop 12
   if (needext) stop 13
+  do m = 1, nummap
+     if (map(m) .ne. expected_map(m)) then
+        print *, map(m), ' expected ', expected_map(m), ' m ', m
+        stop 15
+     end if
+  end do
 
   print *, 'SUCCESS'
 end program test_pdstemplates
