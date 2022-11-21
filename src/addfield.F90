@@ -105,7 +105,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   integer :: mappds(ipdstmplen), intbmap(ngrdpts), mapdrs(idrstmplen)
   integer, parameter :: zero = 0, one = 1, four = 4, five = 5, six = 6, seven = 7
   integer, parameter :: minsize = 50000
-  integer :: iofst, ibeg, lencurr, len, mappdslen, mapdrslen, lpos3
+  integer :: iofst, ibeg, lencurr, len, mappdslen, mapdrslen, lpos3 = 0
   integer :: width, height, ndpts
   integer :: lensec3, lensec4, lensec5, lensec6, lensec7
   logical :: issec3, needext, isprevbmap

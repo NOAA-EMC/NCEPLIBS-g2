@@ -7,8 +7,8 @@ program test_intmath
   real(kind = 16), parameter :: alog2 = log(2.0_16)
   integer(kind = 8) :: ival8 = 10, iret8
   integer(kind = 4) :: ival4 = 10, iret4
-  integer(kind = 2) :: ival2 = 10, iret2
-  integer(kind = 1) :: ival1 = 10, iret1
+  integer(kind = 2) :: ival2 = 10_2, iret2
+  integer(kind = 1) :: ival1 = 10_1, iret1
 
   print *, 'Testing intmath...'
   

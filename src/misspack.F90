@@ -57,7 +57,7 @@ subroutine misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
   character(len = 1), intent(out) :: cpack(*)
   integer, intent(inout) :: idrstmpl(*)
   integer, intent(out) :: lcpack
-  real :: bscale,  dscale,  rmin,  rmissp,  rmisss,  temp
+  real :: bscale,  dscale,  rmin = 0.0,  rmissp,  rmisss,  temp
   integer :: i,  ibit,  ier,  igmax,  ij,  ilmax,  imax,  imin,  inc,  iofst,  isd
   integer :: itemp,  ival1,  ival2,  iwmax,  j,  jbit,  kbit,  kfildo,  kk
   integer :: lbitref,  left,  lg,  maxgrps,  maxorig,  minpk,  minsd,  miss1

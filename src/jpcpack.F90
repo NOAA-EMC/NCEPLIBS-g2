@@ -46,7 +46,7 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
   
   integer(kind = 8) :: lcpack8
   integer(kind = 8) :: width8, height8
-  integer :: i, ierr
+  integer :: ierr
   
   interface
 #if KIND == 4
