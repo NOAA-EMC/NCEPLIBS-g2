@@ -1,6 +1,6 @@
 # This is the main CMake file for NCEPLIBS-g2.
 #
-# Mark Potts, Kyle Gerheiser
+# Mark Potts, Kyle Gerheiser, Ed Hartnett
 cmake_minimum_required(VERSION 3.18)
 
 # Read the current version number from file VERSION.
