@@ -29,7 +29,7 @@ program test_pdstemplates
   print *, 'testing getpdstemplate() ...'
   pdtlen = getpdtlen(0)
   if (pdtlen .ne. 15) stop 5
-  map_comp = (/ 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4/)
+  map_comp = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4/)
   call getpdstemplate(0, nummap, map, needext, iret)
   if (iret .ne. 0) stop 6
   if (pdtlen .ne. nummap) stop 7
