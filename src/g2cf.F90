@@ -143,7 +143,7 @@ contains
        end function g2c_set_log_level
     end interface
     
-    integer, intent(in) :: log_level
+    integer, value :: log_level
     integer :: status
     integer(c_int) :: clog_level, cstatus
     
@@ -151,4 +151,108 @@ contains
     cstatus = g2c_set_log_level(clog_level)
     status = cstatus
   end function g2cf_set_log_level
+
+  !> Inquire how many messages in a GRIB2 file.
+  !>
+  !> @param[in] g2cid ID of open GRIB2 file.
+  !> @param[out] num_msg Number of GRIB2 messages in the file.
+  !>
+  !> @return
+  !> - 0 No error
+  !>
+  !> @author Ed Hartnett @date 2022-11-21
+  function g2cf_inq(g2cid, num_msg) result (status)
+    use iso_c_binding
+    implicit none
+      
+    interface
+       function g2c_inq(g2cid, num_msg) bind(c)
+         use iso_c_binding, only: c_int
+         integer(c_int), value :: g2cid
+         integer(c_int), intent(out) :: num_msg
+         integer(c_int) :: g2c_inq
+       end function g2c_inq
+    end interface
+    
+    integer, value :: g2cid
+    integer, intent(out) :: num_msg
+    integer :: status
+    integer(c_int) :: cg2cid, cnum_msg, cstatus
+    
+    cg2cid = g2cid
+    cstatus = g2c_inq(cg2cid, cnum_msg)
+    if (cstatus .eq. 0) num_msg = cnum_msg
+    status = cstatus
+  end function g2cf_inq
+
+  !> Inquire about a messages in a GRIB2 file.
+  !>
+  !> @param[in] g2cid ID of the opened file, as from g2cf_open().
+  !> @param[in] msg_num Number of the message in the file, starting with the
+  !> first message as 1.
+  !>
+  !> @param[out] discipline Gets the discipline from the message.
+  !> @param[out] num_fields Gets the number of fields in the message.
+  !> @param[out] num_local Gets the number of local sections in the
+  !> message.
+  !> @param[out] center Gets the code for the producing center from
+  !> the message.
+  !> @param[out] subcenter Gets the code for the producing subcenter
+  !> from the message.
+  !> @param[out] master_version Gets the master version from the
+  !> message.
+  !> @param[out] local_version Gets the local version from the
+  !> message.
+  !>
+  !> @return
+  !> - 0 No error
+  !>
+  !> @author Ed Hartnett @date 2022-11-21
+  function g2cf_inq_msg(g2cid, msg_num, discipline, num_fields, num_local, center, &
+       subcenter, master_version, local_version) result (status)
+    use iso_c_binding
+    implicit none
+      
+    interface
+       function g2c_inq_msg(g2cid, msg_num, discipline, num_fields, num_local, center, &
+       subcenter, master_version, local_version) bind(c)
+         use iso_c_binding
+         integer(c_int), value :: g2cid
+         integer(c_int), value :: msg_num
+         integer(c_signed_char), intent(out) :: discipline
+         integer(c_int), intent(out) :: num_fields, num_local
+         integer(c_short), intent(out) :: center, subcenter
+         integer(c_signed_char), intent(out) :: master_version, local_version
+         integer(c_int) :: g2c_inq_msg
+       end function g2c_inq_msg
+    end interface
+    
+    integer, value :: g2cid
+    integer, value :: msg_num    
+    integer(kind = 1), intent(out) :: discipline
+    integer(kind = 4), intent(out) :: num_fields, num_local
+    integer(kind = 2), intent(out) :: center, subcenter
+    integer(kind = 1), intent(out) :: master_version, local_version
+    integer :: status
+    integer(c_int) :: cstatus, cmsg_num
+    integer(c_signed_char) :: cdiscipline
+    integer(c_int) :: cg2cid, cnum_fields, cnum_local
+    integer(c_short) :: ccenter, csubcenter
+    integer(c_signed_char) :: cmaster_version, clocal_version
+    
+    cg2cid = g2cid
+    cmsg_num = msg_num - 1
+    cstatus = g2c_inq_msg(cg2cid, cmsg_num, cdiscipline, cnum_fields, cnum_local, ccenter, &
+         csubcenter, cmaster_version, clocal_version)
+    if (cstatus .eq. 0) then
+       discipline = cdiscipline
+       num_fields = cnum_fields
+       num_local = cnum_local
+       center = ccenter
+       subcenter = csubcenter
+       master_version = cmaster_version
+       local_version = clocal_version
+    endif
+    status = cstatus
+  end function g2cf_inq_msg
 end module g2cf

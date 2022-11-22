@@ -51,6 +51,11 @@ option(BUILD_D "Build libg2_d.a" ON)
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
 find_package(g2c 1.7.0 REQUIRED)
+if (g2c_VERSION GREATER_EQUAL 1.8.0)
+    message(STATUS "      g2c is version 1.8.0 or greater")
+    add_definitions(-DG2C)
+    set(G2C_ENABLED ON)
+endif()
 find_package(Jasper 2.0.25 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
