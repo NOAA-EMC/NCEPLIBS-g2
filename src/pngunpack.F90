@@ -23,8 +23,7 @@ subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
   integer, intent(in) :: idrstmpl(*)
   real, intent(out) :: fld(ndpts)
   integer(kind = 8) :: ndpts8, len8
-  integer(kind = 8) :: idrstmpl8(7)
-  integer :: i, ierr
+  integer :: ierr
 
   interface
 #if KIND == 4

@@ -52,9 +52,9 @@ subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, &
   integer :: totBit, totLen
 
   !implicit none additions
-  integer :: lensec, idrsnum, ier, iofst, is, isign, itemp, itype, ival1
+  integer :: lensec, idrsnum, ier, iofst, is, isign, itemp = 0, itype, ival1
   integer :: ival2, j, k, minsd, msng1, msng2, n, nbitsd, nbitsglen
-  integer :: nbitsgref, nbitsgwidth, ngroups, non
+  integer :: nbitsgref, nbitsgwidth, ngroups, non = 0
 
 
   ier = 0
