@@ -41,7 +41,7 @@ endfunction()
 # This function builds, links, and runs a test program.
 function(create_test name kind)
   add_executable(${name}_${kind} ${name}.F90)
-  target_link_libraries(${name}_${kind} PRIVATE g2_test_lib g2_${kind} PNG::PNG)
+  target_link_libraries(${name}_${kind} PRIVATE g2_test_lib g2_${kind} PNG::PNG  g2c::g2c)
   set_target_properties(${name}_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   set_target_properties(${name}_${kind} PROPERTIES Fortran_MODULE_DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
@@ -87,6 +87,7 @@ copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 # Build a _4 and _d version of each test and link them to the _4 and
 # _d builds of the library, for 4-byte real, and 8-byte real.
 foreach(kind ${kinds})
+  create_test(test_g2cf ${kind})
   create_test(test_g2 ${kind})
   create_test(test_g2_encode ${kind})
   create_test(test_g2_decode ${kind})

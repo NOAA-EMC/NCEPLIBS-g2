@@ -1,6 +1,6 @@
 # This is the main CMake file for NCEPLIBS-g2.
 #
-# Mark Potts, Kyle Gerheiser
+# Mark Potts, Kyle Gerheiser, Ed Hartnett
 cmake_minimum_required(VERSION 3.18)
 
 # Read the current version number from file VERSION.
@@ -48,9 +48,11 @@ option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
 
+# Version 1.8.0 will be required when released. Until then the develop
+# branch of NCEPLIBS-g2c must be used.
+find_package(g2c 1.7.0 REQUIRED)
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
-find_package(g2c 1.7.0 REQUIRED)
 find_package(Jasper 2.0.25 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)

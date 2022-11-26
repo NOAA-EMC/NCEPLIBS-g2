@@ -14,7 +14,7 @@ ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.F90 intmath.F90 ixgb2.F90
 jpcpack.F90 jpcunpack.F90 misspack.F90 mkieee.F90 pack_gp.F90 params_ecmwf.F90
 params.F90 pdstemplates.F90 pngpack.F90 pngunpack.F90 putgb2.F90 rdieee.F90
 realloc.F90 reduce.F90 simpack.F90 simunpack.F90 skgb.F90 specpack.F90
-specunpack.F90 set_log_level.F90)
+specunpack.F90 set_log_level.F90 g2cf.F90)
 
 # These are the C source files.
 set(c_src mova2i.c)
