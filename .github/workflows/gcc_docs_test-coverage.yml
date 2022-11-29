@@ -29,8 +29,8 @@ jobs:
             options: "-DBUILD_D=OFF"
           }
         - {
-            name: "buiild 4 and d with docs and FTP test files",
-            options: "-DFTP_TEST_FILES=ON -DENABLE_DOCS=Yes "
+            name: "buiild 4 and d with docs",
+            options: "-DENABLE_DOCS=Yes "
           }
     steps:
 
@@ -38,7 +38,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
-        python3 -m pip install gcovr
 
     - name: checkout-bacio
       uses: actions/checkout@v2
@@ -120,21 +119,12 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        cmake .. ${{ matrix.config.options }} -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"
+        cmake .. ${{ matrix.config.options }} -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc"
         make -j2 VERBOSE=1
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose --output-on-failure
-        ctest --rerun-failed --output-on-failure
-        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html
 
-    - name: upload-test-coverage
-      uses: actions/upload-artifact@v2
-      with:
-        name: g2-test-coverage
-        path: |
-          g2/build/*.html
-          g2/build/*.css
 
