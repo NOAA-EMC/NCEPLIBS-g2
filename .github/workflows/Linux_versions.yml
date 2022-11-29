@@ -32,7 +32,7 @@ jobs:
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
         path: bacio
-        ref: v${{ matrix.jasper-version }}
+        ref: v${{ matrix.bacio-version }}
 
     - name: build-bacio
       run: |
