@@ -54,14 +54,21 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
         make -j2
         make install
+    - name: cache-w3emc
+      id: cache-w3emc
+      uses: actions/cache@v2
+      with:
+        path: ~/w3emc
+        key: w3emc-${{ runner.os }}-2.9.2
     - name: checkout-w3emc
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-w3emc
         path: w3emc
-        ref: develop
+        ref: v2.9.2
 
     - name: build-w3emc
+      if: steps.cache-w3emc.outputs.cache-hit != 'true'
       run: |
         cd w3emc
         mkdir build
