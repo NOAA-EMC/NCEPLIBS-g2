@@ -1,4 +1,4 @@
-name: Intel Build
+name: Intel_Build
 on:
   push:
     branches:
