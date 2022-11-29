@@ -23,7 +23,7 @@ program test_getg2i
   print *, 'Testing index file reading with getg2i().'
   
   ! Open the test file, generated with the utility grb2index.
-  call baopenr(lugi, "ref_gdaswave.t00z.wcoast.0p16.f000.grb2index", iret)
+  call baopenr(lugi, "data/ref_gdaswave.t00z.wcoast.0p16.f000.grb2index", iret)
   if (iret .ne. 0) stop 3
 
   ! Check that this is an index file, and read it into buffer cbuf.

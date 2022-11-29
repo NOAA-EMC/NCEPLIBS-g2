@@ -27,7 +27,7 @@ program tst_g2grids
 
   ! Open data files for tests.
 
-  open(id, file = 'testdata_g2grids', status = 'old', action = 'read')
+  open(id, file = 'data/testdata_g2grids', status = 'old', action = 'read')
 
   if (id .ne. 15) stop 101
 

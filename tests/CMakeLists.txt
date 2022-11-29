@@ -15,28 +15,39 @@ target_link_libraries(g2_test_lib PRIVATE bacio::bacio)
 # site. This function is used to download such test data. It takes two
 # arguments, the URL and the file to be downloaded.
 function(PULL_DATA THE_URL THE_FILE)
-  if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${THE_FILE}")
+  # If the TEST_FILE_DIR was specified, look for our test data files
+  # there before FTPing them. Developers can keep all test files on
+  # their machines, and save the time of downloading them every time.
+  if(NOT ${TEST_FILE_DIR} STREQUAL ".")
+    if (EXISTS ${TEST_FILE_DIR}/${THE_FILE})
+      message(STATUS "Copying file ${TEST_FILE_DIR}/${THE_FILE} to test data directory.")
+      FILE(COPY ${TEST_FILE_DIR}/${THE_FILE}
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)
+    endif()
+  endif()
+  if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}")
+    message(STATUS "Downloading file ${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}.")
     file(DOWNLOAD
       ${THE_URL}/${THE_FILE}
-      ${CMAKE_CURRENT_BINARY_DIR}/${THE_FILE}
+      ${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}
       SHOW_PROGRESS
       STATUS status
       INACTIVITY_TIMEOUT 30
-      )
+    )
     list(GET status 0 status_num)
-    if(NOT status_num EQUAL 0 OR NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${THE_FILE}")
+    if(NOT status_num EQUAL 0 OR NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}")
       message(FATAL_ERROR "Could not download ${THE_FILE}")
     endif()
   endif()
 endfunction()
 
-# Some very small test files may be committed to the repo. This
-# function copies such a data file to the build directory.
-function(copy_test_data name)
-  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${name}"
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-    FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
-endfunction()
+set(REF_FILES "testdata_g2grids"
+  "ref_gdaswave.t00z.wcoast.0p16.f000.grb2index"
+  "gdaswave.t00z.wcoast.0p16.f000.grib2")
+foreach(THE_FILE IN LISTS REF_FILES) 
+  FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data/${THE_FILE}
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)
+endforeach()
 
 # This function builds, links, and runs a test program.
 function(create_test name kind)
@@ -78,11 +89,6 @@ if(FTP_TEST_FILES)
     create_test(test_getgb2ir ${kind})
   endforeach()  
 endif()
-
-# Copy test data files that are in the repo to the build directory.
-copy_test_data(testdata_g2grids)
-copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.grb2index)
-copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 
 # Build a _4 and _d version of each test and link them to the _4 and
 # _d builds of the library, for 4-byte real, and 8-byte real.

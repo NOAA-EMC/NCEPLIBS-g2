@@ -48,7 +48,7 @@ program test_ixgb2
   print *, 'Trying to read too many bytes...'
   lgrib = 1000
   lskip = 0
-  call baopenr(lugi, "testdata_g2grids", iret)
+  call baopenr(lugi, "data/testdata_g2grids", iret)
   if (iret .ne. 0) stop 3
   call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
   if (iret .ne. 2) stop 4
@@ -60,7 +60,7 @@ program test_ixgb2
   print *, 'Trying to index a non-GRIB2 file...'
   lgrib = 95
   lskip = 0
-  call baopenr(lugi, "testdata_g2grids", iret)
+  call baopenr(lugi, "data/testdata_g2grids", iret)
   if (iret .ne. 0) stop 10
   call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
   print *, 'iret = ', iret
@@ -71,7 +71,7 @@ program test_ixgb2
 
   ! Now open a real GRIB2 file.
   print *, 'Indexing a real GRIB2 file...'
-  call baopenr(lugi, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
+  call baopenr(lugi, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
 
   ! Skip the first 202 bytes of the test file.

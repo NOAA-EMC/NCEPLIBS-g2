@@ -18,7 +18,7 @@ program test_ixgb2
      end subroutine ixgb2
   end interface
 
-  call baopenr(lugi, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
+  call baopenr(lugi, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) then
      print *, 'baopenr failed with iret value: ', iret
      stop 3

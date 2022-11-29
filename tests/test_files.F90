@@ -17,7 +17,7 @@ program test_files
   print *, 'Testing reading GRIB2 file gdaswave.t00z.wcoast.0p16.f000.grib2...'
 
   ! Open the file.
-  call baopenr(lugb, 'gdaswave.t00z.wcoast.0p16.f000.grib2', iret)
+  call baopenr(lugb, 'data/gdaswave.t00z.wcoast.0p16.f000.grib2', iret)
   if (iret .ne. 0) stop 2
 
   ! Learn about the file.

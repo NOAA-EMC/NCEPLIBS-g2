@@ -49,8 +49,8 @@ program test_getgb2s
   print *, 'Testing the getgb2s() subroutine - expect and ignore error messages during test...'
 
   ! Open a real GRIB2 file.
-  print *, 'Indexing a real GRIB2 file WW3_Regional_US_West_Coast_20220718_0000.grib2...'
-  call baopenr(lugb, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
+  print *, 'Indexing a real GRIB2 file data/WW3_Regional_US_West_Coast_20220718_0000.grib2...'
+  call baopenr(lugb, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
 
   ! Get the index information for the GRIB2 file.

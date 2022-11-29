@@ -44,9 +44,10 @@ endif()
 
 # Handle user build options.
 option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
-option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
+option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
+SET(TEST_FILE_DIR "." CACHE STRING "Check this directory for test files before using FTP.")
 
 # Version 1.8.0 will be required when released. Until then the develop
 # branch of NCEPLIBS-g2c must be used.
