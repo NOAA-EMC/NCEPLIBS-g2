@@ -1,4 +1,4 @@
-name: GCC Build, docs, test coverage
+name: GCC Build
 on:
   push:
     branches:
@@ -29,8 +29,8 @@ jobs:
             options: "-DBUILD_D=OFF"
           }
         - {
-            name: "buiild 4 and d with docs",
-            options: "-DENABLE_DOCS=Yes "
+            name: "buiild 4 and d",
+            options: " "
           }
     steps:
 
