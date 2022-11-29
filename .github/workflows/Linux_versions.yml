@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       FC: gfortran
       CC: gcc
@@ -105,7 +105,6 @@ jobs:
         set -x
         cd g2
         mkdir build
-        doxygen --version
         cd build
         cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc"
         make -j2 VERBOSE=1
