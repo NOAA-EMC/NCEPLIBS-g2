@@ -1,4 +1,4 @@
-name: developer_build
+name: developer
 on:
   push:
     branches:
