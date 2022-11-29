@@ -17,8 +17,7 @@ jobs:
 
     strategy:
       fail-fast: true
-      matrix:
-        jasper-version: [2.0.33, 3.0.3]
+
     steps:
 
     - name: install-dependencies
@@ -62,7 +61,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-${{ matrix.jasper-version }}
+        ref: version-3.0.3
 
     - name: cache-jasper
       id: cache-jasper
