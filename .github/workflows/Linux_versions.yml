@@ -76,7 +76,7 @@ jobs:
       run: |
         cd jasper
         mkdir build-jasper && cd build-jasper
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper 
         make -j2
         make install
 
@@ -92,7 +92,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper 
         make -j2
         make install
     - name: checkout
@@ -106,7 +106,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS=-g
+        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fsanitize=address"
         make -j2 VERBOSE=1
 
     - name: test
