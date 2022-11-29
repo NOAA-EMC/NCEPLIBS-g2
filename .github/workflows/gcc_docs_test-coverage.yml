@@ -1,4 +1,4 @@
-name: Linux
+name: Linux_versions
 on:
   push:
     branches:
@@ -13,38 +13,26 @@ jobs:
     env:
       FC: gfortran
       CC: gcc
-      CXX: g++
 
     strategy:
       fail-fast: true
       matrix:
         jasper-version: [2.0.33, 3.0.3]
-        config:
-        - {
-            name: "build d",
-            options: "-DBUILD_4=OFF"
-          }
-        - {
-            name: "build 4",
-            options: "-DBUILD_D=OFF"
-          }
-        - {
-            name: "buiild 4 and d",
-            options: " "
-          }
+        bacio-version: [2.4.1, 2.5.0]
+
     steps:
 
     - name: install-dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev 
 
     - name: checkout-bacio
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
         path: bacio
-        ref: develop
+        ref: v${{ matrix.jasper-version }}
 
     - name: build-bacio
       run: |
@@ -59,7 +47,7 @@ jobs:
       with:
         repository: NOAA-EMC/NCEPLIBS-w3emc
         path: w3emc
-        ref: develop
+        ref: v2.9.2
 
     - name: build-w3emc
       run: |
@@ -97,7 +85,7 @@ jobs:
       with:
         repository: NOAA-EMC/NCEPLIBS-g2c
         path: g2c
-        ref: develop
+        ref: v1.7.0
 
     - name: build-g2c
       run: |
@@ -112,14 +100,14 @@ jobs:
       with:
         path: g2
 
-    - name:  ${{ matrix.config.name }}
+    - name:  build
       run: |
         set -x
         cd g2
         mkdir build
         doxygen --version
         cd build
-        cmake .. ${{ matrix.config.options }} -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc"
+        cmake .. -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc"
         make -j2 VERBOSE=1
 
     - name: test
