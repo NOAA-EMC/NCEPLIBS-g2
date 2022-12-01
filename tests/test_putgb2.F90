@@ -95,6 +95,9 @@ program test_putgb2
      stop 8
   end if
 
+  ! Free the memory.
+  call gf_free(gfld)
+
   print *, 'SUCCESS!'
 
 end program test_putgb2
