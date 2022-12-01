@@ -12,7 +12,7 @@ on:
     - README.md
 
 jobs:
-  build:
+  developer:
     runs-on: ubuntu-latest
     env:
       FC: gfortran
@@ -118,7 +118,7 @@ jobs:
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose --output-on-failure --rerun-failed
         pwd
-        ls -l tests/data
+        ls -l tests
         gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
 
     - name: cache-data

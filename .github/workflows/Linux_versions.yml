@@ -1,4 +1,4 @@
-name: bacio-2.4.1 build 2
+name: Linux_versions
 on:
   push:
     branches:
@@ -8,8 +8,8 @@ on:
     - develop
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  Linux_versions:
+    runs-on: ubuntu-latest
     env:
       FC: gfortran
       CC: gcc
@@ -20,8 +20,7 @@ jobs:
     - name: install-dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
-        python3 -m pip install gcovr
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev
 
     - name: cache-bacio
       id: cache-bacio
@@ -110,21 +109,12 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        cmake .. ${{ matrix.config.options }} -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"
+        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" ..
         make -j2 VERBOSE=1
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose --output-on-failure
-        ctest --rerun-failed --output-on-failure
-        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html
+        ctest --verbose --rerun-failed --output-on-failure
 
-    - name: upload-test-coverage
-      uses: actions/upload-artifact@v2
-      with:
-        name: g2-test-coverage
-        path: |
-          g2/build/*.html
-          g2/build/*.css
 
