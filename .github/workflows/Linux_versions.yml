@@ -14,6 +14,9 @@ jobs:
       FC: gfortran
       CC: gcc
       CXX: g++
+    strategy:
+      matrix:
+        jasper-version: [2.0.33, 3.0.3]
 
     steps:
 
@@ -64,7 +67,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-2.0.33
+        ref: version-${{ matrix.jasper-version }}
 
     - name: cache-jasper
       id: cache-jasper
@@ -107,7 +110,6 @@ jobs:
         set -x
         cd g2
         mkdir build
-        doxygen --version
         cd build
         cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" ..
         make -j2 VERBOSE=1
