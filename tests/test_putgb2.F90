@@ -83,11 +83,11 @@ program test_putgb2
      stop 6
   end if
 
-  call putgb2(2, gfld, iret)
-  if (iret .ne. 0) then
-     print *, 'putgb2 failed with iret value: ', iret
-     stop 7
-  end if
+  ! call putgb2(2, gfld, iret)
+  ! if (iret .ne. 0) then
+  !    print *, 'putgb2 failed with iret value: ', iret
+  !    stop 7
+  ! end if
 
   call baclose(2, iret)
   if (iret .ne. 0) then
