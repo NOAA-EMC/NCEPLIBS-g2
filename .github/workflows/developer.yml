@@ -118,8 +118,8 @@ jobs:
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose --output-on-failure --rerun-failed
         pwd
-        ls -l
-        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html
+        ls -l tests/data
+        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
 
     - name: cache-data
       if: steps.cache-data.outputs.cache-hit != 'true'
