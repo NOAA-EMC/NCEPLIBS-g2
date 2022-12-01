@@ -18,7 +18,7 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-  intel-build-and-test:
+  intel:
     runs-on: ubuntu-latest
     env:
       CC: icc

@@ -1,43 +1,46 @@
-name: developer 
+name: Linux_versions
 on:
   push:
     branches:
     - develop
-    paths-ignore:
-    - README.md
   pull_request:
     branches:
     - develop
-    paths-ignore:
-    - README.md
 
 jobs:
-  developer:
+  Linux_versions:
     runs-on: ubuntu-latest
     env:
       FC: gfortran
       CC: gcc
       CXX: g++
-
+      LD_LIBRARY_PATH: /home/runner/Jasper/lib
     strategy:
-      fail-fast: true
+      matrix:
+        jasper-version: [2.0.33]
 
     steps:
 
     - name: install-dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
-        python3 -m pip install gcovr
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev
 
+    - name: cache-bacio
+      id: cache-bacio
+      uses: actions/cache@v2
+      with:
+        path: ~/bacio
+        key: bacio-${{ runner.os }}-2.4.1-1
     - name: checkout-bacio
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
         path: bacio
-        ref: develop
+        ref: v2.4.1
 
     - name: build-bacio
+      if: steps.cache-bacio.outputs.cache-hit != 'true'
       run: |
         cd bacio
         mkdir build
@@ -65,7 +68,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-3.0.3
+        ref: version-${{ matrix.jasper-version }}
 
     - name: cache-jasper
       id: cache-jasper
@@ -95,7 +98,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper 
         make -j2
         make install
     - name: checkout
@@ -103,33 +106,18 @@ jobs:
       with:
         path: g2
 
-    - name:  build
+    - name:  ${{ matrix.config.name }}
       run: |
         set -x
         cd g2
         mkdir build
-        doxygen --version
         cd build
-        cmake .. -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"  -DCMAKE_BUILD_TYPE=Debug
+        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" ..
         make -j2 VERBOSE=1
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose --output-on-failure --rerun-failed 
-        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
+        ctest --verbose --rerun-failed --output-on-failure
 
-    - name: cache-data
-      if: steps.cache-data.outputs.cache-hit != 'true'
-      run: |
-        mkdir ~/data
-        cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
-        
-    - name: upload-test-coverage
-      uses: actions/upload-artifact@v2
-      with:
-        name: g2-test-coverage
-        path: |
-          g2/build/*.html
-          g2/build/*.css
 
