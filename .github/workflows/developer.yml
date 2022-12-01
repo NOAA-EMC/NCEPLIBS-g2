@@ -117,15 +117,13 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose --output-on-failure --rerun-failed
-        pwd
-        ls -l tests
         gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
 
     - name: cache-data
       if: steps.cache-data.outputs.cache-hit != 'true'
       run: |
         mkdir ~/data
-        cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
+        cp $GITHUB_WORKSPACE/g2/build/tests/* ~/data
         
     - name: upload-test-coverage
       uses: actions/upload-artifact@v2
