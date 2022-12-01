@@ -1,4 +1,4 @@
-name: macOS Build
+name: Linux_versions
 on:
   push:
     branches:
@@ -8,33 +8,39 @@ on:
     - develop
 
 jobs:
-  macOS-build:
-    runs-on: macos-latest
+  Linux_versions:
+    runs-on: ubuntu-latest
     env:
-      FC: gfortran-12
+      FC: gfortran
       CC: gcc
-
+      CXX: g++
+      LD_LIBRARY_PATH: /home/runner/Jasper/lib
     strategy:
-      fail-fast: true
       matrix:
-        jasper-version: [2.0.33, 3.0.3]
+        jasper-version: [2.0.33]
+
     steps:
+
     - name: install-dependencies
       run: |
-        find /Library/Frameworks/ -name "png*"
-        sudo rm -rf /Library/Frameworks/Mono.framework
-        brew update
-        brew install libpng
-        brew install jpeg-turbo
+        sudo apt-get update
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev
 
+    - name: cache-bacio
+      id: cache-bacio
+      uses: actions/cache@v2
+      with:
+        path: ~/bacio
+        key: bacio-${{ runner.os }}-2.4.1-1
     - name: checkout-bacio
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
         path: bacio
-        ref: develop
+        ref: v2.4.1
 
     - name: build-bacio
+      if: steps.cache-bacio.outputs.cache-hit != 'true'
       run: |
         cd bacio
         mkdir build
@@ -69,7 +75,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/Jasper
-        key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}-1
+        key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
@@ -92,7 +98,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_PREFIX_PATH=~/Jasper -DCMAKE_INSTALL_PREFIX=~/g2c
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper 
         make -j2
         make install
     - name: checkout
@@ -100,15 +106,18 @@ jobs:
       with:
         path: g2
 
-    - name: build
+    - name:  ${{ matrix.config.name }}
       run: |
+        set -x
         cd g2
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH="~/Jasper;~/bacio;~/w3emc;~/g2c" -DCMAKE_BUILD_TYPE=Debug ..
-        make -j2
+        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" ..
+        make -j2 VERBOSE=1
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest  --output-on-failure
+        ctest --verbose --rerun-failed --output-on-failure
+
+
