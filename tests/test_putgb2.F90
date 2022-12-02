@@ -1,6 +1,9 @@
-! This program creates a grib file to use in testing other source files
+! This is a test program in the NCEPLIBS-g2 project.
+!
+! This program tests the putgb2() subroutine.
 !
 ! Brian Curtis 11/26/2021
+! Ed Hartnett
 program test_putgb2
   use grib_mod
   use bacio_module
@@ -10,7 +13,7 @@ program test_putgb2
   integer :: lugi = lugb
   integer, parameter :: j = 0
   integer, parameter :: jdisc = 0
-  integer :: jids(13)
+  integer :: jids(13) = (/ 7, 4, 2, 24, 0, 2021, 11, 13, 15, 59, 59, 1, 0 /)  
   integer, parameter :: jpdtn = 0
   integer, parameter :: ipdstmplen = 15
   integer :: jpdt(ipdstmplen)
@@ -37,21 +40,6 @@ program test_putgb2
   jpdt(13) = 2
   jpdt(14) = 1
   jpdt(15) = 1
-
-  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect1.shtml.
-  jids(1) = 7 ! US National Weather Service - NCEP (WMC)
-  jids(2) = 4 ! Environmental Modeling Center
-  jids(3) = 2 ! GRIB master tables version number (currently 2)
-  jids(4) = 24 ! Version Implemented on 06 November 2019
-  jids(5) = 0 ! Local tables not used.
-  jids(6) = 2021 ! Year
-  jids(7) = 11 ! Month
-  jids(8) = 13 ! Day
-  jids(9) = 15 ! Hour
-  jids(10) = 59 ! Minute
-  jids(11) = 59 ! Second
-  jids(12) = 1 !  Operational Test Products
-  jids(13) = 0 ! Analysis Products
 
   call baopenr(1, "testgrib.grb2", iret)
   if (iret .ne. 0) then
