@@ -142,12 +142,17 @@ contains
     character :: cgrib(200)
     integer :: ierr
 
+    ! Create a GRIB2 message.
     call create_cgrib(cgrib, lengrib)
 
+    ! Open the file for writing.
     call baopenw(1, "testgrib.grb2", ierr)
+
+    ! Write the GRIB2 message.
     call wryte(1, lengrib, cgrib)
+
+    ! Close the file.
     call baclose(1, ierr)
 
-    return
   end subroutine write_grib2_file
 end module creategrib
