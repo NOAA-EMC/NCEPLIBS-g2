@@ -93,7 +93,9 @@ program test_getgb2
   end do
   if (gfld%unpacked .neqv. .false.) stop 201
   if (gfld%ibmap .ne. 255) stop 203
-!  print *, gfld%bmap(1)
+  !  print *, gfld%bmap()
+  print *, fld
+  print *, gfld%fld
   do i = 1, 4
       print *, gfld%fld(i), fld(i), abs(gfld%fld(i) - fld(i))
       if (abs(gfld%fld(i) - fld(i)) .gt. EPSILON) stop 205
