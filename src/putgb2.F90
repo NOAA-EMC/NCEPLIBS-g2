@@ -1,6 +1,7 @@
 !> @file
-!> @brief This subroutine read and unpack sections 6 and 7 from ah
-!> grib2 message.
+!> @brief Packs a single field into a GRIB2 message and
+!> writes out that message to the file.
+!>
 !> @author Stephen Gilbert @date 2002-01-11
 
 !> This subroutine packs a single field into a grib2 message and
