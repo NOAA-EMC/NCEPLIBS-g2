@@ -23,14 +23,14 @@ program test_getgb2
   integer, parameter :: igdstmplen = 19
   integer :: idrstmpl(5) = (/ 0, 1, 1, 8, 0 /)
   integer :: jgdt(igdstmplen) = (/ 0, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 45, 91, 0, 55, 101, 5, 5, 0 /)
-  logical, parameter :: unpack = .false.
+  logical, parameter :: unpack = .true.
   integer :: k
   type(gribfield) :: gfld
   integer :: iret
   integer :: i
   integer, parameter :: lcsec2 = 3
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
-  !  real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+ real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   print *, 'Testing open/read/close of GRIB2 file created with creategrib.f90..'
   print *, 'testing getgb2()..'
@@ -81,7 +81,11 @@ program test_getgb2
   ! The first value of the DRS template gets changed to an IEEE
   ! floating point reference value when the data are written. So the
   ! first value of gfld%idrtmpl will not match.
-  if (gfld%idrtmpl(1) .ne. -1583349760) stop 160
+#ifdef KIND_4
+  if (gfld%idrtmpl(1) .ne. -1583349760) stop 191
+#else
+  if (gfld%idrtmpl(1) .ne. 1093664768) stop 191
+#endif
   do i = 2, 5
     print *, gfld%idrtmpl(i), idrstmpl(i)
     if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
@@ -90,6 +94,10 @@ program test_getgb2
   if (gfld%ibmap .ne. 255) stop 203
   !REMAINING ITEMS NOT WORKING RIGHT
   ! if (gfld%bmap(1) .neqv. .false.) stop 204
+  do i = 1, 4
+      print *, fld(i)
+  !   ! if (gfld%fld(i) .ne. fld(i)) stop 205
+  end do
   ! do i = 1, 4
   !     print *, gfld%fld(i), fld(i)
   ! !   ! if (gfld%fld(i) .ne. fld(i)) stop 205

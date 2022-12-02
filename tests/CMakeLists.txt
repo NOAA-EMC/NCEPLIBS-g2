@@ -46,6 +46,7 @@ function(create_test name kind)
   set_target_properties(${name}_${kind} PROPERTIES Fortran_MODULE_DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
   add_test(NAME ${name}_${kind} COMMAND ${name}_${kind})
+  target_compile_definitions(${name}_${kind} PUBLIC -DKIND_${kind})  
 endfunction()
 
 # Copy the VERSION file, it's needed in a test.
