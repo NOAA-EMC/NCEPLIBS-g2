@@ -81,6 +81,7 @@ program test_getgb2
   ! The first value of the DRS template gets changed to an IEEE
   ! floating point reference value when the data are written. So the
   ! first value of gfld%idrtmpl will not match.
+  if (gfld%idrtmpl(1) .ne. -1583349760) stop 160
   do i = 2, 5
     print *, gfld%idrtmpl(i), idrstmpl(i)
     if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
