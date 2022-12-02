@@ -78,11 +78,13 @@ program test_getgb2
   if (gfld%ndpts .ne. 4) stop 170
   if (gfld%idrtnum .ne. 0) stop 180
   if (gfld%idrtlen .ne. 5) stop 190
-  ! NOT WORKING
-  ! do i = 1, 5
-  !   print *, gfld%idrtmpl(i), idrstmpl(i)
-  !   ! if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
-  ! end do
+  ! The first value of the DRS template gets changed to an IEEE
+  ! floating point reference value when the data are written. So the
+  ! first value of gfld%idrtmpl will not match.
+  do i = 2, 5
+    print *, gfld%idrtmpl(i), idrstmpl(i)
+    if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
+  end do
   if (gfld%unpacked .neqv. .false.) stop 201
   if (gfld%ibmap .ne. 255) stop 203
   !REMAINING ITEMS NOT WORKING RIGHT
