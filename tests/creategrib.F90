@@ -3,7 +3,7 @@
 ! This module provides subroutines that create a cgrib variable for other tests
 ! or writes a grib2 file for use in other tests.
 !
-! Brian Curtis 11/12/21 
+! Brian Curtis 11/12/21
 ! Ed Hartnett
 module creategrib
   implicit none
@@ -20,9 +20,9 @@ contains
     character, intent(out), dimension(lcgrib) :: cgrib
 
     ! Section 0 and 1.
-    ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml.    
+    ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml.
     integer :: listsec0(2) = (/ 0, 2 /)
-    ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect1.shtml.    
+    ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect1.shtml.
     integer :: listsec1(13) = (/ 7, 4, 2, 24, 0, 2021, 11, 13, 15, 59, 59, 1, 0 /)
 
     ! Section 2.
@@ -42,7 +42,7 @@ contains
     ! Sections 4-7.
     integer :: ipdsnum = 0
     integer, parameter :: ipdstmplen = 15, numcoord = 0
-    ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml    
+    ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp4-0.shtml
     integer :: ipdstmpl(ipdstmplen) = (/ 0, 0, 0, 0, 0, 12, 59, 0, 0, 1, 1, 1, 2, 1, 1 /)
     integer :: coordlist(1)
     integer :: idrsnum = 0

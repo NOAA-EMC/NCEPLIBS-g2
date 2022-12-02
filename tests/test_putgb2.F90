@@ -14,7 +14,7 @@ program test_putgb2
   integer :: lugi = lugb
   integer, parameter :: j = 0
   integer, parameter :: jdisc = 0
-  integer :: jids(13) = (/ 7, 4, 2, 24, 0, 2021, 11, 13, 15, 59, 59, 1, 0 /)  
+  integer :: jids(13) = (/ 7, 4, 2, 24, 0, 2021, 11, 13, 15, 59, 59, 1, 0 /)
   integer, parameter :: jpdtn = 0
   integer, parameter :: ipdstmplen = 15
   integer :: jpdt(ipdstmplen) = (/ 0, 0, 0, 0, 0, 12, 59, 0, 0, 1, 1, 1, 2, 1, 1 /)
@@ -28,8 +28,8 @@ program test_putgb2
 
   print *, 'Testing reading and writing of GRIB2 file.'
   print *, 'testing reading...'
-  
-  ! Open test file for reading. 
+
+  ! Open test file for reading.
   call baopenr(1, "testgrib.grb2", iret)
   if (iret .ne. 0) stop 3
 

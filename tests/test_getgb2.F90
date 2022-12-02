@@ -30,7 +30,7 @@ program test_getgb2
   integer :: i
   integer, parameter :: lcsec2 = 3
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
-!  real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+  !  real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   print *, 'Testing open/read/close of GRIB2 file created with creategrib.f90..'
   print *, 'testing getgb2()..'
@@ -44,18 +44,18 @@ program test_getgb2
 
   ! Read a field from the test file.
   call getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
-              unpack, k, gfld, iret)
+       unpack, k, gfld, iret)
   if (iret .ne. 0) stop 4
 
   ! Check results.
   if (gfld%version .ne. 2) stop 10
   if (gfld%discipline .ne. 0) stop 20
   do i = 1, 13
-    if (gfld%idsect(i) .ne. jids(i)) stop 30
+     if (gfld%idsect(i) .ne. jids(i)) stop 30
   end do
   if (gfld%idsectlen .ne. 13) stop 40
   do i = 1, lcsec2
-    if (gfld%local(i) .ne. csec2(i)) stop 50
+     if (gfld%local(i) .ne. csec2(i)) stop 50
   end do
   if (gfld%locallen .ne. lcsec2) stop 60
   if (gfld%ifldnum .ne. 1) stop 70
@@ -67,12 +67,12 @@ program test_getgb2
   if (gfld%igdtnum .ne. 0) stop 101
   if (gfld%igdtlen .ne. 19) stop 110
   do i = 1, 19
-    if (gfld%igdtmpl(i) .ne. jgdt(i)) stop 120
+     if (gfld%igdtmpl(i) .ne. jgdt(i)) stop 120
   end do
   if (gfld%ipdtnum .ne. 0) stop 130
   if (gfld%ipdtlen .ne. 15) stop 140
   do i = 1, 15
-    if (gfld%ipdtmpl(i) .ne. jpdt(i)) stop 150
+     if (gfld%ipdtmpl(i) .ne. jpdt(i)) stop 150
   end do
   if (gfld%num_coord .ne. 0) stop 160
   if (gfld%ndpts .ne. 4) stop 170
@@ -91,7 +91,7 @@ program test_getgb2
   !     print *, gfld%fld(i), fld(i)
   ! !   ! if (gfld%fld(i) .ne. fld(i)) stop 205
   ! end do
-  
+
   ! Close file.
   call baclose(1, iret)
   if (iret .ne. 0) stop 5
