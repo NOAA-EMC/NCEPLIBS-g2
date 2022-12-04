@@ -30,7 +30,11 @@ program test_getgb2
   integer :: i
   integer, parameter :: lcsec2 = 3
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
+#ifdef KIND_4  
+  real(4) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+#else
   real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+#endif
   real, parameter :: EPSILON = .2 ! mighty large epsilon is required!
 
   print *, 'Testing open/read/close of GRIB2 file created with creategrib.f90..'
@@ -88,17 +92,18 @@ program test_getgb2
   if (gfld%idrtmpl(1) .ne. 1093664768) stop 191
 #endif
   do i = 2, 5
-!    print *, gfld%idrtmpl(i), idrstmpl(i)
-    if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
+     !    print *, gfld%idrtmpl(i), idrstmpl(i)
+     if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
   end do
   if (gfld%unpacked .neqv. .false.) stop 201
   if (gfld%ibmap .ne. 255) stop 203
   !  print *, gfld%bmap()
-  print *, fld
-  print *, gfld%fld
+  print *, 'fld: ',fld
+  print *, 'gfld%fld ', gfld%fld
   do i = 1, 4
-      print *, gfld%fld(i), fld(i), abs(gfld%fld(i) - fld(i))
-      if (abs(gfld%fld(i) - fld(i)) .gt. EPSILON) stop 205
+     print *, 'gfld%fld(i), fld(i), abs(gfld%fld(i) - fld(i))'
+     print *, gfld%fld(i), fld(i), abs(gfld%fld(i) - fld(i))
+     if (abs(gfld%fld(i) - fld(i)) .gt. EPSILON) stop 205
   end do
 
   ! Close file.
@@ -107,5 +112,4 @@ program test_getgb2
 
   print *, 'OK!'
   print *, 'SUCCESS!'
-
 end program test_getgb2
