@@ -34,6 +34,7 @@ jobs:
       with:
         path: ~/bacio
         key: bacio-${{ runner.os }}-${{ matrix.bacio-version }}
+        
     - name: checkout-bacio
       uses: actions/checkout@v2
       with:
@@ -50,6 +51,14 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
         make -j2
         make install
+        
+    - name: cache-w3emc
+      id: cache-w3emc
+      uses: actions/cache@v2
+      with:
+        path: ~/w3emc
+        key: w3emc-${{ runner.os }}-${{ matrix.w3emc-version }}-${{ matrix.bacio-version }}
+        
     - name: checkout-w3emc
       uses: actions/checkout@v2
       with:
@@ -58,6 +67,7 @@ jobs:
         ref: v${{ matrix.w3emc-version }}
 
     - name: build-w3emc
+      if: steps.cache-w3emc.outputs.cache-hit != 'true'
       run: |
         cd w3emc
         mkdir build
@@ -103,6 +113,7 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper 
         make -j2
         make install
+        
     - name: checkout
       uses: actions/checkout@v2
       with:
