@@ -7,7 +7,6 @@
 program test_getgb2
   use grib_mod
   use bacio_module
-  use creategrib
   implicit none
 
   ! Define what I need
@@ -86,11 +85,7 @@ program test_getgb2
   ! The first value of the DRS template gets changed to an IEEE
   ! floating point reference value when the data are written. So the
   ! first value of gfld%idrtmpl will not match.
-#ifdef KIND_4
-  if (gfld%idrtmpl(1) .ne. -1583349760) stop 191
-#else
   if (gfld%idrtmpl(1) .ne. 1093664768) stop 191
-#endif
   do i = 2, 5
      !    print *, gfld%idrtmpl(i), idrstmpl(i)
      if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
@@ -103,7 +98,7 @@ program test_getgb2
   do i = 1, 4
      print *, 'gfld%fld(i), fld(i), abs(gfld%fld(i) - fld(i))'
      print *, gfld%fld(i), fld(i), abs(gfld%fld(i) - fld(i))
-!     if (abs(gfld%fld(i) - fld(i)) .gt. EPSILON) stop 205
+     if (abs(gfld%fld(i) - fld(i)) .gt. EPSILON) stop 205
   end do
 
   ! Close file.

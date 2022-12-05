@@ -6,11 +6,6 @@
 # This is needed for macos to work on GitHub CI.
 link_directories("/usr/local/lib")
 
-# Common functions used for testing
-set(lib_src creategrib.F90)
-add_library(g2_test_lib STATIC ${lib_src})
-target_link_libraries(g2_test_lib PRIVATE bacio::bacio)
-
 # Some test files are large and are kept on the NOAA EMC FTP
 # site. This function is used to download such test data. It takes two
 # arguments, the URL and the file to be downloaded.
@@ -40,8 +35,8 @@ endfunction()
 
 # This function builds, links, and runs a test program.
 function(create_test name kind)
-  add_executable(${name}_${kind} ${name}.F90)
-  target_link_libraries(${name}_${kind} PRIVATE g2_test_lib g2_${kind} PNG::PNG  g2c::g2c)
+  add_executable(${name}_${kind} ${name}.F90 creategrib.F90)
+  target_link_libraries(${name}_${kind} PRIVATE g2_${kind} PNG::PNG  g2c::g2c)
   set_target_properties(${name}_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   set_target_properties(${name}_${kind} PROPERTIES Fortran_MODULE_DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
