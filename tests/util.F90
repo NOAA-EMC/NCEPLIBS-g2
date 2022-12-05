@@ -1,6 +1,6 @@
 ! This is part of the test code for the NCEPLIBS-g2 project.
 !
-! This module provides subroutines that create a cgrib variable for other tests
+! This file provides subroutines that create a cgrib variable for other tests
 ! or writes a grib2 file for use in other tests.
 !
 ! Brian Curtis 11/12/21
@@ -90,10 +90,11 @@ end subroutine create_cgrib
 ! Write a GRIB2 message to a file.
 !
 ! Brian Curtis
-subroutine write_grib2_file()
+subroutine write_grib2_file(filename)
   use bacio_module
   implicit none
 
+  character(*), intent(in) :: filename
   integer :: lengrib
   character :: cgrib(200)
   integer :: ierr
@@ -102,7 +103,7 @@ subroutine write_grib2_file()
   call create_cgrib(cgrib, lengrib)
 
   ! Open the file for writing.
-  call baopenw(1, "testgrib.grb2", ierr)
+  call baopenw(1, filename, ierr)
 
   ! Write the GRIB2 message.
   call wryte(1, lengrib, cgrib)

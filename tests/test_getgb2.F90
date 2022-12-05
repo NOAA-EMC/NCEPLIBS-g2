@@ -40,7 +40,7 @@ program test_getgb2
   print *, 'testing getgb2()..'
 
   ! Write the test file.
-  call write_grib2_file()
+  call write_grib2_file("test_getgb2.grib2")
 
   ! Open the test file for reading.
   call baopenr(1, "test_getgb2.grib2", iret)
@@ -125,3 +125,4 @@ program test_getgb2
   print *, 'OK!'
   print *, 'SUCCESS!'
 end program test_getgb2
+
