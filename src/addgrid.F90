@@ -59,12 +59,16 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   character(len = 4), parameter :: grib = 'GRIB', c7777 = '7777'
   character(len = 4):: ctemp
   integer:: mapgrid(igdstmplen)
-  integer, parameter :: one = 1, three = 3
+  integer, parameter :: ONE = 1, THREE = 3
   integer lensec3, iofst, ibeg, lencurr, len, mapgridlen
   logical needext
   integer :: i, ilen, iret, isecnum, nbits
 
   ierr = 0
+
+#ifdef LOGGING
+  print *, 'addgrid lcgrib ', lcgrib, ' igdstmplen ', igdstmplen, ' idefnum ', idefnum
+#endif
 
   ! Check to see if beginning of GRIB message exists.
   do i = 1, 4
@@ -131,7 +135,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   ! Add Section 3  - Grid Definition Section.
   ibeg = lencurr * 8        !   Calculate offset for beginning of section 3
   iofst = ibeg + 32         !   leave space for length of section
-  call g2_sbytec(cgrib, three, iofst, 8) ! Store section number (3)
+  call g2_sbytec(cgrib, THREE, iofst, 8) ! Store section number (3)
   iofst = iofst + 8
   call g2_sbytec(cgrib, igds(1), iofst, 8) ! Store source of Grid def.
   iofst = iofst + 8
@@ -179,7 +183,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      if ((mapgrid(i) .ge. 0) .or. (igdstmpl(i) .ge. 0)) then
         call g2_sbytec(cgrib, igdstmpl(i), iofst, nbits)
      else
-        call g2_sbytec(cgrib, one, iofst, 1)
+        call g2_sbytec(cgrib, ONE, iofst, 1)
         call g2_sbytec(cgrib, iabs(igdstmpl(i)), iofst + 1, nbits &
              - 1)
      endif
