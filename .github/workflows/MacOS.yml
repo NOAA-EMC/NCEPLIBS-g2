@@ -38,7 +38,9 @@ jobs:
       with:
         path: ~/bacio
         key: bacio-${{ runner.os }}-${{ matrix.bacio-version }}
+        
     - name: checkout-bacio
+      if: steps.cache-bacio.outputs.cache-hit != 'true'        
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
@@ -54,13 +56,16 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
         make -j2
         make install
+        
     - name: cache-w3emc
       id: cache-w3emc
       uses: actions/cache@v2
       with:
         path: ~/w3emc
         key: w3emc-${{ runner.os }}-2.9.2-bacio-${{ matrix.bacio-version }}
+        
     - name: checkout-w3emc
+      if: steps.cache-w3emc.outputs.cache-hit != 'true'    
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-w3emc
@@ -76,26 +81,28 @@ jobs:
         cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
         make -j2
         make install
+        
+    - name: cache-jasper
+      id: cache-jasper
+      uses: actions/cache@v2
+      with:
+        path: ~/jasper
+        key: jasper-${{ runner.os }}-${{ matrix.jasper-version }}
+
     - name: checkout-jasper
+      if: steps.cache-jasper.outputs.cache-hit != 'true'    
       uses: actions/checkout@v2
       with:
         repository: jasper-software/jasper
         path: jasper
         ref: version-${{ matrix.jasper-version }}
 
-    - name: cache-jasper
-      id: cache-jasper
-      uses: actions/cache@v2
-      with:
-        path: ~/Jasper
-        key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}-1
-
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
       run: |
         cd jasper
         mkdir build-jasper && cd build-jasper
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
         make -j2
         make install
 
@@ -111,7 +118,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_PREFIX_PATH=~/Jasper -DCMAKE_INSTALL_PREFIX=~/g2c
+        cmake .. -DCMAKE_PREFIX_PATH=~/jasper -DCMAKE_INSTALL_PREFIX=~/g2c
         make -j2
         make install
     - name: checkout
@@ -124,7 +131,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH="~/Jasper;~/bacio;~/w3emc;~/g2c" -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DCMAKE_PREFIX_PATH="~/jasper;~/bacio;~/w3emc;~/g2c" -DCMAKE_BUILD_TYPE=Debug ..
         make -j2
 
     - name: test

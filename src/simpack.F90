@@ -48,7 +48,11 @@ subroutine simpack(fld, ndpts, idrstmpl, cpack, lcpack)
 
   integer(4) :: iref
   integer :: ifld(ndpts)
-  integer, parameter :: zero = 0
+  integer, parameter :: ZERO = 0
+
+#ifdef LOGGING
+  print *, 'simpack ndpts ', ndpts
+#endif
 
   bscale = 2.0**real(-idrstmpl(2))
   dscale = 10.0**real(idrstmpl(3))
@@ -57,10 +61,9 @@ subroutine simpack(fld, ndpts, idrstmpl, cpack, lcpack)
   else
      nbits = idrstmpl(4)
   endif
-  !
-  !  Find max and min values in the data
-  !
-  if(ndpts<1) then
+
+  ! Find max and min values in the data.
+  if (ndpts < 1) then
      rmin = 0
      rmax = 0
   else
@@ -72,15 +75,18 @@ subroutine simpack(fld, ndpts, idrstmpl, cpack, lcpack)
      enddo
   endif
 
+#ifdef LOGGING
+  print *, 'bscale ', bscale, ' dscale ', dscale, ' nbits ', nbits, &
+       ' rmin ', rmin, ' rmax ', rmax, ' idrstmpl(2) ', idrstmpl(2), ' fld(1) ', fld(1)
+#endif
+
   ! If max and min values are not equal, pack up field.  If they are
   ! equal, we have a constant field, and the reference value (rmin) is
   ! the value for each point in the field and set nbits to 0.
   if (rmin .ne. rmax) then
-
      ! Determine which algorithm to use based on user-supplied binary
      ! scale factor and number of bits.
      if (nbits .eq. 0 .AND. idrstmpl(2) .eq. 0) then
-
         ! No binary scaling and calculate minumum number of bits in
         ! which the data will fit.
         imin = nint(rmin * dscale)
@@ -94,7 +100,6 @@ subroutine simpack(fld, ndpts, idrstmpl, cpack, lcpack)
            ifld(j) = nint(fld(j) * dscale) - imin
         enddo
      elseif (nbits .ne. 0 .AND. idrstmpl(2) .eq. 0) then
-
         ! Use minimum number of bits specified by user and adjust
         ! binary scaling factor to accomodate data.
         rmin = rmin * dscale
@@ -108,7 +113,6 @@ subroutine simpack(fld, ndpts, idrstmpl, cpack, lcpack)
            ifld(j) = max(0, nint(((fld(j)*dscale) - rmin) * bscale))
         enddo
      elseif (nbits .eq. 0 .AND. idrstmpl(2) .ne. 0) then
-
         ! Use binary scaling factor and calculate minumum number of
         ! bits in which the data will fit.
         rmin = rmin * dscale
@@ -121,7 +125,6 @@ subroutine simpack(fld, ndpts, idrstmpl, cpack, lcpack)
            ifld(j) = max(0, nint(((fld(j) * dscale) - rmin) * bscale))
         enddo
      elseif (nbits .ne. 0 .AND. idrstmpl(2) .ne. 0) then
-
         ! Use binary scaling factor and use minumum number of bits
         ! specified by user.  Dangerous - may loose information if
         ! binary scale factor and nbits not set properly by user.
@@ -131,15 +134,14 @@ subroutine simpack(fld, ndpts, idrstmpl, cpack, lcpack)
            ifld(j) = max(0, nint(((fld(j) * dscale) - rmin) * bscale))
         enddo
      endif
-     !
+
      !  Pack data, Pad last octet with Zeros, if necessary, 
      !  and calculate the length of the packed data in bytes
-     !
      call g2_sbytesc(cpack, ifld, 0, nbits, 0, ndpts)
      nbittot = nbits * ndpts
      left = 8 - mod(nbittot, 8)
      if (left .ne. 8) then
-        call g2_sbytec(cpack, zero, nbittot, left)    ! Pad with zeros to fill Octet
+        call g2_sbytec(cpack, ZERO, nbittot, left)    ! Pad with zeros to fill Octet
         nbittot = nbittot + left
      endif
      lcpack = nbittot / 8

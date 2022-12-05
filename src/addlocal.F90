@@ -37,11 +37,15 @@ subroutine addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
 
   character(len=4), parameter :: grib = 'GRIB', c7777 = '7777'
   character(len=4):: ctemp
-  integer, parameter :: two = 2
+  integer, parameter :: TWO = 2
   integer lensec2, iofst, ibeg, lencurr, len
   integer :: ilen, isecnum, istart
 
   ierr = 0
+
+#ifdef LOGGING
+  print *, 'addlocal lcgrib ', lcgrib, ' lcsec2 ', lcsec2
+#endif
 
   ! Check to see if beginning of GRIB message exists.
   ctemp = cgrib(1) // cgrib(2) // cgrib(3) // cgrib(4)
@@ -104,7 +108,7 @@ subroutine addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   ! Add Section 2  - Local Use Section.
   ibeg = lencurr * 8        !    Calculate offset for beginning of section 2
   iofst = ibeg + 32         !    leave space for length of section
-  call g2_sbytec(cgrib, two, iofst, 8) ! Store section number ( 2 )
+  call g2_sbytec(cgrib, TWO, iofst, 8) ! Store section number ( 2 )
   istart = lencurr + 5
   cgrib(istart + 1:istart + lcsec2) = csec2(1:lcsec2)
 

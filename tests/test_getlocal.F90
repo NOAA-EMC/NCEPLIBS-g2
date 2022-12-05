@@ -3,7 +3,6 @@
 ! Brian Curtis 2/11/2022
 
 program test_getlocal
-    use creategrib
     implicit none
     
     integer :: lengrib

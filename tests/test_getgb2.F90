@@ -7,7 +7,6 @@
 program test_getgb2
   use grib_mod
   use bacio_module
-  use creategrib
   implicit none
 
   ! Define what I need
@@ -23,23 +22,28 @@ program test_getgb2
   integer, parameter :: igdstmplen = 19
   integer :: idrstmpl(5) = (/ 0, 1, 1, 8, 0 /)
   integer :: jgdt(igdstmplen) = (/ 0, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 45, 91, 0, 55, 101, 5, 5, 0 /)
-  logical, parameter :: unpack = .false.
+  logical, parameter :: unpack = .true.
   integer :: k
   type(gribfield) :: gfld
   integer :: iret
   integer :: i
   integer, parameter :: lcsec2 = 3
   character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
-  !  real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+#ifdef KIND_4  
+  real(4) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+#else
+  real(8) :: fld(4) = (/ 1.1, 1.2, 1.3, 1.4 /)
+#endif
+  real, parameter :: EPSILON = .2 ! mighty large epsilon is required!
 
   print *, 'Testing open/read/close of GRIB2 file created with creategrib.f90..'
   print *, 'testing getgb2()..'
 
   ! Write the test file.
-  call write_grib2_file()
+  call write_grib2_file("test_getgb2.grib2")
 
   ! Open the test file for reading.
-  call baopenr(1, "testgrib.grb2", iret)
+  call baopenr(1, "test_getgb2.grib2", iret)
   if (iret .ne. 0) stop 3
 
   ! Read a field from the test file.
@@ -78,25 +82,47 @@ program test_getgb2
   if (gfld%ndpts .ne. 4) stop 170
   if (gfld%idrtnum .ne. 0) stop 180
   if (gfld%idrtlen .ne. 5) stop 190
-  ! NOT WORKING
-  ! do i = 1, 5
-  !   print *, gfld%idrtmpl(i), idrstmpl(i)
-  !   ! if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
-  ! end do
+  ! The first value of the DRS template gets changed to an IEEE
+  ! floating point reference value when the data are written. So the
+  ! first value of gfld%idrtmpl will not match.
+  if (gfld%idrtmpl(1) .ne. 1093664768) stop 191
+  do i = 2, 5
+     !    print *, gfld%idrtmpl(i), idrstmpl(i)
+     if (gfld%idrtmpl(i) .ne. idrstmpl(i)) stop 200
+  end do
   if (gfld%unpacked .neqv. .false.) stop 201
   if (gfld%ibmap .ne. 255) stop 203
-  !REMAINING ITEMS NOT WORKING RIGHT
-  ! if (gfld%bmap(1) .neqv. .false.) stop 204
-  ! do i = 1, 4
-  !     print *, gfld%fld(i), fld(i)
-  ! !   ! if (gfld%fld(i) .ne. fld(i)) stop 205
-  ! end do
+  !  print *, gfld%bmap()
+  print *, 'fld: ',fld
+  print *, 'gfld%fld ', gfld%fld
+  do i = 1, 4
+     print *, 'gfld%fld(i), fld(i), abs(gfld%fld(i) - fld(i))'
+     print *, gfld%fld(i), fld(i), abs(gfld%fld(i) - fld(i))
+     if (abs(gfld%fld(i) - fld(i)) .gt. EPSILON) stop 205
+  end do
 
   ! Close file.
   call baclose(1, iret)
   if (iret .ne. 0) stop 5
 
   print *, 'OK!'
-  print *, 'SUCCESS!'
+  print *, 'testing putgb2...'
 
+  ! Open file for writing.
+  call baopenw(2, "test_getgb2_copy.grib2", iret)
+  if (iret .ne. 0) stop 100
+
+  call putgb2(2, gfld, iret)
+  if (iret .ne. 0) stop 107
+
+  ! Close file.
+  call baclose(2, iret)
+  if (iret .ne. 0) stop 150
+
+  ! Free the memory.
+  call gf_free(gfld)
+
+  print *, 'OK!'
+  print *, 'SUCCESS!'
 end program test_getgb2
+
