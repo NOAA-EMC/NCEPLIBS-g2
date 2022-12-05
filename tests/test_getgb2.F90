@@ -43,7 +43,7 @@ program test_getgb2
   call write_grib2_file()
 
   ! Open the test file for reading.
-  call baopenr(1, "testgrib.grb2", iret)
+  call baopenr(1, "test_getgb2.grib2", iret)
   if (iret .ne. 0) stop 3
 
   ! Read a field from the test file.
@@ -109,7 +109,7 @@ program test_getgb2
   print *, 'testing putgb2...'
 
   ! Open file for writing.
-  call baopenw(2, "testgrib2.grb2", iret)
+  call baopenw(2, "test_getgb2_copy.grib2", iret)
   if (iret .ne. 0) stop 100
 
   call putgb2(2, gfld, iret)
