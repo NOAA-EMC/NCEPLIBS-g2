@@ -19,6 +19,7 @@ jobs:
       matrix:
         jasper-version: [2.0.33, 3.0.5]
         bacio-version: [2.4.1, 2.5.0]
+        w3emc-version: [2.9.2, 2.9.3]
 
     steps:
 
@@ -54,7 +55,7 @@ jobs:
       with:
         repository: NOAA-EMC/NCEPLIBS-w3emc
         path: w3emc
-        ref: develop
+        ref: v${{ matrix.w3emc-version }}
 
     - name: build-w3emc
       run: |
