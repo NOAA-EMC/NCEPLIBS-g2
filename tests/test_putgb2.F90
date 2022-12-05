@@ -51,7 +51,7 @@ program test_putgb2
   call baopenw(2, "testgrib2.grb2", iret)
   if (iret .ne. 0) stop 100
 
-  call putgb2(2, gfld, iret)
+!  call putgb2(2, gfld, iret)
   if (iret .ne. 0) stop 107
 
   ! Close file.
