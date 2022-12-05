@@ -82,6 +82,10 @@ subroutine putgb2(lugb, gfld, iret)
   ! Section 7 holds the data.
   lcgrib = lcgrib + gfld%ngrdpts * 4
 
+#ifdef LOGGING
+  print *, 'putgb2 lugb ', lugb, ' lcgrib ', lcgrib
+#endif
+
   ! Allocate array for grib2 field.
   allocate(cgrib(lcgrib), stat = is)
   if (is .ne. 0) then

@@ -106,5 +106,22 @@ program test_getgb2
   if (iret .ne. 0) stop 5
 
   print *, 'OK!'
+  print *, 'testing putgb2...'
+
+  ! Open file for writing.
+  call baopenw(2, "testgrib2.grb2", iret)
+  if (iret .ne. 0) stop 100
+
+  call putgb2(2, gfld, iret)
+  if (iret .ne. 0) stop 107
+
+  ! Close file.
+  call baclose(2, iret)
+  if (iret .ne. 0) stop 150
+
+  ! Free the memory.
+  call gf_free(gfld)
+
+  print *, 'OK!'
   print *, 'SUCCESS!'
 end program test_getgb2
