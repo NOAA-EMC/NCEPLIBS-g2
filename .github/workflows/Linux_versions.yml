@@ -36,6 +36,7 @@ jobs:
         key: bacio-${{ runner.os }}-${{ matrix.bacio-version }}
         
     - name: checkout-bacio
+      if: steps.cache-bacio.outputs.cache-hit != 'true'
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
@@ -75,6 +76,7 @@ jobs:
         cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
         make -j2
         make install
+        
     - name: checkout-jasper
       uses: actions/checkout@v2
       with:
