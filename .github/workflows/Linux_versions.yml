@@ -13,8 +13,7 @@ jobs:
     env:
       FC: gfortran
       CC: gcc
-      CXX: g++
-      LD_LIBRARY_PATH: /home/runner/Jasper/lib
+      LD_LIBRARY_PATH: /home/runner/jasper/lib
     strategy:
       matrix:
         jasper-version: [2.0.33, 3.0.5]
@@ -82,7 +81,7 @@ jobs:
       id: cache-jasper
       uses: actions/cache@v2
       with:
-        path: ~/Jasper
+        path: ~/jasper
         key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
 
     - name: checkout-jasper
@@ -98,7 +97,7 @@ jobs:
       run: |
         cd jasper
         mkdir build-jasper && cd build-jasper
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
         make -j2
         make install
 
@@ -114,7 +113,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper 
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/jasper 
         make -j2
         make install
         
@@ -129,7 +128,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DLOGGING=ON -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DJasper_ROOT=~/jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DLOGGING=ON -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
 
     - name: test

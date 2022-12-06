@@ -17,7 +17,6 @@ jobs:
     env:
       FC: gfortran
       CC: gcc
-      CXX: g++
 
     strategy:
       fail-fast: true
@@ -45,6 +44,7 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
         make -j2
         make install
+        
     - name: checkout-w3emc
       uses: actions/checkout@v2
       with:
@@ -60,19 +60,21 @@ jobs:
         cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
         make -j2
         make install
-    - name: checkout-jasper
-      uses: actions/checkout@v2
-      with:
-        repository: jasper-software/jasper
-        path: jasper
-        ref: version-3.0.3
-
+        
     - name: cache-jasper
       id: cache-jasper
       uses: actions/cache@v2
       with:
         path: ~/Jasper
-        key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
+        key: jasper-${{ runner.os }}-3.0.3
+
+    - name: checkout-jasper
+      if: steps.cache-jasper.outputs.cache-hit != 'true'    
+      uses: actions/checkout@v2
+      with:
+        repository: jasper-software/jasper
+        path: jasper
+        ref: version-3.0.3
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
@@ -98,6 +100,7 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper
         make -j2
         make install
+        
     - name: checkout
       uses: actions/checkout@v2
       with:
