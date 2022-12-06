@@ -23,9 +23,6 @@ jobs:
     env:
       CC: icc
       FC: ifort
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
 
     steps:
 
@@ -78,7 +75,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/jasper
-        key: jasper-intel-${{ runner.os }}-3.0.5
+        key: jasper-intel-ubuntu-latest-3.0.5
 
     - name: checkout-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'

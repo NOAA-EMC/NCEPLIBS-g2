@@ -132,7 +132,7 @@ jobs:
         mkdir build
         cd build
         cmake -DCMAKE_PREFIX_PATH="~/jasper;~/bacio;~/w3emc;~/g2c" -DCMAKE_BUILD_TYPE=Debug ..
-        make -j2
+        make -j2 VERBOSE=1
 
     - name: test
       run: |
