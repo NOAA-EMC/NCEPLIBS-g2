@@ -23,10 +23,6 @@ jobs:
     env:
       CC: icc
       FC: ifort
-      CXX: icpc
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
 
     steps:
 
@@ -57,6 +53,7 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
         make -j2
         make install
+        
     - name: checkout-w3emc
       uses: actions/checkout@v2
       with:
@@ -72,26 +69,28 @@ jobs:
         cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
         make -j2
         make install
-    - name: checkout-jasper
-      uses: actions/checkout@v2
-      with:
-        repository: jasper-software/jasper
-        path: jasper
-        ref: version-2.0.25
-
+        
     - name: cache-jasper
       id: cache-jasper
       uses: actions/cache@v2
       with:
-        path: ~/Jasper
-        key: jasper-intel-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
+        path: ~/jasper
+        key: jasper-intel-ubuntu-latest-3.0.5
+
+    - name: checkout-jasper
+      if: steps.cache-jasper.outputs.cache-hit != 'true'
+      uses: actions/checkout@v2
+      with:
+        repository: jasper-software/jasper
+        path: jasper
+        ref: version-3.0.5
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
       run: |
         cd jasper
         mkdir build-jasper && cd build-jasper
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
         make -j2
         make install
 
@@ -107,7 +106,7 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_PREFIX_PATH=~/Jasper -DCMAKE_INSTALL_PREFIX=~/g2c
+        cmake .. -DCMAKE_PREFIX_PATH=~/jasper -DCMAKE_INSTALL_PREFIX=~/g2c
         make -j2
         make install
     - name: checkout
@@ -120,10 +119,10 @@ jobs:
         cd g2
         mkdir build 
         cd build
-        cmake .. -DOPENMP=ON -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc;~/g2c"
+        cmake .. -DOPENMP=ON -DJasper_ROOT=~/jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc;~/g2c"
         make -j2 VERBOSE=1
     
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose --output-on-failure
+        ctest --verbose --output-on-failure --rerun-failed
