@@ -4,17 +4,18 @@
 #
 # Ed Hartnett, 12/22/22
 name: developer 
-on:
-  push:
-    branches:
-    - develop
-    paths-ignore:
-    - README.md
-  pull_request:
-    branches:
-    - develop
-    paths-ignore:
-    - README.md
+on: [push, pull_request]
+# on:
+#   push:
+#     branches:
+#     - develop
+#     paths-ignore:
+#     - README.md
+#   pull_request:
+#     branches:
+#     - develop
+#     paths-ignore:
+#     - README.md
 
 jobs:
   developer:
