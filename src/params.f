@@ -1062,7 +1062,7 @@
        data paramlist(999) /gribparam(255,255,10,3,206,'RUNUP')/
        data paramlist(1000) /gribparam(255,255,10,3,207,'SETUP')/
        data paramlist(1001) /gribparam(255,255,10,3,208,'SWASH')/
-       data paramlist(1002) /gribparam(255,255,10,3,200,'TWLDT')/
+       data paramlist(1002) /gribparam(255,255,10,3,209,'TWLDT')/
        data paramlist(1003) /gribparam(255,255,10,3,210,'TWLDC')/
        data paramlist(1004) /gribparam(255,255,10,3,250,'ETCWL')/
        data paramlist(1005) /gribparam(255,255,10,3,251,'TIDE')/
