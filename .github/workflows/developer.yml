@@ -4,7 +4,7 @@
 #
 # Ed Hartnett, 12/22/22
 name: developer 
-on: [push, pull_request]
+on: [pull_request]
 # on:
 #   push:
 #     branches:
