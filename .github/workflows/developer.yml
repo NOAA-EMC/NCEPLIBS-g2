@@ -91,22 +91,6 @@ jobs:
         make -j2
         make install
 
-    - name: checkout-g2c
-      uses: actions/checkout@v2
-      with:
-        repository: NOAA-EMC/NCEPLIBS-g2c
-        path: g2c
-        ref: develop
-
-    - name: build-g2c
-      run: |
-        cd g2c
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/Jasper
-        make -j2
-        make install
-        
     - name: checkout
       uses: actions/checkout@v2
       with:
@@ -119,7 +103,7 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        cmake .. -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"  -DCMAKE_BUILD_TYPE=Debug 
+        cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"  -DCMAKE_BUILD_TYPE=Debug 
         make -j2 VERBOSE=1
 
     - name: test
