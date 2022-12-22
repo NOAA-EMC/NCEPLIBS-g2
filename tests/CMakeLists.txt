@@ -20,7 +20,7 @@ FILE(COPY ${CMAKE_SOURCE_DIR}/VERSION DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 # Build a _4 and _d version of each test and link them to the _4 and
 # _d builds of the library, for 4-byte real, and 8-byte real.
 foreach(kind ${kinds})
-#  create_test(test_g2_encode ${kind})
+  create_test(test_g2_encode ${kind})
   create_test(test_g2_decode ${kind})
   create_test(test_gridtemplates ${kind})
   create_test(test_drstemplates ${kind})

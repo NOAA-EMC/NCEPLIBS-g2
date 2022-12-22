@@ -96,6 +96,7 @@
       integer,intent(in) :: idrsnum,numcoord,ipdstmplen,idrstmplen
       integer,intent(in) :: lcgrib,ngrdpts,ibmap
       real,intent(in) :: coordlist(numcoord)
+      real(kind = 4) :: coordlist_4(numcoord)
       real,target,intent(in) :: fld(ngrdpts)
       integer,intent(out) :: ierr
       integer,intent(inout) :: idrstmpl(*)
@@ -259,7 +260,10 @@
       ! after the Product Definition Template, if necessary.
       !
       if ( numcoord .ne. 0 ) then
-        call mkieee(coordlist,coordieee,numcoord)
+         do i = 1, numcoord
+            coordlist_4(i) = coordlist(i)
+         end do
+        call mkieee(coordlist_4, coordieee, numcoord)
         call g2_sbytesc(cgrib,coordieee,iofst,32,0,numcoord)
         iofst=iofst+(32*numcoord)
       endif
