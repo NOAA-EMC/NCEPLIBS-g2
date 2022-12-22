@@ -1,15 +1,5 @@
-name: Intel
-on:
-  push:
-    branches:
-    - develop
-    paths-ignore:
-    - README.md
-  pull_request:
-    branches:
-    - develop
-    paths-ignore:
-    - README.md
+name: Intel Build
+on: [push, pull_request]
 
 # Use custom shell with -l so .bash_profile is sourced which loads intel/oneapi/setvars.sh
 # without having to do it in manually every step
@@ -18,11 +8,15 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-  Intel:
+  intel-build-and-test:
     runs-on: ubuntu-latest
     env:
       CC: icc
       FC: ifort
+      CXX: icpc
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
 
     steps:
 
@@ -38,77 +32,29 @@ jobs:
         sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-mpi-devel intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
         echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
       
-    - name: checkout-bacio
-      uses: actions/checkout@v2
-      with:
-        repository: NOAA-EMC/NCEPLIBS-bacio
-        path: bacio
-        ref: develop
-
-    - name: build-bacio
-      run: |
-        cd bacio
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
-        make -j2
-        make install
-        
-    - name: checkout-w3emc
-      uses: actions/checkout@v2
-      with:
-        repository: NOAA-EMC/NCEPLIBS-w3emc
-        path: w3emc
-        ref: develop
-
-    - name: build-w3emc
-      run: |
-        cd w3emc
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc
-        make -j2
-        make install
-        
-    - name: cache-jasper
-      id: cache-jasper
-      uses: actions/cache@v2
-      with:
-        path: ~/jasper
-        key: jasper-intel-ubuntu-latest-3.0.5
-
     - name: checkout-jasper
-      if: steps.cache-jasper.outputs.cache-hit != 'true'
       uses: actions/checkout@v2
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-3.0.5
+        ref: version-2.0.25
+
+    - name: cache-jasper
+      id: cache-jasper
+      uses: actions/cache@v2
+      with:
+        path: ~/Jasper
+        key: jasper-intel-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
       run: |
         cd jasper
         mkdir build-jasper && cd build-jasper
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
         make -j2
         make install
 
-    - name: checkout-g2c
-      uses: actions/checkout@v2
-      with:
-        repository: NOAA-EMC/NCEPLIBS-g2c
-        path: g2c
-        ref: develop
-
-    - name: build-g2c
-      run: |
-        cd g2c
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_PREFIX_PATH=~/jasper -DCMAKE_INSTALL_PREFIX=~/g2c
-        make -j2
-        make install
     - name: checkout
       uses: actions/checkout@v2
       with: 
@@ -119,10 +65,10 @@ jobs:
         cd g2
         mkdir build 
         cd build
-        cmake .. -DOPENMP=ON -DJasper_ROOT=~/jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc;~/g2c"
-        make -j2 VERBOSE=1
+        cmake .. -DOPENMP=ON -DJasper_ROOT=~/Jasper
+        make -j2
     
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose --output-on-failure --rerun-failed
+        ctest --verbose
