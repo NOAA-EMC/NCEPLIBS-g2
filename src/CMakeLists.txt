@@ -12,7 +12,7 @@ gettemplates.f gf_free.f gf_getfld.f gf_unpack1.f gf_unpack2.f
 gf_unpack3.f gf_unpack4.f gf_unpack5.f gf_unpack6.f gf_unpack7.f
 gribcreate.f gribend.f gribinfo.f gribmod.f gridtemplates.f intmath.f
 ixgb2.f jpcpack.f jpcunpack.f misspack.f mkieee.f pack_gp.f
-params_ecmwf.f params.f pdstemplates.f pngpack.f pngunpack.f putgb2.f
+params_ecmwf.f params.f pdstemplates.F90 pngpack.f pngunpack.f putgb2.f
 rdieee.f realloc.f reduce.f simpack.f simunpack.f skgb.f specpack.f
 specunpack.f )
 
