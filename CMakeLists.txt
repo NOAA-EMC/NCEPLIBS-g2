@@ -47,8 +47,15 @@ option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
 
-find_package(Jasper REQUIRED)
+# There was a bug in jasper for the intel compiler that was fixed in
+# 2.0.25.
+find_package(Jasper 2.0.25 REQUIRED)
 find_package(PNG REQUIRED)
+find_package(bacio REQUIRED)
+if(bacio_VERSION LESS 2.5.0)
+  add_library(bacio::bacio ALIAS bacio::bacio_4)
+endif()
+find_package(w3emc 2.9.0 REQUIRED)
 
 # Figure whether user wants a _4, a _d, or both libraries.
 if(BUILD_4 AND BUILD_D)
