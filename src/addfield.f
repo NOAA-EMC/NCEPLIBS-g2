@@ -85,9 +85,9 @@
 !>
 !>    @author Stephen Gilbert @date 2000-05-02
 !>
-      subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen,
-     & coordlist,numcoord,idrsnum,idrstmpl,
-     & idrstmplen,fld,ngrdpts,ibmap,bmap,ierr)
+      subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
+           coordlist,numcoord,idrsnum,idrstmpl, &
+           idrstmplen,fld,ngrdpts,ibmap,bmap,ierr)
       use pdstemplates
       use drstemplates
       logical :: match
@@ -128,8 +128,7 @@
       enddo
       if ( .not. match ) then
         print *,'addfield: GRIB not found in given message.'
-        print *,'addfield: Call to routine gribcreate required',
-     & ' to initialize GRIB messge.'
+        print *,'addfield: Call to routine gribcreate required to initialize GRIB messge.'
         ierr=1
         return
       endif
