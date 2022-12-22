@@ -1,51 +1,49 @@
-name: Intel
+name: Linux_versions
 on:
   push:
     branches:
     - develop
-    paths-ignore:
-    - README.md
   pull_request:
     branches:
     - develop
-    paths-ignore:
-    - README.md
-
-# Use custom shell with -l so .bash_profile is sourced which loads intel/oneapi/setvars.sh
-# without having to do it in manually every step
-defaults:
-  run:
-    shell: bash -leo pipefail {0}
 
 jobs:
-  Intel:
+  Linux_versions:
     runs-on: ubuntu-latest
     env:
-      CC: icc
-      FC: ifort
+      FC: gfortran
+      CC: gcc
+      LD_LIBRARY_PATH: /home/runner/jasper/lib
+    strategy:
+      matrix:
+        jasper-version: [2.0.33, 3.0.5]
+        bacio-version: [2.4.1, 2.5.0]
+        w3emc-version: [2.9.2, 2.9.3]
 
     steps:
 
-    # See https://software.intel.com/content/www/us/en/develop/articles/oneapi-repo-instructions.html
-    - name: install-intel
+    - name: install-dependencies
       run: |
-        cd /tmp
-        wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
         sudo apt-get update
-        sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-mpi-devel intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
-        echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
-      
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev
+
+    - name: cache-bacio
+      id: cache-bacio
+      uses: actions/cache@v2
+      with:
+        path: ~/bacio
+        key: bacio-${{ runner.os }}-${{ matrix.bacio-version }}
+        
     - name: checkout-bacio
+      if: steps.cache-bacio.outputs.cache-hit != 'true'
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
         path: bacio
-        ref: develop
+        ref: v${{ matrix.bacio-version }}
 
     - name: build-bacio
+      if: steps.cache-bacio.outputs.cache-hit != 'true'
       run: |
         cd bacio
         mkdir build
@@ -54,14 +52,23 @@ jobs:
         make -j2
         make install
         
+    - name: cache-w3emc
+      id: cache-w3emc
+      uses: actions/cache@v2
+      with:
+        path: ~/w3emc
+        key: w3emc-${{ runner.os }}-${{ matrix.w3emc-version }}-${{ matrix.bacio-version }}
+        
     - name: checkout-w3emc
+      if: steps.cache-w3emc.outputs.cache-hit != 'true'
       uses: actions/checkout@v2
       with:
         repository: NOAA-EMC/NCEPLIBS-w3emc
         path: w3emc
-        ref: develop
+        ref: v${{ matrix.w3emc-version }}
 
     - name: build-w3emc
+      if: steps.cache-w3emc.outputs.cache-hit != 'true'
       run: |
         cd w3emc
         mkdir build
@@ -75,7 +82,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/jasper
-        key: jasper-intel-ubuntu-latest-3.0.5
+        key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
 
     - name: checkout-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
@@ -83,7 +90,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-3.0.5
+        ref: version-${{ matrix.jasper-version }}
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
@@ -106,23 +113,27 @@ jobs:
         cd g2c
         mkdir build
         cd build
-        cmake .. -DCMAKE_PREFIX_PATH=~/jasper -DCMAKE_INSTALL_PREFIX=~/g2c
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/jasper 
         make -j2
         make install
+        
     - name: checkout
       uses: actions/checkout@v2
-      with: 
+      with:
         path: g2
 
-    - name: build
+    - name:  ${{ matrix.config.name }}
       run: |
+        set -x
         cd g2
-        mkdir build 
+        mkdir build
         cd build
-        cmake .. -DOPENMP=ON -DJasper_ROOT=~/jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc;~/g2c"
+        cmake -DJasper_ROOT=~/jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DLOGGING=ON -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
-    
+
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose --output-on-failure --rerun-failed
+        ctest --verbose --rerun-failed --output-on-failure
+
+
