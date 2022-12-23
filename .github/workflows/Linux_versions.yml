@@ -1,11 +1,5 @@
 name: Linux_versions
-on:
-  push:
-    branches:
-    - develop
-  pull_request:
-    branches:
-    - develop
+on: [push, pull_request]
 
 jobs:
   Linux_versions:
