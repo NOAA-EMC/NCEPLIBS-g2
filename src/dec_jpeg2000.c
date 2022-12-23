@@ -12,8 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "grib2_int.h"
 #include "jasper/jasper.h"
+#include "jpeg.h"
 
 /**
  * This Function decodes a JPEG2000 code stream specified in the
@@ -49,8 +49,6 @@ int_dec_jpeg2000(char *injpc, g2int bufsize, void *outfld, int out_is_g2int)
     char *opts = NULL;
     jas_matrix_t *data;
     int fmt;
-
-    LOG((3, "int_dec_jpeg2000 bufsize %ld out_is_g2int %d", bufsize, out_is_g2int));
 
     /* Initialize Jasper. */
 #ifdef JASPER3
@@ -158,7 +156,6 @@ int_dec_jpeg2000(char *injpc, g2int bufsize, void *outfld, int out_is_g2int)
  * the unpacked data.
  *
  * @return
- * - ::G2C_NOERROR No error.
  * - ::G2_JASPER_DECODE Error decode jpeg2000 code stream.
  * - ::G2_JASPER_DECODE_COLOR decoded image had multiple color
  *     components. Only grayscale is expected.
@@ -194,7 +191,7 @@ g2c_dec_jpeg2000(char *injpc, size_t bufsize, int *outfld)
  * @author Stephen Gilbert, Ed Hartnett 
  */
 int
-dec_jpeg2000(char *injpc, g2int bufsize, g2int *outfld)
+dec_jpeg2000_(char *injpc, g2int bufsize, g2int *outfld)
 {
     return int_dec_jpeg2000(injpc, bufsize, outfld, 1);
 }
