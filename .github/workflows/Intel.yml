@@ -97,7 +97,7 @@ jobs:
         cd g2
         mkdir build 
         cd build
-        cmake .. -DOPENMP=ON -DJasper_ROOT=~/Jasper
+        cmake -DOPENMP=ON -DCMAKE_PREFIX_PATH="~/Jasper;~/bacio;~/w3emc" ..
         make -j2
     
     - name: test
