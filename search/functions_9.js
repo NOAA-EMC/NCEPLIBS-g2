@@ -1,12 +1,9 @@
 var searchData=
 [
-  ['pack_5fgp_384',['pack_gp',['../pack__gp_8F90.html#a0b39972f65790b8c3b460f4f255481f6',1,'pack_gp.F90']]],
-  ['param_5fecmwf_5fg1_5fto_5fg2_385',['param_ecmwf_g1_to_g2',['../namespaceparams__ecmwf.html#a280642146d277203d5d4e05986b53d21',1,'params_ecmwf']]],
-  ['param_5fecmwf_5fg2_5fto_5fg1_386',['param_ecmwf_g2_to_g1',['../namespaceparams__ecmwf.html#a331c25475a7e70ef54e66b8166f26b62',1,'params_ecmwf']]],
-  ['param_5fg1_5fto_5fg2_387',['param_g1_to_g2',['../namespaceparams.html#a6f001cd8c3ceee37017a9c30decc0bfe',1,'params']]],
-  ['param_5fg2_5fto_5fg1_388',['param_g2_to_g1',['../namespaceparams.html#a4feba6e01ac1b6230216db2811ec6e2e',1,'params']]],
-  ['param_5fget_5fabbrev_389',['param_get_abbrev',['../namespaceparams.html#ae003618971409e5e11a0ac0e55331e19',1,'params']]],
-  ['pngpack_390',['pngpack',['../pngpack_8F90.html#a957229f31c0e2c9861bced05256d9bc3',1,'pngpack.F90']]],
-  ['pngunpack_391',['pngunpack',['../pngunpack_8F90.html#a6c975c7eb4bd5f8a7971420fe6fad457',1,'pngunpack.F90']]],
-  ['putgb2_392',['putgb2',['../putgb2_8F90.html#a9a81776bba301f9f8af1aa1e619d0428',1,'putgb2.F90']]]
+  ['rdieee_392',['rdieee',['../rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4',1,'rdieee.f']]],
+  ['readgrids_393',['readgrids',['../namespaceg2grids.html#a56a2c4fcd16e58123d22462da272f67e',1,'g2grids']]],
+  ['realloc_5fc1_394',['realloc_c1',['../interfacere__alloc_1_1realloc.html#a44232167301171dc055a61663f383034',1,'re_alloc::realloc::realloc_c1()'],['../namespacere__alloc.html#ab3dc5cdb5a5e8468aff46e582d19eb71',1,'re_alloc::realloc_c1()']]],
+  ['realloc_5fi_395',['realloc_i',['../interfacere__alloc_1_1realloc.html#a70808277979ee031cdf8e1653af2c4b0',1,'re_alloc::realloc::realloc_i()'],['../namespacere__alloc.html#aeb77f273ac94f2b319238e10a9369653',1,'re_alloc::realloc_i()']]],
+  ['realloc_5fr_396',['realloc_r',['../interfacere__alloc_1_1realloc.html#a3f5b60af2f8d423b72050e28d5383a32',1,'re_alloc::realloc::realloc_r()'],['../namespacere__alloc.html#a9e8746c3bfb9226f51446ef2b95f1c44',1,'re_alloc::realloc_r()']]],
+  ['reduce_397',['reduce',['../reduce_8f.html#ad456b2773d1653cfcc57fea7204c4251',1,'reduce.f']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['discipline_414',['discipline',['../namespacegrib__mod.html#a7764268e560163f975be2be2f65ee847',1,'grib_mod::gribfield']]]
+  ['expanded_414',['expanded',['../namespacegrib__mod.html#a47c4a539f37aa7735efd6de7bed7b7f7',1,'grib_mod::gribfield']]]
 ];
