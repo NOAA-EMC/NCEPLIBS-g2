@@ -1,13 +1,20 @@
-name: GCC Build, docs, test coverage
+# This is a GitHub actions workflow for NCEPLIBS-g2.
+#
+# This builds the devleper branch with checking.
+#
+# Ed Hartnett, 12/22/22
+name: developer 
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  developer:
+    runs-on: ubuntu-latest
     env:
       FC: gfortran
       CC: gcc
-      CXX: g++
+
+    strategy:
+      fail-fast: true
 
     steps:
 
@@ -32,7 +39,7 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
         make -j2
         make install
-
+        
     - name: checkout-w3emc
       uses: actions/checkout@v2
       with:
@@ -49,19 +56,20 @@ jobs:
         make -j2
         make install
         
-    - name: checkout-jasper
-      uses: actions/checkout@v2
-      with:
-        repository: jasper-software/jasper
-        path: jasper
-        ref: version-2.0.25
-
     - name: cache-jasper
       id: cache-jasper
       uses: actions/cache@v2
       with:
         path: ~/Jasper
-        key: jasper-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
+        key: jasper-${{ runner.os }}-3.0.3
+
+    - name: checkout-jasper
+      if: steps.cache-jasper.outputs.cache-hit != 'true'    
+      uses: actions/checkout@v2
+      with:
+        repository: jasper-software/jasper
+        path: jasper
+        ref: version-3.0.3
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
@@ -77,22 +85,27 @@ jobs:
       with:
         path: g2
 
-    - name: build
+    - name:  build
       run: |
+        set -x
         cd g2
         mkdir build
+        doxygen --version
         cd build
-        cmake -DCMAKE_PREFIX_PATH="~/Jasper;~/bacio;~/w3emc" ..
-        make -j2
+        cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"  -DCMAKE_BUILD_TYPE=Debug 
+        make -j2 VERBOSE=1
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose
-        gcovr -r .. -v  --html-details -o test-coverage.html
+        ctest --verbose --output-on-failure --rerun-failed
+        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
 
     - name: upload-test-coverage
       uses: actions/upload-artifact@v2
       with:
         name: g2-test-coverage
-        path: g2/build/*.html
+        path: |
+          g2/build/*.html
+          g2/build/*.css
+

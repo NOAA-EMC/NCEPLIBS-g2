@@ -1,8 +1,9 @@
 # This is the main CMake file for NCEPLIBS-g2.
 #
-# Mark Potts, Kyle Gerheiser
+# Mark Potts, Kyle Gerheiser, Ed Hartnett
 cmake_minimum_required(VERSION 3.15)
 
+# Read the current version number from file VERSION.
 file(STRINGS "VERSION" pVersion)
 
 project(
@@ -12,6 +13,7 @@ project(
 
 include(GNUInstallDirs)
 
+# Handle build type.
 if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
   message(STATUS "Setting build type to 'Release' as none was specified.")
   set(CMAKE_BUILD_TYPE
@@ -21,18 +23,61 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
     "MinSizeRel" "RelWithDebInfo")
 endif()
 
-find_package(Jasper REQUIRED)
-find_package(PNG REQUIRED)
+# Set flags.
+if(CMAKE_C_COMPILER_ID MATCHES "^(Intel)$")
+  set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
+  set(CMAKE_C_FLAGS_RELEASE "-O3")
+  set(CMAKE_Fortran_FLAGS "-g -assume noold_ldout_format ${CMAKE_Fortran_FLAGS}")
+  set(fortran_d_flags "-r8")
+elseif(CMAKE_C_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
+  set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
+  set(CMAKE_C_FLAGS_DEBUG "-ggdb -Wall")
+  set(CMAKE_Fortran_FLAGS "-g -fno-range-check -funroll-loops ${CMAKE_Fortran_FLAGS}")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-ggdb -Wall")
+  set(fortran_d_flags "-fdefault-real-8")
+endif()
 
+# The GNU compilers (after version 10) require the -fallow-argument-mismatch flag.
+if(${CMAKE_Fortran_COMPILER_ID} MATCHES "^(GNU)$" AND ${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -w -fallow-argument-mismatch")
+endif()
+
+# Handle user build options.
+option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+option(BUILD_4 "Build libg2_4.a" ON)
+option(BUILD_D "Build libg2_d.a" ON)
+
+# There was a bug in jasper for the intel compiler that was fixed in
+# 2.0.25.
+find_package(Jasper 2.0.25 REQUIRED)
+find_package(PNG REQUIRED)
+find_package(bacio REQUIRED)
+if(bacio_VERSION LESS 2.5.0)
+  add_library(bacio::bacio ALIAS bacio::bacio_4)
+endif()
+find_package(w3emc 2.9.0 REQUIRED)
+
+# Figure whether user wants a _4, a _d, or both libraries.
+if(BUILD_4 AND BUILD_D)
+  set(kinds "4" "d")
+elseif(BUILD_4 AND NOT BUILD_D)
+  set(kinds "4")
+elseif(BUILD_D AND NOT BUILD_4)
+  set(kinds "d")
+else()
+  message(FATAL_ERROR "At least one of BUILD_4 or BUILD_D must be turned on")
+endif()
+
+# Build the code in the source directory.
 add_subdirectory(src)
 
+# Unit testing.
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
 # Determine whether or not to generate documentation.
-option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
 if(ENABLE_DOCS)
   find_package(Doxygen REQUIRED)
 endif()

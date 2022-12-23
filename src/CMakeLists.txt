@@ -1,5 +1,27 @@
 
-include("list_of_files.cmake")
+# This is the CMake file for the src directory of the NCEPLIBS-g2 project.
+#
+# Mark Potts, Kyle Gerheiser, Ed Hartnett
+
+# These are the fortran source files.
+set(fortran_src addfield.f addgrid.f addlocal.f cmplxpack.f compack.f
+comunpack.f drstemplates.f g2_gbytesc.f g2grids.f gb_info.f gdt2gds.f
+getdim.f getfield.F90 getg2i.f getg2ir.f getgb2.f getgb2l.f getgb2p.f
+getgb2r.f getgb2rp.f getgb2s.f getidx.f getlocal.f getpoly.f
+gettemplates.f gf_free.f gf_getfld.F90 gf_unpack1.f gf_unpack2.f
+gf_unpack3.F90 gf_unpack4.f gf_unpack5.f gf_unpack6.f gf_unpack7.f
+gribcreate.f gribend.f gribinfo.f ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.f intmath.f
+ixgb2.f jpcpack.f jpcunpack.f misspack.f mkieee.f pack_gp.f
+params_ecmwf.f params.f pdstemplates.F90 pngpack.f pngunpack.f putgb2.f
+rdieee.f realloc.f reduce.f simpack.f simunpack.f skgb.f specpack.f
+specunpack.f )
+
+# These are the C source files.
+set(c_src dec_jpeg2000.c dec_png.c enc_jpeg2000.c enc_png.c mova2i.c )
+
+# Create this fortran file, which has the contents of the VERSION file
+# substituted in.
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gribmod.F90.in" "${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90" @ONLY)
 
 add_compile_definitions(__64BIT__)
 if(APPLE)
