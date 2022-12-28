@@ -6,10 +6,8 @@ cmake_minimum_required(VERSION 3.15)
 # Read the current version number from file VERSION.
 file(STRINGS "VERSION" pVersion)
 
-project(
-  g2
-  VERSION ${pVersion}
-  LANGUAGES C Fortran)
+project(g2 VERSION ${pVersion} LANGUAGES C Fortran)
+set(lib_name ${PROJECT_NAME})
 
 include(GNUInstallDirs)
 

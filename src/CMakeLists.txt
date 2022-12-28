@@ -69,6 +69,22 @@ foreach(kind ${kinds})
     $<INSTALL_INTERFACE:include_${kind}>)
   list(APPEND LIB_TARGETS ${lib_name})
 
+  # Build with Jasper.
+  if(JASPER_FOUND)
+    message(STATUS "Found JASPER:")
+    message(STATUS "      JASPER include directories ${JASPER_INCLUDE_DIR}")
+    message(STATUS "      JASPER libraries ${JASPER_LIBRARIES} version ${JASPER_VERSION}")
+    target_sources(${lib_name} PRIVATE dec_jpeg2000.c enc_jpeg2000.c)
+    target_compile_definitions(${lib_name} PRIVATE USE_JPEG2000)
+    target_include_directories(${lib_name} PRIVATE "${JASPER_INCLUDE_DIR}")
+    set(G2_JPEG2000_ENABLED ON)
+    if(JASPER_VERSION_STRING VERSION_GREATER_EQUAL "3")
+      message(STATUS "      JASPER is version 3.0 or greater")
+      add_definitions(-DJASPER3)
+    endif()
+    add_definitions(-DJPEG)
+  endif()
+
   install(DIRECTORY ${module_dir} DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 endforeach()
