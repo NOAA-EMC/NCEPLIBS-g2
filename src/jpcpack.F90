@@ -48,7 +48,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
        character(kind = c_char), intent(in) :: cin(*)       
        integer(c_int), value, intent(in) :: width, height, nbits, ltype, ratio, retry
        character(kind = c_char), intent(inout) :: outjpc(*)
-       integer(c_int), intent(inout) :: jpclen
+       integer(c_size_t), value, intent(in) :: jpclen
        integer(c_int) :: enc_jpeg2000
      end function enc_jpeg2000
   end interface
@@ -56,6 +56,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   real(4) :: ref,rmin4
   real(8) :: rmin,rmax
   integer(4) :: iref
+  integer(8) :: nsize
   integer :: ifld(width*height),retry
   integer,parameter :: zero=0
   character(len=1),allocatable :: ctemp(:)

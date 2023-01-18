@@ -7,7 +7,7 @@ program test_jpcpack
     implicit none
 
     integer, parameter :: width = 2, height = 2, ndpts = 4
-    real, parameter :: delta = 0.1
+    real, parameter :: delta = 0.2
     real :: fld(ndpts)
     real :: fld2(ndpts)
     integer :: idrstmpl(7)
@@ -17,6 +17,7 @@ program test_jpcpack
 
     ! Create the fld variable with data to pack.
     fld = (/1.1, 2.2, 3.3, 4.4/)
+    fld2 = (/0, 0, 0, 0/)
 
     idrstmpl(1) = 0
     idrstmpl(2) = 1
