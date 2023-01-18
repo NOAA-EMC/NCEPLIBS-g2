@@ -10,7 +10,7 @@ jobs:
       LD_LIBRARY_PATH: /home/runner/jasper/lib
     strategy:
       matrix:
-        jasper-version: [2.0.33, 3.0.5]
+        jasper-version: [2.0.33, 3.0.5, 4.0.0]
         bacio-version: [2.4.1, 2.5.0]
         w3emc-version: [2.9.2, 2.9.3]
 
@@ -122,7 +122,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DJasper_ROOT=~/jasper -DCMAKE_PREFIX_PATH="~/g2c;~/bacio;~/w3emc" -DLOGGING=ON -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DCMAKE_PREFIX_PATH="~/jasper;~/g2c;~/bacio;~/w3emc" -DLOGGING=ON -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
 
     - name: test

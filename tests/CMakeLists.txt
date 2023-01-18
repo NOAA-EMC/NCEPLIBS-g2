@@ -43,7 +43,7 @@ foreach(kind ${kinds})
 #  create_test(test_gribcreate ${kind})
   create_test(test_getfield ${kind})
   create_test(test_pngpack ${kind})
-#  create_test(test_jpcpack ${kind})
+  create_test(test_jpcpack ${kind})
 endforeach()
 
 # add_executable(test_g2 test_g2.f90)

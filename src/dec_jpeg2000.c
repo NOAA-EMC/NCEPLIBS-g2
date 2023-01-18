@@ -191,7 +191,7 @@ g2c_dec_jpeg2000(char *injpc, size_t bufsize, int *outfld)
  * @author Stephen Gilbert, Ed Hartnett 
  */
 int
-dec_jpeg2000_(char *injpc, g2int bufsize, g2int *outfld)
+dec_jpeg2000(char *injpc, g2int bufsize, g2int *outfld)
 {
     return int_dec_jpeg2000(injpc, bufsize, outfld, 1);
 }
