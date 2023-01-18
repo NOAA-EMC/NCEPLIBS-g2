@@ -24,6 +24,6 @@ typedef float g2float;
 /** Name of JPEG codec in Jasper. */
 #define G2C_JASPER_JPEG_FORMAT_NAME "jpc"
 
-int enc_jpeg2000_(unsigned char *cin, g2int width, g2int height, g2int nbits,
-                  g2int ltype, g2int ratio, g2int retry, char *outjpc,
-                  g2int jpclen);
+/* int enc_jpeg2000_(unsigned char *cin, g2int width, g2int height, g2int nbits, */
+/*                   g2int ltype, g2int ratio, g2int retry, char *outjpc, */
+/*                   g2int jpclen); */
