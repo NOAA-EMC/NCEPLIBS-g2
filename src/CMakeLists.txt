@@ -10,14 +10,15 @@ getdim.f getfield.F90 getg2i.f getg2ir.f getgb2.f getgb2l.f getgb2p.f
 getgb2r.f getgb2rp.f getgb2s.f getidx.f getlocal.f getpoly.f
 gettemplates.f gf_free.f gf_getfld.F90 gf_unpack1.f gf_unpack2.f
 gf_unpack3.F90 gf_unpack4.f gf_unpack5.f gf_unpack6.f gf_unpack7.f
-gribcreate.f gribend.f gribinfo.f ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.f intmath.f
-ixgb2.f jpcpack.f jpcunpack.f misspack.f mkieee.f pack_gp.f
-params_ecmwf.f params.f pdstemplates.F90 pngpack.f pngunpack.f putgb2.f
-rdieee.f realloc.f reduce.f simpack.f simunpack.f skgb.f specpack.f
-specunpack.f )
+gribcreate.f gribend.f gribinfo.f
+${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.f intmath.f
+ixgb2.f jpcpack.F90 jpcunpack.F90 misspack.f mkieee.f pack_gp.f
+params_ecmwf.f params.f pdstemplates.F90 pngpack.f pngunpack.f
+putgb2.f rdieee.f realloc.f reduce.f simpack.f simunpack.f skgb.f
+specpack.f specunpack.f)
 
 # These are the C source files.
-set(c_src dec_jpeg2000.c dec_png.c enc_jpeg2000.c enc_png.c mova2i.c )
+set(c_src dec_jpeg2000.c dec_png.c enc_jpeg2000.c enc_png.c mova2i.c)
 
 # Create this fortran file, which has the contents of the VERSION file
 # substituted in.
@@ -58,6 +59,11 @@ foreach(kind ${kinds})
   set_target_properties(${lib_name}_f PROPERTIES Fortran_MODULE_DIRECTORY
     ${module_dir})
 
+  # Set preprocessor define so code can know what kind of library is
+  # being built.
+  target_compile_definitions(${lib_name}_f PUBLIC KIND=${kind})
+
+  # Build the C code.
   add_library(${lib_name}_c OBJECT ${c_src})
   target_include_directories(${lib_name}_c PRIVATE ${JASPER_INCLUDE_DIR})
   target_link_libraries(${lib_name}_c PRIVATE PNG::PNG)

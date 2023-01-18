@@ -15,7 +15,7 @@ program test_jpcpack
     integer :: lcpack = 200
     integer :: ii
 
-    ! Create the fld variable with data to pack
+    ! Create the fld variable with data to pack.
     fld = (/1.1, 2.2, 3.3, 4.4/)
 
     idrstmpl(1) = 0
@@ -26,10 +26,11 @@ program test_jpcpack
     idrstmpl(6) = 0
     idrstmpl(7) = 1
 
-    ! Testing jpcpack
+    ! Pack the data.
     call jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
     print *, 'lcpack: ', lcpack
-    ! Testing jpcunpack
+    
+    ! Unpack the data.
     call jpcunpack(cpack, lcpack, idrstmpl, ndpts, fld2)
 
     ! Compare each value to see match, remember, comparing reals
