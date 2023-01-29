@@ -1,15 +1,16 @@
+# This is a GitHub actions workflow for the NCEPLIBS-g2 project.
+#
+# This test runs a developer build.
+#
+# Ed Hartnett Jan, 2023
 name: developer 
 on:
   push:
     branches:
     - develop
-    paths-ignore:
-    - README.md
   pull_request:
     branches:
     - develop
-    paths-ignore:
-    - README.md
 
 jobs:
   developer:
