@@ -14,6 +14,8 @@ Documentation](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/). For
 the WMO GRIB2 templates and tables see [WMO Information Management
 GRIB2 GitHub repository](https://github.com/wmo-im/GRIB2).
 
+To submit bug reports, feature requests, or other code-related issues including installation and usage questions, please create a [GitHub issue](https://github.com/NOAA-EMC/NCEPLIBS-g2/issues). For general NCEPLIBS inquiries, contact [Ed Hartnett](mailto:edward.hartnett@noaa.gov) (secondary point of contact [Alex Richert](mailto:alexander.richert@noaa.gov)).
+
 ## Related NCEPLIBS Projects
 
 Repository | Notes
@@ -36,7 +38,7 @@ The NCEPLIBS-g2 library is used by:
 
 Stephen Gilbert, Mark Iredell, Boi Vuong, other NCEP/EMC Developers
 
-Code Manager : Hang Lei, Edward Hartnett
+Code Manager : [Hang Lei](mailto:hang.lei@noaa.gov), [Edward Hartnett](mailto:edward.hartnett@noaa.gov)
 
 ## Prerequisites
 
