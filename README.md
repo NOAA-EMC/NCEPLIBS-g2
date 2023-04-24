@@ -38,7 +38,7 @@ The NCEPLIBS-g2 library is used by:
 
 Stephen Gilbert, Mark Iredell, Boi Vuong, other NCEP/EMC Developers
 
-Code Manager : [Hang Lei](mailto:hang.lei@noaa.gov), [Edward Hartnett](mailto:edward.hartnett@noaa.gov)
+Code Manager : [Hang Lei](mailto:hang.lei@noaa.gov), [Ed Hartnett](mailto:edward.hartnett@noaa.gov)
 
 ## Prerequisites
 
