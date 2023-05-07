@@ -1,54 +1,54 @@
-!> @file
-!> @brief Convert grid information from a GRIB2 grid
-!> to GRIB1 GDS info.
-!> @author Stephen Gilbert @date 2003-06-17
+C> @file
+C> @brief Convert grid information from a GRIB2 grid
+C> to GRIB1 GDS info.
+C> @author Stephen Gilbert @date 2003-06-17
 
-!> Convert grid information from a GRIB2 Grid Description Section as
-!> well as its Grid Definition Template to GRIB1 GDS info.
-!>
-!> In addition, a check is made to determine if the grid is a NCEP
-!> predefined grid.
-!>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2003-06-17 | Stephen Gilbert | Initial
-!> 2004-04-27 | Stephen Gilbert | Added support for gaussian grids.
-!> 2007-04-16 | Boi Vuong | Added Curvilinear Orthogonal grids.
-!> 2007-05-29 | Boi Vuong | Added Rotate Lat/Lon E-grid (203).
-!>
-!> @param[in] igds Contains information read from the appropriate GRIB
-!> Grid Definition Section 3 for the field being returned. Must be
-!> dimensioned >= 5.
-!> - igds(1) Source of grid definition See [GRIB2 - CODE TABLE 3.0 -
-!> - Source of Grid
-!> - Definition](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml).
-!> - igds(2) Number of grid points in the defined grid.
-!> - igds(3) Number of octets needed for each additional grid points
-!> definition. Used to define number of points in each row (or
-!> column) for non-regular grids. = 0, if using regular grid.
-!> - igds(4) Interpretation of list for optional point definition. See
-!> [GRIB2 - TABLE 3.11 - Interpretation of list of numbers at end of
-!> section
-!> 3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml).
-!> - igds(5) Grid Definition Template Number See [GRIB2 - TABLE 3.1 -
-!>   Grid Definition Template
-!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml).
-!> @param[in] igdstmpl Grid Definition Template values.
-!> @param[in] idefnum The number of entries in array ideflist.
-!> i.e. number of rows (or columns) for which optional grid points are
-!> defined.
-!> @param[in] ideflist Optional integer array containing the number of
-!> grid points contained in each row (or column).
-!> @param[out] kgds GRIB1 GDS as described in [NCEPLIBS-w3emc w3fi63()
-!> function](https://noaa-emc.github.io/NCEPLIBS-w3emc/w3fi63_8f.html).
-!> @param[out] igrid NCEP predefined GRIB1 grid number. Set to 255, if
-!> not an NCEP grid.
-!> @param[out] iret Error return value:
-!> - 0 No error.
-!> - 1 Unrecognized GRIB2 GDT number.
-!>
-!> @author Stephen Gilbert @date 2003-06-17
+C> Convert grid information from a GRIB2 Grid Description Section as
+C> well as its Grid Definition Template to GRIB1 GDS info.
+C>
+C> In addition, a check is made to determine if the grid is a NCEP
+C> predefined grid.
+C>
+C> ### Program History Log
+C> Date | Programmer | Comments
+C> -----|------------|---------
+C> 2003-06-17 | Stephen Gilbert | Initial
+C> 2004-04-27 | Stephen Gilbert | Added support for gaussian grids.
+C> 2007-04-16 | Boi Vuong | Added Curvilinear Orthogonal grids.
+C> 2007-05-29 | Boi Vuong | Added Rotate Lat/Lon E-grid (203).
+C>
+C> @param[in] igds Contains information read from the appropriate GRIB
+C> Grid Definition Section 3 for the field being returned. Must be
+C> dimensioned >= 5.
+C> - igds(1) Source of grid definition See [GRIB2 - CODE TABLE 3.0 -
+C> - Source of Grid
+C> - Definition](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml).
+C> - igds(2) Number of grid points in the defined grid.
+C> - igds(3) Number of octets needed for each additional grid points
+C> definition. Used to define number of points in each row (or
+C> column) for non-regular grids. = 0, if using regular grid.
+C> - igds(4) Interpretation of list for optional point definition. See
+C> [GRIB2 - TABLE 3.11 - Interpretation of list of numbers at end of
+C> section
+C> 3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml).
+C> - igds(5) Grid Definition Template Number See [GRIB2 - TABLE 3.1 -
+C>   Grid Definition Template
+C>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml).
+C> @param[in] igdstmpl Grid Definition Template values.
+C> @param[in] idefnum The number of entries in array ideflist.
+C> i.e. number of rows (or columns) for which optional grid points are
+C> defined.
+C> @param[in] ideflist Optional integer array containing the number of
+C> grid points contained in each row (or column).
+C> @param[out] kgds GRIB1 GDS as described in [NCEPLIBS-w3emc w3fi63()
+C> function](https://noaa-emc.github.io/NCEPLIBS-w3emc/w3fi63_8f.html).
+C> @param[out] igrid NCEP predefined GRIB1 grid number. Set to 255, if
+C> not an NCEP grid.
+C> @param[out] iret Error return value:
+C> - 0 No error.
+C> - 1 Unrecognized GRIB2 GDT number.
+C>
+C> @author Stephen Gilbert @date 2003-06-17
         subroutine gdt2gds(igds,igdstmpl,idefnum,ideflist,kgds,
      &                     igrid,iret)
 

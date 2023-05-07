@@ -15,19 +15,6 @@
   typedef long g2int; /**< Long Integer type. */
 #endif
 
-#if defined CRAY90
-   #include <fortran.h>
-   #define SUB_NAME DEC_PNG
-#elif defined LINUXF90
-   #define SUB_NAME DEC_PNG
-#elif defined LINUXG95
-   #define SUB_NAME dec_png__
-#elif defined HP || defined AIX
-   #define SUB_NAME dec_png
-#elif defined SGI || defined LINUX || defined VPP5000 || defined APPLE
-   #define SUB_NAME dec_png_
-#endif
-
 /**
  * location to write PNG stream
 */
@@ -75,7 +62,7 @@ user_read_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
  *
  * @author Stephen Gilbert
 */
-int SUB_NAME(unsigned char *pngbuf,g2int *width,g2int *height,char *cout)
+int dec_png_(unsigned char *pngbuf,g2int *width,g2int *height,char *cout)
 {
     int interlace,color,compres,filter,bit_depth;
     g2int j,k,n,bytes,clen;
