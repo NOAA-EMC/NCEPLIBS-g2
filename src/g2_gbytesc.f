@@ -13,7 +13,7 @@
 !> @param[in] in Array input.
 !> @param[out] iout Unpacked array output.
 !> @param[in] iskip Initial number of bits to skip.
-!> @param[in] nbits Number of bits of each integer in IN to take.
+!> @param[in] nbyte Number of bits of each integer in IN to take.
 !>
 !> @author Stephen Gilbert @date 2004-04-27
       SUBROUTINE G2_GBYTEC(IN,IOUT,ISKIP,NBYTE)
