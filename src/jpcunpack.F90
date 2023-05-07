@@ -1,21 +1,21 @@
-!>    @file
-!>    @brief This subroutine unpacks a data field from a JPEG2000 code stream.
-!>    @author Stephen Gilbert @date 2002-12-17
-!>
+!> @file
+!> @brief Unpack a data field from a JPEG2000 code stream.
+!> @author Stephen Gilbert @date 2002-12-17
 
-!>    This subroutine unpacks a data field that was packed into a
-!>    JPEG2000 code stream using info from the GRIB2 Data Representation
-!>    Template 5.40 or 5.40000.
-!>    
-!>    @param[in] cpack The packed data field (character*1 array).
-!>    @param[in] len length of packed field cpack().
-!>    @param[in] idrstmpl Contains the array of values for Data
-!>    Representation Template 5.40 or 5.40000.
-!>    @param[in] ndpts The number of data values to unpack.
-!>    @param[out] fld Contains the unpacked data values.
-!>    
-!>    @author Stephen Gilbert @date 2002-12-17
+!> Unpack a data field from a JPEG2000 code stream.
 !>
+!> This subroutine unpacks a data field that was packed into a
+!> JPEG2000 code stream using info from the GRIB2 Data Representation
+!> Template 5.40 or 5.40000.
+!>
+!> @param[in] cpack The packed data field (character*1 array).
+!> @param[in] len length of packed field cpack().
+!> @param[in] idrstmpl Array of values for Data Representation
+!> Template 5.40 or 5.40000.
+!> @param[in] ndpts The number of data values to unpack.
+!> @param[out] fld Contains the unpacked data values.
+!>
+!> @author Stephen Gilbert @date 2002-12-17
       subroutine jpcunpack(cpack,len,idrstmpl,ndpts,fld)
 
       character(len=1),intent(in) :: cpack(len)

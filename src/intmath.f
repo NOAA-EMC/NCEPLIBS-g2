@@ -1,24 +1,24 @@
-!>    @file
-!>    @brief Define math functions used by other code.
-!>    @author Stephen Gilbert @date 2000-06-21
+!> @file
+!> @brief Define math functions used by compack(),
+!> simpack(), and misspack().
+!> @author Stephen Gilbert @date 2000-06-21
+
+!> @brief Define math functions used by compack(),
+!> simpack(), and misspack().
 !>
-
-!>    This module defines integer math functions used by other programs.
-!>    It include following functions:
-!>    - ilog2 Calculate log(x)/log(2).
-!>     - ilog2_8 for 8 bit integer numbers.
-!>     - ilog2_4 for 4 bit integer numbers.
-!>     - ilog2_2 for 2 bit integer numbers.
-!>     - ilog2_1 for 1 bit integer numbers.
-!>    - i1log2 Calculate log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2).
-!>     - i1log2_8 for 8 bit integer numbers.
-!>     - i1log2_4 for 4 bit integer numbers.
-!>     - i1log2_2 for 2 bit integer numbers.
-!>     - i1log2_1 for 1 bit integer numbers.
-!>    
-!>    @author Stephen Gilbert @date 2000-06-21
-!>    
-
+!> This module includes the following functions:
+!> - ilog2 Calculate log(x)/log(2).
+!>   - ilog2_8 for 8 bit integer numbers.
+!>   - ilog2_4 for 4 bit integer numbers.
+!>   - ilog2_2 for 2 bit integer numbers.
+!>   - ilog2_1 for 1 bit integer numbers.
+!> - i1log2 Calculate log(x+1)/log(2) unless x=maxint, in which case log(x)/log(2).
+!>   - i1log2_8 for 8 bit integer numbers.
+!>   - i1log2_4 for 4 bit integer numbers.
+!>   - i1log2_2 for 2 bit integer numbers.
+!>   - i1log2_1 for 1 bit integer numbers.
+!>
+!> @author Stephen Gilbert @date 2000-06-21
       module intmath
       implicit none
 

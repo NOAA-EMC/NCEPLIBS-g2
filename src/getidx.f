@@ -1,48 +1,46 @@
-C>    @file
-C>    @brief This subroutine finds, reads or generates a grib2 index for
-C>    the grib2 file associated with unit lugb.
-C>    @author Stephen Gilbert @date 2005-03-15
-C>
+!> @file
+!> @brief This subroutine finds, reads or generates a GRIB2 index for
+!> the GRIB2 file associated with unit lugb.
+!> @author Stephen Gilbert @date 2005-03-15
 
-C>    This subroutine finds, reads or generates a grib2 index for
-C>    the grib2 file associated with unit lugb. If the index already
-C>    exists, it is returned. otherwise, the index is (1) read from an
-C>    existing indexfile associated with unit LUGI. or (2) generated
-C>    from the grib2file LUGI. Users can force a regeneration of an
-C>    index. If LUGI equals LUGB, the index will be regenerated from 
-C>    the data in file LUGB. If LUGI is less than zero, then the index
-C>    is re read from index file abs(lugi).
-C>
-C>    PROGRAM HISTORY LOG:
-C>    - 2005-03-15 Stephen Gilbert Initial Programming
-C>    - 2009-07-09 Boi Vuong Fixed bug for checking (LUGB) unit index file
-C>    - 2016-03-29 Boi Vuong Restore original getidx.f from version
-C>    1.2.3 modified getidex to allow to open range of unit file number
-C>    up to 9999 added new parameters and new product definition
-C>    template numbers: 4.60, 4.61
-C>
-C>    @param[in] LUGB integer unit of the unblocked grib data file.
-C>    file must be opened with baopen or baopenr before calling
-C>    this routine.
-C>    @param[in] LUGI integer unit of the unblocked grib index file.
-C>    if nonzero, file must be opened with baopen baopenr before
-C>    calling this routine. (=0 to get index buffer from the grib file)
-C>    @param[out] CINDEX character*1 pointer to a buffer that contains
-C>    index records.
-C>    @param[out] NLEN integer total length of all index records
-C>    @param[out] NNUM integer number of index records
-C>    @param[out] IRET integer return code
-C>    - 0 all ok
-C>    - 90 unit number out of range
-C>    - 96 error reading/creating index file
-C>
-C>    @note allow file unit numbers in range 0 - 9999
-C>    the grib index will automatically generate the index file. 
-C>  
-C>    @author Stephen Gilbert @date 2005-03-15
-C>
-
-C-----------------------------------------------------------------------
+!> This subroutine finds, reads or generates a GRIB2 index for
+!> the GRIB2 file associated with unit lugb. If the index already
+!> exists, it is returned, otherwise, the index is (1) read from an
+!> existing indexfile associated with unit LUGI or (2) generated
+!> from the grib2file lugi.
+!>
+!> Users can force a regeneration of an index: if lugi equals lugb,
+!> the index will be regenerated from the data in file LUGB. If LUGI
+!> is less than zero, then the index is re read from index file
+!> abs(lugi).
+!>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2005-03-15 | Stephen Gilbert | Initial Programming
+!> 2009-07-09 | Boi Vuong | Fixed bug for checking (LUGB) unit index file
+!> 2016-03-29 | Boi Vuong | Restore getidx.f from 1.2.3; file num up to 9999; added templates: 4.60, 4.61
+!>
+!> @param[in] lugb integer unit of the unblocked GRIB2 data file.
+!> File must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
+!> this routine.
+!> @param[in] lugi integer unit of the unblocked GRIB2 index file.
+!> If nonzero, file must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before
+!> calling this routine. Set to 0 to get index buffer from the grib file.
+!> @param[out] cindex character*1 pointer to a buffer that will get
+!> index records.
+!> @param[out] nlen integer total length of all index records
+!> @param[out] nnum integer number of index records
+!> @param[out] iret integer return code
+!> - 0 No error.
+!> - 90 Unit number out of range.
+!> - 96 Error reading/creating index file.
+!>
+!> @note Allow file unit numbers in range 0 - 9999.
+!>
+!> @author Stephen Gilbert @date 2005-03-15
       SUBROUTINE GETIDX(LUGB,LUGI,CINDEX,NLEN,NNUM,IRET)
 
       INTEGER,INTENT(IN) :: LUGB,LUGI

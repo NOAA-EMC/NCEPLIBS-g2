@@ -1,154 +1,142 @@
-C>    @file
-C>    @brief This subroutine determines groups of variable size.
-C>    @author Harry Glahn @date 1994-02-01
-C>
+!> @file
+!> @brief This subroutine determines groups of variable size.
+!> @author Harry Glahn @date 1994-02-01
+!>
 
-C>    This subroutine determines groups of variable size, but at least
-C>    of size minpk, the associated max(JMAX) and min(JMIN), the number
-C>    of bits necessary to hold the values in each group LBIT, the
-C>    number of values in each group NOV, the number of bits necessary
-C>    to pack the JMIN values IBIT, the number of bits necessary to pack
-C>    the LBIT values JBIT, and the number of bits necessary to pack the
-C>    NOV values KBIT. The routine is designed to determine the groups
-C>    such that a small number of bits is necessary to pack the data
-C>    without excessive computations. If all values in the group are
-C>    zero, the number of bits to use in packing is defined as zero when
-C>    there can be no missing values; when there can be missing values,
-C>    the number of bits must be at least 1 to have the capability to
-C>    recognize the missing value. However, if all values in a group are
-C>    missing, the number of bits needed is 0, and the unpacker recognizes
-C>    this. All variables are integer. even though the groups are
-C>    initially of size minpk or larger, an adjustment between two groups
-C>    (the lookback procedure) may make a group smaller than minpk. The
-C>    control on group size is that the sum of the sizes of the two
-C>    consecutive groups, each of size minpk or larger, is not decreased.
-C>    When determining the number of bits necessary for packing, the
-C>    largest value that can be accommodated in, say mbits is 2**mbits-1
-C>    this largest value (and the next smallest value) is reserved for
-C>    the missing value indicator (only) when is523 ne 0. If the
-C>    dimension NDG is not large enough to hold all the groups, the
-C>    local value of minpk is increased by 50 percent. this is repeated
-C>    until ndg will suffice. A diagnostic is printed whenever this
-C>    happens, which should be very rarely. If it happens often, NDG in
-C>    subroutine pack should be increased and a corresponding increase
-C>    in subroutine unpack made. Considerable code is provided so that
-C>    no more checking for missing values within loops is done than
-C>    necessary; the added efficiency of this is relatively minor,
-C>    but does no harm. For grib2, the reference value for the length
-C>    of groups in nov and for the number of bits necessary to pack
-C>    group values are determined, and subtracted before jbit and kbit
-C>    are determined. When 1 or more groups are large compared to the
-C>    others, the width of all groups must be as large as the largest.
-C>    A subroutine reduce breaks up large groups into 2 or more to reduce
-C>    total bits required. If reduce should abort, pack_gp will be
-C>    executed again without the call to reduce.
-C>
-C>    PROGRAM HISTORY LOG:
-C>    - 1994-02-01 Harry Glahn tdl mos-2000.
-C>    - 1995-06-01 Harry Glahn modified for lmiss error.
-C>    - 1996-07-01 Harry Glahn added misss.
-C>    - 1997-02-01 Harry Glahn removed 4 redundant tests for missp.eq.0;
-C>    inserted a test to better handle a string of 9999's.
-C>    - 1997-02-01 Harry Glahn added loops to eliminate test for misss
-C>    when misss = 0.
-C>    - 1997-03-01 Harry Glahn corrected for secondary missing value.
-C>    - 1997-03-01 Harry Glahn corrected for use of local value of minpk.
-C>    - 1997-03-01 Harry Glahn corrected for secondary missing value.
-C>    - 1997-03-01 Harry Glahn changed calculating number of bits
-C>    through exponents to an array (improved overall packing performance
-C>    by about 35 percent). Allowed 0 bit for packing JMIN, LBIT, and NOV.
-C>    - 1997-05-01 Harry Glahn a number of changes for efficiency. mod
-C>    functions eliminated and one ifthen added. Jount removed.
-C>    Recomputation of bits not made unless necessary after moving points
-C>    from one group to another. Nendb adjusted to eliminate possibility
-C>    of very small group at the end. About 8 percent improvement in
-C>    overall packing. ISKIPA removed; There is always a group b that can
-C>    become group A. Control on size of group b (statement below 150)
-C>    added. Added adda, and use of ge and le instead of gt and lt in
-C>    loop between 150 and 160. IBITBS added to shorten trip through loop.
-C>    - 2000-03-01 Harry Glahn modified for grib2; changed name from
-C>    packgp.
-C>    - 2001-01-01 Harry Glahn Add comments; ier = 706 substituted for
-C>    stops; added return; removed statement number 110; added ier.
-C>    - 2001-11-01 Harry Glahn changed some diagnostic formats to
-C>    allow printing larger numbers
-C>    - 2001-11-01 Harry Glahn added misslx to put maximum value into JMIN
-C>    when all values missing to agree with grib standard.
-C>    - 2001-11-01 Harry Glahn changed two tests on missp and misss eq 0
-C>    to tests on is523. However, missp and misss cannot in general be 0.
-C>    - 2001-11-01 Harry Glahn added call to reduce; defined itest
-C>    before loops to reduce computation; started large group when all
-C>    same value.
-C>    - 2001-12-01 Harry Glahn modified and added a few comments.
-C>    - 2002-01-01 Harry Glahn removed loop before 150 to determine
-C>    a group of all same value.
-C>    - 2002-01-01 Harry Glahn changed mallow from 9999999 to 2**30+1,
-C>    and made it a parameter.
-C>    - 2002-03-01 Harry Glahn added non fatal ier = 716, 717; removed
-C>    nendb=nxy above 150; added iersav=0.
-C>
-C>    @param[in] KFILDO unit number for output/print file.
-C>    @param[in] IC array to hold data for packing. The values do not
-C>    have to be positive at this point, but must be in the range
-C>    -2**30 to +2**30 (the value of mallow). These integer values
-C>    will be retained exactly through packing and unpacking.
-C>    @param[in] NXY number of values in IC. also treated as
-C>    its dimension.
-C>    @param[in] IS523 missing value management 0=data contains no
-C>    missing values: 1 data contains primary missing values; 2=data
-C>    contains primary and secondary missing values.
-C>    @param[in] MINPK the minimum size of each group, except possibly
-C>    the last one.
-C>    @param[in] INC the number of values to add to an already existing
-C>    group in determining whether or not to start a new group. Ideally,
-C>    this would be 1, but each time inc values are attempted, the max
-C>    and min of the next minpk values must be found. This is "a loop
-C>    within a loop," and a slightly larger value may give about as good
-C>    results with slightly less computational time. If inc is le 0, 1
-C>    is used, and a diagnostic is output. note: it is expected that
-C>    INC will equal 1. The code uses inc primarily in the loops
-C>    starting at statement 180. If INC were 1, there would not need
-C>    to be loops as such. However, kinc (the local value of INC) is
-C>    set ge 1 when near the end of the data to forestall a very small
-C>    group at the end.
-C>    @param[in] MISSP when missing points can be present in the data,
-C>    they will have the value missp or misss. missp is the primary
-C>    missing value and misss is the secondary missing value. These
-C>    must not be values that would occur with subtracting the minimum
-C>    (reference) value or scaling. for example, missp = 0 would not
-C>    be advisable.
-C>    @param[in] MISSS secondary missing value indicator (see missp).
-C>    @param[out] JMIN the minimum of each group (j=1,lx).
-C>    @param[out] JMAX the maximum of each group (j=1,lx). This is not
-C>    really needed, but since the max of each group must be found,
-C>    saving it here is cheap in case the user wants it.
-C>    @param[out] LBIT the number of bits necessary to pack each group
-C>    (j=1,lx). It is assumed the minimum of each group will be removed
-C>    before packing, and the values to pack will, therefore, all be
-C>    positive. However, IC does not necessarily contain all positive
-C>    values. If the overall minimum has been removed (the usual case),
-C>    then IC will contain only positive values.
-C>    @param[out] NOV the number of values in each group (j=1,lx).
-C>    @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
-C>    @param[out] LX the number of groups determined.
-C>    @param[out] IBIT the number of bits necessary to pack the JMIN(j)
-C>    values, j=1,LX.
-C>    @param[out] JBIT the number of bits necessary to pack the LBIT(j)
-C>    values, j=1,LX.
-C>    @param[out] KBIT the number of bits necessary to pack the NOV(j)
-C>    values, j=1,LX.
-C>    @param[out] NOVREF reference value for NOV.
-C>    @param[out] LBITREF reference value for LBIT.
-C>    @param[out] IER error return.
-C>    - 706 value will not pack in 30 bits--fatal
-C>    - 714 error in reduce--non-fatal
-C>    - 715 ngp not large enough in reduce--non-fatal
-C>    - 716 minpk inceased--non-fatal
-C>    - 717 inc set = 1--non-fatal
-C>
-C>    @author Harry Glahn @date 1994-02-01
-C>
-
+!> This subroutine determines groups of variable size, but at least of
+!> size minpk, the associated max(JMAX) and min(JMIN), the number of
+!> bits necessary to hold the values in each group LBIT, the number of
+!> values in each group NOV, the number of bits necessary to pack the
+!> JMIN values IBIT, the number of bits necessary to pack the LBIT
+!> values JBIT, and the number of bits necessary to pack the NOV
+!> values KBIT.
+!>
+!> The routine is designed to determine the groups such that a small
+!> number of bits is necessary to pack the data without excessive
+!> computations. If all values in the group are zero, the number of
+!> bits to use in packing is defined as zero when there can be no
+!> missing values; when there can be missing values, the number of
+!> bits must be at least 1 to have the capability to recognize the
+!> missing value. However, if all values in a group are missing, the
+!> number of bits needed is 0, and the unpacker recognizes this.
+!>
+!> All variables are integer, even though the groups are initially of
+!> size minpk or larger, an adjustment between two groups (the
+!> lookback procedure) may make a group smaller than minpk. The
+!> control on group size is that the sum of the sizes of the two
+!> consecutive groups, each of size minpk or larger, is not decreased.
+!>
+!> When determining the number of bits necessary for packing, the
+!> largest value that can be accommodated in, say mbits is 2**mbits-1
+!> this largest value (and the next smallest value) is reserved for
+!> the missing value indicator (only) when is 523 ne 0.
+!>
+!> If the dimension NDG is not large enough to hold all the groups,
+!> the local value of minpk is increased by 50 percent. this is
+!> repeated until ndg will suffice. A diagnostic is printed whenever
+!> this happens, which should be very rarely. If it happens often, NDG
+!> in subroutine pack should be increased and a corresponding increase
+!> in subroutine unpack made.
+!>
+!> Considerable code is provided so that no more checking for missing
+!> values within loops is done than necessary; the added efficiency of
+!> this is relatively minor, but does no harm.
+!>
+!> For grib2, the reference value for the length of groups in nov and
+!> for the number of bits necessary to pack group values are
+!> determined, and subtracted before jbit and kbit are
+!> determined. When 1 or more groups are large compared to the others,
+!> the width of all groups must be as large as the largest.  A
+!> subroutine reduce breaks up large groups into 2 or more to reduce
+!> total bits required. If reduce() should abort, pack_gp() will be
+!> executed again without the call to reduce.
+!>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 1994-02-01 | Harry Glahn | tdl mos-2000.
+!> 1995-06-01 | Harry Glahn | modified for lmiss error.
+!> 1996-07-01 | Harry Glahn | added misss.
+!> 1997-02-01 | Harry Glahn | removed 4 redundant tests for missp.eq.0; inserted a test to better handle a string of 9999's.
+!> 1997-02-01 | Harry Glahn | added loops to eliminate test for misss when misss = 0.
+!> 1997-03-01 | Harry Glahn | corrected for secondary missing value.
+!> 1997-03-01 | Harry Glahn | corrected for use of local value of minpk.
+!> 1997-03-01 | Harry Glahn | corrected for secondary missing value.
+!> 1997-03-01 | Harry Glahn | changed calculating number of bits through exponents to an array (improved overall packing performance by about 35 percent). Allowed 0 bit for packing JMIN, LBIT, and NOV.
+!> 1997-05-01 | Harry Glahn | a number of changes for efficiency. mod functions eliminated and one ifthen added. Jount removed. Recomputation of bits not made unless necessary after moving points from one group to another.
+!> 1997-05-01 | Harry Glahn | Nendb adjusted to eliminate possibility of very small group at the end. About 8 percent improvement in overall packing. ISKIPA removed; There is always a group b that can become group A. Control on size of group b (statement below 150) added.
+!> 1997-05-01 | Harry Glahn | Added adda, and use of ge and le instead of gt and lt in loop between 150 and 160. IBITBS added to shorten trip through loop.
+!> 2000-03-01 | Harry Glahn | modified for grib2; changed name from packgp.
+!> 2001-01-01 | Harry Glahn | Add comments; ier = 706 substituted for stops; added return; removed statement number 110; added ier.
+!> 2001-11-01 | Harry Glahn | changed some diagnostic formats to allow printing larger numbers
+!> 2001-11-01 | Harry Glahn | added misslx to put maximum value into JMIN when all values missing to agree with grib standard.
+!> 2001-11-01 | Harry Glahn | changed two tests on missp and misss eq 0 to tests on is523. However, missp and misss cannot in general be 0.
+!> 2001-11-01 | Harry Glahn | added call to reduce; defined itest before loops to reduce computation; started large group when all same value.
+!> 2001-12-01 | Harry Glahn | modified and added a few comments.
+!> 2002-01-01 | Harry Glahn | removed loop before 150 to determine a group of all same value.
+!> 2002-01-01 | Harry Glahn | changed mallow from 9999999 to 2**30+1, and made it a parameter.
+!> 2002-03-01 | Harry Glahn | added non fatal ier = 716, 717; removed nendb=nxy above 150; added iersav=0.
+!>
+!> @param[in] KFILDO unit number for output/print file.
+!> @param[in] IC array to hold data for packing. The values do not
+!> have to be positive at this point, but must be in the range
+!> -2**30 to +2**30 (the value of mallow). These integer values
+!> will be retained exactly through packing and unpacking.
+!> @param[in] NXY number of values in IC. also treated as
+!> its dimension.
+!> @param[in] IS523 missing value management 0=data contains no
+!> missing values: 1 data contains primary missing values; 2=data
+!> contains primary and secondary missing values.
+!> @param[in] MINPK the minimum size of each group, except possibly
+!> the last one.
+!> @param[in] INC the number of values to add to an already existing
+!> group in determining whether or not to start a new group. Ideally,
+!> this would be 1, but each time inc values are attempted, the max
+!> and min of the next minpk values must be found. This is "a loop
+!> within a loop," and a slightly larger value may give about as good
+!> results with slightly less computational time. If inc is le 0, 1
+!> is used, and a diagnostic is output. note: it is expected that
+!> INC will equal 1. The code uses inc primarily in the loops
+!> starting at statement 180. If INC were 1, there would not need
+!> to be loops as such. However, kinc (the local value of INC) is
+!> set ge 1 when near the end of the data to forestall a very small
+!> group at the end.
+!> @param[in] MISSP when missing points can be present in the data,
+!> they will have the value missp or misss. missp is the primary
+!> missing value and misss is the secondary missing value. These
+!> must not be values that would occur with subtracting the minimum
+!> (reference) value or scaling. for example, missp = 0 would not
+!> be advisable.
+!> @param[in] MISSS secondary missing value indicator (see missp).
+!> @param[out] JMIN the minimum of each group (j=1,lx).
+!> @param[out] JMAX the maximum of each group (j=1,lx). This is not
+!> really needed, but since the max of each group must be found,
+!> saving it here is cheap in case the user wants it.
+!> @param[out] LBIT the number of bits necessary to pack each group
+!> (j=1,lx). It is assumed the minimum of each group will be removed
+!> before packing, and the values to pack will, therefore, all be
+!> positive. However, IC does not necessarily contain all positive
+!> values. If the overall minimum has been removed (the usual case),
+!> then IC will contain only positive values.
+!> @param[out] NOV the number of values in each group (j=1,lx).
+!> @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
+!> @param[out] LX the number of groups determined.
+!> @param[out] IBIT the number of bits necessary to pack the JMIN(j)
+!> values, j=1,LX.
+!> @param[out] JBIT the number of bits necessary to pack the LBIT(j)
+!> values, j=1,LX.
+!> @param[out] KBIT the number of bits necessary to pack the NOV(j)
+!> values, j=1,LX.
+!> @param[out] NOVREF reference value for NOV.
+!> @param[out] LBITREF reference value for LBIT.
+!> @param[out] IER error return.
+!> - 706 value will not pack in 30 bits--fatal
+!> - 714 error in reduce--non-fatal
+!> - 715 ngp not large enough in reduce--non-fatal
+!> - 716 minpk inceased--non-fatal
+!> - 717 inc set = 1--non-fatal
+!>
+!> @author Harry Glahn @date 1994-02-01
       SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS,
      1                   JMIN,JMAX,LBIT,NOV,NDG,LX,IBIT,JBIT,KBIT,
      2                   NOVREF,LBITREF,IER)            

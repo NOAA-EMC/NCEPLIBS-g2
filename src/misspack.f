@@ -1,45 +1,53 @@
-!>    @file
-!>    @brief This subroutine packs up a data field using a GRIB2 algorithm.
-!>    @author Stephen Gilbert @date 2000-06-21
-!>
+!> @file
+!> @brief Pack up a data field using a GRIB2 algorithm with missing
+!> value management.
+!> @author Stephen Gilbert @date 2000-06-21
 
-!>    This subroutine packs up a data field using a complex packing
-!>    algorithm as defined in the GRIB2 documention. It supports GRIB2
-!>    complex packing templates with or without spatial differences
-!>    (i.e. DRTs 5.2 and 5.3). It also fills in GRIB2 Data
-!>    Representation Template 5.2 or 5.3 with the appropriate values.
-!>    This version assumes that Missing Value Management is being
-!>    used and that1 or 2 missing values appear in the data.
-!>    
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-06-21 Stephen Gilbert
-!>    - 2004-12-29 Stephen Gilbert Corrected bug when encoding secondary
-!>    missing values.
-!>    - 2012-05-10 Boi Vuong Added variable rmin4 for 4 byte real.
-!>    
-!>    @param[in] fld Contains the data values to pack.
-!>    @param[in] ndpts The number of data values in array fld.
-!>    @param[in] idrsnum Data Representation Template number 5.N Must
-!>    equal 2 or 3.
-!>    @param[inout] idrstmpl Contains the array of values for Data
-!>    Representation Template 5.2 or 5.3
-!>    - idrstmpl(1) Reference value - ignored on input set by compack routine.
-!>    - idrstmpl(2) Binary Scale Factor.
-!>    - idrstmpl(3) Decimal Scale Factor.
-!>    - idrstmpl(4) number of bits for each data value - ignored on input.
-!>    - idrstmpl(5) Original field type, currently ignored on input, set = 0 on
-!>    !output, Data values assumed to be reals.
-!>    - idrstmpl(6) = 0 use lossless compression or = 1 use lossy compression.
-!>    - idrstmpl(7) Missing value management.
-!>    - idrstmpl(8) Primary missing value.
-!>    - idrstmpl(9) Secondary missing value.
-!>    - idrstmpl(17) Order of Spatial Differencing (1 or 2).
-!>    @param[out] cpack The packed data field (character*1 array).
-!>    @param[out] lcpack length of packed field cpack.
-!>    
-!>    @author Stephen Gilbert @date 2000-06-21
+!> Pack up a data field using a GRIB2 algorithm with missing value
+!> management.
 !>
-
+!> This subroutine packs up a data field using a complex packing
+!> algorithm as defined in the GRIB2 documention. It supports GRIB2
+!> complex packing templates with or without spatial differences
+!> (i.e. Data Representation Tables [5.2]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-2.shtml)
+!> and
+!> [5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-3.shtml)).
+!>
+!> This subroutine also fills in GRIB2 Data Representation Template
+!> 5.2 or 5.3 with the appropriate values. It assumes that Missing
+!> Value Management is being used and that 1 or 2 missing values
+!> appear in the data.
+!>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-06-21 | Stephen Gilbert |
+!> 2004-12-29 | Stephen Gilbert | Corrected bug when encoding secondary missing values.
+!> 2012-05-10 | Boi Vuong | Added variable rmin4 for 4 byte real.
+!>
+!> @param[in] fld Contains the data values to pack.
+!> @param[in] ndpts The number of data values in array fld.
+!> @param[in] idrsnum Data Representation Template number. Must
+!> equal 2 or 3.
+!> @param[inout] idrstmpl Contains the array of values for Data
+!> Representation Template 5.2 or 5.3
+!> - idrstmpl(1) Reference value - ignored on input set by compack routine.
+!> - idrstmpl(2) Binary Scale Factor.
+!> - idrstmpl(3) Decimal Scale Factor.
+!> - idrstmpl(4) number of bits for each data value - ignored on input.
+!> - idrstmpl(5) Original field type, currently ignored on input, set = 0 on
+!> !output, Data values assumed to be reals.
+!> - idrstmpl(6) = 0 use lossless compression or = 1 use lossy compression.
+!> - idrstmpl(7) Missing value management.
+!> - idrstmpl(8) Primary missing value.
+!> - idrstmpl(9) Secondary missing value.
+!> - idrstmpl(17) Order of Spatial Differencing (1 or 2).
+!> @param[out] cpack The packed data field (character*1 array).
+!> @param[out] lcpack length of packed field cpack. -1 is returned if
+!> idrstmpl(7) is not set correctly.
+!>
+!> @author Stephen Gilbert @date 2000-06-21
       subroutine misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
 
       use intmath
