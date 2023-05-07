@@ -1,48 +1,51 @@
-!>    @file
-!>    @brief This subroutine packs up a Grid Definition Section
-!>    (Section 3) and adds it to a GRIB2 message.
-!>    @author Stephen Gilbert @date 2000-05-01
-!>     
+!> @file
+!> @brief Pack up a Grid Definition Section (Section 3) and add it to
+!> a GRIB2 message.
+!> @author Stephen Gilbert @date 2000-05-01
 
-!>    This routine is used with routines gribcreate(), addlocal(), addfield(),
-!>    and gribend() to create a complete GRIB2 message. Subroutine
-!>    gribcreate must be called first to initialize a new GRIB2 message.
-!>     
-!>    @param[inout] cgrib Character array to contain the GRIB2 message
-!>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
-!>    @param[in] igds Contains information needed for GRIB Grid Definition Section 3.
-!>    Must be dimensioned >= 5.
-!>    - igds(1)=Source of grid definition (see Code Table 3.0)
-!>    - igds(2)=Number of grid points in the defined grid.
-!>    - igds(3)=Number of octets needed for each
-!>    additional grid points definition.Used to define number of
-!>    points in each row ( or column ) for non-regular grids. = 0, if using regular grid.
-!>    - igds(4)=Interpretation of list for optional points
-!>    definition.  (Code Table 3.11)
-!>    - igds(5)=Grid Definition Template Number (Code Table 3.1)
-!>    @param[in] igdstmpl Contains the data values for the specified Grid Definition
-!>    Template ( NN=igds(5) ).  Each element of this integer array
-!>    contains an entry (in the order specified) of Grid Defintion Template 3.NN
-!>    @param[in] igdstmplen Max dimension of igdstmpl()
-!>    @param[in] ideflist (Used if igds(3) .ne. 0)  This array contains the
-!>    number of grid points contained in each row ( or column )
-!>    @param[in] idefnum (Used if igds(3) .ne. 0)  The number of entries
-!>    in array ideflist.  i.e. number of rows ( or columns )
-!>    for which optional grid points are defined.
-!>    @param[out] ierr Error return code.
-!>    - 0 = no error
-!>    - 1 = GRIB message was not initialized.  Need to call routine gribcreate first.
-!>    - 2 = GRIB message already complete.  Cannot add new section.
-!>    - 3 = Sum of Section byte counts doesn't add to total byte count.
-!>    - 4 = Previous Section was not 1, 2 or 7.
-!>    - 5 = Could not find requested Grid Definition Template.
+!> Add a [Grid Definition Section (Section
+!> 3)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml)
+!> to a GRIB2 message.
 !>
-!>    @note: Note that the Local Use Section ( Section 2 ) can only follow
-!>          Section 1 or Section 7 in a GRIB2 message.
+!> This routine is used with routines gribcreate(), addlocal(),
+!> addfield(), and gribend() to create a complete GRIB2
+!> message.
 !>
-!>    @author Stephen Gilbert @date 2000-05-01
+!> @param[inout] cgrib Character array to contain the GRIB2 message.
+!> @param[in] lcgrib Maximum length (bytes) of array cgrib.
+!> @param[in] igds Contains information needed for GRIB Grid
+!> Definition Section 3. Must be dimensioned >= 5.
+!> - igds(1) Source of grid definition (see [Code Table
+!> 3.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml)).
+!> - igds(2) Number of grid points in the defined grid.
+!> - igds(3) Number of octets needed for each additional grid points
+!> definition. Used to define number of points in each row (or column)
+!> for non-regular grids. = 0, if using regular grid.
+!> - igds(4) Interpretation of list for optional points
+!> definition. (See [Code Table
+!> 3.11](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
+!> - igds(5) Grid Definition Template Number (See [Code Table
+!> 3.1](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
+!> @param[in] igdstmpl Contains the data values for the Grid
+!> Definition Template specified by igds(5). This should have the
+!> length of mapgridlen of the selected grid template.
+!> @param[in] igdstmplen Max dimension of igdstmpl. This must be at
+!> least as large as the mapgridlen of the chosen template.
+!> @param[in] ideflist (Used if igds(3) .ne. 0). This array contains
+!> the number of grid points contained in each row (or column).
+!> @param[in] idefnum The number of entries in array ideflist. This
+!> is the number of rows (or columns) for which optional grid points
+!> are defined.
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 1 GRIB message was not initialized. Need to call routine
+!> gribcreate first.
+!> - 2 GRIB message already complete. Cannot add new section.
+!> - 3 Sum of Section byte counts doesn't add to total byte count.
+!> - 4 Previous Section was not 1, 2 or 7.
+!> - 5 Could not find requested Grid Definition Template.
 !>
-
+!> @author Stephen Gilbert @date 2000-05-01
       subroutine addgrid(cgrib,lcgrib,igds,igdstmpl,igdstmplen,
      &                   ideflist,idefnum,ierr)
 
