@@ -33,7 +33,7 @@
 !> @param[out] out packed array output
 !> @param[in] in unpacked array input
 !> @param[in] iskip initial number of bits to skip
-!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!> @param[in] nbyte Number of bits of each integer in OUT to fill.
 !>
 !> @author Stephen Gilbert @date 2004-04-27
       SUBROUTINE G2_SBYTEC(OUT,IN,ISKIP,NBYTE)
@@ -50,7 +50,7 @@
 !> @param[in] in array input
 !> @param[out] iout unpacked array output
 !> @param[in] iskip initial number of bits to skip
-!> @param[in] nbits Number of bits of each integer in IN to take.
+!> @param[in] nbyte Number of bits of each integer in IN to take.
 !> @param[in] nskip Additional number of bits to skip on each iteration.
 !> @param[in] n Number of integers to extract.
 !>
@@ -103,7 +103,7 @@ c        get data from last byte
 !> @param[out] out Packed array output.
 !> @param[in] in Unpacked array input.
 !> @param[in] iskip Initial number of bits to skip.
-!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!> @param[in] nbyte Number of bits of each integer in OUT to fill.
 !> @param[in] nskip Additional number of bits to skip on each iteration.
 !> @param[in] n Number of iterations.
 !>
