@@ -1,90 +1,81 @@
-!>    @file
-!>    @brief Contains subroutine which packs up Sections 4 through 7 for
-!>    a given field and adds them to a GRIB2 message.
-!>    @author Stephen Gilbert @date 2000-05-02
-!>     
+!> @file
+!> @brief Pack up Sections 4 through 7 for a given field and add them
+!> to a GRIB2 message.
+!> @author Stephen Gilbert @date 2000-05-02
 
-!>    This subroutine packs up Sections 4 through 7 for a given field
-!>    and adds them to a GRIB2 message. They are Product Definition
-!>    Section, Data Representation Section, Bit-Map Section and Data
-!>    Section, respectively.
-!>     
-!>    This routine is used with routines "gribcreate", "addlocal",
-!>    "addgrid", and "gribend" to create a complete GRIB2
-!>    message. Subroutine gribcreate must be called first to initialize
-!>    a new GRIB2 message.  Also, subroutine addgrid must be called
-!>    after gribcreate and before this routine to add the appropriate
-!>    grid description to the GRIB2 message. Also, a call to gribend is
-!>    required to complete GRIB2 message after all fields have been
-!>    added.
+!> Pack up Sections 4 through 7 for a given field and add them to a
+!> GRIB2 message.
 !>
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-02 Stephen Gilbert
-!>    - 2002-12-17 Stephen Gilbert - Added support for new templates using
-!>    PNG and JPEG2000 algorithms/templates.
-!>    - 2004-06-22 Stephen Gilbert - Added check to determine if packing algorithm failed.
+!> They are the Product Definition Section, Data Representation
+!> Section, Bit-Map Section and Data Sections.
 !>
-!>    @param[inout] cgrib Character array to contain the GRIB2 message.
-!>    @param[in] lcgrib Maximum length (bytes) of array cgrib.
-!>    @param[in] ipdsnum Product Definition Template Number ( see Code
-!>    Table 4.0).
-!>    @param[in] ipdstmpl Contains the data values for the specified
-!>    Product Definition Template (N=ipdsnum). Each element of this
-!>    integer array contains an entry (in the order specified) of
-!>    Product Defintion Template 4.N
-!>    @param[in] ipdstmplen Max dimension of ipdstmpl coordlist Array
-!>    containg floating point values intended to document the vertical
-!>    discretisation associated to model data on hybrid coordinate
-!>    vertical levels.
-!>    @param[out] coordlist Array containg floating point values intended to 
-!>    document the vertical discretisation associated to model data on hybrid 
-!>    coordinate vertical levels. (part of Section 4) The dimension of this 
-!>    array can be obtained in advance from maxvals(5), which is returned 
-!>    from subroutine gribinfo.
-!>    @param[in] numcoord - number of values in array coordlist.
-!>    @param[in] idrsnum - Data Representation Template Number ( see
-!>    Code Table 5.0 )
-!>    @param[in] idrstmpl Contains the data values for the specified
-!>    Data Representation Template (N=idrsnum). Each element of this
-!>    integer array contains an entry (in the order specified) of Data
-!>    Representation Template 5.N.  Note that some values in this
-!>    template (eg. reference values, number of bits, etc...) may be
-!>    changed by the data packing algorithms.
-!>    Use this to specify scaling factors and order of
-!>    spatial differencing, if desired.
-!>    @param[in] idrstmplen Max dimension of idrstmpl.
-!>    @param[in] fld Array of data points to pack.
-!>    @param[out] ngrdpts Number of data points in grid. i.e. size of
-!>    fld and bmap.
-!>    @param[out] ibmap Bitmap indicator (see Code Table 6.0).
-!>    - 0 = bitmap applies and is included in Section 6.
-!>    - 1-253 = Predefined bitmap applies
-!>    - 254 = Previously defined bitmap applies to this field
-!>    - 255 = Bit map does not apply to this product.
-!>    @param[out] bmap Logical*1 array containing bitmap to be added.
-!>    (if ibmap=0 or ibmap=254)
-!>    @param[out] ierr Error return code.
-!>    - 0 = no error
-!>    - 1 = GRIB message was not initialized. Need to call
-!>    routine gribcreate first.
-!>    - 2 = GRIB message already complete. Cannot add new section.
-!>    - 3 = Sum of Section byte counts does not add to total
-!>    byte count.
-!>    - 4 = Previous Section was not 3 or 7.
-!>    - 5 = Could not find requested Product Definition Template.
-!>    - 6 = Section 3 (GDS) not previously defined in message
-!>    - 7 = Tried to use unsupported Data Representationi Template
-!>    - 8 = Specified use of a previously defined bitmap, but one
-!>    does not exist in the GRIB message.
-!>    - 9 = GDT of one of 5.50 through 5.53 required to pack
-!>    using DRT 5.51
-!>    - 10 = Error packing data field.
+!> This routine is used with routines gribcreate(), addlocal(),
+!> addgrid(), and gribend() to create a complete GRIB2
+!> message. Subroutine gribcreate() must be called first to initialize
+!> a new GRIB2 message. Subroutine addgrid() must be called after
+!> gribcreate() and before this routine to add the appropriate grid
+!> description to the GRIB2 message. A call to gribend() is required
+!> to complete GRIB2 message after all fields have been added.
 !>
-!>    @note Note that the Local Use Section (Section 2) can only follow
-!>    Section 1 or Section 7 in a GRIB2 message.
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-05-02 | Stephen Gilbert | Initial.
+!> 2002-12-17 | Stephen Gilbert | Added support for new templates using PNG and JPEG2000 algorithms/templates.
+!> 2004-06-22 | Stephen Gilbert | Added check to determine if packing algorithm failed.
 !>
-!>    @author Stephen Gilbert @date 2000-05-02
+!> @param[inout] cgrib Character array to contain the GRIB2 message.
+!> @param[in] lcgrib Maximum length (bytes) of array cgrib.
+!> @param[in] ipdsnum Product Definition Template Number (see [Code
+!> Table 4.0]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
+!> @param[in] ipdstmpl Contains the data values for the
+!> Product Definition Template specified by ipdsnum.
+!> @param[in] ipdstmplen Max dimension of ipdstmpl.
+!> @param[out] coordlist Array containg floating point values intended to
+!> document the vertical discretisation associated to model data on hybrid
+!> coordinate vertical levels (part of Section 4).
+!> @param[in] numcoord - number of values in array coordlist.
+!> @param[in] idrsnum - Data Representation Template Number (see
+!> [Code Table 5.0]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml)).
+!> @param[in] idrstmpl Contains the data values for the Data
+!> Representation Template specified by idrsnum. Note that some
+!> values in this template (eg. reference values, number of bits,
+!> etc...) may be changed by the data packing algorithms. Use this
+!> to specify scaling factors and order of spatial differencing, if
+!> desired.
+!> @param[in] idrstmplen Max dimension of idrstmpl. This must be at
+!> least as large as the length of the selected PDS template.
+!> @param[in] fld Array of data points to pack.
+!> @param[out] ngrdpts Number of data points in grid. i.e. size of
+!> fld and bmap.
+!> @param[out] ibmap Bitmap indicator (see [Code Table
+!> 6.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
+!> - 0 bitmap applies and is included in Section 6.
+!> - 1-253 Predefined bitmap applies
+!> - 254 Previously defined bitmap applies to this field
+!> - 255 Bit map does not apply to this product.
+!> @param[out] bmap Logical*1 array containing bitmap to be added
+!> (if ibmap=0 or ibmap=254).
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 1 GRIB message was not initialized. Need to call
+!> routine gribcreate first.
+!> - 2 GRIB message already complete. Cannot add new section.
+!> - 3 Sum of Section byte counts does not add to total
+!> byte count.
+!> - 4 Previous Section was not 3 or 7.
+!> - 5 Could not find requested Product Definition Template.
+!> - 6 Section 3 (GDS) not previously defined in message.
+!> - 7 Tried to use unsupported Data Representationi Template.
+!> - 8 Specified use of a previously defined bitmap, but one
+!> does not exist in the GRIB message.
+!> - 9 GDT of one of 5.50 through 5.53 required to pack
+!> using DRT 5.51.
+!> - 10 Error packing data field.
 !>
+!> @author Stephen Gilbert @date 2000-05-02
       subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen,
      & coordlist,numcoord,idrsnum,idrstmpl,
      & idrstmplen,fld,ngrdpts,ibmap,bmap,ierr)
