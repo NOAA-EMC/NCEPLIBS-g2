@@ -1,37 +1,40 @@
-!>    @file
-!>    @brief This subroutine unpacks a data field that was packed using a
-!>    complex packing algorithm as defined in the GRIB2 documention.
-!>    @author Stephen Gilbert @date 2000-06-21
-!>     
+!> @file
+!> @brief Unpack a data field that was packed using a complex packing
+!> algorithm as defined in the GRIB2 documention.
+!> @author Stephen Gilbert @date 2000-06-21
 
-!>    This subroutine unpacks a data field that was packed using a
-!>    complex packing algorithm as defined in the GRIB2 documention.
-!>    Using info from the GRIB2 Data Representation Template 5.2 or 5.3.
-!>    Supports GRIB2 complex packing templates with or without
-!>    spatial differences (i.e. DRTs 5.2 and 5.3).
-!>    
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-06-21  Stephen Gilbert
-!>    - 2004-12-29  Stephen Gilbert  -  Added test ( provided by Arthur Taylor/MDL )
-!>    to verify that group widths and lengths are consistent with section length.
-!>    - 2016-02-26              update unpacking for template 5.3
+!> Unpack a data field that was packed using a complex packing
+!> algorithm as defined in the GRIB2 documention.
 !>
-!>    @param[in] cpack The packed data field (character*1 array)
-!>    @param[in] len length of packed field cpack.
-!>    @param[in] lensec length of section 7 (used for error checking).
-!>    @param[in] idrsnum Data Representation Template number 5.N
-!>    Must equal 2 or 3.
-!>    @param[in] idrstmpl Contains the array of values for Data Representation
-!>    Template 5.2 or 5.3
-!>    @param[in] ndpts The number of data values to unpack
-!>    @param[out] fld Contains the unpacked data values
-!>    @param[out] ier Error return:
-!>    - 0 = OK
-!>    - 1 = Problem - inconsistent group lengths of widths.
+!> This subroutine Supports GRIB2 complex packing templates with or
+!> without spatial differences: It supports GRIB2 complex packing
+!> templates with or without spatial differences: Data Representation
+!> Tables [5.2]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-2.shtml)
+!> and
+!> [5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-3.shtml)).
 !>
-!>    @author Stephen Gilbert @date 2000-06-21
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-06-21 | Stephen Gilbert |
+!> 2004-12-29 | Stephen Gilbert | Added check (from Arthur Taylor/MDL) for group widths/lengths and section length.
+!> 2016-02-26 | ???             | update unpacking for template 5.3
 !>
-
+!> @param[in] cpack The packed data field (character*1 array).
+!> @param[in] len Length of packed field cpack.
+!> @param[in] lensec Length of section 7 (used for error checking).
+!> @param[in] idrsnum Data Representation Template number 5.N. Must
+!> equal 2 or 3.
+!> @param[in] idrstmpl The array of values for Data Representation
+!> Template 5.2 or 5.3.
+!> @param[in] ndpts The number of data values to unpack.
+!> @param[out] fld Contains the unpacked data values.
+!> @param[out] ier Error return:
+!> - 0 = No error.
+!> - 1 = Problem - inconsistent group lengths of widths.
+!>
+!> @author Stephen Gilbert @date 2000-06-21
       subroutine comunpack(cpack,len,lensec,idrsnum,idrstmpl,ndpts,
      &                     fld,ier)
 

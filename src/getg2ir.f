@@ -1,61 +1,44 @@
-C>    @file
-C>    @brief This subroutine read a GRIB file and return its index content.
-C>    @author Mark Iredell @date 1995-10-31
-C>
+!> @file
+!> @brief This subroutine reads a GRIB file and returns its index
+!> content.
+!> @author Mark Iredell @date 1995-10-31
 
-C>    This subroutine read a GRIB file and return its index content.
-C>    the index buffer returned contains index records with the internal format:
-C>    - byte 001 - 004 length of index record
-C>    - byte 005 - 008 bytes to skip in data file before grib message
-C>    - byte 009 - 012 bytes to skip in message before lus (local use)
-C>    set = 0, if no local use section in grib2 message.
-C>    - byte 013 - 016 bytes to skip in message before gds
-C>    - byte 017 - 020 bytes to skip in message before pds
-C>    - byte 021 - 024 bytes to skip in message before drs
-C>    - byte 025 - 028 bytes to skip in message before bms
-C>    - byte 029 - 032 bytes to skip in message before data section
-C>    - byte 033 - 040 bytes total in the message
-C>    - byte 041 - 041 grib version number (currently 2)
-C>    - byte 042 - 042 message discipline
-C>    - byte 043 - 044 field number within grib2 message
-C>    - byte 045 -  ii identification section (ids)
-C>    - byte ii+1-  jj grid definition section (gds)
-C>    - byte jj+1-  kk product definition section (pds)
-C>    - byte kk+1-  ll the data representation section (drs)
-C>    - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
-C>
-C>    Program history log:
-C>    - 1995-10-31 mark iredell
-C>    - 1996-10-31 mark iredell augmented optional definitions to byte 320
-C>    - 2002-01-02 stephen gilbert modified from getgir to create grib2 indexes
-C>
-C>    @param[in] lugb integer unit of the unblocked grib file
-C>    @param[in] msk1 integer number of bytes to search for first message
-C>    @param[in] msk2 integer number of bytes to search for other messages
-C>    @param[in] mnum integer number of grib messages to skip (usually 0)
-C>    output arguments:
-C>    @param[out] cbuf character*1 pointer to a buffer that contains index
-C>    records. users should free memory that cbuf points to, using
-C>    deallocate(cbuf) when cbuf is no longer needed.
-C>    @param[out] nlen integer total length of index record buffer in bytes
-C>    @param[out] nnum integer number of index records, =0 if no grib
-C>    messages are found)
-C>    @param[out] nmess last grib message in file successfully processed
-C>    @param[out] iret integer return code
-C>    - 0 all ok
-C>    - 1 not enough memory available to hold full index buffer
-C>    - 2 not enough memory to allocate initial index buffer
-C>
-C>    subprograms called:
-C>    - skgb  seek next grib message
-C>    - ixgb2 make index record
-C>
-C>    @note subprogram can be called from a multiprocessing environment.
-C>    do not engage the same logical unit from more than one processor.
-C>
-C>    @author Mark Iredell @date 1995-10-31
-C>
-
+!> This subroutine reads a GRIB file and returns its index content.
+!>
+!> The index file record format is documented in function ixgb2().
+!>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 1995-10-31 | Mark Iredell | Initial
+!> 1996-10-31 | Mark Iredell | augmented optional definitions to byte 320
+!> 2002-01-02 | Stephen Gilbert | modified from getgir to create GRIB2 indexes
+!>
+!> @param[in] lugb Unit of the unblocked GRIB file. Must
+!> be opened by [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
+!> @param[in] msk1 Number of bytes to search for first message.
+!> @param[in] msk2 Number of bytes to search for other messages.
+!> @param[in] mnum Number of GRIB messages to skip (usually 0).
+!> @param[out] cbuf Pointer to a buffer that will get the index
+!> records. If any memory is associated with cbuf when this subroutine
+!> is called, cbuf will be nullified in the subroutine. Initially cbuf
+!> will get an allocation of 5000 bytes. realloc() will be used to
+!> increase the size if necessary. Users must free memory that cbuf
+!> points to when cbuf is no longer needed.
+!> @param[out] nlen Total length of index record buffer in bytes.
+!> @param[out] nnum Number of index records, =0 if no GRIB
+!> messages are found).
+!> @param[out] nmess Last GRIB message in file successfully processed
+!> @param[out] iret Return code.
+!> - 0 all ok
+!> - 1 not enough memory available to hold full index buffer
+!> - 2 not enough memory to allocate initial index buffer
+!>
+!> @note Subprogram can be called from a multiprocessing environment.
+!> Do not engage the same logical unit from more than one processor.
+!>
+!> @author Mark Iredell @date 1995-10-31
       SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,NMESS,IRET)
 
       USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC

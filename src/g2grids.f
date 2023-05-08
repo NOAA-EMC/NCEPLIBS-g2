@@ -1,32 +1,35 @@
-!>    @file
-!>    @brief This Fortran Module allows access to predefined GRIB2 Grid
-!>    Definition Templates stored in a file.
-!>    @author Stephen Gilbert @date 2004-04-27
-!>
+!> @file
+!> @brief This Fortran Module allows access to predefined GRIB2 Grid
+!> Definition Templates (GDT) stored in a file.
+!> @author Stephen Gilbert @date 2004-04-27
 
-!>    This Fortran Module allows access to predefined GRIB2 Grid
-!>    Definition Templates stored in a file.  The GDTs are represented by
-!>    a predefined number or a character abbreviation. At the first
-!>    request, all the grid GDT entries in the file associated with
-!>    input Fortran file unit number, lunit, are read into a linked list
-!>    named gridlist.  This list is searched for the requested entry.
-!>    Users of this Fortran module should only call routines getgridbynum
-!>    and getgridbyname.
+!> @brief Allow access to predefined GRIB2 Grid Definition Templates
+!> (GDT) stored in a file.
 !>
-!>    The format of the file scanned by routines in this module is as follows.
-!>    Each line contains one Grid entry containing five fields, each separated
-!>    by a colon, ":".  The fields are:
-!>    - 1) - predefined grid number
-!>    - 2) - Up to an 8 character abbreviation
-!>    - 3) - Grid Definition Template number
-!>    - 4) - Number of entries in the Grid Definition Template
-!>    - 5) - A list of values for each entry in the Grid Definition Template.
-!>    As an example, this is the entry for the 1x1 GFS global grid
-!>    3:gbl_1deg: 0:19: 0 0 0 0 0 0 0 360 181 0 0 90000000 0 48 -90000000 359000000 1000000 1000000 0
+!> The GDTs are represented by a predefined number or a character
+!> abbreviation. At the first request, all the grid GDT entries in the
+!> file associated with input Fortran file unit number, lunit, are
+!> read into a linked list named gridlist. This list is searched for
+!> the requested entry. Users of this Fortran module should only call
+!> routines getgridbynum() and getgridbyname(), and freegridlist() to
+!> release all allocated memory.
 !>
-!>    @author Stephen Gilbert @date 2004-04-27
+!> The format of the file scanned by routines in this module is as
+!> follows. Each line contains one Grid entry containing five
+!> fields, each separated by a colon, ":". The fields are:
 !>
-
+!> 1. predefined grid number
+!> 2. Up to an 8 character abbreviation
+!> 3. Grid Definition Template number
+!> 4. Number of entries in the Grid Definition Template
+!> 5. A list of values for each entry in the Grid Definition Template.
+!>
+!> As an example, this is the entry for the 1x1 GFS global grid:
+!> <pre>
+!> 3:gbl_1deg: 0:19: 0 0 0 0 0 0 0 360 181 0 0 90000000 0 48 -90000000 359000000 1000000 1000000 0
+!> </pre>
+!>
+!> @author Stephen Gilbert @date 2004-04-27!
       module g2grids
 
       integer,parameter :: MAXTEMP=200 !< maximum template number for grid definition.

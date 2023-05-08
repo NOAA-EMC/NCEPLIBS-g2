@@ -1,71 +1,79 @@
-!>    @file
-!>    @brief This subroutines searches the number of  Local Use 
-!>    Sections and gridded fields.
-!>    @author Stephen Gilbert @date 2000-05-25
-!>
+!> @file
+!> @brief This subroutines searches the number of Local Use Sections
+!> and gridded fields in a GRIB2 message.
+!> @author Stephen Gilbert @date 2000-05-25
 
-!>    This subroutine searches through a GRIB2 message and returns
-!>    the number of Local Use Sections and number of gridded fields
-!>    found in the message. It also performs various checks to see
-!>    if the message is a valid GRIB2 message. Last, a list of safe
-!>    array dimensions is returned for use in allocating return
-!>    arrays from routines getlocal, gettemplates, and getfields.
-!>    (See maxvals and REMARKS)
+!> This subroutine searches through a GRIB2 message and returns
+!> the number of Local Use Sections and number of gridded fields
+!> found in the message.
 !>
-!>    @param[in] cgrib Character that contains the GRIB2 message.
-!>    @param[in] lcgrib Length (in bytes) of array cgrib.
-!>    @param[out] listsec0 Contains information needed for GRIB Indicator
-!>    Section 0. Must be dimensioned >= 2.
-!>    - listsec0(1) Discipline-GRIB Master Table Number.
-!>    - listsec0(2) GRIB Edition Number (currently 2).
-!>    - listsec0(3) Length of GRIB message.
-!>    @param[out] listsec1 Contains information needed for GRIB Identification
-!>    Section 1. Must be dimensioned >= 13.
-!>    - listsec1(1)=Id of orginating centre (Common Code Table C-1)
-!>    - listsec1(2)=Id of orginating sub-centre (local table)
-!>    - listsec1(3) GRIB Master Tables Version Number (Code Table 1.0)
-!>    - listsec1(4) GRIB Local Tables Version Number (Code Table 1.1)
-!>    - listsec1(5) Significance of Reference Time (Code Table 1.2)
-!>    - listsec1(6) Reference Time - Year (4 digits)
-!>    - listsec1(7) Reference Time - Month
-!>    - listsec1(8) Reference Time - Day
-!>    - listsec1(9) Reference Time - Hour
-!>    - listsec1(10) Reference Time - Minute
-!>    - listsec1(11) Reference Time - Second
-!>    - listsec1(12) Production status of data (Code Table 1.3)
-!>    - listsec1(13) Type of processed data (Code Table 1.4)
-!>    @param[out] numlocal The number of Local Use Sections (Section 2)
-!>    found in the GRIB message.
-!>    @param[out] numfields The number of gridded fieldse found in the GRIB message.
-!>    @param[out] maxvals The maximum number of elements that could be
-!>    returned in various arrays from this GRIB2 message.
-!>    - maxvals(1) max length of local section 2 (for getlocal)
-!>    - maxvals(2) max length of GDS Template (for gettemplates and getfield)
-!>    - maxvals(3) max length of GDS Optional list (for getfield)
-!>    - maxvals(4) max length of PDS Template (for gettemplates and getfield)
-!>    - maxvals(5) max length of PDS Optional list (for getfield)
-!>    - maxvals(6) max length of DRS Template (for gettemplates and getfield)
-!>    - maxvals(7) max number of gridpoints (for getfield)
-!>    @param[out] ierr Error return code.
-!>    - 0 no error.
-!>    - 1 Beginning characters "GRIB" not found.
-!>    - 2 GRIB message is not Edition 2.
-!>    - 3 Could not find Section 1, where expected.
-!>    - 4 End string "7777" found, but not where expected.
-!>    - 5 End string "7777" not found at end of message.
+!> It also performs various checks to see if the message is a valid
+!> GRIB2 message. Also, a list of safe array dimensions is returned
+!> for use in allocating return arrays from routines getlocal(),
+!> gettemplates(), and getfields().
 !>
-!>    @note Array maxvals contains the maximum possible number of values
-!>    that will be returned in argument arrays for routines getlocal(),
-!>    gettemplates() and getfields(). Users can use this info to determine
-!>    if their arrays are dimensioned large enough for the data that may
-!>    be returned from the above routines, or to dynamically allocate
-!>    arrays with a reasonable size. NOTE that the actual number of values
-!>    in these arrays is returned from the routines and will likely be
-!>    less than the values calculated by this routine.
-!>    
-!>    @author Stephen Gilbert @date 2000-05-25
-!>    
-
+!> Array maxvals contains the maximum possible number of values
+!> that will be returned in argument arrays for routines getlocal(),
+!> gettemplates() and getfields(). Users can use this info to determine
+!> if their arrays are dimensioned large enough for the data that may
+!> be returned from the above routines, or to dynamically allocate
+!> arrays with a reasonable size.
+!>
+!> @note The actual number of values in these arrays will likely be
+!> less than the values calculated by this routine.
+!>
+!> @param[in] cgrib Character that contains the GRIB2 message.
+!> @param[in] lcgrib Length (in bytes) of array cgrib.
+!> @param[out] listsec0 Contains information needed for GRIB
+!> Indicator Section 0. Must be dimensioned >= 2.
+!> - listsec0(1) Discipline-GRIB Master Table Number ([Code Table 0.0]
+!>   (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml)).
+!> - listsec0(2) GRIB Edition Number (currently 2)
+!> - listsec0(3) Length of GRIB message.
+!> @param[out] listsec1 Contains information needed for GRIB
+!> Identification Section 1. Must be dimensioned >= 13.
+!> - listsec1(1) Id of orginating centre ([Table 0]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html)).
+!> - listsec1(2) Id of orginating sub-centre ([Table C]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html)).
+!> - listsec1(3) GRIB Master Tables Version Number ([Table 1.0]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml)).
+!> - listsec1(4) GRIB Local Tables Version Number ([Table 1.1]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml)).
+!> - listsec1(5) Significance of Reference Time ([Table 1.2]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml))
+!> - listsec1(6) Reference Time - Year (4 digits)
+!> - listsec1(7) Reference Time - Month
+!> - listsec1(8) Reference Time - Day
+!> - listsec1(9) Reference Time - Hour
+!> - listsec1(10) Reference Time - Minute
+!> - listsec1(11) Reference Time - Second
+!> - listsec1(12) Production status of data ([Table 1.3]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml)).
+!> - listsec1(13) Type of processed data ([Table 1.4]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml)).
+!> @param[out] numlocal The number of Local Use Sections (Section 2)
+!> found in the GRIB message.
+!> @param[out] numfields The number of gridded fieldse found in the
+!> GRIB message.
+!> @param[out] maxvals The maximum number of elements that could be
+!> returned in various arrays from this GRIB2 message.
+!> - maxvals(1) max length of local section 2 (for getlocal()).
+!> - maxvals(2) max length of GDS Template (for gettemplates() and getfield()).
+!> - maxvals(3) max length of GDS Optional list (for getfield()).
+!> - maxvals(4) max length of PDS Template (for gettemplates() and getfield()).
+!> - maxvals(5) max length of PDS Optional list (for getfield()).
+!> - maxvals(6) max length of DRS Template (for gettemplates() and getfield()).
+!> - maxvals(7) max number of gridpoints (for getfield()).
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 1 Beginning characters "GRIB" not found.
+!> - 2 GRIB message is not Edition 2.
+!> - 3 Could not find Section 1, where expected.
+!> - 4 End string "7777" found, but not where expected.
+!> - 5 End string "7777" not found at end of message.
+!>
+!> @author Stephen Gilbert @date 2000-05-25
       subroutine gribinfo(cgrib,lcgrib,listsec0,listsec1,
      &                    numlocal,numfields,maxvals,ierr)
 

@@ -1,47 +1,51 @@
-!>    @file
-!>    @brief This Fortran Module contains info on all the available
-!>    GRIB2 Grid Definition Templates used in Section 3 (GDS).
-!>    @author Stephen Gilbert @date 2000-05-09
-!>
+!> @file
+!> @brief This Fortran module contains info on all the available
+!> GRIB2 Grid Definition Templates used in Section 3 - the Grid
+!> Definition Section (GDS).
+!> @author Stephen Gilbert @date 2000-05-09
 
-!>    This Fortran Module contains info on all the available GRIB2
-!>    Grid Definition Templates used in Section 3 (GDS).
-!>    Each Template has three parts: The number of entries in the template
-!>    (mapgridlen); A map of the template (mapgrid), which contains the
-!>    number of octets in which to pack each of the template values; and
-!>    a logical value (needext) that indicates whether the Template needs
-!>    to be extended. In some cases the number of entries in a template
-!>    can vary depending upon values specified in the "static" part of
-!>    the template. (See Template 3.120 as an example)
-!>    This module also contains two subroutines. Subroutine getgridtemplate
-!>    returns the octet map for a specified Template number, and
-!>    subroutine extgridtemplate will calculate the extended octet map
-!>    of an appropriate template given values for the "static" part of the
-!>    template. See docblocks below for the arguments and usage of these
-!>    routines.
-!>    
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-09 Stephen Gilbert Initial development
-!>    - 2003-09-02 Stephen Gilbert Added GDT 3.31 Albers Equal Area
-!>    - 2007-04-24 Boi Vuong Added GDT 3.204 Curilinear Orthogonal Grids
-!>    - 2008-05-29 Boi Vuong Added GDT 3.32768 Rotate Lat/Lon E-grid
-!>    - 2010-05-10 Boi Vuong Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
-!>    - 2013-08-06 Boi Vuong Added GDT 3.4,3.5,3.12,3.101,3.140
-!>    
-!>    @note Array mapgrid contains the number of octets in which the
-!>    corresponding template values will be stored. A negative value in
-!>    mapgrid is used to indicate that the corresponding template entry
-!>    can contain negative values. This information is used later when
-!>    packing/unpacking the template data values. Negative data values
-!>    in GRIB are stored with the left most bit set to one, and a
-!>    negative number of octets value in mapgrid() indicates that this
-!>    possibility should be considered. The number of octets used to
-!>    store the data value in this case would be the absolute value
-!>    of the negative value in mapgrid().
+!> This Fortran module contains info on all the available GRIB2 Grid
+!> Definition Templates used in [Section 3 - the Grid Definition
+!> Section
+!> (GDS)](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml).
 !>
-!>    @author Stephen Gilbert @date 2000-05-09
+!> Each Template has three parts:
+!> 1. The number of entries in the template (mapgridlen);
+!> 2. A map of the template (mapgrid), which contains the number of
+!> octets in which to pack each of the template values;
+!> 3. A logical value (needext) that indicates whether the Template
+!> needs to be extended. In some cases the number of entries in a
+!> template can vary depending upon values specified in the "static"
+!> part of the template. (See Template 3.120 as an example).
 !>
-
+!> This module also contains two subroutines. Subroutine
+!> getgridtemplate() returns the octet map for a specified Template
+!> number, and subroutine extgridtemplate() will calculate the
+!> extended octet map of an appropriate template given values for the
+!> static part of the template.
+!>
+!> @note Array mapgrid contains the number of bytes in which the
+!> corresponding template values will be stored. A negative value in
+!> mapgrid is used to indicate that the corresponding template entry
+!> can contain negative values. This information is used later when
+!> packing/unpacking the template data values. Negative data values in
+!> GRIB are stored with the left most bit set to one, and a negative
+!> number of bytes value in mapgrid indicates that this possibility
+!> should be considered. The number of bytes used to store the data
+!> value in this case would be the absolute value of the negative
+!> value in mapgrid.
+!>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-05-09 | Stephen Gilbert | Initial development
+!> 2003-09-02 | Stephen Gilbert | Added GDT 3.31 Albers Equal Area
+!> 2007-04-24 | Boi Vuong | Added GDT 3.204 Curilinear Orthogonal Grids
+!> 2008-05-29 | Boi Vuong | Added GDT 3.32768 Rotate Lat/Lon E-grid
+!> 2010-05-10 | Boi Vuong | Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
+!> 2013-08-06 | Boi Vuong | Added GDT 3.4,3.5,3.12,3.101,3.140
+!>
+!> @author Stephen Gilbert @date 2000-05-09
       module gridtemplates
 
       integer,parameter :: MAXLEN=200 !< maximum number of octets in mapgrid

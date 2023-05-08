@@ -1,100 +1,106 @@
-C>    @file
-C>    @brief This subroutine find and extracts a grib message from a file.
-C>    @author Mark Iredell @date 1994-04-01
-C>
+!> @file
+!> @brief Find and extract a GRIB2 message from a file.
+!> @author Mark Iredell @date 1994-04-01
 
-C>    This subroutine find and extracts a grib message from a file.
-C>    It reads a grib index file (or optionally the grib file itself) to
-C>    get the index buffer (i.e. table of contents) for the grib file.
-C>    find in the index buffer a reference to the grib field requested.
-C>    the grib field request specifies the number of fields to skip
-C>    and the unpacked identification section, grid definition template
-C>    and product defintion section parameters. (a requested parameter
-C>    of -9999 means to allow any value of this parameter to be found.)
-C>    if the requested grib field is found, then it is read from the
-C>    grib file and unpacked. If the grib field is not found, then the
-C>    return code will be nonzero.
-C>
-C>    PROGRAM HISTORY LOG:
-C>    - 1994-04-01 Mark Iredell
-C>    - 1995-10-31 Mark Iredell modularized portions of code into subprograms
-C>    and allowed for unspecified index file
-C>    - 2002-01-11 Stephen Gilbert modified from getgb and getgbm to work with grib2
-C>    - 2003-12-17 Stephen Gilbert modified from getgb2 to return packed grib2 message
-C>    @param[in] LUGB integer unit of the unblocked grib data file.
-C>    file must be opened with baopen or baopenr before calling
-C>    this routine.
-C>    @param[in] LUGI integer unit of the unblocked grib index file.
-C>    if nonzero, file must be opened with baopen baopenr before
-C>    calling this routine. (=0 to get index buffer from the grib file)
-C>    @param[in] J integer number of fields to skip
-C>    (=0 to search from beginning)
-C>    @param[in] JDISC grib2 discipline number of requested field
-C>    (if = -1, accept any discipline see code table 0.0)
-C>    - 0 meteorological products
-C>    - 1 hydrological products
-C>    - 2 land surface products
-C>    - 3 space products
-C>    - 10 oceanographic products
-C>    @param[in] JIDS integer array of values in the identification section
-C>    (=-9999 for wildcard)
-C>    - JIDS(1) identification of originating centre
-C>    (see common code table c-1)
-C>    - JIDS(2) identification of originating sub-centre
-C>    - JIDS(3) grib master tables version number
-C>    (see code table 1.0) 0 experimental;1 initial operational version number.
-C>    - JIDS(4) grib local tables version number (see code table 1.1)
-C>    0 local tables not used; 1-254 number of local tables version used.
-C>    - JIDS(5) significance of reference time (code table 1.2)
-C>    0 analysis; 1 start of forecast; 2 verifying time of forecast; 3 observation time
-C>    - JIDS(6) year (4 digits)
-C>    - JIDS(7) month
-C>    - JIDS(8) day
-C>    - JIDS(9) hour
-C>    - JIDS(10) minute
-C>    - JIDS(11) second
-C>    - JIDS(12) production status of processed data (see code table 1.3)
-C>    0 operational products; 1 operational test products;
-C>    2 research products; 3 re-analysis products.
-C>    - JIDS(13) type of processed data (see code table 1.4)
-C>    0 analysis products; 1 forecast products; 2 analysis and forecast
-C>    products; 3 control forecast products; 4 perturbed forecast products;
-C>    5 control and perturbed forecast products; 6 processed satellite
-C>    observations; 7 processed radar observations.
-C>    @param[in] JPDTN integer product definition template number (n)
-C>    (if = -1, don't bother matching pdt - accept any)
-C>    @param[in] JPDT integer array of values defining the product definition
-C>    template 4.n of the field for which to search (=-9999 for wildcard)
-C>    @param[in] JGDTN integer grid definition template number (m)
-C>    (if = -1, don't bother matching gdt - accept any )
-C>    @param[in] JGDT integer array of values defining the grid definition
-C>    template 3.m of the field for which to search (=-9999 for wildcard)
-C>    @param[in] EXTRACT logical value indicating whether to return a
-C>    grib2 message with just the requested field, or the entire
-C>    grib2 message containing the requested field.
-C>    - .true. = return grib2 message containing only the requested field.
-C>    - .false. = return entire grib2 message containing the requested field.
-C>    @param[out] K integer field number unpacked.
-C>    @param[out] GRIBM returned grib message.
-C>    @param[out] LENG length of returned grib message in bytes.
-C>    @param[out] IRET integer return code
-C>    - 0 all ok
-C>    - 96 error reading index
-C>    - 97 error reading grib file
-C>    - 99 request not found
-C>    @note specify an index file if feasible to increase speed.
-C>    do not engage the same logical unit from more than one processor.
-C>    Note that derived type gribfield contains pointers to many
-C>    arrays of data. The memory for these arrays is allocated
-C>    when the values in the arrays are set, to help minimize
-C>    problems with array overloading. Because of this users are 
-C>    encouraged to free up this memory, when it is no longer
-C>    needed, by an explicit call to subroutine gf_free.
-C>
-C>    @author Mark Iredell @date 1994-04-01
-C>
-
-C-----------------------------------------------------------------------
+!> Find and extract a GRIB2 message from a file.
+!>
+!> This subroutine reads a GRIB index file (or optionally the GRIB
+!> file itself) to get the index buffer (i.e. table of contents) for
+!> the GRIB file. It finds in the index buffer a reference to the
+!> GRIB field requested.
+!>
+!> The GRIB field request specifies the number of fields to skip and
+!> the unpacked identification section, grid definition template and
+!> product defintion section parameters. (A requested parameter of
+!> -9999 means to allow any value of this parameter to be found.)
+!>
+!> If the requested GRIB field is found, then it is read from the GRIB
+!> file and unpacked. If the GRIB field is not found, then the return
+!> code will be nonzero.
+!>
+!> Note that derived type @ref grib_mod::gribfield contains pointers
+!> to many arrays of data. The memory for these arrays is allocated
+!> when the values in the arrays are set, to help minimize problems
+!> with array overloading. Because of this users are should free this
+!> memory, when it is no longer needed, by a call to subroutine
+!> gf_free().
+!>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 1994-04-01 | Mark Iredell | Initial
+!> 1995-10-31 | Mark Iredell | modularized portions of code into subprograms and allowed for unspecified index file
+!> 2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with GRIB2
+!> 2003-12-17 | Stephen Gilbert | modified from getgb2 to return packed GRIB2 message
+!>
+!> @param[in] lugb Unit of the unblocked GRIB data file. The
+!> file must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> routine.
+!> @param[in] lugi Unit of the unblocked GRIB index file. If
+!> nonzero, file must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> subroutine. Set to 0 to get index buffer from the GRIB file.
+!> @param[in] J Number of fields to skip (set to 0 to search
+!> from beginning).
+!> @param[in] jdisc GRIB2 discipline number of requested field. See
+!> [GRIB2 - TABLE 0.0 -
+!> DISCIPLINE](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml).
+!> Use -1 to accept any discipline.
+!> @param[in] jids Array of values in the identification
+!> section. (Set to -9999 for wildcard.)
+!> - jids(1) Identification of originating centre. See [TABLE 0 -
+!>   NATIONAL/INTERNATIONAL ORIGINATING
+!>   CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html).
+!> - jids(2) Identification of originating sub-centre. See [TABLE C -
+!>   NATIONAL
+!>   SUB-CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html).
+!> - jids(3) GRIB master tables version number. See [GRIB2 - TABLE 1.0
+!>   - GRIB Master Tables Version
+!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml).
+!> - jids(4) GRIB local tables version number. See [GRIB2 - TABLE 1.1
+!>   - GRIB Local Tables Version
+!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml).
+!> - jids(5) Significance of reference time. See [GRIB2 - TABLE 1.2 -
+!>   Significance of Reference
+!>   Time](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-2.shtml).
+!> - jids(6) year (4 digits)
+!> - jids(7) month
+!> - jids(8) day
+!> - jids(9) hour
+!> - jids(10) minute
+!> - jids(11) second
+!> - jids(12) Production status of processed data. See [GRIB2 - TABLE
+!>   1.3 - Production Status of
+!>   Data](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml).
+!> - jids(13) Type of processed data. See [GRIB2 - TABLE 1.4 - TYPE OF
+!>   DATA](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml).
+!> @param[in] jpdtn Product Definition Template (PDT) number (n)
+!> (if = -1, don't bother matching PDT - accept any)
+!> @param[in] jpdt Array of values defining the Product Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] jgdtn Grid Definition Template (GDT) number (if = -1,
+!> don't bother matching GDT - accept any).
+!> @param[in] jgdt array of values defining the Grid Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] extract value indicating whether to return a
+!> GRIB2 message with just the requested field, or the entire
+!> GRIB2 message containing the requested field.
+!> - .true. return GRIB2 message containing only the requested field.
+!> - .false. return entire GRIB2 message containing the requested field.
+!> @param[out] k field number unpacked.
+!> @param[out] gribm returned GRIB message.
+!> @param[out] leng length of returned GRIB message in bytes.
+!> @param[out] iret integer return code
+!> - 0 No error.
+!> - 96 Error reading index.
+!> - 97 Error reading GRIB file.
+!> - 99 Request not found.
+!>
+!> @note Specify an index file if feasible to increase speed.
+!> Do not engage the same logical unit from more than one processor.
+!>
+!> @author Mark Iredell @date 1994-04-01
       SUBROUTINE GETGB2P(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT,
      &                   EXTRACT,K,GRIBM,LENG,IRET)
 

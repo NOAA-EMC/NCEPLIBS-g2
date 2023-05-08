@@ -1,43 +1,44 @@
-C>    @file
-C>    @brief This subroutine determines groups of variable size.
-C>    @author Harry Glahn @date 2001-11-01
-C>
+!> @file
+!> @brief This subroutine determines groups of variable size.
+!> @author Harry Glahn @date 2001-11-01
 
-C>    This subroutine determines whether the number of groups should be
-C>    increased in order to reduce the size of the large groups, and to
-C>    make that adjustment. By reducing the size of the large groups,
-C>    less bits may be necessary for packing the group sizes and all the
-C>    information about the groups. The reference for NOV was removed in
-C>    the calling routine so that kbit could be determined. This
-C>    furnishes a starting point for the iterations in reduce.
-C>    
-C>    @param[in] KFILDO unit number for output/print file.
-C>    @param[inout] JMIN the minimum of each group (j=1,lx). JMIN is
-C>    really the group reference and doesn't have to be the smallest
-C>    value.
-C>    @param[inout] JMAX the maximum of each group (j=1,lx).
-C>    @param[inout] LBIT the number of bits necessary to pack each group
-C>    (j=1,lx).
-C>    @param[inout] NOV the number of values in each group (j=1,lx).
-C>    @param[inout] LX the number of groups. This will be increased, if
-C>    groups are split.
-C>    @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
-C>    @param[in] IBIT the number of bits necessary to pack the JMIN(j)
-C>    values, j=1,LX.
-C>    @param[in] JBIT the number of bits necessary to pack the LBIT(j)
-C>    values, j=1,LX.
-C>    @param[inout] KBIT the number of bits necessary to pack the NOV(j)
-C>    values, j=1,LX. If the groups are split, kbit is reduced.
-C>    @param[in] NOVREF reference value for NOV.
-C>    @param[in] IBXX2 ibxx2(j) = 2**j (j=0,30).
-C>    @param[out] IER error return.
-C>    - 0 good return.
-C>    - 714 error in reduce--non-fatal
-C>    - 715 ngp not large enough in reduce--non-fatal
-C>
-C>    @author Harry Glahn @date 2001-11-01
-C>
-
+!> This subroutine determines whether the number of groups should be
+!> increased in order to reduce the size of the large groups, and to
+!> make that adjustment.
+!>
+!> By reducing the size of the large groups, less bits may be
+!> necessary for packing the group sizes and all the information about
+!> the groups.
+!>
+!> The reference for NOV was removed in the calling routine so that
+!> kbit could be determined. This furnishes a starting point for the
+!> iterations in reduce.
+!>
+!> @param[in] KFILDO unit number for output/print file.
+!> @param[inout] JMIN the minimum of each group (j=1,lx). JMIN is
+!> really the group reference and doesn't have to be the smallest
+!> value.
+!> @param[inout] JMAX the maximum of each group (j=1,lx).
+!> @param[inout] LBIT the number of bits necessary to pack each group
+!> (j=1,lx).
+!> @param[inout] NOV the number of values in each group (j=1,lx).
+!> @param[inout] LX the number of groups. This will be increased, if
+!> groups are split.
+!> @param[in] NDG the dimension of JMIN, JMAX, LBIT, and NOV.
+!> @param[in] IBIT the number of bits necessary to pack the JMIN(j)
+!> values, j=1,LX.
+!> @param[in] JBIT the number of bits necessary to pack the LBIT(j)
+!> values, j=1,LX.
+!> @param[inout] KBIT the number of bits necessary to pack the NOV(j)
+!> values, j=1,LX. If the groups are split, kbit is reduced.
+!> @param[in] NOVREF reference value for NOV.
+!> @param[in] IBXX2 ibxx2(j) = 2**j (j=0,30).
+!> @param[out] IER error return.
+!> - 0 good return.
+!> - 714 error in reduce--non-fatal
+!> - 715 ngp not large enough in reduce--non-fatal
+!>
+!> @author Harry Glahn @date 2001-11-01
       SUBROUTINE REDUCE(KFILDO,JMIN,JMAX,LBIT,NOV,LX,NDG,IBIT,JBIT,KBIT,
      1                  NOVREF,IBXX2,IER)            
 

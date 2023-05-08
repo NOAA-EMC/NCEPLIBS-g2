@@ -1,16 +1,16 @@
-!>    @file
-!>    @brief This module contains routines to reorganize the data in
-!>    memory.
-!>    @author Stephen Gilbert @date 2000-10-01
-!>
+!> @file
+!> @brief This module contains routines to reallocate memory and
+!> reorganize the data in memory.
+!> @author Stephen Gilbert @date 2000-10-01
 
-!>    This module contains three subroutines to reorganize the integer,
-!>    real and character data in memory into one dimensional array and
-!>    back to memory.
-!>    
-!>    @author Stephen Gilbert @date 2000-10-01
+!> @brief This module contains routines to reallocate memory and
+!> reorganize the data in memory.
 !>
-
+!> This module contains two subroutines to reallocate integer, and
+!> character arrays in memory, preseving the existing contents of the
+!> array.
+!>
+!> @author Stephen Gilbert @date 2000-10-01
       module re_alloc
 
       interface realloc
@@ -36,15 +36,20 @@
 
       contains
 
-!>    This subroutine reorganize character type data in memory
-!>    into one one dimensional array.
-!>    @param[inout] c pointer for data in memory.
-!>    @param[in] n dimension for data in memory.
-!>    @param[in] m dimension for allocatable array.
-!>    @param[out] istat scalar INTEGER variable for allocate.
-!>    @author Stephen Gilbert @date 2000-10-01
-!>
-
+  !> This subroutine reallocates a character array, preserving its
+  !> contents.
+  !>
+  !> @param[inout] c pointer for data in memory.
+  !> @param[in] n dimension for data in memory. This is how much data
+  !> is currently stored in the array.
+  !> @param[in] m dimension for allocatable array. This is the size
+  !> the array will be after the allocation of memory.
+  !> @param[out] istat scalar INTEGER variable for allocate.
+  !> - 0 No error.
+  !> - 10 Incorrect dimension.
+  !> - other Allocation error.
+  !>
+  !> @author Stephen Gilbert @date 2000-10-01
          subroutine realloc_c1(c,n,m,istat)
             character(len=1),pointer,dimension(:) :: c
             integer,intent(in) :: n,m
@@ -78,15 +83,20 @@
             return
          end subroutine
 
-!>    This subroutine reorganize real type data in memory into
-!>    one one dimensional array.
-!>    @param[inout] c pointer for data in memory.
-!>    @param[in] n dimension for data in memory.
-!>    @param[in] m dimension for allocatable array.
-!>    @param[out] istat scalar INTEGER variable for allocate.
-!>    @author Stephen Gilbert @date 2000-10-01
-!>
-
+  !> This subroutine reallocates an integer array, preserving its
+  !> contents.
+  !>
+  !> @param[inout] c pointer for data in memory.
+  !> @param[in] n dimension for data in memory. This is how much data
+  !> is currently stored in the array.
+  !> @param[in] m dimension for allocatable array. This is the size
+  !> the array will be after the allocation of memory.
+  !> @param[out] istat scalar INTEGER variable for allocate.
+  !> - 0 No error.
+  !> - 10 Incorrect dimension.
+  !> - other Allocation error.
+  !>
+  !> @author Stephen Gilbert @date 2000-10-01
          subroutine realloc_r(c,n,m,istat)
             real,pointer,dimension(:) :: c
             integer,intent(in) :: n,m

@@ -1,17 +1,16 @@
-!>    @file
-!>    @brief This subroutine reads 32-bit IEEE floating point values.
-!>    @author Stephen Gilbert @date 2000-05-09
-!>
+!> @file
+!> @brief Read 32-bit IEEE floating point values.
+!> @author Stephen Gilbert @date 2000-05-09
 
-!>    This subroutine reads a list of real values in 32-bit IEEE
-!>    floating point format.
-!>    @param[in] rieee Input array of floating point values in 32-bit IEEE format.
-!>    @param[in] num Number of floating point values to convert.
-!>    @param[out] a Output array of real values.
+!> This subroutine reads a list of real values in 32-bit IEEE
+!> floating point format, and copies them to an array of real.
 !>
-!>    @author Stephen Gilbert @date 2000-05-09
+!> @param[in] rieee Input array of floating point values in 32-bit
+!> IEEE format.
+!> @param[out] a Output array of real values.
+!> @param[in] num Number of floating point values to convert.
 !>
-
+!> @author Stephen Gilbert @date 2000-05-09
       subroutine rdieee(rieee,a,num)
 
       real(4),intent(in) :: rieee(num)
