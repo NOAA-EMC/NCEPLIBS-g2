@@ -27,7 +27,7 @@
       character(len=1),intent(out) :: cpack(*)
       integer,intent(out) :: lcpack
 
-      integer :: ifld(ndpts),Ts,tmplsim(5)
+      integer :: Ts,tmplsim(5)
       real :: bscale,dscale,unpk(ndpts),tfld(ndpts)
       real,allocatable :: pscale(:)
 

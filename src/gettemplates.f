@@ -78,7 +78,7 @@
       character(len=4),parameter :: grib='GRIB',c7777='7777'
       character(len=4) :: ctemp
       integer:: listsec0(2)
-      integer iofst,ibeg,istart
+      integer iofst,istart
       logical have3,have4
 
       have3=.false.

@@ -63,7 +63,7 @@
       integer,parameter :: mapsec1len=13
       integer,parameter :: 
      &        mapsec1(mapsec1len)=(/ 2,2,1,1,1,2,1,1,1,1,1,1,1 /)
-      integer iofst,ibeg,istart
+      integer iofst,istart
 
       ierr=0
       numlocal=0
