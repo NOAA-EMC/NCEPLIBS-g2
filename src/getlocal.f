@@ -41,7 +41,7 @@
       character(len=4),parameter :: grib='GRIB',c7777='7777'
       character(len=4) :: ctemp
       integer :: listsec0(2)
-      integer iofst,ibeg,istart,numlocal
+      integer iofst,istart,numlocal
 
       ierr=0
       numlocal=0

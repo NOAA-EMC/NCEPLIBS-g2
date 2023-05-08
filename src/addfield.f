@@ -107,7 +107,7 @@
       integer lensec3,lensec4,lensec5,lensec6,lensec7
       logical issec3,needext,isprevbmap
 
-      allones=Z'FFFFFFFF'
+      allones = int(Z'FFFFFFFF')
       ierr=0
 !
 ! Check to see if beginning of GRIB message exists
