@@ -14,7 +14,7 @@ gribcreate.f gribend.f gribinfo.f
 ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.f intmath.f
 ixgb2.f jpcpack.F90 jpcunpack.F90 misspack.f mkieee.f pack_gp.f
 params_ecmwf.f params.f pdstemplates.F90 pngpack.f pngunpack.f
-putgb2.f rdieee.f realloc.f reduce.f simpack.f simunpack.f skgb.f
+putgb2.F90 rdieee.f realloc.f reduce.f simpack.f simunpack.f skgb.f
 specpack.f specunpack.f)
 
 # These are the C source files.
