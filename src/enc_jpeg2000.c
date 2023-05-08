@@ -10,6 +10,11 @@
 
 #define MAXOPTSSIZE 1024 /**< Maximum size of options. */
 
+int
+enc_jpeg2000(unsigned char *cin, g2int width, g2int height, g2int nbits,
+             g2int ltype, g2int ratio, g2int retry, char *outjpc,
+             g2int jpclen);
+
 /**
  * This Function encodes a grayscale image into a JPEG2000 code stream
  * specified in the JPEG2000 Part-1 standard (i.e., ISO/IEC 15444-1)

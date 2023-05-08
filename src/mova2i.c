@@ -18,38 +18,7 @@
  * @author Stephen Gilbert @date 2002-08-15
  * */
 
-#ifdef CRAY90
-   #include <fortran.h>
-   int MOVA2I(unsigned char *a)
-#endif
-#ifdef HP
-   int mova2i(unsigned char *a)
-#endif
-#ifdef SGI
-   int mova2i_(unsigned char *a)
-#endif
-#ifdef LINUX
-   int mova2i_(unsigned char *a)
-#endif
-#ifdef LINUXF90
-   int MOVA2I(unsigned char *a)
-#endif
-#ifdef LINUXG95
-   int mova2i__(unsigned char *a)
-#endif
-#ifdef APPLE
-   int mova2i__(unsigned char *a)
-#endif
-#ifdef VPP5000
-   int mova2i_(unsigned char *a)
-#endif
-#ifdef IBM4
-   int mova2i(unsigned char *a)
-#endif
-#ifdef IBM8
-   long long int mova2i(unsigned char *a)
-#endif
-
+int mova2i_(unsigned char *a)
 {
     return (int)(*a);
 }

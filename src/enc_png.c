@@ -83,7 +83,7 @@ void user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
 void user_flush_data(png_structp png_ptr)
 
 {
-   int *do_nothing=NULL;
+   /* int *do_nothing=NULL; */
 }
 
 /**
