@@ -157,7 +157,7 @@ C        MISSLX( ) IS AN AUTOMATIC ARRAY.
      &     536870912, 1073741824 /)
 C
       
-      PARAMETER IFEED=12
+      PARAMETER (IFEED=12)
 C
       IER=0
       IERSAV=0
