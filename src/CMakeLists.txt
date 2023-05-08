@@ -5,7 +5,7 @@
 
 # These are the fortran source files.
 set(fortran_src addfield.f addgrid.f addlocal.f cmplxpack.f compack.f
-comunpack.f drstemplates.f g2_gbytesc.f g2grids.f gb_info.f gdt2gds.f
+comunpack.f drstemplates.f g2_gbytesc.f g2grids.F90 gb_info.f gdt2gds.f
 getdim.f getfield.F90 getg2i.f getg2ir.f getgb2.f getgb2l.f getgb2p.f
 getgb2r.f getgb2rp.f getgb2s.f getidx.f getlocal.f getpoly.f
 gettemplates.f gf_free.f gf_getfld.F90 gf_unpack1.f gf_unpack2.f
