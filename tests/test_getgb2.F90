@@ -120,7 +120,7 @@ program test_getgb2
   if (iret .ne. 0) stop 150
 
   ! Free the memory.
-  call gf_free(gfld)
+!  call gf_free(gfld)
 
   print *, 'OK!'
   print *, 'SUCCESS!'
