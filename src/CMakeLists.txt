@@ -24,35 +24,14 @@ set(c_src dec_jpeg2000.c dec_png.c enc_jpeg2000.c enc_png.c mova2i.c)
 # substituted in.
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gribmod.F90.in" "${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90" @ONLY)
 
-add_compile_definitions(__64BIT__)
-if(APPLE)
-  add_compile_definitions(APPLE)
-elseif(UNIX)
-  add_compile_definitions(LINUX)
-endif()
-
-if(CMAKE_C_COMPILER_ID MATCHES "^(Intel)$")
-  set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
-  set(CMAKE_C_FLAGS_RELEASE "-O3")
-  set(CMAKE_Fortran_FLAGS "-g -assume noold_ldout_format ${CMAKE_Fortran_FLAGS}")
-  set(fortran_d_flags "-r8")
-elseif(CMAKE_C_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
-  set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
-  set(CMAKE_C_FLAGS_DEBUG "-ggdb -Wall")
-  set(CMAKE_Fortran_FLAGS "-g -fno-range-check -funroll-loops ${CMAKE_Fortran_FLAGS}")
-  set(CMAKE_Fortran_FLAGS_DEBUG "-ggdb -Wall")
-  set(fortran_d_flags "-fdefault-real-8")
-endif()
-
-if(${CMAKE_Fortran_COMPILER_ID} MATCHES "^(GNU)$" AND ${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
-  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -w -fallow-argument-mismatch -fallow-invalid-boz")
-endif()
-
 set(kinds "4" "d")
 foreach(kind ${kinds})
+
+  # Figure out the library name and the include directory.
   set(lib_name ${PROJECT_NAME}_${kind})
   set(module_dir ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
 
+  # Build the fortran code.
   add_library(${lib_name}_f OBJECT ${fortran_src})
   set_target_properties(${lib_name}_f PROPERTIES COMPILE_FLAGS
     "${fortran_${kind}_flags}")
@@ -68,8 +47,11 @@ foreach(kind ${kinds})
   target_include_directories(${lib_name}_c PRIVATE ${JASPER_INCLUDE_DIR})
   target_link_libraries(${lib_name}_c PRIVATE PNG::PNG)
 
+  # Assemble the library.
   add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
-  target_link_libraries(${lib_name} PUBLIC PNG::PNG ${JASPER_LIBRARIES})
+  
+  # Link to bacio, jasper, and w3emc.
+  target_link_libraries(${lib_name} PUBLIC bacio::bacio ${PNG_LIBRARIES} ${JASPER_LIBRARIES} w3emc::w3emc_${kind})
   target_include_directories(${lib_name} INTERFACE
     $<BUILD_INTERFACE:${module_dir}>
     $<INSTALL_INTERFACE:include_${kind}>)
