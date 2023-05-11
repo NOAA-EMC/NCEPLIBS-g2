@@ -25,7 +25,7 @@
 !> @param[out] lcpack The length of packed field cpack.
 !>
 !> @author Stephen Gilbert @date 2002-12-21
-subroutine pngpack(fld,width,height,idrstmpl,cpack,lcpack)
+subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
 
   integer, intent(in) :: width, height
   real, intent(in) :: fld(width * height)
@@ -36,10 +36,20 @@ subroutine pngpack(fld,width,height,idrstmpl,cpack,lcpack)
   real(4) :: ref, rmin4
   real(8) :: rmin, rmax
   integer(4) :: iref
-  integer :: ifld(width * height), nbits
+  integer :: ifld(width * height), nbits, w, h
   integer, parameter :: zero = 0
-  integer :: enc_png
   character(len = 1), allocatable :: ctemp(:)
+
+  interface
+     function enc_png(data, width, height, nbits, pngbuf) bind(c, name="enc_png")
+       use iso_c_binding
+       character(kind = c_char), intent(in) :: data(*)
+       integer(c_int), intent(in) :: width, height
+       integer(c_int), intent(inout) :: nbits
+       character(kind = c_char), intent(out) :: pngbuf(*)
+       integer(c_int) :: enc_png
+     end function enc_png
+  end interface
 
   ndpts = width * height
   bscale = 2.0**real(-idrstmpl(2))
@@ -101,7 +111,7 @@ subroutine pngpack(fld,width,height,idrstmpl,cpack,lcpack)
         nbits = 16
      elseif (nbits .le. 24) then
         nbits = 24
-     else 
+     else
         nbits = 32
      endif
      nbytes = (nbits / 8) * ndpts
@@ -109,7 +119,9 @@ subroutine pngpack(fld,width,height,idrstmpl,cpack,lcpack)
      call g2_sbytesc(ctemp, ifld, 0, nbits, 0, ndpts)
 
      ! Encode data into PNG Format.
-     lcpack = enc_png(ctemp, width, height, nbits, cpack)
+     w = width
+     h = height
+     lcpack = enc_png(ctemp, w, h, nbits, cpack)
      if (lcpack .le. 0) then
         print *, 'pngpack: ERROR Encoding PNG = ', lcpack
      endif
