@@ -1,12 +1,8 @@
 !> @file
-!> @brief This Fortran Module contains info on all the available GRIB2
-!> Data Representation Templates used in Section 5 - the Data
-!> Representation Section (DRS).
+!> @brief Handles Data Representation Templates used in Section 5.
 !> @author Stephen Gilbert @date 2001-04-03
 
-!> This Fortran Module contains info on all the available GRIB2 Data
-!> Representation Templates used in Section 5 - the Data
-!> Representation Section (DRS). (See
+!> Handles Data Representation Templates used in Section 5.  (See
 !> https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect5.shtml.)
 !>
 !> Each Template has three parts:
@@ -111,20 +107,17 @@ module drstemplates
   !         data (templates(5)%mapdrs(j),j=1,15) &
   !                                /4,-2,-2,1,1,1,4,2,2,1,1,1,1,1,1/
 
-
 contains
 
-  !>    This function returns the index of specified Data
-  !>    Representation Template 5.NN (NN=number) in array templates.
+  !> Return the index of specified Data Representation Template in
+  !> array templates.
   !>
-  !>    @param[in] number NN, indicating the number of the Data Representation
-  !>    Template 5.NN that is being requested.
+  !> @param[in] number the Data Representation Template number.
   !>
-  !>    @return Index of DRT 5.NN in array templates, if template exists.
-  !>    = -1, otherwise.
+  !> @return Index of DRT 5.NN in array templates, if template exists.
+  !> = -1, otherwise.
   !>
-  !>    @author Stephen Gilbert            @date 2001-06-28
-  !>
+  !> @author Stephen Gilbert @date 2001-06-28
   integer function getdrsindex(number)
     implicit none
 
@@ -139,29 +132,27 @@ contains
           return
        endif
     enddo
-
   end function getdrsindex
 
-  !>    This subroutine returns DRS template information for a
-  !>    specified Data Representation Template 5.NN.
+  !> Return DRS template information for a specified Data
+  !> Representation Template.
   !>
-  !>    The number of entries in the template is returned along with a map
-  !>    of the number of octets occupied by each entry. Also, a flag is
-  !>    returned to indicate whether the template would need to be extended.
+  !> The number of entries in the template is returned along with a map
+  !> of the number of octets occupied by each entry. Also, a flag is
+  !> returned to indicate whether the template would need to be extended.
   !>
-  !>    @param[in] number NN, indicating the number of the Data Representation
-  !>    Template 5.NN that is being requested.
-  !>    @param[out] nummap Number of entries in the Template
-  !>    @param[out] map An array containing the number of octets that each
-  !>    template entry occupies when packed up into the DRS.
-  !>    @param[out] needext Logical variable indicating whether the Data Representation
-  !>    Template has to be extended.
-  !>    @param[out] iret Error return code.
-  !>    - 0 = no error
-  !>    - 1 = Undefined Data Representation Template number.
+  !> @param[in] number NN, indicating the number of the Data Representation
+  !> Template 5.NN that is being requested.
+  !> @param[out] nummap Number of entries in the Template
+  !> @param[out] map An array containing the number of octets that each
+  !> template entry occupies when packed up into the DRS.
+  !> @param[out] needext Logical variable indicating whether the Data Representation
+  !> Template has to be extended.
+  !> @param[out] iret Error return code.
+  !> - 0 = no error
+  !> - 1 = Undefined Data Representation Template number.
   !>
-  !>    @author Stephen Gilbert            @date 2000-05-11
-  !>
+  !> @author Stephen Gilbert @date 2000-05-11
   subroutine getdrstemplate(number, nummap, map, needext, iret)
     implicit none
 
@@ -185,27 +176,28 @@ contains
             ' not defined.'
        iret = 1
     endif
-
   end subroutine getdrstemplate
 
-  !>    This subroutine generates the remaining octet map for a given Data
-  !>    Representation Template, if required.
+  !> Generate the remaining octet map for a given Data
+  !> Representation Template, if required.
   !>
-  !>    Some Templates can vary depending on data values given in an
-  !>    earlier part of the Template, and it is necessary to know some of
-  !>    the earlier entry values to generate the full octet map of the
-  !>    Template.
+  !> Some Templates can vary depending on data values given in an
+  !> earlier part of the Template, and it is necessary to know some of
+  !> the earlier entry values to generate the full octet map of the
+  !> Template.
   !>
-  !>    @param[in] number NN, indicating the number of the Data
-  !>    Representation Template 5.NN that is being requested.
-  !>    @param[in] list The list of values for each entry in the Data
-  !>    Representation Template 5.NN.
-  !>    @param[out] nummap Number of entries in the Template
-  !>    @param[out] map An array containing the number of octets that each
-  !>    template entry occupies when packed up into the GDS.
+  !> Currently no templates have been implemented which require an
+  !> extension.
   !>
-  !>    @author  Stephen Gilbert            @date 2000-05-11
+  !> @param[in] number NN, indicating the number of the Data
+  !> Representation Template 5.NN that is being requested.
+  !> @param[in] list The list of values for each entry in the Data
+  !> Representation Template 5.NN.
+  !> @param[out] nummap Number of entries in the Template
+  !> @param[out] map An array containing the number of octets that each
+  !> template entry occupies when packed up into the GDS.
   !>
+  !> @author  Stephen Gilbert @date 2000-05-11
   subroutine extdrstemplate(number, list, nummap, map)
     implicit none
 
@@ -216,18 +208,20 @@ contains
     index = getdrsindex(number)
     if (index .eq. -1) return
 
+    ! No implemented DRS templates need extensions.
     if (.not. templates(index)%needext) return
-    nummap = templates(index)%mapdrslen
-    map(1 : nummap) = templates(index)%mapdrs(1 : nummap)
 
-    if (number .eq. 1) then
-       N = list(11) + list(13)
-       do i = 1, N
-          map(nummap + i)=4
-       enddo
-       nummap = nummap + N
-    endif
+    ! Uncomment the code below if we ever implement a template that
+    ! needs extension.
+    ! nummap = templates(index)%mapdrslen
+    ! map(1 : nummap) = templates(index)%mapdrs(1 : nummap)
 
+    ! if (number .eq. 1) then
+    !    N = list(11) + list(13)
+    !    do i = 1, N
+    !       map(nummap + i)=4
+    !    enddo
+    !    nummap = nummap + N
+    ! endif
   end subroutine extdrstemplate
-
 end module drstemplates
