@@ -26,6 +26,7 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-21
 subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
+  implicit none
 
   integer, intent(in) :: width, height
   real, intent(in) :: fld(width * height)
@@ -36,9 +37,11 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   real(4) :: ref, rmin4
   real(8) :: rmin, rmax
   integer(4) :: iref
-  integer :: ifld(width * height), nbits, w, h
+  integer :: ifld(width * height), nbits
   integer, parameter :: zero = 0
   character(len = 1), allocatable :: ctemp(:)
+  real :: bscale, dscale, temp
+  integer :: imax, imin, j, maxdif, nbytes, ndpts
 
   interface
      function enc_png(data, width, height, nbits, pngbuf) bind(c, name="enc_png")
@@ -119,9 +122,7 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
      call g2_sbytesc(ctemp, ifld, 0, nbits, 0, ndpts)
 
      ! Encode data into PNG Format.
-     w = width
-     h = height
-     lcpack = enc_png(ctemp, w, h, nbits, cpack)
+     lcpack = enc_png(ctemp, width, height, nbits, cpack)
      if (lcpack .le. 0) then
         print *, 'pngpack: ERROR Encoding PNG = ', lcpack
      endif

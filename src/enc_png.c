@@ -9,7 +9,7 @@
 #include <string.h>
 #include <png.h>
 
-typedef long g2int; /**< Long integer type. */ 
+typedef int g2int; /**< Long integer type. */ 
 
 /**
  * location to write PNG stream
