@@ -1,16 +1,15 @@
 !> @file
-!> @brief This subroutines searches the number of Local Use Sections
-!> and gridded fields in a GRIB2 message.
+!> @brief Find the number of Local Use Sections and gridded fields in
+!> a GRIB2 message.
 !> @author Stephen Gilbert @date 2000-05-25
 
-!> This subroutine searches through a GRIB2 message and returns
-!> the number of Local Use Sections and number of gridded fields
-!> found in the message.
+!> Search through a GRIB2 message and return the number of Local Use
+!> Sections and number of gridded fields found in the message.
 !>
-!> It also performs various checks to see if the message is a valid
-!> GRIB2 message. Also, a list of safe array dimensions is returned
-!> for use in allocating return arrays from routines getlocal(),
-!> gettemplates(), and getfields().
+!> This subroutine also performs various checks to see if the message
+!> is a valid GRIB2 message. Also, a list of safe array dimensions is
+!> returned for use in allocating return arrays from routines
+!> getlocal(), gettemplates(), and getfields().
 !>
 !> Array maxvals contains the maximum possible number of values
 !> that will be returned in argument arrays for routines getlocal(),
