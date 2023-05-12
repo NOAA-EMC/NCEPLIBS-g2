@@ -10,7 +10,7 @@ getdim.f getfield.F90 getg2i.f getg2ir.f getgb2.f getgb2l.f getgb2p.f
 getgb2r.f getgb2rp.f getgb2s.f getidx.f getlocal.f getpoly.f
 gettemplates.f gf_free.f gf_getfld.F90 gf_unpack1.f gf_unpack2.f
 gf_unpack3.F90 gf_unpack4.f gf_unpack5.f gf_unpack6.f gf_unpack7.f
-gribcreate.F90 gribend.F90 gribinfo.f
+gribcreate.F90 gribend.F90 gribinfo.F90
 ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.f intmath.f
 ixgb2.f jpcpack.F90 jpcunpack.F90 misspack.f mkieee.f pack_gp.f
 params_ecmwf.f params.f pdstemplates.F90 pngpack.F90 pngunpack.F90
