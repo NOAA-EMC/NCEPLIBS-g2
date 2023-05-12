@@ -9,11 +9,7 @@
 #include <string.h>
 #include <png.h>
 
-#ifdef __64BIT__
-  typedef int g2int; /**< Integer type. */
-#else
-  typedef long g2int; /**< Long integer type. */ 
-#endif
+typedef int g2int; /**< Long integer type. */ 
 
 /**
  * location to write PNG stream
@@ -29,9 +25,6 @@ struct png_stream {
 };
 typedef struct png_stream png_stream; /**< location to write PNG stream. */
 
-void user_write_data(png_structp ,png_bytep , png_uint_32 );
-void user_flush_data(png_structp );
-
 /**
  * Custom write function used to that libpng will write to memory
  * location instead of a file on disk.
@@ -43,19 +36,17 @@ void user_flush_data(png_structp );
  * @author Stephen Gilbert
 */
 
-void user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
-
+static void
+user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
 {
      unsigned char *ptr;
      g2int offset;
      png_stream *mem;
 
-     mem=(png_stream *)png_get_io_ptr(png_ptr);
-     ptr=mem->stream_ptr;
-     offset=mem->stream_len;
-/*     printf("SAGwr %ld %ld %x\n",offset,length,ptr);    */
-/*     for (j=offset,k=0;k<length;j++,k++) ptr[j]=data[k];*/
-     memcpy(ptr+offset,data,length);
+     mem = (png_stream *)png_get_io_ptr(png_ptr);
+     ptr = mem->stream_ptr;
+     offset = mem->stream_len;
+     memcpy(ptr + offset, data, length);
      mem->stream_len += length;
 }
 
@@ -67,10 +58,9 @@ void user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
  * @author Stephen Gilbert
 */
 
-void 
+static void 
 user_flush_data(png_structp png_ptr)
 {
-   /* int *do_nothing=NULL; */
 }
 
 /**
@@ -86,7 +76,7 @@ user_flush_data(png_structp png_ptr)
  * @author Stephen Gilbert
 */
 int 
-enc_png_(char *data, g2int *width, g2int *height, g2int *nbits, char *pngbuf)
+enc_png(char *data, g2int *width, g2int *height, g2int *nbits, char *pngbuf)
 {
  
     int color_type;

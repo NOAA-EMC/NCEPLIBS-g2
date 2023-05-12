@@ -19,14 +19,12 @@ program test_pngpack
   ! Create the fld variable with data to pack
   fld = (/1.0, 2.0, 3.0, 4.0/)
 
-  ! No idea what this needs to be, documentation confusing
+  ! Find these in drstemplates.f template 41
   idrstmpl(1)=0
   idrstmpl(2)=1
   idrstmpl(3)=1
   idrstmpl(4)=8
   idrstmpl(5)=0
-  idrstmpl(6)=0
-  idrstmpl(7)=1
 
   ! Testing pngpack
   call pngpack(fld, width, height, idrstmpl, cpack, lcpack)
