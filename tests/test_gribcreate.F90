@@ -280,6 +280,10 @@ program test_gribcreate
   call gribend(cgrib, lcgrib, lengrib, ierr)
   if (ierr .ne. 0) stop 150
   
+  ! Try to add a local section again - will not work.
+  call addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  if (ierr .ne. 2) stop 41
+
   ! Try to add a grid section - won't work, message has been ended.
   call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
        ideflist, idefnum, ierr)

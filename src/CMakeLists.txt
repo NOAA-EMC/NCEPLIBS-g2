@@ -4,7 +4,7 @@
 # Mark Potts, Kyle Gerheiser, Ed Hartnett
 
 # These are the fortran source files.
-set(fortran_src addfield.f addgrid.F90 addlocal.f cmplxpack.f compack.f
+set(fortran_src addfield.f addgrid.F90 addlocal.F90 cmplxpack.f compack.f
 comunpack.f drstemplates.f g2_gbytesc.F90 g2grids.F90 gb_info.f gdt2gds.f
 getdim.f getfield.F90 getg2i.f getg2ir.f getgb2.f getgb2l.f getgb2p.f
 getgb2r.f getgb2rp.f getgb2s.f getidx.f getlocal.f getpoly.f
