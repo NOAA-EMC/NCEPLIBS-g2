@@ -25,9 +25,6 @@ struct png_stream {
 };
 typedef struct png_stream png_stream; /**< location to write PNG stream. */
 
-void user_write_data(png_structp ,png_bytep , png_uint_32 );
-void user_flush_data(png_structp );
-
 /**
  * Custom write function used to that libpng will write to memory
  * location instead of a file on disk.
@@ -39,7 +36,7 @@ void user_flush_data(png_structp );
  * @author Stephen Gilbert
 */
 
-void
+static void
 user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
 {
      unsigned char *ptr;
@@ -61,7 +58,7 @@ user_write_data(png_structp png_ptr,png_bytep data, png_uint_32 length)
  * @author Stephen Gilbert
 */
 
-void 
+static void 
 user_flush_data(png_structp png_ptr)
 {
 }
