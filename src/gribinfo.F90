@@ -120,7 +120,7 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
      return
   endif
 
-  !     Unpack Section 0 - Indicator Section
+  ! Unpack Section 0 - Indicator Section.
   iofst = 8 * (istart + 5)
   call g2_gbytec(cgrib, listsec0(1), iofst, 8) ! Discipline
   iofst = iofst + 8
@@ -133,14 +133,14 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
   lensec0 = 16
   ipos = istart + lensec0
 
-  !     Currently handles only GRIB Edition 2.
+  ! Currently handles only GRIB Edition 2.
   if (listsec0(2) .ne. 2) then
      print *, 'gribinfo: can only decode GRIB edition 2.'
      ierr = 2
      return
   endif
 
-  !     Unpack Section 1 - Identification Section
+  ! Unpack Section 1 - Identification Section.
   call g2_gbytec(cgrib, lensec1, iofst, 32) ! Length of Section 1
   iofst = iofst + 32
   call g2_gbytec(cgrib, isecnum, iofst, 8) ! Section number (1)
@@ -151,9 +151,9 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
      return
   endif
 
-  !     Unpack each input value in array listsec1 into the the appropriate
-  !     number of octets, which are specified in corresponding entries in
-  !     array mapsec1.
+  ! Unpack each input value in array listsec1 into the the appropriate
+  ! number of octets, which are specified in corresponding entries in
+  ! array mapsec1.
   do i = 1, mapsec1len
      nbits = mapsec1(i) * 8
      call g2_gbytec(cgrib, listsec1(i), iofst, nbits)
@@ -161,9 +161,9 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
   enddo
   ipos = ipos + lensec1
 
-  !     Loop through the remaining sections keeping track of the length of
-  !     each. Also count the number of times Section 2 and Section 4
-  !     appear.
+  ! Loop through the remaining sections keeping track of the length of
+  ! each. Also count the number of times Section 2 and Section 4
+  ! appear.
   do
      ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // &
           cgrib(ipos + 3)
@@ -188,8 +188,8 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
         return
      endif
      if (isecnum .eq. 2) then ! Local Section 2
-        !             Increment counter for total number of local sections found
-        !             and determine largest Section 2 in message.
+        ! Increment counter for total number of local sections found
+        ! and determine largest Section 2 in message.
         numlocal = numlocal + 1
         lenposs = lensec-5
         if (lenposs .gt. maxsec2len) maxsec2len = lenposs
@@ -219,7 +219,6 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
         lenposs = lensec-11
         if (lenposs .gt. maxdrstmpl) maxdrstmpl = lenposs
      endif
-
   enddo
 
   maxvals(1) = maxsec2len
