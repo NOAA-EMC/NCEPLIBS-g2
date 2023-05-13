@@ -14,13 +14,6 @@
 !> is less than zero, then the index is re read from index file
 !> abs(lugi).
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2005-03-15 | Stephen Gilbert | Initial Programming
-!> 2009-07-09 | Boi Vuong | Fixed bug for checking (LUGB) unit index file
-!> 2016-03-29 | Boi Vuong | Restore getidx.f from 1.2.3; file num up to 9999; added templates: 4.60, 4.61
-!>
 !> @param[in] lugb integer unit of the unblocked GRIB2 data file.
 !> File must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
