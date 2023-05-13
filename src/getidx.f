@@ -1,37 +1,37 @@
 !> @file
-!> @brief This subroutine finds, reads or generates a GRIB2 index for
+!> @brief Find, read or generate a GRIB2 index for
 !> the GRIB2 file associated with unit lugb.
 !> @author Stephen Gilbert @date 2005-03-15
 
-!> This subroutine finds, reads or generates a GRIB2 index for
+!> Find, read or generate a GRIB2 index for
 !> the GRIB2 file associated with unit lugb. If the index already
 !> exists, it is returned, otherwise, the index is (1) read from an
 !> existing indexfile associated with unit LUGI or (2) generated
-!> from the grib2file lugi.
+!> from the GRIB2 file lugi.
 !>
 !> Users can force a regeneration of an index: if lugi equals lugb,
 !> the index will be regenerated from the data in file LUGB. If LUGI
 !> is less than zero, then the index is re read from index file
 !> abs(lugi).
 !>
-!> @param[in] lugb integer unit of the unblocked GRIB2 data file.
+!> @note The file unit numbers must be in range 0 - 9999.
+!>
+!> @param[in] lugb integer unit of the GRIB2 data file.
 !> File must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
 !> this routine.
-!> @param[in] lugi integer unit of the unblocked GRIB2 index file.
+!> @param[in] lugi integer unit of the GRIB2 index file.
 !> If nonzero, file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before
-!> calling this routine. Set to 0 to get index buffer from the grib file.
-!> @param[out] cindex character*1 pointer to a buffer that will get
+!> calling this routine. Set to 0 to get index information from the grib file.
+!> @param[out] cindex character*1 Pointer to a buffer that will get
 !> index records.
-!> @param[out] nlen integer total length of all index records
-!> @param[out] nnum integer number of index records
-!> @param[out] iret integer return code
+!> @param[out] nlen integer Total length of all index records.
+!> @param[out] nnum integer Number of index records.
+!> @param[out] iret integer Return code:
 !> - 0 No error.
 !> - 90 Unit number out of range.
 !> - 96 Error reading/creating index file.
-!>
-!> @note Allow file unit numbers in range 0 - 9999.
 !>
 !> @author Stephen Gilbert @date 2005-03-15
       SUBROUTINE GETIDX(LUGB,LUGI,CINDEX,NLEN,NNUM,IRET)
