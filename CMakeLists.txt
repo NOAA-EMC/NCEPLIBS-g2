@@ -41,8 +41,15 @@ endif()
 
 # Handle user build options.
 option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
+option(LOGGING "Turn on internal logging messages. Only useful to g2 developers." OFF)
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
+
+# Set pre-processor symbol if logging is desired.
+if(LOGGING)
+  add_definitions(-DLOGGING)
+endif()
 
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
