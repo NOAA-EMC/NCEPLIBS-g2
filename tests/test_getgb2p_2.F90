@@ -21,6 +21,8 @@ program test_getgb2p_2
   logical :: extract
   integer :: k
   integer :: i
+  character(*) :: GDAS_FILE
+  parameter(GDAS_FILE = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
   
   ! Interfaces are needed due to pointers in the parameter lists.
   interface
@@ -39,7 +41,7 @@ program test_getgb2p_2
 
   ! Open a real GRIB2 file.
   print *, 'Testing getgb2p() some more...'
-  call baopenr(lugb, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
+  call baopenr(lugb, GDAS_FILE, iret)
   if (iret .ne. 0) stop 100
 
   lugi = 0
@@ -61,18 +63,19 @@ program test_getgb2p_2
   extract = .true.
   call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, k, gribm, leng, iret)
+  print *, iret, k, leng
   if (iret .ne. 0) stop 101
-  if (k .ne. 1 .or. leng .ne. 11183) stop 110
+  if (k .ne. 1 .or. leng .ne. 15254) stop 110
 
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
 
-  print *, 'Now try with extract false...'
+  ! print *, 'Now try with extract false...'
   extract = .false.
   call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, k, gribm, leng, iret)
   if (iret .ne. 0) stop 101
-  if (k .ne. 1 .or. leng .ne. 11183) stop 110
+  if (k .ne. 1 .or. leng .ne. 15254) stop 110
 
   print *, 'Deallocate buffer that got GRIB message.'
   deallocate(gribm)
