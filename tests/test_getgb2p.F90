@@ -9,7 +9,7 @@ program test_getgb2p
 
   integer :: lugi
 #if KIND == 4
-  integer :: lugb = 3
+  integer :: lugb = 3 ! Use different LU for _4/_d in case tests are run in parallel.
 #else
   integer :: lugb = 13
 #endif
