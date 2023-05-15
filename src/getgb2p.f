@@ -20,18 +20,9 @@
 !>
 !> Note that derived type @ref grib_mod::gribfield contains pointers
 !> to many arrays of data. The memory for these arrays is allocated
-!> when the values in the arrays are set, to help minimize problems
-!> with array overloading. Because of this users are should free this
+!> when the values in the arrays are set. Users must free this
 !> memory, when it is no longer needed, by a call to subroutine
 !> gf_free().
-!>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 1994-04-01 | Mark Iredell | Initial
-!> 1995-10-31 | Mark Iredell | modularized portions of code into subprograms and allowed for unspecified index file
-!> 2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with GRIB2
-!> 2003-12-17 | Stephen Gilbert | modified from getgb2 to return packed GRIB2 message
 !>
 !> @param[in] lugb Unit of the unblocked GRIB data file. The
 !> file must have been opened with [baopen() or baopenr()]
