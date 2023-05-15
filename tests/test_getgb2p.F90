@@ -8,7 +8,11 @@ program test_getgb2p
   implicit none
 
   integer :: lugi
-  integer :: lugb = 3
+#if KIND == 4
+  integer :: lugb = 3 ! Use different LU for _4/_d in case tests are run in parallel.
+#else
+  integer :: lugb = 5
+#endif
   integer :: iret
   integer :: leng
   character(len=1), pointer, dimension(:) :: gribm
@@ -53,7 +57,7 @@ program test_getgb2p
      jgdt(i) = -9999
   end do
 
-  ! First try with extract true.
+  print *, 'First try with extract true...'
   extract = .true.
   call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, k, gribm, leng, iret)
@@ -63,14 +67,14 @@ program test_getgb2p
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
 
-  ! Now try with extract false.
+  print *, 'Now try with extract false...'
   extract = .false.
   call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, k, gribm, leng, iret)
   if (iret .ne. 0) stop 101
   if (k .ne. 1 .or. leng .ne. 11183) stop 110
 
-  ! Deallocate buffer that got GRIB message.
+  print *, 'Deallocate buffer that got GRIB message.'
   deallocate(gribm)
   
   call baclose(lugb, iret)
