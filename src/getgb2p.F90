@@ -25,13 +25,8 @@
 !> memory, when it is no longer needed, by a call to subroutine
 !> gf_free().
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 1994-04-01 | Mark Iredell | Initial
-!> 1995-10-31 | Mark Iredell | modularized portions of code into subprograms and allowed for unspecified index file
-!> 2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with GRIB2
-!> 2003-12-17 | Stephen Gilbert | modified from getgb2 to return packed GRIB2 message
+!> @note Specify an index file if feasible to increase speed.
+!> Do not engage the same logical unit from more than one processor.
 !>
 !> @param[in] lugb Unit of the unblocked GRIB data file. The
 !> file must have been opened with [baopen() or baopenr()]
@@ -96,9 +91,6 @@
 !> - 96 Error reading index.
 !> - 97 Error reading GRIB file.
 !> - 99 Request not found.
-!>
-!> @note Specify an index file if feasible to increase speed.
-!> Do not engage the same logical unit from more than one processor.
 !>
 !> @author Mark Iredell @date 1994-04-01
 subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
