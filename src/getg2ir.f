@@ -7,12 +7,8 @@
 !>
 !> The index file record format is documented in function ixgb2().
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 1995-10-31 | Mark Iredell | Initial
-!> 1996-10-31 | Mark Iredell | augmented optional definitions to byte 320
-!> 2002-01-02 | Stephen Gilbert | modified from getgir to create GRIB2 indexes
+!> @note Subprogram can be called from a multiprocessing environment.
+!> Do not engage the same logical unit from more than one processor.
 !>
 !> @param[in] lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
@@ -34,9 +30,6 @@
 !> - 0 all ok
 !> - 1 not enough memory available to hold full index buffer
 !> - 2 not enough memory to allocate initial index buffer
-!>
-!> @note Subprogram can be called from a multiprocessing environment.
-!> Do not engage the same logical unit from more than one processor.
 !>
 !> @author Mark Iredell @date 1995-10-31
       SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,NMESS,IRET)
