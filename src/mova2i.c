@@ -17,7 +17,6 @@
  * 
  * @author Stephen Gilbert @date 2002-08-15
  * */
-
 int mova2i_(unsigned char *a)
 {
     return (int)(*a);

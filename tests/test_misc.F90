@@ -10,6 +10,8 @@ program test_misc
 
   print *, 'Testing misc stuff...'
 
+  ! This test demonstrates that the mova2i_ C function is not needed
+  ! any more. See https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/396.
   do i = 0, 255
      if (i .ne. ichar(char(i))) stop 10
   end do
