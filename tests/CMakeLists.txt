@@ -66,6 +66,7 @@ if(FTP_TEST_FILES)
   # Build a _4 and _d version of each test and link them to the _4 and
   # _d builds of the library, for 4-byte real, and 8-byte real.
   foreach(kind ${kinds})
+    create_test(test_skgb ${kind})
     create_test(test_ixgb2 ${kind})  
     create_test(test_getg2ir ${kind})  
     create_test(test_getidx ${kind})  
@@ -86,6 +87,7 @@ copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 # _d builds of the library, for 4-byte real, and 8-byte real.
 foreach(kind ${kinds})
 #  create_test(test_g2cf ${kind})
+  create_test(test_misc ${kind})
   create_test(test_g2 ${kind})
   create_test(test_g2_encode ${kind})
   create_test(test_g2_decode ${kind})
