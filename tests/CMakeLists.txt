@@ -66,6 +66,7 @@ if(FTP_TEST_FILES)
   # Build a _4 and _d version of each test and link them to the _4 and
   # _d builds of the library, for 4-byte real, and 8-byte real.
   foreach(kind ${kinds})
+    create_test(test_skgb ${kind})
     create_test(test_ixgb2 ${kind})  
     create_test(test_getg2ir ${kind})  
     create_test(test_getidx ${kind})  
