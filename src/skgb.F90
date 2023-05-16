@@ -4,10 +4,10 @@
 
 !> Search a file for the next GRIB1 or GRIB2 message.
 !>
-!> A grib message is identified by its indicator section,
-!> i.e. an 8-byte sequence with 'GRIB' in bytes 1-4 and a '1' or '2'
-!> in byte 8. If found, the length of the message is decoded from
-!> bytes 5-7. The search is done over a given section of the file. The
+!> A grib message is identified by its indicator section, which is an
+!> 8-byte sequence with 'GRIB' in bytes 1-4 and a '1' or '2' in byte
+!> 8. If found, the length of the message is decoded from bytes
+!> 5-7. The search is done over a given section of the file. The
 !> search is terminated if an eof or i/o error is encountered.
 !>
 !> @param[in] lugb Unit of the unblocked grib file.

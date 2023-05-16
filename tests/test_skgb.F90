@@ -47,6 +47,11 @@ program test_skgb
      start = start + lgrib
   end do
 
+  ! Try and read past end of file. This should work but doesn't see:
+  ! https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/395
+  !  call skgb(lugb, start, 10000, lskip, lgrib)
+  !  print *, i, lskip, lgrib
+
   ! Close the file.
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
