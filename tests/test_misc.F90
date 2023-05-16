@@ -5,7 +5,6 @@
 ! Ed Hartnett 5/16/23
 program test_misc
   implicit none
-  
   integer :: i
 
   print *, 'Testing misc stuff...'
