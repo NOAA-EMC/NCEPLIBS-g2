@@ -7,13 +7,14 @@ program test_getgb2p_2
   use bacio_module
   implicit none
 
-  integer :: lugi
+  ! Use different LU for _4/_d in case tests are run in parallel.  
 #if KIND == 4
-  integer :: lugb = 3 ! Use different LU for _4/_d in case tests are run in parallel.
+  integer :: lugi = 3
+  integer :: lugb = 4 
 #else
-  integer :: lugb = 5
+  integer :: lugi = 10
+  integer :: lugb = 11
 #endif
-  integer :: iret
   integer :: leng
   character(len=1), pointer, dimension(:) :: gribm
   integer :: j, jdisc, jpdtn, jgdtn
@@ -23,6 +24,9 @@ program test_getgb2p_2
   integer :: i
   character(*) :: GDAS_FILE
   parameter(GDAS_FILE = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
+  character(*) :: GDAS_INDEX_FILE
+  parameter(GDAS_INDEX_FILE = 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
+  integer :: iret
   
   ! Interfaces are needed due to pointers in the parameter lists.
   interface
@@ -44,7 +48,6 @@ program test_getgb2p_2
   call baopenr(lugb, GDAS_FILE, iret)
   if (iret .ne. 0) stop 100
 
-  lugi = 0
   j = 0
   jdisc = -1
   do i = 1, 13
@@ -59,9 +62,9 @@ program test_getgb2p_2
      jgdt(i) = -9999
   end do
 
-  print *, 'First try with extract true...'
+  print *, 'First try with extract true and no index...'
   extract = .true.
-  call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+  call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, k, gribm, leng, iret)
   print *, iret, k, leng
   if (iret .ne. 0) stop 101
@@ -70,18 +73,38 @@ program test_getgb2p_2
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
 
-  ! print *, 'Now try with extract false...'
+  print *, 'Now try with extract false and no index...'
   extract = .false.
-  call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+  call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, k, gribm, leng, iret)
-  if (iret .ne. 0) stop 101
-  if (k .ne. 1 .or. leng .ne. 15254) stop 110
+  if (iret .ne. 0) stop 201
+  if (k .ne. 1 .or. leng .ne. 15254) stop 210
 
   print *, 'Deallocate buffer that got GRIB message.'
   deallocate(gribm)
-  
+
+  ! Now try with the index file.
+  print *, 'Testing getgb2p() with index file ', GDAS_INDEX_FILE
+  call baopenr(lugi, GDAS_INDEX_FILE, iret)
+  if (iret .ne. 0) stop 400
+
+  print *, 'Now try with extract false with index...'
+  extract = .false.
+  call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+       extract, k, gribm, leng, iret)
+  if (iret .ne. 0) stop 201
+  if (k .ne. 1 .or. leng .ne. 15254) stop 210
+
+  print *, 'Deallocate buffer that got GRIB message.'
+  deallocate(gribm)
+
+  ! Close the index file.
+  call baclose(lugi, iret)
+  if (iret .ne. 0) stop 499
+
+  ! Close the GRIB2 file.
   call baclose(lugb, iret)
-  if (iret .ne. 0) stop 199
+  if (iret .ne. 0) stop 599
 
   print *, 'SUCCESS!...'
 
