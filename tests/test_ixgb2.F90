@@ -53,13 +53,23 @@ program test_ixgb2
      stop 3
   end if
 
+  ! This will return an error because lskip does not point to a valid
+  ! GRIB message.
+  lskip = 0
+  lgrib = 11183
+  call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
+  if (iret .ne. 3) stop 11
+
+  ! Free allocated memory
+  deallocate(cbuf)
+
   ! These numbers come from test_skgb.F90, which finds the
   ! offsets/lengths of all GRIB messages in this test file.
   lskip = 202
   lgrib = 11183
   call ixgb2(lugi, lskip, lgrib, cbuf, numfld, mlen, iret)
   if (numfld .ne. 1 .or. mlen .ne. 200 .or. iret .ne. 0) stop 20
-  print *,cbuf(1:mlen)
+  !print *,cbuf(1:mlen)
   do i = 1, mlen
 !     print *,'char(',ichar(cbuf(i)),'), '
      if (cbuf(i) .ne. expected_cbuf(i)) stop 30
