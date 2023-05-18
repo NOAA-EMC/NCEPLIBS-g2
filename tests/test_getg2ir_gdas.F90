@@ -15,7 +15,7 @@ program test_getg2ir_gdas
 
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   integer :: total_bytes, grib_version, discipline, field_number
-  type (index_rec_data) :: idx, expected_idx(2)
+  type (index_rec_data) :: idx, expected_idx(3)
 
   ! These are the test files we will use.
   character(*) :: TEST_FILE_GDAS
@@ -35,7 +35,8 @@ program test_getg2ir_gdas
 
   ! Initialize expected results.
   call init_index(200, 0, 0, 37, 109, 143, 166, 4721, 15254, 2, 0, 1, expected_idx(1))
-  call init_index(200, 37897, 0, 37, 109, 143, 166, 4721, 15897, 2, 0, 1, expected_idx(2))
+  call init_index(200, 15254, 0, 37, 109, 143, 166, 4721, 22643, 2, 0, 1, expected_idx(2))
+  call init_index(200, 37897, 0, 37, 109, 143, 166, 4721, 15897, 2, 0, 1, expected_idx(3))
 
   ! Open a real GRIB2 file.
   call baopenr(lugb, TEST_FILE_GDAS, iret)
@@ -50,10 +51,23 @@ program test_getg2ir_gdas
   !  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
 
   call parse_cbuf(cbuf, idx)
-  call print_index(idx)
+  !call print_index(idx)
   if (cmp_idx(idx, expected_idx(1)) .ne. 0) stop 300
 
   ! Free memory.
+  deallocate(cbuf)
+  
+  ! Get a index for a different message.
+  mnum = 1
+  call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+!  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
+  if (iret .ne. 0) stop 101
+  if (nlen .ne. 3600 .or. nnum .ne. 18 .or. nmess .ne. 19) stop 102
+  
+  call parse_cbuf(cbuf, idx)
+  !call print_index(idx)
+  if (cmp_idx(idx, expected_idx(2)) .ne. 0) stop 300
+
   deallocate(cbuf)
   
   ! Get a index for a different message.
@@ -64,8 +78,8 @@ program test_getg2ir_gdas
   if (nlen .ne. 3400 .or. nnum .ne. 17 .or. nmess .ne. 19) stop 102
   
   call parse_cbuf(cbuf, idx)
-  call print_index(idx)
-  if (cmp_idx(idx, expected_idx(2)) .ne. 0) stop 300
+  !call print_index(idx)
+  if (cmp_idx(idx, expected_idx(3)) .ne. 0) stop 300
 
   deallocate(cbuf)
   
