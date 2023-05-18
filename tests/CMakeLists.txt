@@ -35,7 +35,7 @@ endfunction()
 
 # This function builds, links, and runs a test program.
 function(create_test name kind)
-  add_executable(${name}_${kind} ${name}.F90 util.F90)
+  add_executable(${name}_${kind} ${name}.F90 util.F90 index_rec.F90)
   target_link_libraries(${name}_${kind} PRIVATE g2_${kind} PNG::PNG)
   set_target_properties(${name}_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   set_target_properties(${name}_${kind} PROPERTIES Fortran_MODULE_DIRECTORY
