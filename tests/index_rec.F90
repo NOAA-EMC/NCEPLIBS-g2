@@ -69,23 +69,26 @@ contains
   integer function cmp_idx(idx1, idx2)
     implicit none
     type (index_rec_data), intent(in) :: idx1, idx2
+    integer res;
+    
+    res = 0
 
-    cmp_idx = 0
+    if (idx1%index_rec_len .ne. idx2%index_rec_len) res = res + 1
+    if (idx1%index_rec_len .ne. idx2%index_rec_len) res = res + 1
+    if (idx1%b2s_message .ne. idx2%b2s_message) res = res + 1
+    if (idx1%b2s_lus .ne. idx2%b2s_lus) res = res + 1
+    if (idx1%b2s_gds .ne. idx2%b2s_gds) res = res + 1
+    if (idx1%b2s_pds .ne. idx2%b2s_pds) res = res + 1
+    if (idx1%b2s_drs .ne. idx2%b2s_drs) res = res + 1
+    if (idx1%b2s_bms .ne. idx2%b2s_bms) res = res + 1
+    if (idx1%b2s_data .ne. idx2%b2s_data) res = res + 1
+    if (idx1%total_bytes .ne. idx2%total_bytes) res = res + 1
+    if (idx1%grib_version .ne. idx2%grib_version) res = res + 1
+    if (idx1%discipline .ne. idx2%discipline) res = res + 1
+    if (idx1%field_number .ne. idx2%field_number) res = res + 1
 
-    if (idx1%index_rec_len .ne. idx2%index_rec_len) cmp_idx = cmp_idx + 1
-    if (idx1%index_rec_len .ne. idx2%index_rec_len) cmp_idx = cmp_idx + 1
-    if (idx1%b2s_message .ne. idx2%b2s_message) cmp_idx = cmp_idx + 1
-    if (idx1%b2s_lus .ne. idx2%b2s_lus) cmp_idx = cmp_idx + 1
-    if (idx1%b2s_gds .ne. idx2%b2s_gds) cmp_idx = cmp_idx + 1
-    if (idx1%b2s_pds .ne. idx2%b2s_pds) cmp_idx = cmp_idx + 1
-    if (idx1%b2s_drs .ne. idx2%b2s_drs) cmp_idx = cmp_idx + 1
-    if (idx1%b2s_bms .ne. idx2%b2s_bms) cmp_idx = cmp_idx + 1
-    if (idx1%b2s_data .ne. idx2%b2s_data) cmp_idx = cmp_idx + 1
-    if (idx1%total_bytes .ne. idx2%total_bytes) cmp_idx = cmp_idx + 1
-    if (idx1%grib_version .ne. idx2%grib_version) cmp_idx = cmp_idx + 1
-    if (idx1%discipline .ne. idx2%discipline) cmp_idx = cmp_idx + 1
-    if (idx1%field_number .ne. idx2%field_number) cmp_idx = cmp_idx + 1
-
+    ! Return result, 0 if there is no difference between idx1 and idx2.
+    cmp_idx = res
   end function cmp_idx
 
 end module index_rec

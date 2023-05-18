@@ -46,18 +46,19 @@ program test_getg2ir_gdas
   msk1 = 1000
   msk2 = 1000
   nlen_expected = 3800
-  do mnum = 0, 3
+  do mnum = 0, 2
      call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
      !  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
      if (iret .ne. 0) stop 101
      if (nlen .ne. nlen_expected .or. nnum .ne. 19 - mnum .or. nmess .ne. 19) stop 102
+     nlen_expected = nlen_expected - 200
 
      ! Parse the index record into special type.
      call parse_cbuf(cbuf, idx)
      !call print_index(idx)
 
      ! Is this what we expected?
-     if (cmp_idx(idx, expected_idx(mnum)) .ne. 0) stop 300
+     if (cmp_idx(idx, expected_idx(mnum + 1)) .ne. 0) stop 300
      
      ! Free memory.
      deallocate(cbuf)
