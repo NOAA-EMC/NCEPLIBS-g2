@@ -12,6 +12,7 @@ program test_getg2ir_gdas
   character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: msk1, msk2, mnum
   integer :: nlen, nnum, nmess, iret
+  integer :: nlen_expected
 
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   integer :: total_bytes, grib_version, discipline, field_number
@@ -44,44 +45,49 @@ program test_getg2ir_gdas
 
   msk1 = 1000
   msk2 = 1000
-  mnum = 0
-  call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
-  if (iret .ne. 0) stop 101
-  if (nlen .ne. 3800 .or. nnum .ne. 19 .or. nmess .ne. 19) stop 102
-  !  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
+  nlen_expected = 3800
+  do mnum = 0, 3
+     call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+     !  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
+     if (iret .ne. 0) stop 101
+     if (nlen .ne. nlen_expected .or. nnum .ne. 19 - mnum .or. nmess .ne. 19) stop 102
 
-  call parse_cbuf(cbuf, idx)
-  !call print_index(idx)
-  if (cmp_idx(idx, expected_idx(1)) .ne. 0) stop 300
+     ! Parse the index record into special type.
+     call parse_cbuf(cbuf, idx)
+     !call print_index(idx)
 
-  ! Free memory.
-  deallocate(cbuf)
+     ! Is this what we expected?
+     if (cmp_idx(idx, expected_idx(mnum)) .ne. 0) stop 300
+     
+     ! Free memory.
+     deallocate(cbuf)
+  end do
   
-  ! Get a index for a different message.
-  mnum = 1
-  call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
-!  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
-  if (iret .ne. 0) stop 101
-  if (nlen .ne. 3600 .or. nnum .ne. 18 .or. nmess .ne. 19) stop 102
+!   ! Get a index for a different message.
+!   mnum = 1
+!   call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+! !  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
+!   if (iret .ne. 0) stop 101
+!   if (nlen .ne. 3600 .or. nnum .ne. 18 .or. nmess .ne. 19) stop 102
   
-  call parse_cbuf(cbuf, idx)
-  !call print_index(idx)
-  if (cmp_idx(idx, expected_idx(2)) .ne. 0) stop 300
+!   call parse_cbuf(cbuf, idx)
+!   !call print_index(idx)
+!   if (cmp_idx(idx, expected_idx(2)) .ne. 0) stop 300
 
-  deallocate(cbuf)
+!   deallocate(cbuf)
   
-  ! Get a index for a different message.
-  mnum = 2
-  call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
-!  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
-  if (iret .ne. 0) stop 101
-  if (nlen .ne. 3400 .or. nnum .ne. 17 .or. nmess .ne. 19) stop 102
+!   ! Get a index for a different message.
+!   mnum = 2
+!   call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+! !  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
+!   if (iret .ne. 0) stop 101
+!   if (nlen .ne. 3400 .or. nnum .ne. 17 .or. nmess .ne. 19) stop 102
   
-  call parse_cbuf(cbuf, idx)
-  !call print_index(idx)
-  if (cmp_idx(idx, expected_idx(3)) .ne. 0) stop 300
+!   call parse_cbuf(cbuf, idx)
+!   !call print_index(idx)
+!   if (cmp_idx(idx, expected_idx(3)) .ne. 0) stop 300
 
-  deallocate(cbuf)
+!   deallocate(cbuf)
   
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
