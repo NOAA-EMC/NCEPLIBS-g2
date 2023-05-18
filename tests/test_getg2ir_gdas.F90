@@ -5,7 +5,11 @@
 ! Ed Hartnett 5/17/23
 program test_getg2ir_gdas
   use bacio_module
-  use index_rec
+#if KIND == 4 
+  use index_rec_4
+#else
+  use index_rec_d
+#endif
   implicit none
 
   integer :: lugb = 3
