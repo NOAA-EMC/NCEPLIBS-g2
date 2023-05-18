@@ -3,11 +3,7 @@
 ! This is a module to help handle index records.
 !
 ! Ed Hartnett 5/18/23
-#if KIND == 4
-module index_rec_4
-#else
-  module index_rec_d
-#endif
+module index_rec
   implicit none
   
   type index_rec_data
@@ -70,4 +66,4 @@ contains
 
   end function cmp_idx
 
-end module
+end module index_rec
