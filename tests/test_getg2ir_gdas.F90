@@ -31,7 +31,8 @@ program test_getg2ir_gdas
 
   print *, 'Testing getg2ir() with ', TEST_FILE_GDAS
 
-  ! Initialize expected results.
+  ! Initialize expected results. These numbers can also be seen in a
+  ! degrib2 of the file.
   call init_index(200, 0, 0, 37, 109, 143, 166, 4721, 15254, 2, 0, 1, expected_idx(1))
   call init_index(200, 15254, 0, 37, 109, 143, 166, 4721, 22643, 2, 0, 1, expected_idx(2))
   call init_index(200, 37897, 0, 37, 109, 143, 166, 4721, 15897, 2, 0, 1, expected_idx(3))
