@@ -8,21 +8,18 @@ program test_getg2ir_gdas
   use index_rec
   implicit none
 
-  integer :: lugb = 3
-  character(len=1), pointer, dimension(:) :: cbuf(:)
-  integer :: msk1, msk2, mnum
-  integer :: nlen, nnum, nmess, iret
-  integer :: nlen_expected
-
-  integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer :: total_bytes, grib_version, discipline, field_number
-  type (index_rec_data) :: idx, expected_idx(3)
-
   ! These are the test files we will use.
   character(*) :: TEST_FILE_GDAS
   parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: TEST_FILE_GDAS_INDEX
   parameter (TEST_FILE_GDAS_INDEX = 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
+
+  integer :: lugb = 3
+  character(len=1), pointer, dimension(:) :: cbuf(:)
+  integer :: msk1, msk2, mnum
+  integer :: nlen, nnum, nmess, iret
+  integer :: nlen_expected
+  type (index_rec_data) :: idx, expected_idx(10)
 
   interface
      subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
@@ -38,6 +35,13 @@ program test_getg2ir_gdas
   call init_index(200, 0, 0, 37, 109, 143, 166, 4721, 15254, 2, 0, 1, expected_idx(1))
   call init_index(200, 15254, 0, 37, 109, 143, 166, 4721, 22643, 2, 0, 1, expected_idx(2))
   call init_index(200, 37897, 0, 37, 109, 143, 166, 4721, 15897, 2, 0, 1, expected_idx(3))
+  call init_index(200, 53794, 0, 37, 109, 143, 166, 4721, 15270, 2, 0, 1, expected_idx(4))
+  call init_index(200, 69064, 0, 37, 109, 143, 166, 4721, 10418, 2, 0, 1, expected_idx(5))
+  call init_index(200, 79482, 0, 37, 109, 143, 166, 4721, 11826, 2, 0, 1, expected_idx(6))
+  call init_index(200, 91308, 0, 37, 109, 143, 166, 4721, 17233, 2, 0, 1, expected_idx(7))
+  call init_index(200, 108541, 0, 37, 109, 143, 166, 4721, 8175, 2, 0, 1, expected_idx(8))
+  call init_index(200, 116716, 0, 37, 109, 143, 166, 4721, 12116, 2, 0, 1, expected_idx(9))
+  call init_index(200, 128832, 0, 37, 109, 143, 166, 4721, 12016, 2, 0, 1, expected_idx(10))
 
   ! Open a real GRIB2 file.
   call baopenr(lugb, TEST_FILE_GDAS, iret)
@@ -63,32 +67,6 @@ program test_getg2ir_gdas
      ! Free memory.
      deallocate(cbuf)
   end do
-  
-!   ! Get a index for a different message.
-!   mnum = 1
-!   call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
-! !  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
-!   if (iret .ne. 0) stop 101
-!   if (nlen .ne. 3600 .or. nnum .ne. 18 .or. nmess .ne. 19) stop 102
-  
-!   call parse_cbuf(cbuf, idx)
-!   !call print_index(idx)
-!   if (cmp_idx(idx, expected_idx(2)) .ne. 0) stop 300
-
-!   deallocate(cbuf)
-  
-!   ! Get a index for a different message.
-!   mnum = 2
-!   call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
-! !  print *, 'iret, nlen, nnum, nmess: ', iret, nlen, nnum, nmess
-!   if (iret .ne. 0) stop 101
-!   if (nlen .ne. 3400 .or. nnum .ne. 17 .or. nmess .ne. 19) stop 102
-  
-!   call parse_cbuf(cbuf, idx)
-!   !call print_index(idx)
-!   if (cmp_idx(idx, expected_idx(3)) .ne. 0) stop 300
-
-!   deallocate(cbuf)
   
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
