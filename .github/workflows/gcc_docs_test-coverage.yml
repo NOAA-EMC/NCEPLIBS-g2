@@ -83,7 +83,7 @@ jobs:
         mkdir build
         cd build
         cmake -DCMAKE_PREFIX_PATH="~/Jasper;~/bacio;~/w3emc" ..
-        make -j2
+        make
 
     - name: test
       run: |
