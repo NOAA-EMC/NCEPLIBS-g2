@@ -12,6 +12,28 @@ module index_rec
   end type index_rec_data
 
 contains
+  subroutine init_index(index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, &
+       b2s_data, total_bytes, grib_version, discipline, field_number, idx)
+    implicit none
+    integer, intent(in) :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+    integer, intent(in) :: total_bytes, grib_version, discipline, field_number
+    type (index_rec_data), intent(inout) :: idx
+
+    idx%index_rec_len = index_rec_len
+    idx%b2s_message = b2s_message
+    idx%b2s_lus = b2s_lus
+    idx%b2s_gds = b2s_gds
+    idx%b2s_pds = b2s_pds
+    idx%b2s_drs = b2s_drs
+    idx%b2s_bms = b2s_bms
+    idx%b2s_data = b2s_data
+    idx%total_bytes = total_bytes
+    idx%grib_version = grib_version
+    idx%discipline = discipline
+    idx%field_number = field_number
+    
+  end subroutine init_index
+
   subroutine print_index(idx)
     implicit none
     type (index_rec_data), intent(in) :: idx

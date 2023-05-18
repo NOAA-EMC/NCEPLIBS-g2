@@ -15,7 +15,7 @@ program test_getg2ir_gdas
 
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   integer :: total_bytes, grib_version, discipline, field_number
-  type (index_rec_data) :: idx, expected_idx1, expected_idx2
+  type (index_rec_data) :: idx, expected_idx(2)
 
   ! These are the test files we will use.
   character(*) :: TEST_FILE_GDAS
@@ -34,31 +34,8 @@ program test_getg2ir_gdas
   print *, 'Testing getg2ir() with ', TEST_FILE_GDAS
 
   ! Initialize expected results.
-  expected_idx1%index_rec_len = 200
-  expected_idx1%b2s_message = 0
-  expected_idx1%b2s_lus = 0
-  expected_idx1%b2s_gds = 37
-  expected_idx1%b2s_pds = 109
-  expected_idx1%b2s_drs = 143
-  expected_idx1%b2s_bms = 166
-  expected_idx1%b2s_data = 4721
-  expected_idx1%total_bytes = 15254
-  expected_idx1%grib_version = 2
-  expected_idx1%discipline = 0
-  expected_idx1%field_number = 1
-
-  expected_idx2%index_rec_len = 200
-  expected_idx2%b2s_message = 37897
-  expected_idx2%b2s_lus = 0
-  expected_idx2%b2s_gds = 37
-  expected_idx2%b2s_pds = 109
-  expected_idx2%b2s_drs = 143
-  expected_idx2%b2s_bms = 166
-  expected_idx2%b2s_data = 4721
-  expected_idx2%total_bytes = 15897
-  expected_idx2%grib_version = 2
-  expected_idx2%discipline = 0
-  expected_idx2%field_number = 1
+  call init_index(200, 0, 0, 37, 109, 143, 166, 4721, 15254, 2, 0, 1, expected_idx(1))
+  call init_index(200, 37897, 0, 37, 109, 143, 166, 4721, 15897, 2, 0, 1, expected_idx(2))
 
   ! Open a real GRIB2 file.
   call baopenr(lugb, TEST_FILE_GDAS, iret)
@@ -74,7 +51,7 @@ program test_getg2ir_gdas
 
   call parse_cbuf(cbuf, idx)
   call print_index(idx)
-  if (cmp_idx(idx, expected_idx1) .ne. 0) stop 300
+  if (cmp_idx(idx, expected_idx(1)) .ne. 0) stop 300
 
   ! Free memory.
   deallocate(cbuf)
@@ -88,7 +65,7 @@ program test_getg2ir_gdas
   
   call parse_cbuf(cbuf, idx)
   call print_index(idx)
-  if (cmp_idx(idx, expected_idx2) .ne. 0) stop 300
+  if (cmp_idx(idx, expected_idx(2)) .ne. 0) stop 300
 
   deallocate(cbuf)
   
