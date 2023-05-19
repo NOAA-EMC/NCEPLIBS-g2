@@ -1,6 +1,7 @@
 ! This is a test program for NCEPLIBS-g2.
 !
-! This program tests getg2ir() with the test GDAS file.
+! This program tests index file functionality with getg2ir() and
+! getg2i() with the test GDAS file.
 !
 ! Ed Hartnett 5/17/23
 program test_getg2ir_gdas
