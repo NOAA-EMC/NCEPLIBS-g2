@@ -28,6 +28,7 @@ program test_getg2ir_gdas
   integer :: nlen, nnum, nmess, iret
   integer :: nlen_expected
   type (index_rec_data) :: idx, expected_idx(NUM_MESSAGES)
+  integer :: i
 
   interface
      subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
@@ -43,6 +44,14 @@ program test_getg2ir_gdas
        character(len=1),pointer,dimension(:) :: cbuf
        integer,intent(out) :: nlen, nnum, iret
      end subroutine getg2i
+  end interface
+
+  interface
+     subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
+       integer, intent(in) :: lugb, lugi
+       integer, intent(out) :: nlen, nnum, iret
+       character(len = 1), pointer, dimension(:) :: cindex
+     end subroutine getidx
   end interface
 
   print *, 'Testing index functions on GDAS test file and index.'
@@ -71,7 +80,7 @@ program test_getg2ir_gdas
 
   print *, '   testing getg2ir() to generate index records from GRIB2 file.'
   
-  ! Open a real GRIB2 file.
+  ! Open the GDAS GRIB2 file.
   call baopenr(LUGB, TEST_FILE_GDAS, iret)
   if (iret .ne. 0) stop 100
 
@@ -132,6 +141,59 @@ program test_getg2ir_gdas
   if (iret .ne. 0) stop 50
 
   print *, '   ok.'
+
+  ! Do this with and without the index file, and with the negative of
+  ! the index file LU.
+  do i = 1, 3
+     print *, '   testing getidx() to read index records from either file or index file, i = ', i
+     
+     ! Open the GDAS GRIB2 file.
+     call baopenr(LUGB, TEST_FILE_GDAS, iret)
+     if (iret .ne. 0) stop 100
+
+     if (i .gt. 1) then
+        ! Open the GDAS GRIB2 INDEX file.
+        call baopenr(LUGI, TEST_FILE_GDAS_INDEX, iret)
+        if (iret .ne. 0) stop 100
+     endif
+     
+     ! Get the index info, telling getidx() to generate it directly from
+     ! the GRIB2 file for i=2.
+     if (i .eq. 2) then
+        call getidx(LUGB, LUGI, cbuf, nlen, nnum, iret)
+     elseif (i .eq. 3) then
+        call getidx(LUGB, LUGI * -1, cbuf, nlen, nnum, iret)
+     else
+        call getidx(LUGB, 0, cbuf, nlen, nnum, iret)
+     endif
+
+     ! Loop through each of the 19 index records, making sure they match
+     ! the the values we expect.
+     do mnum = 0, 18
+        ! Parse the index record into special type.
+        call parse_cbuf(cbuf(mnum * INDEX_REC_LEN + 1:), idx)
+        !call print_index(idx)
+
+        ! Is this what we expected?
+        if (cmp_idx(idx, expected_idx(mnum + 1)) .ne. 0) stop 300
+     end do
+
+     ! Close the data file.
+     call baclose(LUGB, iret)
+     if (iret .ne. 0) stop 50
+
+     ! Close the index file.
+     if (i .gt. 1) then
+        call baclose(LUGI, iret)
+        if (iret .ne. 0) stop 50
+     endif
+     
+     print *, '   ok.'
+  end do
+
+  ! Feee memory.
+  deallocate(cbuf)
+
   print *, 'SUCCESS!...'
 end program test_getg2ir_gdas
 
