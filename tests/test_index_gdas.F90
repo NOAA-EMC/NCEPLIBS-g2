@@ -100,7 +100,7 @@ program test_index_gdas
   call init_index(INDEX_REC_LEN, 259223, 0, 37, 109, 143, 166, 4721, 22427, 2, 10, 1, expected_idx(19))
 
   do mnum = 1, NUM_MESSAGES  
-     call init_gribmod(2, IDSECTLEN, expected_idsect1, expected_gfld(mnum))
+     call init_gribmod(2, IDSECTLEN, expected_idsect1, 48282272, expected_gfld(mnum))
   end do
 
   ! Initialize these for the getgb2s() call.
@@ -150,8 +150,9 @@ program test_index_gdas
      if (iret .ne. 0) stop 201
      call print_gribmod(gfld)
      if (cmp_gribmod(gfld, expected_gfld(mnum)) .ne. 0) stop 202
-     
+
      ! Free memory.
+     call gf_free(gfld)
      deallocate(cbuf)
   end do
 
