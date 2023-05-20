@@ -27,13 +27,14 @@
 !> routine. Each component of the gribfield type is described in
 !> the OUTPUT ARGUMENT LIST section below.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 1994-04-01 | Mark Iredell | Initial.
-!> 1995-10-31 | Mark Iredell | modularized code into subprograms, allowed for unspecified index file,
-!> 2002-01-11 | Stephen Gilbert | modified from getgb and getgbm to work with grib2
-!> 2015-11-10 | Boi Vuong | modified doc block for gfld\%ngrdpts and gfld\%ndpts
+!> @note Specify an index file if feasible to increase speed. Do
+!> not engage the same logical unit from more than one
+!> processor. Note that derived type gribfield contains pointers to
+!> many arrays of data. The memory for these arrays is allocated
+!> when the values in the arrays are set, to help minimize problems
+!> with array overloading. Because of this users should free this
+!> memory, when it is no longer needed, by a call to subroutine
+!> gf_free().
 !>
 !> @param[in] LUGB integer unit of the unblocked grib data file.
 !> File must be opened with [baopen() or baopenr()]
@@ -101,15 +102,6 @@
 !> - 97 error reading grib file
 !> - 99 request not found
 !> - other gf_getfld grib2 unpacker return code
-!>
-!> @note Specify an index file if feasible to increase speed. Do
-!> not engage the same logical unit from more than one
-!> processor. Note that derived type gribfield contains pointers to
-!> many arrays of data. The memory for these arrays is allocated
-!> when the values in the arrays are set, to help minimize problems
-!> with array overloading. Because of this users should free this
-!> memory, when it is no longer needed, by a call to subroutine
-!> gf_free().
 !>
 !> @author Mark Iredell @date 1994-04-01
       SUBROUTINE GETGB2(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT,

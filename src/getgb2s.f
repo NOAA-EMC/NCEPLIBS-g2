@@ -14,12 +14,12 @@
 !> The unpacked bitmap and bitmap data field are the only components
 !> of the @ref grib_mod::gribfield type not set by this routine.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 1995-10-31 | Mark Iredell | Initial development
-!> 2002-01-02 | Stephen Gilbert | Modified from getg1s to work with grib2
-!> 2011-06-24 | Boi Vuong | initialize variable gfld%idsect and gfld%local
+!> @note This subprogram is intended for private use by getgb2()
+!> routines only. Note that derived type @ref grib_mod::gribfield contains
+!> pointers to many arrays of data. The memory for these arrays is
+!> allocated when the values in the arrays are set. Users must free this
+!> memory, when it is no longer needed, by a call to subroutine
+!> gf_free().
 !>
 !> @param[in] cbuf Buffer (of size nlen bytes) containing index data.
 !> @param[in] nlen Total length of all index records.
@@ -58,7 +58,7 @@
 !> - jids(13) Type of processed data. See [GRIB2 - TABLE 1.4 - TYPE OF
 !>   DATA](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml).
 !> @param[in] jpdtn Product Definition Template (PDT) number (n)
-!> (if = -1, don't bother matching PDT - accept any)
+!> (if = -1, don't bother matching PDT - accept any).
 !> @param[in] jpdt Array of values defining the Product Definition
 !> Template of the field for which to search (=-9999 for wildcard).
 !> @param[in] jgdtn Grid Definition Template (GDT) number (if = -1,
@@ -69,18 +69,10 @@
 !> @param[out] gfld Derived type @ref grib_mod::gribfield.
 !> @param[out] lpos Starting position of the found index record
 !> within the complete index buffer, CBUF. = 0, if request not found.
-!> @param[out] iret integer return code
+!> @param[out] iret integer return code:
 !> - 0 No error.
 !> - 97 Error reading GRIB file.
 !> - other gf_getfld GRIB2 unpacker return code.
-!>
-!> @note This subprogram is intended for private use by getgb2()
-!> routines only. Note that derived type gribfield contains
-!> pointers to many arrays of data. The memory for these arrays is
-!> allocated when the values in the arrays are set, to help
-!> minimize problems with array overloading. Users must free this
-!> memory, when it is no longer needed, by a call to subroutine
-!> gf_free().
 !>
 !> @author Stephen Gilbert @date 2002-01-15
       SUBROUTINE GETGB2S(CBUF,NLEN,NNUM,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,
@@ -88,7 +80,6 @@
 
       USE GRIB_MOD
 
-!      CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
       CHARACTER(LEN=1),INTENT(IN) :: CBUF(NLEN)
       INTEGER,INTENT(IN) :: NLEN,NNUM,J,JDISC,JPDTN,JGDTN
       INTEGER,DIMENSION(:) :: JIDS(*),JPDT(*),JGDT(*)
@@ -97,9 +88,6 @@
 
       INTEGER :: KGDS(5)
       LOGICAL :: MATCH1,MATCH3,MATCH4
-!      INTEGER,POINTER,DIMENSION(:) :: KIDS,KPDT,KGDT
-!      INTEGER,POINTER,DIMENSION(:) :: IDEF
-!      REAL,POINTER,DIMENSION(:) :: COORD
 
       interface
          subroutine gf_unpack1(cgrib,lcgrib,iofst,ids,idslen,ierr)
@@ -139,8 +127,7 @@
          end subroutine gf_unpack5
       end interface
       
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  INITIALIZE
+C     INITIALIZE
       K=0
       LPOS=0
       IRET=1
@@ -148,8 +135,8 @@ C  INITIALIZE
       nullify(gfld%idsect,gfld%local)
       nullify(gfld%list_opt,gfld%igdtmpl,gfld%ipdtmpl)
       nullify(gfld%coord_list,gfld%idrtmpl,gfld%bmap,gfld%fld)
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  SEARCH FOR REQUEST
+
+C     SEARCH FOR REQUEST
       DOWHILE(IRET.NE.0.AND.K.LT.NNUM)
         K=K+1
         CALL G2_GBYTEC(CBUF,INLEN,IPOS*8,4*8)    ! GET LENGTH OF CURRENT
@@ -158,15 +145,15 @@ C  SEARCH FOR REQUEST
            IPOS=IPOS+INLEN
            CYCLE
         ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  CHECK IF GRIB2 DISCIPLINE IS A MATCH
+
+C     CHECK IF GRIB2 DISCIPLINE IS A MATCH
         CALL G2_GBYTEC(CBUF,GFLD%DISCIPLINE,(IPOS+41)*8,1*8)
         IF ( (JDISC.NE.-1).AND.(JDISC.NE.GFLD%DISCIPLINE) ) THEN
            IPOS=IPOS+INLEN
            CYCLE
         ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  CHECK IF IDENTIFICATION SECTION IS A MATCH
+
+C     CHECK IF IDENTIFICATION SECTION IS A MATCH
         MATCH1=.FALSE.
         CALL G2_GBYTEC(CBUF,LSEC1,(IPOS+44)*8,4*8)  ! GET LENGTH OF IDS 
         IOF=0
@@ -187,8 +174,8 @@ C  CHECK IF IDENTIFICATION SECTION IS A MATCH
            IPOS=IPOS+INLEN
            CYCLE
         ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  CHECK IF GRID DEFINITION TEMPLATE IS A MATCH
+
+C     CHECK IF GRID DEFINITION TEMPLATE IS A MATCH
         JPOS=IPOS+44+LSEC1
         MATCH3=.FALSE.
         CALL G2_GBYTEC(CBUF,LSEC3,JPOS*8,4*8)  ! GET LENGTH OF GDS 
@@ -209,8 +196,6 @@ C  CHECK IF GRID DEFINITION TEMPLATE IS A MATCH
                        EXIT
                     ENDIF
                  ENDDO
-C                 WHERE ( JGDT(1:GFLD%IGDTLEN).NE.-9999 ) 
-C     &              MATCH3=ALL(JGDT(1:GFLD%IGDTLEN).EQ.GFLD%IGDTMPL(1:GFLD%IGDTLEN))
               ENDIF
            ENDIF
         ENDIF
@@ -226,8 +211,8 @@ C     &              MATCH3=ALL(JGDT(1:GFLD%IGDTLEN).EQ.GFLD%IGDTMPL(1:GFLD%IGDT
            GFLD%INTERP_OPT=KGDS(4)
            GFLD%IGDTNUM=KGDS(5)
         ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  CHECK IF PRODUCT DEFINITION TEMPLATE IS A MATCH
+
+C     CHECK IF PRODUCT DEFINITION TEMPLATE IS A MATCH
         JPOS=JPOS+LSEC3
         MATCH4=.FALSE.
         CALL G2_GBYTEC(CBUF,LSEC4,JPOS*8,4*8)  ! GET LENGTH OF PDS 
@@ -249,8 +234,6 @@ C  CHECK IF PRODUCT DEFINITION TEMPLATE IS A MATCH
                        EXIT
                     ENDIF
                  ENDDO
-c                 WHERE ( JPDT.NE.-9999) 
-c     &              MATCH4=ALL( JPDT(1:GFLD%IPDTLEN) .EQ. GFLD%IPDTMPL(1:GFLD%IPDTLEN) )
               ENDIF
            ENDIF
         ENDIF
@@ -258,9 +241,9 @@ c     &              MATCH4=ALL( JPDT(1:GFLD%IPDTLEN) .EQ. GFLD%IPDTMPL(1:GFLD%I
            IF (ASSOCIATED(GFLD%IPDTMPL)) DEALLOCATE(GFLD%IPDTMPL)
            IF (ASSOCIATED(GFLD%COORD_LIST)) DEALLOCATE(GFLD%COORD_LIST)
         ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  IF REQUEST IS FOUND
-C  SET VALUES FOR DERIVED TYPE GFLD AND RETURN
+
+C     IF REQUEST IS FOUND
+C     SET VALUES FOR DERIVED TYPE GFLD AND RETURN
         IF(MATCH1.AND.MATCH3.AND.MATCH4) THEN
            LPOS=IPOS+1
            CALL G2_GBYTEC(CBUF,GFLD%VERSION,(IPOS+40)*8,1*8)
@@ -297,6 +280,5 @@ C  SET VALUES FOR DERIVED TYPE GFLD AND RETURN
            IPOS=IPOS+INLEN
         ENDIF
       ENDDO
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       RETURN
       END

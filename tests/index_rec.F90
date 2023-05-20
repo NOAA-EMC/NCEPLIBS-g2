@@ -4,6 +4,7 @@
 !
 ! Ed Hartnett 5/18/23
 module index_rec
+  use grib_mod
   implicit none
   
   type index_rec_data
@@ -12,6 +13,65 @@ module index_rec
   end type index_rec_data
 
 contains
+  ! Initialize a gribmod.
+  subroutine init_gribmod(version, gfld)
+    use grib_mod
+    implicit none
+    integer, optional, intent(in) :: version    
+    type(gribfield), intent(inout) :: gfld
+    
+    gfld%version = version
+    
+  end subroutine init_gribmod
+
+  ! Compare two gribmods, return 0 if they are equal.
+  integer function cmp_gribmod(gfld1, gfld2)
+    use grib_mod
+    implicit none
+    type(gribfield), intent(in) :: gfld1, gfld2
+    integer :: dc ! difference count
+
+    dc = 0
+    if (gfld1%version .ne. gfld2%version) dc = dc + 1
+
+    ! Return 0 for no differences.
+    cmp_gribmod = dc
+  end function cmp_gribmod
+
+  ! Print contents of a gribmod.
+  subroutine print_gribmod(gfld)
+    implicit none
+    type(gribfield), intent(in) :: gfld
+    
+    print *, 'version ', gfld%version
+    print *, 'idsect ', gfld%idsect
+    print *, 'idsectlen ', gfld%idsectlen
+    print *, 'locallen ', gfld%locallen
+    print *, 'ifldnum ', gfld%ifldnum
+    print *, 'griddef ', gfld%griddef
+    print *, 'ngrdpts ', gfld%ngrdpts
+    print *, 'numoct_opt ', gfld%numoct_opt
+    print *, 'interp_opt ', gfld%interp_opt
+    print *, 'num_opt ', gfld%num_opt
+!    print *, 'list_opt ', gfld%list_opt
+    print *, 'igdtnum ', gfld%igdtnum
+    print *, 'igdtlen ', gfld%igdtlen
+!    print *, 'igdtmpl ', gfld%igdtmpl
+    print *, 'ipdtnum ', gfld%ipdtnum
+    print *, 'ipdtlen ', gfld%ipdtlen
+!    print *, 'ipdtmpl ', gfld%ipdtmpl
+    print *, 'num_coord ', gfld%num_coord
+!    print *, 'coord_list ', gfld%coord_list
+    print *, 'ndpts ', gfld%ndpts
+    print *, 'idrtnum ', gfld%idrtnum
+    print *, 'idrtlen ', gfld%idrtlen
+!    print *, 'idrtmpl ', gfld%idrtmpl
+    print *, 'unpacked ', gfld%unpacked
+    print *, 'expanded ', gfld%expanded
+    print *, 'ibmap ', gfld%ibmap
+  end subroutine print_gribmod
+
+  ! Initialize an index record.
   subroutine init_index(index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, &
        b2s_data, total_bytes, grib_version, discipline, field_number, idx)
     implicit none
@@ -34,6 +94,7 @@ contains
     
   end subroutine init_index
 
+  ! Print an index record.
   subroutine print_index(idx)
     implicit none
     type (index_rec_data), intent(in) :: idx
@@ -45,6 +106,7 @@ contains
          idx%total_bytes, idx%grib_version, idx%discipline, idx%field_number
   end subroutine print_index
 
+  ! Parse buffer with index file contents into index information.
   subroutine parse_cbuf(cbuf, idx)
     implicit none
     character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
@@ -65,7 +127,8 @@ contains
     call g2_gbytec(cbuf, idx%field_number, 8 * 42, 8 * 2)
 
   end subroutine parse_cbuf
-
+  
+  ! Compare two indexes, return 0 if they are equal.
   integer function cmp_idx(idx1, idx2)
     implicit none
     type (index_rec_data), intent(in) :: idx1, idx2
