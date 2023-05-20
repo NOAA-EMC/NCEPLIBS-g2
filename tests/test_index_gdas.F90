@@ -33,6 +33,11 @@ program test_index_gdas
   integer :: j, jdisc, jpdtn, jgdtn
   integer :: jids(13), jpdt(100), jgdt(250)
   type(gribfield) :: gfld, expected_gfld(NUM_MESSAGES)
+  integer :: IDSECTLEN
+  parameter(IDSECTLEN = 13)
+  ! Unbelievably clumsy, but this is how we have to initialize a 2D
+  ! array in Fortran.
+  integer :: expected_idsect1(IDSECTLEN) = (/ 7, 0, 2, 1, 1, 2021, 11, 30, 0, 0, 0, 0, 1 /)
 
   interface
      subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
@@ -94,9 +99,8 @@ program test_index_gdas
   call init_index(INDEX_REC_LEN, 237035, 0, 37, 109, 143, 166, 4721, 22188, 2, 10, 1, expected_idx(18))
   call init_index(INDEX_REC_LEN, 259223, 0, 37, 109, 143, 166, 4721, 22427, 2, 10, 1, expected_idx(19))
 
-  ! Initialize the gribmod results we expect.
-  do mnum = 1, NUM_MESSAGES
-     call init_gribmod(2, expected_gfld(mnum))
+  do mnum = 1, NUM_MESSAGES  
+     call init_gribmod(2, IDSECTLEN, expected_idsect1, expected_gfld(mnum))
   end do
 
   ! Initialize these for the getgb2s() call.
@@ -114,7 +118,6 @@ program test_index_gdas
      jgdt(i) = -9999
   end do
   nlen = 5000
-  
 
   print *, '   testing getg2ir() to generate index records from GRIB2 file.'
   
@@ -155,6 +158,12 @@ program test_index_gdas
   ! Close the GRIB2 file.
   call baclose(LUGB, iret)
   if (iret .ne. 0) stop 199
+
+  ! Free memory.
+  do mnum = 1, NUM_MESSAGES  
+     call gf_free(expected_gfld(mnum))
+  end do
+
   
   print *, '   ok.'
   print *, '   testing getg2i() to read index records from an index file.'

@@ -14,13 +14,22 @@ module index_rec
 
 contains
   ! Initialize a gribmod.
-  subroutine init_gribmod(version, gfld)
+  subroutine init_gribmod(version, idsectlen, idsect, gfld)
     use grib_mod
     implicit none
-    integer, optional, intent(in) :: version    
+    integer, intent(in) :: version    
+    integer, intent(in) :: idsectlen    
+    integer, intent(in) :: idsect(:)    
     type(gribfield), intent(inout) :: gfld
+    integer :: i
     
     gfld%version = version
+    gfld%idsectlen = idsectlen
+    allocate(gfld%idsect(idsectlen))
+    do i = 1, idsectlen
+       print *, i, idsect(i)
+       gfld%idsect(i) = idsect(i)
+    end do
     
   end subroutine init_gribmod
 
@@ -30,9 +39,14 @@ contains
     implicit none
     type(gribfield), intent(in) :: gfld1, gfld2
     integer :: dc ! difference count
+    integer :: i
 
     dc = 0
     if (gfld1%version .ne. gfld2%version) dc = dc + 1
+    if (gfld1%idsectlen .ne. gfld2%idsectlen) dc = dc + 1
+    do i = 1, gfld1%idsectlen
+       if (gfld1%idsect(i) .ne. gfld2%idsect(i)) dc = dc + 1
+    end do
 
     ! Return 0 for no differences.
     cmp_gribmod = dc
