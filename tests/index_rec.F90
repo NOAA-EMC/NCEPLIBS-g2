@@ -14,13 +14,17 @@ module index_rec
 
 contains
   ! Initialize a gribmod.
-  subroutine init_gribmod(version, idsectlen, idsect, locallen, gfld)
+  subroutine init_gribmod(version, idsectlen, idsect, locallen, ifldnum, &
+       griddef, ngrdpts, gfld)
     use grib_mod
     implicit none
     integer, intent(in) :: version    
     integer, intent(in) :: idsectlen    
     integer, intent(in) :: idsect(:)    
     integer, intent(in) :: locallen    
+    integer, intent(in) :: ifldnum    
+    integer, intent(in) :: griddef    
+    integer, intent(in) :: ngrdpts    
     type(gribfield), intent(inout) :: gfld
     integer :: i
     
@@ -31,6 +35,9 @@ contains
        gfld%idsect(i) = idsect(i)
     end do
     gfld%locallen = locallen
+    gfld%ifldnum = ifldnum
+    gfld%griddef = griddef
+    gfld%ngrdpts = ngrdpts
     
   end subroutine init_gribmod
 
@@ -48,7 +55,10 @@ contains
     do i = 1, gfld1%idsectlen
        if (gfld1%idsect(i) .ne. gfld2%idsect(i)) dc = dc + 1
     end do
-!    if (gfld1%locallen .ne. gfld2%locallen) dc = dc + 1
+    !    if (gfld1%locallen .ne. gfld2%locallen) dc = dc + 1
+    if (gfld1%ifldnum .ne. gfld2%ifldnum) dc = dc + 1
+    if (gfld1%griddef .ne. gfld2%griddef) dc = dc + 1
+    if (gfld1%ngrdpts .ne. gfld2%ngrdpts) dc = dc + 1
     
     ! Return 0 for no differences.
     cmp_gribmod = dc
