@@ -100,7 +100,8 @@ program test_index_gdas
   call init_index(INDEX_REC_LEN, 259223, 0, 37, 109, 143, 166, 4721, 22427, 2, 10, 1, expected_idx(19))
 
   do mnum = 1, NUM_MESSAGES  
-     call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, expected_gfld(mnum))
+     call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, 0, 15, 0, 11041, 40, 7, &
+          .false., .false., 0, expected_gfld(mnum))
   end do
 
   ! Initialize these for the getgb2s() call.

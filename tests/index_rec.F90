@@ -15,7 +15,9 @@ module index_rec
 contains
   ! Initialize a gribmod.
   subroutine init_gribmod(version, idsectlen, idsect, locallen, ifldnum, &
-       griddef, ngrdpts, gfld)
+       griddef, ngrdpts, numoct_opt, interp_opt, num_opt, igdtnum, igdtlen, &
+       ipdtnum, ipdtlen, num_coord, ndpts, idrtnum, idrtlen, unpacked, expanded, &
+       ibmap, gfld)
     use grib_mod
     implicit none
     integer, intent(in) :: version    
@@ -24,7 +26,22 @@ contains
     integer, intent(in) :: locallen    
     integer, intent(in) :: ifldnum    
     integer, intent(in) :: griddef    
-    integer, intent(in) :: ngrdpts    
+    integer, intent(in) :: ngrdpts
+    integer, intent(in) :: numoct_opt
+    integer, intent(in) :: interp_opt
+    integer, intent(in) :: num_opt
+    integer, intent(in) :: igdtnum
+    integer, intent(in) :: igdtlen
+    integer, intent(in) :: ipdtnum
+    integer, intent(in) :: ipdtlen
+    integer, intent(in) :: num_coord
+    integer, intent(in) :: ndpts
+    integer, intent(in) :: idrtnum
+    integer, intent(in) :: idrtlen
+    logical, intent(in) :: unpacked
+    logical, intent(in) :: expanded
+    integer, intent(in) :: ibmap
+    
     type(gribfield), intent(inout) :: gfld
     integer :: i
     
@@ -38,7 +55,20 @@ contains
     gfld%ifldnum = ifldnum
     gfld%griddef = griddef
     gfld%ngrdpts = ngrdpts
-    
+    gfld%numoct_opt = numoct_opt
+    gfld%interp_opt = interp_opt
+    gfld%num_opt = num_opt
+    gfld%igdtnum = igdtnum
+    gfld%igdtlen = igdtlen
+    gfld%ipdtnum = ipdtnum
+    gfld%ipdtlen = ipdtlen
+    gfld%num_coord = num_coord
+    gfld%ndpts = ndpts
+    gfld%idrtnum = idrtnum
+    gfld%idrtlen = idrtlen
+    gfld%unpacked = unpacked
+    gfld%expanded = expanded
+    gfld%ibmap = ibmap
   end subroutine init_gribmod
 
   ! Compare two gribmods, return 0 if they are equal.
@@ -59,7 +89,21 @@ contains
     if (gfld1%ifldnum .ne. gfld2%ifldnum) dc = dc + 1
     if (gfld1%griddef .ne. gfld2%griddef) dc = dc + 1
     if (gfld1%ngrdpts .ne. gfld2%ngrdpts) dc = dc + 1
-    
+    if (gfld1%numoct_opt .ne. gfld2%numoct_opt) dc = dc + 1
+    if (gfld1%interp_opt .ne. gfld2%interp_opt) dc = dc + 1
+    if (gfld1%num_opt .ne. gfld2%num_opt) dc = dc + 1
+    if (gfld1%igdtnum .ne. gfld2%igdtnum) dc = dc + 1
+    if (gfld1%igdtlen .ne. gfld2%igdtlen) dc = dc + 1
+    if (gfld1%ipdtnum .ne. gfld2%ipdtnum) dc = dc + 1
+    if (gfld1%ipdtlen .ne. gfld2%ipdtlen) dc = dc + 1
+    if (gfld1%num_coord .ne. gfld2%num_coord) dc = dc + 1
+!    if (gfld1%ndpts .ne. gfld2%ndpts) dc = dc + 1
+    if (gfld1%idrtnum .ne. gfld2%idrtnum) dc = dc + 1
+    ! if (gfld1%idrtlen .ne. gfld2%idrtlen) dc = dc + 1
+    ! if (gfld1%unpacked .neqv. gfld2%unpacked) dc = dc + 1
+    ! if (gfld1%expanded .neqv. gfld2%expanded) dc = dc + 1
+    ! if (gfld1%ibmap .ne. gfld2%ibmap) dc = dc + 1
+
     ! Return 0 for no differences.
     cmp_gribmod = dc
   end function cmp_gribmod
