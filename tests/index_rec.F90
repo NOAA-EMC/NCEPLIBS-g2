@@ -79,30 +79,89 @@ contains
     integer :: dc ! difference count
     integer :: i
 
+    print *, 'cmp_gribmod'
+
     dc = 0
-    if (gfld1%version .ne. gfld2%version) dc = dc + 1
-    if (gfld1%idsectlen .ne. gfld2%idsectlen) dc = dc + 1
+    if (gfld1%version .ne. gfld2%version) then
+       print *, 'version ', gfld1%version, gfld2%version
+       dc = dc + 1
+    end if
+    if (gfld1%idsectlen .ne. gfld2%idsectlen) then
+       print *, 'idsectlen ', gfld1%idsectlen, gfld2%idsectlen
+       dc = dc + 1
+    end if
     do i = 1, gfld1%idsectlen
-       if (gfld1%idsect(i) .ne. gfld2%idsect(i)) dc = dc + 1
+       if (gfld1%idsect(i) .ne. gfld2%idsect(i)) then
+          print *, 'i, idsect(i) ', i, gfld1%idsect(i), gfld2%idsect(i)
+          dc = dc + 1
+       end if
     end do
     !    if (gfld1%locallen .ne. gfld2%locallen) dc = dc + 1
-    if (gfld1%ifldnum .ne. gfld2%ifldnum) dc = dc + 1
-    if (gfld1%griddef .ne. gfld2%griddef) dc = dc + 1
-    if (gfld1%ngrdpts .ne. gfld2%ngrdpts) dc = dc + 1
-    if (gfld1%numoct_opt .ne. gfld2%numoct_opt) dc = dc + 1
-    if (gfld1%interp_opt .ne. gfld2%interp_opt) dc = dc + 1
-    if (gfld1%num_opt .ne. gfld2%num_opt) dc = dc + 1
-    if (gfld1%igdtnum .ne. gfld2%igdtnum) dc = dc + 1
-    if (gfld1%igdtlen .ne. gfld2%igdtlen) dc = dc + 1
-    if (gfld1%ipdtnum .ne. gfld2%ipdtnum) dc = dc + 1
-    if (gfld1%ipdtlen .ne. gfld2%ipdtlen) dc = dc + 1
-    if (gfld1%num_coord .ne. gfld2%num_coord) dc = dc + 1
+    if (gfld1%ifldnum .ne. gfld2%ifldnum) then
+       print *, 'ifldnum ', gfld1%ifldnum, gfld2%ifldnum
+       dc = dc + 1
+    end if
+    if (gfld1%griddef .ne. gfld2%griddef) then
+       print *, 'griddef ', gfld1%griddef, gfld2%griddef
+       dc = dc + 1
+    end if
+    if (gfld1%ngrdpts .ne. gfld2%ngrdpts) then
+       print *, 'ngrdpts ', gfld1%ngrdpts, gfld2%ngrdpts
+       dc = dc + 1
+    end if
+    if (gfld1%numoct_opt .ne. gfld2%numoct_opt) then
+       print *, 'numoct_opt ', gfld1%numoct_opt, gfld2%numoct_opt
+       dc = dc + 1
+    end if
+    if (gfld1%interp_opt .ne. gfld2%interp_opt) then
+       print *, 'interp_opt ', gfld1%interp_opt, gfld2%interp_opt
+       dc = dc + 1
+    end if
+    if (gfld1%num_opt .ne. gfld2%num_opt) then
+       print *, 'num_opt ', gfld1%num_opt, gfld2%num_opt
+       dc = dc + 1
+    end if
+    if (gfld1%igdtnum .ne. gfld2%igdtnum) then
+       print *, 'igdtnum ', gfld1%igdtnum, gfld2%igdtnum
+       dc = dc + 1
+    end if
+    if (gfld1%igdtlen .ne. gfld2%igdtlen) then
+       print *, 'igdtlen ', gfld1%igdtlen, gfld2%igdtlen
+       dc = dc + 1
+    end if
+    if (gfld1%ipdtnum .ne. gfld2%ipdtnum) then
+       print *, 'ipdtnum ', gfld1%ipdtnum, gfld2%ipdtnum
+       dc = dc + 1
+    end if
+    if (gfld1%ipdtlen .ne. gfld2%ipdtlen) then
+       print *, 'ipdtlen ', gfld1%ipdtlen, gfld2%ipdtlen
+       dc = dc + 1
+    end if
+    if (gfld1%num_coord .ne. gfld2%num_coord) then
+       print *, 'num_coord ', gfld1%num_coord, gfld2%num_coord
+       dc = dc + 1
+    end if
 !    if (gfld1%ndpts .ne. gfld2%ndpts) dc = dc + 1
-    if (gfld1%idrtnum .ne. gfld2%idrtnum) dc = dc + 1
-    ! if (gfld1%idrtlen .ne. gfld2%idrtlen) dc = dc + 1
-    ! if (gfld1%unpacked .neqv. gfld2%unpacked) dc = dc + 1
-    ! if (gfld1%expanded .neqv. gfld2%expanded) dc = dc + 1
-    ! if (gfld1%ibmap .ne. gfld2%ibmap) dc = dc + 1
+    if (gfld1%idrtnum .ne. gfld2%idrtnum) then
+       print *, 'idrtnum ', gfld1%idrtnum, gfld2%idrtnum
+       dc = dc + 1
+    end if
+    if (gfld1%idrtlen .ne. gfld2%idrtlen) then
+       print *, 'idrtlen ', gfld1%idrtlen, gfld2%idrtlen
+       dc = dc + 1
+    end if
+    if (gfld1%unpacked .neqv. gfld2%unpacked) then
+       print *, 'unpacked ', gfld1%unpacked, gfld2%unpacked
+       dc = dc + 1
+    end if
+    ! if (gfld1%expanded .neqv. gfld2%expanded) then
+    !    print *, 'expanded ', gfld1%expanded, gfld2%expanded
+    !    dc = dc + 1
+    ! end if
+    if (gfld1%ibmap .ne. gfld2%ibmap) then
+       print *, 'ibmap ', gfld1%ibmap, gfld2%ibmap
+       dc = dc + 1
+    end if
 
     ! Return 0 for no differences.
     cmp_gribmod = dc

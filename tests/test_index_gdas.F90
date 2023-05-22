@@ -150,7 +150,9 @@ program test_index_gdas
           jgdt, k, gfld, lpos, iret)
      if (iret .ne. 0) stop 201
      call print_gribmod(gfld)
+     print *, '***************************************'
      if (cmp_gribmod(gfld, expected_gfld(mnum)) .ne. 0) stop 202
+     print *, '***************************************'
 
      ! Free memory.
      call gf_free(gfld)
