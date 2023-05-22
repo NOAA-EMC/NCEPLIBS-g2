@@ -112,12 +112,24 @@ program test_getgb2s
   j = 1
   call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jgdt, k, gfld, lpos, iret)
-  if (iret .ne. 0) stop 101
+  if (iret .ne. 0) stop 110
+  print *, gfld%ipdtmpl
+
+  ! Free memory.
+  call gf_free(gfld)
+
+  ! Try again, but will fail because we are looking for a discipline
+  ! that is not present in the file.
+  j = 0
+  jdisc = 12
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, k, gfld, lpos, iret)
+  print *, iret
+  if (iret .ne. 1) stop 111
   print *, gfld%ipdtmpl
 
   ! Free memory.
   deallocate(cbuf)
-  call gf_free(gfld)
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
