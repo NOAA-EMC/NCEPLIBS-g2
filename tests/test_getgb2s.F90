@@ -145,6 +145,9 @@ program test_getgb2s
   jgdt(1) = -9999
   jgdtn = -1
 
+  ! Free memory.
+  call gf_free(gfld)
+
   ! Try again, but will fail because we are looking for an incorrect
   ! PDT section value.
   jpdt(1) = 42
@@ -154,6 +157,9 @@ program test_getgb2s
   if (iret .ne. 1) stop 113
   jpdt(1) = -9999
   jpdtn = -1
+
+  ! Free memory.
+  call gf_free(gfld)
 
   ! Free memory.
   deallocate(cbuf)
