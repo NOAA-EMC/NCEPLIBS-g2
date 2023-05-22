@@ -104,7 +104,16 @@ program test_getgb2s
   do i = 1, gfld%idrtlen
      if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 203
   end do
-  
+
+  ! Free memory.
+  call gf_free(gfld)
+
+  ! Try again.
+  j = 1
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+     jgdt, k, gfld, lpos, iret)
+  if (iret .ne. 0) stop 101
+  print *, gfld%ipdtmpl
 
   ! Free memory.
   deallocate(cbuf)
