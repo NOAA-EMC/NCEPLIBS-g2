@@ -16,8 +16,8 @@ contains
   ! Initialize a gribmod.
   subroutine init_gribmod(version, idsectlen, idsect, locallen, ifldnum, &
        griddef, ngrdpts, numoct_opt, interp_opt, num_opt, igdtnum, igdtlen, igdtmpl, &
-       ipdtnum, ipdtlen, ipdtmpl, num_coord, ndpts, idrtnum, idrtlen, unpacked, expanded, &
-       ibmap, gfld)
+       ipdtnum, ipdtlen, ipdtmpl, num_coord, ndpts, idrtnum, idrtlen, idrtmpl, unpacked, &
+       expanded, ibmap, gfld)
     use grib_mod
     implicit none
     integer, intent(in) :: version    
@@ -40,6 +40,7 @@ contains
     integer, intent(in) :: ndpts
     integer, intent(in) :: idrtnum
     integer, intent(in) :: idrtlen
+    integer, intent(in) :: idrtmpl(:)
     logical, intent(in) :: unpacked
     logical, intent(in) :: expanded
     integer, intent(in) :: ibmap
@@ -76,6 +77,10 @@ contains
     gfld%ndpts = ndpts
     gfld%idrtnum = idrtnum
     gfld%idrtlen = idrtlen
+    allocate(gfld%idrtmpl(idrtlen))
+    do i = 1, idrtlen
+       gfld%idrtmpl(i) = idrtmpl(i)
+    end do
     gfld%unpacked = unpacked
     gfld%expanded = expanded
     gfld%ibmap = ibmap
@@ -172,6 +177,12 @@ contains
        print *, 'idrtlen ', gfld1%idrtlen, gfld2%idrtlen
        dc = dc + 1
     end if
+    do i = 1, gfld1%idrtlen
+       if (gfld1%idrtmpl(i) .ne. gfld2%idrtmpl(i)) then
+          print *, 'i, idrtmpl(i) ', i, gfld1%idrtmpl(i), gfld2%idrtmpl(i)
+!          dc = dc + 1
+       end if
+    end do
     if (gfld1%unpacked .neqv. gfld2%unpacked) then
        print *, 'unpacked ', gfld1%unpacked, gfld2%unpacked
        dc = dc + 1
@@ -216,7 +227,7 @@ contains
     print *, 'ndpts ', gfld%ndpts
     print *, 'idrtnum ', gfld%idrtnum
     print *, 'idrtlen ', gfld%idrtlen
-!    print *, 'idrtmpl ', gfld%idrtmpl
+    print *, 'idrtmpl ', gfld%idrtmpl
     print *, 'unpacked ', gfld%unpacked
     print *, 'expanded ', gfld%expanded
     print *, 'ibmap ', gfld%ibmap
