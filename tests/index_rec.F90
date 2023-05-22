@@ -16,7 +16,7 @@ contains
   ! Initialize a gribmod.
   subroutine init_gribmod(version, idsectlen, idsect, locallen, ifldnum, &
        griddef, ngrdpts, numoct_opt, interp_opt, num_opt, igdtnum, igdtlen, igdtmpl, &
-       ipdtnum, ipdtlen, num_coord, ndpts, idrtnum, idrtlen, unpacked, expanded, &
+       ipdtnum, ipdtlen, ipdtmpl, num_coord, ndpts, idrtnum, idrtlen, unpacked, expanded, &
        ibmap, gfld)
     use grib_mod
     implicit none
@@ -35,6 +35,7 @@ contains
     integer, intent(in) :: igdtmpl(:)
     integer, intent(in) :: ipdtnum
     integer, intent(in) :: ipdtlen
+    integer, intent(in) :: ipdtmpl(:)
     integer, intent(in) :: num_coord
     integer, intent(in) :: ndpts
     integer, intent(in) :: idrtnum
@@ -67,6 +68,10 @@ contains
     end do
     gfld%ipdtnum = ipdtnum
     gfld%ipdtlen = ipdtlen
+    allocate(gfld%ipdtmpl(ipdtlen))
+    do i = 1, ipdtlen
+       gfld%ipdtmpl(i) = ipdtmpl(i)
+    end do
     gfld%num_coord = num_coord
     gfld%ndpts = ndpts
     gfld%idrtnum = idrtnum
@@ -148,6 +153,12 @@ contains
        print *, 'ipdtlen ', gfld1%ipdtlen, gfld2%ipdtlen
        dc = dc + 1
     end if
+    do i = 1, gfld1%ipdtlen
+       if (gfld1%ipdtmpl(i) .ne. gfld2%ipdtmpl(i)) then
+          print *, 'i, ipdtmpl(i) ', i, gfld1%ipdtmpl(i), gfld2%ipdtmpl(i)
+          dc = dc + 1
+       end if
+    end do
     if (gfld1%num_coord .ne. gfld2%num_coord) then
        print *, 'num_coord ', gfld1%num_coord, gfld2%num_coord
        dc = dc + 1
@@ -199,7 +210,7 @@ contains
     print *, 'igdtmpl ', gfld%igdtmpl
     print *, 'ipdtnum ', gfld%ipdtnum
     print *, 'ipdtlen ', gfld%ipdtlen
-!    print *, 'ipdtmpl ', gfld%ipdtmpl
+    print *, 'ipdtmpl ', gfld%ipdtmpl
     print *, 'num_coord ', gfld%num_coord
 !    print *, 'coord_list ', gfld%coord_list
     print *, 'ndpts ', gfld%ndpts

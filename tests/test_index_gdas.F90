@@ -40,6 +40,25 @@ program test_index_gdas
   integer :: expected_idsect1(IDSECTLEN) = (/ 7, 0, 2, 1, 1, 2021, 11, 30, 0, 0, 0, 0, 1 /)
   integer :: expected_igdtmpl(19) = (/ 6, 0, 0, 0, 0, 0, 0, 241, 151, 0, 0, 50000000, &
        210000000, 48, 25000000, 250000000, 166667, 166667, 0 /)
+  integer :: expected_ipdtmpl_1(15) = (/ 2, 1, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_2(15) = (/ 2, 0, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_3(15) = (/ 2, 2, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_4(15) = (/ 2, 3, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_5(15) = (/ 0, 3, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_6(15) = (/ 0, 11, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_7(15) = (/ 0, 10, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_8(15) = (/ 0, 5, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_9(15) = (/ 0, 8, 2, 0, 11, 0, 0, 1, 0, 241, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_10(15) = (/ 0, 8, 2, 0, 11, 0, 0, 1, 0, 241, 0, 2, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_11(15) = (/ 0, 8, 2, 0, 11, 0, 0, 1, 0, 241, 0, 3, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_12(15) = (/ 0, 6, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_13(15) = (/ 0, 9, 2, 0, 11, 0, 0, 1, 0, 241, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_14(15) = (/ 0, 9, 2, 0, 11, 0, 0, 1, 0, 241, 0, 2, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_15(15) = (/ 0, 9, 2, 0, 11, 0, 0, 1, 0, 241, 0, 3, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_16(15) = (/ 0, 4, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_17(15) = (/ 0, 7, 2, 0, 11, 0, 0, 1, 0, 241, 0, 1, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_18(15) = (/ 0, 7, 2, 0, 11, 0, 0, 1, 0, 241, 0, 2, 255, 0, 0 /)
+  integer :: expected_ipdtmpl_19(15) = (/ 0, 7, 2, 0, 11, 0, 0, 1, 0, 241, 0, 3, 255, 0, 0 /)
   interface
      subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb, msk1, msk2, mnum
@@ -100,10 +119,45 @@ program test_index_gdas
   call init_index(INDEX_REC_LEN, 237035, 0, 37, 109, 143, 166, 4721, 22188, 2, 10, 1, expected_idx(18))
   call init_index(INDEX_REC_LEN, 259223, 0, 37, 109, 143, 166, 4721, 22427, 2, 10, 1, expected_idx(19))
 
-  do mnum = 1, NUM_MESSAGES  
-     call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
-          0, 15, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(mnum))
-  end do
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_1, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(1))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_2, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(2))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_3, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(3))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_4, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(4))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_5, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(5))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_6, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(6))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_7, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(7))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_8, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(8))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_9, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(9))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_10, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(10))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_11, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(11))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_12, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(12))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_13, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(13))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_14, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(14))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_15, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(15))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_16, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(16))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_17, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(17))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_18, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(18))
+  call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+       0, 15, expected_ipdtmpl_19, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(19))
+
 
   ! Initialize these for the getgb2s() call.
   j = 0
