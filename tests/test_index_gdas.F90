@@ -38,7 +38,8 @@ program test_index_gdas
   ! Unbelievably clumsy, but this is how we have to initialize a 2D
   ! array in Fortran.
   integer :: expected_idsect1(IDSECTLEN) = (/ 7, 0, 2, 1, 1, 2021, 11, 30, 0, 0, 0, 0, 1 /)
-
+  integer :: expected_igdtmpl(19) = (/ 6, 0, 0, 0, 0, 0, 0, 241, 151, 0, 0, 50000000, &
+       210000000, 48, 25000000, 250000000, 166667, 166667, 0 /)
   interface
      subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb, msk1, msk2, mnum
@@ -100,8 +101,8 @@ program test_index_gdas
   call init_index(INDEX_REC_LEN, 259223, 0, 37, 109, 143, 166, 4721, 22427, 2, 10, 1, expected_idx(19))
 
   do mnum = 1, NUM_MESSAGES  
-     call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, 0, 15, 0, 11041, 40, 7, &
-          .false., .false., 0, expected_gfld(mnum))
+     call init_gribmod(2, IDSECTLEN, expected_idsect1, 0, 1, 0, 36391, 0, 0, 0, 0, 19, expected_igdtmpl, &
+          0, 15, 0, 11041, 40, 7, .false., .false., 0, expected_gfld(mnum))
   end do
 
   ! Initialize these for the getgb2s() call.

@@ -15,7 +15,7 @@ module index_rec
 contains
   ! Initialize a gribmod.
   subroutine init_gribmod(version, idsectlen, idsect, locallen, ifldnum, &
-       griddef, ngrdpts, numoct_opt, interp_opt, num_opt, igdtnum, igdtlen, &
+       griddef, ngrdpts, numoct_opt, interp_opt, num_opt, igdtnum, igdtlen, igdtmpl, &
        ipdtnum, ipdtlen, num_coord, ndpts, idrtnum, idrtlen, unpacked, expanded, &
        ibmap, gfld)
     use grib_mod
@@ -32,6 +32,7 @@ contains
     integer, intent(in) :: num_opt
     integer, intent(in) :: igdtnum
     integer, intent(in) :: igdtlen
+    integer, intent(in) :: igdtmpl(:)
     integer, intent(in) :: ipdtnum
     integer, intent(in) :: ipdtlen
     integer, intent(in) :: num_coord
@@ -60,6 +61,10 @@ contains
     gfld%num_opt = num_opt
     gfld%igdtnum = igdtnum
     gfld%igdtlen = igdtlen
+    allocate(gfld%igdtmpl(igdtlen))
+    do i = 1, igdtlen
+       gfld%igdtmpl(i) = igdtmpl(i)
+    end do
     gfld%ipdtnum = ipdtnum
     gfld%ipdtlen = ipdtlen
     gfld%num_coord = num_coord
@@ -129,6 +134,12 @@ contains
        print *, 'igdtlen ', gfld1%igdtlen, gfld2%igdtlen
        dc = dc + 1
     end if
+    do i = 1, gfld1%igdtlen
+       if (gfld1%igdtmpl(i) .ne. gfld2%igdtmpl(i)) then
+          print *, 'i, igdtmpl(i) ', i, gfld1%igdtmpl(i), gfld2%igdtmpl(i)
+          dc = dc + 1
+       end if
+    end do
     if (gfld1%ipdtnum .ne. gfld2%ipdtnum) then
        print *, 'ipdtnum ', gfld1%ipdtnum, gfld2%ipdtnum
        dc = dc + 1
@@ -185,7 +196,7 @@ contains
 !    print *, 'list_opt ', gfld%list_opt
     print *, 'igdtnum ', gfld%igdtnum
     print *, 'igdtlen ', gfld%igdtlen
-!    print *, 'igdtmpl ', gfld%igdtmpl
+    print *, 'igdtmpl ', gfld%igdtmpl
     print *, 'ipdtnum ', gfld%ipdtnum
     print *, 'ipdtlen ', gfld%ipdtlen
 !    print *, 'ipdtmpl ', gfld%ipdtmpl
