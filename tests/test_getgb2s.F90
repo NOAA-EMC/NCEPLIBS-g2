@@ -138,7 +138,7 @@ program test_getgb2s
   ! Try again, but will fail because we are looking for an incorrect
   ! GDT section value.
   jgdt(1) = 999
-  jgdtn = 6
+  jgdtn = 0
   call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
        jgdt, k, gfld, lpos, iret)
   if (iret .ne. 1) stop 113
@@ -148,7 +148,7 @@ program test_getgb2s
   ! Try again, but will fail because we are looking for an incorrect
   ! PDT section value.
   jpdt(1) = 42
-  jpdtn = 6
+  jpdtn = 0
   call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
        jgdt, k, gfld, lpos, iret)
   if (iret .ne. 1) stop 113
