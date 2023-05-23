@@ -77,10 +77,10 @@ program test_getgb2p_2
   print *, 'Deallocate buffer that got GRIB message.'
   deallocate(gribm)
 
-  ! ! Now try with the index file.
-  ! print *, 'Testing getgb2p() with index file ', GDAS_INDEX_FILE
-  ! call baopenr(lugi, GDAS_INDEX_FILE, iret)
-  ! if (iret .ne. 0) stop 400
+  ! Now try with the index file.
+  print *, 'Testing getgb2p() with index file ', GDAS_INDEX_FILE
+  call baopenr(lugi, GDAS_INDEX_FILE, iret)
+  if (iret .ne. 0) stop 400
 
   ! print *, 'Now try with extract false with index...'
   ! extract = .false.
@@ -92,13 +92,13 @@ program test_getgb2p_2
   ! print *, 'Deallocate buffer that got GRIB message.'
   ! deallocate(gribm)
 
-  ! ! Close the index file.
-  ! call baclose(lugi, iret)
-  ! if (iret .ne. 0) stop 499
+  ! Close the index file.
+  call baclose(lugi, iret)
+  if (iret .ne. 0) stop 499
 
-  ! ! Close the GRIB2 file.
-  ! call baclose(lugb, iret)
-  ! if (iret .ne. 0) stop 599
+  ! Close the GRIB2 file.
+  call baclose(lugb, iret)
+  if (iret .ne. 0) stop 599
 
   print *, 'SUCCESS!...'
 
