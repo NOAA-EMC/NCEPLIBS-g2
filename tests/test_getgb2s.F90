@@ -136,9 +136,8 @@ program test_getgb2s
   jids(1) = -9999
 
   ! Try again, but will fail because we are looking for an incorrect
-  ! GDT section value. This will fail due to a memory leak in
-  ! getgb2s(). See https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/406.
-  jgdt(1) = 42
+  ! GDT section value.
+  jgdt(1) = 999
   jgdtn = 6
   call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
        jgdt, k, gfld, lpos, iret)
@@ -146,12 +145,8 @@ program test_getgb2s
   jgdt(1) = -9999
   jgdtn = -1
 
-  ! Free memory.
-  !call gf_free(gfld)
-
   ! Try again, but will fail because we are looking for an incorrect
-  ! PDT section value. This also causes a memory leak. See
-  ! https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/406.
+  ! PDT section value.
   jpdt(1) = 42
   jpdtn = 6
   call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
@@ -159,9 +154,6 @@ program test_getgb2s
   if (iret .ne. 1) stop 113
   jpdt(1) = -9999
   jpdtn = -1
-
-  ! ! Free memory.
-  ! call gf_free(gfld)
 
   ! Free memory.
   deallocate(cbuf)
