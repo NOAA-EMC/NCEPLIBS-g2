@@ -1,6 +1,6 @@
 ! This is a test program for NCEPLIBS-g2.
 !
-! This program tests getg2ir.F90
+! This program tests getidx().
 !
 ! Ed Hartnett 7/26/22
 program test_getidx
