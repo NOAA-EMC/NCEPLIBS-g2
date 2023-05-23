@@ -147,6 +147,7 @@ program test_getgb2s
 
   ! Free memory.
   call gf_free(gfld)
+  
 
   ! Try again, but will fail because we are looking for an incorrect
   ! PDT section value.
