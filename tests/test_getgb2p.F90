@@ -8,7 +8,7 @@ program test_getgb2p
   implicit none
 
   integer :: lugi
-  integer :: lugb = 3 ! Use different LU for _4/_d in case tests are run in parallel.
+  integer :: lugb = 3
   integer :: iret
   integer :: leng
   character(len=1), pointer, dimension(:) :: gribm
