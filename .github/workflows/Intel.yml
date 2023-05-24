@@ -1,4 +1,4 @@
-name: Intel Build
+name: Intel
 on:
   push:
     branches:
@@ -14,20 +14,18 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-  intel-build-and-test:
+  Intel:
     runs-on: ubuntu-latest
     env:
       CC: icc
       FC: ifort
       CXX: icpc
     strategy:
+      fail-fast: true
       matrix:
         os: [ubuntu-latest]
 
     steps:
-
-    strategy:
-      fail-fast: true
 
     # See https://software.intel.com/content/www/us/en/develop/articles/oneapi-repo-instructions.html
     - name: install-intel
