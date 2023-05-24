@@ -3,13 +3,9 @@ on:
   push:
     branches:
     - develop
-    paths-ignore:
-    - README.md
   pull_request:
     branches:
     - develop
-    paths-ignore:
-    - README.md
 
 jobs:
   MacOS:
@@ -23,6 +19,7 @@ jobs:
       matrix:
         jasper-version: [3.0.3]
         bacio-version: [2.4.1, 2.5.0]
+        
     steps:
     - name: install-dependencies
       run: |
