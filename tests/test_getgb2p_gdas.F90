@@ -1,6 +1,6 @@
 ! This is a test program for NCEPLIBS-g2.
 !
-! This program tests getg2p.F90 some more.
+! This program tests getg2p() on the GDAS test file.
 !
 ! Ed Hartnett 5/15/23
 program test_getgb2p_gdas
@@ -20,7 +20,7 @@ program test_getgb2p_gdas
   parameter(GDAS_FILE = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: GDAS_INDEX_FILE
   parameter(GDAS_INDEX_FILE = 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
-  integer :: iret
+  integer :: e, iret
   
   ! Interfaces are needed due to pointers in the parameter lists.
   interface
@@ -56,26 +56,30 @@ program test_getgb2p_gdas
      jgdt(i) = -9999
   end do
 
-  print *, 'First try with extract true and no index...'
-  extract = .true.
-  call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-       extract, k, gribm, leng, iret)
-  print *, iret, k, leng
-  if (iret .ne. 0) stop 101
-  if (k .ne. 1 .or. leng .ne. 15254) stop 110
+  ! Try with extract both true and false. The results are the same for
+  ! the GDAS file.
+  do e = 1, 2
+     if (e .eq. 2) extract = .true.
+     call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+          extract, k, gribm, leng, iret)
+     print *, iret, k, leng
+     if (iret .ne. 0) stop 101
+     if (k .ne. 1 .or. leng .ne. 15254) stop 110
 
-  ! Deallocate buffer that got GRIB message.
-  deallocate(gribm)
+     ! Deallocate buffer that got GRIB message.
+     deallocate(gribm)
+  end do
 
-  print *, 'Now try with extract false and no index...'
-  extract = .false.
-  call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-       extract, k, gribm, leng, iret)
-  if (iret .ne. 0) stop 201
-  if (k .ne. 1 .or. leng .ne. 15254) stop 210
 
-  print *, 'Deallocate buffer that got GRIB message.'
-  deallocate(gribm)
+  ! print *, 'Now try with extract false and no index...'
+  ! extract = .false.
+  ! call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+  !      extract, k, gribm, leng, iret)
+  ! if (iret .ne. 0) stop 201
+  ! if (k .ne. 1 .or. leng .ne. 15254) stop 210
+
+  ! print *, 'Deallocate buffer that got GRIB message.'
+  ! deallocate(gribm)
 
   ! Now try with the index file.
   print *, 'Testing getgb2p() with index file ', GDAS_INDEX_FILE
