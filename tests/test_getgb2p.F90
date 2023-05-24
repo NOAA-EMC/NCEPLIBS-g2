@@ -8,11 +8,7 @@ program test_getgb2p
   implicit none
 
   integer :: lugi
-#if KIND == 4
   integer :: lugb = 3 ! Use different LU for _4/_d in case tests are run in parallel.
-#else
-  integer :: lugb = 5
-#endif
   integer :: iret
   integer :: leng
   character(len=1), pointer, dimension(:) :: gribm
