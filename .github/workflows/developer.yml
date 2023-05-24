@@ -4,7 +4,13 @@
 #
 # Ed Hartnett, 12/22/22
 name: developer 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 jobs:
   developer:
@@ -21,8 +27,7 @@ jobs:
     - name: install-dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
-        python3 -m pip install gcovr
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen gcovr
 
     - name: checkout-bacio
       uses: actions/checkout@v2

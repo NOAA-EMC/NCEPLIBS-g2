@@ -1,5 +1,11 @@
-name: Intel Build
-on: [push, pull_request]
+name: Intel
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 # Use custom shell with -l so .bash_profile is sourced which loads intel/oneapi/setvars.sh
 # without having to do it in manually every step
@@ -8,13 +14,14 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-  intel-build-and-test:
+  Intel:
     runs-on: ubuntu-latest
     env:
       CC: icc
       FC: ifort
       CXX: icpc
     strategy:
+      fail-fast: true
       matrix:
         os: [ubuntu-latest]
 
