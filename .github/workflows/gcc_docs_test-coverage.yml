@@ -1,5 +1,11 @@
 name: GCC Build, docs, test coverage
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 jobs:
   build:
@@ -8,6 +14,9 @@ jobs:
       FC: gfortran
       CC: gcc
       CXX: g++
+
+    strategy:
+      fail-fast: true
 
     steps:
 

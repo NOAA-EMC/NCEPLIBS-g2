@@ -1,5 +1,11 @@
 name: Linux_versions
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 jobs:
   Linux_versions:
@@ -9,6 +15,7 @@ jobs:
       CC: gcc
       LD_LIBRARY_PATH: /home/runner/jasper/lib
     strategy:
+      fail-fast: true
       matrix:
         jasper-version: [2.0.33, 3.0.5, 4.0.0]
         bacio-version: [2.4.1, 2.5.0]

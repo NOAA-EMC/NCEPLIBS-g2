@@ -1,5 +1,11 @@
 name: Intel Build
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 # Use custom shell with -l so .bash_profile is sourced which loads intel/oneapi/setvars.sh
 # without having to do it in manually every step
@@ -19,6 +25,9 @@ jobs:
         os: [ubuntu-latest]
 
     steps:
+
+    strategy:
+      fail-fast: true
 
     # See https://software.intel.com/content/www/us/en/develop/articles/oneapi-repo-instructions.html
     - name: install-intel
