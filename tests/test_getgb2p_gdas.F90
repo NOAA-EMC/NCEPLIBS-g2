@@ -60,6 +60,7 @@ program test_getgb2p_gdas
   ! the GDAS file.
   do e = 1, 2
      if (e .eq. 2) extract = .true.
+     print *, '   trying getgb2p() with extract ', e
      call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
           extract, k, gribm, leng, iret)
      print *, iret, k, leng
@@ -72,27 +73,27 @@ program test_getgb2p_gdas
 
   ! Now try with the index file. This causes a memory leak. See
   ! https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/412.
-  ! print *, 'Testing getgb2p() with index file ', GDAS_INDEX_FILE
-  ! call baopenr(lugi, GDAS_INDEX_FILE, iret)
-  ! if (iret .ne. 0) stop 400
+  print *, 'Testing getgb2p() with index file ', GDAS_INDEX_FILE
+  call baopenr(lugi, GDAS_INDEX_FILE, iret)
+  if (iret .ne. 0) stop 400
 
-  ! print *, 'Now try with extract false with index...'
-  ! extract = .false.
-  ! call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-  !       extract, k, gribm, leng, iret)
-  ! if (iret .ne. 0) stop 201
-  ! if (k .ne. 1 .or. leng .ne. 15254) stop 210
+  print *, 'Now try with extract false with index...'
+  extract = .false.
+  call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+        extract, k, gribm, leng, iret)
+  if (iret .ne. 0) stop 201
+  if (k .ne. 1 .or. leng .ne. 15254) stop 210
 
-  ! print *, 'Deallocate buffer that got GRIB message.'
-  ! deallocate(gribm)
+  print *, 'Deallocate buffer that got GRIB message.'
+  deallocate(gribm)
 
-  ! ! Close the index file.
-  ! call baclose(lugi, iret)
-  ! if (iret .ne. 0) stop 499
+  ! Close the index file.
+  call baclose(lugi, iret)
+  if (iret .ne. 0) stop 499
 
-  ! ! Close the GRIB2 file.
-  ! call baclose(lugb, iret)
-  ! if (iret .ne. 0) stop 599
+  ! Close the GRIB2 file.
+  call baclose(lugb, iret)
+  if (iret .ne. 0) stop 599
 
   print *, 'SUCCESS!...'
 

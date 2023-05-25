@@ -110,8 +110,8 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   character(len = 1), pointer, dimension(:) :: cbuf
   parameter(msk1 = 32000, msk2 = 4000)
 
-  save cbuf, nlen, nnum
-  data lux/0/
+  !save cbuf, nlen, nnum
+  !data lux/0/
 
   !  declare interfaces (required for cbuf pointer)
   interface
@@ -136,6 +136,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   end interface
 
   ! Determine whether index buffer needs to be initialized.
+  lux = 0
   irgi = 0
   if (lugi .gt. 0 .and. lugi .ne. lux) then
      call getg2i(lugi, cbuf, nlen, nnum, irgi)
@@ -165,5 +166,9 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   call getgb2rp(lugb, cbuf(lpos:), extract, gribm, leng, iret)
 
   k = jk
+
+  ! Free cbuf memory allocated in getg2i/getg2ir().
+  if (associated(cbuf)) deallocate(cbuf)
+  
   call gf_free(gfld)
 end subroutine getgb2p
