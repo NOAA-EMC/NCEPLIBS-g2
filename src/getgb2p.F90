@@ -104,7 +104,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   integer, intent(out) :: k, iret, leng
   character(len = 1), pointer, dimension(:) :: gribm
 
-  type(gribfield) :: gfld
+!  type(gribfield) :: gfld
   integer :: msk1, irgi, irgs, jk, lpos, msk2, mskp, nlen, nmess, nnum
 
   character(len = 1), pointer, dimension(:) :: cbuf
@@ -145,14 +145,14 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      return
   endif
 
-  ! Search index buffer.
-  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-       jk, gfld, lpos, irgs)
-  if (irgs .ne. 0) then
-     iret = 99
-     call gf_free(gfld)
-     return
-  endif
+  ! Find info from index and fill a grib_mod::gribfield variable.
+  ! call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+  !      jk, gfld, lpos, irgs)
+  ! if (irgs .ne. 0) then
+  !    iret = 99
+  !    call gf_free(gfld)
+  !    return
+  ! endif
 
   ! Extract grib message from file.
   nullify(gribm)
@@ -163,5 +163,5 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   ! Free cbuf memory allocated in getg2i/getg2ir().
   if (associated(cbuf)) deallocate(cbuf)
   
-  call gf_free(gfld)
+!  call gf_free(gfld)
 end subroutine getgb2p
