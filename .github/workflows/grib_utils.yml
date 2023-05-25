@@ -171,12 +171,12 @@ jobs:
         ctest --verbose --output-on-failure --rerun-failed
 
     - name: checkout-grib_utils
+      repository: NOAA-EMC/NCEPLIBS-grib_utils
       uses: actions/checkout@v2
       with: 
         path: grib_utils
 
     - name: build-grib_utils
-      repository: NOAA-EMC/NCEPLIBS-grib_utils
       run: |
         cd grib_utils
         mkdir build && cd build
