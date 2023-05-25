@@ -177,7 +177,7 @@ jobs:
         ls -l ~/jasper/lib
         export LD_LIBRARY_PATH=/home/runner/jasper/lib
         export PATH="~/g2c/bin:$PATH"
-        cmake -DENABLE_DOCS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="~/bacio;~/jasper;~/sp;~/ip;~/w3emc;~/g2;~/g2c" ..
+        cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="~/bacio;~/jasper;~/sp;~/ip;~/w3emc;~/g2;~/g2c" ..
         make -j2 VERBOSE=1
         ctest --output-on-failure --rerun-failed --verbose
 
