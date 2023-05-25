@@ -130,7 +130,7 @@ jobs:
       id: cache-jasper
       uses: actions/cache@v2
       with:
-        path: ~/Jasper
+        path: ~/jasper
         key: jasper-${{ runner.os }}-3.0.3
 
     - name: checkout-jasper
@@ -146,7 +146,7 @@ jobs:
       run: |
         cd jasper
         mkdir build-jasper && cd build-jasper
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
         make -j2
         make install
 
@@ -161,7 +161,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/g2 ..
+        cmake -DJasper_ROOT=~/jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/g2 ..
         make -j2 VERBOSE=1
         make install
 
