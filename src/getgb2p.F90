@@ -36,7 +36,7 @@
 !> nonzero, file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
 !> subroutine. Set to 0 to get index buffer from the GRIB file.
-!> @param[in] J Number of fields to skip (set to 0 to search
+!> @param[in] j Number of fields to skip (set to 0 to search
 !> from beginning).
 !> @param[in] jdisc GRIB2 discipline number of requested field. See
 !> [GRIB2 - TABLE 0.0 -
