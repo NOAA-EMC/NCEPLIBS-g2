@@ -76,10 +76,8 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
   lux = 0
   iret = 0
   if (lugb .le. 0 .or. lugb .gt. 9999) then
-     print *, ' '
      print *, ' file unit number out of range'
      print *, ' use unit numbers in range: 0 - 9999 '
-     print *, ' '
      iret = 90
      return
   endif
@@ -125,9 +123,7 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
   else
      nlen = 0
      nnum = 0
-     print *, ' '
      print *, ' error reading index file '
-     print *, ' '
      iret = 96
      return
   endif
