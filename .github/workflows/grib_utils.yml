@@ -53,6 +53,70 @@ jobs:
         path: w3emc
         ref: develop
 
+    - name: cache-sp
+      id: cache-sp
+      uses: actions/cache@v2
+      with:
+        path: ~/sp
+        key: sp-developer-${{ runner.os }}-2.3.3
+
+    - name: checkout-sp
+      if: steps.cache-sp.outputs.cache-hit != 'true'
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-sp
+        path: sp
+        ref: v2.3.3
+
+    - name: build-sp
+      if: steps.cache-sp.outputs.cache-hit != 'true'
+      run: |
+        cd sp
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/sp
+        make -j2
+        make install
+          
+    - name: checkout-ip
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-ip
+        path: ip
+        ref: v3.3.3
+
+    - name: build-ip
+      run: |
+        cd ip
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/ip -DCMAKE_PREFIX_PATH=~/sp
+        make -j2
+        make install
+          
+    - name: checkout-g2c
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-g2c
+        path: g2c
+        ref: develop
+
+    - name: build-g2c
+      run: |
+        cd g2c
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=~/g2c -DCMAKE_PREFIX_PATH="~/jasper" ..
+        make -j2
+        make install
+                 
+    - name: checkout-g2
+      uses: actions/checkout@v2
+      with:
+        repository: NOAA-EMC/NCEPLIBS-g2
+        path: g2
+        ref: ${{ matrix.g2-branch }}
+
     - name: build-w3emc
       run: |
         cd w3emc
@@ -97,13 +161,31 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/g2 ..
         make -j2 VERBOSE=1
+        make install
 
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose --output-on-failure --rerun-failed
+
+    - name: checkout-grib_utils
+      uses: actions/checkout@v2
+      with: 
+        path: grib_utils
+
+    - name: build-grib_utils
+      repository: NOAA-EMC/NCEPLIBS-grib_utils
+      run: |
+        cd grib_utils
+        mkdir build && cd build
+        ls -l ~/jasper/lib
+        export LD_LIBRARY_PATH=/home/runner/jasper/lib
+        export PATH="~/g2c/bin:$PATH"
+        cmake -DENABLE_DOCS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="~/bacio;~/jasper;~/sp;~/ip;~/w3emc;~/g2;~/g2c" ..
+        make -j2 VERBOSE=1
+        ctest --output-on-failure --rerun-failed --verbose
 
 
 
