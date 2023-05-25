@@ -166,7 +166,7 @@ jobs:
     - name: checkout-grib_utils
       uses: actions/checkout@v2
       with: 
-        repository: NOAA-EMC/NCEPLIBS-grib_utils
+        repository: NOAA-EMC/NCEPLIBS-grib_util
         path: grib_utils
         ref: develop
         
