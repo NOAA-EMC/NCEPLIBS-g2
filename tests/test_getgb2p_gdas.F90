@@ -60,7 +60,6 @@ program test_getgb2p_gdas
   ! the GDAS file.
   do e = 1, 2
      if (e .eq. 2) extract = .true.
-     print *, '   trying getgb2p() with extract ', e
      call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
           extract, k, gribm, leng, iret)
      print *, iret, k, leng
