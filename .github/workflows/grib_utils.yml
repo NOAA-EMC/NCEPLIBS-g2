@@ -22,6 +22,8 @@ jobs:
 
     strategy:
       fail-fast: true
+      matrix:
+        grib_util-branch: [develop, v1.2.4]
 
     steps:
 
@@ -168,7 +170,7 @@ jobs:
       with: 
         repository: NOAA-EMC/NCEPLIBS-grib_util
         path: grib_utils
-        ref: develop
+        ref: ${{ matrix.grib_util-branch }}
         
     - name: build-grib_utils
       run: |
