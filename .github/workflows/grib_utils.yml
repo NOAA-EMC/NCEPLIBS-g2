@@ -30,6 +30,30 @@ jobs:
         sudo apt-get update
         sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev
 
+    - name: cache-jasper
+      id: cache-jasper
+      uses: actions/cache@v2
+      with:
+        path: ~/jasper
+        key: jasper-${{ runner.os }}-3.0.3
+
+    - name: checkout-jasper
+      if: steps.cache-jasper.outputs.cache-hit != 'true'    
+      uses: actions/checkout@v2
+      with:
+        repository: jasper-software/jasper
+        path: jasper
+        ref: version-3.0.3
+
+    - name: build-jasper
+      if: steps.cache-jasper.outputs.cache-hit != 'true'
+      run: |
+        cd jasper
+        mkdir build-jasper && cd build-jasper
+        cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
+        make -j2
+        make install
+
     - name: checkout-bacio
       uses: actions/checkout@v2
       with:
@@ -110,13 +134,6 @@ jobs:
         make -j2
         make install
                  
-    - name: checkout-g2
-      uses: actions/checkout@v2
-      with:
-        repository: NOAA-EMC/NCEPLIBS-g2
-        path: g2
-        ref: ${{ matrix.g2-branch }}
-
     - name: build-w3emc
       run: |
         cd w3emc
@@ -126,30 +143,6 @@ jobs:
         make -j2
         make install
         
-    - name: cache-jasper
-      id: cache-jasper
-      uses: actions/cache@v2
-      with:
-        path: ~/jasper
-        key: jasper-${{ runner.os }}-3.0.3
-
-    - name: checkout-jasper
-      if: steps.cache-jasper.outputs.cache-hit != 'true'    
-      uses: actions/checkout@v2
-      with:
-        repository: jasper-software/jasper
-        path: jasper
-        ref: version-3.0.3
-
-    - name: build-jasper
-      if: steps.cache-jasper.outputs.cache-hit != 'true'
-      run: |
-        cd jasper
-        mkdir build-jasper && cd build-jasper
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/jasper
-        make -j2
-        make install
-
     - name: checkout
       uses: actions/checkout@v2
       with:
