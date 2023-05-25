@@ -1,10 +1,10 @@
 !> @file
-!> @brief This subroutine finds and extracts the index for the
-!> requested field from a GRIB2 file.
+!> @brief Extract a grib message from a file given the index of the requested
+!> field.
 !> @author Stephen Gilbert @date 2003-12-31
 
-!> This subroutine finds and extracts a grib message from a GRIB2 file
-!> given the index of the requested field.
+!> Extract a grib message from a file given the index of the requested
+!> field.
 !>
 !> The GRIB message returned can contain only the requested field
 !> (extract=.true.), or the complete GRIB message originally
