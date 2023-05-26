@@ -1,6 +1,7 @@
 # This is a GitHub actions workflow for NCEPLIBS-g2.
 #
-# This builds the devleper branch with checking.
+# This builds the develop branch with documentation, warning check,
+# and address sanitizer.
 #
 # Ed Hartnett, 12/22/22
 name: developer 
