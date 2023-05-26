@@ -105,15 +105,12 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   character(len = 1), pointer, dimension(:) :: gribm
 
   type(gribfield) :: gfld
-  integer :: msk1, irgi, irgs, jk, lpos, lux, msk2, mskp, nlen, nmess, nnum
+  integer :: msk1, irgi, irgs, jk, lpos, msk2, mskp, nlen, nmess, nnum
 
   character(len = 1), pointer, dimension(:) :: cbuf
   parameter(msk1 = 32000, msk2 = 4000)
 
-  save cbuf, nlen, nnum
-  data lux/0/
-
-  !  declare interfaces (required for cbuf pointer)
+  ! Declare interfaces (required for cbuf pointer).
   interface
      subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
        character(len = 1), pointer, dimension(:) :: cbuf
@@ -135,23 +132,20 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      end subroutine getgb2rp
   end interface
 
-  ! Determine whether index buffer needs to be initialized.
+  ! Initialize the index information in cbuf.
   irgi = 0
-  if (lugi .gt. 0 .and. lugi .ne. lux) then
+  if (lugi .gt. 0) then
      call getg2i(lugi, cbuf, nlen, nnum, irgi)
-     lux = lugi
-  elseif (lugi .le. 0 .and. lugb .ne. lux) then
+  elseif (lugi .le. 0) then
      mskp = 0
      call getg2ir(lugb, msk1, msk2, mskp, cbuf, nlen, nnum, nmess, irgi)
-     lux = lugb
   endif
   if (irgi .gt. 1) then
      iret = 96
-     lux = 0
      return
   endif
 
-  ! Search index buffer.
+  ! Find info from index and fill a grib_mod::gribfield variable.
   call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        jk, gfld, lpos, irgs)
   if (irgs .ne. 0) then
@@ -165,5 +159,9 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   call getgb2rp(lugb, cbuf(lpos:), extract, gribm, leng, iret)
 
   k = jk
+
+  ! Free cbuf memory allocated in getg2i/getg2ir().
+  if (associated(cbuf)) deallocate(cbuf)
+  
   call gf_free(gfld)
 end subroutine getgb2p
