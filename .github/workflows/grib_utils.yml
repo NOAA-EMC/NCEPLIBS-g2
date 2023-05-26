@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        grib_util-branch: [develop, v1.2.4]
+        grib_util-branch: [develop]
 
     steps:
 
