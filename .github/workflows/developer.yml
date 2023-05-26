@@ -117,7 +117,7 @@ jobs:
       if: steps.cache-data.outputs.cache-hit != 'true'
       run: |
         mkdir ~/data
-        cp $GITHUB_WORKSPACE/g2c/build/tests/data/* ~/data
+        cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
 
     - name: upload-test-coverage
       uses: actions/upload-artifact@v2
