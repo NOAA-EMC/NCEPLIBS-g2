@@ -24,6 +24,7 @@ jobs:
       fail-fast: true
       matrix:
         grib_util-branch: [develop]
+        jasper-vesion: [3.0.3, 4.0.0]
 
     steps:
 
@@ -37,7 +38,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/jasper
-        key: jasper-${{ runner.os }}-3.0.3
+        key: jasper-${{ runner.os }}-${{ matrix.jasper-version }}
 
     - name: checkout-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'    
@@ -45,7 +46,7 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-3.0.3
+        ref: version-${{ matrix.jasper-version }}
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
