@@ -46,6 +46,12 @@ option(LOGGING "Turn on internal logging messages. Only useful to g2 developers.
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
 
+# Developers can use this option to specify a local directory which
+# holds the test files. They will be copied instead of fetching the
+# files via FTP.
+SET(TEST_FILE_DIR "." CACHE STRING "Check this directory for test files before using FTP.")
+message(STATUS "Finding test data files in directory ${TEST_FILE_DIR}.")
+
 # Set pre-processor symbol if logging is desired.
 if(LOGGING)
   add_definitions(-DLOGGING)

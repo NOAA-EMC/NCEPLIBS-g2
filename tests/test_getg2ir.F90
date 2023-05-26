@@ -27,7 +27,7 @@ program test_getg2ir
 
   ! Open a real GRIB2 file.
   print *, 'Indexing a real GRIB2 file...'
-  call baopenr(lugb, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
+  call baopenr(lugb, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
 
   msk1 = 1000

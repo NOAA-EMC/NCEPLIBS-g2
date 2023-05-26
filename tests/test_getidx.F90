@@ -9,7 +9,7 @@ program test_getidx
 
   ! THese are the test files we will use.
   character(*) :: TEST_FILE_WW3_WEST
-  parameter (TEST_FILE_WW3_WEST = 'WW3_Regional_US_West_Coast_20220718_0000.grib2')
+  parameter (TEST_FILE_WW3_WEST = 'data/WW3_Regional_US_West_Coast_20220718_0000.grib2')
   character(*) :: TEST_FILE_GDAS
   parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: TEST_FILE_GDAS_INDEX
