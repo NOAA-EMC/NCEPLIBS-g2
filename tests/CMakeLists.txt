@@ -10,6 +10,16 @@ link_directories("/usr/local/lib")
 # site. This function is used to download such test data. It takes two
 # arguments, the URL and the file to be downloaded.
 function(PULL_DATA THE_URL THE_FILE)
+  # If the TEST_FILE_DIR was specified, look for our test data files
+  # there before FTPing them. Developers can keep all test files on
+  # their machines, and save the time of downloading them every time.
+  if(NOT ${TEST_FILE_DIR} STREQUAL ".")
+    if (EXISTS ${TEST_FILE_DIR}/${THE_FILE})
+      message(STATUS "Copying file ${TEST_FILE_DIR}/${THE_FILE} to test data directory.")
+      FILE(COPY ${TEST_FILE_DIR}/${THE_FILE}
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+  endif()
   if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${THE_FILE}")
     file(DOWNLOAD
       ${THE_URL}/${THE_FILE}
