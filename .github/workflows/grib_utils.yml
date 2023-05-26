@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        grib_util-branch: [develop]
+        grib_util-branch: [v1.2.4, develop]
         jasper-vesion: [3.0.3, 4.0.0]
 
     steps:
