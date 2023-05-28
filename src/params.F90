@@ -1189,45 +1189,4 @@ contains
     return
   end subroutine param_g2_to_g1
 
-  !> Return all the information about a parameter.
-  !>
-  !> @param[in] param_idx Index to the paramlist array. If there is no
-  !> parameter with this index, then 0 is returned for all integer
-  !> parameters. If the index is outside the range of 1-2000, then 255
-  !> is returned for all values.
-  !> @param[out] g1_table_version GRIB1 table version.
-  !> @param[out] g1_val GRIB1 value.
-  !> @param[out] g2_discipline GRIB2 discipline.
-  !> @param[out] g2_category GRIB2 Category number.
-  !> @param[out] g2_param_num GRIB2 Parameter number within category g2cat.
-  !> @param[out] g2_abbrev NOAA abbreviation for this parameter._
-  !>
-  !> @author Ed Hartnett, 9/18/22
-  subroutine param_all(param_idx, g1_table_version, g1_val, g2_discipline, g2_category, &
-       g2_param_num, g2_abbrev)
-    implicit none
-    
-    integer, intent(in) :: param_idx
-    integer, intent(out) :: g1_table_version, g1_val, g2_discipline, g2_category, &
-         g2_param_num
-    character(len = 8), intent(out) :: g2_abbrev
-
-    g1_table_version = 255
-    g1_val = 255
-    g2_discipline = 255
-    g2_category = 255
-    g2_param_num = 255
-    g2_abbrev = 'UNKNOWN '
-
-    if (param_idx .ge. 1 .and. param_idx .le. MAXPARAM) then
-       g1_table_version = paramlist(param_idx)%g1tblver
-       g1_val = paramlist(param_idx)%grib1val
-       g2_discipline = paramlist(param_idx)%grib2dsc
-       g2_category = paramlist(param_idx)%grib2cat
-       g2_param_num = paramlist(param_idx)%grib2num
-       g2_abbrev = paramlist(param_idx)%abbrev
-    endif
-
-  end subroutine param_all
-
 end module params
