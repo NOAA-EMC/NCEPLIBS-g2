@@ -121,7 +121,6 @@ foreach(kind ${kinds})
   create_test(test_index_gdas ${kind} index_rec.F90)
   create_test(test_getgb2p_gdas ${kind})    
   create_test(test_realloc ${kind})
-  create_test(test_gdt2gds ${kind})
   create_test(test_simpack ${kind})
   create_test(test_gbytec ${kind})
   create_test(test_gribcreate ${kind})
@@ -129,5 +128,11 @@ foreach(kind ${kinds})
   create_test(test_pngpack ${kind})
   create_test(test_jpcpack ${kind})
   create_test(test_files ${kind})
+
+  # This test depends on gdt2gds(), which is not present if the GRIB1
+  # library is not also included in the build.
+  if (BUILD_WITH_W3EMC)
+    create_test(test_gdt2gds ${kind})
+  endif()
 endforeach()
 

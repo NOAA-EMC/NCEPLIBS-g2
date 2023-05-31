@@ -45,6 +45,7 @@ option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
 option(LOGGING "Turn on internal logging messages. Only useful to g2 developers." OFF)
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
+option(BUILD_WITH_W3EMC "Build with NCEPLIBS-w3emc, enabling some GRIB1 functionality" ON)
 
 # Developers can use this option to specify a local directory which
 # holds the test files. They will be copied instead of fetching the
@@ -65,7 +66,11 @@ find_package(bacio REQUIRED)
 if(bacio_VERSION LESS 2.5.0)
   add_library(bacio::bacio ALIAS bacio::bacio_4)
 endif()
-find_package(w3emc 2.9.0 REQUIRED)
+
+# NCEPLIBS-w3emc may be required.
+if (BUILD_WITH_W3EMC)
+  find_package(w3emc 2.9.0 REQUIRED)
+endif()
 
 # Figure whether user wants a _4, a _d, or both libraries.
 if(BUILD_4 AND BUILD_D)
