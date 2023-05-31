@@ -22,7 +22,7 @@ jobs:
         config:
         - {
             name: "with NCEPLIBS-w3emc and logging",
-            options: "-DLOGGING=ON"
+            options: "-DCMAKE_BUILD_TYPE=Debug"
           }
         # - {
         #     name: "without NCEPLIBS-w3emc",
