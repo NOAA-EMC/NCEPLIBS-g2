@@ -112,6 +112,10 @@ program test_getgb2
   call baopenw(2, "test_getgb2_copy.grib2", iret)
   if (iret .ne. 0) stop 100
 
+  print *, gfld%ipdtnum, gfld%ipdtmpl
+  print *, gfld%ipdtlen, gfld%num_coord
+  print *, gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen
+  print *, gfld%fld, gfld%ngrdpts, gfld%ibmap, gfld%bmap
   call putgb2(2, gfld, iret)
   if (iret .ne. 0) stop 107
 

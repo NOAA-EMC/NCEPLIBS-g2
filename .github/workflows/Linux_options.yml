@@ -29,12 +29,12 @@ jobs:
             options: "-DCMAKE_BUILD_TYPE=Debug -DLOGGING=ON"
           }
         - {
-            name: "with NCEPLIBS-w3emc",
-            options: ""
+            name: "with NCEPLIBS-w3emc ",
+            options: "-DCMAKE_BUILD_TYPE=Debug"
           }
         - {
             name: "without NCEPLIBS-w3emc",
-            options: "-DBUILD_WITH_W3EMC=OFF"
+            options: "-DBUILD_WITH_W3EMC=OFF -DCMAKE_BUILD_TYPE=Debug"
           }
 
     steps:
