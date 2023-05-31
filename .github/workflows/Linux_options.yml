@@ -15,7 +15,7 @@ jobs:
       CC: gcc
       LD_LIBRARY_PATH: /home/runner/jasper/lib
     strategy:
-      fail-fast: true
+#      fail-fast: true
       matrix:
         bacio-version: [2.5.0]
         w3emc-version: [2.9.3]
@@ -24,10 +24,13 @@ jobs:
             options: "-DCMAKE_BUILD_TYPE=Debug"
           }
         - {
-            options: "-DCMAKE_BUILD_TYPE=Debug -DLOGGING=ON"
+            options: "-DCMAKE_C_Fortran_FLAGS=\"-fno-omit-frame-pointer -fsanitize=address\"" -DLOGGING=ON"
           }
         - {
             options: "-DCMAKE_BUILD_TYPE=Debug"
+          }
+        - {
+            options: "-DBUILD_WITH_W3EMC=OFF"
           }
         - {
             options: "-DBUILD_WITH_W3EMC=OFF -DCMAKE_BUILD_TYPE=Debug"
