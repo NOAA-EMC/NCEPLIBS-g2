@@ -21,19 +21,15 @@ jobs:
         w3emc-version: [2.9.3]
         config:
         - {
-            name: "with Debug, NCEPLIBS-w3emc",
             options: "-DCMAKE_BUILD_TYPE=Debug"
           }
         - {
-            name: "with Debug, NCEPLIBS-w3emc and logging",
             options: "-DCMAKE_BUILD_TYPE=Debug -DLOGGING=ON"
           }
         - {
-            name: "with NCEPLIBS-w3emc ",
             options: "-DCMAKE_BUILD_TYPE=Debug"
           }
         - {
-            name: "without NCEPLIBS-w3emc",
             options: "-DBUILD_WITH_W3EMC=OFF -DCMAKE_BUILD_TYPE=Debug"
           }
 
