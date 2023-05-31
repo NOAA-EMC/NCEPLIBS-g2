@@ -24,7 +24,7 @@ jobs:
             options: "-DCMAKE_BUILD_TYPE=Debug"
           }
         - {
-            options: "-DCMAKE_C_Fortran_FLAGS=\"-fno-omit-frame-pointer -fsanitize=address\"" -DLOGGING=ON"
+            options: '-DCMAKE_C_Fortran_FLAGS="-fno-omit-frame-pointer -fsanitize=address" -DLOGGING=ON'
           }
         - {
             options: "-DCMAKE_BUILD_TYPE=Debug"
