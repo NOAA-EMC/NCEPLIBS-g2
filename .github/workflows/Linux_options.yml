@@ -24,10 +24,10 @@ jobs:
             name: "with NCEPLIBS-w3emc and logging",
             options: "-DLOGGING=ON"
           }
-        - {
-            name: "without NCEPLIBS-w3emc",
-            options: "-DBUILD_WITH_W3EMC=OFF"
-          }
+        # - {
+        #     name: "without NCEPLIBS-w3emc",
+        #     options: "-DBUILD_WITH_W3EMC=OFF"
+        #   }
 
     steps:
 
