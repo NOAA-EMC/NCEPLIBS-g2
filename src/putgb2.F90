@@ -139,11 +139,6 @@ subroutine putgb2(lugb, gfld, iret)
   if (associated(gfld%ipdtmpl) .AND. &
        associated(gfld%idrtmpl) .AND. &
        associated(gfld%fld)) then
-  print *, gfld%ipdtnum, gfld%ipdtmpl
-  print *, gfld%ipdtlen, gfld%num_coord
-  print *, gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen
-  print *, gfld%fld, gfld%ngrdpts, gfld%ibmap, gfld%bmap
-  print *, cgrib, lcgrib, coordlist, ierr
      call addfield(cgrib, lcgrib, gfld%ipdtnum, gfld%ipdtmpl,  &
           gfld%ipdtlen, coordlist, gfld%num_coord,  &
           gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen,  &
