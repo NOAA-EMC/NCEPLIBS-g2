@@ -31,14 +31,14 @@ jobs:
 
     - name: cache-bacio
       id: cache-bacio
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/bacio
         key: bacio-${{ runner.os }}-${{ matrix.bacio-version }}
         
     - name: checkout-bacio
       if: steps.cache-bacio.outputs.cache-hit != 'true'        
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
         path: bacio
@@ -56,14 +56,14 @@ jobs:
         
     - name: cache-w3emc
       id: cache-w3emc
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/w3emc
         key: w3emc-${{ runner.os }}-2.9.2-bacio-${{ matrix.bacio-version }}
         
     - name: checkout-w3emc
       if: steps.cache-w3emc.outputs.cache-hit != 'true'    
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: NOAA-EMC/NCEPLIBS-w3emc
         path: w3emc
@@ -81,14 +81,14 @@ jobs:
         
     - name: cache-jasper
       id: cache-jasper
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/jasper
         key: jasper-${{ runner.os }}-${{ matrix.jasper-version }}
 
     - name: checkout-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'    
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: jasper-software/jasper
         path: jasper
@@ -104,7 +104,7 @@ jobs:
         make install
 
     - name: checkout-g2c
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: NOAA-EMC/NCEPLIBS-g2c
         path: g2c
@@ -119,7 +119,7 @@ jobs:
         make -j2
         make install
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: g2
 
