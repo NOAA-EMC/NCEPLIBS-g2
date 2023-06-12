@@ -112,6 +112,7 @@ program test_getgb2
   call baopenw(2, "test_getgb2_copy.grib2", iret)
   if (iret .ne. 0) stop 100
 
+  allocate(gfld%bmap(1))
   call putgb2(2, gfld, iret)
   if (iret .ne. 0) stop 107
 
