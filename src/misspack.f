@@ -19,13 +19,6 @@
 !> Value Management is being used and that 1 or 2 missing values
 !> appear in the data.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2000-06-21 | Stephen Gilbert |
-!> 2004-12-29 | Stephen Gilbert | Corrected bug when encoding secondary missing values.
-!> 2012-05-10 | Boi Vuong | Added variable rmin4 for 4 byte real.
-!>
 !> @param[in] fld Contains the data values to pack.
 !> @param[in] ndpts The number of data values in array fld.
 !> @param[in] idrsnum Data Representation Template number. Must
