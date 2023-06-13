@@ -35,16 +35,6 @@
 !> value in this case would be the absolute value of the negative
 !> value in mapgrid.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2000-05-09 | Stephen Gilbert | Initial development
-!> 2003-09-02 | Stephen Gilbert | Added GDT 3.31 Albers Equal Area
-!> 2007-04-24 | Boi Vuong | Added GDT 3.204 Curilinear Orthogonal Grids
-!> 2008-05-29 | Boi Vuong | Added GDT 3.32768 Rotate Lat/Lon E-grid
-!> 2010-05-10 | Boi Vuong | Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
-!> 2013-08-06 | Boi Vuong | Added GDT 3.4,3.5,3.12,3.101,3.140
-!>
 !> @author Stephen Gilbert @date 2000-05-09
       module gridtemplates
 
@@ -325,10 +315,6 @@
 !>    depending on data values given in an earlier part of the Template,
 !>    and it is necessary to know some of the earlier entry values to
 !>    generate the full octet map of the Template.
-!>    
-!>    PROGRAM HISTORY LOG:
-!>    - 2000-05-09 Stephen Gilbert 
-!>    - 2013-07-30 Boi Vuong Added GDT 3.4,3.5,3.12,3.101,3.140
 !>    
 !>    @param[in] number NN, indicating the number of the Grid Definition
 !>    Template 3.NN that is being requested.

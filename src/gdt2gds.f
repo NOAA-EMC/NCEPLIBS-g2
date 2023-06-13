@@ -9,14 +9,6 @@
 !> In addition, a check is made to determine if the grid is a NCEP
 !> predefined grid.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2003-06-17 | Stephen Gilbert | Initial
-!> 2004-04-27 | Stephen Gilbert | Added support for gaussian grids.
-!> 2007-04-16 | Boi Vuong | Added Curvilinear Orthogonal grids.
-!> 2007-05-29 | Boi Vuong | Added Rotate Lat/Lon E-grid (203).
-!>
 !> @param[in] igds Contains information read from the appropriate GRIB
 !> Grid Definition Section 3 for the field being returned. Must be
 !> dimensioned >= 5.
