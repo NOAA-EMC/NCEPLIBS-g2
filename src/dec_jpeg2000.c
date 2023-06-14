@@ -1,12 +1,6 @@
 /** @file
  * @brief Decodes JPEG2000 code stream.
  * @author Stephen Gilbert @date 2002-12-02
- *
- * ### Program History Log
- * Date | Programmer | Comments
- * -----|------------|---------
- * 2002-12-02 | Gilbert | Initial
- * 2022-04-15 | Hartnett | Converted to use jas_ instead of jpc_ functions.
  */
 
 #include <stdio.h>
