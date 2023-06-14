@@ -2,9 +2,8 @@
 
 # NCEPLIBS G2 Library
 
-Utilities for coding/decoding GRIB2 messages. This library contains
-Fortran 90 decoder/encoder routines for GRIB edition 2, as well as
-indexing/searching utility routines. This is part of the
+This library contains
+Fortran 90 decoder/encoder routines for GRIB edition 2. This is part of the
 [NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
 
 For more detailed documentation see
@@ -29,16 +28,20 @@ Hartnett](mailto:edward.hartnett@noaa.gov)
 ## Prerequisites
 
 The following libraries are required:
-- libpng
-- libjasper
+
+This package requires the following third party libraries:
+- [Jasper](http://www.ece.uvic.ca/~mdadams/jasper/)
+- [libpng](http://www.libpng.org/pub/png/libpng.html)
+- [libz](http://www.gzip.org/zlib/)
+
+This package requires the folling NCEPLIBS libraries:
+- [NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio)
+- [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc) (optional)
 
 ## Building
 
 ```
 cmake .. -DCMAKE_INSTALL_PREFIX=myg2 -DCMAKE_PREFIX_PATH="${PNG_LIBDIR};${PNG_INC};${JASPER_LIBDIR};${JASPER_INC}"
-
-If -DCMAKE_INSTALL_PREFIX= is omitted, the libraries will be installed in directory 
-install underneath the build directory.
 
 make
 make install
@@ -72,3 +75,4 @@ Commerce. The Department of Commerce seal and logo, or the seal and
 logo of a DOC bureau, shall not be used in any manner to imply
 endorsement of any commercial product or activity by DOC or the United
 States Government.
+
