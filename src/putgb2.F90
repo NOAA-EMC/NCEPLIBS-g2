@@ -18,16 +18,6 @@
 !> component of the gribfield type is described in the input argument
 !> list section below.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2002-04-22 | Stephen Gilbert | Initial.
-!> 2005-02-28 | Stephen Gilbert | Changed dim of array cgrib to be a multiple of gfld%ngrdpts instead of gfld%ndpts.
-!> 2009-03-10 | Boi Vuong | Initialize variable coordlist.
-!> 2011-06-09 | Boi Vuong | Initialize variable gfld%list_opt.
-!> 2012-02-28 | Boi Vuong | Initialize variable ilistopt.
-!> 2022-07-19 | Ed Hartnett | Fixed memory problem.
-!>
 !> @param[in] lugb integer unit of the unblocked grib data file.  File
 !> must be opened with [baopen() or baopenw()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
