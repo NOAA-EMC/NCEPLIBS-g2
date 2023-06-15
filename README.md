@@ -32,9 +32,9 @@ The following libraries are required:
 This package requires the following third party libraries:
 - [Jasper](http://www.ece.uvic.ca/~mdadams/jasper/)
 - [libpng](http://www.libpng.org/pub/png/libpng.html)
-- [libz](http://www.gzip.org/zlib/)
+- [zlib](http://www.zlib.net/)
 
-This package requires the folling NCEPLIBS libraries:
+This package requires the following NCEPLIBS libraries:
 - [NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio)
 - [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc) (optional)
 
