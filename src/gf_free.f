@@ -5,13 +5,6 @@
 !> This subroutine frees up memory that was used to store
 !> array values in derived type grib_mod::gribfield.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2000-05-26 | Stephen Gilbert | Modified from getg1s to work with grib2
-!> 2012-12-11 | Boi Vuong | initialize an undefine pointers
-!> 2015-10-29 | Boi Vuong | Deallocate pointers in derived type gribfield
-!>
 !> @param gfld derived type grib_mod::gribfield.
 !>
 !> @author Stephen Gilbert @date 2000-05-26
