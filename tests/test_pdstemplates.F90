@@ -10,9 +10,7 @@ program test_pdstemplates
   integer :: idx
   integer :: nummap
   integer :: iret, i
-  integer, dimension(15) :: map_comp, list
-  integer, dimension(MAXLEN) :: map
-  !integer, dimension(MAXLEN) :: map1
+  integer, dimension(MAXLEN) :: map, map_comp, list
   logical :: needext
   integer :: pdtlen
 
@@ -45,22 +43,108 @@ program test_pdstemplates
   print *, 'testing getpdstemplate() with template -1 (nonexistent)...'  
   call getpdstemplate(-1, nummap, map, needext, iret)
   if (iret .eq. 0) stop 11
-  if (pdtlen .ne. nummap) stop 12
+  if (nummap .ne. 0) stop 12
   if (needext) stop 13
 
   print *, 'testing extpdstemplate()...'
+  ! Index = -1 -- returns without doing anything
+  call extpdstemplate(-1, list, nummap, map)
+  ! Template without map extension (needext = false)
+  ! -- returns without doing anything
   call extpdstemplate(0, list, nummap, map)
-  if (nummap .ne. 0) stop 14
+  ! Testing the extendable tempaltes
+  ! ---- still need to test output i.e. nummap and map ----
+  ! Template number 3
+  call getpdstemplate(3, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 31 .or. .not. needext) stop 14
+  call extpdstemplate(3, list, nummap, map)
+  ! Template number 4
+  call getpdstemplate(4, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 30 .or. .not. needext) stop 15
+  call extpdstemplate(4, list, nummap, map)
+  ! Template number 8
+  call getpdstemplate(8, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 29 .or. .not. needext) stop 16
+  call extpdstemplate(8, list, nummap, map)
+  ! Template number 9
+  call getpdstemplate(9, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 36 .or. .not. needext) stop 17
+  call extpdstemplate(9, list, nummap, map)
+  ! Template number 10
+  call getpdstemplate(10, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 30 .or. .not. needext) stop 18
+  call extpdstemplate(10, list, nummap, map)
+  ! Template number 11
+  call getpdstemplate(11, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 32 .or. .not. needext) stop 19
+  call extpdstemplate(11, list, nummap, map)
+  ! Template number 12
+  call getpdstemplate(12, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 31 .or. .not. needext) stop 20
+  call extpdstemplate(12, list, nummap, map)
+  ! Template number 13
+  call getpdstemplate(13, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 45 .or. .not. needext) stop 21
+  call extpdstemplate(13, list, nummap, map)
+  ! Template number 14
+  call getpdstemplate(14, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 44 .or. .not. needext) stop 22
+  call extpdstemplate(14, list, nummap, map)
+  ! Template number 30
+  call getpdstemplate(30, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 5 .or. .not. needext) stop 23
+  call extpdstemplate(30, list, nummap, map)
+  ! Template number 31
+  call getpdstemplate(31, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 5 .or. .not. needext) stop 24
+  call extpdstemplate(31, list, nummap, map)
+  ! Template number 32
+  call getpdstemplate(32, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 10 .or. .not. needext) stop 25
+  call extpdstemplate(32, list, nummap, map)
+  ! Template number 33
+  call getpdstemplate(33, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 18 .or. .not. needext) stop 26
+  call extpdstemplate(33, list, nummap, map)
+  ! Template number 34
+  call getpdstemplate(34, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 32 .or. .not. needext) stop 27
+  call extpdstemplate(34, list, nummap, map)
+  ! Template number 42
+  call getpdstemplate(42, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 30 .or. .not. needext) stop 28
+  call extpdstemplate(42, list, nummap, map)
+  ! Template number 43
+  call getpdstemplate(43, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 33 .or. .not. needext) stop 29
+  call extpdstemplate(43, list, nummap, map)
+  ! Template number 46
+  call getpdstemplate(46, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 35 .or. .not. needext) stop 30
+  call extpdstemplate(46, list, nummap, map)
+  ! Template number 47
+  call getpdstemplate(47, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 38 .or. .not. needext) stop 31
+  call extpdstemplate(47, list, nummap, map)
+  ! Template number 51
+  call getpdstemplate(51, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 16 .or. .not. needext) stop 32
+  call extpdstemplate(51, list, nummap, map)
+  ! Template number 53
+  call getpdstemplate(53, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 19 .or. .not. needext) stop 33
+  call extpdstemplate(53, list, nummap, map)
+  ! Template number 54
+  call getpdstemplate(54, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 22 .or. .not. needext) stop 34
+  call extpdstemplate(54, list, nummap, map)
+  ! Template number 91
+  call getpdstemplate(91, nummap, list, needext, iret)
+  if (iret .ne. 0 .or. nummap .ne. 36 .or. .not. needext) stop 35
+  call extpdstemplate(91, list, nummap, map)
+  
 
-  ! print *, 'testing extpdstemplate() some more...'
-  ! pdtlen = getpdtlen(3)
-  ! if (pdtlen .ne. 31) stop 5
-  ! call getpdstemplate(3, nummap, map, needext, iret)
-  ! if (iret .ne. 0) stop 6
-  ! if (nummap .ne. 31) stop 20
-  ! call extpdstemplate(3, map, nummap, map1)
-  ! print *, 'nummap = ', nummap
-  ! if (nummap .ne. 32) stop 20
+  
   
   print *, 'SUCCESS'
 end program test_pdstemplates
