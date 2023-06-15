@@ -375,14 +375,6 @@ contains
   !> occupied by each entry. Also,  a flag is returned to indicate
   !> whether the template would need to be extended.
   !>
-  !> ### Program History Log
-  !> Date | Programmer | Comments
-  !> -----|------------|---------
-  !> 2000-05-11 | Stephen Gilbert | Initial
-  !> 2010-08-03 | Boi Vuong | Added Templates 4.40, 4.41, 4.42, .4.43
-  !> 2010-12-08 | Boi Vuong | Corrected Product Definition Template 4.42 and 4.43
-  !> 2013-07-29 | Boi Vuong | Added Templates 4.48, 4.50, 4.33, 4.34, 4.53, 4.54
-  !>
   !> @param[in] number the Product Definition Template number that is
   !> being requested.
   !> @param[out] nummap Number of entries in the Template.
@@ -426,14 +418,6 @@ contains
   !> vary depending on data values given in an earlier part of the
   !> Template,  and it is necessary to know some of the earlier entry
   !> values to generate the full octet map of the Template.
-  !>
-  !> ### Program History Log
-  !> Date | Programmer | Comments
-  !> -----|------------|---------
-  !> 2000-05-11 | Stephen Gilbert | Initial
-  !> 2010-08-03 | Boi Vuong | Added Templates 4.40, 4.41, 4.42, .4.43
-  !> 2010-12-08 | Boi Vuong | Corrected Product Definition Template 4.42 and 4.43
-  !> 2013-07-29 | Boi Vuong | Added Templates 4.48, 4.50, 4.33, 4.34, 4.53, 4.54
   !>
   !> @param[in] number the Product Definition Template number.
   !> @param[in] list An array containing the number of octets that match
