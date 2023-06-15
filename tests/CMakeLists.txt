@@ -69,9 +69,10 @@ if(FTP_TEST_FILES)
   set(G2_FTP_URL "https://ftp.emc.ncep.noaa.gov/static_files/public/NCEPLIBS-g2")
   set(WW3_WEST_FILE "WW3_Regional_US_West_Coast_20220718_0000.grib2")
   set(WW3_EAST_FILE "WW3_Regional_US_East_Coast_20220717_0600.grib2")
+  set(GEAVG_FILE "geavg.t00z.pgrb2a.0p50_mecomf144")
   # Not using the East Coast file yet.
   # foreach(THE_FILE IN LISTS WW3_WEST_FILE WW3_EAST_FILE) 
-  foreach(THE_FILE IN LISTS WW3_WEST_FILE) 
+  foreach(THE_FILE IN LISTS WW3_WEST_FILE GEAVG_FILE) 
     PULL_DATA(${G2_FTP_URL} ${THE_FILE})
   endforeach()
 
@@ -88,6 +89,7 @@ if(FTP_TEST_FILES)
     create_test(test_getgb2p ${kind})  
     create_test(test_getgb2r ${kind})  
     create_test(test_getgb2ir ${kind})
+    create_test(test_getgb2_mem ${kind})
   endforeach()  
 endif()
 
@@ -128,7 +130,6 @@ foreach(kind ${kinds})
   create_test(test_pngpack ${kind})
   create_test(test_jpcpack ${kind})
   create_test(test_files ${kind})
-  create_test(test_getgb2_mem ${kind})
 
   # This test depends on gdt2gds(), which is not present if the GRIB1
   # library is not also included in the build.

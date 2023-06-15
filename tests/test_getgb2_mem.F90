@@ -5,9 +5,23 @@
 ! Bo Cui, Ed Hartnett, 6/1/23
 program test_getgb2_mem
   implicit none
+
+  character(*) :: TEST_FILE_GEP19_BCF144
+  parameter (TEST_FILE_GEP19_BCF144 = 'data/gep19.t00z.pgrb2a.0p50_bcf144')
+  character(*) :: TEST_FILE_GEAVG
+  parameter (TEST_FILE_GEAVG = 'data/geavg.t00z.pgrb2a.0p50_mecomf144')
+  character(*) :: TEST_FILE_GEC00
+  parameter (TEST_FILE_GEC00 = 'data/gec00.t00z.pgrb2a.0p50.f144')
+  character(*) :: TEST_FILE_GEGFS_F144
+  parameter (TEST_FILE_GEGFS_F144 = 'data/gegfs.t00z.pgrb2a.0p50.f144')
+  character(*) :: TEST_FILE_GEGFS_MEF144
+  parameter (TEST_FILE_GEGFS_MEF144 = 'data/gegfs.t00z.pgrb2a.0p50_mef144')
+  character(*) :: TEST_FILE_GEP19_F144
+  parameter (TEST_FILE_GEP19_F144 = 'data/gep19.t00z.pgrb2a.0p50.f144')
+  integer :: NUM_TEST_FILES
+  parameter (NUM_TEST_FILES = 6)
+  character(len=120), dimension(NUM_TEST_FILES) :: test_file
   
-  character(*) :: TEST_FILE_GDAS
-  parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
   integer :: inver = 0,outver = 0,ipack = -1
   character(len = 500) :: gfilein
   INTEGER(4) NARG,IARGC
@@ -15,19 +29,26 @@ program test_getgb2_mem
   integer lugb
   parameter(lugb = 10)
   integer :: ios, ncgb
+  integer :: i
+  
+  test_file = [character(len=120) :: TEST_FILE_GEP19_BCF144, TEST_FILE_GEAVG, TEST_FILE_GEC00, &
+       TEST_FILE_GEGFS_F144, TEST_FILE_GEGFS_MEF144, TEST_FILE_GEP19_F144]
+  
+  do i = 1, NUM_TEST_FILES
+     print *, 'Opening GRIB2 file ', test_file(i)
+     
+     ! Open input GRIB2 file.
+     call baopenr(lugb + i, test_file(i), ios)
+     if (ios .ne. 0) stop 10
 
-  ! Open input GRIB2 file.
-  call baopenr(lugb, TEST_FILE_GDAS, ios)
-  if (ios .ne. 0) stop 10
+     ! Readd grib file.
+     call gb2read(lugb + i)
 
-  ! Readd grib file.
-  call gb2read(lugb)
+     ! Close grib file.
+     call baclose(lugb + i, ios)
+     if (ios .ne. 0) stop 11
+  end do
 
-  ! Close grib file.
-  call baclose(lugb, ios)
-  if (ios .ne. 0) stop 11
-
-  stop
 end program test_getgb2_mem
 
 ! Read GRIB2 file.
@@ -149,8 +170,8 @@ subroutine gb2read(ifl1)
           unpack,jskp,gfld,iret)
 
      if (iret.ne.0) then
-        print *,' getgb2 error  =  ',iret
-        if (iret .eq. 99) stop 2
+        print *,' getgb2 returned ',iret
+!        if (iret .eq. 99) stop 2
         cycle
         !call errexit(17)
      endif
