@@ -10,7 +10,8 @@ program test_pdstemplates
   integer :: idx
   integer :: nummap
   integer :: iret, i
-  integer, dimension(MAXLEN) :: map, map_comp, list
+  integer, dimension(15) :: map_comp
+  integer, dimension(MAXLEN) :: map, list
   logical :: needext
   integer :: pdtlen
 
