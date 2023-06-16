@@ -10,7 +10,7 @@ program test_params_ecmwf
 
   print *, 'Testing the params_ecmwf module.'
 
-  print *, 'Testing param_ecmwf_g1_to_g2...'
+  print *, 'Testing param_ecmwf_g1_to_g2...' 
   call param_ecmwf_g1_to_g2(1, 128, g2disc, g2cat, g2num)
   if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 2
   call param_ecmwf_g1_to_g2(52, 1, g2disc, g2cat, g2num)
