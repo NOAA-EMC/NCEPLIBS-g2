@@ -21,14 +21,11 @@ program test_getgb2_mem
   integer :: NUM_TEST_FILES
   parameter (NUM_TEST_FILES = 6)
   character(len=120), dimension(NUM_TEST_FILES) :: test_file
+  logical, dimension(NUM_TEST_FILES) :: success_expected = (/ .false., .false., .true., .true., .false., .true./)
   
-  integer :: inver = 0,outver = 0,ipack = -1
-  character(len = 500) :: gfilein
-  INTEGER(4) NARG,IARGC
-  logical :: usemiss = .false., uvvect = .true.
   integer lugb
   parameter(lugb = 10)
-  integer :: ios, ncgb
+  integer :: ios
   integer :: i
   
   test_file = [character(len=120) :: TEST_FILE_GEP19_BCF144, TEST_FILE_GEAVG, TEST_FILE_GEC00, &
@@ -42,7 +39,7 @@ program test_getgb2_mem
      if (ios .ne. 0) stop 10
 
      ! Readd grib file.
-     call gb2read(lugb + i)
+     call gb2read(lugb + i, success_expected(i))
 
      ! Close grib file.
      call baclose(lugb + i, ios)
@@ -52,16 +49,15 @@ program test_getgb2_mem
 end program test_getgb2_mem
 
 ! Read GRIB2 file.
-subroutine gb2read(ifl1)
+subroutine gb2read(ifl1, success_expected)
   use grib_mod
   use params
   implicit none
-  !     integer,intent(in) :: ifl1
   integer ifl1, icnt
   real dmax, dmin
+  logical success_expected
 
   CHARACTER(len = 1),allocatable,dimension(:) :: cgrib
-  CHARACTER(len = 8) :: ctemp
   type(gribfield) :: gfld
   integer,dimension(20) :: jpdt,jgdt
   integer,dimension(13) :: jids
@@ -70,7 +66,6 @@ subroutine gb2read(ifl1)
   integer :: currlen = 0
   integer :: igds(5) = (/0,0,0,0,0/)
   real :: xprob(2)
-  logical*1,target,dimension(1) :: dummy
   logical :: unpack = .true.
 
   integer nvar
@@ -79,8 +74,7 @@ subroutine gb2read(ifl1)
 
   integer     ipd1(nvar),ipd2(nvar),ipd10(nvar),ipd3(nvar)
   integer     ipd11(nvar),ipd12(nvar),ipdn(nvar)
-  integer     ipdnm(nvar),ipdnr(nvar),ipdna(nvar)
-  integer     ipd11_cmc(nvar),ipd12_cmc(nvar)
+  integer     ipdnm(nvar)
   integer :: kf, newlen, jdisc, jgdtn, jskp, jpdtn, j, ivar, is
   integer :: iret, imug, igrid, ifli1, i, ibs, icount
   real :: rmiss1, rmiss2
@@ -171,9 +165,8 @@ subroutine gb2read(ifl1)
 
      if (iret.ne.0) then
         print *,' getgb2 returned ',iret
-!        if (iret .eq. 99) stop 2
+        if (success_expected) stop 2
         cycle
-        !call errexit(17)
      endif
      icount = icount+1
 
@@ -254,11 +247,6 @@ subroutine gb2read(ifl1)
      imug = 0
      ! print out
      kf = gfld%ngrdpts
-     !      do i  =  1, kf
-     !       data(i)  =  gfld%fld(i)
-     !      enddo
-     !      call grange(kf,lb,gfld%fld,dmin,dmax)
-     !      call grange(kf,gfld%bmap,gfld%fld,dmin,dmax)
 
      dmin = gfld%fld(1)
      dmax = gfld%fld(1)
@@ -278,17 +266,6 @@ subroutine gb2read(ifl1)
 887  format(' REC  PD5 PD6 PD7 YEAR MN  DY  HR  F1  F2  FU  ', &
           'E2  E3  E4   LEN      MAX        MIN       Sample ')
 888  format(3i4,i5,7i4,3i4,i8,3f11.2)
-
-
-     !        call putgbexn(ifl2,gfld%ngrdpts,kpds,kgds,kens,kprob,
-     !    &                 xprob,kclust,kmembr,ibs,imug,gfld%bmap,
-     !    &                 gfld%fld,iret)
-     !print *,'SAGT:after putgbexn'
-     !        if (iret.ne.0) then
-     !           print *,' putgbexn error  =  ',iret
-     !           cycle
-     !call errexit(17)
-     !        endif
 
      call gf_free(gfld)
 
@@ -412,6 +389,8 @@ subroutine makepds(idisc,idsect,ipdsnum,ipdstmpl,ibmap,   &
   integer,intent(out) :: iret
   integer :: ipos
 
+  ! This is always 3 in this test.
+  if (idrsnum .ne. 3) stop 20
   iret = 0
   kpds(1:24) = 0
   if ((ipdsnum.lt.0).OR.(ipdsnum.gt.14)) then
@@ -633,28 +612,4 @@ subroutine levelcnv(ipdstmpl,ltype,lval)
      ltype = 255
   endif
 
-  !  High resolution stuff
-  !        elseif (ltype .eq. 121) then
-  !           ipdstmpl(10) = 100
-  !           ipdstmpl(12) = (1100+(lval/256))*100
-  !           ipdstmpl(13) = 100
-  !           ipdstmpl(15) = (1100+mod(lval,256))*100
-  !        elseif (ltype .eq. 125) then
-  !           ipdstmpl(10) = 103
-  !           ipdstmpl(11) = -2
-  !           ipdstmpl(12) = lval
-  !        elseif (ltype .eq. 128) then
-  !           ipdstmpl(10) = 104
-  !           ipdstmpl(11) = -3
-  !           ipdstmpl(12) = 1100+(lval/256)
-  !           ipdstmpl(13) = 104
-  !           ipdstmpl(14) = -3
-  !           ipdstmpl(15) = 1100+mod(lval,256)
-  !        elseif (ltype .eq. 141) then
-  !           ipdstmpl(10)=100
-  !           ipdstmpl(12)=(lval/256)*100
-  !           ipdstmpl(13)=100
-  !           ipdstmpl(15)=(1100+mod(lval,256))*100
-
-  return
 end subroutine levelcnv
