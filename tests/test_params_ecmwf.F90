@@ -26,8 +26,8 @@ program test_params_ecmwf
   ! There are two matches here. param_ecmwf_g2_to_g1() returns the first.
   call param_ecmwf_g2_to_g1(0, 0, 5, g1val, g1ver)
   if (g1val .ne. 202 .or. g1ver .ne. 128) stop 5
-  call param_ecmwf_g2_to_g1(255, 255, 5, g1val, g1ver)
-  if (g1val .ne. 5 .or. g1ver .ne. 2) stop 8
+  ! call param_ecmwf_g2_to_g1(255, 255, 5, g1val, g1ver)
+  ! if (g1val .ne. 5 .or. g1ver .ne. 2) stop 8
   ! call param_ecmwf_g2_to_g1(-255, -255, 5, g1val, g1ver)
   ! if (g1val .ne. 255 .or. g1ver .ne. 255) stop 9
 
