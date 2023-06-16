@@ -1,6 +1,7 @@
 ! This is a test for NCEPLIBS-g2.
 !
-! This tests for a memory leak in getgb2().
+! This tests for a memory leak in getgb2(). See
+! https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/446.
 !
 ! Bo Cui, Ed Hartnett, 6/1/23
 program test_getgb2_mem
@@ -189,6 +190,7 @@ subroutine gb2read(ifl1, success_expected)
           kgds,igrid,iret)
      if (iret.ne.0) then
         print *,'cnv21: could not create gds'
+        stop 15
         cycle
      endif
      !print *,' SAGT: NCEP GRID: ',igrid
@@ -198,6 +200,7 @@ subroutine gb2read(ifl1, success_expected)
           gfld%ipdtmpl,gfld%ibmap,gfld%idrtnum, gfld%idrtmpl,kpds,iret)
      if (iret.ne.0) then
         print *,'cnv21: could not create pds'
+        stop 16
         cycle
      endif
      kpds(3) = igrid
@@ -263,6 +266,11 @@ subroutine gb2read(ifl1, success_expected)
      write(*,888) jskp,(kpds(i),i = 5,11),kpds(14),kpds(15),kpds(16), &
           (kens(i),i = 2,4),kf, dmax,dmin,gfld%fld(8601)
 
+     ! For our test files, we expect certain values.
+     if (kpds(5) .ne. 7 .or. kpds(6) .ne. 100 .or. kpds(8) .ne. 23 .or. kpds(9) .ne. 4 .or. &
+          kpds(10) .ne. 30  .or. kpds(11) .ne. 0) stop 25
+     if (kpds(14) .ne. 144 .or. kpds(15) .ne. 0) stop 26
+     
 887  format(' REC  PD5 PD6 PD7 YEAR MN  DY  HR  F1  F2  FU  ', &
           'E2  E3  E4   LEN      MAX        MIN       Sample ')
 888  format(3i4,i5,7i4,3i4,i8,3f11.2)
