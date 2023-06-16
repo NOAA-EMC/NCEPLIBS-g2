@@ -162,12 +162,20 @@ program test_pdstemplates
     if (list(i) .ne. exp_map8(i)) stop 64
   end do
   call extpdstemplate(8, list, nummap, map)
+  if (list(22) .le. 1) then
+    list(22) = 2
+  end if
+  call extpdstemplate(8, list, nummap, map)
   ! Template number 9
   call getpdstemplate(9, nummap, list, needext, iret)
   if (iret .ne. 0 .or. nummap .ne. 36 .or. .not. needext) stop 17
   do i = 1, nummap
     if (list(i) .ne. exp_map9(i)) stop 65
   end do
+  call extpdstemplate(9, list, nummap, map)
+  if (list(29) .le. 1) then
+    list(29) = 2
+  end if
   call extpdstemplate(9, list, nummap, map)
   ! Template number 10
   call getpdstemplate(10, nummap, list, needext, iret)
@@ -176,12 +184,20 @@ program test_pdstemplates
     if (list(i) .ne. exp_map10(i)) stop 66
   end do
   call extpdstemplate(10, list, nummap, map)
+  if (list(23) .le. 1) then
+    list(23) = 2
+  end if
+  call extpdstemplate(10, list, nummap, map)
   ! Template number 11
   call getpdstemplate(11, nummap, list, needext, iret)
   if (iret .ne. 0 .or. nummap .ne. 32 .or. .not. needext) stop 19
   do i = 1, nummap
     if (list(i) .ne. exp_map11(i)) stop 67
   end do
+  call extpdstemplate(11, list, nummap, map)
+  if (list(25) .le. 1) then
+    list(25) = 2
+  end if
   call extpdstemplate(11, list, nummap, map)
   ! Template number 12
   call getpdstemplate(12, nummap, list, needext, iret)
@@ -190,6 +206,10 @@ program test_pdstemplates
     if (list(i) .ne. exp_map12(i)) stop 68
   end do
   call extpdstemplate(12, list, nummap, map)
+  if (list(24) .le. 1) then
+    list(24) = 2
+  end if
+  call extpdstemplate(12, list, nummap, map)
   ! Template number 13
   call getpdstemplate(13, nummap, list, needext, iret)
   if (iret .ne. 0 .or. nummap .ne. 45 .or. .not. needext) stop 21
@@ -197,12 +217,20 @@ program test_pdstemplates
     if (list(i) .ne. exp_map13(i)) stop 69
   end do
   call extpdstemplate(13, list, nummap, map)
+  if (list(38) .le. 1) then
+    list(38) = 2
+  end if
+  call extpdstemplate(13, list, nummap, map)
   ! Template number 14
   call getpdstemplate(14, nummap, list, needext, iret)
   if (iret .ne. 0 .or. nummap .ne. 44 .or. .not. needext) stop 22
   do i = 1, nummap
     if (list(i) .ne. exp_map14(i)) stop 70
   end do
+  call extpdstemplate(14, list, nummap, map)
+  if (list(37) .le. 1) then
+    list(37) = 2
+  end if
   call extpdstemplate(14, list, nummap, map)
   ! Template number 30
   call getpdstemplate(30, nummap, list, needext, iret)
@@ -239,12 +267,20 @@ program test_pdstemplates
     if (list(i) .ne. exp_map34(i)) stop 74
   end do
   call extpdstemplate(34, list, nummap, map)
+  if (list(25) .le. 1) then
+    list(25) = 2
+  end if
+  call extpdstemplate(34, list, nummap, map)
   ! Template number 42
   call getpdstemplate(42, nummap, list, needext, iret)
   if (iret .ne. 0 .or. nummap .ne. 30 .or. .not. needext) stop 28
   do i = 1, nummap
     if (list(i) .ne. exp_map42(i)) stop 75
   end do
+  call extpdstemplate(42, list, nummap, map)
+  if (list(23) .le. 1) then
+    list(23) = 2
+  end if
   call extpdstemplate(42, list, nummap, map)
   ! Template number 43
   call getpdstemplate(43, nummap, list, needext, iret)
@@ -253,6 +289,10 @@ program test_pdstemplates
     if (list(i) .ne. exp_map43(i)) stop 76
   end do
   call extpdstemplate(43, list, nummap, map)
+  if (list(26) .le. 1) then
+    list(26) = 2
+  end if
+  call extpdstemplate(43, list, nummap, map)
   ! Template number 46
   call getpdstemplate(46, nummap, list, needext, iret)
   if (iret .ne. 0 .or. nummap .ne. 35 .or. .not. needext) stop 30
@@ -260,12 +300,20 @@ program test_pdstemplates
     if (list(i) .ne. exp_map46(i)) stop 77
   end do
   call extpdstemplate(46, list, nummap, map)
+  if (list(28) .le. 1) then
+    list(28) = 2
+  end if
+  call extpdstemplate(46, list, nummap, map)
   ! Template number 47
   call getpdstemplate(47, nummap, list, needext, iret)
   if (iret .ne. 0 .or. nummap .ne. 38 .or. .not. needext) stop 31
   do i = 1, nummap
     if (list(i) .ne. exp_map47(i)) stop 78
   end do
+  call extpdstemplate(47, list, nummap, map)
+  if (list(31) .le. 1) then
+    list(31) = 2
+  end if
   call extpdstemplate(47, list, nummap, map)
   ! Template number 51
   call getpdstemplate(51, nummap, list, needext, iret)
@@ -294,6 +342,10 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map91(i)) stop 82
   end do
+  call extpdstemplate(91, list, nummap, map)
+  if (list(29) .le. 1) then
+    list(29) = 2
+  end if
   call extpdstemplate(91, list, nummap, map)
   print *, 'SUCCESS'
 end program test_pdstemplates
