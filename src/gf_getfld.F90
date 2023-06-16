@@ -14,14 +14,6 @@
 !> message, the calling routine indicates which field is being
 !> requested with the ifldnum argument.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2000-05-26 | Stephen Gilbert | Initial.
-!> 2002-01-24 | Stephen Gilbert | Pass back derived type gribfield variable through argument list.
-!> 2004-05-20 | Stephen Gilbert | Check if previous a bit-map is specified, but none was found.
-!> 2015-10-29 | Boi Vuong | Initial all pointers in derive type gribfield.
-!>
 !> @param[in] cgrib Character array that contains the GRIB2 message.
 !> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
 !> @param[in] ifldnum Specifies which field in the GRIB2 message to
