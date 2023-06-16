@@ -15,6 +15,10 @@ program test_params_ecmwf
   if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 2
   call param_ecmwf_g1_to_g2(52, 1, g2disc, g2cat, g2num)
   if (g2disc .ne. 0 .or. g2cat .ne. 1 .or. g2num .ne. 1) stop 3
+  call param_ecmwf_g1_to_g2(-1, -128, g2disc, g2cat, g2num)
+  if (g1val .le. 0 or g1ver .le. 0) stop 6
+  call param_ecmwf_g1_to_g2(53, 129, g2disc, g2cat, g2num)
+  if (g1val .ge. 53 or g1ver .ge. 129) stop 7
 
   print *, 'Testing param_ecmwf_g2_to_g1...'
   call param_ecmwf_g2_to_g1(0, 3, 1, g1val, g1ver)
