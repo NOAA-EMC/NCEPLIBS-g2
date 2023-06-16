@@ -24,18 +24,6 @@
 !> appropriate template given values for the static part of the
 !> template.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2000-05-11 Stephen Gilbert |
-!> 2001-12-04 Stephen Gilbert | Added Templates 4.12, 4.12, 4.14, 4.1000, 4.1001, 4.1002, 4.1100 and 4.1101
-!> 2009-05-21 Boi Vuong | Allow negative scale factors and limits for Templates 4.5 and 4.9
-!> 2009-12-14 Boi Vuong | Added Templates (Satellite Product) 4.31 Added Templates (ICAO WAFS) 4.15
-!> 2010-08-03 Boi Vuong | Added Templates 4.40,4.41,4.42,.4.43
-!> 2010-12-08 Boi Vuong | Corrected Product Definition Template 4.42 and 4.43
-!> 2012-02-07 Boi Vuong | Added Templates 4.44,4.45,4.46,4.47,4.48,4.50,4.51,4.91,4.32 and 4.52
-!> 2013-07-29 Boi Vuong | Corrected 4.91 and added Templates 4.33,4.34,4.53,4.54
-!>
 !> @note Array mapgrid contains the number of octets in which the
 !> corresponding template values will be stored. A negative value in
 !> mapgrid is used to indicate that the corresponding template entry
@@ -387,14 +375,6 @@ contains
   !> occupied by each entry. Also,  a flag is returned to indicate
   !> whether the template would need to be extended.
   !>
-  !> ### Program History Log
-  !> Date | Programmer | Comments
-  !> -----|------------|---------
-  !> 2000-05-11 | Stephen Gilbert | Initial
-  !> 2010-08-03 | Boi Vuong | Added Templates 4.40, 4.41, 4.42, .4.43
-  !> 2010-12-08 | Boi Vuong | Corrected Product Definition Template 4.42 and 4.43
-  !> 2013-07-29 | Boi Vuong | Added Templates 4.48, 4.50, 4.33, 4.34, 4.53, 4.54
-  !>
   !> @param[in] number the Product Definition Template number that is
   !> being requested.
   !> @param[out] nummap Number of entries in the Template.
@@ -438,14 +418,6 @@ contains
   !> vary depending on data values given in an earlier part of the
   !> Template,  and it is necessary to know some of the earlier entry
   !> values to generate the full octet map of the Template.
-  !>
-  !> ### Program History Log
-  !> Date | Programmer | Comments
-  !> -----|------------|---------
-  !> 2000-05-11 | Stephen Gilbert | Initial
-  !> 2010-08-03 | Boi Vuong | Added Templates 4.40, 4.41, 4.42, .4.43
-  !> 2010-12-08 | Boi Vuong | Corrected Product Definition Template 4.42 and 4.43
-  !> 2013-07-29 | Boi Vuong | Added Templates 4.48, 4.50, 4.33, 4.34, 4.53, 4.54
   !>
   !> @param[in] number the Product Definition Template number.
   !> @param[in] list An array containing the number of octets that match
