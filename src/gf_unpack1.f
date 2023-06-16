@@ -7,12 +7,6 @@
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect1.shtml))
 !> of a GRIB2 message, starting at octet 6 of that Section.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2000-05-26 | Stephen Gilbert | Initial development.
-!> 2002-01-24 | Stephen Gilbert | Changed to dynamically allocate arrays and to pass pointers.
-!>
 !> @param[in] cgrib Character array that contains the GRIB2 message.
 !> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
 !> @param[inout] iofst Bit offset of the beginning/end(returned) of

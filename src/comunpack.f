@@ -14,13 +14,6 @@
 !> and
 !> [5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-3.shtml)).
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2000-06-21 | Stephen Gilbert |
-!> 2004-12-29 | Stephen Gilbert | Added check (from Arthur Taylor/MDL) for group widths/lengths and section length.
-!> 2016-02-26 | ???             | update unpacking for template 5.3
-!>
 !> @param[in] cpack The packed data field (character*1 array).
 !> @param[in] len Length of packed field cpack.
 !> @param[in] lensec Length of section 7 (used for error checking).
