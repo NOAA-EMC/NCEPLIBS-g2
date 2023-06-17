@@ -215,10 +215,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map8(i)) stop 64
   end do
-  call extpdstemplate(8, list, nummap, map)
-  if (list(22) .le. 1) then
-    list(22) = 2
-  end if
+  list(22) = 2
   call extpdstemplate(8, list, nummap, map)
   if (nummap .ne. 35) stop 104
   do i = 1, nummap
@@ -230,10 +227,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map9(i)) stop 65
   end do
-  call extpdstemplate(9, list, nummap, map)
-  if (list(29) .le. 1) then
-    list(29) = 2
-  end if
+  list(29) = 2
   call extpdstemplate(9, list, nummap, map)
   if (nummap .ne. 42) stop 106
   do i = 1, nummap
@@ -245,10 +239,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map10(i)) stop 66
   end do
-  call extpdstemplate(10, list, nummap, map)
-  if (list(23) .le. 1) then
-    list(23) = 2
-  end if
+  list(23) = 2
   call extpdstemplate(10, list, nummap, map)
   if (nummap .ne. 36) stop 108
   do i = 1, nummap
@@ -260,10 +251,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map11(i)) stop 67
   end do
-  call extpdstemplate(11, list, nummap, map)
-  if (list(25) .le. 1) then
-    list(25) = 2
-  end if
+  list(25) = 2
   call extpdstemplate(11, list, nummap, map)
   if (nummap .ne. 38) stop 110
   do i = 1, nummap
@@ -275,10 +263,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map12(i)) stop 68
   end do
-  call extpdstemplate(12, list, nummap, map)
-  if (list(24) .le. 1) then
-    list(24) = 2
-  end if
+  list(24) = 2
   call extpdstemplate(12, list, nummap, map)
   if (nummap .ne. 37) stop 112
   do i = 1, nummap
@@ -290,10 +275,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map13(i)) stop 69
   end do
-  call extpdstemplate(13, list, nummap, map)
-  if (list(38) .le. 1) then
-    list(38) = 2
-  end if
+  list(38) = 2
   call extpdstemplate(13, list, nummap, map)
   if (nummap .ne. 52) stop 114
   do i = 1, nummap
@@ -305,10 +287,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map14(i)) stop 70
   end do
-  call extpdstemplate(14, list, nummap, map)
-  if (list(37) .le. 1) then
-    list(37) = 2
-  end if
+  list(37) = 2
   call extpdstemplate(14, list, nummap, map)
   if (nummap .ne. 51) stop 116
   do i = 1, nummap
@@ -364,10 +343,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map34(i)) stop 74
   end do
-  call extpdstemplate(34, list, nummap, map)
-  if (list(25) .le. 1) then
-    list(25) = 2
-  end if
+  list(25) = 2
   call extpdstemplate(34, list, nummap, map)
   if (nummap .ne. 39) stop 126
   do i = 1, nummap
@@ -379,10 +355,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map42(i)) stop 75
   end do
-  call extpdstemplate(42, list, nummap, map)
-  if (list(23) .le. 1) then
-    list(23) = 2
-  end if
+  list(23) = 2
   call extpdstemplate(42, list, nummap, map)
   if (nummap .ne. 36) stop 128
   do i = 1, nummap
@@ -394,10 +367,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map43(i)) stop 76
   end do
-  call extpdstemplate(43, list, nummap, map)
-  if (list(26) .le. 1) then
-    list(26) = 2
-  end if
+  list(26) = 2
   call extpdstemplate(43, list, nummap, map)
   if (nummap .ne. 39) stop 130
   do i = 1, nummap
@@ -409,10 +379,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map46(i)) stop 77
   end do
-  call extpdstemplate(46, list, nummap, map)
-  if (list(28) .le. 1) then
-    list(28) = 2
-  end if
+  list(28) = 2
   call extpdstemplate(46, list, nummap, map)
   if (nummap .ne. 41) stop 132
   do i = 1, nummap
@@ -424,10 +391,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map47(i)) stop 78
   end do
-  call extpdstemplate(47, list, nummap, map)
-  if (list(31) .le. 1) then
-    list(31) = 2
-  end if
+  list(31) = 2
   call extpdstemplate(47, list, nummap, map)
   if (nummap .ne. 44) stop 134
   do i = 1, nummap
@@ -472,10 +436,7 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map91(i)) stop 82
   end do
-  call extpdstemplate(91, list, nummap, map)
-  if (list(29) .le. 1) then
-    list(29) = 2
-  end if
+  list(29) = 2
   call extpdstemplate(91, list, nummap, map)
   if (nummap .ne. 43) stop 142
   do i = 1, nummap
