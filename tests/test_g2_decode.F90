@@ -47,60 +47,60 @@
        ! The grib message for a typical grib2 file in fortran.
        fgrib(:)=(/                                                    &
        ! section 0
-     & "G", "R", "I", "B", achar(0), achar(0),                        &
-     & achar(0), achar(2), achar(0), achar(0), achar(0), achar(0),    &
-     & achar(0), achar(0), achar(1), achar(13),                       &
+     & "G", "R", "I", "B", char(0), char(0),                        &
+     & char(0), char(2), char(0), char(0), char(0), char(0),    &
+     & char(0), char(0), char(1), char(13),                       &
        ! section 1
-     & achar(0), achar(0), achar(0), achar(21), achar(1), achar(0),   &
-     & achar(8), achar(0), achar(0), achar(1), achar(0), achar(1),    &
-     & achar(7), achar(n1), achar(11), achar(15), achar(10),          &
-     & achar(10), achar(10), achar(0), achar(1),                      &
+     & char(0), char(0), char(0), char(21), char(1), char(0),   &
+     & char(8), char(0), char(0), char(1), char(0), char(1),    &
+     & char(7), char(n1), char(11), char(15), char(10),          &
+     & char(10), char(10), char(0), char(1),                      &
        ! section 2
-     & achar(0), achar(0), achar(0), achar(11), achar(2),             &
-     & achar(1), "H", "K", "T", "A", "R",                             &
+     & char(0), char(0), char(0), char(11), char(2),             &
+     & char(1), "H", "K", "T", "A", "R",                             &
        ! section 3
-     & achar(0), achar(0), achar(0), achar(81), achar(3), achar(0),   &
-     & achar(0), achar(0), achar(0), achar(k10), achar(0), achar(0),  &
-     & achar(0), achar(30), achar(1), achar(0), achar(k1), achar(k1), &
-     & achar(k1), achar(k1), achar(0), achar(0), achar(0), achar(0),  &
-     & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
-     & achar(k2), achar(k2), achar(k2), achar(k2), achar(k3),         &
-     & achar(k3), achar(k3), achar(k3), achar(k4), achar(k4),         &
-     & achar(k4), achar(k4),achar(k5),achar(k5), achar(k5),           &
-     & achar(k5), achar(0), achar(k6), achar(k6), achar(k6),          &
-     & achar(k6), achar(k7), achar(k7), achar(k7), achar(k7),         &
-     & achar(k8), achar(k8), achar(k8), achar(k8), achar(k8),         &
-     & achar(k8), achar(k8), achar(k8), achar(0), achar(80),          &
-     & achar(k6), achar(k6), achar(k6), achar(k6), achar(k6),         &
-     & achar(k6), achar(k6), achar(k6), achar(k9), achar(k9),         &
-     & achar(k9), achar(k9), achar(0), achar(0), achar(0), achar(0),  &
+     & char(0), char(0), char(0), char(81), char(3), char(0),   &
+     & char(0), char(0), char(0), char(k10), char(0), char(0),  &
+     & char(0), char(30), char(1), char(0), char(k1), char(k1), &
+     & char(k1), char(k1), char(0), char(0), char(0), char(0),  &
+     & char(0), char(0), char(0), char(0), char(0), char(0),    &
+     & char(k2), char(k2), char(k2), char(k2), char(k3),         &
+     & char(k3), char(k3), char(k3), char(k4), char(k4),         &
+     & char(k4), char(k4),char(k5),char(k5), char(k5),           &
+     & char(k5), char(0), char(k6), char(k6), char(k6),          &
+     & char(k6), char(k7), char(k7), char(k7), char(k7),         &
+     & char(k8), char(k8), char(k8), char(k8), char(k8),         &
+     & char(k8), char(k8), char(k8), char(0), char(80),          &
+     & char(k6), char(k6), char(k6), char(k6), char(k6),         &
+     & char(k6), char(k6), char(k6), char(k9), char(k9),         &
+     & char(k9), char(k9), char(0), char(0), char(0), char(0),  &
        ! section 4
-     & achar(0), achar(0), achar(0), achar(71), achar(4), achar(0),   &
-     & achar(0), achar(0), achar(9), achar(1), achar(8), achar(2),    &
-     & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
-     & achar(0), achar(3), achar(6), achar(9), achar(1), achar(0),    &
-     & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
-     & achar(0), achar(0), achar(0),  achar(0), achar(0), achar(0),   &
-     & achar(1), achar(0), achar(0), achar(0), achar(0), achar(0),    &
-     & achar(3), achar(0), achar(0), achar(0), achar(n2), achar(7),   & 
-     & achar(n1), achar(11), achar(15), achar(12), achar(20),         &
-     & achar(10), achar(1), achar(0), achar(0), achar(0), achar(0),   &
-     & achar(1), achar(0), achar(1), achar(0), achar(0), achar(0),    &
-     & achar(12), achar(1), achar(0), achar(0), achar(0), achar(0),   &
+     & char(0), char(0), char(0), char(71), char(4), char(0),   &
+     & char(0), char(0), char(9), char(1), char(8), char(2),    &
+     & char(0), char(0), char(0), char(0), char(0), char(0),    &
+     & char(0), char(3), char(6), char(9), char(1), char(0),    &
+     & char(0), char(0), char(0), char(0), char(0), char(0),    &
+     & char(0), char(0), char(0),  char(0), char(0), char(0),   &
+     & char(1), char(0), char(0), char(0), char(0), char(0),    &
+     & char(3), char(0), char(0), char(0), char(n2), char(7),   & 
+     & char(n1), char(11), char(15), char(12), char(20),         &
+     & char(10), char(1), char(0), char(0), char(0), char(0),   &
+     & char(1), char(0), char(1), char(0), char(0), char(0),    &
+     & char(12), char(1), char(0), char(0), char(0), char(0),   &
        ! section 5
-     & achar(0), achar(0), achar(0), achar(47), achar(5),  achar(0),  &
-     & achar(0), achar(0), achar(k10), achar(0), achar(2),  achar(0), &
-     & achar(0), achar(0), achar(0), achar(0), achar(0),  achar(0),   &
-     & achar(1), achar(8), achar(1), achar(1), achar(1), achar(Nan),  &
-     & achar(Nan), achar(Nan), achar(Nan), achar(0), achar(0),        &
-     & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
-     & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
-     & achar(0), achar(0), achar(0), achar(0), achar(0), achar(0),    &
+     & char(0), char(0), char(0), char(47), char(5),  char(0),  &
+     & char(0), char(0), char(k10), char(0), char(2),  char(0), &
+     & char(0), char(0), char(0), char(0), char(0),  char(0),   &
+     & char(1), char(8), char(1), char(1), char(1), char(Nan),  &
+     & char(Nan), char(Nan), char(Nan), char(0), char(0),        &
+     & char(0), char(0), char(0), char(0), char(0), char(0),    &
+     & char(0), char(0), char(0), char(0), char(0), char(0),    &
+     & char(0), char(0), char(0), char(0), char(0), char(0),    &
        ! section 6
-     & achar(0), achar(0), achar(0), achar(6), achar(6),  achar(n3),  &
+     & char(0), char(0), char(0), char(6), char(6),  char(n3),  &
        ! section 7
-     & achar(0), achar(0), achar(0), achar(12), achar(7),  achar(1),  &
-     & achar(0), achar(0), achar(0), achar(0), achar(0),  achar(0),   &
+     & char(0), char(0), char(0), char(12), char(7),  char(1),  &
+     & char(0), char(0), char(0), char(0), char(0),  char(0),   &
        ! section 8
      & "7", "7", "7", "7" /) 
    
