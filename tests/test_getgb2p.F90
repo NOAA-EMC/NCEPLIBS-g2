@@ -35,7 +35,7 @@ program test_getgb2p
 
   ! Open a real GRIB2 file.
   print *, 'Indexing a real GRIB2 file WW3_Regional_US_West_Coast_20220718_0000.grib2...'
-  call baopenr(lugb, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
+  call baopenr(lugb, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
 
   lugi = 0
@@ -53,7 +53,7 @@ program test_getgb2p
      jgdt(i) = -9999
   end do
 
-  ! First try with extract true.
+  print *, 'First try with extract true...'
   extract = .true.
   call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, k, gribm, leng, iret)
@@ -63,14 +63,14 @@ program test_getgb2p
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
 
-  ! Now try with extract false.
+  print *, 'Now try with extract false...'
   extract = .false.
   call getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, k, gribm, leng, iret)
   if (iret .ne. 0) stop 101
   if (k .ne. 1 .or. leng .ne. 11183) stop 110
 
-  ! Deallocate buffer that got GRIB message.
+  print *, 'Deallocate buffer that got GRIB message.'
   deallocate(gribm)
   
   call baclose(lugb, iret)

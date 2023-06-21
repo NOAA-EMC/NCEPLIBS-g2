@@ -1,18 +1,15 @@
 !> @file
-!> @brief This subroutine reads a GRIB file and returns its index
-!> content.
+!> @brief Generate an index record for a message in a GRIB2 file.
 !> @author Mark Iredell @date 1995-10-31
 
-!> This subroutine reads a GRIB file and returns its index content.
+!> Generate an index record for a message in a GRIB2 file.
 !>
-!> The index file record format is documented in function ixgb2().
+!> The index record contains byte offsets to the message, it's length,
+!> and byte offsets within the message to each section. The index file
+!> record format is documented in subroutine ixgb2().
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 1995-10-31 | Mark Iredell | Initial
-!> 1996-10-31 | Mark Iredell | augmented optional definitions to byte 320
-!> 2002-01-02 | Stephen Gilbert | modified from getgir to create GRIB2 indexes
+!> @note Subprogram can be called from a multiprocessing environment.
+!> Do not engage the same logical unit from more than one processor.
 !>
 !> @param[in] lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
@@ -27,16 +24,13 @@
 !> increase the size if necessary. Users must free memory that cbuf
 !> points to when cbuf is no longer needed.
 !> @param[out] nlen Total length of index record buffer in bytes.
-!> @param[out] nnum Number of index records, =0 if no GRIB
-!> messages are found).
+!> @param[out] nnum Number of index records, zero if no GRIB
+!> messages are found.
 !> @param[out] nmess Last GRIB message in file successfully processed
 !> @param[out] iret Return code.
-!> - 0 all ok
-!> - 1 not enough memory available to hold full index buffer
-!> - 2 not enough memory to allocate initial index buffer
-!>
-!> @note Subprogram can be called from a multiprocessing environment.
-!> Do not engage the same logical unit from more than one processor.
+!> - 0 No error.
+!> - 1 Not enough memory available to hold full index buffer.
+!> - 2 Not enough memory to allocate initial index buffer.
 !>
 !> @author Mark Iredell @date 1995-10-31
       SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,NMESS,IRET)

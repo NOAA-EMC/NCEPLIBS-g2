@@ -1,10 +1,17 @@
 # This is a GitHub actions workflow for NCEPLIBS-g2.
 #
-# This builds the devleper branch with checking.
+# This builds the develop branch with documentation, warning check,
+# and address sanitizer.
 #
 # Ed Hartnett, 12/22/22
 name: developer 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
 
 jobs:
   developer:
@@ -21,11 +28,10 @@ jobs:
     - name: install-dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen
-        python3 -m pip install gcovr
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen gcovr
 
     - name: checkout-bacio
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: NOAA-EMC/NCEPLIBS-bacio
         path: bacio
@@ -41,7 +47,7 @@ jobs:
         make install
         
     - name: checkout-w3emc
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: NOAA-EMC/NCEPLIBS-w3emc
         path: w3emc
@@ -58,14 +64,14 @@ jobs:
         
     - name: cache-jasper
       id: cache-jasper
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/Jasper
         key: jasper-${{ runner.os }}-3.0.3
 
     - name: checkout-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'    
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: jasper-software/jasper
         path: jasper
@@ -81,9 +87,16 @@ jobs:
         make install
 
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: g2
+
+    - name: cache-data
+      id: cache-data
+      uses: actions/cache@v3
+      with:
+        path: ~/data
+        key: data-1
 
     - name:  build
       run: |
@@ -92,7 +105,7 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fsanitize=address"  -DCMAKE_BUILD_TYPE=Debug 
+        cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug 
         make -j2 VERBOSE=1
 
     - name: test
@@ -101,8 +114,14 @@ jobs:
         ctest --verbose --output-on-failure --rerun-failed
         gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
 
+    - name: cache-data
+      if: steps.cache-data.outputs.cache-hit != 'true'
+      run: |
+        mkdir ~/data
+        cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
+
     - name: upload-test-coverage
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: g2-test-coverage
         path: |

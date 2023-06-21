@@ -51,70 +51,66 @@
 !> complete GRIB2 message.
 !>
 !> @author Stephen Gilbert @date 2000-04-28
-      subroutine gribcreate(cgrib,lcgrib,listsec0,listsec1,ierr)
+subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
+  implicit none
 
-      character(len=1),intent(inout) :: cgrib(lcgrib)
-      integer,intent(in) :: listsec0(*),listsec1(*)
-      integer,intent(in) :: lcgrib
-      integer,intent(out) :: ierr
-      
-      character(len=4),parameter :: grib='GRIB'
-      integer,parameter :: zero=0,one=1
-      integer,parameter :: mapsec1len=13
-      integer,parameter :: 
-     &        mapsec1(mapsec1len)=(/ 2,2,1,1,1,2,1,1,1,1,1,1,1 /)
-      integer lensec0,iofst,ibeg
+  character(len = 1), intent(inout) :: cgrib(lcgrib)
+  integer, intent(in) :: listsec0(*), listsec1(*)
+  integer, intent(in) :: lcgrib
+  integer, intent(out) :: ierr
 
-      ierr=0
-!
-!  Currently handles only GRIB Edition 2.
-!  
-      if (listsec0(2).ne.2) then
-        print *,'gribcreate: can only code GRIB edition 2.'
-        ierr=1
-        return
-      endif
-!
-!  Pack Section 0 - Indicator Section 
-!  ( except for total length of GRIB message )
-!
-!      cgrib=' '
-      cgrib(1)=grib(1:1)                     ! Beginning of GRIB message
-      cgrib(2)=grib(2:2)   
-      cgrib(3)=grib(3:3)   
-      cgrib(4)=grib(4:4)
-      call g2_sbytec(cgrib,zero,32,16)           ! reserved for future use
-      call g2_sbytec(cgrib,listsec0(1),48,8)     ! Discipline
-      call g2_sbytec(cgrib,listsec0(2),56,8)     ! GRIB edition number
-      lensec0=16      ! bytes (octets)
-!
-!  Pack Section 1 - Identification Section
-!
-      ibeg=lensec0*8        !   Calculate offset for beginning of section 1
-      iofst=ibeg+32         !   leave space for length of section
-      call g2_sbytec(cgrib,one,iofst,8)     ! Store section number ( 1 )
-      iofst=iofst+8
-      !
-      !   Pack up each input value in array listsec1 into the
-      !   the appropriate number of octets, which are specified in
-      !   corresponding entries in array mapsec1.
-      !
-      do i=1,mapsec1len
-        nbits=mapsec1(i)*8
-        call g2_sbytec(cgrib,listsec1(i),iofst,nbits)
-        iofst=iofst+nbits
-      enddo
-      !
-      !   Calculate length of section 1 and store it in octets
-      !   1-4 of section 1.
-      !
-      lensec1=(iofst-ibeg)/8
-      call g2_sbytec(cgrib,lensec1,ibeg,32)
-!
-!  Put current byte total of message into Section 0
-!
-      call g2_sbytec(cgrib,zero,64,32)
-      call g2_sbytec(cgrib,lensec0+lensec1,96,32)
+  integer :: i, lensec1, nbits
+  character(len = 4), parameter :: grib = 'GRIB'
+  integer, parameter :: ZERO = 0, ONE = 1
+  integer, parameter :: mapsec1len = 13
+  integer, parameter :: mapsec1(mapsec1len) = (/ 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1 /)
+  integer lensec0, iofst, ibeg
 
-      return
-      end
+  ierr = 0
+
+#ifdef LOGGING
+  print *, 'gribcreate lcgrib ', lcgrib
+#endif
+
+  ! Currently handles only GRIB Edition 2.
+  if (listsec0(2) .ne. 2) then
+     print *, 'gribcreate: can only code GRIB edition 2.'
+     ierr = 1
+     return
+  endif
+
+  !  Pack Section 0 - Indicator Section (except for total length of
+  !  GRIB message).
+  cgrib(1) = grib(1:1) ! Beginning of GRIB message
+  cgrib(2) = grib(2:2)
+  cgrib(3) = grib(3:3)
+  cgrib(4) = grib(4:4)
+  call g2_sbytec(cgrib, ZERO, 32, 16)           ! reserved for future use
+  call g2_sbytec(cgrib, listsec0(1), 48, 8)     ! Discipline
+  call g2_sbytec(cgrib, listsec0(2), 56, 8)     ! GRIB edition number
+  lensec0 = 16      ! bytes (octets)
+
+  ! Pack Section 1 - Identification Section.
+  ibeg = lensec0 * 8        !   Calculate offset for beginning of section 1
+  iofst = ibeg + 32         !   leave space for length of section
+  call g2_sbytec(cgrib, ONE, iofst, 8)     ! Store section number ( 1 )
+  iofst = iofst + 8
+
+  ! Pack up each input value in array listsec1 into the the
+  ! appropriate number of octets, which are specified in corresponding
+  ! entries in array mapsec1.
+  do i = 1, mapsec1len
+     nbits = mapsec1(i) * 8
+     call g2_sbytec(cgrib, listsec1(i), iofst, nbits)
+     iofst = iofst + nbits
+  enddo
+
+  ! Calculate length of section 1 and store it in octets 1-4 of
+  ! section 1.
+  lensec1 = (iofst - ibeg) / 8
+  call g2_sbytec(cgrib, lensec1, ibeg, 32)
+
+  ! Put current byte total of message into Section 0.
+  call g2_sbytec(cgrib, ZERO, 64, 32)
+  call g2_sbytec(cgrib, lensec0 + lensec1, 96, 32)
+end subroutine gribcreate

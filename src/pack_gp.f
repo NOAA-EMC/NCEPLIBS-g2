@@ -51,32 +51,6 @@
 !> total bits required. If reduce() should abort, pack_gp() will be
 !> executed again without the call to reduce.
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 1994-02-01 | Harry Glahn | tdl mos-2000.
-!> 1995-06-01 | Harry Glahn | modified for lmiss error.
-!> 1996-07-01 | Harry Glahn | added misss.
-!> 1997-02-01 | Harry Glahn | removed 4 redundant tests for missp.eq.0; inserted a test to better handle a string of 9999's.
-!> 1997-02-01 | Harry Glahn | added loops to eliminate test for misss when misss = 0.
-!> 1997-03-01 | Harry Glahn | corrected for secondary missing value.
-!> 1997-03-01 | Harry Glahn | corrected for use of local value of minpk.
-!> 1997-03-01 | Harry Glahn | corrected for secondary missing value.
-!> 1997-03-01 | Harry Glahn | changed calculating number of bits through exponents to an array (improved overall packing performance by about 35 percent). Allowed 0 bit for packing JMIN, LBIT, and NOV.
-!> 1997-05-01 | Harry Glahn | a number of changes for efficiency. mod functions eliminated and one ifthen added. Jount removed. Recomputation of bits not made unless necessary after moving points from one group to another.
-!> 1997-05-01 | Harry Glahn | Nendb adjusted to eliminate possibility of very small group at the end. About 8 percent improvement in overall packing. ISKIPA removed; There is always a group b that can become group A. Control on size of group b (statement below 150) added.
-!> 1997-05-01 | Harry Glahn | Added adda, and use of ge and le instead of gt and lt in loop between 150 and 160. IBITBS added to shorten trip through loop.
-!> 2000-03-01 | Harry Glahn | modified for grib2; changed name from packgp.
-!> 2001-01-01 | Harry Glahn | Add comments; ier = 706 substituted for stops; added return; removed statement number 110; added ier.
-!> 2001-11-01 | Harry Glahn | changed some diagnostic formats to allow printing larger numbers
-!> 2001-11-01 | Harry Glahn | added misslx to put maximum value into JMIN when all values missing to agree with grib standard.
-!> 2001-11-01 | Harry Glahn | changed two tests on missp and misss eq 0 to tests on is523. However, missp and misss cannot in general be 0.
-!> 2001-11-01 | Harry Glahn | added call to reduce; defined itest before loops to reduce computation; started large group when all same value.
-!> 2001-12-01 | Harry Glahn | modified and added a few comments.
-!> 2002-01-01 | Harry Glahn | removed loop before 150 to determine a group of all same value.
-!> 2002-01-01 | Harry Glahn | changed mallow from 9999999 to 2**30+1, and made it a parameter.
-!> 2002-03-01 | Harry Glahn | added non fatal ier = 716, 717; removed nendb=nxy above 150; added iersav=0.
-!>
 !> @param[in] KFILDO unit number for output/print file.
 !> @param[in] IC array to hold data for packing. The values do not
 !> have to be positive at this point, but must be in the range

@@ -10,16 +10,26 @@ link_directories("/usr/local/lib")
 # site. This function is used to download such test data. It takes two
 # arguments, the URL and the file to be downloaded.
 function(PULL_DATA THE_URL THE_FILE)
-  if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${THE_FILE}")
+  # If the TEST_FILE_DIR was specified, look for our test data files
+  # there before FTPing them. Developers can keep all test files on
+  # their machines, and save the time of downloading them every time.
+  if(NOT ${TEST_FILE_DIR} STREQUAL ".")
+    if (EXISTS ${TEST_FILE_DIR}/${THE_FILE})
+      message(STATUS "Copying file ${TEST_FILE_DIR}/${THE_FILE} to test data directory.")
+      FILE(COPY ${TEST_FILE_DIR}/${THE_FILE}
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data)
+    endif()
+  endif()
+  if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}")
     file(DOWNLOAD
       ${THE_URL}/${THE_FILE}
-      ${CMAKE_CURRENT_BINARY_DIR}/${THE_FILE}
+      ${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}
       SHOW_PROGRESS
       STATUS status
       INACTIVITY_TIMEOUT 30
       )
     list(GET status 0 status_num)
-    if(NOT status_num EQUAL 0 OR NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/${THE_FILE}")
+    if(NOT status_num EQUAL 0 OR NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}")
       message(FATAL_ERROR "Could not download ${THE_FILE}")
     endif()
   endif()
@@ -35,7 +45,10 @@ endfunction()
 
 # This function builds, links, and runs a test program.
 function(create_test name kind)
-  add_executable(${name}_${kind} ${name}.F90 util.F90)
+  if(${ARGC} GREATER 2)
+    set(extra_files ${ARGN})
+  endif()
+  add_executable(${name}_${kind} ${name}.F90 util.F90 ${extra_files})
   target_link_libraries(${name}_${kind} PRIVATE g2_${kind} PNG::PNG)
   set_target_properties(${name}_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   set_target_properties(${name}_${kind} PROPERTIES Fortran_MODULE_DIRECTORY
@@ -66,10 +79,11 @@ if(FTP_TEST_FILES)
   # Build a _4 and _d version of each test and link them to the _4 and
   # _d builds of the library, for 4-byte real, and 8-byte real.
   foreach(kind ${kinds})
+    create_test(test_skgb ${kind})
     create_test(test_ixgb2 ${kind})  
     create_test(test_getg2ir ${kind})  
     create_test(test_getidx ${kind})  
-    create_test(test_getgb2rp ${kind})  
+#    create_test(test_getgb2rp ${kind})  
     create_test(test_getgb2s ${kind})  
     create_test(test_getgb2p ${kind})  
     create_test(test_getgb2r ${kind})  
@@ -86,6 +100,7 @@ copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 # _d builds of the library, for 4-byte real, and 8-byte real.
 foreach(kind ${kinds})
 #  create_test(test_g2cf ${kind})
+  create_test(test_misc ${kind})
   create_test(test_g2 ${kind})
   create_test(test_g2_encode ${kind})
   create_test(test_g2_decode ${kind})
@@ -103,15 +118,21 @@ foreach(kind ${kinds})
   create_test(test_cmplxpack ${kind})
   create_test(test_mkieee ${kind})
   create_test(test_getlocal ${kind})
-  create_test(test_getg2i ${kind})
+  create_test(test_index_gdas ${kind} index_rec.F90)
+  create_test(test_getgb2p_gdas ${kind})    
   create_test(test_realloc ${kind})
-  create_test(test_gdt2gds ${kind})
   create_test(test_simpack ${kind})
   create_test(test_gbytec ${kind})
   create_test(test_gribcreate ${kind})
   create_test(test_getfield ${kind})
-#  create_test(test_pngpack ${kind})
+  create_test(test_pngpack ${kind})
   create_test(test_jpcpack ${kind})
   create_test(test_files ${kind})
+
+  # This test depends on gdt2gds(), which is not present if the GRIB1
+  # library is not also included in the build.
+  if (BUILD_WITH_W3EMC)
+    create_test(test_gdt2gds ${kind})
+  endif()
 endforeach()
 

@@ -36,12 +36,8 @@
 !> - byte kk+1-  ll the data representation section (drs)
 !> - byte ll+1-ll+6 first 6 bytes of the bit map section (bms)
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 1995-10-31 | Mark Iredell | Initial.
-!> 1996-10-31 | Mark Iredell | Augmented optional definitions to byte 320.
-!> 2002-01-03 | Stephen Gilbert | Modified from getgi to work with GRIB2.
+!> @note Subprogram can be called from a multiprocessing environment.
+!> Do not engage the same logical unit from more than one processor.
 !>
 !> @param[in] lugi Integer unit of the unblocked GRIB index file. Must
 !>  be opened by [baopen() or baopenr()]
@@ -57,9 +53,6 @@
 !> - 2 not enough memory to hold index buffer
 !> - 3 error reading index file buffer
 !> - 4 error reading index file header
-!>
-!> @note Subprogram can be called from a multiprocessing environment.
-!> Do not engage the same logical unit from more than one processor.
 !>
 !> @author Mark Iredell @date 2000-05-26
       SUBROUTINE GETG2I(LUGI,CBUF,NLEN,NNUM,IRET)

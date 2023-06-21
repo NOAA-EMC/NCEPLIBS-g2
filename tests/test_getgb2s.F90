@@ -50,7 +50,7 @@ program test_getgb2s
 
   ! Open a real GRIB2 file.
   print *, 'Indexing a real GRIB2 file WW3_Regional_US_West_Coast_20220718_0000.grib2...'
-  call baopenr(lugb, "WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
+  call baopenr(lugb, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
 
   ! Get the index information for the GRIB2 file.
@@ -104,11 +104,59 @@ program test_getgb2s
   do i = 1, gfld%idrtlen
      if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 203
   end do
-  
+
+  ! Free memory.
+  call gf_free(gfld)
+
+  ! Try again.
+  j = 1
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+     jgdt, k, gfld, lpos, iret)
+  if (iret .ne. 0) stop 110
+  print *, gfld%ipdtmpl
+
+  ! Free memory.
+  call gf_free(gfld)
+
+  ! Try again, but will fail because we are looking for a discipline
+  ! that is not present in the file.
+  j = 0
+  jdisc = 12
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, k, gfld, lpos, iret)
+  if (iret .ne. 1) stop 111
+  jdisc = -1
+
+  ! Try again, but will fail because we are looking for an incorrect
+  ! id section value.
+  jids(1) = 42
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, k, gfld, lpos, iret)
+  if (iret .ne. 1) stop 112
+  jids(1) = -9999
+
+  ! Try again, but will fail because we are looking for an incorrect
+  ! GDT section value.
+  jgdt(1) = 999
+  jgdtn = 0
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, k, gfld, lpos, iret)
+  if (iret .ne. 1) stop 113
+  jgdt(1) = -9999
+  jgdtn = -1
+
+  ! Try again, but will fail because we are looking for an incorrect
+  ! PDT section value.
+  jpdt(1) = 42
+  jpdtn = 0
+  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, k, gfld, lpos, iret)
+  if (iret .ne. 1) stop 113
+  jpdt(1) = -9999
+  jpdtn = -1
 
   ! Free memory.
   deallocate(cbuf)
-  call gf_free(gfld)
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199

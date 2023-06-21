@@ -9,13 +9,6 @@
 !> JPEG2000 encoder. It also fills in [GRIB2 - TABLE 5.40 TYPE OF
 !> COMPRESSION](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-40.shtml).
 !>
-!> ### Program History Log
-!> Date | Programmer | Comments
-!> -----|------------|---------
-!> 2002-12-17 | Stephen Gilbert | Initial Development.
-!> 2002-12-29 | Stephen Gilbert | check jpeg2000 encoding for success. If not, try again.
-!> 2022-08-10 | Hartnett | Adding interfaces for C functions.
-!>
 !> @param[in] fld The data values to pack.
 !> @param[in] width number of points in the x direction
 !> @param[in] height number of points in the y direction
