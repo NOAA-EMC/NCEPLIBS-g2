@@ -414,9 +414,9 @@ contains
   end subroutine getpdstemplate
 
   !> This subroutine generates the remaining octet map for a given
-  !> Product Definition Template,  if required. Some Templates can
+  !> Product Definition Template, if required. Some Templates can
   !> vary depending on data values given in an earlier part of the
-  !> Template,  and it is necessary to know some of the earlier entry
+  !> Template, and it is necessary to know some of the earlier entry
   !> values to generate the full octet map of the Template.
   !>
   !> @param[in] number the Product Definition Template number.

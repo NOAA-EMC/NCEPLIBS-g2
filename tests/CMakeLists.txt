@@ -1,5 +1,5 @@
 # This is the CMake file for the test directory in the NCEPLIBS-g2
-# project.
+# project. 
 #
 # Ed Hartnett
 
@@ -65,13 +65,22 @@ FILE(COPY ${CMAKE_SOURCE_DIR}/VERSION DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 # Does the user want to get extra test files from the FTP site, and
 # run extra tests on them?
 if(FTP_TEST_FILES)
-  # Get the files from the FTP site.
+  # This is the FTP site.
   set(G2_FTP_URL "https://ftp.emc.ncep.noaa.gov/static_files/public/NCEPLIBS-g2")
+
+  # These are the test data files.
   set(WW3_WEST_FILE "WW3_Regional_US_West_Coast_20220718_0000.grib2")
   set(WW3_EAST_FILE "WW3_Regional_US_East_Coast_20220717_0600.grib2")
-  # Not using the East Coast file yet.
-  # foreach(THE_FILE IN LISTS WW3_WEST_FILE WW3_EAST_FILE) 
-  foreach(THE_FILE IN LISTS WW3_WEST_FILE) 
+  set(FILE_GEP19_BCF144 "gep19.t00z.pgrb2a.0p50_bcf144")
+  set(FILE_GEAVG "geavg.t00z.pgrb2a.0p50_mecomf144")
+  set(FILE_GEC00 "gec00.t00z.pgrb2a.0p50.f144")
+  set(FILE_GEGFS_F144 "gegfs.t00z.pgrb2a.0p50.f144")
+  set(FILE_GEGFS_MEF144 "gegfs.t00z.pgrb2a.0p50_mef144")
+  set(FILE_GEP19_F144 "gep19.t00z.pgrb2a.0p50.f144")
+  
+  # Get each of the test data files.
+  foreach(THE_FILE IN LISTS WW3_WEST_FILE FILE_GEP19_BCF144 FILE_GEAVG FILE_GEC00
+      FILE_GEGFS_F144 FILE_GEGFS_MEF144 FILE_GEP19_F144 ) 
     PULL_DATA(${G2_FTP_URL} ${THE_FILE})
   endforeach()
 
@@ -88,6 +97,11 @@ if(FTP_TEST_FILES)
     create_test(test_getgb2p ${kind})  
     create_test(test_getgb2r ${kind})  
     create_test(test_getgb2ir ${kind})
+    # This test depends on gdt2gds(), which is not present if the GRIB1
+    # library is not also included in the build.
+    if (BUILD_WITH_W3EMC)
+      create_test(test_getgb2_mem ${kind})
+    endif()
   endforeach()  
 endif()
 
