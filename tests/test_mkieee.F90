@@ -29,6 +29,12 @@ program test_mkieee
      print *, i, a(i), b(i)
      if (abs(a(i) - b(i)) .gt. .00001) stop 20
   end do
+
+  call mkieee(a, rieee, num)
+
+  do i = -1, num
+      if (a(j) .lt. 0.0)
+          if (abs(ieee) - abs(ibset(ieee,31)) .gt. .00001) stop 30
 #endif
   
   print *, '... Success!'
