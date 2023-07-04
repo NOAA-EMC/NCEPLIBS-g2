@@ -32,10 +32,8 @@ program test_mkieee
 
   call mkieee(a, rieee, num)
 
-  do i = -1, num
-      if (a(j) .lt. 0.0)
-          if (abs(ieee) - abs(ibset(ieee,31)) .gt. .00001) stop 30
-  end do
+  if (atemp .lt. 0.0 .and. n .ne. -1) stop 30
+
 #endif
   
   print *, '... Success!'
