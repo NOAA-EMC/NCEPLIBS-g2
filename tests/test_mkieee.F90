@@ -35,6 +35,7 @@ program test_mkieee
   do i = -1, num
       if (a(j) .lt. 0.0)
           if (abs(ieee) - abs(ibset(ieee,31)) .gt. .00001) stop 30
+  end do
 #endif
   
   print *, '... Success!'
