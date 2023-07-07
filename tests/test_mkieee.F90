@@ -11,7 +11,7 @@ program test_mkieee
 #if KIND == 4
   integer, parameter :: num = 5
   real :: rieee(num)
-  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000 -4.3000000 /)
+  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000, -4.3000000 /)
   real :: b(num)
   integer :: i
 
