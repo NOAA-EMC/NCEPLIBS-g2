@@ -9,9 +9,9 @@ program test_mkieee
   implicit none
 
 #ifdef KIND_4
-  integer, parameter :: num = 5
+  integer, parameter :: num = 6
   real :: rieee(num)
-  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000, -4.3000000 /)
+  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000, -4.3000000, 0.5000000 /)
   real :: b(num)
   integer :: i
 
