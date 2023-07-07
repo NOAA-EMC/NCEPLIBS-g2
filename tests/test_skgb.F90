@@ -15,11 +15,7 @@ program test_skgb
   character(*) :: TEST_FILE_GDAS_INDEX
   parameter (TEST_FILE_GDAS_INDEX = 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
 
-#if KIND == 4
-  integer :: lugb = 3 ! Use different LU for _4/_d in case tests are run in parallel.
-#else
   integer :: lugb = 5
-#endif
   integer :: lskip, lgrib
   integer :: NUM_MSG
   parameter (NUM_MSG = 26)
