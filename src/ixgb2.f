@@ -2,9 +2,9 @@
 !> @brief Generate an index record for each field in a GRIB2 message.
 !> @author Mark Iredell @date 1995-10-31
 
-!> This subroutine generates an index record for each field in a GRIB2
-!> message. The index records are written to index buffer pointed to
-!> by cbuf. All integers in the index are in big-endian format.
+!> Generate an index record for each field in a GRIB2 message. The index
+!> records are written to index buffer pointed to by cbuf. All integers
+!> in the index are in big-endian format.
 !>
 !> This subroutine is called by getg2ir(), which packages the index
 !> records into an index file.
