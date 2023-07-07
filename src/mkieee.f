@@ -59,7 +59,7 @@
               n = n - 1
            enddo
         endif
-!        n=floor(alog(atemp)/alog2)
+        n=floor(alog(atemp)/alog2)
         !write(6,*) ' logstuff ',alog(atemp)/alog2
         !write(6,*) ' logstuffn ',n
         iexp=n+127

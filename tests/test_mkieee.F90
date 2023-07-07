@@ -1,7 +1,5 @@
 ! Test the mkieee and rdieee functions in NCEPLIBS-g2
 !
-! These functions only make sense when KIND == 4.
-!
 ! Brian Curtis 2022/02/01
 ! Ed Hartnett
 
