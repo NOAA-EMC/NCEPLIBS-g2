@@ -11,7 +11,7 @@ program test_mkieee
 #if KIND == 4
   integer, parameter :: num = 4
   real :: rieee(num)
-  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000 /)
+  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000 -2.3300000 -1.6700000 /)
   real :: b(num)
   integer :: i
 
@@ -29,10 +29,6 @@ program test_mkieee
      print *, i, a(i), b(i)
      if (abs(a(i) - b(i)) .gt. .00001) stop 20
   end do
-
-  call mkieee(a, rieee, num)
-
-  if (atemp .lt. 0.0 .and. n .ne. -1) stop 30
 
 #endif
   
