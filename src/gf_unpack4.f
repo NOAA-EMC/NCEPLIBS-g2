@@ -1,11 +1,11 @@
 !> @file
-!> @brief This subroutine unpacks Section 4 ([Product Definition
+!> @brief Unpack Section 4 ([Product Definition
 !> Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml))
 !> of a GRIB2 message.
 !> @author Stephen Gilbert @date 2000-05-26
 
-!> This subroutine unpacks Section 4 ([Product Definition Section]
+!> Unpack Section 4 ([Product Definition Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml))
 !> of a GRIB2 message, starting at octet 6 of that Section.
 !>
