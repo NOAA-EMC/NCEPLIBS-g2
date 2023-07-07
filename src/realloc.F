@@ -58,11 +58,17 @@
                c=>tmp
                return
             endif
+#ifdef LOGGING
+            print *, 'realloc_c1 allocated ', m, ' bytes at ', loc(c)
+#endif
             if ( n /= 0 ) then
                num=min(n,m)
                c(1:num)=tmp(1:num)      ! copy data from orig mem to new loc.
             endif
-            deallocate(tmp)             ! deallocate original memory
+#ifdef LOGGING
+            print *, 'realloc_c1 deallocating ', loc(tmp)
+#endif
+            deallocate(tmp)     ! deallocate original memory
             return
          end subroutine
 
