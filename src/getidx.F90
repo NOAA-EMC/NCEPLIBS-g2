@@ -82,8 +82,12 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      return
   endif
   if (lugi .eq. lugb) then      ! force regeneration of index from grib2 file
-     if (associated(idxlist(lugb)%cbuf))  &
-          deallocate(idxlist(lugb)%cbuf)
+     if (associated(idxlist(lugb)%cbuf)) then 
+#ifdef LOGGING
+        print *, 'getidx deallocating ', loc(idxlist(lugb)%cbuf)
+#endif
+        deallocate(idxlist(lugb)%cbuf)
+     endif
      nullify(idxlist(lugb)%cbuf)
      idxlist(lugb)%nlen = 0
      idxlist(lugb)%nnum = 0
@@ -92,8 +96,12 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
 
   if (lugi .lt. 0) then      ! force re-read of index from indexfile
      ! associated with unit abs(lugi)
-     if (associated(idxlist(lugb)%cbuf))  &
-          deallocate(idxlist(lugb)%cbuf)
+     if (associated(idxlist(lugb)%cbuf)) then
+#ifdef LOGGING
+        print *, 'getidx deallocating ', loc(idxlist(lugb)%cbuf)
+#endif
+        deallocate(idxlist(lugb)%cbuf)
+     endif
      nullify(idxlist(lugb)%cbuf)
      idxlist(lugb)%nlen = 0
      idxlist(lugb)%nnum = 0
