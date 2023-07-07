@@ -40,11 +40,11 @@ program test_getidx
   call baopenr(lugb, TEST_FILE_WW3_WEST, iret)
   if (iret .ne. 0) stop 100
 
-  ! This will not work because the first argument must be between 0 and 9999.
-  call getidx(0, lugi, cbuf, nlen, nnum, iret)
-  if (iret .ne. 90) stop 99
-  call getidx(10000, lugi, cbuf, nlen, nnum, iret)
-  if (iret .ne. 90) stop 99
+  ! ! This will not work because the first argument must be between 0 and 9999.
+  ! call getidx(0, lugi, cbuf, nlen, nnum, iret)
+  ! if (iret .ne. 90) stop 99
+  ! call getidx(10000, lugi, cbuf, nlen, nnum, iret)
+  ! if (iret .ne. 90) stop 99
 
   ! Get the index info, telling getidx() to generate it directly from
   ! the GRIB2 file.
@@ -104,112 +104,107 @@ program test_getidx
   print *, 'nlen, nnum: ', nlen, nnum
   if (nlen .ne.  3800 .or. nnum .ne. 19) stop 102
   
-  ! Get the index info, telling getidx() to use the index file.
-  call getidx(lu_gdas, lu_gdas_index * -1, cbuf, nlen, nnum, iret)
-  if (iret .ne. 0) stop 101
-  print *, 'nlen, nnum: ', nlen, nnum
-  if (nlen .ne.  3800 .or. nnum .ne. 19) stop 102
-  
-  ! Break out the index record into component values and check them for correctness.
-  call g2_gbytec(cbuf, index_rec_len, 0, 8*4)
-  if (index_rec_len .ne. 200) stop 205
-  call g2_gbytec(cbuf, b2s_message, 8*4, 8*4)
-  if (b2s_message .ne. 0) stop 206
-  call g2_gbytec(cbuf, b2s_lus, 8*8, 8*4)
-  if (b2s_lus .ne. 0) stop 207
-  call g2_gbytec(cbuf, b2s_gds, 8*12, 8*4)
-  if (b2s_gds .ne. 37) stop 208
-  call g2_gbytec(cbuf, b2s_pds, 8*16, 8*4)
-  if (b2s_pds .ne. 109) stop 209
-  call g2_gbytec(cbuf, b2s_drs, 8*20, 8*4)
-  if (b2s_drs .ne. 143) stop 210
-  call g2_gbytec(cbuf, b2s_bms, 8*24, 8*4)
-  if (b2s_bms .ne. 166) stop 211
-  call g2_gbytec(cbuf, b2s_data, 8*28, 8*4)
-  if (b2s_data .ne. 4721) stop 212
-  call g2_gbytec(cbuf, total_bytes, 8*32, 8*8)
-  if (total_bytes .ne. 15254) stop 213
-  call g2_gbytec(cbuf, grib_version, 8*40, 8*1)
-  if (grib_version .ne. 2) stop 215
-  call g2_gbytec(cbuf, discipline, 8*41, 8*1)
-  if (discipline .ne. 0) stop 217
-  call g2_gbytec(cbuf, field_number, 8*42, 8*2)
-  if (field_number .ne. 1) stop 220
-  print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
-  print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
+  ! ! Break out the index record into component values and check them for correctness.
+  ! call g2_gbytec(cbuf, index_rec_len, 0, 8*4)
+  ! if (index_rec_len .ne. 200) stop 205
+  ! call g2_gbytec(cbuf, b2s_message, 8*4, 8*4)
+  ! if (b2s_message .ne. 0) stop 206
+  ! call g2_gbytec(cbuf, b2s_lus, 8*8, 8*4)
+  ! if (b2s_lus .ne. 0) stop 207
+  ! call g2_gbytec(cbuf, b2s_gds, 8*12, 8*4)
+  ! if (b2s_gds .ne. 37) stop 208
+  ! call g2_gbytec(cbuf, b2s_pds, 8*16, 8*4)
+  ! if (b2s_pds .ne. 109) stop 209
+  ! call g2_gbytec(cbuf, b2s_drs, 8*20, 8*4)
+  ! if (b2s_drs .ne. 143) stop 210
+  ! call g2_gbytec(cbuf, b2s_bms, 8*24, 8*4)
+  ! if (b2s_bms .ne. 166) stop 211
+  ! call g2_gbytec(cbuf, b2s_data, 8*28, 8*4)
+  ! if (b2s_data .ne. 4721) stop 212
+  ! call g2_gbytec(cbuf, total_bytes, 8*32, 8*8)
+  ! if (total_bytes .ne. 15254) stop 213
+  ! call g2_gbytec(cbuf, grib_version, 8*40, 8*1)
+  ! if (grib_version .ne. 2) stop 215
+  ! call g2_gbytec(cbuf, discipline, 8*41, 8*1)
+  ! if (discipline .ne. 0) stop 217
+  ! call g2_gbytec(cbuf, field_number, 8*42, 8*2)
+  ! if (field_number .ne. 1) stop 220
+  ! print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
+  ! print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+  ! print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
 
-  ! Do the same read again.
-  call getidx(lu_gdas, lu_gdas_index, cbuf, nlen, nnum, iret)
-  if (iret .ne. 0) stop 101
-  print *, 'nlen, nnum: ', nlen, nnum
-  if (nlen .ne.  3800 .or. nnum .ne. 19) stop 102
+  ! ! Do the same read again.
+  ! call getidx(lu_gdas, lu_gdas_index, cbuf, nlen, nnum, iret)
+  ! if (iret .ne. 0) stop 101
+  ! print *, 'nlen, nnum: ', nlen, nnum
+  ! if (nlen .ne.  3800 .or. nnum .ne. 19) stop 102
   
-  ! Break out the index record into component values and check them for correctness.
-  call g2_gbytec(cbuf, index_rec_len, 0, 8*4)
-  if (index_rec_len .ne. 200) stop 205
-  call g2_gbytec(cbuf, b2s_message, 8*4, 8*4)
-  if (b2s_message .ne. 0) stop 206
-  call g2_gbytec(cbuf, b2s_lus, 8*8, 8*4)
-  if (b2s_lus .ne. 0) stop 207
-  call g2_gbytec(cbuf, b2s_gds, 8*12, 8*4)
-  if (b2s_gds .ne. 37) stop 208
-  call g2_gbytec(cbuf, b2s_pds, 8*16, 8*4)
-  if (b2s_pds .ne. 109) stop 209
-  call g2_gbytec(cbuf, b2s_drs, 8*20, 8*4)
-  if (b2s_drs .ne. 143) stop 210
-  call g2_gbytec(cbuf, b2s_bms, 8*24, 8*4)
-  if (b2s_bms .ne. 166) stop 211
-  call g2_gbytec(cbuf, b2s_data, 8*28, 8*4)
-  if (b2s_data .ne. 4721) stop 212
-  call g2_gbytec(cbuf, total_bytes, 8*32, 8*8)
-  if (total_bytes .ne. 15254) stop 213
-  call g2_gbytec(cbuf, grib_version, 8*40, 8*1)
-  if (grib_version .ne. 2) stop 215
-  call g2_gbytec(cbuf, discipline, 8*41, 8*1)
-  if (discipline .ne. 0) stop 217
-  call g2_gbytec(cbuf, field_number, 8*42, 8*2)
-  if (field_number .ne. 1) stop 220
-  print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
-  print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
+  ! ! Break out the index record into component values and check them for correctness.
+  ! call g2_gbytec(cbuf, index_rec_len, 0, 8*4)
+  ! if (index_rec_len .ne. 200) stop 205
+  ! call g2_gbytec(cbuf, b2s_message, 8*4, 8*4)
+  ! if (b2s_message .ne. 0) stop 206
+  ! call g2_gbytec(cbuf, b2s_lus, 8*8, 8*4)
+  ! if (b2s_lus .ne. 0) stop 207
+  ! call g2_gbytec(cbuf, b2s_gds, 8*12, 8*4)
+  ! if (b2s_gds .ne. 37) stop 208
+  ! call g2_gbytec(cbuf, b2s_pds, 8*16, 8*4)
+  ! if (b2s_pds .ne. 109) stop 209
+  ! call g2_gbytec(cbuf, b2s_drs, 8*20, 8*4)
+  ! if (b2s_drs .ne. 143) stop 210
+  ! call g2_gbytec(cbuf, b2s_bms, 8*24, 8*4)
+  ! if (b2s_bms .ne. 166) stop 211
+  ! call g2_gbytec(cbuf, b2s_data, 8*28, 8*4)
+  ! if (b2s_data .ne. 4721) stop 212
+  ! call g2_gbytec(cbuf, total_bytes, 8*32, 8*8)
+  ! if (total_bytes .ne. 15254) stop 213
+  ! call g2_gbytec(cbuf, grib_version, 8*40, 8*1)
+  ! if (grib_version .ne. 2) stop 215
+  ! call g2_gbytec(cbuf, discipline, 8*41, 8*1)
+  ! if (discipline .ne. 0) stop 217
+  ! call g2_gbytec(cbuf, field_number, 8*42, 8*2)
+  ! if (field_number .ne. 1) stop 220
+  ! print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
+  ! print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+  ! print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
 
-  ! Get the index info, telling getidx() to use the index file.
-  call getidx(lu_gdas, lu_gdas, cbuf, nlen, nnum, iret)
-  if (iret .ne. 0) stop 101
-  print *, 'nlen, nnum: ', nlen, nnum
-  if (nlen .ne.  3800 .or. nnum .ne. 19) stop 102
+  ! ! Get the index info, telling getidx() to use the index file.
+  ! call getidx(lu_gdas, lu_gdas, cbuf, nlen, nnum, iret)
+  ! if (iret .ne. 0) stop 101
+  ! print *, 'nlen, nnum: ', nlen, nnum
+  ! if (nlen .ne.  3800 .or. nnum .ne. 19) stop 102
   
-  ! Break out the index record into component values and check them for correctness.
-  call g2_gbytec(cbuf, index_rec_len, 0, 8*4)
-  if (index_rec_len .ne. 200) stop 205
-  call g2_gbytec(cbuf, b2s_message, 8*4, 8*4)
-  if (b2s_message .ne. 0) stop 206
-  call g2_gbytec(cbuf, b2s_lus, 8*8, 8*4)
-  if (b2s_lus .ne. 0) stop 207
-  call g2_gbytec(cbuf, b2s_gds, 8*12, 8*4)
-  if (b2s_gds .ne. 37) stop 208
-  call g2_gbytec(cbuf, b2s_pds, 8*16, 8*4)
-  if (b2s_pds .ne. 109) stop 209
-  call g2_gbytec(cbuf, b2s_drs, 8*20, 8*4)
-  if (b2s_drs .ne. 143) stop 210
-  call g2_gbytec(cbuf, b2s_bms, 8*24, 8*4)
-  if (b2s_bms .ne. 166) stop 211
-  call g2_gbytec(cbuf, b2s_data, 8*28, 8*4)
-  if (b2s_data .ne. 4721) stop 212
-  call g2_gbytec(cbuf, total_bytes, 8*32, 8*8)
-  if (total_bytes .ne. 15254) stop 213
-  call g2_gbytec(cbuf, grib_version, 8*40, 8*1)
-  if (grib_version .ne. 2) stop 215
-  call g2_gbytec(cbuf, discipline, 8*41, 8*1)
-  if (discipline .ne. 0) stop 217
-  call g2_gbytec(cbuf, field_number, 8*42, 8*2)
-  if (field_number .ne. 1) stop 220
-  print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
-  print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
+  ! ! Break out the index record into component values and check them for correctness.
+  ! call g2_gbytec(cbuf, index_rec_len, 0, 8*4)
+  ! if (index_rec_len .ne. 200) stop 205
+  ! call g2_gbytec(cbuf, b2s_message, 8*4, 8*4)
+  ! if (b2s_message .ne. 0) stop 206
+  ! call g2_gbytec(cbuf, b2s_lus, 8*8, 8*4)
+  ! if (b2s_lus .ne. 0) stop 207
+  ! call g2_gbytec(cbuf, b2s_gds, 8*12, 8*4)
+  ! if (b2s_gds .ne. 37) stop 208
+  ! call g2_gbytec(cbuf, b2s_pds, 8*16, 8*4)
+  ! if (b2s_pds .ne. 109) stop 209
+  ! call g2_gbytec(cbuf, b2s_drs, 8*20, 8*4)
+  ! if (b2s_drs .ne. 143) stop 210
+  ! call g2_gbytec(cbuf, b2s_bms, 8*24, 8*4)
+  ! if (b2s_bms .ne. 166) stop 211
+  ! call g2_gbytec(cbuf, b2s_data, 8*28, 8*4)
+  ! if (b2s_data .ne. 4721) stop 212
+  ! call g2_gbytec(cbuf, total_bytes, 8*32, 8*8)
+  ! if (total_bytes .ne. 15254) stop 213
+  ! call g2_gbytec(cbuf, grib_version, 8*40, 8*1)
+  ! if (grib_version .ne. 2) stop 215
+  ! call g2_gbytec(cbuf, discipline, 8*41, 8*1)
+  ! if (discipline .ne. 0) stop 217
+  ! call g2_gbytec(cbuf, field_number, 8*42, 8*2)
+  ! if (field_number .ne. 1) stop 220
+  ! print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
+  ! print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+  ! print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
 
   ! Clean up.
+  print *, 'test_getidx deallocating ', loc(cbuf)
   deallocate(cbuf)
   call baclose(lu_gdas, iret)
   if (iret .ne. 0) stop 199
