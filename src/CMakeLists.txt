@@ -12,7 +12,7 @@ gettemplates.f gf_free.f gf_getfld.F90 gf_unpack1.f gf_unpack2.f
 gf_unpack3.F90 gf_unpack4.f gf_unpack5.f gf_unpack6.f gf_unpack7.f
 gribcreate.F90 gribend.F90 gribinfo.F90
 ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.f intmath.f
-ixgb2.f jpcpack.F90 jpcunpack.F90 misspack.f mkieee.f pack_gp.f
+ixgb2.F jpcpack.F90 jpcunpack.F90 misspack.f mkieee.f pack_gp.f
 params_ecmwf.f params.F90 pdstemplates.F90 pngpack.F90 pngunpack.F90
 putgb2.F90 rdieee.f realloc.f reduce.f simpack.f simunpack.f skgb.F90
 specpack.f specunpack.f)
