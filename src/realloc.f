@@ -1,10 +1,8 @@
 !> @file
-!> @brief This module contains routines to reallocate memory and
-!> reorganize the data in memory.
+!> @brief Reallocate memory, preserving contents.
 !> @author Stephen Gilbert @date 2000-10-01
 
-!> @brief This module contains routines to reallocate memory and
-!> reorganize the data in memory.
+!> @brief Reallocate memory, preserving contents.
 !>
 !> This module contains two subroutines to reallocate integer, and
 !> character arrays in memory, preseving the existing contents of the
@@ -17,21 +15,6 @@
          module procedure realloc_c1
          module procedure realloc_r
          module procedure realloc_i
-!!         subroutine realloc_c1(c,n,m,istat)
-!!            character(len=1),pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
-!!         subroutine realloc_r(c,n,m,istat)
-!!            real,pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
-!!         subroutine realloc_i(c,n,m,istat)
-!!            integer,pointer,dimension(:) :: c
-!!            integer :: n,m
-!!            integer :: istat
-!!         end subroutine
       end interface
 
       contains
