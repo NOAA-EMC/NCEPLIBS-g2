@@ -51,7 +51,7 @@
 C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  INITIALIZE
       IRET=0
-      IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
+      NULLIFY(CBUF)
       MBUF=INIT
       ALLOCATE(CBUF(MBUF),STAT=ISTAT)    ! ALLOCATE INITIAL SPACE FOR CBUF
       IF (ISTAT.NE.0) THEN
