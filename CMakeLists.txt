@@ -87,6 +87,7 @@ endif()
 add_subdirectory(src)
 
 # Unit testing.
+set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=1")
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
