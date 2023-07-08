@@ -34,7 +34,6 @@
 !>
 !> @author Mark Iredell @date 1995-10-31
       SUBROUTINE GETG2IR(LUGB,MSK1,MSK2,MNUM,CBUF,NLEN,NNUM,NMESS,IRET)
-
       USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
       PARAMETER(INIT=50000,NEXT=10000)
       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
@@ -48,7 +47,7 @@
            INTEGER,INTENT(OUT) :: NUMFLD,MLEN,IRET
          END SUBROUTINE IXGB2
       END INTERFACE
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  INITIALIZE
       IRET=0
       NULLIFY(CBUF)
@@ -58,7 +57,7 @@ C  INITIALIZE
          IRET=2
          RETURN
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  SEARCH FOR FIRST GRIB MESSAGE
       ISEEK=0
       CALL SKGB(LUGB,ISEEK,MSK1,LSKIP,LGRIB)
@@ -68,7 +67,7 @@ C  SEARCH FOR FIRST GRIB MESSAGE
           CALL SKGB(LUGB,ISEEK,MSK2,LSKIP,LGRIB)
         ENDIF
       ENDDO
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  GET INDEX RECORDS FOR EVERY GRIB MESSAGE FOUND
       NLEN=0
       NNUM=0
@@ -86,10 +85,9 @@ C  GET INDEX RECORDS FOR EVERY GRIB MESSAGE FOUND
            ENDIF
            MBUF=NEWSIZE
         ENDIF
-        !
+
         !  IF INDEX RECORDS WERE RETURNED IN CBUFTMP FROM IXGB2,
         !  COPY CBUFTMP INTO CBUF, THEN DEALLOCATE CBUFTMP WHEN DONE
-        !
         IF ( ASSOCIATED(CBUFTMP) ) THEN
            CBUF(NLEN+1:NLEN+NBYTES)=CBUFTMP(1:NBYTES)
            DEALLOCATE(CBUFTMP,STAT=ISTAT)
@@ -106,6 +104,4 @@ C  GET INDEX RECORDS FOR EVERY GRIB MESSAGE FOUND
         ISEEK=LSKIP+LGRIB
         CALL SKGB(LUGB,ISEEK,MSK2,LSKIP,LGRIB)
       ENDDO
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END
