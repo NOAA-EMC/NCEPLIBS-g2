@@ -30,14 +30,10 @@
         if (a(j).eq.0.) then
           ieee=0
           rieee(j)=transfer(ieee,rieee(j))
-!       write(6,fmt='(f20.10,5x,b32)') a,a
-!       write(6,fmt='(f20.10,5x,b32)') rieee,rieee
           cycle
         endif
         
-!
-!  Set Sign bit (bit 31 - leftmost bit)
-!
+!     Set Sign bit (bit 31 - leftmost bit)
         if (a(j).lt.0.0) then
           ieee=ibset(ieee,31)
           atemp=abs(a(j))
@@ -45,9 +41,8 @@
           ieee=ibclr(ieee,31)
           atemp=a(j)
         endif
-!
-!  Determine exponent n with base 2
-!
+
+!     Determine exponent n with base 2
         if ( atemp .ge. 1.0 ) then
            n = 0
            do while ( 2.0**(n+1) .le. atemp )
@@ -59,17 +54,12 @@
               n = n - 1
            enddo
         endif
-!        n=floor(alog(atemp)/alog2)
-        !write(6,*) ' logstuff ',alog(atemp)/alog2
-        !write(6,*) ' logstuffn ',n
         iexp=n+127
         if (n.gt.127) iexp=255     ! overflow
         if (n.lt.-127) iexp=0
-        !      set exponent bits ( bits 30-23 )
         call mvbits(iexp,0,8,ieee,23)
-!
-!  Determine Mantissa
-! 
+
+!     Determine Mantissa
         if (iexp.ne.255) then
           if (iexp.ne.0) then
             atemp=(atemp/(2.0**n))-1.0
@@ -80,17 +70,12 @@
         else
           imant=0
         endif
-        !      set mantissa bits ( bits 22-0 )
+!      set mantissa bits ( bits 22-0 )
         call mvbits(imant,0,23,ieee,0)
-!
-!  Transfer IEEE bit string to real variable
-!
-        rieee(j)=transfer(ieee,rieee(j))
-!       write(6,fmt='(f20.10,5x,b32)') a,a
-!       write(6,fmt='(f20.10,5x,b32)') rieee,rieee
 
+!     Transfer IEEE bit string to real variable
+        rieee(j)=transfer(ieee,rieee(j))
       enddo
 
-      return
       end
 

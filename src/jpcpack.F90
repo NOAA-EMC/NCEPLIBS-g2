@@ -59,9 +59,8 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   ndpts=width*height
   bscale=2.0**real(-idrstmpl(2))
   dscale=10.0**real(idrstmpl(3))
-  !
+
   !  Find max and min values in the data
-  !
   if(ndpts>0) then
      rmax=fld(1)
      rmin=fld(1)
@@ -78,22 +77,19 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   else
      maxdif=nint((rmax-rmin)*dscale*bscale)
   endif
-  !
+
   !  If max and min values are not equal, pack up field.
   !  If they are equal, we have a constant field, and the reference
   !  value (rmin) is the value for each point in the field and
   !  set nbits to 0.
-  !
   if (rmin.ne.rmax .AND. maxdif.ne.0) then
-     !
+
      !  Determine which algorithm to use based on user-supplied
      !  binary scale factor and number of bits.
-     !
      if (idrstmpl(2).eq.0) then
-        !
+
         !  No binary scaling and calculate minimum number of
         !  bits in which the data will fit.
-        !
         imin=nint(rmin*dscale)
         imax=nint(rmax*dscale)
         maxdif=imax-imin
@@ -105,10 +101,9 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
            ifld(j)=nint(fld(j)*dscale)-imin
         enddo
      else
-        !
+
         !  Use binary scaling factor and calculate minimum number of
         !  bits in which the data will fit.
-        !
         rmin=rmin*dscale
         rmax=rmax*dscale
         maxdif=nint((rmax-rmin)*bscale)
@@ -119,10 +114,9 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
            ifld(j)=max(0,nint(((fld(j)*dscale)-rmin)*bscale))
         enddo
      endif
-     !
+
      !  Pack data into full octets, then do JPEG2000 encode.
      !  and calculate the length of the packed data in bytes
-     !
      retry=0
      nbytes=(nbits+7)/8
      nsize=lcpack      ! needed for input to enc_jpeg2000
@@ -151,9 +145,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
      lcpack=0
   endif
 
-  !
   !  Fill in ref value and number of bits in Template 5.0
-  !
   rmin4 = rmin
   call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
   !      call g2_gbytec(ref,idrstmpl(1),0,32)
@@ -163,5 +155,4 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   idrstmpl(5)=0         ! original data were reals
   if (idrstmpl(6).eq.0) idrstmpl(7)=255       ! lossy not used
 
-  return
 end subroutine

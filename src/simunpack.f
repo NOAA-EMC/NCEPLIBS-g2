@@ -34,10 +34,9 @@
       dscale = 10.0**real(-idrstmpl(3))
       nbits = idrstmpl(4)
       itype = idrstmpl(5)
-!
-!  if nbits equals 0, we have a constant field where the reference value
-!  is the data value at each gridpoint
-!
+
+!     if nbits equals 0, we have a constant field where the reference value
+!     is the data value at each gridpoint
       if (nbits.ne.0) then
          call g2_gbytesc(cpack,ifld,0,nbits,0,ndpts)
          do j=1,ndpts
@@ -50,7 +49,4 @@
            fld(j)=ref
          enddo
       endif
-
-
-      return
       end

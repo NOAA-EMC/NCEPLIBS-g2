@@ -61,9 +61,9 @@
       INTEGER,INTENT(IN) :: LUGI
       INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
       CHARACTER CHEAD*162
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       NLEN=0
       NNUM=0
       IRET=4
@@ -83,6 +83,4 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         ENDIF
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END
