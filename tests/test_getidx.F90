@@ -83,8 +83,8 @@ program test_getidx
   print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
 
-  ! Clean up. Don't deallocate cbuf, it will be deallocated within
-  ! the next call of getidx().
+  ! Clean up.
+  deallocate(cbuf)
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
   
