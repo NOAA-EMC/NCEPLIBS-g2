@@ -39,19 +39,16 @@
       Ms=idrstmpl(8)
       Ts=idrstmpl(9)
 
-!
-!   Calculate Laplacian scaling factors for each possible wave number.
-!
+!     Calculate Laplacian scaling factors for each possible wave number.
       allocate(pscale(JJ+MM))
       tscale=real(idrstmpl(5))*1E-6
       do n=Js,JJ+MM
          pscale(n)=real(n*(n+1))**(tscale)
       enddo
-!
-!   Separate spectral coeffs into two lists; one to contain unpacked
-!   values within the sub-spectrum Js, Ks, Ms, and the other with values 
-!   outside of the sub-spectrum to be packed.
-!
+
+!     Separate spectral coeffs into two lists; one to contain unpacked
+!     values within the sub-spectrum Js, Ks, Ms, and the other with values 
+!     outside of the sub-spectrum to be packed.
       inc=1
       incu=1
       incp=1
@@ -85,22 +82,19 @@
          print *,'specpack: Resetting idrstmpl(9) to ',incu
          Ts=incu
       endif
-!
-!  Add unpacked values to the packed data array in 32-bit IEEE format
-!
+
+!     Add unpacked values to the packed data array in 32-bit IEEE format
       call mkieee(unpk,cpack,Ts)
       ipos=4*Ts
-!
-!  Scale and pack the rest of the coefficients
-! 
+
+!     Scale and pack the rest of the coefficients
       tmplsim(2)=idrstmpl(2)
       tmplsim(3)=idrstmpl(3)
       tmplsim(4)=idrstmpl(4)
       call simpack(tfld,ndpts-Ts,tmplsim,cpack(ipos+1),lcpack)
       lcpack=lcpack+ipos
-!
-!  Fill in Template 5.51
-!
+
+!     Fill in Template 5.51
       idrstmpl(1)=tmplsim(1)
       idrstmpl(2)=tmplsim(2)
       idrstmpl(3)=tmplsim(3)
@@ -108,5 +102,4 @@
       idrstmpl(9)=Ts
       idrstmpl(10)=1         ! Unpacked spectral data is 32-bit IEEE
 
-      return
       end

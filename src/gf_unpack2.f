@@ -56,6 +56,5 @@
       csec2(1:lencsec2)=cgrib(ipos:ipos+lencsec2-1)
       iofst=iofst+(lencsec2*8)
 
-      return    ! End of Section 2 processing
       end
 

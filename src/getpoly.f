@@ -18,9 +18,6 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-11
       subroutine getpoly(csec3,lcsec3,jj,kk,mm)
-
-!      use grib_mod
-    
       character(len=1),intent(in) :: csec3(*)
       integer,intent(in) :: lcsec3
       integer,intent(out) :: jj,kk,mm
@@ -42,7 +39,7 @@
       end interface
 
       nullify(igdstmpl,list_opt)
-        !
+
       iofst=0       ! set offset to beginning of section
       call gf_unpack3(csec3,lcsec3,iofst,igds,igdstmpl,
      &                 igdtlen,list_opt,num_opt,jerr)
@@ -62,9 +59,8 @@
          kk=0
          mm=0
       endif
-        !
+
       if (associated(igdstmpl)) deallocate(igdstmpl)
       if (associated(list_opt)) deallocate(list_opt)
 
-      return
       end

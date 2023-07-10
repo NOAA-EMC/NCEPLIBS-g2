@@ -65,7 +65,7 @@
       CHARACTER CIDS(LINMAX),CGDS(LINMAX)
       CHARACTER(LEN=4) :: CTEMP
       INTEGER LOCLUS,LOCGDS,LENGDS,LOCBMS
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       LOCLUS=0
       IRET=0
       MLEN=0
@@ -77,8 +77,8 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
          IRET=1
          RETURN
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
+
+C     READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
       IBREAD=MIN(LGRIB,LINMAX)
       CALL BAREAD(LUGB,LSKIP,IBREAD,LBREAD,CBREAD)
       IF(LBREAD.NE.IBREAD) THEN
@@ -95,8 +95,8 @@ C  READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
       LENSEC1=MIN(LENSEC1,IBREAD)
       CIDS(1:LENSEC1)=CBREAD(17:16+LENSEC1)
       IBSKIP=LSKIP+16+LENSEC1
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
+
+C     LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
       IBREAD=MAX(5,MXBMS)
       DO
          CALL BAREAD(LUGB,IBSKIP,IBREAD,LBREAD,CBREAD)     
@@ -187,7 +187,4 @@ C  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
          ENDIF
          IBSKIP=IBSKIP+LENSEC
       ENDDO
-
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END

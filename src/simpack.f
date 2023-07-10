@@ -53,9 +53,8 @@ C     real(8) :: rmin,rmax
       else
          nbits=idrstmpl(4)
       endif
-!
-!  Find max and min values in the data
-!
+
+!     Find max and min values in the data
       if(ndpts<1) then
          rmin=0
          rmax=0
@@ -67,22 +66,19 @@ C     real(8) :: rmin,rmax
             if (fld(j).lt.rmin) rmin=fld(j)
          enddo
       endif
-!
-!  If max and min values are not equal, pack up field.
-!  If they are equal, we have a constant field, and the reference
-!  value (rmin) is the value for each point in the field and
-!  set nbits to 0.
-!
+
+!     If max and min values are not equal, pack up field.
+!     If they are equal, we have a constant field, and the reference
+!     value (rmin) is the value for each point in the field and
+!     set nbits to 0.
       if (rmin.ne.rmax) then
-        !
+
         !  Determine which algorithm to use based on user-supplied 
         !  binary scale factor and number of bits.
-        !
         if (nbits.eq.0.AND.idrstmpl(2).eq.0) then
-           !
+
            !  No binary scaling and calculate minumum number of 
            !  bits in which the data will fit.
-           !
            imin=nint(rmin*dscale)
            imax=nint(rmax*dscale)
            maxdif=imax-imin
@@ -94,10 +90,9 @@ C     real(8) :: rmin,rmax
              ifld(j)=nint(fld(j)*dscale)-imin
            enddo
         elseif (nbits.ne.0.AND.idrstmpl(2).eq.0) then
-           !
+
            !  Use minimum number of bits specified by user and
            !  adjust binary scaling factor to accomodate data.
-           !
            rmin=rmin*dscale
            rmax=rmax*dscale
            maxnum=(2**nbits)-1
@@ -109,10 +104,9 @@ C     real(8) :: rmin,rmax
              ifld(j)=max(0,nint(((fld(j)*dscale)-rmin)*bscale))
            enddo
         elseif (nbits.eq.0.AND.idrstmpl(2).ne.0) then
-           !
+
            !  Use binary scaling factor and calculate minumum number of 
            !  bits in which the data will fit.
-           !
            rmin=rmin*dscale
            rmax=rmax*dscale
            maxdif=nint((rmax-rmin)*bscale)
@@ -123,22 +117,20 @@ C     real(8) :: rmin,rmax
              ifld(j)=max(0,nint(((fld(j)*dscale)-rmin)*bscale))
            enddo
         elseif (nbits.ne.0.AND.idrstmpl(2).ne.0) then
-           !
+
            !  Use binary scaling factor and use minumum number of 
            !  bits specified by user.   Dangerous - may loose
            !  information if binary scale factor and nbits not set
            !  properly by user.
-           !
            rmin=rmin*dscale
            !   scale data
            do j=1,ndpts
              ifld(j)=max(0,nint(((fld(j)*dscale)-rmin)*bscale))
            enddo
         endif
-        !
+
         !  Pack data, Pad last octet with Zeros, if necessary,
         !  and calculate the length of the packed data in bytes
-        !
         call g2_sbytesc(cpack,ifld,0,nbits,0,ndpts)
         nbittot=nbits*ndpts
         left=8-mod(nbittot,8)
@@ -154,17 +146,13 @@ C     real(8) :: rmin,rmax
         lcpack=0
       endif
 
-!
-!  Fill in ref value and number of bits in Template 5.0
-!
+
+!     Fill in ref value and number of bits in Template 5.0
       rmin4 = rmin
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
-      !print *,'SAGref = ',rmin,ref
-!      call g2_gbytec(ref,idrstmpl(1),0,32)
       iref=transfer(ref,iref)
       idrstmpl(1)=iref
       idrstmpl(4)=nbits
       idrstmpl(5)=0         ! original data were reals
 
-      return
       end
