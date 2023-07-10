@@ -70,16 +70,16 @@
            real,pointer,dimension(:) :: fld
          end subroutine gf_unpack7
       end interface
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  GET INFO
+
+C     GET INFO
       NULLIFY(gfld%bmap,gfld%fld)
       IRET=0
       CALL G2_GBYTEC(CINDEX,LSKIP,4*8,4*8)
       CALL G2_GBYTEC(CINDEX,SKIP6,24*8,4*8)
       CALL G2_GBYTEC(CINDEX,SKIP7,28*8,4*8)
 
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  READ AND UNPACK BIT_MAP, IF PRESENT
+
+C     READ AND UNPACK BIT_MAP, IF PRESENT
       IF ( gfld%ibmap.eq.0.OR.gfld%ibmap.eq.254 ) THEN
          ISKIP=LSKIP+SKIP6
          CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
@@ -101,8 +101,8 @@ C  READ AND UNPACK BIT_MAP, IF PRESENT
          ENDIF
          DEALLOCATE(CTEMP)
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  READ AND UNPACK DATA FIELD 
+
+C     READ AND UNPACK DATA FIELD 
       ISKIP=LSKIP+SKIP7
       CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
       CALL G2_GBYTEC(CSIZE,ILEN,0,32)
@@ -124,7 +124,7 @@ C  READ AND UNPACK DATA FIELD
          RETURN
       ENDIF
       DEALLOCATE(CTEMP)
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       !  If bitmap is used with this field, expand data field
       !  to grid, if possible.
       if ( gfld%ibmap .ne. 255 .AND. associated(gfld%bmap) ) then
@@ -146,6 +146,4 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       else
          gfld%expanded=.true.
       endif
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END

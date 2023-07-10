@@ -106,5 +106,4 @@
 
       iofst=iofst+(8*lensec)
 
-      return ! End of Section 7 processing
       end
