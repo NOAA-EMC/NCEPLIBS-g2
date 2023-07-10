@@ -23,7 +23,15 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        memcheck: [false, true]
+        memcheck:
+        - {
+            memcheck: false
+            name: "asan/coverage"
+          }
+        - {
+            memcheck: true
+            name: "valgrind"
+          }
 
     steps:
 
