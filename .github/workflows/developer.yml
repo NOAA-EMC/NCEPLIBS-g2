@@ -30,7 +30,7 @@ jobs:
     - name: install-dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen gcovr valgrind
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen gcovr valgrind tcl tcl-dev
 
     - name: checkout-bacio
       uses: actions/checkout@v3
