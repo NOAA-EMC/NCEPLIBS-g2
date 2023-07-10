@@ -119,6 +119,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         if [${{ matrix.config }} = "asan/code coverage"]
+        then
            ctest --verbose --output-on-failure --rerun-failed
            gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
         else
