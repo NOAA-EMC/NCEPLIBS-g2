@@ -131,6 +131,7 @@ jobs:
         cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
 
     - name: upload-test-coverage
+      if: ${{ matrix.memcheck }} == "false"
       uses: actions/upload-artifact@v3
       with:
         name: g2-test-coverage
