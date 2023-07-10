@@ -27,6 +27,7 @@
       do j=1,num
          ieee=0
 
+
          if (a(j).eq.0.) then
             ieee=0
             rieee(j)=transfer(ieee,rieee(j))
