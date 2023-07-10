@@ -26,13 +26,10 @@ jobs:
         config:
         - {
             memcheck: false
-            name: "asan/coverage"
           }
         - {
             memcheck: true
-            name: "valgrind"
           }
-
     steps:
 
     - name: install-dependencies
