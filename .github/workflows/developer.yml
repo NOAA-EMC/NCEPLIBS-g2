@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        memcheck:
+        config:
         - {
             memcheck: false
             name: "asan/coverage"
@@ -115,7 +115,7 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        if [[ ${{ matrix.memcheck }} == "false" ]]; then
+        if [[ ${{ matrix.config.memcheck }} == "false" ]]; then
           cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug
         else
           cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug
@@ -125,7 +125,7 @@ jobs:
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-        if [[ ${{ matrix.memcheck }} == "false" ]]; then        
+        if [[ ${{ matrix.config.memcheck }} == "false" ]]; then        
            ctest --verbose --output-on-failure --rerun-failed
            gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
         else
@@ -139,7 +139,7 @@ jobs:
         cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
 
     - name: upload-test-coverage
-      if: ${{ matrix.memcheck }} == "false"
+      if: ${{ matrix.config.memcheck }} == "false"
       uses: actions/upload-artifact@v3
       with:
         name: g2-test-coverage
