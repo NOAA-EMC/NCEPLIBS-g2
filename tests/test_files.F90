@@ -31,6 +31,9 @@ program test_files
   ! Close the file.
   call baclose(lugb, iret)  
   if (iret .ne. 0) stop 200
+
+  ! Free memory.
+  call gf_free(gfld)
   
   print *, 'SUCCESS!'
 end program test_files
