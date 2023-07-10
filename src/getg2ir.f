@@ -48,7 +48,7 @@
            INTEGER,INTENT(OUT) :: NUMFLD,MLEN,IRET
          END SUBROUTINE IXGB2
       END INTERFACE
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  INITIALIZE
       IRET=0
       IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
@@ -58,7 +58,7 @@ C  INITIALIZE
          IRET=2
          RETURN
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  SEARCH FOR FIRST GRIB MESSAGE
       ISEEK=0
       CALL SKGB(LUGB,ISEEK,MSK1,LSKIP,LGRIB)
@@ -68,7 +68,7 @@ C  SEARCH FOR FIRST GRIB MESSAGE
           CALL SKGB(LUGB,ISEEK,MSK2,LSKIP,LGRIB)
         ENDIF
       ENDDO
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  GET INDEX RECORDS FOR EVERY GRIB MESSAGE FOUND
       NLEN=0
       NNUM=0
@@ -106,6 +106,4 @@ C  GET INDEX RECORDS FOR EVERY GRIB MESSAGE FOUND
         ISEEK=LSKIP+LGRIB
         CALL SKGB(LUGB,ISEEK,MSK2,LSKIP,LGRIB)
       ENDDO
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END
