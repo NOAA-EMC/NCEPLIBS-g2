@@ -100,31 +100,33 @@ jobs:
         path: ~/data
         key: data-2
 
-    - name:  build
-      run: |
+    - name:  asan
+      run: |        
         set -x
         cd g2
         mkdir build
         doxygen --version
         cd build
-      run: |        
-          cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug
+        cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug
+       make -j2 VERBOSE=1
       if: matrix.config == 'asan/code coverage'
+      
+    - name:  memcheck
       run: |        
-          cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug
-      if: matrix.config == 'memcheck'
-      run: |        
+        cmake .. -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug
         make -j2 VERBOSE=1
+      if: matrix.config == 'memcheck'
 
-    - name: test
+    - name: test_asan
       run: |
         cd $GITHUB_WORKSPACE/g2/build
-      run: |
-           ctest --verbose --output-on-failure --rerun-failed
-           gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
+        ctest --verbose --output-on-failure --rerun-failed
+        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
       if: matrix.config == 'asan/code coverage'        
+
+    - name: test_memcheck
       run: |
-           ctest -T memcheck
+        ctest -T memcheck
       if: matrix.config == 'memcheck'        
 
     - name: cache-data
