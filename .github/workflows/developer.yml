@@ -130,7 +130,7 @@ jobs:
     - name: test_memcheck
       if: matrix.config == 'memcheck'
       run: |
-        ls -l /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/
+        cd $GITHUB_WORKSPACE/g2/build        
         ctest -T memcheck
 
     - name: cache-data
