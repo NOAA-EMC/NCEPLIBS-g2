@@ -35,10 +35,8 @@ program test_getgb2p_gdas
      end subroutine getgb2p
   end interface
 
-  print *, 'Testing the getgb2p() subroutine - expect and ignore error messages during test...'
-
   ! Open a real GRIB2 file.
-  print *, 'Testing getgb2p() some more...'
+  print *, 'Testing getgb2p() with file ', GDAS_FILE
   call baopenr(lugb, GDAS_FILE, iret)
   if (iret .ne. 0) stop 100
 
@@ -55,11 +53,13 @@ program test_getgb2p_gdas
   do i = 1, 250
      jgdt(i) = -9999
   end do
+  extract = .false.
 
   ! Try with extract both true and false. The results are the same for
   ! the GDAS file.
   do e = 1, 2
      if (e .eq. 2) extract = .true.
+     print *, 'calling getgb2p() with extract = ', extract
      call getgb2p(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
           extract, k, gribm, leng, iret)
      print *, iret, k, leng

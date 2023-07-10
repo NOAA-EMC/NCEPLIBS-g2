@@ -116,7 +116,6 @@
 
       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
 
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 C  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)
       INTERFACE
          SUBROUTINE GETIDX(LUGB,LUGI,CBUF,NLEN,NNUM,IRGI)
@@ -125,15 +124,15 @@ C  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)
             INTEGER,INTENT(OUT) :: NLEN,NNUM,IRGI
          END SUBROUTINE GETIDX
       END INTERFACE
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
+
+C     DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
       IRGI=0
       CALL GETIDX(LUGB,LUGI,CBUF,NLEN,NNUM,IRGI)
       IF(IRGI.GT.1) THEN
         IRET=96
         RETURN
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  SEARCH INDEX BUFFER
       CALL GETGB2S(CBUF,NLEN,NNUM,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT,
      &             JK,GFLD,LPOS,IRGS)
@@ -142,10 +141,10 @@ C  SEARCH INDEX BUFFER
         CALL GF_FREE(GFLD)
         RETURN
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  READ LOCAL USE SECTION, IF AVAILABLE
       CALL GETGB2L(LUGB,CBUF(LPOS),GFLD,IRET)
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 C  READ AND UNPACK GRIB RECORD
       IF (UNPACK) THEN
     !    NUMFLD=GFLD%IFLDNUM
@@ -153,6 +152,4 @@ C  READ AND UNPACK GRIB RECORD
         CALL GETGB2R(LUGB,CBUF(LPOS),GFLD,IRET)
       ENDIF
       K=JK
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END

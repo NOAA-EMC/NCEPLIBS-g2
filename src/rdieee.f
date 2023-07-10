@@ -24,12 +24,10 @@
 
       do j=1,num
 !
-!  Transfer IEEE bit string to integer variable
-!
+!     Transfer IEEE bit string to integer variable
         ieee=transfer(rieee(j),ieee)
-!
-!  Extract sign bit, exponent, and mantissa
-!
+
+!     Extract sign bit, exponent, and mantissa
         isign=ibits(ieee,31,1)
         iexp=ibits(ieee,23,8)
         imant=ibits(ieee,0,23)
@@ -54,6 +52,5 @@
 
       enddo
 
-      return
       end
 

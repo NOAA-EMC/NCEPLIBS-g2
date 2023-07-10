@@ -73,10 +73,9 @@
          call rdieee(idrstmpl(8),rmissp,1)
          if (missopt.eq.2) call rdieee(idrstmpl(9),rmisss,1)
       endif
-!
+
 !  Find min value of non-missing values in the data,
 !  AND set up missing value mapping of the field.
-!
       allocate(ifldmiss(ndpts))
 c     rmin=huge(rmin)
 
@@ -114,14 +113,13 @@ c     rmin=huge(rmin)
            if(.not.have_rmin) rmin=rmissp
          enddo
       endif
-!
+
 !  Allocate work arrays:
 !  Note: -ifldmiss(j),j=1,ndpts is a map of original field indicating 
 !         which of the original data values
 !         are primary missing (1), sencondary missing (2) or non-missing (0).
 !        -jfld(j),j=1,nonmiss is a subarray of just the non-missing values from
 !         the original field.
-!
       !if (rmin.ne.rmax) then
         iofst=0
         allocate(ifld(ndpts))
@@ -185,24 +183,21 @@ c     rmin=huge(rmin)
               if(nonmiss>=1) jfld(1)=0
               if(nonmiss>=2) jfld(2)=0
            endif
-           !
+
            !  subtract min value from spatial diff field
-           !
            isd=idrstmpl(17)+1
            minsd=minval(jfld(isd:nonmiss))
            do j=isd,nonmiss
               jfld(j)=jfld(j)-minsd
            enddo
-           !
+
            !   find num of bits need to store minsd and add 1 extra bit
            !   to indicate sign
-           !
            temp=i1log2(abs(minsd))
            nbitsd=ceiling(temp)+1
-           !
+
            !   find num of bits need to store ifld(1) ( and ifld(2)
            !   if using 2nd order differencing )
-           !
            maxorig=ival1
            if (idrstmpl(17).eq.2.and.ival2.gt.ival1) maxorig=ival2
            temp=i1log2(maxorig)
@@ -210,10 +205,9 @@ c     rmin=huge(rmin)
            if (nbitorig.gt.nbitsd) nbitsd=nbitorig
            !   increase number of bits to even multiple of 8 ( octet )
            if (mod(nbitsd,8).ne.0) nbitsd=nbitsd+(8-mod(nbitsd,8))
-           !
+
            !  Store extra spatial differencing info into the packed
            !  data section.
-           !
            if (nbitsd.ne.0) then
               !   pack first original value
               if (ival1.ge.0) then
@@ -250,9 +244,8 @@ c     rmin=huge(rmin)
            endif
          !print *,'SDp ',ival1,ival2,minsd,nbitsd
         endif     !  end of spatial diff section
-        !
+
         !  Expand non-missing data values to original grid.
-        !
         miss1=minval(jfld(1:nonmiss))-1
         miss2=miss1-1
         n=0
@@ -267,9 +260,8 @@ c     rmin=huge(rmin)
            endif
         enddo
         if(ndpts<2) simple_alg=.true.
-        !
+
         !   Determine Groups to be used.
-        !
         if ( simple_alg ) then
            !  set group length to 10 :  calculate number of groups
            !  and length of last group
@@ -301,10 +293,9 @@ c     rmin=huge(rmin)
            deallocate(jmax)
            deallocate(lbit)
         endif
-        !  
+
         !  For each group, find the group's reference value (min)
         !  and the number of bits needed to hold the remaining values
-        !
         n=1
         do ng=1,ngroups
            !  how many of each type?
@@ -360,11 +351,10 @@ c     rmin=huge(rmin)
            !   increment fld array counter
            n=n+glen(ng)
         enddo
-        !  
+
         !  Find max of the group references and calc num of bits needed 
         !  to pack each groups reference value, then
         !  pack up group reference values
-        !
         !write(77,*)'GREFS: ',(gref(j),j=1,ngroups)
         igmax=maxval(gref(1:ngroups))
         if (missopt.eq.1) igmax=igmax+1
@@ -390,11 +380,10 @@ c     rmin=huge(rmin)
         else
            nbitsgref=0
         endif
-        !
+
         !  Find max/min of the group widths and calc num of bits needed
         !  to pack each groups width value, then
         !  pack up group width values
-        !
         !write(77,*)'GWIDTHS: ',(gwidth(j),j=1,ngroups)
         iwmax=maxval(gwidth(1:ngroups))
         ngwidthref=minval(gwidth(1:ngroups))
@@ -417,11 +406,10 @@ c     rmin=huge(rmin)
            nbitsgwidth=0
            gwidth(1:ngroups)=0
         endif
-        !
+
         !  Find max/min of the group lengths and calc num of bits needed
         !  to pack each groups length value, then
         !  pack up group length values
-        !
         !write(77,*)'GLENS: ',(glen(j),j=1,ngroups)
         ilmax=maxval(glen(1:ngroups-1))
         nglenref=minval(glen(1:ngroups-1))
@@ -449,9 +437,8 @@ c     rmin=huge(rmin)
            nbitsglen=0
            glen(1:ngroups)=0
         endif
-        !
+
         !  For each group, pack data values
-        !
         !write(77,*)'IFLDS: ',(ifld(j),j=1,ndpts)
         n=1
         ij=0
@@ -491,9 +478,7 @@ c     rmin=huge(rmin)
       !  ngroups=0
       !endif
 
-!
-!  Fill in ref value and number of bits in Template 5.2
-!
+!     Fill in ref value and number of bits in Template 5.2
       rmin4 = rmin
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
 !      call g2_gbytec(ref,idrstmpl(1),0,32)
@@ -514,5 +499,4 @@ c     rmin=huge(rmin)
                                     ! differencing values
       endif
 
-      return
       end

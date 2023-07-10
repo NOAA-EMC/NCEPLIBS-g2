@@ -61,9 +61,8 @@
       INTEGER,INTENT(IN) :: LUGI
       INTEGER,INTENT(OUT) :: NLEN,NNUM,IRET
       CHARACTER CHEAD*162
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      NULLIFY(CBUF)
       NLEN=0
       NNUM=0
       IRET=4
@@ -71,7 +70,6 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       IF(LHEAD.EQ.162.AND.CHEAD(42:47).EQ.'GB2IX1') THEN
         READ(CHEAD(82:162),'(8X,3I10,2X,A40)',IOSTAT=IOS) NSKP,NLEN,NNUM
         IF(IOS.EQ.0) THEN
-          
           ALLOCATE(CBUF(NLEN),STAT=ISTAT)    ! ALLOCATE SPACE FOR CBUF
           IF (ISTAT.NE.0) THEN
              IRET=2
@@ -83,6 +81,4 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         ENDIF
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END

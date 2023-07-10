@@ -86,7 +86,10 @@ endif()
 # Build the code in the source directory.
 add_subdirectory(src)
 
-# Unit testing.
+# This will cause the memcheck to fail if memory problems are found.
+set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=1")
+
+# Turn on unit testing.
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
