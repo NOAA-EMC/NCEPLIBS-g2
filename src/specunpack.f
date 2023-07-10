@@ -47,17 +47,15 @@
          call rdieee(cpack,unpk,Ts)          ! read IEEE unpacked floats
          iofst=32*Ts
          call g2_gbytesc(cpack,ifld,iofst,nbits,0,ndpts-Ts)  ! unpack scaled data
-!
-!   Calculate Laplacian scaling factors for each possible wave number.
-!
+
+!     Calculate Laplacian scaling factors for each possible wave number.
          allocate(pscale(JJ+MM))
          tscale=real(idrstmpl(5))*1E-6
          do n=Js,JJ+MM
             pscale(n)=real(n*(n+1))**(-tscale)
          enddo
-!
-!   Assemble spectral coeffs back to original order.
-!
+
+!     Assemble spectral coeffs back to original order.
          inc=1
          incu=1
          incp=1

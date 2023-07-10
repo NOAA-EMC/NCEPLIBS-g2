@@ -63,7 +63,6 @@
       CHARACTER CHEAD*162
 
       NULLIFY(CBUF)
-
       NLEN=0
       NNUM=0
       IRET=4

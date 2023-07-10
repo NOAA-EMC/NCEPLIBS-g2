@@ -70,11 +70,10 @@
         if( allocated(mappds) ) deallocate(mappds)
         return
       endif
-      !
-      !   Unpack each value into array ipdstmpl from the
-      !   the appropriate number of octets, which are specified in
-      !   corresponding entries in array mappds.
-      !
+
+!     Unpack each value into array ipdstmpl from the
+!     the appropriate number of octets, which are specified in
+!     corresponding entries in array mappds.
       istat=0
       if (mappdslen.gt.0) allocate(ipdstmpl(mappdslen),stat=istat)
       if (istat.ne.0) then
@@ -94,13 +93,12 @@
         endif
         iofst=iofst+nbits
       enddo
-      !
+
       !   Check to see if the Product Definition Template needs to be
       !   extended.
       !   The number of values in a specific template may vary
       !   depending on data specified in the "static" part of the
       !   template.
-      !
       if ( needext ) then
         call extpdstemplate(ipdsnum,ipdstmpl,newmappdslen,mappds)
         call realloc(ipdstmpl,mappdslen,newmappdslen,istat)
@@ -119,10 +117,9 @@
         mappdslen=newmappdslen
       endif
       if( allocated(mappds) ) deallocate(mappds)
-      !
+
       !   Get Optional list of vertical coordinate values
       !   after the Product Definition Template, if necessary.
-      !
       nullify(coordlist)
       if ( numcoord .ne. 0 ) then
          allocate (coordieee(numcoord),stat=istat1)
@@ -138,7 +135,5 @@
         deallocate (coordieee)
         iofst=iofst+(32*numcoord)
       endif
-      
-      return    ! End of Section 4 processing
       end
 
