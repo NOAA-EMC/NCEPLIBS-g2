@@ -1,11 +1,11 @@
 !> @file
-!> @brief Contains subroutines unpacks Section 5 ([Data Representation
+!> @brief Unpack Section 5 ([Data Representation
 !> Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect5.shtml))
 !> of a GRIB2 message.
 !> @author Stephen Gilbert @date 2000-05-26
 
-!> This subroutine unpacks Section 5 ([Data Representation Section]
+!> Unpack Section 5 ([Data Representation Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect5.shtml))
 !> of a GRIB2 message, starting at octet 6 of that Section.
 !>
@@ -66,11 +66,10 @@
         if( allocated(mapdrs) ) deallocate(mapdrs)
         return
       endif
-      !
+
       !   Unpack each value into array ipdstmpl from the
       !   the appropriate number of octets, which are specified in
       !   corresponding entries in array mappds.
-      !
       istat=0
       if (mapdrslen.gt.0) allocate(idrstmpl(mapdrslen),stat=istat)
       if (istat.ne.0) then
@@ -90,13 +89,12 @@
         endif
         iofst=iofst+nbits
       enddo
-      !
+
       !   Check to see if the Data Representation Template needs to be
       !   extended.
       !   The number of values in a specific template may vary
       !   depending on data specified in the "static" part of the
       !   template.
-      !
       if ( needext ) then
         call extdrstemplate(idrsnum,idrstmpl,newmapdrslen,mapdrs)
         call realloc(idrstmpl,mapdrslen,newmapdrslen,istat)
@@ -116,6 +114,5 @@
       endif
       if( allocated(mapdrs) ) deallocate(mapdrs)
 
-      return    ! End of Section 5 processing
       end
 

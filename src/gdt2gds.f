@@ -51,6 +51,7 @@
         integer :: kgds72(200),kgds71(200),idum(200),jdum(200)
 
         iret=0
+        idum = 0
         if (igds(5).eq.0) then       !  Lat/Lon grid
            kgds(1)=0
            kgds(2)=igdstmpl(8)            ! Ni

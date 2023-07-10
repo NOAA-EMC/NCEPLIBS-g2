@@ -45,17 +45,15 @@
 
       ierr=0
       numlocal=0
-!
-!  Check for valid request number
-!  
+
+!     Check for valid request number
       if (localnum.le.0) then
         print *,'getlocal: Request for local section must be positive.'
         ierr=3
         return
       endif
-!
-!  Check for beginning of GRIB message in the first 100 bytes
-!
+
+!     Check for beginning of GRIB message in the first 100 bytes
       istart=0
       do j=1,100
         ctemp=cgrib(j)//cgrib(j+1)//cgrib(j+2)//cgrib(j+3)
@@ -69,9 +67,8 @@
         ierr=1
         return
       endif
-!
-!  Unpack Section 0 - Indicator Section 
-!
+
+!     Unpack Section 0 - Indicator Section 
       iofst=8*(istart+5)
       call g2_gbytec(cgrib,listsec0(1),iofst,8)     ! Discipline
       iofst=iofst+8
@@ -82,19 +79,17 @@
       iofst=iofst+32
       lensec0=16
       ipos=istart+lensec0
-!
-!  Currently handles only GRIB Edition 2.
-!  
+
+!     Currently handles only GRIB Edition 2.
       if (listsec0(2).ne.2) then
         print *,'getlocal: can only decode GRIB edition 2.'
         ierr=2
         return
       endif
-!
-!  Loop through the remaining sections keeping track of the 
-!  length of each.  Also check to see that if the current occurrence
-!  of Section 2 is the same as the one requested.
-!
+
+!     Loop through the remaining sections keeping track of the length of
+!     each. Also check to see that if the current occurrence of Section
+!     2 is the same as the one requested.
       do
         !    Check to see if we are at end of GRIB message
         ctemp=cgrib(ipos)//cgrib(ipos+1)//cgrib(ipos+2)//cgrib(ipos+3)
@@ -135,17 +130,14 @@
         
       enddo
 
-!
-!  If exited from above loop, the end of the GRIB message was reached
-!  before the requested occurrence of section 2 was found.
-!
+!     If exited from above loop, the end of the GRIB message was reached
+!     before the requested occurrence of section 2 was found.
       print *,'getlocal: GRIB message contained ',numlocal,
      &        ' local sections.'
       print *,'getlocal: The request was for the ',localnum,
      &        ' occurrence.'
       ierr=6
 
-      return
       end
 
 

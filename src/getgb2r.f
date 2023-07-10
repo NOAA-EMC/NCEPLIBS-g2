@@ -1,10 +1,8 @@
 !> @file
-!> @brief This subroutine reads and unpacks sections 6 and 7 from a
-!> GRIB2 message.
+!> @brief Read and unpack sections 6 and 7 from a GRIB2 message.
 !> @author Stephen Gilbert @date 2002-01-11
 
-!> This subroutine reads and unpacks sections 6 and 7 from a GRIB2
-!> message.
+!> Read and unpack sections 6 and 7 from a GRIB2 message.
 !>
 !> It assumes that the metadata for this field already exists in
 !> derived type @ref grib_mod::gribfield. Specifically, it requires
@@ -15,6 +13,15 @@
 !> in a derived type variable, gfld, of type @ref
 !> grib_mod::gribfield. Users of this routine will need to include the
 !> line "use grib_mod" in their calling routine.
+!>
+!> This subprogram is intended for private use by getgb2()
+!> routines only.
+!>
+!> Derived type gribfield contains pointers to many arrays of
+!> data. Users must free this memory by calling gf_free().
+!>
+!> @note Do not engage the same logical unit from more than one
+!> processor.
 !>
 !> @param[in] LUGB integer unit of the unblocked grib data file.
 !> File must be opened with [baopen() or baopenr()]
@@ -28,15 +35,7 @@
 !> - 97 error reading grib file
 !> - other gf_getfld grib2 unpacker return code
 !>
-!> @note Do not engage the same logical unit from more than one
-!> processor. This subprogram is intended for private use by getgb2
-!> routines only. Note that derived type gribfield contains pointers
-!> to many arrays of data. The memory for these arrays is allocated
-!> when the values in the arrays are set, to help minimize problems
-!> with array overloading. Users should free this memory, when it is
-!> no longer needed, by a call to subroutine gf_free().
-!>
-!>    @author Stephen Gilbert @date 2002-01-11
+!> @author Stephen Gilbert @date 2002-01-11
       SUBROUTINE GETGB2R(LUGB,CINDEX,GFLD,IRET)
 
       USE GRIB_MOD
@@ -71,16 +70,16 @@
            real,pointer,dimension(:) :: fld
          end subroutine gf_unpack7
       end interface
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  GET INFO
+
+C     GET INFO
       NULLIFY(gfld%bmap,gfld%fld)
       IRET=0
       CALL G2_GBYTEC(CINDEX,LSKIP,4*8,4*8)
       CALL G2_GBYTEC(CINDEX,SKIP6,24*8,4*8)
       CALL G2_GBYTEC(CINDEX,SKIP7,28*8,4*8)
 
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  READ AND UNPACK BIT_MAP, IF PRESENT
+
+C     READ AND UNPACK BIT_MAP, IF PRESENT
       IF ( gfld%ibmap.eq.0.OR.gfld%ibmap.eq.254 ) THEN
          ISKIP=LSKIP+SKIP6
          CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
@@ -102,8 +101,8 @@ C  READ AND UNPACK BIT_MAP, IF PRESENT
          ENDIF
          DEALLOCATE(CTEMP)
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  READ AND UNPACK DATA FIELD 
+
+C     READ AND UNPACK DATA FIELD 
       ISKIP=LSKIP+SKIP7
       CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
       CALL G2_GBYTEC(CSIZE,ILEN,0,32)
@@ -125,7 +124,7 @@ C  READ AND UNPACK DATA FIELD
          RETURN
       ENDIF
       DEALLOCATE(CTEMP)
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       !  If bitmap is used with this field, expand data field
       !  to grid, if possible.
       if ( gfld%ibmap .ne. 255 .AND. associated(gfld%bmap) ) then
@@ -147,6 +146,4 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       else
          gfld%expanded=.true.
       endif
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END

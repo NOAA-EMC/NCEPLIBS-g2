@@ -1,8 +1,8 @@
 !> @file
-!> @brief This subroutine frees up memory in derived type grib_mod::gribfield.
+!> @brief Frees memory in derived type grib_mod::gribfield.
 !> @author Stephen Gilbert @date 2000-05-26
 
-!> This subroutine frees up memory that was used to store
+!> Free memory that was used to store
 !> array values in derived type grib_mod::gribfield.
 !>
 !> @param gfld derived type grib_mod::gribfield.

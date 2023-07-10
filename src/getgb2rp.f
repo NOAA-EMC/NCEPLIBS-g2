@@ -45,8 +45,8 @@
       CHARACTER(LEN=4) :: Ctemp
 
       IRET=0
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  EXTRACT GRIB MESSAGE FROM FILE
+
+C     EXTRACT GRIB MESSAGE FROM FILE
       IF ( EXTRACT ) THEN
          LEN0=16
          LEN8=4
@@ -76,9 +76,8 @@ C  EXTRACT GRIB MESSAGE FROM FILE
             CALL BAREAD(LUGB,ISKIP+ISKP6,4,LREAD,ctemp)
             CALL G2_GBYTEC(Ctemp,LEN6,0,4*8)      ! LENGTH OF SECTION 6
          ENDIF
-         !
+
          !  READ IN SECTION 7 from file
-         !
          CALL G2_GBYTEC(CINDEX,ISKP7,28*8,4*8)    ! BYTES TO SKIP FOR section 7
          CALL BAREAD(LUGB,ISKIP+ISKP7,4,LREAD,ctemp)
          CALL G2_GBYTEC(Ctemp,LEN7,0,4*8)      ! LENGTH OF SECTION 7
@@ -89,7 +88,6 @@ C  EXTRACT GRIB MESSAGE FROM FILE
          IF (.NOT. ASSOCIATED(GRIBM)) ALLOCATE(GRIBM(LENG))
 
          ! Create Section 0
-         !
          GRIBM(1)='G'
          GRIBM(2)='R'
          GRIBM(3)='I'
@@ -103,29 +101,25 @@ C  EXTRACT GRIB MESSAGE FROM FILE
          GRIBM(11)=CHAR(0)
          GRIBM(12)=CHAR(0)
          CALL G2_SBYTEC(GRIBM,LENG,12*8,4*8)
-         !
+
          ! Copy Section 1
-         !
          GRIBM(17:16+LEN1)=CINDEX(45:44+LEN1)
          lencur=16+LEN1
          ipos=44+len1
-         !
+
          ! Copy Section 2, if necessary
-         !
          if ( iskp2 .gt. 0 ) then
            GRIBM(lencur+1:lencur+LEN2)=csec2(1:LEN2)
            lencur=lencur+LEN2
          endif
-         !
+
          ! Copy Sections 3 through 5
-         !
          GRIBM(lencur+1:lencur+LEN3+LEN4+LEN5)=
      &                      CINDEX(ipos+1:ipos+LEN3+LEN4+LEN5)
          lencur=lencur+LEN3+LEN4+LEN5
          ipos=ipos+LEN3+LEN4+LEN5
-         !
+
          ! Copy Section 6
-         !
          if ( LEN6 .eq. 6 .AND. IBMAP .ne. 254 ) then
             GRIBM(lencur+1:lencur+LEN6)=CINDEX(ipos+1:ipos+LEN6)
             lencur=lencur+LEN6
@@ -139,26 +133,22 @@ C  EXTRACT GRIB MESSAGE FROM FILE
             lencur=lencur+LEN6
             IF ( allocated(csec6)) DEALLOCATE(csec6)
          endif
-         !
+
          ! Copy Section 7
-         !
          GRIBM(lencur+1:lencur+LEN7)=csec7(1:LEN7)
          lencur=lencur+LEN7
-         !
+
          ! Section 8
-         !
          GRIBM(lencur+1)='7'
          GRIBM(lencur+2)='7'
          GRIBM(lencur+3)='7'
          GRIBM(lencur+4)='7'
 
          !  clean up
-         !
          IF ( allocated(csec2)) DEALLOCATE(csec2)
          IF ( allocated(csec7)) deallocate(csec7)
 
       ELSE    ! DO NOT extract field from message :  Get entire message
-
          CALL G2_GBYTEC(CINDEX,ISKIP,4*8,4*8)    ! BYTES TO SKIP IN FILE
          CALL G2_GBYTEC(CINDEX,LENG,36*8,4*8)      ! LENGTH OF GRIB MESSAGE
          IF (.NOT. ASSOCIATED(GRIBM)) ALLOCATE(GRIBM(LENG))
@@ -170,6 +160,4 @@ C  EXTRACT GRIB MESSAGE FROM FILE
             RETURN
          ENDIF
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END
