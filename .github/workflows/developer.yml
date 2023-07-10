@@ -22,8 +22,8 @@ jobs:
 
     strategy:
       fail-fast: true
-    matrix:
-      memcheck: [false, true]
+      matrix:
+        memcheck: [false, true]
 
     steps:
 
