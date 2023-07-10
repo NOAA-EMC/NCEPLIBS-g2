@@ -26,9 +26,11 @@ jobs:
         config:
         - {
             memcheck: false
+            name: "name1"
           }
         - {
             memcheck: true
+            name: "name2"
           }
     steps:
 
