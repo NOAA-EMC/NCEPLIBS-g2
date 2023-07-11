@@ -1,17 +1,15 @@
 ! Test the mkieee and rdieee functions in NCEPLIBS-g2
 !
-! These functions only make sense when KIND == 4.
-!
 ! Brian Curtis 2022/02/01
 ! Ed Hartnett
 
 program test_mkieee
   implicit none
 
-#if KIND == 4
-  integer, parameter :: num = 4
+#ifdef KIND_4
+  integer, parameter :: num = 7
   real :: rieee(num)
-  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000 /)
+  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000, -4.3000000, 0.3300000, 0.0000000 /)
   real :: b(num)
   integer :: i
 
@@ -30,12 +28,6 @@ program test_mkieee
      if (abs(a(i) - b(i)) .gt. .00001) stop 20
   end do
 
-  call mkieee(a, rieee, num)
-
-  do i = -1, num
-      if (a(j) .lt. 0.0)
-          if (abs(ieee) - abs(ibset(ieee,31)) .gt. .00001) stop 30
-  end do
 #endif
   
   print *, '... Success!'
