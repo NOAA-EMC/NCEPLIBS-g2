@@ -2,9 +2,9 @@
 !> @brief Generate an index record for each field in a GRIB2 message.
 !> @author Mark Iredell @date 1995-10-31
 
-!> This subroutine generates an index record for each field in a GRIB2
-!> message. The index records are written to index buffer pointed to
-!> by cbuf. All integers in the index are in big-endian format.
+!> Generate an index record for each field in a GRIB2 message. The index
+!> records are written to index buffer pointed to by cbuf. All integers
+!> in the index are in big-endian format.
 !>
 !> This subroutine is called by getg2ir(), which packages the index
 !> records into an index file.
@@ -52,7 +52,6 @@
 !>
 !> @author Mark Iredell @date 1995-10-31
       SUBROUTINE IXGB2(LUGB,LSKIP,LGRIB,CBUF,NUMFLD,MLEN,IRET)
-
       USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
       PARAMETER(LINMAX=5000,INIT=50000,NEXT=10000)
@@ -65,20 +64,20 @@
       CHARACTER CIDS(LINMAX),CGDS(LINMAX)
       CHARACTER(LEN=4) :: CTEMP
       INTEGER LOCLUS,LOCGDS,LENGDS,LOCBMS
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
       LOCLUS=0
       IRET=0
       MLEN=0
       NUMFLD=0
-      IF (ASSOCIATED(CBUF)) NULLIFY(CBUF)
+      NULLIFY(CBUF)
       MBUF=INIT
       ALLOCATE(CBUF(MBUF),STAT=ISTAT)    ! ALLOCATE INITIAL SPACE FOR CBUF
       IF (ISTAT.NE.0) THEN
          IRET=1
          RETURN
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
+
+C     READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
       IBREAD=MIN(LGRIB,LINMAX)
       CALL BAREAD(LUGB,LSKIP,IBREAD,LBREAD,CBREAD)
       IF(LBREAD.NE.IBREAD) THEN
@@ -95,8 +94,8 @@ C  READ SECTIONS 0 AND 1 FOR VERSIN NUMBER AND DISCIPLINE
       LENSEC1=MIN(LENSEC1,IBREAD)
       CIDS(1:LENSEC1)=CBREAD(17:16+LENSEC1)
       IBSKIP=LSKIP+16+LENSEC1
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
+
+C     LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
       IBREAD=MAX(5,MXBMS)
       DO
          CALL BAREAD(LUGB,IBSKIP,IBREAD,LBREAD,CBREAD)     
@@ -168,8 +167,7 @@ C  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
          ELSEIF (NUMSEC.EQ.7) THEN                 ! FOUND DATA SECTION
             CALL G2_SBYTEC(CINDEX,IBSKIP-LSKIP,8*IXDS,8*MXDS)   ! LOC. OF DATA SEC.
             NUMFLD=NUMFLD+1
-            IF ((LINDEX+MLEN).GT.MBUF) THEN        ! ALLOCATE MORE SPACE IF
-                                                   ! NECESSARY
+            IF ((LINDEX+MLEN).GT.MBUF) THEN ! ALLOCATE MORE SPACE IF NECESSARY
                NEWSIZE=MAX(MBUF+NEXT,MBUF+LINDEX)
                CALL REALLOC(CBUF,MLEN,NEWSIZE,ISTAT)
                IF ( ISTAT .NE. 0 ) THEN
@@ -187,7 +185,4 @@ C  LOOP THROUGH REMAINING SECTIONS CREATING AN INDEX FOR EACH FIELD
          ENDIF
          IBSKIP=IBSKIP+LENSEC
       ENDDO
-
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END

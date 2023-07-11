@@ -139,6 +139,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
   have7 = .false.
   ierr = 0
   numfld = 0
+  numlocal = 0
 
   !     Check for valid request number
   if (ifldnum .le. 0) then

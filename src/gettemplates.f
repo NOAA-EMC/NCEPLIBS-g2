@@ -85,18 +85,16 @@
       have4=.false.
       ierr=0
       numfld=0
-!
-!  Check for valid request number
-!  
+
+!     Check for valid request number
       if (ifldnum.le.0) then
         print *,'gettemplates: Request for field number must be ',
      &          'positive.'
         ierr=3
         return
       endif
-!
-!  Check for beginning of GRIB message in the first 100 bytes
-!
+
+!     Check for beginning of GRIB message in the first 100 bytes
       istart=0
       do j=1,100
         ctemp=cgrib(j)//cgrib(j+1)//cgrib(j+2)//cgrib(j+3)
@@ -110,9 +108,8 @@
         ierr=1
         return
       endif
-!
-!  Unpack Section 0 - Indicator Section 
-!
+
+!     Unpack Section 0 - Indicator Section 
       iofst=8*(istart+5)
       call g2_gbytec(cgrib,listsec0(1),iofst,8)     ! Discipline
       iofst=iofst+8
@@ -123,19 +120,17 @@
       iofst=iofst+32
       lensec0=16
       ipos=istart+lensec0
-!
-!  Currently handles only GRIB Edition 2.
-!  
+
+!     Currently handles only GRIB Edition 2.
       if (listsec0(2).ne.2) then
         print *,'gettemplates: can only decode GRIB edition 2.'
         ierr=2
         return
       endif
-!
-!  Loop through the remaining sections keeping track of the 
-!  length of each.  Also keep the latest Grid Definition Section info.
-!  Unpack the requested field number.
-!
+
+!     Loop through the remaining sections keeping track of the length of
+!     each. Also keep the latest Grid Definition Section info. Unpack
+!     the requested field number.
       do
         !    Check to see if we are at end of GRIB message
         ctemp=cgrib(ipos)//cgrib(ipos+1)//cgrib(ipos+2)//cgrib(ipos+3)
@@ -157,11 +152,10 @@
         call g2_gbytec(cgrib,isecnum,iofst,8)         ! Get Section number
         iofst=iofst+8
         !print *,' lensec= ',lensec,'    secnum= ',isecnum
-        !
-        !   If found Section 3, unpack the GDS info using the 
-        !   appropriate template.  Save in case this is the latest
-        !   grid before the requested field.
-        !
+
+!       If found Section 3, unpack the GDS info using the appropriate
+!       template. Save in case this is the latest grid before the requested
+!       field.
         if (isecnum.eq.3) then
           iofst=iofst-40       ! reset offset to beginning of section
           call unpack3(cgrib,lcgrib,iofst,igds,igdstmpl,igdslen,
@@ -173,10 +167,9 @@
             return
           endif
         endif
-        !
+
         !   If found Section 4, check to see if this field is the
         !   one requested.
-        !
         if (isecnum.eq.4) then
           numfld=numfld+1
           if (numfld.eq.ifldnum) then
@@ -191,10 +184,9 @@
             endif
           endif
         endif
-        !
+
         !   Check to see if we read pass the end of the GRIB
         !   message and missed the terminator string '7777'.
-        !
         ipos=ipos+lensec                 ! Update beginning of section pointer
         if (ipos.gt.(istart+lengrib)) then
           print *,'gettemplates: "7777"  not found at end of GRIB ',
@@ -204,13 +196,10 @@
         endif
 
         if (have3.and.have4) return
-        
       enddo
 
-!
-!  If exited from above loop, the end of the GRIB message was reached
-!  before the requested field was found.
-!
+!     If exited from above loop, the end of the GRIB message was reached
+!     before the requested field was found.
       print *,'gettemplates: GRIB message contained ',numlocal,
      &        ' different fields.'
       print *,'gettemplates: The request was for the ',ifldnum,

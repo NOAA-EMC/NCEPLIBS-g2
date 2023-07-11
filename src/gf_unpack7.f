@@ -1,10 +1,10 @@
 !> @file
-!> @brief Contains subroutines unpacks Section 7 ([Data Section]
+!> @brief Unpack Section 7 ([Data Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect7.shtml))
 !> of a GRIB2 message.
 !> @author Stephen Gilbert @date 2002-01-24
 
-!> This subroutine unpacks Section 7 ([Data Section]
+!> Unpack Section 7 ([Data Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect7.shtml))
 !> of a GRIB2 message.
 !>
@@ -106,5 +106,4 @@
 
       iofst=iofst+(8*lensec)
 
-      return ! End of Section 7 processing
       end

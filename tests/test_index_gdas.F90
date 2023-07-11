@@ -230,7 +230,7 @@ program test_index_gdas
      call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
           jgdt, k, gfld, lpos, iret)
      if (iret .ne. 0) stop 201
-     call print_gribmod(gfld)
+!     call print_gribmod(gfld)
      print *, '***************************************'
      if (cmp_gribmod(gfld, expected_gfld(mnum)) .ne. 0) stop 202
      print *, '***************************************'

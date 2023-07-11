@@ -56,15 +56,15 @@
            character(len=1),pointer,dimension(:) :: csec2
          end subroutine gf_unpack2
       end interface
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  GET INFO
+
+C     GET INFO
       NULLIFY(gfld%local)
       IRET=0
       CALL G2_GBYTEC(CINDEX,LSKIP,4*8,4*8)
       CALL G2_GBYTEC(CINDEX,SKIP2,8*8,4*8)
 
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-C  READ AND UNPACK LOCAL USE SECTION, IF PRESENT
+
+C     READ AND UNPACK LOCAL USE SECTION, IF PRESENT
       IF ( SKIP2.NE.0 ) THEN
          ISKIP=LSKIP+SKIP2
          CALL BAREAD(LUGB,ISKIP,4,LREAD,CSIZE)    ! GET LENGTH OF SECTION
@@ -88,6 +88,4 @@ C  READ AND UNPACK LOCAL USE SECTION, IF PRESENT
       ELSE
          gfld%locallen=0
       ENDIF
-C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      RETURN
       END

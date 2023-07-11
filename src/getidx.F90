@@ -1,13 +1,13 @@
 !> @file
-!> @brief Find, read or generate a GRIB2 index for
-!> the GRIB2 file associated with unit lugb.
+!> @brief Find, read or generate a GRIB2 index for the GRIB2 file
+!> associated with unit lugb.
 !> @author Stephen Gilbert @date 2005-03-15
 
-!> Find, read or generate a GRIB2 index for
-!> the GRIB2 file associated with unit lugb. If the index already
-!> exists, it is returned, otherwise, the index is (1) read from an
-!> existing indexfile associated with unit lugi or (2) generated
-!> from the GRIB2 file lugb.
+!> Find, read or generate a GRIB2 index for the GRIB2 file associated
+!> with unit lugb. If the index already exists, it is returned,
+!> otherwise, the index is (1) read from an existing indexfile
+!> associated with unit lugi or (2) generated from the GRIB2 file
+!> lugb.
 !>
 !> Users can force a regeneration of an index: if lugi equals lugb,
 !> the index will be regenerated from the data in file lugb. If lugi
@@ -24,7 +24,7 @@
 !> If nonzero, file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before
 !> calling this routine. Set to 0 to get index information from the GRIB2 file.
-!> @param[out] cindex character*1 Pointer to a buffer that will get
+!> @param[inout] cindex character*1 Pointer to a buffer that will get
 !> index records.
 !> @param[out] nlen integer Total length of all index records.
 !> @param[out] nnum integer Number of index records.
