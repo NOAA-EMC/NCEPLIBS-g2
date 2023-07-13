@@ -106,30 +106,6 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This Fortran module contains the declaration of derived type gribfield. </p>
-<h3><a class="anchor" id="autotoc_md6"></a>
-Program History Log</h3>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Date   </th><th class="markdownTableHeadNone">Programmer   </th><th class="markdownTableHeadNone">Comments    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2002-01-23   </td><td class="markdownTableBodyNone">Stephen Gilbert   </td><td class="markdownTableBodyNone">Initial.    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2007-04-24   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Added GDT 3.204 Curvilinear Orthogonal Grids    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2008-05-29   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Added GDT 3.32768 Rotate Lat/Lon E-grid    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2009-02-17   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Allow negative scale factors and limits for Templates 4.5 and 4.9    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2009-12-14   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Fixed bug in <a class="el" href="getidx_8f.html" title="This subroutine finds, reads or generates a grib2 index for the grib2 file associated with unit lugb.">getidx.f</a>, increase length of seek(512), Added Templates (Satellite Product) 4.31, (ICAO WAFS) 4.15    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2013-05-07   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Initialized all pointers to null()    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2013-08-29   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Changed version number 2.5.0    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2015-11-01   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Changed version number 2.6.0    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2017-18-01   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Changed version number 3.1.0   </td></tr>
-</table>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2002-01-23 </dd></dl>
 </div><hr/><h2 class="groupheader">Data Type Documentation</h2>
@@ -145,7 +121,7 @@ Program History Log</h3>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="gribmod_8F90_source.html#l00027">27</a> of file <a class="el" href="gribmod_8F90_source.html">gribmod.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gribmod_8F90_source.html#l00014">14</a> of file <a class="el" href="gribmod_8F90_source.html">gribmod.F90</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -358,7 +334,7 @@ Number of data points unpacked and returned. <p>Note that this number may be dif
 <td class="fieldname">
 ngrdpts</td>
 <td class="fielddoc">
-Number of grid points in the defined grid. <p>Note that the number of actual data values returned from <a class="el" href="getgb2_8f.html#a59b91d6ac5c93ac460bb89760bf41694" title="This subroutine find and unpack a grib message.">getgb2()</a> (in ndpts) may be less than this value if a logical bitmap is in use with grid points that are being masked out. </p>
+Number of grid points in the defined grid. <p>Note that the number of actual data values returned from <a class="el" href="getgb2_8f.html#a59b91d6ac5c93ac460bb89760bf41694" title="This subroutine finds and unpacks a GRIB2 message.">getgb2()</a> (in ndpts) may be less than this value if a logical bitmap is in use with grid points that are being masked out. </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a8bbc587bb2812ee0096f6ee1ecb5a9f4"></a>integer</td>
@@ -413,7 +389,7 @@ GRIB edition number (currently 2). </td></tr>
 
 <p>Library version. </p>
 
-<p class="definition">Definition at line <a class="el" href="gribmod_8F90_source.html#l00025">25</a> of file <a class="el" href="gribmod_8F90_source.html">gribmod.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gribmod_8F90_source.html#l00012">12</a> of file <a class="el" href="gribmod_8F90_source.html">gribmod.F90</a>.</p>
 
 </div>
 </div>

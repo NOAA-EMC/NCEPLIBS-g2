@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['dec_5fjpeg2000_5f_320',['dec_jpeg2000_',['../dec__jpeg2000_8c.html#a37ddc2e0de49da27bb9aeb1627f6d6fb',1,'dec_jpeg2000.c']]]
+  ['dec_5fjpeg2000_332',['dec_jpeg2000',['../dec__jpeg2000_8c.html#aecc47ef133bb090df718275d41098613',1,'dec_jpeg2000.c']]],
+  ['dec_5fpng_333',['dec_png',['../dec__png_8c.html#a2d370c4ca9daeca099b249a1ed3e4500',1,'dec_png.c']]]
 ];

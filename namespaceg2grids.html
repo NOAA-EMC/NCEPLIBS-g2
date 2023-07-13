@@ -91,11 +91,14 @@ $(document).ready(function(){initNavTree('namespaceg2grids.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 
-<p>This Fortran Module allows access to predefined GRIB2 Grid Definition Templates stored in a file.  
+<p>Allow access to predefined GRIB2 Grid Definition Templates (GDT) stored in a file.  
 <a href="namespaceg2grids.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
+<tr class="memitem:a2cd75c04b471c7b88e921f0051d69f3d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceg2grids.html#a2cd75c04b471c7b88e921f0051d69f3d">freegridlist</a> ()</td></tr>
+<tr class="memdesc:a2cd75c04b471c7b88e921f0051d69f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine frees the memory allocated for the linked list of grid templates stored in module variable gridlist.  <a href="namespaceg2grids.html#a2cd75c04b471c7b88e921f0051d69f3d">More...</a><br /></td></tr>
+<tr class="separator:a2cd75c04b471c7b88e921f0051d69f3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af909017f37048acf68815aa78a17a10f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceg2grids.html#af909017f37048acf68815aa78a17a10f">getgridbyname</a> (lunit, name, igdtn, igdtmpl, iret)</td></tr>
 <tr class="memdesc:af909017f37048acf68815aa78a17a10f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine searches a file referenced by fortran unit lunit for a Grid Definition Template assigned to the requested name.  <a href="namespaceg2grids.html#af909017f37048acf68815aa78a17a10f">More...</a><br /></td></tr>
 <tr class="separator:af909017f37048acf68815aa78a17a10f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -108,26 +111,51 @@ Functions/Subroutines</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a3189c0bf23a43b2088d020cbdc78f15f"><td class="memItemLeft" align="right" valign="top">integer, parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceg2grids.html#a3189c0bf23a43b2088d020cbdc78f15f">maxtemp</a> =200</td></tr>
+<tr class="memitem:a3189c0bf23a43b2088d020cbdc78f15f"><td class="memItemLeft" align="right" valign="top">integer, parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceg2grids.html#a3189c0bf23a43b2088d020cbdc78f15f">maxtemp</a> = 200</td></tr>
 <tr class="memdesc:a3189c0bf23a43b2088d020cbdc78f15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">maximum template number for grid definition.  <a href="namespaceg2grids.html#a3189c0bf23a43b2088d020cbdc78f15f">More...</a><br /></td></tr>
 <tr class="separator:a3189c0bf23a43b2088d020cbdc78f15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a722699f566db5273fbab2ecf2cf937e9"><td class="memItemLeft" align="right" valign="top">integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceg2grids.html#a722699f566db5273fbab2ecf2cf937e9">num_grids</a> =0</td></tr>
+<tr class="memitem:a722699f566db5273fbab2ecf2cf937e9"><td class="memItemLeft" align="right" valign="top">integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceg2grids.html#a722699f566db5273fbab2ecf2cf937e9">num_grids</a> = 0</td></tr>
 <tr class="memdesc:a722699f566db5273fbab2ecf2cf937e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">the number of grids.  <a href="namespaceg2grids.html#a722699f566db5273fbab2ecf2cf937e9">More...</a><br /></td></tr>
 <tr class="separator:a722699f566db5273fbab2ecf2cf937e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This Fortran Module allows access to predefined GRIB2 Grid Definition Templates stored in a file. </p>
-<p>The GDTs are represented by a predefined number or a character abbreviation. At the first request, all the grid GDT entries in the file associated with input Fortran file unit number, lunit, are read into a linked list named gridlist. This list is searched for the requested entry. Users of this Fortran module should only call routines getgridbynum and getgridbyname.</p>
-<p>The format of the file scanned by routines in this module is as follows. Each line contains one Grid entry containing five fields, each separated by a colon, ":". The fields are:</p><ul>
-<li>1) - predefined grid number</li>
-<li>2) - Up to an 8 character abbreviation</li>
-<li>3) - Grid Definition Template number</li>
-<li>4) - Number of entries in the Grid Definition Template</li>
-<li>5) - A list of values for each entry in the Grid Definition Template. As an example, this is the entry for the 1x1 GFS global grid 3:gbl_1deg: 0:19: 0 0 0 0 0 0 0 360 181 0 0 90000000 0 48 -90000000 359000000 1000000 1000000 0</li>
-</ul>
-<dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
+<div class="textblock"><p>Allow access to predefined GRIB2 Grid Definition Templates (GDT) stored in a file. </p>
+<p>The GDTs are represented by a predefined number or a character abbreviation. At the first request, all the grid GDT entries in the file associated with input Fortran file unit number, lunit, are read into a linked list named gridlist. This list is searched for the requested entry. Users of this Fortran module should only call routines <a class="el" href="namespaceg2grids.html#a863b03b8c8f14a707ca757e8bd34d272" title="This subroutine searches a file referenced by fortran unit lunit for a Grid Definition Template assig...">getgridbynum()</a> and <a class="el" href="namespaceg2grids.html#af909017f37048acf68815aa78a17a10f" title="This subroutine searches a file referenced by fortran unit lunit for a Grid Definition Template assig...">getgridbyname()</a>, and <a class="el" href="namespaceg2grids.html#a2cd75c04b471c7b88e921f0051d69f3d" title="This subroutine frees the memory allocated for the linked list of grid templates stored in module var...">freegridlist()</a> to release all allocated memory.</p>
+<p>The format of the file scanned by routines in this module is as follows. Each line contains one Grid entry containing five fields, each separated by a colon, ":". The fields are:</p>
+<ol type="1">
+<li>predefined grid number</li>
+<li>Up to an 8 character abbreviation</li>
+<li>Grid Definition Template number</li>
+<li>Number of entries in the Grid Definition Template</li>
+<li>A list of values for each entry in the Grid Definition Template.</li>
+</ol>
+<p>As an example, this is the entry for the 1x1 GFS global grid: </p><pre>
+ 3:gbl_1deg: 0:19: 0 0 0 0 0 0 0 360 181 0 0 90000000 0 48 -90000000 359000000 1000000 1000000 0
+ </pre><dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2004-04-27 </dd></dl>
 </div><h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="a2cd75c04b471c7b88e921f0051d69f3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cd75c04b471c7b88e921f0051d69f3d">&#9670;&nbsp;</a></span>freegridlist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine g2grids::freegridlist</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This subroutine frees the memory allocated for the linked list of grid templates stored in module variable gridlist. </p>
+<dl class="section author"><dt>Author</dt><dd>Ed Hartnett </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>July 16, 2022 </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="g2grids_8F90_source.html#l00241">241</a> of file <a class="el" href="g2grids_8F90_source.html">g2grids.F90</a>.</p>
+
+<p class="reference">References <a class="el" href="g2grids_8F90_source.html#l00047">num_grids</a>.</p>
+
+</div>
+</div>
 <a id="af909017f37048acf68815aa78a17a10f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af909017f37048acf68815aa78a17a10f">&#9670;&nbsp;</a></span>getgridbyname()</h2>
 
@@ -143,7 +171,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">character(len=8), intent(in)&#160;</td>
+          <td class="paramtype">character(len = 8), intent(in)&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
@@ -174,6 +202,7 @@ Variables</h2></td></tr>
 
 <p>This subroutine searches a file referenced by fortran unit lunit for a Grid Definition Template assigned to the requested name. </p>
 <p>The input file format is described at the top of this module.</p>
+<p>Callers should call <a class="el" href="namespaceg2grids.html#a2cd75c04b471c7b88e921f0051d69f3d" title="This subroutine frees the memory allocated for the linked list of grid templates stored in module var...">freegridlist()</a> to free the memory allocated when this function is called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lunit</td><td>Unit number of file containing Grid definitions </td></tr>
@@ -192,7 +221,9 @@ Variables</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2004-04-26 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2grids_8f_source.html#l00211">211</a> of file <a class="el" href="g2grids_8f_source.html">g2grids.f</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2grids_8F90_source.html#l00200">200</a> of file <a class="el" href="g2grids_8F90_source.html">g2grids.F90</a>.</p>
+
+<p class="reference">References <a class="el" href="g2grids_8F90_source.html#l00047">num_grids</a>, and <a class="el" href="g2grids_8F90_source.html#l00059">readgrids()</a>.</p>
 
 </div>
 </div>
@@ -242,6 +273,7 @@ Variables</h2></td></tr>
 
 <p>This subroutine searches a file referenced by fortran unit lunit for a Grid Definition Template assigned to the requested number. </p>
 <p>The input file format is described at the top of this module.</p>
+<p>Callers should call <a class="el" href="namespaceg2grids.html#a2cd75c04b471c7b88e921f0051d69f3d" title="This subroutine frees the memory allocated for the linked list of grid templates stored in module var...">freegridlist()</a> to free the memory allocated when this function is called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lunit</td><td>Unit number of file containing Grid definitions </td></tr>
@@ -260,7 +292,9 @@ Variables</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2004-04-26 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2grids_8f_source.html#l00149">149</a> of file <a class="el" href="g2grids_8f_source.html">g2grids.f</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2grids_8F90_source.html#l00144">144</a> of file <a class="el" href="g2grids_8F90_source.html">g2grids.F90</a>.</p>
+
+<p class="reference">References <a class="el" href="g2grids_8F90_source.html#l00047">num_grids</a>, and <a class="el" href="g2grids_8F90_source.html#l00059">readgrids()</a>.</p>
 
 </div>
 </div>
@@ -292,7 +326,9 @@ Variables</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2001-06-28 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2grids_8f_source.html#l00057">57</a> of file <a class="el" href="g2grids_8f_source.html">g2grids.f</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2grids_8F90_source.html#l00058">58</a> of file <a class="el" href="g2grids_8F90_source.html">g2grids.F90</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="g2grids_8F90_source.html#l00201">getgridbyname()</a>, and <a class="el" href="g2grids_8F90_source.html#l00145">getgridbynum()</a>.</p>
 
 </div>
 </div>
@@ -304,14 +340,14 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">integer, parameter g2grids::maxtemp =200</td>
+          <td class="memname">integer, parameter g2grids::maxtemp = 200</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>maximum template number for grid definition. </p>
 
-<p class="definition">Definition at line <a class="el" href="g2grids_8f_source.html#l00032">32</a> of file <a class="el" href="g2grids_8f_source.html">g2grids.f</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2grids_8F90_source.html#l00035">35</a> of file <a class="el" href="g2grids_8F90_source.html">g2grids.F90</a>.</p>
 
 </div>
 </div>
@@ -322,14 +358,16 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">integer g2grids::num_grids =0</td>
+          <td class="memname">integer g2grids::num_grids = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>the number of grids. </p>
 
-<p class="definition">Definition at line <a class="el" href="g2grids_8f_source.html#l00044">44</a> of file <a class="el" href="g2grids_8f_source.html">g2grids.f</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2grids_8F90_source.html#l00047">47</a> of file <a class="el" href="g2grids_8F90_source.html">g2grids.F90</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="g2grids_8F90_source.html#l00242">freegridlist()</a>, <a class="el" href="g2grids_8F90_source.html#l00201">getgridbyname()</a>, and <a class="el" href="g2grids_8F90_source.html#l00145">getgridbynum()</a>.</p>
 
 </div>
 </div>

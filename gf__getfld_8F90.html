@@ -166,20 +166,6 @@ Functions/Subroutines</h2></td></tr>
 <p>This subroutine returns the Grid Definition, Product Definition, Bit-map (if applicable), and the unpacked data for a given data field. </p>
 <p>All of the information returned is stored in a derived type variable, gfld. Gfld is of type gribfield, which is defined in module <a class="el" href="namespacegrib__mod.html" title="This Fortran module contains the declaration of derived type gribfield.">grib_mod</a>, so users of this routine will need to include the line "USE GRIB_MOD" in their calling routine.</p>
 <p>Since there can be multiple data fields packed into a GRIB2 message, the calling routine indicates which field is being requested with the ifldnum argument.</p>
-<h3><a class="anchor" id="autotoc_md11"></a>
-Program History Log</h3>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Date   </th><th class="markdownTableHeadNone">Programmer   </th><th class="markdownTableHeadNone">Comments    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2000-05-26   </td><td class="markdownTableBodyNone">Stephen Gilbert   </td><td class="markdownTableBodyNone">Initial.    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2002-01-24   </td><td class="markdownTableBodyNone">Stephen Gilbert   </td><td class="markdownTableBodyNone">Pass back derived type gribfield variable through argument list.    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2004-05-20   </td><td class="markdownTableBodyNone">Stephen Gilbert   </td><td class="markdownTableBodyNone">Check if previous a bit-map is specified, but none was found.    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2015-10-29   </td><td class="markdownTableBodyNone">Boi Vuong   </td><td class="markdownTableBodyNone">Initial all pointers in derive type gribfield.   </td></tr>
-</table>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">cgrib</td><td>Character array that contains the GRIB2 message. </td></tr>
@@ -213,12 +199,14 @@ Program History Log</h3>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Note that derived type <a class="el" href="namespacegrib__mod.html#structgrib__mod_1_1gribfield">grib_mod::gribfield</a> contains pointers to many arrays of data. The memory for these arrays is allocated when the values in the arrays are set, to help minimize problems with array overloading. Because of this users should free this memory, when it is no longer needed, by a call to subroutine <a class="el" href="gf__free_8f.html#a027efd02c99c9464153fc76d9bb9627e" title="This subroutine frees up memory that was used to store array values in derived type grib_mod::gribfie...">gf_free()</a>. Subroutine <a class="el" href="gb__info_8f.html#a56f9a0b651490e6240eb18fc12754e17" title="This subroutine searches through a GRIB2 message and returns the number of gridded fields found in th...">gb_info()</a> can be used to first determine how many data fields exist in a given GRIB message.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Note that derived type <a class="el" href="namespacegrib__mod.html#structgrib__mod_1_1gribfield">grib_mod::gribfield</a> contains pointers to many arrays of data. The memory for these arrays is allocated when the values in the arrays are set, to help minimize problems with array overloading. Because of this users should free this memory, when it is no longer needed, by a call to subroutine <a class="el" href="gf__free_8f.html#a027efd02c99c9464153fc76d9bb9627e" title="Free memory that was used to store array values in derived type grib_mod::gribfield.">gf_free()</a>. Subroutine <a class="el" href="gb__info_8f.html#a56f9a0b651490e6240eb18fc12754e17" title="This subroutine searches through a GRIB2 message and returns the number of gridded fields found in th...">gb_info()</a> can be used to first determine how many data fields exist in a given GRIB message.</dd></dl>
 <p>It may not always be possible to expand a bit-mapped data field. If a pre-defined bit-map is used and not included in the GRIB2 message itself, this routine would not have the necessary information to expand the data. In this case, gfld%expanded would be set to 0 (false), regardless of the value of input argument expand.</p>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-05-26 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gf__getfld_8F90_source.html#l00075">75</a> of file <a class="el" href="gf__getfld_8F90_source.html">gf_getfld.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gf__getfld_8F90_source.html#l00067">67</a> of file <a class="el" href="gf__getfld_8F90_source.html">gf_getfld.F90</a>.</p>
+
+<p class="reference">References <a class="el" href="g2__gbytesc_8F90_source.html#l00020">g2_gbytec()</a>, <a class="el" href="gf__free_8f_source.html#l00012">gf_free()</a>, <a class="el" href="gf__unpack1_8f_source.html#l00043">gf_unpack1()</a>, <a class="el" href="gf__unpack2_8f_source.html#l00024">gf_unpack2()</a>, <a class="el" href="gf__unpack3_8F90_source.html#l00052">gf_unpack3()</a>, <a class="el" href="gf__unpack4_8f_source.html#l00037">gf_unpack4()</a>, <a class="el" href="gf__unpack5_8f_source.html#l00035">gf_unpack5()</a>, <a class="el" href="gf__unpack6_8f_source.html#l00030">gf_unpack6()</a>, and <a class="el" href="gf__unpack7_8f_source.html#l00042">gf_unpack7()</a>.</p>
 
 </div>
 </div>

@@ -29,19 +29,28 @@ var menudata={children:[
 {text:"Module Members",url:"namespacemembers.html",children:[
 {text:"All",url:"namespacemembers.html",children:[
 {text:"e",url:"namespacemembers.html#index_e"},
+{text:"f",url:"namespacemembers.html#index_f"},
 {text:"g",url:"namespacemembers.html#index_g"},
 {text:"i",url:"namespacemembers.html#index_i"},
+{text:"j",url:"namespacemembers.html#index_j"},
 {text:"m",url:"namespacemembers.html#index_m"},
 {text:"n",url:"namespacemembers.html#index_n"},
 {text:"p",url:"namespacemembers.html#index_p"},
 {text:"r",url:"namespacemembers.html#index_r"},
 {text:"t",url:"namespacemembers.html#index_t"}]},
-{text:"Functions/Subroutines",url:"namespacemembers_func.html"},
+{text:"Functions/Subroutines",url:"namespacemembers_func.html",children:[
+{text:"e",url:"namespacemembers_func.html#index_e"},
+{text:"f",url:"namespacemembers_func.html#index_f"},
+{text:"g",url:"namespacemembers_func.html#index_g"},
+{text:"i",url:"namespacemembers_func.html#index_i"},
+{text:"p",url:"namespacemembers_func.html#index_p"},
+{text:"r",url:"namespacemembers_func.html#index_r"}]},
 {text:"Variables",url:"namespacemembers_vars.html"}]}]},
 {text:"Data Types List",url:"annotated.html",children:[
 {text:"Data Types List",url:"annotated.html"},
 {text:"Data Fields",url:"functions.html",children:[
 {text:"All",url:"functions.html",children:[
+{text:"a",url:"functions.html#index_a"},
 {text:"b",url:"functions.html#index_b"},
 {text:"c",url:"functions.html#index_c"},
 {text:"d",url:"functions.html#index_d"},
@@ -58,6 +67,7 @@ var menudata={children:[
 {text:"v",url:"functions.html#index_v"}]},
 {text:"Functions/Subroutines",url:"functions_func.html"},
 {text:"Variables",url:"functions_vars.html",children:[
+{text:"a",url:"functions_vars.html#index_a"},
 {text:"b",url:"functions_vars.html#index_b"},
 {text:"c",url:"functions_vars.html#index_c"},
 {text:"d",url:"functions_vars.html#index_d"},

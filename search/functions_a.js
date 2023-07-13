@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['simpack_398',['simpack',['../simpack_8f.html#a8ad780e9cc53e95db8cbbbe5ee703411',1,'simpack.f']]],
-  ['simunpack_399',['simunpack',['../simunpack_8f.html#a5047ba28bbe7d18c4d2385c880ef863c',1,'simunpack.f']]],
-  ['skgb_400',['skgb',['../skgb_8f.html#a7654c30923c8fa28091b5cb300c93311',1,'skgb.f']]],
-  ['specpack_401',['specpack',['../specpack_8f.html#a8ca96d02d64aef61d821ac8c90543d46',1,'specpack.f']]],
-  ['specunpack_402',['specunpack',['../specunpack_8f.html#ac62623670f5c37f1d648ca24907044ed',1,'specunpack.f']]],
-  ['sub_5fname_403',['SUB_NAME',['../dec__png_8c.html#a186d26755df74b12e767c773cc069f6a',1,'SUB_NAME(unsigned char *pngbuf, g2int *width, g2int *height, char *cout):&#160;dec_png.c'],['../enc__png_8c.html#a2797eb173e10c631b55fdfc143a497e2',1,'SUB_NAME(char *data, g2int *width, g2int *height, g2int *nbits, char *pngbuf):&#160;enc_png.c']]]
+  ['rdieee_408',['rdieee',['../rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4',1,'rdieee.f']]],
+  ['readgrids_409',['readgrids',['../namespaceg2grids.html#a56a2c4fcd16e58123d22462da272f67e',1,'g2grids']]],
+  ['realloc_5fc1_410',['realloc_c1',['../interfacere__alloc_1_1realloc.html#a44232167301171dc055a61663f383034',1,'re_alloc::realloc::realloc_c1()'],['../namespacere__alloc.html#ab3dc5cdb5a5e8468aff46e582d19eb71',1,'re_alloc::realloc_c1()']]],
+  ['realloc_5fi_411',['realloc_i',['../interfacere__alloc_1_1realloc.html#a70808277979ee031cdf8e1653af2c4b0',1,'re_alloc::realloc::realloc_i()'],['../namespacere__alloc.html#aeb77f273ac94f2b319238e10a9369653',1,'re_alloc::realloc_i()']]],
+  ['realloc_5fr_412',['realloc_r',['../interfacere__alloc_1_1realloc.html#a3f5b60af2f8d423b72050e28d5383a32',1,'re_alloc::realloc::realloc_r()'],['../namespacere__alloc.html#a9e8746c3bfb9226f51446ef2b95f1c44',1,'re_alloc::realloc_r()']]],
+  ['reduce_413',['reduce',['../reduce_8f.html#ad456b2773d1653cfcc57fea7204c4251',1,'reduce.f']]]
 ];

@@ -88,136 +88,136 @@ $(document).ready(function(){initNavTree('gf__unpack3_8F90_source.html',''); ini
 <div class="contents">
 <a href="gf__unpack3_8F90.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">   56</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">gf_unpack3</a>(cgrib, lcgrib, iofst, igds, igdstmpl, &amp;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;     mapgridlen, ideflist, idefnum, ierr)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacegridtemplates.html">gridtemplates</a></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacere__alloc.html">re_alloc</a>              <span class="comment">!  needed for subroutine realloc</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">implicit none</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">pointer</span>, <span class="keywordtype">dimension(:)</span> :: igdstmpl, ideflist</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: igds(5)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr, idefnum</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">   50</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">gf_unpack3</a>(cgrib, lcgrib, iofst, igds, igdstmpl, &amp;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;     mapgridlen, ideflist, idefnum, ierr)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacegridtemplates.html">gridtemplates</a></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacere__alloc.html">re_alloc</a>              <span class="comment">!  needed for subroutine realloc</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">pointer</span>, <span class="keywordtype">dimension(:)</span> :: igdstmpl, ideflist</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: igds(5)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr, idefnum</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">allocatable</span> :: mapgrid(:)</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: mapgridlen</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">integer</span> :: ibyttem</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">logical</span> needext</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">integer</span> :: lensec, istat, i, nbits, isign, newmapgridlen, iret</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">allocatable</span> :: mapgrid(:)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: mapgridlen</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">integer</span> :: ibyttem</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">logical</span> needext</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">integer</span> :: lensec, istat, i, nbits, isign, newmapgridlen, iret</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  ierr = 0</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">nullify</span>(igdstmpl, ideflist)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  ierr = 0</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">nullify</span>(igdstmpl, ideflist)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  iofst = iofst + 32</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(1), iofst, 8) <span class="comment">! Get source of Grid def.</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  iofst = iofst + 8</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(2), iofst, 32) <span class="comment">! Get number of grid pts.</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(1), iofst, 8) <span class="comment">! Get source of Grid def.</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(3), iofst, 8) <span class="comment">! Get num octets for opt. list</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  iofst = iofst + 8</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(4), iofst, 8) <span class="comment">! Get interpret. for opt. list</span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(2), iofst, 32) <span class="comment">! Get number of grid pts.</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(3), iofst, 8) <span class="comment">! Get num octets for opt. list</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(4), iofst, 8) <span class="comment">! Get interpret. for opt. list</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(5), iofst, 16) <span class="comment">! Get Grid Def Template num.</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  iofst = iofst + 16</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">if</span> (igds(1) .eq. 0 .OR. igds(1) .eq. 255) <span class="keywordflow">then</span> <span class="comment">! FOR ECMWF TEST ONLY</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;     <span class="keyword">allocate</span>(mapgrid(lensec))</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;     <span class="comment">!         Get Grid Definition Template</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacegridtemplates.html#a0d4c8cc82df95376e5555961052670c0">getgridtemplate</a>(igds(5), mapgridlen, mapgrid, needext, iret)</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;     <span class="keywordflow">if</span> (iret .ne. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        ierr = 5</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapgrid)) <span class="keyword">deallocate</span>(mapgrid)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;     mapgridlen = 0</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;     needext = .false.</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="comment">!     Unpack each value into array igdstmpl from the the appropriate</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="comment">!     number of octets, which are specified in corresponding entries in</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="comment">!     array mapgrid.</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  istat = 0</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordflow">if</span> (mapgridlen .gt. 0) <span class="keyword">allocate</span>(igdstmpl(mapgridlen), stat = istat)</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keywordflow">if</span> (istat .ne. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;     ierr = 6</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;     <span class="keyword">nullify</span>(igdstmpl)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;     <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapgrid)) <span class="keyword">deallocate</span>(mapgrid)</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;     <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  ibyttem = 0</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">do</span> i = 1, mapgridlen</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;     nbits = iabs(mapgrid(i)) * 8</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;     <span class="keywordflow">if</span> (mapgrid(i) .ge. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igdstmpl(i), iofst, nbits)</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;     <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igdstmpl(i), iofst + 1, nbits - 1)</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">if</span> (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;     iofst = iofst + nbits</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;     ibyttem = ibyttem + iabs(mapgrid(i))</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keywordflow">  enddo</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="comment">!     Check to see if the Grid Definition Template needs to be extended.</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  <span class="comment">!     The number of values in a specific template may vary depending on</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="comment">!     data specified in the &quot;static&quot; part of the template.</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keywordflow">if</span> (needext) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82">extgridtemplate</a>(igds(5), igdstmpl, newmapgridlen, &amp;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;          mapgrid)</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;     <span class="comment">! Unpack the rest of the Grid Definition Template.</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;     <span class="keyword">call </span><a class="code" href="interfacere__alloc_1_1realloc.html">realloc</a>(igdstmpl, mapgridlen, newmapgridlen, istat)</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;     <span class="keywordflow">do</span> i = mapgridlen + 1, newmapgridlen</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        nbits = iabs(mapgrid(i)) * 8</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keywordflow">if</span> (mapgrid(i) .ge. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igdstmpl(i), iofst, nbits)</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igdstmpl(i), iofst + 1, nbits - 1)</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;           <span class="keywordflow">if</span> (isign.eq.1) igdstmpl(i) = -igdstmpl(i)</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        iofst = iofst + nbits</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        ibyttem = ibyttem + iabs(mapgrid(i))</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="keywordflow">     enddo</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;     mapgridlen = newmapgridlen</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapgrid)) <span class="keyword">deallocate</span>(mapgrid)</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <span class="comment">! Unpack optional list of numbers defining number of points in each</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="comment">! row or column, if included. This is used for non regular grids.</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keywordflow">if</span> (igds(3) .ne. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;     nbits = igds(3) * 8</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;     idefnum = (lensec - 14 - ibyttem) / igds(3)</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;     istat = 0</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;     <span class="keywordflow">if</span> (idefnum .gt. 0) <span class="keyword">allocate</span>(ideflist(idefnum), stat = istat)</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;     <span class="keywordflow">if</span> (istat .ne. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        ierr = 6</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keyword">nullify</span>(ideflist)</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#a43b84c9ffac05a56d909d3520018d68d">g2_gbytesc</a>(cgrib, ideflist, iofst, nbits, 0, idefnum)</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;     iofst = iofst + (nbits * idefnum)</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;     idefnum = 0</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;     <span class="keyword">nullify</span>(ideflist)</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">gf_unpack3</a></div>
-<div class="ttc" id="ag2__gbytesc_8f_html_a43b84c9ffac05a56d909d3520018d68d"><div class="ttname"><a href="g2__gbytesc_8f.html#a43b84c9ffac05a56d909d3520018d68d">g2_gbytesc</a></div><div class="ttdeci">subroutine g2_gbytesc(IN, IOUT, ISKIP, NBYTE, NSKIP, N)</div><div class="ttdoc">This subrountine is to extract arbitrary size values from a packed bit string, right justifying each ...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8f_source.html#l00059">g2_gbytesc.f:60</a></div></div>
-<div class="ttc" id="ag2__gbytesc_8f_html_aca0f5451292195fe5e0eb3ff4e53fe98"><div class="ttname"><a href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a></div><div class="ttdeci">subroutine g2_gbytec(IN, IOUT, ISKIP, NBYTE)</div><div class="ttdoc">This subrountine is to extract arbitrary size values from a packed bit string, right justifying each ...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8f_source.html#l00019">g2_gbytesc.f:20</a></div></div>
-<div class="ttc" id="agf__unpack3_8F90_html_aa256495eea520bcee7b5ee13acae09dd"><div class="ttname"><a href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">gf_unpack3</a></div><div class="ttdeci">subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, mapgridlen, ideflist, idefnum, ierr)</div><div class="ttdoc">This subroutine unpacks Section 3 (Grid Definition Section) of a GRIB2 message, starting at octet 6 o...</div><div class="ttdef"><b>Definition:</b> <a href="gf__unpack3_8F90_source.html#l00056">gf_unpack3.F90:58</a></div></div>
-<div class="ttc" id="ainterfacere__alloc_1_1realloc_html"><div class="ttname"><a href="interfacere__alloc_1_1realloc.html">re_alloc::realloc</a></div><div class="ttdef"><b>Definition:</b> <a href="realloc_8f_source.html#l00016">realloc.f:16</a></div></div>
-<div class="ttc" id="anamespacegridtemplates_html"><div class="ttname"><a href="namespacegridtemplates.html">gridtemplates</a></div><div class="ttdoc">This Fortran Module contains info on all the available GRIB2 Grid Definition Templates used in Sectio...</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00045">gridtemplates.f:45</a></div></div>
-<div class="ttc" id="anamespacegridtemplates_html_a0d4c8cc82df95376e5555961052670c0"><div class="ttname"><a href="namespacegridtemplates.html#a0d4c8cc82df95376e5555961052670c0">gridtemplates::getgridtemplate</a></div><div class="ttdeci">subroutine getgridtemplate(number, nummap, map, needext, iret)</div><div class="ttdoc">This subroutine grid template information for a specified Grid Definition Template 3....</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00295">gridtemplates.f:296</a></div></div>
-<div class="ttc" id="anamespacegridtemplates_html_a5f5d50ac236e47cc8965802b8398bb82"><div class="ttname"><a href="namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82">gridtemplates::extgridtemplate</a></div><div class="ttdeci">subroutine extgridtemplate(number, list, nummap, map)</div><div class="ttdoc">This subroutine generates the remaining octet map for a given Grid Definition Template,...</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00340">gridtemplates.f:341</a></div></div>
-<div class="ttc" id="anamespacere__alloc_html"><div class="ttname"><a href="namespacere__alloc.html">re_alloc</a></div><div class="ttdoc">This module contains three subroutines to reorganize the integer, real and character data in memory i...</div><div class="ttdef"><b>Definition:</b> <a href="realloc_8f_source.html#l00014">realloc.f:14</a></div></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(5), iofst, 16) <span class="comment">! Get Grid Def Template num.</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  iofst = iofst + 16</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">if</span> (igds(1) .eq. 0 .OR. igds(1) .eq. 255) <span class="keywordflow">then</span> <span class="comment">! FOR ECMWF TEST ONLY</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;     <span class="keyword">allocate</span>(mapgrid(lensec))</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;     <span class="comment">!         Get Grid Definition Template</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacegridtemplates.html#a0d4c8cc82df95376e5555961052670c0">getgridtemplate</a>(igds(5), mapgridlen, mapgrid, needext, iret)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;     <span class="keywordflow">if</span> (iret .ne. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        ierr = 5</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapgrid)) <span class="keyword">deallocate</span>(mapgrid)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;     mapgridlen = 0</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;     needext = .false.</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="comment">!     Unpack each value into array igdstmpl from the the appropriate</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">!     number of octets, which are specified in corresponding entries in</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="comment">!     array mapgrid.</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  istat = 0</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordflow">if</span> (mapgridlen .gt. 0) <span class="keyword">allocate</span>(igdstmpl(mapgridlen), stat = istat)</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordflow">if</span> (istat .ne. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;     ierr = 6</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;     <span class="keyword">nullify</span>(igdstmpl)</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;     <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapgrid)) <span class="keyword">deallocate</span>(mapgrid)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;     <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  ibyttem = 0</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  <span class="keywordflow">do</span> i = 1, mapgridlen</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;     nbits = iabs(mapgrid(i)) * 8</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;     <span class="keywordflow">if</span> (mapgrid(i) .ge. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igdstmpl(i), iofst, nbits)</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;     <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igdstmpl(i), iofst + 1, nbits - 1)</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">if</span> (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;     iofst = iofst + nbits</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;     ibyttem = ibyttem + iabs(mapgrid(i))</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keywordflow">  enddo</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="comment">!     Check to see if the Grid Definition Template needs to be extended.</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="comment">!     The number of values in a specific template may vary depending on</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="comment">!     data specified in the &quot;static&quot; part of the template.</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordflow">if</span> (needext) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82">extgridtemplate</a>(igds(5), igdstmpl, newmapgridlen, &amp;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;          mapgrid)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;     <span class="comment">! Unpack the rest of the Grid Definition Template.</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;     <span class="keyword">call </span><a class="code" href="interfacere__alloc_1_1realloc.html">realloc</a>(igdstmpl, mapgridlen, newmapgridlen, istat)</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;     <span class="keywordflow">do</span> i = mapgridlen + 1, newmapgridlen</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        nbits = iabs(mapgrid(i)) * 8</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordflow">if</span> (mapgrid(i) .ge. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igdstmpl(i), iofst, nbits)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igdstmpl(i), iofst + 1, nbits - 1)</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;           <span class="keywordflow">if</span> (isign.eq.1) igdstmpl(i) = -igdstmpl(i)</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        iofst = iofst + nbits</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        ibyttem = ibyttem + iabs(mapgrid(i))</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="keywordflow">     enddo</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;     mapgridlen = newmapgridlen</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapgrid)) <span class="keyword">deallocate</span>(mapgrid)</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="comment">! Unpack optional list of numbers defining number of points in each</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="comment">! row or column, if included. This is used for non regular grids.</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordflow">if</span> (igds(3) .ne. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;     nbits = igds(3) * 8</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;     idefnum = (lensec - 14 - ibyttem) / igds(3)</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;     istat = 0</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;     <span class="keywordflow">if</span> (idefnum .gt. 0) <span class="keyword">allocate</span>(ideflist(idefnum), stat = istat)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;     <span class="keywordflow">if</span> (istat .ne. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        ierr = 6</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keyword">nullify</span>(ideflist)</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a257b7f2466cdf820903102d69ef2f93e">g2_gbytesc</a>(cgrib, ideflist, iofst, nbits, 0, idefnum)</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;     iofst = iofst + (nbits * idefnum)</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;     idefnum = 0</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;     <span class="keyword">nullify</span>(ideflist)</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">gf_unpack3</a></div>
+<div class="ttc" id="ag2__gbytesc_8F90_html_a257b7f2466cdf820903102d69ef2f93e"><div class="ttname"><a href="g2__gbytesc_8F90.html#a257b7f2466cdf820903102d69ef2f93e">g2_gbytesc</a></div><div class="ttdeci">subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)</div><div class="ttdoc">Extract arbitrary size values from a packed bit string, right justifying each value in the unpacked a...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8F90_source.html#l00062">g2_gbytesc.F90:63</a></div></div>
+<div class="ttc" id="ag2__gbytesc_8F90_html_a2d1c1d6ddbb4b4d56637c32faa0ee7e1"><div class="ttname"><a href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a></div><div class="ttdeci">subroutine g2_gbytec(in, iout, iskip, nbits)</div><div class="ttdoc">Extract arbitrary size values from a packed bit string, right justifying each value in the unpacked a...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8F90_source.html#l00019">g2_gbytesc.F90:20</a></div></div>
+<div class="ttc" id="agf__unpack3_8F90_html_aa256495eea520bcee7b5ee13acae09dd"><div class="ttname"><a href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">gf_unpack3</a></div><div class="ttdeci">subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, mapgridlen, ideflist, idefnum, ierr)</div><div class="ttdoc">Unpack Section 3 (Grid Definition Section) of a GRIB2 message, starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="gf__unpack3_8F90_source.html#l00050">gf_unpack3.F90:52</a></div></div>
+<div class="ttc" id="ainterfacere__alloc_1_1realloc_html"><div class="ttname"><a href="interfacere__alloc_1_1realloc.html">re_alloc::realloc</a></div><div class="ttdef"><b>Definition:</b> <a href="realloc_8f_source.html#l00014">realloc.f:14</a></div></div>
+<div class="ttc" id="anamespacegridtemplates_html"><div class="ttname"><a href="namespacegridtemplates.html">gridtemplates</a></div><div class="ttdoc">This Fortran module contains info on all the available GRIB2 Grid Definition Templates used in [Secti...</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00039">gridtemplates.f:39</a></div></div>
+<div class="ttc" id="anamespacegridtemplates_html_a0d4c8cc82df95376e5555961052670c0"><div class="ttname"><a href="namespacegridtemplates.html#a0d4c8cc82df95376e5555961052670c0">gridtemplates::getgridtemplate</a></div><div class="ttdeci">subroutine getgridtemplate(number, nummap, map, needext, iret)</div><div class="ttdoc">This subroutine grid template information for a specified Grid Definition Template 3....</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00289">gridtemplates.f:290</a></div></div>
+<div class="ttc" id="anamespacegridtemplates_html_a5f5d50ac236e47cc8965802b8398bb82"><div class="ttname"><a href="namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82">gridtemplates::extgridtemplate</a></div><div class="ttdeci">subroutine extgridtemplate(number, list, nummap, map)</div><div class="ttdoc">This subroutine generates the remaining octet map for a given Grid Definition Template,...</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00330">gridtemplates.f:331</a></div></div>
+<div class="ttc" id="anamespacere__alloc_html"><div class="ttname"><a href="namespacere__alloc.html">re_alloc</a></div><div class="ttdoc">Reallocate memory, preserving contents.</div><div class="ttdef"><b>Definition:</b> <a href="realloc_8f_source.html#l00012">realloc.f:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

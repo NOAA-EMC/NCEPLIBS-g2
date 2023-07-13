@@ -90,7 +90,7 @@ $(document).ready(function(){initNavTree('namespacere__alloc.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
-<p>This module contains three subroutines to reorganize the integer, real and character data in memory into one dimensional array and back to memory.  
+<p>Reallocate memory, preserving contents.  
 <a href="namespacere__alloc.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -101,17 +101,18 @@ Data Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
 <tr class="memitem:ab3dc5cdb5a5e8468aff46e582d19eb71"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacere__alloc.html#ab3dc5cdb5a5e8468aff46e582d19eb71">realloc_c1</a> (c, n, m, istat)</td></tr>
-<tr class="memdesc:ab3dc5cdb5a5e8468aff46e582d19eb71"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine reorganize character type data in memory into one one dimensional array.  <a href="namespacere__alloc.html#ab3dc5cdb5a5e8468aff46e582d19eb71">More...</a><br /></td></tr>
+<tr class="memdesc:ab3dc5cdb5a5e8468aff46e582d19eb71"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine reallocates a character array, preserving its contents.  <a href="namespacere__alloc.html#ab3dc5cdb5a5e8468aff46e582d19eb71">More...</a><br /></td></tr>
 <tr class="separator:ab3dc5cdb5a5e8468aff46e582d19eb71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb77f273ac94f2b319238e10a9369653"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacere__alloc.html#aeb77f273ac94f2b319238e10a9369653">realloc_i</a> (c, n, m, istat)</td></tr>
 <tr class="memdesc:aeb77f273ac94f2b319238e10a9369653"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine reorganize integer type data in memory into one one dimensional array.  <a href="namespacere__alloc.html#aeb77f273ac94f2b319238e10a9369653">More...</a><br /></td></tr>
 <tr class="separator:aeb77f273ac94f2b319238e10a9369653"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e8746c3bfb9226f51446ef2b95f1c44"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacere__alloc.html#a9e8746c3bfb9226f51446ef2b95f1c44">realloc_r</a> (c, n, m, istat)</td></tr>
-<tr class="memdesc:a9e8746c3bfb9226f51446ef2b95f1c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine reorganize real type data in memory into one one dimensional array.  <a href="namespacere__alloc.html#a9e8746c3bfb9226f51446ef2b95f1c44">More...</a><br /></td></tr>
+<tr class="memdesc:a9e8746c3bfb9226f51446ef2b95f1c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine reallocates an integer array, preserving its contents.  <a href="namespacere__alloc.html#a9e8746c3bfb9226f51446ef2b95f1c44">More...</a><br /></td></tr>
 <tr class="separator:a9e8746c3bfb9226f51446ef2b95f1c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This module contains three subroutines to reorganize the integer, real and character data in memory into one dimensional array and back to memory. </p>
+<div class="textblock"><p>Reallocate memory, preserving contents. </p>
+<p>This module contains two subroutines to reallocate integer, and character arrays in memory, preseving the existing contents of the array.</p>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-10-01 </dd></dl>
 </div><h2 class="groupheader">Function/Subroutine Documentation</h2>
@@ -153,20 +154,25 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This subroutine reorganize character type data in memory into one one dimensional array. </p>
+<p>This subroutine reallocates a character array, preserving its contents. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">c</td><td>pointer for data in memory. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>dimension for data in memory. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>dimension for allocatable array. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">istat</td><td>scalar INTEGER variable for allocate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>dimension for data in memory. This is how much data is currently stored in the array. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>dimension for allocatable array. This is the size the array will be after the allocation of memory. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">istat</td><td>scalar INTEGER variable for allocate.<ul>
+<li>0 No error.</li>
+<li>10 Incorrect dimension.</li>
+<li>other Allocation error.</li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-10-01 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="realloc_8f_source.html#l00048">48</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
+<p class="definition">Definition at line <a class="el" href="realloc_8f_source.html#l00036">36</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
 
 </div>
 </div>
@@ -221,7 +227,7 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-10-01 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="realloc_8f_source.html#l00132">132</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
+<p class="definition">Definition at line <a class="el" href="realloc_8f_source.html#l00125">125</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
 
 </div>
 </div>
@@ -263,20 +269,25 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This subroutine reorganize real type data in memory into one one dimensional array. </p>
+<p>This subroutine reallocates an integer array, preserving its contents. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">c</td><td>pointer for data in memory. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>dimension for data in memory. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>dimension for allocatable array. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">istat</td><td>scalar INTEGER variable for allocate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>dimension for data in memory. This is how much data is currently stored in the array. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">m</td><td>dimension for allocatable array. This is the size the array will be after the allocation of memory. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">istat</td><td>scalar INTEGER variable for allocate.<ul>
+<li>0 No error.</li>
+<li>10 Incorrect dimension.</li>
+<li>other Allocation error.</li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-10-01 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="realloc_8f_source.html#l00090">90</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
+<p class="definition">Definition at line <a class="el" href="realloc_8f_source.html#l00083">83</a> of file <a class="el" href="realloc_8f_source.html">realloc.f</a>.</p>
 
 </div>
 </div>

@@ -2,6 +2,7 @@ var namespaces_dup =
 [
     [ "drstemplates", "namespacedrstemplates.html", "namespacedrstemplates" ],
     [ "g2grids", "namespaceg2grids.html", [
+      [ "freegridlist", "namespaceg2grids.html#a2cd75c04b471c7b88e921f0051d69f3d", null ],
       [ "getgridbyname", "namespaceg2grids.html#af909017f37048acf68815aa78a17a10f", null ],
       [ "getgridbynum", "namespaceg2grids.html#a863b03b8c8f14a707ca757e8bd34d272", null ],
       [ "readgrids", "namespaceg2grids.html#a56a2c4fcd16e58123d22462da272f67e", null ],

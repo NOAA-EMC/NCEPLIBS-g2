@@ -124,523 +124,524 @@ $(document).ready(function(){initNavTree('getfield_8F90_source.html',''); initRe
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  have7 = .false.</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  ierr = 0</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  numfld = 0</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="comment">!     Check for valid request number</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="keywordflow">if</span> (ifldnum .le. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;     print *, <span class="stringliteral">&#39;getfield: Request for field number &#39;</span> &amp;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;          ,<span class="stringliteral">&#39;must be positive.&#39;</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;     ierr = 3</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;     <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="comment">!     Check for beginning of GRIB message in the first 100 bytes</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  istart = 0</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordflow">do</span> j = 1, 100</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;     ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j + 3)</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;     <span class="keywordflow">if</span> (ctemp .eq. grib) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        istart = j</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordflow">exit</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="keywordflow">  enddo</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="keywordflow">if</span> (istart .eq. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;     print *, <span class="stringliteral">&#39;getfield:  Beginning characters GRIB not found.&#39;</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;     ierr = 1</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;     <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="comment">!     Unpack Section 0 - Indicator Section</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  iofst = 8 * (istart + 5)</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, listsec0(1), iofst, 8) <span class="comment">! Discipline</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, listsec0(2), iofst, 8) <span class="comment">! GRIB edition number</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, lengrib, iofst, 32) <span class="comment">! Length of GRIB message</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  lensec0 = 16</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  ipos = istart + lensec0</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <span class="comment">!     Currently handles only GRIB Edition 2.</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="keywordflow">if</span> (listsec0(2) .ne. 2) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;     print *, <span class="stringliteral">&#39;getfield: can only decode GRIB edition 2.&#39;</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;     ierr = 2</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;     <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="comment">!     Loop through the remaining sections keeping track of the length of</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="comment">!     each. Also keep the latest Grid Definition Section info.  Unpack</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="comment">!     the requested field number.</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <span class="keywordflow">do</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;     <span class="comment">!         Check to see if we are at end of GRIB message</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;     ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // &amp;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;          cgrib(ipos + 3)</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;     <span class="keywordflow">if</span> (ctemp .eq. c7777) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        ipos = ipos + 4</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="comment">!             If end of GRIB message not where expected, issue error</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">if</span> (ipos.ne.(istart + lengrib)) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;           print *, <span class="stringliteral">&#39;getfield: &quot;7777&quot; found, but not &#39;</span> &amp;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                ,<span class="stringliteral">&#39;where expected.&#39;</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;           ierr = 4</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;           <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">exit</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;     <span class="comment">!         Get length of Section and Section number</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;     iofst = (ipos - 1) * 8</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;     iofst = iofst + 32</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isecnum, iofst, 8) <span class="comment">! Get Section number</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;     iofst = iofst + 8</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;     <span class="comment">!         If found Section 3, unpack the GDS info using the appropriate</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;     <span class="comment">!         template. Save in case this is the latest grid before the</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;     <span class="comment">!         requested field.</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;     <span class="keywordflow">if</span> (isecnum .eq. 3) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        iofst = iofst - 40    <span class="comment">! reset offset to beginning of section</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keyword">call </span><a class="code" href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">unpack3</a>(cgrib, lcgrib, iofst, igds, igdstmpl,  &amp;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;             igdslen, ideflist, idefnum, jerr)</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="keywordflow">if</span> (jerr .eq. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;           have3 = .true.</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;           ierr = 10</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;           <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;     <span class="comment">!         If found Section 4, check to see if this field is the one</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;     <span class="comment">!         requested.</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;     <span class="keywordflow">if</span> (isecnum .eq. 4) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        numfld = numfld + 1</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keywordflow">if</span> (numfld .eq. ifldnum) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;           iofst = iofst - 40 <span class="comment">! reset offset to beginning of section</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;           <span class="keyword">call </span><a class="code" href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">unpack4</a>(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &amp;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                ipdslen, coordlist, numcoord, jerr)</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;           <span class="keywordflow">if</span> (jerr .eq. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;              have4 = .true.</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;           <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;              ierr = 11</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;              <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="keywordflow">           endif</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;     <span class="comment">!         If found Section 5, check to see if this field is the one</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;     <span class="comment">!         requested.</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;     <span class="keywordflow">if</span> ((isecnum .eq. 5) .and. (numfld .eq. ifldnum)) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        iofst = iofst - 40    <span class="comment">! reset offset to beginning of section</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="keyword">call </span><a class="code" href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">unpack5</a>(cgrib, lcgrib, iofst, ndpts, idrsnum, &amp;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;             idrstmpl, idrslen, jerr)</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="keywordflow">if</span> (jerr .eq. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;           have5 = .true.</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;           ierr = 12</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;           <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;     <span class="comment">!         If found Section 6, Unpack bitmap. Save in case this is the</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;     <span class="comment">!         latest bitmap before the requested field.</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;     <span class="keywordflow">if</span> (isecnum .eq. 6) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        iofst = iofst - 40    <span class="comment">! reset offset to beginning of section</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keyword">call </span><a class="code" href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">unpack6</a>(cgrib, lcgrib, iofst, igds(2), ibmap, bmap, &amp;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;             jerr)</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="keywordflow">if</span> (jerr .eq. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;           have6 = .true.</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;           ierr = 13</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;           <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;     <span class="comment">!         If found Section 7, check to see if this field is the one</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;     <span class="comment">!         requested.</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;     <span class="keywordflow">if</span> ((isecnum .eq. 7) .and. (numfld .eq. ifldnum)) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <span class="keywordflow">if</span> (idrsnum .eq. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;           <span class="keyword">call </span><a class="code" href="simunpack_8f.html#a5047ba28bbe7d18c4d2385c880ef863c">simunpack</a>(cgrib(ipos + 5), lensec - 6, idrstmpl, &amp;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                ndpts, fld)</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;           have7 = .true.</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keywordflow">elseif</span> (idrsnum .eq. 2 .or. idrsnum .eq. 3) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;           <span class="keyword">call </span><a class="code" href="comunpack_8f.html#a78a7efb9e450327a66eb02faab53e731">comunpack</a>(cgrib(ipos + 5), lensec - 6, lensec, &amp;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                idrsnum,idrstmpl, ndpts, fld, ier)</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;           <span class="keywordflow">if</span> (ier .ne. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;              ierr = 14</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;              <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keywordflow">           endif</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;           have7 = .true.</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">elseif</span> (idrsnum .eq. 50) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;           <span class="keyword">call </span><a class="code" href="simunpack_8f.html#a5047ba28bbe7d18c4d2385c880ef863c">simunpack</a>(cgrib(ipos + 5), lensec - 6, idrstmpl, &amp;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                ndpts - 1, fld(2))</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;           ieee = idrstmpl(5)</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;           <span class="keyword">call </span><a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(ieee, fld(1), 1)</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;           have7 = .true.</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordflow">elseif</span> (idrsnum .eq. 40 .or. idrsnum .eq. 40000) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;           <span class="keyword">call </span><a class="code" href="jpcunpack_8f.html#a19586f31dfd8afd977d8d62ed37a48a5">jpcunpack</a>(cgrib(ipos + 5), lensec - 5, idrstmpl, &amp;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                ndpts, fld)</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;           have7 = .true.</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keywordflow">elseif</span> (idrsnum .eq. 41 .or. idrsnum .eq. 40010) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;           <span class="keyword">call </span><a class="code" href="pngunpack_8f.html#a6c975c7eb4bd5f8a7971420fe6fad457">pngunpack</a>(cgrib(ipos + 5), lensec - 5, idrstmpl, &amp;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                ndpts, fld)</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;           have7 = .true.</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;           print *, <span class="stringliteral">&#39;getfield: Data Representation Template &#39;</span>, &amp;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                idrsnum, <span class="stringliteral">&#39; not yet implemented.&#39;</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;           ierr = 9</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;           <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;     <span class="comment">!         Check to see if we read pass the end of the GRIB message and</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;     <span class="comment">!         missed the terminator string &#39;7777&#39;.</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;     ipos = ipos + lensec      <span class="comment">! Update beginning of section pointer</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;     <span class="keywordflow">if</span> (ipos .gt. (istart + lengrib)) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        print *, <span class="stringliteral">&#39;getfield: &quot;7777&quot;  not found at end&#39;</span> &amp;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;             ,<span class="stringliteral">&#39; of GRIB message.&#39;</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        ierr = 7</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;     <span class="keywordflow">if</span> (have3 .and. have4 .and. have5 .and. have6 .and. have7) &amp;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;          <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="keywordflow">  enddo</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  <span class="comment">!     If exited from above loop, the end of the GRIB message was reached</span></div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  <span class="comment">!     before the requested field was found.</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  print *, <span class="stringliteral">&#39;getfield: GRIB message contained &#39;</span>, numlocal,  &amp;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;       <span class="stringliteral">&#39; different fields.&#39;</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  print *, <span class="stringliteral">&#39;getfield: The request was for the &#39;</span>, ifldnum,  &amp;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;       <span class="stringliteral">&#39; field.&#39;</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;  ierr = 6</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#a4bffc7bcc5d802447811c5a703c1ddfb">getfield</a></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
-<div class="line"><a name="l00373"></a><span class="lineno"><a class="line" href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">  373</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">unpack3</a>(cgrib, lcgrib, iofst, igds, igdstmpl,  &amp;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;     mapgridlen, ideflist, idefnum, ierr)</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacegridtemplates.html">gridtemplates</a></div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;  <span class="keywordtype">implicit none</span></div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: igds(*), igdstmpl(*), ideflist(*)</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr, idefnum</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160; </div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">allocatable</span> :: mapgrid(:)</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  <span class="keywordtype">integer</span> :: mapgridlen, ibyttem</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;  <span class="keywordtype">logical</span> needext</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;  <span class="comment">!implicit none additions</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;  <span class="keywordtype">integer</span> :: lensec, iret, i, nbits, isign, newmapgridlen</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160; </div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;  ierr = 0</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(1), iofst, 8) <span class="comment">! Get source of Grid def.</span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(2), iofst, 32) <span class="comment">! Get number of grid pts.</span></div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(3), iofst, 8) <span class="comment">! Get num octets for opt. list</span></div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(4), iofst, 8) <span class="comment">! Get interpret. for opt. list</span></div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igds(5), iofst, 16) <span class="comment">! Get Grid Def Template num.</span></div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;  iofst = iofst + 16</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;  <span class="keywordflow">if</span> (igds(1) .eq. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;     <span class="comment">!      if (igds(1).eq.0.OR.igds(1).eq.255) then  ! FOR ECMWF TEST ONLY</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;     <span class="keyword">allocate</span>(mapgrid(lensec))</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;     <span class="comment">!         Get Grid Definition Template</span></div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacegridtemplates.html#a0d4c8cc82df95376e5555961052670c0">getgridtemplate</a>(igds(5), mapgridlen, mapgrid, needext,  &amp;</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;          iret)</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;     <span class="keywordflow">if</span> (iret .ne. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        ierr = 5</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;  <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;     <span class="comment">!        igdstmpl = -1</span></div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;     mapgridlen = 0</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;     needext = .false.</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160; </div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;  <span class="comment">!     Unpack each value into array igdstmpl from the the appropriate</span></div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;  <span class="comment">!     number of octets, which are specified in corresponding entries in</span></div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;  <span class="comment">!     array mapgrid.</span></div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;  ibyttem = 0</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;  <span class="keywordflow">do</span> i = 1, mapgridlen</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;     nbits = iabs(mapgrid(i)) * 8</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;     <span class="keywordflow">if</span> (mapgrid(i) .ge. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igdstmpl(i), iofst, nbits)</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;     <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igdstmpl(i), iofst + 1, nbits-1)</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keywordflow">if</span> (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;     iofst = iofst + nbits</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;     ibyttem = ibyttem + iabs(mapgrid(i))</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="keywordflow">  enddo</span></div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160; </div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;  <span class="comment">!      Check to see if the Grid Definition Template needs to be</span></div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;  <span class="comment">!      extended. The number of values in a specific template may vary</span></div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;  <span class="comment">!      depending on data specified in the &quot;static&quot; part of the template.</span></div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;  <span class="keywordflow">if</span> (needext) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82">extgridtemplate</a>(igds(5), igdstmpl, newmapgridlen, &amp;</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;          mapgrid)</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;     <span class="comment">!         Unpack the rest of the Grid Definition Template</span></div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;     <span class="keywordflow">do</span> i = mapgridlen + 1, newmapgridlen</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        nbits = iabs(mapgrid(i)) * 8</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        <span class="keywordflow">if</span> (mapgrid(i) .ge. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igdstmpl(i), iofst, nbits)</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, igdstmpl(i), iofst + 1, nbits - &amp;</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;                1)</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;           <span class="keywordflow">if</span> (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        iofst = iofst + nbits</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        ibyttem = ibyttem + iabs(mapgrid(i))</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;<span class="keywordflow">     enddo</span></div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;     mapgridlen = newmapgridlen</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160; </div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;  <span class="comment">!     Unpack optional list of numbers defining number of points in each</span></div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;  <span class="comment">!     row or column, if included. This is used for non regular grids.</span></div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;  <span class="keywordflow">if</span> (igds(3) .ne. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;     nbits = igds(3) * 8</div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;     idefnum = (lensec - 14 - ibyttem) / igds(3)</div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#a43b84c9ffac05a56d909d3520018d68d">g2_gbytesc</a>(cgrib, ideflist, iofst, nbits, 0, idefnum)</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;     iofst = iofst + (nbits * idefnum)</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;  <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;     idefnum = 0</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapgrid)) <span class="keyword">deallocate</span>(mapgrid)</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">unpack3</a></div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160; </div>
-<div class="line"><a name="l00503"></a><span class="lineno"><a class="line" href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">  503</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">unpack4</a>(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &amp;</div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;     mappdslen, coordlist, numcoord, ierr)</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160; </div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacepdstemplates.html">pdstemplates</a></div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;  <span class="keywordtype">implicit none</span></div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160; </div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;<span class="keywordtype">  real</span>, <span class="keywordtype">intent(out)</span> :: coordlist(*)</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ipdsnum, ipdstmpl(*)</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr, numcoord</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160; </div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;<span class="keywordtype">  real</span>(4), <span class="keywordtype">allocatable</span> :: coordieee(:)</div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">allocatable</span> :: mappds(:)</div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;  <span class="keywordtype">integer</span> :: mappdslen</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;  <span class="keywordtype">logical</span> needext</div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160; </div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;  <span class="comment">!implicit none additions</span></div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;  <span class="keywordtype">integer</span> :: lensec, iret, i, nbits, isign, newmappdslen</div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160; </div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;  ierr = 0</div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160; </div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;  <span class="keyword">allocate</span>(mappds(lensec))</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160; </div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, numcoord, iofst, 16) <span class="comment">! Get num of coordinate values</span></div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;  iofst = iofst + 16</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, ipdsnum, iofst, 16) <span class="comment">! Get Prod. Def Template num.</span></div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;  iofst = iofst + 16</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;  <span class="comment">!     Get Product Definition Template.</span></div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;  <span class="keyword">call </span><a class="code" href="namespacepdstemplates.html#ae982fefe8217f6bafdfafddcdac27198">getpdstemplate</a>(ipdsnum, mappdslen, mappds, needext, iret)</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;  <span class="keywordflow">if</span> (iret.ne.0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;     ierr = 5</div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;     <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160; </div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;  <span class="comment">!     Unpack each value into array ipdstmpl from the the appropriate</span></div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;  <span class="comment">!     number of octets, which are specified in corresponding entries in</span></div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;  <span class="comment">!     array mappds.</span></div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;  <span class="keywordflow">do</span> i = 1, mappdslen</div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;     nbits = iabs(mappds(i))*8</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;     <span class="keywordflow">if</span> (mappds(i).ge.0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, ipdstmpl(i), iofst, nbits)</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;     <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, ipdstmpl(i), iofst + 1, nbits-1)</div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        <span class="keywordflow">if</span> (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)</div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;     iofst = iofst + nbits</div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;<span class="keywordflow">  enddo</span></div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160; </div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;  <span class="comment">!     Check to see if the Product Definition Template needs to be</span></div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;  <span class="comment">!     extended. The number of values in a specific template may vary</span></div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;  <span class="comment">!     depending on data specified in the &quot;static&quot; part of the template.</span></div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;  <span class="keywordflow">if</span> (needext) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacepdstemplates.html#a0570955986fc8d676e5acd2d990e828d">extpdstemplate</a>(ipdsnum, ipdstmpl, newmappdslen, mappds)</div>
-<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160; </div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;     <span class="comment">!         Unpack the rest of the Product Definition Template</span></div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;     <span class="keywordflow">do</span> i = mappdslen + 1, newmappdslen</div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;        nbits = iabs(mappds(i))*8</div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;        <span class="keywordflow">if</span> (mappds(i).ge.0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, ipdstmpl(i), iofst, nbits)</div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, ipdstmpl(i), iofst + 1, nbits-1)</div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;           <span class="keywordflow">if</span> (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;        iofst = iofst + nbits</div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;<span class="keywordflow">     enddo</span></div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;     mappdslen = newmappdslen</div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160; </div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;  <span class="comment">!     Get Optional list of vertical coordinate values after the Product</span></div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;  <span class="comment">!     Definition Template, if necessary.</span></div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;  <span class="keywordflow">if</span> (numcoord .ne. 0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;     <span class="keyword">allocate</span> (coordieee(numcoord))</div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#a43b84c9ffac05a56d909d3520018d68d">g2_gbytesc</a>(cgrib, coordieee, iofst, 32, 0, numcoord)</div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;     <span class="keyword">call </span><a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(coordieee, coordlist, numcoord)</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;     <span class="keyword">deallocate</span> (coordieee)</div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;     iofst = iofst + (32*numcoord)</div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mappds)) <span class="keyword">deallocate</span>(mappds)</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">unpack4</a></div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160; </div>
-<div class="line"><a name="l00612"></a><span class="lineno"><a class="line" href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">  612</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">unpack5</a>(cgrib, lcgrib, iofst, ndpts, idrsnum,  &amp;</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;     idrstmpl, mapdrslen, ierr)</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160; </div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacedrstemplates.html">drstemplates</a></div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;  <span class="keywordtype">implicit none</span></div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160; </div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib</div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ndpts, idrsnum, idrstmpl(*)</div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160; </div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;  <span class="comment">!      integer, allocatable :: mapdrs(:)</span></div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">allocatable</span> :: mapdrs(:)</div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;  <span class="keywordtype">integer</span> :: mapdrslen</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;  <span class="keywordtype">logical</span> needext</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160; </div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;  <span class="comment">!implicit none additions</span></div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;  <span class="keywordtype">integer</span> :: lensec, i, nbits, isign, newmapdrslen, iret</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160; </div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;  ierr = 0</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160; </div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;  <span class="keyword">allocate</span>(mapdrs(lensec))</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160; </div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, ndpts, iofst, 32) <span class="comment">! Get num of data points</span></div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;  iofst = iofst + 32</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, idrsnum, iofst, 16) <span class="comment">! Get Data Rep Template Num.</span></div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;  iofst = iofst + 16</div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;  <span class="comment">!     Gen Data Representation Template</span></div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;  <span class="keyword">call </span><a class="code" href="namespacedrstemplates.html#a289f2f4b832edac2286b1d494df0fc5d">getdrstemplate</a>(idrsnum, mapdrslen, mapdrs, needext, iret)</div>
-<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;  <span class="keywordflow">if</span> (iret.ne.0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;     ierr = 7</div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;     <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160; </div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;  <span class="comment">!     Unpack each value into array ipdstmpl from the the appropriate</span></div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;  <span class="comment">!     number of octets, which are specified in corresponding entries in</span></div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;  <span class="comment">!     array mappds.</span></div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;  <span class="keywordflow">do</span> i = 1, mapdrslen</div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;     nbits = iabs(mapdrs(i))*8</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;     <span class="keywordflow">if</span> (mapdrs(i).ge.0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, idrstmpl(i), iofst, nbits)</div>
-<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;     <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
-<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, idrstmpl(i), iofst + 1, nbits-1)</div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        <span class="keywordflow">if</span> (isign.eq.1) idrstmpl(i) = -idrstmpl(i)</div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;<span class="keywordflow">     endif</span></div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;     iofst = iofst + nbits</div>
-<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;<span class="keywordflow">  enddo</span></div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160; </div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;  <span class="comment">!     Check to see if the Data Representation Template needs to be</span></div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;  <span class="comment">!     extended. The number of values in a specific template may vary</span></div>
-<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;  <span class="comment">!     depending on data specified in the &quot;static&quot; part of the template.</span></div>
-<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;  <span class="keywordflow">if</span> (needext) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacedrstemplates.html#a7faeffac8ac21af2be2eda0fc0156ea6">extdrstemplate</a>(idrsnum, idrstmpl, newmapdrslen, mapdrs)</div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;     <span class="comment">!         Unpack the rest of the Data Representation Template</span></div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;     <span class="keywordflow">do</span> i = mapdrslen + 1, newmapdrslen</div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;        nbits = iabs(mapdrs(i))*8</div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;        <span class="keywordflow">if</span> (mapdrs(i).ge.0) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, idrstmpl(i), iofst, nbits)</div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, idrstmpl(i), iofst + 1, nbits - 1)</div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;           <span class="keywordflow">if</span> (isign.eq.1) idrstmpl(i) = -idrstmpl(i)</div>
-<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;<span class="keywordflow">        endif</span></div>
-<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;        iofst = iofst + nbits</div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;<span class="keywordflow">     enddo</span></div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;     mapdrslen = newmapdrslen</div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapdrs)) <span class="keyword">deallocate</span>(mapdrs)</div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">unpack5</a></div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160; </div>
-<div class="line"><a name="l00708"></a><span class="lineno"><a class="line" href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">  708</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">unpack6</a>(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)</div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;  <span class="keywordtype">implicit none</span></div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160; </div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib, ngpts</div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ibmap</div>
-<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr</div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;  <span class="keywordtype">logical*1</span>, <span class="keywordtype">intent(out)</span> :: bmap(ngpts)</div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160; </div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;  <span class="keywordtype">integer</span> :: intbmap(ngpts)</div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160; </div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;  <span class="comment">!implicit none additions</span></div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;  <span class="keywordtype">integer</span> :: j</div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160; </div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;  ierr = 0</div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160; </div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;  iofst = iofst + 32            <span class="comment">! skip Length of Section</span></div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160; </div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a>(cgrib, ibmap, iofst, 8) <span class="comment">! Get bit-map indicator</span></div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;  iofst = iofst + 8</div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160; </div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;  <span class="keywordflow">if</span> (ibmap.eq.0) <span class="keywordflow">then</span>      <span class="comment">! Unpack bitmap</span></div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8f.html#a43b84c9ffac05a56d909d3520018d68d">g2_gbytesc</a>(cgrib, intbmap, iofst, 1, 0, ngpts)</div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;     iofst = iofst + ngpts</div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;     <span class="keywordflow">do</span> j = 1, ngpts</div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        bmap(j) = .true.</div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;        <span class="keywordflow">if</span> (intbmap(j).eq.0) bmap(j) = .false.</div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;<span class="keywordflow">     enddo</span></div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;  <span class="keywordflow">elseif</span> (ibmap.eq.254) <span class="keywordflow">then</span> <span class="comment">! Use previous bitmap</span></div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;     <span class="keywordflow">return</span></div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;  <span class="keywordflow">elseif</span> (ibmap.eq.255) <span class="keywordflow">then</span> <span class="comment">! No bitmap in message</span></div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;     bmap(1:ngpts) = .true.</div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;  <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;     print *, <span class="stringliteral">&#39;unpack6: Predefined bitmap &#39;</span>, ibmap, &amp;</div>
-<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;          <span class="stringliteral">&#39; not recognized.&#39;</span></div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;     ierr = 4</div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="keywordflow">  endif</span></div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">unpack6</a></div>
-<div class="ttc" id="acomunpack_8f_html_a78a7efb9e450327a66eb02faab53e731"><div class="ttname"><a href="comunpack_8f.html#a78a7efb9e450327a66eb02faab53e731">comunpack</a></div><div class="ttdeci">subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, fld, ier)</div><div class="ttdoc">This subroutine unpacks a data field that was packed using a complex packing algorithm as defined in ...</div><div class="ttdef"><b>Definition:</b> <a href="comunpack_8f_source.html#l00035">comunpack.f:37</a></div></div>
-<div class="ttc" id="ag2__gbytesc_8f_html_a43b84c9ffac05a56d909d3520018d68d"><div class="ttname"><a href="g2__gbytesc_8f.html#a43b84c9ffac05a56d909d3520018d68d">g2_gbytesc</a></div><div class="ttdeci">subroutine g2_gbytesc(IN, IOUT, ISKIP, NBYTE, NSKIP, N)</div><div class="ttdoc">This subrountine is to extract arbitrary size values from a packed bit string, right justifying each ...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8f_source.html#l00059">g2_gbytesc.f:60</a></div></div>
-<div class="ttc" id="ag2__gbytesc_8f_html_aca0f5451292195fe5e0eb3ff4e53fe98"><div class="ttname"><a href="g2__gbytesc_8f.html#aca0f5451292195fe5e0eb3ff4e53fe98">g2_gbytec</a></div><div class="ttdeci">subroutine g2_gbytec(IN, IOUT, ISKIP, NBYTE)</div><div class="ttdoc">This subrountine is to extract arbitrary size values from a packed bit string, right justifying each ...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8f_source.html#l00019">g2_gbytesc.f:20</a></div></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  numlocal = 0</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="comment">!     Check for valid request number</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keywordflow">if</span> (ifldnum .le. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;     print *, <span class="stringliteral">&#39;getfield: Request for field number &#39;</span> &amp;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;          ,<span class="stringliteral">&#39;must be positive.&#39;</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;     ierr = 3</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;     <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="comment">!     Check for beginning of GRIB message in the first 100 bytes</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  istart = 0</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordflow">do</span> j = 1, 100</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;     ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j + 3)</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;     <span class="keywordflow">if</span> (ctemp .eq. grib) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        istart = j</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">exit</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="keywordflow">  enddo</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keywordflow">if</span> (istart .eq. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;     print *, <span class="stringliteral">&#39;getfield:  Beginning characters GRIB not found.&#39;</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;     ierr = 1</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;     <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <span class="comment">!     Unpack Section 0 - Indicator Section</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  iofst = 8 * (istart + 5)</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, listsec0(1), iofst, 8) <span class="comment">! Discipline</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  iofst = iofst + 8</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, listsec0(2), iofst, 8) <span class="comment">! GRIB edition number</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  iofst = iofst + 8</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  iofst = iofst + 32</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, lengrib, iofst, 32) <span class="comment">! Length of GRIB message</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  iofst = iofst + 32</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  lensec0 = 16</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  ipos = istart + lensec0</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="comment">!     Currently handles only GRIB Edition 2.</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <span class="keywordflow">if</span> (listsec0(2) .ne. 2) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;     print *, <span class="stringliteral">&#39;getfield: can only decode GRIB edition 2.&#39;</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;     ierr = 2</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;     <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="comment">!     Loop through the remaining sections keeping track of the length of</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="comment">!     each. Also keep the latest Grid Definition Section info.  Unpack</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <span class="comment">!     the requested field number.</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordflow">do</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;     <span class="comment">!         Check to see if we are at end of GRIB message</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;     ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // &amp;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;          cgrib(ipos + 3)</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;     <span class="keywordflow">if</span> (ctemp .eq. c7777) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        ipos = ipos + 4</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="comment">!             If end of GRIB message not where expected, issue error</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keywordflow">if</span> (ipos.ne.(istart + lengrib)) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;           print *, <span class="stringliteral">&#39;getfield: &quot;7777&quot; found, but not &#39;</span> &amp;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                ,<span class="stringliteral">&#39;where expected.&#39;</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;           ierr = 4</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;           <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="keywordflow">exit</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;     <span class="comment">!         Get length of Section and Section number</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;     iofst = (ipos - 1) * 8</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;     iofst = iofst + 32</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isecnum, iofst, 8) <span class="comment">! Get Section number</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;     iofst = iofst + 8</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;     <span class="comment">!         If found Section 3, unpack the GDS info using the appropriate</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;     <span class="comment">!         template. Save in case this is the latest grid before the</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;     <span class="comment">!         requested field.</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;     <span class="keywordflow">if</span> (isecnum .eq. 3) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        iofst = iofst - 40    <span class="comment">! reset offset to beginning of section</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="keyword">call </span><a class="code" href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">unpack3</a>(cgrib, lcgrib, iofst, igds, igdstmpl,  &amp;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;             igdslen, ideflist, idefnum, jerr)</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">if</span> (jerr .eq. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;           have3 = .true.</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;           ierr = 10</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;           <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;     <span class="comment">!         If found Section 4, check to see if this field is the one</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;     <span class="comment">!         requested.</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;     <span class="keywordflow">if</span> (isecnum .eq. 4) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        numfld = numfld + 1</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordflow">if</span> (numfld .eq. ifldnum) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;           iofst = iofst - 40 <span class="comment">! reset offset to beginning of section</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;           <span class="keyword">call </span><a class="code" href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">unpack4</a>(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &amp;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                ipdslen, coordlist, numcoord, jerr)</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;           <span class="keywordflow">if</span> (jerr .eq. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;              have4 = .true.</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;           <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;              ierr = 11</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;              <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keywordflow">           endif</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;     <span class="comment">!         If found Section 5, check to see if this field is the one</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;     <span class="comment">!         requested.</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;     <span class="keywordflow">if</span> ((isecnum .eq. 5) .and. (numfld .eq. ifldnum)) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        iofst = iofst - 40    <span class="comment">! reset offset to beginning of section</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="keyword">call </span><a class="code" href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">unpack5</a>(cgrib, lcgrib, iofst, ndpts, idrsnum, &amp;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;             idrstmpl, idrslen, jerr)</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordflow">if</span> (jerr .eq. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;           have5 = .true.</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;           ierr = 12</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;           <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;     <span class="comment">!         If found Section 6, Unpack bitmap. Save in case this is the</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;     <span class="comment">!         latest bitmap before the requested field.</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;     <span class="keywordflow">if</span> (isecnum .eq. 6) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        iofst = iofst - 40    <span class="comment">! reset offset to beginning of section</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="keyword">call </span><a class="code" href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">unpack6</a>(cgrib, lcgrib, iofst, igds(2), ibmap, bmap, &amp;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;             jerr)</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="keywordflow">if</span> (jerr .eq. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;           have6 = .true.</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;           ierr = 13</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;           <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;     <span class="comment">!         If found Section 7, check to see if this field is the one</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;     <span class="comment">!         requested.</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;     <span class="keywordflow">if</span> ((isecnum .eq. 7) .and. (numfld .eq. ifldnum)) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keywordflow">if</span> (idrsnum .eq. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;           <span class="keyword">call </span><a class="code" href="simunpack_8f.html#a5047ba28bbe7d18c4d2385c880ef863c">simunpack</a>(cgrib(ipos + 5), lensec - 6, idrstmpl, &amp;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                ndpts, fld)</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;           have7 = .true.</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">elseif</span> (idrsnum .eq. 2 .or. idrsnum .eq. 3) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;           <span class="keyword">call </span><a class="code" href="comunpack_8f.html#a78a7efb9e450327a66eb02faab53e731">comunpack</a>(cgrib(ipos + 5), lensec - 6, lensec, &amp;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                idrsnum,idrstmpl, ndpts, fld, ier)</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;           <span class="keywordflow">if</span> (ier .ne. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;              ierr = 14</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;              <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="keywordflow">           endif</span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;           have7 = .true.</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <span class="keywordflow">elseif</span> (idrsnum .eq. 50) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;           <span class="keyword">call </span><a class="code" href="simunpack_8f.html#a5047ba28bbe7d18c4d2385c880ef863c">simunpack</a>(cgrib(ipos + 5), lensec - 6, idrstmpl, &amp;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                ndpts - 1, fld(2))</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;           ieee = idrstmpl(5)</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;           <span class="keyword">call </span><a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(ieee, fld(1), 1)</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;           have7 = .true.</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <span class="keywordflow">elseif</span> (idrsnum .eq. 40 .or. idrsnum .eq. 40000) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;           <span class="keyword">call </span><a class="code" href="jpcunpack_8F90.html#a19586f31dfd8afd977d8d62ed37a48a5">jpcunpack</a>(cgrib(ipos + 5), lensec - 5, idrstmpl, &amp;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                ndpts, fld)</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;           have7 = .true.</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordflow">elseif</span> (idrsnum .eq. 41 .or. idrsnum .eq. 40010) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;           <span class="keyword">call </span><a class="code" href="pngunpack_8F90.html#a6c975c7eb4bd5f8a7971420fe6fad457">pngunpack</a>(cgrib(ipos + 5), lensec - 5, idrstmpl, &amp;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                ndpts, fld)</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;           have7 = .true.</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;           print *, <span class="stringliteral">&#39;getfield: Data Representation Template &#39;</span>, &amp;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                idrsnum, <span class="stringliteral">&#39; not yet implemented.&#39;</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;           ierr = 9</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;           <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;     <span class="comment">!         Check to see if we read pass the end of the GRIB message and</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;     <span class="comment">!         missed the terminator string &#39;7777&#39;.</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;     ipos = ipos + lensec      <span class="comment">! Update beginning of section pointer</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;     <span class="keywordflow">if</span> (ipos .gt. (istart + lengrib)) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        print *, <span class="stringliteral">&#39;getfield: &quot;7777&quot;  not found at end&#39;</span> &amp;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;             ,<span class="stringliteral">&#39; of GRIB message.&#39;</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        ierr = 7</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;     <span class="keywordflow">if</span> (have3 .and. have4 .and. have5 .and. have6 .and. have7) &amp;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;          <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="keywordflow">  enddo</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  <span class="comment">!     If exited from above loop, the end of the GRIB message was reached</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  <span class="comment">!     before the requested field was found.</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  print *, <span class="stringliteral">&#39;getfield: GRIB message contained &#39;</span>, numlocal,  &amp;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;       <span class="stringliteral">&#39; different fields.&#39;</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  print *, <span class="stringliteral">&#39;getfield: The request was for the &#39;</span>, ifldnum,  &amp;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;       <span class="stringliteral">&#39; field.&#39;</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;  ierr = 6</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#a4bffc7bcc5d802447811c5a703c1ddfb">getfield</a></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
+<div class="line"><a name="l00374"></a><span class="lineno"><a class="line" href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">  374</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">unpack3</a>(cgrib, lcgrib, iofst, igds, igdstmpl,  &amp;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;     mapgridlen, ideflist, idefnum, ierr)</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160; </div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacegridtemplates.html">gridtemplates</a></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;  <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: igds(*), igdstmpl(*), ideflist(*)</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr, idefnum</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">allocatable</span> :: mapgrid(:)</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;  <span class="keywordtype">integer</span> :: mapgridlen, ibyttem</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;  <span class="keywordtype">logical</span> needext</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; </div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;  <span class="comment">!implicit none additions</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  <span class="keywordtype">integer</span> :: lensec, iret, i, nbits, isign, newmapgridlen</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160; </div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;  ierr = 0</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;  iofst = iofst + 32</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(1), iofst, 8) <span class="comment">! Get source of Grid def.</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;  iofst = iofst + 8</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(2), iofst, 32) <span class="comment">! Get number of grid pts.</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;  iofst = iofst + 32</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(3), iofst, 8) <span class="comment">! Get num octets for opt. list</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;  iofst = iofst + 8</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(4), iofst, 8) <span class="comment">! Get interpret. for opt. list</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;  iofst = iofst + 8</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igds(5), iofst, 16) <span class="comment">! Get Grid Def Template num.</span></div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;  iofst = iofst + 16</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;  <span class="keywordflow">if</span> (igds(1) .eq. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;     <span class="comment">!      if (igds(1).eq.0.OR.igds(1).eq.255) then  ! FOR ECMWF TEST ONLY</span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;     <span class="keyword">allocate</span>(mapgrid(lensec))</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;     <span class="comment">!         Get Grid Definition Template</span></div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacegridtemplates.html#a0d4c8cc82df95376e5555961052670c0">getgridtemplate</a>(igds(5), mapgridlen, mapgrid, needext,  &amp;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;          iret)</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;     <span class="keywordflow">if</span> (iret .ne. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        ierr = 5</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;  <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;     <span class="comment">!        igdstmpl = -1</span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;     mapgridlen = 0</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;     needext = .false.</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160; </div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;  <span class="comment">!     Unpack each value into array igdstmpl from the the appropriate</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;  <span class="comment">!     number of octets, which are specified in corresponding entries in</span></div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;  <span class="comment">!     array mapgrid.</span></div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;  ibyttem = 0</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;  <span class="keywordflow">do</span> i = 1, mapgridlen</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;     nbits = iabs(mapgrid(i)) * 8</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;     <span class="keywordflow">if</span> (mapgrid(i) .ge. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igdstmpl(i), iofst, nbits)</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;     <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igdstmpl(i), iofst + 1, nbits-1)</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        <span class="keywordflow">if</span> (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;     iofst = iofst + nbits</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;     ibyttem = ibyttem + iabs(mapgrid(i))</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="keywordflow">  enddo</span></div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160; </div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;  <span class="comment">!      Check to see if the Grid Definition Template needs to be</span></div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;  <span class="comment">!      extended. The number of values in a specific template may vary</span></div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;  <span class="comment">!      depending on data specified in the &quot;static&quot; part of the template.</span></div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;  <span class="keywordflow">if</span> (needext) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82">extgridtemplate</a>(igds(5), igdstmpl, newmapgridlen, &amp;</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;          mapgrid)</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;     <span class="comment">!         Unpack the rest of the Grid Definition Template</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;     <span class="keywordflow">do</span> i = mapgridlen + 1, newmapgridlen</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        nbits = iabs(mapgrid(i)) * 8</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;        <span class="keywordflow">if</span> (mapgrid(i) .ge. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igdstmpl(i), iofst, nbits)</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, igdstmpl(i), iofst + 1, nbits - &amp;</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;                1)</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;           <span class="keywordflow">if</span> (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        iofst = iofst + nbits</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;        ibyttem = ibyttem + iabs(mapgrid(i))</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;<span class="keywordflow">     enddo</span></div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;     mapgridlen = newmapgridlen</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160; </div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;  <span class="comment">!     Unpack optional list of numbers defining number of points in each</span></div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;  <span class="comment">!     row or column, if included. This is used for non regular grids.</span></div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;  <span class="keywordflow">if</span> (igds(3) .ne. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;     nbits = igds(3) * 8</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;     idefnum = (lensec - 14 - ibyttem) / igds(3)</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a257b7f2466cdf820903102d69ef2f93e">g2_gbytesc</a>(cgrib, ideflist, iofst, nbits, 0, idefnum)</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;     iofst = iofst + (nbits * idefnum)</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;  <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;     idefnum = 0</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapgrid)) <span class="keyword">deallocate</span>(mapgrid)</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">unpack3</a></div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160; </div>
+<div class="line"><a name="l00504"></a><span class="lineno"><a class="line" href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">  504</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">unpack4</a>(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &amp;</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;     mappdslen, coordlist, numcoord, ierr)</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160; </div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacepdstemplates.html">pdstemplates</a></div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;  <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160; </div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;<span class="keywordtype">  real</span>, <span class="keywordtype">intent(out)</span> :: coordlist(*)</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ipdsnum, ipdstmpl(*)</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr, numcoord</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160; </div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;<span class="keywordtype">  real</span>(4), <span class="keywordtype">allocatable</span> :: coordieee(:)</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">allocatable</span> :: mappds(:)</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;  <span class="keywordtype">integer</span> :: mappdslen</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;  <span class="keywordtype">logical</span> needext</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160; </div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;  <span class="comment">!implicit none additions</span></div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;  <span class="keywordtype">integer</span> :: lensec, iret, i, nbits, isign, newmappdslen</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160; </div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;  ierr = 0</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160; </div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;  iofst = iofst + 32</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;  <span class="keyword">allocate</span>(mappds(lensec))</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160; </div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, numcoord, iofst, 16) <span class="comment">! Get num of coordinate values</span></div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;  iofst = iofst + 16</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, ipdsnum, iofst, 16) <span class="comment">! Get Prod. Def Template num.</span></div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;  iofst = iofst + 16</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;  <span class="comment">!     Get Product Definition Template.</span></div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;  <span class="keyword">call </span><a class="code" href="namespacepdstemplates.html#ae982fefe8217f6bafdfafddcdac27198">getpdstemplate</a>(ipdsnum, mappdslen, mappds, needext, iret)</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;  <span class="keywordflow">if</span> (iret.ne.0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;     ierr = 5</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;     <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160; </div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;  <span class="comment">!     Unpack each value into array ipdstmpl from the the appropriate</span></div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;  <span class="comment">!     number of octets, which are specified in corresponding entries in</span></div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;  <span class="comment">!     array mappds.</span></div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;  <span class="keywordflow">do</span> i = 1, mappdslen</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;     nbits = iabs(mappds(i))*8</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;     <span class="keywordflow">if</span> (mappds(i).ge.0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, ipdstmpl(i), iofst, nbits)</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;     <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, ipdstmpl(i), iofst + 1, nbits-1)</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;        <span class="keywordflow">if</span> (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)</div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;     iofst = iofst + nbits</div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;<span class="keywordflow">  enddo</span></div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160; </div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;  <span class="comment">!     Check to see if the Product Definition Template needs to be</span></div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;  <span class="comment">!     extended. The number of values in a specific template may vary</span></div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;  <span class="comment">!     depending on data specified in the &quot;static&quot; part of the template.</span></div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;  <span class="keywordflow">if</span> (needext) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacepdstemplates.html#a0570955986fc8d676e5acd2d990e828d">extpdstemplate</a>(ipdsnum, ipdstmpl, newmappdslen, mappds)</div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160; </div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;     <span class="comment">!         Unpack the rest of the Product Definition Template</span></div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;     <span class="keywordflow">do</span> i = mappdslen + 1, newmappdslen</div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;        nbits = iabs(mappds(i))*8</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;        <span class="keywordflow">if</span> (mappds(i).ge.0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, ipdstmpl(i), iofst, nbits)</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, ipdstmpl(i), iofst + 1, nbits-1)</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;           <span class="keywordflow">if</span> (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;        iofst = iofst + nbits</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="keywordflow">     enddo</span></div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;     mappdslen = newmappdslen</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160; </div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;  <span class="comment">!     Get Optional list of vertical coordinate values after the Product</span></div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;  <span class="comment">!     Definition Template, if necessary.</span></div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;  <span class="keywordflow">if</span> (numcoord .ne. 0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;     <span class="keyword">allocate</span> (coordieee(numcoord))</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a257b7f2466cdf820903102d69ef2f93e">g2_gbytesc</a>(cgrib, coordieee, iofst, 32, 0, numcoord)</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;     <span class="keyword">call </span><a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(coordieee, coordlist, numcoord)</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;     <span class="keyword">deallocate</span> (coordieee)</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;     iofst = iofst + (32*numcoord)</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mappds)) <span class="keyword">deallocate</span>(mappds)</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">unpack4</a></div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160; </div>
+<div class="line"><a name="l00613"></a><span class="lineno"><a class="line" href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">  613</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">unpack5</a>(cgrib, lcgrib, iofst, ndpts, idrsnum,  &amp;</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;     idrstmpl, mapdrslen, ierr)</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160; </div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;  <span class="keywordtype">use </span><a class="code" href="namespacedrstemplates.html">drstemplates</a></div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;  <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160; </div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ndpts, idrsnum, idrstmpl(*)</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160; </div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;  <span class="comment">!      integer, allocatable :: mapdrs(:)</span></div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">allocatable</span> :: mapdrs(:)</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;  <span class="keywordtype">integer</span> :: mapdrslen</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;  <span class="keywordtype">logical</span> needext</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160; </div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;  <span class="comment">!implicit none additions</span></div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;  <span class="keywordtype">integer</span> :: lensec, i, nbits, isign, newmapdrslen, iret</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160; </div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;  ierr = 0</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160; </div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, lensec, iofst, 32) <span class="comment">! Get Length of Section</span></div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;  iofst = iofst + 32</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;  <span class="keyword">allocate</span>(mapdrs(lensec))</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160; </div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, ndpts, iofst, 32) <span class="comment">! Get num of data points</span></div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;  iofst = iofst + 32</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, idrsnum, iofst, 16) <span class="comment">! Get Data Rep Template Num.</span></div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;  iofst = iofst + 16</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;  <span class="comment">!     Gen Data Representation Template</span></div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;  <span class="keyword">call </span><a class="code" href="namespacedrstemplates.html#a289f2f4b832edac2286b1d494df0fc5d">getdrstemplate</a>(idrsnum, mapdrslen, mapdrs, needext, iret)</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;  <span class="keywordflow">if</span> (iret.ne.0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;     ierr = 7</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;     <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160; </div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;  <span class="comment">!     Unpack each value into array ipdstmpl from the the appropriate</span></div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;  <span class="comment">!     number of octets, which are specified in corresponding entries in</span></div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;  <span class="comment">!     array mappds.</span></div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;  <span class="keywordflow">do</span> i = 1, mapdrslen</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;     nbits = iabs(mapdrs(i))*8</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;     <span class="keywordflow">if</span> (mapdrs(i).ge.0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, idrstmpl(i), iofst, nbits)</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;     <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, idrstmpl(i), iofst + 1, nbits-1)</div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        <span class="keywordflow">if</span> (isign.eq.1) idrstmpl(i) = -idrstmpl(i)</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;<span class="keywordflow">     endif</span></div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;     iofst = iofst + nbits</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;<span class="keywordflow">  enddo</span></div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160; </div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;  <span class="comment">!     Check to see if the Data Representation Template needs to be</span></div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;  <span class="comment">!     extended. The number of values in a specific template may vary</span></div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;  <span class="comment">!     depending on data specified in the &quot;static&quot; part of the template.</span></div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;  <span class="keywordflow">if</span> (needext) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;     <span class="keyword">call </span><a class="code" href="namespacedrstemplates.html#a7faeffac8ac21af2be2eda0fc0156ea6">extdrstemplate</a>(idrsnum, idrstmpl, newmapdrslen, mapdrs)</div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;     <span class="comment">!         Unpack the rest of the Data Representation Template</span></div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;     <span class="keywordflow">do</span> i = mapdrslen + 1, newmapdrslen</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;        nbits = iabs(mapdrs(i))*8</div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;        <span class="keywordflow">if</span> (mapdrs(i).ge.0) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, idrstmpl(i), iofst, nbits)</div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, isign, iofst, 1)</div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;           <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, idrstmpl(i), iofst + 1, nbits - 1)</div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;           <span class="keywordflow">if</span> (isign.eq.1) idrstmpl(i) = -idrstmpl(i)</div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;<span class="keywordflow">        endif</span></div>
+<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;        iofst = iofst + nbits</div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;<span class="keywordflow">     enddo</span></div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;     mapdrslen = newmapdrslen</div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;  <span class="keywordflow">if</span> (<span class="keyword">allocated</span>(mapdrs)) <span class="keyword">deallocate</span>(mapdrs)</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">unpack5</a></div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160; </div>
+<div class="line"><a name="l00709"></a><span class="lineno"><a class="line" href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">  709</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">unpack6</a>(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;  <span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160; </div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;  <span class="keywordtype">character(len = 1)</span>, <span class="keywordtype">intent(in)</span> :: cgrib(lcgrib)</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(in)</span> :: lcgrib, ngpts</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(inout)</span> :: iofst</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ibmap</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;  <span class="keywordtype">integer</span>, <span class="keywordtype">intent(out)</span> :: ierr</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;  <span class="keywordtype">logical*1</span>, <span class="keywordtype">intent(out)</span> :: bmap(ngpts)</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160; </div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;  <span class="keywordtype">integer</span> :: intbmap(ngpts)</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160; </div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;  <span class="comment">!implicit none additions</span></div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;  <span class="keywordtype">integer</span> :: j</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160; </div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;  ierr = 0</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160; </div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;  iofst = iofst + 32            <span class="comment">! skip Length of Section</span></div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;  iofst = iofst + 8             <span class="comment">! skip section number</span></div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160; </div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;  <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(cgrib, ibmap, iofst, 8) <span class="comment">! Get bit-map indicator</span></div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;  iofst = iofst + 8</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160; </div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;  <span class="keywordflow">if</span> (ibmap.eq.0) <span class="keywordflow">then</span>      <span class="comment">! Unpack bitmap</span></div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;     <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a257b7f2466cdf820903102d69ef2f93e">g2_gbytesc</a>(cgrib, intbmap, iofst, 1, 0, ngpts)</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;     iofst = iofst + ngpts</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;     <span class="keywordflow">do</span> j = 1, ngpts</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;        bmap(j) = .true.</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;        <span class="keywordflow">if</span> (intbmap(j).eq.0) bmap(j) = .false.</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;<span class="keywordflow">     enddo</span></div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;  <span class="keywordflow">elseif</span> (ibmap.eq.254) <span class="keywordflow">then</span> <span class="comment">! Use previous bitmap</span></div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;     <span class="keywordflow">return</span></div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;  <span class="keywordflow">elseif</span> (ibmap.eq.255) <span class="keywordflow">then</span> <span class="comment">! No bitmap in message</span></div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;     bmap(1:ngpts) = .true.</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;  <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;     print *, <span class="stringliteral">&#39;unpack6: Predefined bitmap &#39;</span>, ibmap, &amp;</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;          <span class="stringliteral">&#39; not recognized.&#39;</span></div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;     ierr = 4</div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="keywordflow">  endif</span></div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">unpack6</a></div>
+<div class="ttc" id="acomunpack_8f_html_a78a7efb9e450327a66eb02faab53e731"><div class="ttname"><a href="comunpack_8f.html#a78a7efb9e450327a66eb02faab53e731">comunpack</a></div><div class="ttdeci">subroutine comunpack(cpack, len, lensec, idrsnum, idrstmpl, ndpts, fld, ier)</div><div class="ttdoc">Unpack a data field that was packed using a complex packing algorithm as defined in the GRIB2 documen...</div><div class="ttdef"><b>Definition:</b> <a href="comunpack_8f_source.html#l00031">comunpack.f:33</a></div></div>
+<div class="ttc" id="ag2__gbytesc_8F90_html_a257b7f2466cdf820903102d69ef2f93e"><div class="ttname"><a href="g2__gbytesc_8F90.html#a257b7f2466cdf820903102d69ef2f93e">g2_gbytesc</a></div><div class="ttdeci">subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)</div><div class="ttdoc">Extract arbitrary size values from a packed bit string, right justifying each value in the unpacked a...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8F90_source.html#l00062">g2_gbytesc.F90:63</a></div></div>
+<div class="ttc" id="ag2__gbytesc_8F90_html_a2d1c1d6ddbb4b4d56637c32faa0ee7e1"><div class="ttname"><a href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a></div><div class="ttdeci">subroutine g2_gbytec(in, iout, iskip, nbits)</div><div class="ttdoc">Extract arbitrary size values from a packed bit string, right justifying each value in the unpacked a...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8F90_source.html#l00019">g2_gbytesc.F90:20</a></div></div>
 <div class="ttc" id="agetfield_8F90_html_a4bffc7bcc5d802447811c5a703c1ddfb"><div class="ttname"><a href="getfield_8F90.html#a4bffc7bcc5d802447811c5a703c1ddfb">getfield</a></div><div class="ttdeci">subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, igdslen, ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, coordlist, numcoord, ndpts, idrsnum, idrstmpl, idrslen, ibmap, bmap, fld, ierr)</div><div class="ttdoc">This subroutine returns the Grid Definition, Product Definition, Bit-map (if applicable),...</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00106">getfield.F90:110</a></div></div>
-<div class="ttc" id="agetfield_8F90_html_a75a590da8a72857e7c0d51c62b64a1bf"><div class="ttname"><a href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">unpack6</a></div><div class="ttdeci">subroutine unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)</div><div class="ttdoc">This subroutine unpacks Section 6 (Bit-Map Section) starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00708">getfield.F90:709</a></div></div>
-<div class="ttc" id="agetfield_8F90_html_a7e1332ed52099a0dd9d86f9b15800291"><div class="ttname"><a href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">unpack4</a></div><div class="ttdeci">subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, mappdslen, coordlist, numcoord, ierr)</div><div class="ttdoc">This subroutine unpacks Section 4 (Product Definition Section) starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00503">getfield.F90:505</a></div></div>
-<div class="ttc" id="agetfield_8F90_html_a9af276fba8f97f4e440a2466415ee3b0"><div class="ttname"><a href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">unpack3</a></div><div class="ttdeci">subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, mapgridlen, ideflist, idefnum, ierr)</div><div class="ttdoc">This subroutine unpacks Section 3 (Grid Definition Section) starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00373">getfield.F90:375</a></div></div>
-<div class="ttc" id="agetfield_8F90_html_adcc218072eac5cf308be17654963fda7"><div class="ttname"><a href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">unpack5</a></div><div class="ttdeci">subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, idrstmpl, mapdrslen, ierr)</div><div class="ttdoc">This subroutine unpacks Section 5 (Data Representation Section) starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00612">getfield.F90:614</a></div></div>
-<div class="ttc" id="ajpcunpack_8f_html_a19586f31dfd8afd977d8d62ed37a48a5"><div class="ttname"><a href="jpcunpack_8f.html#a19586f31dfd8afd977d8d62ed37a48a5">jpcunpack</a></div><div class="ttdeci">subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)</div><div class="ttdoc">This subroutine unpacks a data field that was packed into a JPEG2000 code stream using info from the ...</div><div class="ttdef"><b>Definition:</b> <a href="jpcunpack_8f_source.html#l00020">jpcunpack.f:21</a></div></div>
-<div class="ttc" id="anamespacedrstemplates_html"><div class="ttname"><a href="namespacedrstemplates.html">drstemplates</a></div><div class="ttdoc">This Fortran Module contains info on all the available GRIB2 Data Representation Templates used in Se...</div><div class="ttdef"><b>Definition:</b> <a href="drstemplates_8f_source.html#l00037">drstemplates.f:37</a></div></div>
-<div class="ttc" id="anamespacedrstemplates_html_a289f2f4b832edac2286b1d494df0fc5d"><div class="ttname"><a href="namespacedrstemplates.html#a289f2f4b832edac2286b1d494df0fc5d">drstemplates::getdrstemplate</a></div><div class="ttdeci">subroutine getdrstemplate(number, nummap, map, needext, iret)</div><div class="ttdoc">This subroutine returns DRS template information for a specified Data Representation Template 5....</div><div class="ttdef"><b>Definition:</b> <a href="drstemplates_8f_source.html#l00158">drstemplates.f:159</a></div></div>
-<div class="ttc" id="anamespacedrstemplates_html_a7faeffac8ac21af2be2eda0fc0156ea6"><div class="ttname"><a href="namespacedrstemplates.html#a7faeffac8ac21af2be2eda0fc0156ea6">drstemplates::extdrstemplate</a></div><div class="ttdeci">subroutine extdrstemplate(number, list, nummap, map)</div><div class="ttdoc">This subroutine generates the remaining octet map for a given Data Representation Template,...</div><div class="ttdef"><b>Definition:</b> <a href="drstemplates_8f_source.html#l00198">drstemplates.f:199</a></div></div>
-<div class="ttc" id="anamespacegridtemplates_html"><div class="ttname"><a href="namespacegridtemplates.html">gridtemplates</a></div><div class="ttdoc">This Fortran Module contains info on all the available GRIB2 Grid Definition Templates used in Sectio...</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00045">gridtemplates.f:45</a></div></div>
-<div class="ttc" id="anamespacegridtemplates_html_a0d4c8cc82df95376e5555961052670c0"><div class="ttname"><a href="namespacegridtemplates.html#a0d4c8cc82df95376e5555961052670c0">gridtemplates::getgridtemplate</a></div><div class="ttdeci">subroutine getgridtemplate(number, nummap, map, needext, iret)</div><div class="ttdoc">This subroutine grid template information for a specified Grid Definition Template 3....</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00295">gridtemplates.f:296</a></div></div>
-<div class="ttc" id="anamespacegridtemplates_html_a5f5d50ac236e47cc8965802b8398bb82"><div class="ttname"><a href="namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82">gridtemplates::extgridtemplate</a></div><div class="ttdeci">subroutine extgridtemplate(number, list, nummap, map)</div><div class="ttdoc">This subroutine generates the remaining octet map for a given Grid Definition Template,...</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00340">gridtemplates.f:341</a></div></div>
-<div class="ttc" id="anamespacepdstemplates_html"><div class="ttname"><a href="namespacepdstemplates.html">pdstemplates</a></div><div class="ttdoc">Information on all GRIB2 Product Definition Templates used in Section 4 - the Product Definition Sect...</div><div class="ttdef"><b>Definition:</b> <a href="pdstemplates_8F90_source.html#l00051">pdstemplates.F90:51</a></div></div>
-<div class="ttc" id="anamespacepdstemplates_html_a0570955986fc8d676e5acd2d990e828d"><div class="ttname"><a href="namespacepdstemplates.html#a0570955986fc8d676e5acd2d990e828d">pdstemplates::extpdstemplate</a></div><div class="ttdeci">subroutine extpdstemplate(number, list, nummap, map)</div><div class="ttdoc">This subroutine generates the remaining octet map for a given Product Definition Template,...</div><div class="ttdef"><b>Definition:</b> <a href="pdstemplates_8F90_source.html#l00458">pdstemplates.F90:459</a></div></div>
-<div class="ttc" id="anamespacepdstemplates_html_ae982fefe8217f6bafdfafddcdac27198"><div class="ttname"><a href="namespacepdstemplates.html#ae982fefe8217f6bafdfafddcdac27198">pdstemplates::getpdstemplate</a></div><div class="ttdeci">subroutine getpdstemplate(number, nummap, map, needext, iret)</div><div class="ttdoc">This subroutine returns PDS template information for a specified Product Definition Template.</div><div class="ttdef"><b>Definition:</b> <a href="pdstemplates_8F90_source.html#l00410">pdstemplates.F90:411</a></div></div>
-<div class="ttc" id="apngunpack_8f_html_a6c975c7eb4bd5f8a7971420fe6fad457"><div class="ttname"><a href="pngunpack_8f.html#a6c975c7eb4bd5f8a7971420fe6fad457">pngunpack</a></div><div class="ttdeci">subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)</div><div class="ttdoc">This subroutine unpacks a data field that was packed into a PNG image format using info from the GRIB...</div><div class="ttdef"><b>Definition:</b> <a href="pngunpack_8f_source.html#l00021">pngunpack.f:22</a></div></div>
-<div class="ttc" id="ardieee_8f_html_a291f738ad3d63df5491d5ba7357050c4"><div class="ttname"><a href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a></div><div class="ttdeci">subroutine rdieee(rieee, a, num)</div><div class="ttdoc">This subroutine reads a list of real values in 32-bit IEEE floating point format.</div><div class="ttdef"><b>Definition:</b> <a href="rdieee_8f_source.html#l00015">rdieee.f:16</a></div></div>
+<div class="ttc" id="agetfield_8F90_html_a75a590da8a72857e7c0d51c62b64a1bf"><div class="ttname"><a href="getfield_8F90.html#a75a590da8a72857e7c0d51c62b64a1bf">unpack6</a></div><div class="ttdeci">subroutine unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)</div><div class="ttdoc">This subroutine unpacks Section 6 (Bit-Map Section) starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00709">getfield.F90:710</a></div></div>
+<div class="ttc" id="agetfield_8F90_html_a7e1332ed52099a0dd9d86f9b15800291"><div class="ttname"><a href="getfield_8F90.html#a7e1332ed52099a0dd9d86f9b15800291">unpack4</a></div><div class="ttdeci">subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, mappdslen, coordlist, numcoord, ierr)</div><div class="ttdoc">This subroutine unpacks Section 4 (Product Definition Section) starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00504">getfield.F90:506</a></div></div>
+<div class="ttc" id="agetfield_8F90_html_a9af276fba8f97f4e440a2466415ee3b0"><div class="ttname"><a href="getfield_8F90.html#a9af276fba8f97f4e440a2466415ee3b0">unpack3</a></div><div class="ttdeci">subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, mapgridlen, ideflist, idefnum, ierr)</div><div class="ttdoc">This subroutine unpacks Section 3 (Grid Definition Section) starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00374">getfield.F90:376</a></div></div>
+<div class="ttc" id="agetfield_8F90_html_adcc218072eac5cf308be17654963fda7"><div class="ttname"><a href="getfield_8F90.html#adcc218072eac5cf308be17654963fda7">unpack5</a></div><div class="ttdeci">subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, idrstmpl, mapdrslen, ierr)</div><div class="ttdoc">This subroutine unpacks Section 5 (Data Representation Section) starting at octet 6 of that Section.</div><div class="ttdef"><b>Definition:</b> <a href="getfield_8F90_source.html#l00613">getfield.F90:615</a></div></div>
+<div class="ttc" id="ajpcunpack_8F90_html_a19586f31dfd8afd977d8d62ed37a48a5"><div class="ttname"><a href="jpcunpack_8F90.html#a19586f31dfd8afd977d8d62ed37a48a5">jpcunpack</a></div><div class="ttdeci">subroutine jpcunpack(cpack, len, idrstmpl, ndpts, fld)</div><div class="ttdoc">Unpack a data field from a JPEG2000 code stream.</div><div class="ttdef"><b>Definition:</b> <a href="jpcunpack_8F90_source.html#l00019">jpcunpack.F90:20</a></div></div>
+<div class="ttc" id="anamespacedrstemplates_html"><div class="ttname"><a href="namespacedrstemplates.html">drstemplates</a></div><div class="ttdoc">Handles Data Representation Templates used in Section 5.</div><div class="ttdef"><b>Definition:</b> <a href="drstemplates_8F90_source.html#l00033">drstemplates.F90:33</a></div></div>
+<div class="ttc" id="anamespacedrstemplates_html_a289f2f4b832edac2286b1d494df0fc5d"><div class="ttname"><a href="namespacedrstemplates.html#a289f2f4b832edac2286b1d494df0fc5d">drstemplates::getdrstemplate</a></div><div class="ttdeci">subroutine getdrstemplate(number, nummap, map, needext, iret)</div><div class="ttdoc">Return DRS template information for a specified Data Representation Template.</div><div class="ttdef"><b>Definition:</b> <a href="drstemplates_8F90_source.html#l00156">drstemplates.F90:157</a></div></div>
+<div class="ttc" id="anamespacedrstemplates_html_a7faeffac8ac21af2be2eda0fc0156ea6"><div class="ttname"><a href="namespacedrstemplates.html#a7faeffac8ac21af2be2eda0fc0156ea6">drstemplates::extdrstemplate</a></div><div class="ttdeci">subroutine extdrstemplate(number, list, nummap, map)</div><div class="ttdoc">Generate the remaining octet map for a given Data Representation Template, if required.</div><div class="ttdef"><b>Definition:</b> <a href="drstemplates_8F90_source.html#l00201">drstemplates.F90:202</a></div></div>
+<div class="ttc" id="anamespacegridtemplates_html"><div class="ttname"><a href="namespacegridtemplates.html">gridtemplates</a></div><div class="ttdoc">This Fortran module contains info on all the available GRIB2 Grid Definition Templates used in [Secti...</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00039">gridtemplates.f:39</a></div></div>
+<div class="ttc" id="anamespacegridtemplates_html_a0d4c8cc82df95376e5555961052670c0"><div class="ttname"><a href="namespacegridtemplates.html#a0d4c8cc82df95376e5555961052670c0">gridtemplates::getgridtemplate</a></div><div class="ttdeci">subroutine getgridtemplate(number, nummap, map, needext, iret)</div><div class="ttdoc">This subroutine grid template information for a specified Grid Definition Template 3....</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00289">gridtemplates.f:290</a></div></div>
+<div class="ttc" id="anamespacegridtemplates_html_a5f5d50ac236e47cc8965802b8398bb82"><div class="ttname"><a href="namespacegridtemplates.html#a5f5d50ac236e47cc8965802b8398bb82">gridtemplates::extgridtemplate</a></div><div class="ttdeci">subroutine extgridtemplate(number, list, nummap, map)</div><div class="ttdoc">This subroutine generates the remaining octet map for a given Grid Definition Template,...</div><div class="ttdef"><b>Definition:</b> <a href="gridtemplates_8f_source.html#l00330">gridtemplates.f:331</a></div></div>
+<div class="ttc" id="anamespacepdstemplates_html"><div class="ttname"><a href="namespacepdstemplates.html">pdstemplates</a></div><div class="ttdoc">Information on all GRIB2 Product Definition Templates used in Section 4 - the Product Definition Sect...</div><div class="ttdef"><b>Definition:</b> <a href="pdstemplates_8F90_source.html#l00039">pdstemplates.F90:39</a></div></div>
+<div class="ttc" id="anamespacepdstemplates_html_a0570955986fc8d676e5acd2d990e828d"><div class="ttname"><a href="namespacepdstemplates.html#a0570955986fc8d676e5acd2d990e828d">pdstemplates::extpdstemplate</a></div><div class="ttdeci">subroutine extpdstemplate(number, list, nummap, map)</div><div class="ttdoc">This subroutine generates the remaining octet map for a given Product Definition Template,...</div><div class="ttdef"><b>Definition:</b> <a href="pdstemplates_8F90_source.html#l00430">pdstemplates.F90:431</a></div></div>
+<div class="ttc" id="anamespacepdstemplates_html_ae982fefe8217f6bafdfafddcdac27198"><div class="ttname"><a href="namespacepdstemplates.html#ae982fefe8217f6bafdfafddcdac27198">pdstemplates::getpdstemplate</a></div><div class="ttdeci">subroutine getpdstemplate(number, nummap, map, needext, iret)</div><div class="ttdoc">This subroutine returns PDS template information for a specified Product Definition Template.</div><div class="ttdef"><b>Definition:</b> <a href="pdstemplates_8F90_source.html#l00390">pdstemplates.F90:391</a></div></div>
+<div class="ttc" id="apngunpack_8F90_html_a6c975c7eb4bd5f8a7971420fe6fad457"><div class="ttname"><a href="pngunpack_8F90.html#a6c975c7eb4bd5f8a7971420fe6fad457">pngunpack</a></div><div class="ttdeci">subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)</div><div class="ttdoc">Unpack a data field packed into a PNG image format.</div><div class="ttdef"><b>Definition:</b> <a href="pngunpack_8F90_source.html#l00019">pngunpack.F90:20</a></div></div>
+<div class="ttc" id="ardieee_8f_html_a291f738ad3d63df5491d5ba7357050c4"><div class="ttname"><a href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a></div><div class="ttdeci">subroutine rdieee(rieee, a, num)</div><div class="ttdoc">This subroutine reads a list of real values in 32-bit IEEE floating point format, and copies them to ...</div><div class="ttdef"><b>Definition:</b> <a href="rdieee_8f_source.html#l00014">rdieee.f:15</a></div></div>
 <div class="ttc" id="asimunpack_8f_html_a5047ba28bbe7d18c4d2385c880ef863c"><div class="ttname"><a href="simunpack_8f.html#a5047ba28bbe7d18c4d2385c880ef863c">simunpack</a></div><div class="ttdeci">subroutine simunpack(cpack, len, idrstmpl, ndpts, fld)</div><div class="ttdoc">This subroutine unpacks a data field that was packed using a simple packing algorithm as defined in t...</div><div class="ttdef"><b>Definition:</b> <a href="simunpack_8f_source.html#l00020">simunpack.f:21</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

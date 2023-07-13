@@ -89,7 +89,7 @@ $(document).ready(function(){initNavTree('gf__unpack3_8F90.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 
-<p>This subroutine unpacks Section 3 (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml">Grid Definition Section</a>) of a GRIB2 message.  
+<p>Unpack Section 3 (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml">Grid Definition Section</a>) of a GRIB2 message.  
 <a href="#details">More...</a></p>
 
 <p><a href="gf__unpack3_8F90_source.html">Go to the source code of this file.</a></p>
@@ -97,11 +97,11 @@ $(document).ready(function(){initNavTree('gf__unpack3_8F90.html',''); initResiza
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
 <tr class="memitem:aa256495eea520bcee7b5ee13acae09dd"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">gf_unpack3</a> (cgrib, lcgrib, iofst, igds, igdstmpl, mapgridlen, ideflist, idefnum, ierr)</td></tr>
-<tr class="memdesc:aa256495eea520bcee7b5ee13acae09dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine unpacks Section 3 (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml">Grid Definition Section</a>) of a GRIB2 message, starting at octet 6 of that Section.  <a href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">More...</a><br /></td></tr>
+<tr class="memdesc:aa256495eea520bcee7b5ee13acae09dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unpack Section 3 (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml">Grid Definition Section</a>) of a GRIB2 message, starting at octet 6 of that Section.  <a href="gf__unpack3_8F90.html#aa256495eea520bcee7b5ee13acae09dd">More...</a><br /></td></tr>
 <tr class="separator:aa256495eea520bcee7b5ee13acae09dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This subroutine unpacks Section 3 (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml">Grid Definition Section</a>) of a GRIB2 message. </p>
+<div class="textblock"><p>Unpack Section 3 (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml">Grid Definition Section</a>) of a GRIB2 message. </p>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-05-26 </dd></dl>
 
@@ -175,17 +175,7 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This subroutine unpacks Section 3 (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml">Grid Definition Section</a>) of a GRIB2 message, starting at octet 6 of that Section. </p>
-<h3><a class="anchor" id="autotoc_md12"></a>
-Program History Log</h3>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Date   </th><th class="markdownTableHeadNone">Programmer   </th><th class="markdownTableHeadNone">Comments    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">2000-05-26   </td><td class="markdownTableBodyNone">Stephen Gilbert   </td><td class="markdownTableBodyNone">Initial development.    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2002-01-24   </td><td class="markdownTableBodyNone">Stephen Gilbert   </td><td class="markdownTableBodyNone">Dynamically allocate arrays and pass pointers.   </td></tr>
-</table>
+<p>Unpack Section 3 (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml">Grid Definition Section</a>) of a GRIB2 message, starting at octet 6 of that Section. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">cgrib</td><td>Character array that contains the GRIB2 message. </td></tr>
@@ -199,9 +189,9 @@ Program History Log</h3>
 <li>igds(5) Grid Definition Template Number (<a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml">Code Table 3.1</a>). </li>
 </ul>
 </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">igdstmpl</td><td>Contains the data values for the specified Grid Definition Template (NN=igds(5)). Each element of this integer array contains an entry (in the order specified) of Grid Defintion Template 3.NN. A safe dimension for this array can be obtained in advance from maxvals(2), which is returned from subroutine <a class="el" href="gribinfo_8f.html#ae9618753df7171d5206b10bccc65232e" title="This subroutine searches through a GRIB2 message and returns the number of Local Use Sections and num...">gribinfo()</a>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">igdstmpl</td><td>Contains the data values for the specified Grid Definition Template (NN=igds(5)). Each element of this integer array contains an entry (in the order specified) of Grid Defintion Template 3.NN. A safe dimension for this array can be obtained in advance from maxvals(2), which is returned from subroutine <a class="el" href="gribinfo_8F90.html#ae9618753df7171d5206b10bccc65232e" title="Search through a GRIB2 message and return the number of Local Use Sections and number of gridded fiel...">gribinfo()</a>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">mapgridlen</td><td>Number of elements in igdstmpl. i.e. number of entries in Grid Defintion Template 3.NN (NN=igds(5)). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ideflist</td><td>(Used if igds(3) .ne. 0) This array contains the number of grid points contained in each row (or column). (part of Section 3) A safe dimension for this array can be obtained in advance from maxvals(3), which is returned from subroutine <a class="el" href="gribinfo_8f.html#ae9618753df7171d5206b10bccc65232e" title="This subroutine searches through a GRIB2 message and returns the number of Local Use Sections and num...">gribinfo()</a>. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ideflist</td><td>(Used if igds(3) .ne. 0) This array contains the number of grid points contained in each row (or column). (part of Section 3) A safe dimension for this array can be obtained in advance from maxvals(3), which is returned from subroutine <a class="el" href="gribinfo_8F90.html#ae9618753df7171d5206b10bccc65232e" title="Search through a GRIB2 message and return the number of Local Use Sections and number of gridded fiel...">gribinfo()</a>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">idefnum</td><td>(Used if igds(3) .ne. 0) The number of entries in array ideflist. i.e. number of rows (or columns) for which optional grid points are defined. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">ierr</td><td>Error return code.<ul>
 <li>0 no error.</li>
@@ -215,7 +205,11 @@ Program History Log</h3>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-05-26 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gf__unpack3_8F90_source.html#l00056">56</a> of file <a class="el" href="gf__unpack3_8F90_source.html">gf_unpack3.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gf__unpack3_8F90_source.html#l00050">50</a> of file <a class="el" href="gf__unpack3_8F90_source.html">gf_unpack3.F90</a>.</p>
+
+<p class="reference">References <a class="el" href="gridtemplates_8f_source.html#l00331">gridtemplates::extgridtemplate()</a>, <a class="el" href="g2__gbytesc_8F90_source.html#l00020">g2_gbytec()</a>, <a class="el" href="g2__gbytesc_8F90_source.html#l00063">g2_gbytesc()</a>, and <a class="el" href="gridtemplates_8f_source.html#l00290">gridtemplates::getgridtemplate()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="getdim_8f_source.html#l00022">getdim()</a>, <a class="el" href="getgb2s_8f_source.html#l00080">getgb2s()</a>, <a class="el" href="getpoly_8f_source.html#l00021">getpoly()</a>, and <a class="el" href="gf__getfld_8F90_source.html#l00068">gf_getfld()</a>.</p>
 
 </div>
 </div>
