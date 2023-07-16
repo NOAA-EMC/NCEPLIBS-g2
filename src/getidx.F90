@@ -72,11 +72,11 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
   end interface
 
   ! Free all associated memory and exit.
-  if (lugb .eq. 0 .and. lugi .eq. 0) then
-     print *, 'getidx: Freeing all memory'
+  if (lugb .eq. 0) then
+     !print *, 'getidx: Freeing all memory'
      do i = 1, 10000
         if (associated(idxlist(i)%cbuf)) then
-           print *, 'deallocating ', loc(idxlist(i)%cbuf)
+           !print *, 'deallocating ', loc(idxlist(i)%cbuf)
            deallocate(idxlist(i)%cbuf)
            nullify(idxlist(i)%cbuf)
         endif
@@ -97,7 +97,7 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
   if (lugi .eq. lugb) then      ! force regeneration of index from grib2 file
      if (associated(idxlist(lugb)%cbuf))  &
           deallocate(idxlist(lugb)%cbuf)
-     print *, 'Force regeneration'
+     !print *, 'Force regeneration'
      nullify(idxlist(lugb)%cbuf)
      idxlist(lugb)%nlen = 0
      idxlist(lugb)%nnum = 0
@@ -108,7 +108,7 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      ! associated with unit abs(lugi)
      if (associated(idxlist(lugb)%cbuf))  &
           deallocate(idxlist(lugb)%cbuf)
-     print *, 'Force re-read'
+     !print *, 'Force re-read'
      nullify(idxlist(lugb)%cbuf)
      idxlist(lugb)%nlen = 0
      idxlist(lugb)%nnum = 0
@@ -117,7 +117,7 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
 
   !  check if index already exists in memory
   if (associated(idxlist(lugb)%cbuf)) then
-     print *, 'Index exists in memory!'
+     !print *, 'Index exists in memory!'
      cindex => idxlist(lugb)%cbuf
      nlen = idxlist(lugb)%nlen
      nnum = idxlist(lugb)%nnum
@@ -147,12 +147,17 @@ end subroutine getidx
 
 !> Free all memory associated with the library.
 !>
+!> @param[out] iret integer Return code:
+!> - 0 No error.
+!> - otherwise Error freeing internal resources.
 !> @author Ed Hartnett @date 7/16/23
-subroutine gf_finalize()
+subroutine gf_finalize(iret)
   implicit none
 
+  integer, intent(out) :: iret  
   character(len = 1), pointer, dimension(:) :: cindex
-  integer :: nlen, nnum, iret
+  integer :: nlen, nnum
+
   ! Declare interfaces (required for cbuf pointer).
   interface
      subroutine getidx(lugb,lugi,cbuf,nlen,nnum,irgi)
@@ -162,6 +167,8 @@ subroutine gf_finalize()
      end subroutine getidx
   end interface
 
+  ! Call getidx with 0 for the first parameter, ensuring that the
+  ! internal memory is freed.
   call getidx(0, 0, cindex, nlen, nnum, iret)
 
 end subroutine gf_finalize
