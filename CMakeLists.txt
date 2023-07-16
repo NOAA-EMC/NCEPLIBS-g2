@@ -87,7 +87,7 @@ endif()
 add_subdirectory(src)
 
 # This will cause the memcheck to fail if memory problems are found.
-set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=1")
+set(MEMORYCHECK_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1 --errors-for-leak-kinds=all")
 
 # Turn on unit testing.
 include(CTest)
