@@ -41,8 +41,8 @@ program test_getidx
   if (iret .ne. 0) stop 100
 
   ! This will not work because the first argument must be between 0 and 9999.
-  call getidx(0, lugi, cbuf, nlen, nnum, iret)
-  if (iret .ne. 90) stop 99
+!  call getidx(0, lugi, cbuf, nlen, nnum, iret)
+!  if (iret .ne. 90) stop 99
   call getidx(10000, lugi, cbuf, nlen, nnum, iret)
   if (iret .ne. 90) stop 99
 

@@ -47,6 +47,9 @@ program test_getgb2_mem
      if (ios .ne. 0) stop 11
   end do
 
+  ! Free all memory.
+  call gf_finalize()
+
 end program test_getgb2_mem
 
 ! Read GRIB2 file.
