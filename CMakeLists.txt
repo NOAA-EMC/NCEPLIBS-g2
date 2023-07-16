@@ -36,7 +36,7 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
 endif()
 
 if(${CMAKE_Fortran_COMPILER_ID} MATCHES "^(GNU)$" AND ${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
-  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -w -fallow-argument-mismatch -fallow-invalid-boz")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
 endif()
 
 # Handle user build options.
@@ -86,7 +86,10 @@ endif()
 # Build the code in the source directory.
 add_subdirectory(src)
 
-# Unit testing.
+# This will cause the memcheck to fail if memory problems are found.
+set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=1")
+
+# Turn on unit testing.
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)

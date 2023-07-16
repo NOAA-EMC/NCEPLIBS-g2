@@ -1,11 +1,11 @@
 !> @file
-!> @brief This subroutine unpacks Section 4 ([Product Definition
+!> @brief Unpack Section 4 ([Product Definition
 !> Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml))
 !> of a GRIB2 message.
 !> @author Stephen Gilbert @date 2000-05-26
 
-!> This subroutine unpacks Section 4 ([Product Definition Section]
+!> Unpack Section 4 ([Product Definition Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect4.shtml))
 !> of a GRIB2 message, starting at octet 6 of that Section.
 !>
@@ -70,11 +70,10 @@
         if( allocated(mappds) ) deallocate(mappds)
         return
       endif
-      !
-      !   Unpack each value into array ipdstmpl from the
-      !   the appropriate number of octets, which are specified in
-      !   corresponding entries in array mappds.
-      !
+
+!     Unpack each value into array ipdstmpl from the
+!     the appropriate number of octets, which are specified in
+!     corresponding entries in array mappds.
       istat=0
       if (mappdslen.gt.0) allocate(ipdstmpl(mappdslen),stat=istat)
       if (istat.ne.0) then
@@ -94,13 +93,12 @@
         endif
         iofst=iofst+nbits
       enddo
-      !
+
       !   Check to see if the Product Definition Template needs to be
       !   extended.
       !   The number of values in a specific template may vary
       !   depending on data specified in the "static" part of the
       !   template.
-      !
       if ( needext ) then
         call extpdstemplate(ipdsnum,ipdstmpl,newmappdslen,mappds)
         call realloc(ipdstmpl,mappdslen,newmappdslen,istat)
@@ -119,10 +117,9 @@
         mappdslen=newmappdslen
       endif
       if( allocated(mappds) ) deallocate(mappds)
-      !
+
       !   Get Optional list of vertical coordinate values
       !   after the Product Definition Template, if necessary.
-      !
       nullify(coordlist)
       if ( numcoord .ne. 0 ) then
          allocate (coordieee(numcoord),stat=istat1)
@@ -138,7 +135,5 @@
         deallocate (coordieee)
         iofst=iofst+(32*numcoord)
       endif
-      
-      return    ! End of Section 4 processing
       end
 

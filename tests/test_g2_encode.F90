@@ -122,6 +122,7 @@ program test_g2_encode
   integer :: i
 
   print *, 'Testing g2 library encoding/decoding.'
+  fld = 1
 
   print *, 'Testing g2 library encoding...'
 !  listsec0(1) Discipline-GRIB Master Table Number (Code Table 0.0)

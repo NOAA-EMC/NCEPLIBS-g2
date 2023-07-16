@@ -1,9 +1,9 @@
 !> @file
-!> @brief This subroutine unpacks Section 1 ([Identification Section]
+!> @brief Unpack Section 1 ([Identification Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect1.shtml)).
 !> @author Stephen Gilbert @date 2000-05-26
 
-!> This subroutine unpacks Section 1 ([Identification Section]
+!> Unpack Section 1 ([Identification Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect1.shtml))
 !> of a GRIB2 message, starting at octet 6 of that Section.
 !>
@@ -58,11 +58,10 @@
       call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
       iofst=iofst+32
       iofst=iofst+8     ! skip section number
-      !
-      !   Unpack each value into array ids from the
-      !   the appropriate number of octets, which are specified in
-      !   corresponding entries in array mapid.
-      !
+
+!   Unpack each value into array ids from the
+!   the appropriate number of octets, which are specified in
+!   corresponding entries in array mapid.
       istat=0
       allocate(ids(idslen),stat=istat)
       if (istat.ne.0) then
@@ -76,6 +75,4 @@
         call g2_gbytec(cgrib,ids(i),iofst,nbits)
         iofst=iofst+nbits
       enddo
-      
-      return    ! End of Section 1 processing
       end

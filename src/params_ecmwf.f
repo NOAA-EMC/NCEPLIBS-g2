@@ -219,8 +219,6 @@
 !>    Category g2cat
 !>
 !>    @author Stephen Gilbert @date 2001-06-05
-!>
-
          subroutine param_ecmwf_g1_to_g2(g1val,g1ver,g2disc,g2cat,g2num)
 
            integer,intent(in) :: g1val,g1ver
@@ -229,9 +227,6 @@
            g2disc=255
            g2cat=255
            g2num=255
-! for testing
-!           g2num=g1val
-! for testing
 
            do n=1,MAXPARAM
               if ( paramlist(n)%grib1val.eq.g1val .AND.
@@ -239,9 +234,6 @@
                  g2disc=paramlist(n)%grib2dsc
                  g2cat=paramlist(n)%grib2cat
                  g2num=paramlist(n)%grib2num
-c                print *,g2disc
-c                print *,g2cat
-c                print *,g2num
                  return
               endif
            enddo
@@ -263,8 +255,6 @@ c                print *,g2num
 !>    @param[out] g1ver GRIB1 parameter table version number
 !>
 !>    @author Stephen Gilbert @date 2002-01-04
-!>
-
          subroutine param_ecmwf_g2_to_g1(g2disc,g2cat,g2num,g1val,g1ver)
 
            integer,intent(in) :: g2disc,g2cat,g2num
@@ -272,14 +262,6 @@ c                print *,g2num
 
            g1val=255
            g1ver=255
-
-! for testing
-!           if ( g2disc.eq.255.and.g2cat.eq.255 ) then
-!             g1val=g2num
-!             g1ver=2
-!             return
-!           endif
-! for testing
 
            do n=1,MAXPARAM
               if (paramlist(n)%grib2dsc.eq.g2disc.AND.
