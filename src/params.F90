@@ -3,7 +3,9 @@
 !> @author Stephen Gilbert @date 2001-06-05
 
 !> This Fortran Module contains info on all the available GRIB
-!> Parameters.
+!> Parameters, and their GRIB1 and GRIB2 codes. If both of the GRIB1
+!> codes are 255, that means the parameters is "UNKNOWN" in GRIB1 and
+!> cannot be converted to GRIB1.
 !>
 !> @author Stephen Gilbert @date 2001-06-05
 !> @author Brent Gordon, Boi Vuong
