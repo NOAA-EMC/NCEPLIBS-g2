@@ -24,7 +24,7 @@
 !> @param[out] coordlist Pointer to real array containing floating
 !> point values intended to document the vertical discretisation
 !> associated to model data on hybrid coordinate vertical
-!> levels (part of Section 4).
+!> levels (part of Section 4). Must be deallocated by caller.
 !> @param[out] numcoord Number of values in array coordlist.
 !> @param[out] ierr Error return code.
 !> - 0 no error.

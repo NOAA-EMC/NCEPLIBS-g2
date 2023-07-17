@@ -297,5 +297,8 @@ program test_g2_encode
   if (gfld%ndpts .ne. 4 .or. .not. gfld%unpacked) stop 170
   if (gfld%ifldnum .ne. 1 .or. .not. gfld%expanded) stop 171
 
+  ! Free memory.
+  call gf_free(gfld)
+
   print *, 'SUCESSS!'
 end program test_g2_encode
