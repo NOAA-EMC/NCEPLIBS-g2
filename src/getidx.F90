@@ -14,12 +14,12 @@
 !> is less than zero, then the index is re-read from index file
 !> abs(lugi).
 !>
-!> @note The file unit numbers must be in range 0 - 9999.
+!> @note The file unit numbers must be in range 1 - 9999.
 !>
 !> @param[in] lugb integer unit of the GRIB2 data file.
 !> File must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
-!> this routine.
+!> this routine. If 0, then all saved memory will be released.
 !> @param[in] lugi integer unit of the GRIB2 index file.
 !> If nonzero, file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before
