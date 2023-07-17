@@ -122,6 +122,8 @@ program test_getgb2
 
   ! Free the memory.
   call gf_free(gfld)
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 5
 
   print *, 'OK!'
   print *, 'SUCCESS!'
