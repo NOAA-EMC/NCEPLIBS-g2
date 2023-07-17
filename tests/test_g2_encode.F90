@@ -300,5 +300,6 @@ program test_g2_encode
   ! Free memory.
   call gf_free(gfld)
 
+  print *, 'OK!'
   print *, 'SUCESSS!'
 end program test_g2_encode
