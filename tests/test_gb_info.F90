@@ -8,7 +8,7 @@ program test_gb_info
   ! Length of our message.
   integer, parameter :: lcgrib = 191
   integer, parameter :: lcgrib2 = 195
-  integer :: numfields, maxlocal, numlocal
+  integer :: numfields, maxlocal, numlocal, maxvals(7)
   
   ! Section 0 and 1.
   integer :: listsec0(3), listsec1(13)
@@ -121,6 +121,20 @@ program test_gb_info
   call gb_info(cgrib, lcgrib, listsec0, listsec1, numfields, numlocal, maxlocal, ierr)
   if (ierr .ne. 0) stop 10
   if (numfields .ne. 1 .or. numlocal .ne. 1 .or. maxlocal .ne. 3) stop 11
+
+  ! Test gribinfo() as well. This won't work because we change number of section 1.
+  old_val = cgrib(21)
+  cgrib(21) = char(0)
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, numfields, maxvals, ierr)
+  if (ierr .ne. 3) stop 25
+  cgrib(21) = old_val  
+
+  ! Test gribinfo() as well.
+  call gribinfo(cgrib, lcgrib, listsec0, listsec1, numlocal, numfields, maxvals, ierr)
+  if (ierr .ne. 0) stop 20
+  if (numfields .ne. 1 .or. numlocal .ne. 1) stop 21
+  if (maxvals(1) .ne. 3 .or. maxvals(2) .ne. 58 .or. maxvals(3) .ne. 1 .or. maxvals(4) .ne. 25 &
+       .or. maxvals(5) .ne. 1 .or. maxvals(6) .ne. 10 .or. maxvals(7) .ne. 4) stop 22
 
   print *, 'OK!'
   print *, 'SUCCESS!'
