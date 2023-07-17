@@ -1,12 +1,13 @@
 !> @file
-!> @brief This subroutine searches the number of gridded fields and
-!> the number of Local Use Sections through a GRIB2 message.
+!> @brief Find the number of gridded fields and
+!> Local Use Sections in a GRIB2 message.
 !> @author Stephen Gilbert @date 2000-05-25
 
-!> This subroutine searches through a GRIB2 message and returns the
-!> number of gridded fields found in the message and the number (and
-!> maximum size) of Local Use Sections. Also various checks are
-!> performed to see if the message is a valid GRIB2 message.
+!> Find the number of gridded fields and Local Use Sections in a GRIB2
+!> message. Also various checks are performed to see if the message is a
+!> valid GRIB2 message.
+!>
+!> This function is similar to gribinfo(), but returns less information.
 !>
 !> @param[in] cgrib Character array that contains the GRIB2 message.
 !> @param[in] lcgrib Length (in bytes) of GRIB message in array
@@ -147,7 +148,7 @@
           exit
         endif
         iofst=(ipos-1)*8
-        call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
+        call g2_gbytec(cgrib,lensec,iofst,32) ! Get Length of Section
         iofst=iofst+32
         call g2_gbytec(cgrib,isecnum,iofst,8)         ! Get Section number
         iofst=iofst+8

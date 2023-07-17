@@ -234,6 +234,7 @@ program test_g2_encode
   call gb_info(msg, msg_len, listsec0_in, listsec1_in, &
        numfields, numlocal, maxlocal, ierr)
   if (ierr .ne. 0) stop 10
+  
   ! I don't understand why listsec0_in(1) is 216 instead of 0...
   ! print *, listsec0(1), listsec0_in(1)
   if (listsec0(2) .ne. listsec0_in(2)) stop 11

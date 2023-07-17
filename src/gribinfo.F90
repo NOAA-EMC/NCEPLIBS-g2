@@ -1,10 +1,10 @@
 !> @file
 !> @brief Find the number of Local Use Sections and gridded fields in
-!> a GRIB2 message.
+!> a GRIB2 message, and the maximum sizes of template arrays.
 !> @author Stephen Gilbert @date 2000-05-25
 
-!> Search through a GRIB2 message and return the number of Local Use
-!> Sections and number of gridded fields found in the message.
+!> Find the number of Local Use Sections and gridded fields in
+!> a GRIB2 message, and the maximum sizes of template arrays.
 !>
 !> This subroutine also performs various checks to see if the message
 !> is a valid GRIB2 message. Also, a list of safe array dimensions is
@@ -17,6 +17,8 @@
 !> if their arrays are dimensioned large enough for the data that may
 !> be returned from the above routines, or to dynamically allocate
 !> arrays with a reasonable size.
+!>
+!> This function is similar to gb_info(), but returns more information.
 !>
 !> @note The actual number of values in these arrays will likely be
 !> less than the values calculated by this routine.
