@@ -37,5 +37,6 @@ program test_files
   call gf_finalize(iret)
   if (iret .ne. 0) stop 5
   
+  print *, 'OK!'
   print *, 'SUCCESS!'
 end program test_files
