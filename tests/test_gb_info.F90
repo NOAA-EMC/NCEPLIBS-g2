@@ -11,7 +11,9 @@ program test_gb_info
   integer :: numfields, maxlocal, numlocal, maxvals(7)
   
   ! Section 0 and 1.
-  integer :: listsec0(3), listsec1(13)
+  integer, parameter :: sec1_len = 13
+  integer :: listsec0(3), listsec1(sec1_len)
+  integer :: expected_listsec1(sec1_len) = (/ 7, 4, 2, 24, 0, 2021, 11, 13, 15, 59, 59, 1, 0/)
 
   ! This is a GRIB2 message.
   character :: cgrib(lcgrib2) = (/  char( 71), char( 82),&
@@ -56,7 +58,7 @@ program test_gb_info
        & char(  0), char(  0), char(  0), char(  0) /)
  
   character :: old_val, ov2, ov3, ov4
-  integer :: ierr
+  integer :: ierr, i
 
   print *, 'Testing gb_info(), explect and ignore error messages.'
 
@@ -121,6 +123,10 @@ program test_gb_info
   call gb_info(cgrib, lcgrib, listsec0, listsec1, numfields, numlocal, maxlocal, ierr)
   if (ierr .ne. 0) stop 10
   if (numfields .ne. 1 .or. numlocal .ne. 1 .or. maxlocal .ne. 3) stop 11
+  if (listsec0(1) .ne. 0 .or. listsec0(2) .ne. 2 .or. listsec0(3) .ne. 191) stop 12
+  do i = 1, sec1_len
+     if (listsec1(i) .ne. expected_listsec1(i)) stop 13
+  end do
 
   ! Test gribinfo() as well. This won't work because we change number of section 1.
   old_val = cgrib(21)
@@ -135,6 +141,10 @@ program test_gb_info
   if (numfields .ne. 1 .or. numlocal .ne. 1) stop 21
   if (maxvals(1) .ne. 3 .or. maxvals(2) .ne. 58 .or. maxvals(3) .ne. 1 .or. maxvals(4) .ne. 25 &
        .or. maxvals(5) .ne. 1 .or. maxvals(6) .ne. 10 .or. maxvals(7) .ne. 4) stop 22
+  if (listsec0(1) .ne. 0 .or. listsec0(2) .ne. 2 .or. listsec0(3) .ne. 191) stop 12
+  do i = 1, sec1_len
+     if (listsec1(i) .ne. expected_listsec1(i)) stop 13
+  end do
 
   print *, 'OK!'
   print *, 'SUCCESS!'

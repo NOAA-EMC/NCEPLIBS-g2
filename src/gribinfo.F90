@@ -18,6 +18,8 @@
 !> be returned from the above routines, or to dynamically allocate
 !> arrays with a reasonable size.
 !>
+!> This function is similar to gb_info(), but returns more information.
+!>
 !> @note The actual number of values in these arrays will likely be
 !> less than the values calculated by this routine.
 !>

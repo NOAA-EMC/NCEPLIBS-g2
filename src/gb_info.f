@@ -7,6 +7,8 @@
 !> message. Also various checks are performed to see if the message is a
 !> valid GRIB2 message.
 !>
+!> This function is similar to gribinfo(), but returns less information.
+!>
 !> @param[in] cgrib Character array that contains the GRIB2 message.
 !> @param[in] lcgrib Length (in bytes) of GRIB message in array
 !> cgrib.
