@@ -34,8 +34,8 @@ program test_files
 
   ! Free memory.
   call gf_free(gfld)
-  call gf_finalize(ierr)
-  if (ierr .ne. 0) stop 5
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 5
   
   print *, 'SUCCESS!'
 end program test_files
