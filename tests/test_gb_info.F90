@@ -7,43 +7,14 @@ program test_gb_info
 
   ! Length of our message.
   integer, parameter :: lcgrib = 191
+  integer, parameter :: lcgrib2 = 195
   integer :: numfields, maxlocal, numlocal
   
   ! Section 0 and 1.
   integer :: listsec0(3), listsec1(13)
 
-  ! Section 2.
-  integer, parameter :: lcsec2 = 3
-  character :: csec2(lcsec2) = (/ achar(1), achar(2), achar(3) /)
-
-  ! Section 3.
-  integer, parameter :: expected_len_sec3 = 72
-  integer, parameter :: igdstmplen = 19
-  integer, parameter :: idefnum = 0
-  integer, parameter :: ndata = 4
-  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect3.shtml
-  integer :: igds(5) = (/ 0, ndata, 0, 0, 0/)
-  ! See https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp3-0.shtml
-  integer :: igdstmpl(igdstmplen) = (/ 0, 1, 1, 1, 1, 1, 1, 2, 2, 0, 0, 45, 91, 0, 55, 101, 5, 5, 0 /)
-  integer :: ideflist(idefnum)
-
-  ! Sections 4-7.
-  integer :: ipdsnum
-  integer, parameter :: ipdstmplen = 15, numcoord = 0
-  integer :: ipdstmpl(ipdstmplen)
-  integer :: coordlist(1)
-  integer :: idrsnum = 0
-  integer, parameter :: idrstmplen = 5
-  integer :: idrstmpl(idrstmplen)
-  integer, parameter :: ngrdpts = 4, ibmap = 255
-  logical :: bmap(1)
-  real :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
-
-  ! Section 8
-  integer :: lengrib
-
   ! This is a GRIB2 message.
-  character :: cgrib(lcgrib) = (/  char( 71), char( 82),&
+  character :: cgrib(lcgrib2) = (/  char( 71), char( 82),&
        & char( 73), char( 66), char(  0), char(  0), char(  0),&
        & char(  2), char(  0), char(  0), char(  0), char(  0),&
        & char(  0), char(  0), char(  0), char(191), char(  0),&
@@ -81,10 +52,11 @@ program test_gb_info
        & char(  0), char(  0), char(  0), char(  6), char(  6),&
        & char(255), char(  0), char(  0), char(  0), char(  9),&
        & char(  7), char(  0), char(  1), char(  1), char(  2),&
-       & char( 55), char( 55), char( 55), char( 55) /)
-  
+       & char( 55), char( 55), char( 55), char( 55), &
+       & char(  0), char(  0), char(  0), char(  0) /)
+ 
   character :: old_val, ov2, ov3, ov4
-  integer :: i, ierr
+  integer :: ierr
 
   print *, 'Testing gb_info(), explect and ignore error messages.'
 
@@ -137,7 +109,7 @@ program test_gb_info
   if (ierr .ne. 5) stop 5
   cgrib(190) = old_val  
 
-  ! Change end of message, then try gb_info() - will
+  ! Change a section number, then try gb_info() - will
   ! not work.
   old_val = cgrib(42)
   cgrib(42) = char(0)
