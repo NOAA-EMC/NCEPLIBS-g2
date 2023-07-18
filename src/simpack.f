@@ -140,7 +140,7 @@ C     real(8) :: rmin,rmax
 
 
 !     Fill in ref value and number of bits in Template 5.0
-      rmin4 = rmin
+      rmin4 = real(rmin, 4)
       call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
       iref=transfer(ref,iref)
       idrstmpl(1)=iref

@@ -234,7 +234,7 @@
       ! after the Product Definition Template, if necessary.
       if (numcoord .ne. 0) then
          do i = 1, numcoord
-            coordlist_4(i) = coordlist(i)
+            coordlist_4(i) = real(coordlist(i), 4)
          end do
         call mkieee(coordlist_4, coordieee, numcoord)
         call g2_sbytesc(cgrib,coordieee,iofst,32,0,numcoord)
