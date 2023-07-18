@@ -11,6 +11,27 @@ set(lib_name ${PROJECT_NAME})
 
 include(GNUInstallDirs)
 
+# Handle user build options.
+option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
+option(FTP_LARGE_TEST_FILES "Fetch and test with very large files on FTP site." OFF)
+option(FTP_EXTRA_TEST_FILES "Test with files not yet available via FTP." OFF)
+option(LOGGING "Turn on internal logging messages. Only useful to g2 developers." OFF)
+option(BUILD_4 "Build libg2_4.a" ON)
+option(BUILD_D "Build libg2_d.a" ON)
+option(BUILD_WITH_W3EMC "Build with NCEPLIBS-w3emc, enabling some GRIB1 functionality" ON)
+
+# Developers can use this option to specify a local directory which
+# holds the test files. They will be copied instead of fetching the
+# files via FTP.
+SET(TEST_FILE_DIR "." CACHE STRING "Check this directory for test files before using FTP.")
+message(STATUS "Finding test data files in directory ${TEST_FILE_DIR}.")
+
+# Set pre-processor symbol if logging is desired.
+if(LOGGING)
+  add_definitions(-DLOGGING)
+endif()
+
 # Handle build type.
 if(NOT CMAKE_BUILD_TYPE MATCHES "^(Debug|Release|RelWithDebInfo|MinSizeRel)$")
   message(STATUS "Setting build type to 'Release' as none was specified.")
@@ -37,25 +58,6 @@ endif()
 
 if(${CMAKE_Fortran_COMPILER_ID} MATCHES "^(GNU)$" AND ${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch")
-endif()
-
-# Handle user build options.
-option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
-option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
-option(LOGGING "Turn on internal logging messages. Only useful to g2 developers." OFF)
-option(BUILD_4 "Build libg2_4.a" ON)
-option(BUILD_D "Build libg2_d.a" ON)
-option(BUILD_WITH_W3EMC "Build with NCEPLIBS-w3emc, enabling some GRIB1 functionality" ON)
-
-# Developers can use this option to specify a local directory which
-# holds the test files. They will be copied instead of fetching the
-# files via FTP.
-SET(TEST_FILE_DIR "." CACHE STRING "Check this directory for test files before using FTP.")
-message(STATUS "Finding test data files in directory ${TEST_FILE_DIR}.")
-
-# Set pre-processor symbol if logging is desired.
-if(LOGGING)
-  add_definitions(-DLOGGING)
 endif()
 
 # There was a bug in jasper for the intel compiler that was fixed in
