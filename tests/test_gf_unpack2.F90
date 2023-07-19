@@ -94,7 +94,7 @@ program test_gf_unpack2
     print *, 'Testging gf_unpack2'
 
     ! Printing all offsets which return as section 2 in gf_unpack2
-    print *,'Offsets that give section 2:'
+    print *,''//NEW_LINE('A')//'Offsets that give section 2:'
 
     do i=1, 200
         lensec2 = 0
@@ -108,9 +108,9 @@ program test_gf_unpack2
     end do
 
     ! Attempting to run gf_unpack2 code with iofst=129
-    print *,'Running ofst 129 through gf_unpack2 code ...'
+    print *,''//NEW_LINE('A')//'Running ofst 129 through gf_unpack2 code ...'
 
-    allocate(csec2(100))
+    !allocate(csec2(100))
     nullify(csec2)
     lensec2 = 0
     tmp_ofst = 129
@@ -125,10 +125,11 @@ program test_gf_unpack2
     allocate(csec2(lensec2),stat=istat)
     !print *, '2'
     print *, 'istat: ', istat
+    deallocate(csec2)
 
     ! Actual test code
 
-    print *,'Calling gf_unpack2 ...'
+    print *,''//NEW_LINE('A')//'Calling gf_unpack2 ...'
 
     allocate(csec2(100))
 
@@ -136,8 +137,11 @@ program test_gf_unpack2
     iofst = 129
     call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
     if (ierr .ne. 0) stop 1
+    deallocate(csec2)
+    print *,'Offset'
     ! Offset not to section 2
     iofst = 130
+    allocate(csec2(100))
     call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
     if (ierr .ne. 6) stop 2
     ! Incorrect offset to section 2
@@ -169,6 +173,6 @@ program test_gf_unpack2
     !deallocate(csec2)
 
 
-    print *, 'SUCCESS!'
+    print *, ''//NEW_LINE('A')//'SUCCESS!'
   end program test_gf_unpack2
   
