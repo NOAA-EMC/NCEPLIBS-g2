@@ -93,6 +93,9 @@ program test_gf_unpack2
 
     print *, 'Testging gf_unpack2'
 
+    call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
+    deallocate(csec2)
+
     ! Printing all offsets which return as section 2 in gf_unpack2
     print *,''//NEW_LINE('A')//'Offsets that give section 2:'
 
@@ -109,6 +112,8 @@ program test_gf_unpack2
 
     ! Attempting to run gf_unpack2 code with iofst=129
     print *,''//NEW_LINE('A')//'Running ofst 129 through gf_unpack2 code ...'
+
+
 
     !allocate(csec2(100))
     nullify(csec2)
