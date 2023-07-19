@@ -10,7 +10,7 @@ program test_gf_unpack2
     integer :: k1, k2, k3, k4, k5, k6, k7, k8, k9, k10
     integer :: n1, n2, n3, nan, fgrib_len
     integer :: iofst, lensec2, ierr
-    !integer :: i, ipos, isecnum, lensec, out, istat, tmp_ofst
+    integer :: i, ipos, isecnum, lensec, out, istat, tmp_ofst
     character(len=1),pointer,dimension(:) :: csec2
 
     k1=6371200                   ! Radius of the earth
@@ -92,12 +92,50 @@ program test_gf_unpack2
     & "7", "7", "7", "7" /) 
 
     print *, 'Testging gf_unpack2'
+
+    ! Printing all offsets which return as section 2 in gf_unpack2
+    print *,'Offsets that give section 2:'
+
+    do i=1, 200
+        lensec2 = 0
+        call g2_gbytec(fgrib,lensec,i,32)
+        iofst=i+32    
+        lensec2=lensec-5
+        call g2_gbytec(fgrib,isecnum,iofst,8)
+        iofst=iofst+8     
+        ipos=(iofst/8)+1
+        if (isecnum .eq. 2) print *, 'Offset: ', i, ', sec2 length: ', lensec2
+    end do
+
+    ! Attempting to run gf_unpack2 code with iofst=129
+    print *,'Running ofst 129 through gf_unpack2 code ...'
+
+    allocate(csec2(100))
+    nullify(csec2)
+    lensec2 = 0
+    tmp_ofst = 129
+    call g2_gbytec(fgrib,lensec,tmp_ofst,32)
+    tmp_ofst=tmp_ofst+32    
+    lensec2=lensec-5
+    call g2_gbytec(fgrib,isecnum,tmp_ofst,8)
+    tmp_ofst=tmp_ofst+8     
+    ipos=(tmp_ofst/8)+1
+    print *,'secnum: ', isecnum, ', lensec2: ', lensec2
+    !print *, '1'
+    allocate(csec2(lensec2),stat=istat)
+    !print *, '2'
+    print *, 'istat: ', istat
+
+    ! Actual test code
+
+    print *,'Calling gf_unpack2 ...'
+
     allocate(csec2(100))
 
     ! Offset to section 2
-    !iofst = 129
-    !call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
-    !if (ierr .ne. 0) stop 1
+    iofst = 129
+    call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
+    if (ierr .ne. 0) stop 1
     ! Offset not to section 2
     iofst = 130
     call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
@@ -111,32 +149,7 @@ program test_gf_unpack2
 
     ! Temp testing code
 
-    !do i=1, 200
-    !    lensec2 = 0
-    !    call g2_gbytec(fgrib,lensec,i,32)
-    !    iofst=i+32    
-    !    lensec2=lensec-5
-    !    call g2_gbytec(fgrib,isecnum,iofst,8)
-    !    iofst=iofst+8     
-    !    ipos=(iofst/8)+1
-    !    if (isecnum .eq. 2) print *, 'i: ', i, ', lensec2: ', lensec2
-    !end do
 
-    !allocate(csec2(100))
-    !nullify(csec2)
-    !lensec2 = 0
-    !tmp_ofst = 129
-    !call g2_gbytec(fgrib,lensec,tmp_ofst,32)
-    !tmp_ofst=tmp_ofst+32    
-    !lensec2=lensec-5
-    !call g2_gbytec(fgrib,isecnum,tmp_ofst,8)
-    !tmp_ofst=tmp_ofst+8     
-    !ipos=(tmp_ofst/8)+1
-    !print *,'secnum: ', isecnum, ', lensec2: ', lensec2
-    !print *, '1'
-    !allocate(csec2(lensec2),stat=istat)
-    !print *, '2'
-    !print *, 'istat: ', istat
     !iofst = 129
     !deallocate(csec2)
     !allocate(csec2(100))
@@ -154,10 +167,6 @@ program test_gf_unpack2
     !    end if
     !end do
     !deallocate(csec2)
-
-
-    ! i=81: secnum = 2, lensec2 = -5
-    ! i=24: lensec2 = secnum = 2, 1107296251
 
 
     print *, 'SUCCESS!'
