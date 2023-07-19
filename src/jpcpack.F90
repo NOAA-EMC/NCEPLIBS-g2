@@ -146,7 +146,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   endif
 
   !  Fill in ref value and number of bits in Template 5.0
-  rmin4 = rmin
+  rmin4 = real(rmin, 4)
   call mkieee(rmin4,ref,1)   ! ensure reference value is IEEE format
   !      call g2_gbytec(ref,idrstmpl(1),0,32)
   iref=transfer(ref,iref)
