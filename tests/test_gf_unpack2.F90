@@ -92,7 +92,8 @@ program test_gf_unpack2
     & "7", "7", "7", "7" /) 
 
     print *, 'Testging gf_unpack2'
-
+    
+    iofst = 129
     call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
     deallocate(csec2)
 
