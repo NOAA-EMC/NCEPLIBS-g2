@@ -89,7 +89,7 @@ $(document).ready(function(){initNavTree('gribinfo_8F90.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 
-<p>Find the number of Local Use Sections and gridded fields in a GRIB2 message.  
+<p>Find the number of Local Use Sections and gridded fields in a GRIB2 message, and the maximum sizes of template arrays.  
 <a href="#details">More...</a></p>
 
 <p><a href="gribinfo_8F90_source.html">Go to the source code of this file.</a></p>
@@ -97,11 +97,11 @@ $(document).ready(function(){initNavTree('gribinfo_8F90.html',''); initResizable
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
 <tr class="memitem:ae9618753df7171d5206b10bccc65232e"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gribinfo_8F90.html#ae9618753df7171d5206b10bccc65232e">gribinfo</a> (cgrib, lcgrib, listsec0, listsec1, numlocal, numfields, maxvals, ierr)</td></tr>
-<tr class="memdesc:ae9618753df7171d5206b10bccc65232e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search through a GRIB2 message and return the number of Local Use Sections and number of gridded fields found in the message.  <a href="gribinfo_8F90.html#ae9618753df7171d5206b10bccc65232e">More...</a><br /></td></tr>
+<tr class="memdesc:ae9618753df7171d5206b10bccc65232e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the number of Local Use Sections and gridded fields in a GRIB2 message, and the maximum sizes of template arrays.  <a href="gribinfo_8F90.html#ae9618753df7171d5206b10bccc65232e">More...</a><br /></td></tr>
 <tr class="separator:ae9618753df7171d5206b10bccc65232e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Find the number of Local Use Sections and gridded fields in a GRIB2 message. </p>
+<div class="textblock"><p>Find the number of Local Use Sections and gridded fields in a GRIB2 message, and the maximum sizes of template arrays. </p>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-05-25 </dd></dl>
 
@@ -169,9 +169,10 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Search through a GRIB2 message and return the number of Local Use Sections and number of gridded fields found in the message. </p>
+<p>Find the number of Local Use Sections and gridded fields in a GRIB2 message, and the maximum sizes of template arrays. </p>
 <p>This subroutine also performs various checks to see if the message is a valid GRIB2 message. Also, a list of safe array dimensions is returned for use in allocating return arrays from routines <a class="el" href="getlocal_8f.html#a8a95b82becb1fddb48f1fc08bb7a5717" title="This subroutine returns the contents of Section 2 from a GRIB2 message.">getlocal()</a>, <a class="el" href="gettemplates_8f.html#a6d80aa3be7181f71af7b6ac53be0ec76" title="This subroutine returns the Grid Definition, and Product Definition for a given data field.">gettemplates()</a>, and getfields().</p>
 <p>Array maxvals contains the maximum possible number of values that will be returned in argument arrays for routines <a class="el" href="getlocal_8f.html#a8a95b82becb1fddb48f1fc08bb7a5717" title="This subroutine returns the contents of Section 2 from a GRIB2 message.">getlocal()</a>, <a class="el" href="gettemplates_8f.html#a6d80aa3be7181f71af7b6ac53be0ec76" title="This subroutine returns the Grid Definition, and Product Definition for a given data field.">gettemplates()</a> and getfields(). Users can use this info to determine if their arrays are dimensioned large enough for the data that may be returned from the above routines, or to dynamically allocate arrays with a reasonable size.</p>
+<p>This function is similar to <a class="el" href="gb__info_8f.html#a56f9a0b651490e6240eb18fc12754e17" title="Find the number of gridded fields and Local Use Sections in a GRIB2 message.">gb_info()</a>, but returns more information.</p>
 <dl class="section note"><dt>Note</dt><dd>The actual number of values in these arrays will likely be less than the values calculated by this routine.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -226,7 +227,7 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2000-05-25 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gribinfo_8F90_source.html#l00076">76</a> of file <a class="el" href="gribinfo_8F90_source.html">gribinfo.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gribinfo_8F90_source.html#l00078">78</a> of file <a class="el" href="gribinfo_8F90_source.html">gribinfo.F90</a>.</p>
 
 <p class="reference">References <a class="el" href="g2__gbytesc_8F90_source.html#l00020">g2_gbytec()</a>.</p>
 

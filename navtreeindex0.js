@@ -112,6 +112,7 @@ var NAVTREEINDEX0 =
 "getgb2s_8f_source.html":[7,0,24],
 "getidx_8F90.html":[7,0,25],
 "getidx_8F90.html#a681cc6ee1b2c79c57285604831ce95dd":[7,0,25,0],
+"getidx_8F90.html#ac02dafd6109baa69a66dc278d6b0c083":[7,0,25,1],
 "getidx_8F90_source.html":[7,0,25],
 "getlocal_8f.html":[7,0,26],
 "getlocal_8f.html#a8a95b82becb1fddb48f1fc08bb7a5717":[7,0,26,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "namespacedrstemplates.html#structdrstemplates_1_1drstemplate":[7,0,8,0],
 "namespaceg2grids.html":[5,1,1],
 "namespaceg2grids.html#a2cd75c04b471c7b88e921f0051d69f3d":[5,1,1,0],
-"namespaceg2grids.html#a3189c0bf23a43b2088d020cbdc78f15f":[5,1,1,5],
-"namespaceg2grids.html#a56a2c4fcd16e58123d22462da272f67e":[5,1,1,3]
+"namespaceg2grids.html#a3189c0bf23a43b2088d020cbdc78f15f":[5,1,1,5]
 };

@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('jpcpack_8F90_source.html',''); initRes
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="keywordflow">  endif</span></div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="comment">!  Fill in ref value and number of bits in Template 5.0</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  rmin4 = rmin</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  rmin4 = real(rmin, 4)</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keyword">call </span><a class="code" href="mkieee_8f.html#a375998969cdd6bf0800a5d3c69152aac">mkieee</a>(rmin4,ref,1)   <span class="comment">! ensure reference value is IEEE format</span></div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="comment">!      call g2_gbytec(ref,idrstmpl(1),0,32)</span></div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  iref=transfer(ref,iref)</div>

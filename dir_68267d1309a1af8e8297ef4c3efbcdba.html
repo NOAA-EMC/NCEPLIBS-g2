@@ -129,7 +129,7 @@ Files</h2></td></tr>
 <tr class="memdesc:g2grids_8F90"><td class="mdescLeft">&#160;</td><td class="mdescRight">This Fortran Module allows access to predefined GRIB2 Grid Definition Templates (GDT) stored in a file. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gb__info_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gb__info_8f.html">gb_info.f</a> <a href="gb__info_8f_source.html">[code]</a></td></tr>
-<tr class="memdesc:gb__info_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine searches the number of gridded fields and the number of Local Use Sections through a GRIB2 message. <br /></td></tr>
+<tr class="memdesc:gb__info_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the number of gridded fields and Local Use Sections in a GRIB2 message. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gdt2gds_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gdt2gds_8f.html">gdt2gds.f</a> <a href="gdt2gds_8f_source.html">[code]</a></td></tr>
 <tr class="memdesc:gdt2gds_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert grid information from a GRIB2 grid to GRIB1 GDS info. <br /></td></tr>
@@ -171,7 +171,7 @@ Files</h2></td></tr>
 <tr class="memdesc:getlocal_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine returns the contents of Section 2 from a GRIB2 message. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:getpoly_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="getpoly_8f.html">getpoly.f</a> <a href="getpoly_8f_source.html">[code]</a></td></tr>
-<tr class="memdesc:getpoly_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine returns the J, K, and M pentagonal resolution parameters specified in a GRIB2 Grid Definition Section. <br /></td></tr>
+<tr class="memdesc:getpoly_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the J, K, and M pentagonal resolution parameters specified in a GRIB2 Grid Definition Section. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gettemplates_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gettemplates_8f.html">gettemplates.f</a> <a href="gettemplates_8f_source.html">[code]</a></td></tr>
 <tr class="memdesc:gettemplates_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine returns the Grid Definition, and Product Definition for a given data field. <br /></td></tr>
@@ -210,13 +210,13 @@ Files</h2></td></tr>
 <tr class="memdesc:gribend_8F90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finalize a GRIB2 message after all grids and fields have been added. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gribinfo_8F90"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gribinfo_8F90.html">gribinfo.F90</a> <a href="gribinfo_8F90_source.html">[code]</a></td></tr>
-<tr class="memdesc:gribinfo_8F90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the number of Local Use Sections and gridded fields in a GRIB2 message. <br /></td></tr>
+<tr class="memdesc:gribinfo_8F90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the number of Local Use Sections and gridded fields in a GRIB2 message, and the maximum sizes of template arrays. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gridtemplates_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gridtemplates_8f.html">gridtemplates.f</a> <a href="gridtemplates_8f_source.html">[code]</a></td></tr>
 <tr class="memdesc:gridtemplates_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This Fortran module contains info on all the available GRIB2 Grid Definition Templates used in Section 3 - the Grid Definition Section (GDS). <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:intmath_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="intmath_8f.html">intmath.f</a> <a href="intmath_8f_source.html">[code]</a></td></tr>
-<tr class="memdesc:intmath_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define math functions used by <a class="el" href="compack_8f.html#ae1301bac22c521b15e07191f49a9d296" title="This subroutine supports GRIB2 complex packing templates with or without spatial differences,...">compack()</a>, <a class="el" href="simpack_8f.html#a8ad780e9cc53e95db8cbbbe5ee703411" title="This subroutine packs up a data field using a simple packing algorithm as defined in the GRIB2 docume...">simpack()</a>, and <a class="el" href="misspack_8f.html#a3e22bdf3c44a3260e53044541808fea6" title="Pack up a data field using a GRIB2 algorithm with missing value management.">misspack()</a>. <br /></td></tr>
+<tr class="memdesc:intmath_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define math functions used by <a class="el" href="compack_8f.html#ae1301bac22c521b15e07191f49a9d296" title="This subroutine supports GRIB2 complex packing templates with or without spatial differences,...">compack()</a>, <a class="el" href="simpack_8f.html#a8ad780e9cc53e95db8cbbbe5ee703411" title="Pack up a data field using a simple packing algorithm as defined in the GRIB2 documention.">simpack()</a>, and <a class="el" href="misspack_8f.html#a3e22bdf3c44a3260e53044541808fea6" title="Pack up a data field using a GRIB2 algorithm with missing value management.">misspack()</a>. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ixgb2_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ixgb2_8f.html">ixgb2.f</a> <a href="ixgb2_8f_source.html">[code]</a></td></tr>
 <tr class="memdesc:ixgb2_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate an index record for each field in a GRIB2 message. <br /></td></tr>
@@ -270,7 +270,7 @@ Files</h2></td></tr>
 <tr class="memdesc:reduce_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine determines groups of variable size. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:simpack_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simpack_8f.html">simpack.f</a> <a href="simpack_8f_source.html">[code]</a></td></tr>
-<tr class="memdesc:simpack_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine packs up a data field using simple packing algorithm. <br /></td></tr>
+<tr class="memdesc:simpack_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pack up a data field using simple packing algorithm. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:simunpack_8f"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simunpack_8f.html">simunpack.f</a> <a href="simunpack_8f_source.html">[code]</a></td></tr>
 <tr class="memdesc:simunpack_8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This subroutine packs up a data field. <br /></td></tr>
