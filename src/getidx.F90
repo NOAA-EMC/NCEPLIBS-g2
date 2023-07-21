@@ -14,6 +14,12 @@
 !> is less than zero, then the index is re-read from index file
 !> abs(lugi).
 !>
+!> This subroutine allocates memory and stores the resulting pointers
+!> in an array that is a Fortran "save" variable. The result is that
+!> the memory will not be freed by the library and cannot be reached
+!> by the caller. To free this memory call gf_finalize() after all
+!> library operations are complete.
+!>
 !> @note The file unit numbers must be in range 1 - 9999.
 !>
 !> @param[in] lugb integer unit of the GRIB2 data file.
