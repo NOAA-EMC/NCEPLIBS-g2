@@ -27,6 +27,12 @@
 !> routine. Each component of the gribfield type is described in
 !> the OUTPUT ARGUMENT LIST section below.
 !>
+!> This subroutine calls getidx(), which allocates memory and stores the
+!> resulting pointers in an array that is a Fortran "save" variable. The
+!> result is that the memory will not be freed by the library and cannot
+!> be reached by the caller. To free this memory call gf_finalize()
+!> after all library operations are complete.
+!>
 !> @note Specify an index file if feasible to increase speed. Do
 !> not engage the same logical unit from more than one
 !> processor. Note that derived type gribfield contains pointers to
