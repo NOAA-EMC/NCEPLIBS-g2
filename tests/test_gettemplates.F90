@@ -103,14 +103,14 @@ program test_gettemplates
       & "7", "7", "7", "7" /) 
 
   
-    print *, 'Calling gribinfo ...'
-    call gribinfo(fgrib, lengrib, listsec0, listsec1,  &
-                numlocal, numfields, maxvals, ierr)
-    print *, 'Max igdstmpl: ', maxvals(2), ', size: ', size(igdstmpl)
-    print *, 'Max ipdstmpl: ', maxvals(4), ', size: ', size(ipdstmpl)
+    !print *, 'Calling gribinfo ...'
+    !call gribinfo(fgrib, lengrib, listsec0, listsec1,  &
+    !            numlocal, numfields, maxvals, ierr)
+    !print *, 'Max igdstmpl: ', maxvals(2), ', size: ', size(igdstmpl)
+    !print *, 'Max ipdstmpl: ', maxvals(4), ', size: ', size(ipdstmpl)
     ! gettemplates says this should be max for coordlist but gribinfo says its PDS optional list
-    print *, 'Max drs: ', maxvals(6)
-    print *, 'Max coordlist(7): ', maxvals(7), ', size: ', size(coordlist)
+    !print *, 'Max drs: ', maxvals(6)
+    !print *, 'Max coordlist(7): ', maxvals(7), ', size: ', size(coordlist)
   
     print *, 'Testing gettemplates ...'
     
@@ -135,8 +135,9 @@ program test_gettemplates
     if (ierr .ne. 1) stop 2
     fgrib(1) = old_val
 
-    ! skipping this for now too
+    ! SKIPPING THIS FOR NOW
     if (.false.) then
+
     ! End string not at the end, ierr should be 4
     old_val = fgrib(lengrib-1)
     print *,'old val: ', old_val
@@ -148,11 +149,6 @@ program test_gettemplates
     print *,'ierr7: ', ierr
     if (ierr .ne. 7) stop 6
     fgrib(lengrib-1) = old_val
-
-    end if
-    
-    ! SKIPPING THIS FOR NOW
-    if (.false.) then
     
     ! Bad section 3, ierr should be 10
     call gettemplates(fgrib, lengrib, 1, igds, igdstmpl, &
@@ -195,15 +191,14 @@ program test_gettemplates
                     idgslen, ideflist, idefnum, ipdsnum, ipdstmpl, &
                     ipdslen, coordlist, numcoord, ierr)
     if (ierr .ne. 2) stop 7
-    
-    end if
-  
+      
     ! Field to be returned not found in message, ierr should be 6
     call gettemplates(fgrib, lengrib, 9, igds, igdstmpl, &
                     idgslen, ideflist, idefnum, ipdsnum, ipdstmpl, &
                     ipdslen, coordlist, numcoord, ierr)
     if (ierr .ne. 6) stop 8
-  
+
+    end if
   
     print *, 'SUCCESS!'
   
