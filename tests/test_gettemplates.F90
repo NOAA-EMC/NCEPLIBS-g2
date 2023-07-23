@@ -151,14 +151,11 @@ program test_gettemplates
   fgrib(132) = old_val2
   fgrib(133) = old_val3
 
-  ! Need numlocal to be numfld on line 203 in gettemplates.f
-  if (.false.) then
-    ! Field to be returned not found in message, ierr should be 6
-    call gettemplates(fgrib, lengrib, 9, igds, igdstmpl, &
-    idgslen, ideflist, idefnum, ipdsnum, ipdstmpl, &
-    ipdslen, coordlist, numcoord, ierr)
-    if (ierr .ne. 6) stop 6
-  end if
+  ! Field to be returned not found in message, ierr should be 6
+  call gettemplates(fgrib, lengrib, 9, igds, igdstmpl, &
+       idgslen, ideflist, idefnum, ipdsnum, ipdstmpl, &
+       ipdslen, coordlist, numcoord, ierr)
+  if (ierr .ne. 6) stop 6
 
   ! No 7777 end string, ierr should be 7
   old_val = fgrib(lengrib-1)
