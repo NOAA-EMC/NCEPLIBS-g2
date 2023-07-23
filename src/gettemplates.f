@@ -200,7 +200,7 @@
 
 !     If exited from above loop, the end of the GRIB message was reached
 !     before the requested field was found.
-      print *,'gettemplates: GRIB message contained ',numlocal,
+      print *,'gettemplates: GRIB message contained ',numfld,
      &        ' different fields.'
       print *,'gettemplates: The request was for the ',ifldnum,
      &        ' field.'
