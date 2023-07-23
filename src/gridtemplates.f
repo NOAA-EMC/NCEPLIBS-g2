@@ -392,8 +392,6 @@
 !>    Or 0, if requested template is not found.
 !>
 !>    @author Stephen Gilbert @date 2004-05-11
-!>
-
          integer function getgdtlen(number)
 
            integer,intent(in) :: number
