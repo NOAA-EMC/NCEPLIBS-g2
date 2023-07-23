@@ -51,20 +51,20 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
 
   iret = 0
   idum = 0
-  if (igds(5) .eq. 0) then       !  Lat/Lon grid
+  if (igds(5) .eq. 0) then       !  Lat / Lon grid
      kgds(1) = 0
      kgds(2) = igdstmpl(8)            ! Ni
      kgds(3) = igdstmpl(9)            ! Nj
-     kgds(4) = igdstmpl(12)/1000      ! Lat of 1st grid point
-     kgds(5) = igdstmpl(13)/1000      ! Long of 1st grid point
+     kgds(4) = igdstmpl(12) / 1000      ! Lat of 1st grid point
+     kgds(5) = igdstmpl(13) / 1000      ! Long of 1st grid point
      kgds(6) = 0                      ! resolution and component flags
      if (igdstmpl(1) == 2) kgds(6) = 64
-     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6)+128
-     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6)+8
-     kgds(7) = igdstmpl(15)/1000      ! Lat of last grid point
-     kgds(8) = igdstmpl(16)/1000      ! Long of last grid point
-     kgds(9) = igdstmpl(17)/1000      ! Di
-     kgds(10) = igdstmpl(18)/1000     ! Dj
+     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6) + 128
+     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6) + 8
+     kgds(7) = igdstmpl(15) / 1000      ! Lat of last grid point
+     kgds(8) = igdstmpl(16) / 1000      ! Long of last grid point
+     kgds(9) = igdstmpl(17) / 1000      ! Di
+     kgds(10) = igdstmpl(18) / 1000     ! Dj
      kgds(11) = igdstmpl(19)          ! Scanning mode
      kgds(12) = 0
      kgds(13) = 0
@@ -94,26 +94,26 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
         if (kgds(1) .eq. 1.OR.kgds(1) .eq. 3) kgds(20) = 43
         kgds(21) = igds(2)                   ! num of grid points
         do j = 1, idefnum
-           kgds(21+j) = ideflist(j)
+           kgds(21 + j) = ideflist(j)
         enddo
      endif
   elseif (igds(5) .eq. 10) then       !  Mercator grid
      kgds(1) = 1                 ! Grid Definition Template number
      kgds(2) = igdstmpl(8)            ! Ni
      kgds(3) = igdstmpl(9)            ! Nj
-     kgds(4) = igdstmpl(10)/1000      ! Lat of 1st grid point
-     kgds(5) = igdstmpl(11)/1000      ! Long of 1st grid point
+     kgds(4) = igdstmpl(10) / 1000      ! Lat of 1st grid point
+     kgds(5) = igdstmpl(11) / 1000      ! Long of 1st grid point
      kgds(6) = 0                      ! resolution and component flags
      if (igdstmpl(1)==2) kgds(6) = 64
-     if (btest(igdstmpl(12), 4).OR.btest(igdstmpl(12), 5)) kgds(6) = kgds(6)+128
-     if (btest(igdstmpl(12), 3)) kgds(6) = kgds(6)+8
-     kgds(7) = igdstmpl(14)/1000      ! Lat of last grid point
-     kgds(8) = igdstmpl(15)/1000      ! Long of last grid point
-     kgds(9) = igdstmpl(13)/1000      ! Lat intersects earth
+     if (btest(igdstmpl(12), 4).OR.btest(igdstmpl(12), 5)) kgds(6) = kgds(6) + 128
+     if (btest(igdstmpl(12), 3)) kgds(6) = kgds(6) + 8
+     kgds(7) = igdstmpl(14) / 1000      ! Lat of last grid point
+     kgds(8) = igdstmpl(15) / 1000      ! Long of last grid point
+     kgds(9) = igdstmpl(13) / 1000      ! Lat intersects earth
      kgds(10) = 0
      kgds(11) = igdstmpl(16)          ! Scanning mode
-     kgds(12) = igdstmpl(18)/1000     ! Di
-     kgds(13) = igdstmpl(19)/1000     ! Dj
+     kgds(12) = igdstmpl(18) / 1000     ! Di
+     kgds(13) = igdstmpl(19) / 1000     ! Dj
      kgds(14) = 0
      kgds(15) = 0
      kgds(16) = 0
@@ -127,21 +127,21 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
      kgds(1) = 3
      kgds(2) = igdstmpl(8)            ! Nx
      kgds(3) = igdstmpl(9)            ! Ny
-     kgds(4) = igdstmpl(10)/1000      ! Lat of 1st grid point
-     kgds(5) = igdstmpl(11)/1000      ! Long of 1st grid point
+     kgds(4) = igdstmpl(10) / 1000      ! Lat of 1st grid point
+     kgds(5) = igdstmpl(11) / 1000      ! Long of 1st grid point
      kgds(6) = 0                      ! resolution and component flags
      if (igdstmpl(1)==2) kgds(6) = 64
-     if (btest(igdstmpl(12), 4).OR.btest(igdstmpl(12), 5)) kgds(6) = kgds(6)+128
-     if (btest(igdstmpl(12), 3)) kgds(6) = kgds(6)+8
-     kgds(7) = igdstmpl(14)/1000      ! Lon of orientation
-     kgds(8) = igdstmpl(15)/1000      ! Dx
-     kgds(9) = igdstmpl(16)/1000      ! Dy
+     if (btest(igdstmpl(12), 4).OR.btest(igdstmpl(12), 5)) kgds(6) = kgds(6) + 128
+     if (btest(igdstmpl(12), 3)) kgds(6) = kgds(6) + 8
+     kgds(7) = igdstmpl(14) / 1000      ! Lon of orientation
+     kgds(8) = igdstmpl(15) / 1000      ! Dx
+     kgds(9) = igdstmpl(16) / 1000      ! Dy
      kgds(10) = igdstmpl(17)          ! Projection Center Flag
      kgds(11) = igdstmpl(18)          ! Scanning mode
-     kgds(12) = igdstmpl(19)/1000     ! Lat in 1
-     kgds(13) = igdstmpl(20)/1000     ! Lat in 2
-     kgds(14) = igdstmpl(21)/1000     ! Lat of S. Pole of projection
-     kgds(15) = igdstmpl(22)/1000     ! Lon of S. Pole of projection
+     kgds(12) = igdstmpl(19) / 1000     ! Lat in 1
+     kgds(13) = igdstmpl(20) / 1000     ! Lat in 2
+     kgds(14) = igdstmpl(21) / 1000     ! Lat of S. Pole of projection
+     kgds(15) = igdstmpl(22) / 1000     ! Lon of S. Pole of projection
      kgds(16) = 0
      kgds(17) = 0
      kgds(18) = 0
@@ -149,19 +149,19 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
      kgds(20) = 255
      kgds(21) = 0
      kgds(22) = 0
-  elseif (igds(5) .eq. 40) then       !  Gaussian Lat/Lon grid
+  elseif (igds(5) .eq. 40) then       !  Gaussian Lat / Lon grid
      kgds(1) = 4
      kgds(2) = igdstmpl(8)            ! Ni
      kgds(3) = igdstmpl(9)            ! Nj
-     kgds(4) = igdstmpl(12)/1000      ! Lat of 1st grid point
-     kgds(5) = igdstmpl(13)/1000      ! Long of 1st grid point
+     kgds(4) = igdstmpl(12) / 1000      ! Lat of 1st grid point
+     kgds(5) = igdstmpl(13) / 1000      ! Long of 1st grid point
      kgds(6) = 0                      ! resolution and component flags
      if (igdstmpl(1)==2) kgds(6) = 64
-     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6)+128
-     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6)+8
-     kgds(7) = igdstmpl(15)/1000      ! Lat of last grid point
-     kgds(8) = igdstmpl(16)/1000      ! Long of last grid point
-     kgds(9) = igdstmpl(17)/1000      ! Di
+     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6) + 128
+     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6) + 8
+     kgds(7) = igdstmpl(15) / 1000      ! Lat of last grid point
+     kgds(8) = igdstmpl(16) / 1000      ! Long of last grid point
+     kgds(9) = igdstmpl(17) / 1000      ! Di
      kgds(10) = igdstmpl(18)          ! N - Number of parallels
      kgds(11) = igdstmpl(19)          ! Scanning mode
      kgds(12) = 0
@@ -179,15 +179,15 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
      kgds(1) = 5
      kgds(2) = igdstmpl(8)            ! Nx
      kgds(3) = igdstmpl(9)            ! Ny
-     kgds(4) = igdstmpl(10)/1000      ! Lat of 1st grid point
-     kgds(5) = igdstmpl(11)/1000      ! Long of 1st grid point
+     kgds(4) = igdstmpl(10) / 1000      ! Lat of 1st grid point
+     kgds(5) = igdstmpl(11) / 1000      ! Long of 1st grid point
      kgds(6) = 0                      ! resolution and component flags
      if (igdstmpl(1)==2) kgds(6) = 64
-     if (btest(igdstmpl(12), 4).OR.btest(igdstmpl(12), 5)) kgds(6) = kgds(6)+128
-     if (btest(igdstmpl(12), 3)) kgds(6) = kgds(6)+8
-     kgds(7) = igdstmpl(14)/1000      ! Lon of orientation
-     kgds(8) = igdstmpl(15)/1000      ! Dx
-     kgds(9) = igdstmpl(16)/1000      ! Dy
+     if (btest(igdstmpl(12), 4).OR.btest(igdstmpl(12), 5)) kgds(6) = kgds(6) + 128
+     if (btest(igdstmpl(12), 3)) kgds(6) = kgds(6) + 8
+     kgds(7) = igdstmpl(14) / 1000      ! Lon of orientation
+     kgds(8) = igdstmpl(15) / 1000      ! Dx
+     kgds(9) = igdstmpl(16) / 1000      ! Dy
      kgds(10) = igdstmpl(17)          ! Projection Center Flag
      kgds(11) = igdstmpl(18)          ! Scanning mode
      kgds(12) = 0
@@ -209,8 +209,8 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
      kgds(5) = 0
      kgds(6) = 0                      ! resolution and component flags
      if (igdstmpl(1)==2) kgds(6) = 64
-     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6)+128
-     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6)+8
+     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6) + 128
+     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6) + 8
      kgds(7) = 0
      kgds(8) = 0
      kgds(9) = 0
@@ -244,23 +244,23 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
         if (kgds(1) .eq. 1.OR.kgds(1) .eq. 3) kgds(20) = 43
         kgds(21) = igds(2)                   ! num of grid points
         do j = 1, idefnum
-           kgds(21+j) = ideflist(j)
+           kgds(21 + j) = ideflist(j)
         enddo
      endif
-  elseif (igds(5) .eq. 32768) then    ! Rotate Lat/Lon grid
-     kgds(1) = 203                      ! Arakawa Staggerred E/B grid
+  elseif (igds(5) .eq. 32768) then    ! Rotate Lat / Lon grid
+     kgds(1) = 203                      ! Arakawa Staggerred E / B grid
      kgds(2) = igdstmpl(8)            ! Ni
      kgds(3) = igdstmpl(9)            ! Nj
-     kgds(4) = igdstmpl(12)/1000      ! Lat of 1st grid point
-     kgds(5) = igdstmpl(13)/1000      ! Lon of 1st grid point
+     kgds(4) = igdstmpl(12) / 1000      ! Lat of 1st grid point
+     kgds(5) = igdstmpl(13) / 1000      ! Lon of 1st grid point
      kgds(6) = 0                      ! resolution and component flags
      if (igdstmpl(1)==2) kgds(6) = 64
-     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6)+128
-     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6)+8
-     kgds(7) = igdstmpl(15)/1000      ! Lat of last grid point
-     kgds(8) = igdstmpl(16)/1000      ! Lon of last grid point
-     kgds(9) = igdstmpl(17)/1000      ! Di
-     kgds(10) = igdstmpl(18)/1000     ! Dj
+     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6) + 128
+     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6) + 8
+     kgds(7) = igdstmpl(15) / 1000      ! Lat of last grid point
+     kgds(8) = igdstmpl(16) / 1000      ! Lon of last grid point
+     kgds(9) = igdstmpl(17) / 1000      ! Di
+     kgds(10) = igdstmpl(18) / 1000     ! Dj
      kgds(11) = igdstmpl(19)          ! Scanning mode
      kgds(12) = 0
      kgds(13) = 0
@@ -290,26 +290,26 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
         if (kgds(1) .eq. 1.OR.kgds(1) .eq. 3) kgds(20) = 43
         kgds(21) = igds(2)                   ! num of grid points
         do j = 1, idefnum
-           kgds(21+j) = ideflist(j)
+           kgds(21 + j) = ideflist(j)
         enddo
      endif
-  elseif (igds(5) .eq. 32769) then    ! Rotate Lat/Lon grid
+  elseif (igds(5) .eq. 32769) then    ! Rotate Lat / Lon grid
      kgds(1) = 205                    ! Arakawa Staggerred for Non-E Stagger grid
      kgds(2) = igdstmpl(8)            ! Ni
      kgds(3) = igdstmpl(9)            ! Nj
-     kgds(4) = igdstmpl(12)/1000      ! Lat of 1st grid point
-     kgds(5) = igdstmpl(13)/1000      ! Lon of 1st grid point
+     kgds(4) = igdstmpl(12) / 1000      ! Lat of 1st grid point
+     kgds(5) = igdstmpl(13) / 1000      ! Lon of 1st grid point
      kgds(6) = 0                      ! resolution and component flags
      if (igdstmpl(1)==2) kgds(6) = 64
-     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6)+128
-     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6)+8
-     kgds(7) = igdstmpl(15)/1000      ! Lat of last grid point
-     kgds(8) = igdstmpl(16)/1000      ! Lon of last grid point
-     kgds(9) = igdstmpl(17)/1000      ! Di
-     kgds(10) = igdstmpl(18)/1000     ! Dj
+     if (btest(igdstmpl(14), 4).OR.btest(igdstmpl(14), 5)) kgds(6) = kgds(6) + 128
+     if (btest(igdstmpl(14), 3)) kgds(6) = kgds(6) + 8
+     kgds(7) = igdstmpl(15) / 1000      ! Lat of last grid point
+     kgds(8) = igdstmpl(16) / 1000      ! Lon of last grid point
+     kgds(9) = igdstmpl(17) / 1000      ! Di
+     kgds(10) = igdstmpl(18) / 1000     ! Dj
      kgds(11) = igdstmpl(19)          ! Scanning mode
-     kgds(12) = igdstmpl(20)/1000
-     kgds(13) = igdstmpl(21)/1000
+     kgds(12) = igdstmpl(20) / 1000
+     kgds(13) = igdstmpl(21) / 1000
      kgds(14) = 0
      kgds(15) = 0
      kgds(16) = 0
@@ -336,22 +336,22 @@ subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
      call w3fi71(j, kgds71, ierr)
      if (ierr.ne.0) cycle
      ! convert W to E for longitudes
-     if (kgds71(3) .eq. 0) then    ! lat/lon
-        if (kgds71(7) .lt. 0) kgds71(7) = 360000+kgds71(7)
-        if (kgds71(10) .lt. 0) kgds71(10) = 360000+kgds71(10)
+     if (kgds71(3) .eq. 0) then    ! lat / lon
+        if (kgds71(7) .lt. 0) kgds71(7) = 360000 + kgds71(7)
+        if (kgds71(10) .lt. 0) kgds71(10) = 360000 + kgds71(10)
      elseif (kgds71(3) .eq. 1) then    ! mercator
-        if (kgds71(7) .lt. 0) kgds71(7) = 360000+kgds71(7)
-        if (kgds71(10) .lt. 0) kgds71(10) = 360000+kgds71(10)
+        if (kgds71(7) .lt. 0) kgds71(7) = 360000 + kgds71(7)
+        if (kgds71(10) .lt. 0) kgds71(10) = 360000 + kgds71(10)
      elseif (kgds71(3) .eq. 3) then     ! lambert conformal
-        if (kgds71(7) .lt. 0) kgds71(7) = 360000+kgds71(7)
-        if (kgds71(9) .lt. 0) kgds71(9) = 360000+kgds71(9)
-        if (kgds71(18) .lt. 0) kgds71(18) = 360000+kgds71(18)
-     elseif (kgds71(3) .eq. 4) then     ! Guassian lat/lon
-        if (kgds71(7) .lt. 0) kgds71(7) = 360000+kgds71(7)
-        if (kgds71(10) .lt. 0) kgds71(10) = 360000+kgds71(10)
+        if (kgds71(7) .lt. 0) kgds71(7) = 360000 + kgds71(7)
+        if (kgds71(9) .lt. 0) kgds71(9) = 360000 + kgds71(9)
+        if (kgds71(18) .lt. 0) kgds71(18) = 360000 + kgds71(18)
+     elseif (kgds71(3) .eq. 4) then     ! Guassian lat / lon
+        if (kgds71(7) .lt. 0) kgds71(7) = 360000 + kgds71(7)
+        if (kgds71(10) .lt. 0) kgds71(10) = 360000 + kgds71(10)
      elseif (kgds71(3) .eq. 5) then     ! polar stereographic
-        if (kgds71(7) .lt. 0) kgds71(7) = 360000+kgds71(7)
-        if (kgds71(9) .lt. 0) kgds71(9) = 360000+kgds71(9)
+        if (kgds71(7) .lt. 0) kgds71(7) = 360000 + kgds71(7)
+        if (kgds71(9) .lt. 0) kgds71(9) = 360000 + kgds71(9)
      endif
      call r63w72(idum, kgds, jdum, kgds72)
      if (kgds72(3) .eq. 3) kgds72(14) = 0    ! lambert conformal fix
