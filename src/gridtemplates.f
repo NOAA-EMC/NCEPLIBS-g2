@@ -18,22 +18,23 @@
 !> template can vary depending upon values specified in the "static"
 !> part of the template. (See Template 3.120 as an example).
 !>
-!> This module also contains two subroutines. Subroutine
-!> getgridtemplate() returns the octet map for a specified Template
-!> number, and subroutine extgridtemplate() will calculate the
-!> extended octet map of an appropriate template given values for the
-!> static part of the template.
+!> This module also contains two subroutines:
+!> * getgridtemplate() returns the octet map for a specified Template
+!> number
+!> * extgridtemplate() calculates the extended octet map of a template
+!> that needs extension.
 !>
-!> @note Array mapgrid contains the number of bytes in which the
+!> Array mapgrid contains the number of bytes in which the
 !> corresponding template values will be stored. A negative value in
 !> mapgrid is used to indicate that the corresponding template entry
 !> can contain negative values. This information is used later when
-!> packing/unpacking the template data values. Negative data values in
-!> GRIB are stored with the left most bit set to one, and a negative
-!> number of bytes value in mapgrid indicates that this possibility
-!> should be considered. The number of bytes used to store the data
-!> value in this case would be the absolute value of the negative
-!> value in mapgrid.
+!> packing/unpacking the template data values.
+!>
+!> Negative data values in GRIB are stored with the left most bit set to
+!> one, and a negative number of bytes value in mapgrid indicates that
+!> this possibility should be considered. The number of bytes used to
+!> store the data value in this case would be the absolute value of the
+!> negative value in mapgrid.
 !>
 !> @author Stephen Gilbert @date 2000-05-09
       module gridtemplates
@@ -242,16 +243,15 @@
 
       contains
 
-!>    This function returns the index of specified Grid Definition
-!>    Template 3.NN in array templates.
+!>    Return the index of specified Grid Definition Template.
+!>
 !>    @param[in] number NN, indicating the number of the Grid Definition
 !>    Template 3.NN that is being requested.
-!>    @return Index of GDT 3.NN in array templates, if template exists.
+!>
+!>    @return Index of the grid template in array templates, if template exists.
 !>    -1, otherwise.
 !>
 !>    @author Stephen Gilbert @date 2001-06-28
-!>
-
          integer function getgridindex(number)
 
            integer,intent(in) :: number
@@ -267,13 +267,16 @@
 
          end function
 
-!>    This subroutine grid template information for a specified Grid 
-!>    Definition Template 3.NN. The number of entries in the template 
-!>    is returned along with a map of the number of octets occupied by 
-!>    each entry. Also, a flag is returned to indicate whether the 
-!>    template would need to be extended.
+!>    Get the grid template information for a specified Grid 
+!>    Definition Template.
+!>
+!>    The number of entries in the template is returned along with a map
+!>    of the number of octets occupied by each entry. Also, a flag is
+!>    returned to indicate whether the template would need to be
+!>    extended.
+!>
 !>    @param[in] number NN, indicating the number of the Grid Definition
-!>    Template 3.NN that is being requested.
+!>    Template that is being requested.
 !>    @param[out] nummap Number of entries in the Template.
 !>    @param[out] map An array containing the number of octets that each
 !>    template entry occupies when packed up into the GDS.
@@ -284,8 +287,6 @@
 !>    - 1 Undefine Grid Template number.
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
-!>
-
          subroutine getgridtemplate(number,nummap,map,needext,iret)
 
            integer,intent(in) :: number
@@ -310,8 +311,10 @@
 
          end subroutine
 
-!>    This subroutine generates the remaining octet map for a given Grid
-!>    Definition Template, if required. Some Templates can vary
+!>    Generate the remaining octet map for a given Grid
+!>    Definition Template, if required.
+!>    
+!>    Some Templates can vary
 !>    depending on data values given in an earlier part of the Template,
 !>    and it is necessary to know some of the earlier entry values to
 !>    generate the full octet map of the Template.
@@ -325,8 +328,6 @@
 !>    template entry occupies when packed up into the GDS.
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
-!>
-
          subroutine extgridtemplate(number,list,nummap,map)
 
            integer,intent(in) :: number,list(*)
@@ -385,15 +386,15 @@
          end subroutine
 
 !>    This function returns the initial length (number of entries) in
-!>    the "static" part of specified Grid Definition Template 3.number.
+!>    the static part of specified Grid Definition Template.
+!>
 !>    @param[in] number NN, indicating the number of the Grid Definition
-!>    Template 3.NN that is being requested.
-!>    @return Number of entries in the "static" part of GDT 3.number.
-!>    Or 0, if requested template is not found.
+!>    Template that is being requested.
+!>
+!>    @return Number of entries in the static part of the grid definition template,
+!>    or 0, if requested template is not found.
 !>
 !>    @author Stephen Gilbert @date 2004-05-11
-!>
-
          integer function getgdtlen(number)
 
            integer,intent(in) :: number
