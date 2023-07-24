@@ -78,6 +78,7 @@
 SUBROUTINE GETGB2S(CBUF, NLEN, NNUM, J, JDISC, JIDS, JPDTN, JPDT, JGDTN, &
      JGDT, K, GFLD, LPOS, IRET)
   USE GRIB_MOD
+  implicit none
 
   CHARACTER(LEN = 1), INTENT(IN) :: CBUF(NLEN)
   INTEGER, INTENT(IN) :: NLEN, NNUM, J, JDISC, JPDTN, JGDTN
@@ -87,6 +88,7 @@ SUBROUTINE GETGB2S(CBUF, NLEN, NNUM, J, JDISC, JIDS, JPDTN, JPDT, JGDTN, &
 
   INTEGER :: KGDS(5)
   LOGICAL :: MATCH1, MATCH3, MATCH4
+  integer :: i, icnd, inlen, iof, ipos, jpos, lsec1, lsec3, lsec4, lsec5, numgdt, numpdt
 
   interface
      subroutine gf_unpack1(cgrib, lcgrib, iofst, ids, idslen, ierr)

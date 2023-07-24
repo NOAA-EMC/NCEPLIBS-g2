@@ -220,9 +220,11 @@ contains
   !>
   !>    @author Stephen Gilbert @date 2001-06-05
   subroutine param_ecmwf_g1_to_g2(g1val, g1ver, g2disc, g2cat, g2num)
-
+    implicit none
+    
     integer, intent(in) :: g1val, g1ver
     integer, intent(out) :: g2disc, g2cat, g2num
+    integer :: n
 
     g2disc=255
     g2cat=255
@@ -253,9 +255,11 @@ contains
   !>
   !>    @author Stephen Gilbert @date 2002-01-04
   subroutine param_ecmwf_g2_to_g1(g2disc, g2cat, g2num, g1val, g1ver)
+    implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer, intent(out) :: g1val, g1ver
+    integer :: n
 
     g1val=255
     g1ver=255
