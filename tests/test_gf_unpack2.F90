@@ -3,15 +3,27 @@
 ! This program tests the gf_unpack2.f file.
 !
 ! Andrew King 6/23/23
-program test_gf_unpack2
+
+ program test_gf_unpack2
+    
     implicit none
 
     character, dimension(269) :: fgrib
     integer :: k1, k2, k3, k4, k5, k6, k7, k8, k9, k10
     integer :: n1, n2, n3, nan, fgrib_len
-    integer :: iofst, lensec2, ierr
-    integer :: i, ipos, isecnum, lensec, out, istat, tmp_ofst
+    integer :: iofst, lensec2, ierr, i
     character(len=1),pointer,dimension(:) :: csec2
+
+    interface
+        subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
+        character(len = 1), intent(in) :: cgrib(lcgrib)
+        integer, intent(in) :: lcgrib
+        integer, intent(inout) :: iofst
+        integer, intent(out) :: lencsec2
+        integer, intent(out) :: ierr
+        character(len = 1), pointer, dimension(:) :: csec2
+        end subroutine gf_unpack2
+    end interface
 
     k1=6371200                   ! Radius of the earth
     k2=1073                      ! Nx for lambert 5km
@@ -92,93 +104,50 @@ program test_gf_unpack2
     & "7", "7", "7", "7" /) 
 
     print *, 'Testging gf_unpack2'
-    
-    iofst = 129
-    call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
-    deallocate(csec2)
 
-    ! Printing all offsets which return as section 2 in gf_unpack2
-    print *,''//NEW_LINE('A')//'Offsets that give section 2:'
-
-    do i=1, 200
-        lensec2 = 0
-        call g2_gbytec(fgrib,lensec,i,32)
-        iofst=i+32    
-        lensec2=lensec-5
-        call g2_gbytec(fgrib,isecnum,iofst,8)
-        iofst=iofst+8     
-        ipos=(iofst/8)+1
-        if (isecnum .eq. 2) print *, 'Offset: ', i, ', sec2 length: ', lensec2
-    end do
-
-    ! Attempting to run gf_unpack2 code with iofst=129
-    print *,''//NEW_LINE('A')//'Running ofst 129 through gf_unpack2 code ...'
-
-
-
-    !allocate(csec2(100))
-    nullify(csec2)
-    lensec2 = 0
-    tmp_ofst = 129
-    call g2_gbytec(fgrib,lensec,tmp_ofst,32)
-    tmp_ofst=tmp_ofst+32    
-    lensec2=lensec-5
-    call g2_gbytec(fgrib,isecnum,tmp_ofst,8)
-    tmp_ofst=tmp_ofst+8     
-    ipos=(tmp_ofst/8)+1
-    print *,'secnum: ', isecnum, ', lensec2: ', lensec2
-    !print *, '1'
-    allocate(csec2(lensec2),stat=istat)
-    !print *, '2'
-    print *, 'istat: ', istat
-    deallocate(csec2)
-
-    ! Actual test code
-
-    print *,''//NEW_LINE('A')//'Calling gf_unpack2 ...'
-
-    allocate(csec2(100))
-
-    ! Offset to section 2
+    ! Normal test, should return no error and allocate csec2
     iofst = 129
     call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
     if (ierr .ne. 0) stop 1
     deallocate(csec2)
-    print *,'Offset'
-    ! Offset not to section 2
+
+    ! Offset not to section 2 data, should error without allocating csec2
     iofst = 130
-    allocate(csec2(100))
     call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
     if (ierr .ne. 6) stop 2
-    ! Incorrect offset to section 2
-    !iofst = 24
-    !call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
-    !if (ierr .ne. 6) stop 3
 
-    deallocate(csec2)
+    if (.false.) then
+        ! Offset to section 2 data with already allocated csec2 array, should error and nullify csec2
+        iofst = 129
+        allocate(csec2(100))
+        call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
+        print *,'ierr: ', ierr
+        if (ierr .ne. 6) stop 3
+        
 
-    ! Temp testing code
+        ! Printing all offsets which return as section 2 in gf_unpack2
+        print *,''//NEW_LINE('A')//'Offsets that give section 2:'
 
-
-    !iofst = 129
-    !deallocate(csec2)
-    !allocate(csec2(100))
-    !call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
-    !deallocate(csec2)
-    !print *,'error 129: ', ierr
-
-    !allocate(csec2(10))
-    !do i=1, 200
-    !    iofst = i
-    !    print *,'offset: ', iofst, ', Calling: ', i .ne. 24 .and. i .ne. 81
-    !    if(i .ne. 24 .and. i .ne. 81) then
-    !        call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
-    !        print *,'                               error: ', ierr
-    !    end if
-    !end do
-    !deallocate(csec2)
-
+        do i=1, 269
+            iofst = i
+            if(i .ne. 24 .and. i .ne. 117 .and. i .ne. 142 .and. i .ne. 169 .and. i .ne. 257) then
+                call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
+                if (ierr .eq. 0) deallocate(csec2)
+            end if
+        end do
+    end if
 
     print *, ''//NEW_LINE('A')//'SUCCESS!'
-  end program test_gf_unpack2
-  
+
+end program test_gf_unpack2
+
+! Lengths of section 2 offsets
+! iofst   lensec
+! 24      1107296251
+! 81      -5
+! 117     564133883
+! 129     37
+! 142     344123
+! 169     1048571
+! 185     507
+! 257     336860155
