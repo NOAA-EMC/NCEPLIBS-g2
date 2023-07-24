@@ -10,7 +10,8 @@ program test_mkieee
   integer, parameter :: num = 9
   real :: rieee(num)
   integer :: x
-  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000, -4.3000000, 0.3300000, 0.0000000, -400.000000, huge(x) /)
+  x=huge(x)
+  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000, -4.3000000, 0.3300000, 0.0000000, -400.000000, x/)
   real :: b(num)
   integer :: i
 
