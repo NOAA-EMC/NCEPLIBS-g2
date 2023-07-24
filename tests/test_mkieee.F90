@@ -7,9 +7,10 @@ program test_mkieee
   implicit none
 
 #ifdef KIND_4
-  integer, parameter :: num = 8
+  integer, parameter :: num = 9
   real :: rieee(num)
-  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000, -4.3000000, 0.3300000, 0.0000000, -400.000000 /)
+  integer :: x
+  real :: a(num) = (/ 4.3000000, 5.6000000, 1.6700000, 2.3300000, -4.3000000, 0.3300000, 0.0000000, -400.000000, huge(x) /)
   real :: b(num)
   integer :: i
 
