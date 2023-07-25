@@ -12,6 +12,7 @@
     integer :: k1, k2, k3, k4, k5, k6, k7, k8, k9, k10
     integer :: n1, n2, n3, nan, fgrib_len
     integer :: iofst, lensec2, ierr, i
+    integer :: lencsec2, lensec, isecnum
     character(len=1),pointer,dimension(:) :: csec2
 
     interface
@@ -123,19 +124,35 @@
         call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
         print *,'ierr: ', ierr
         if (ierr .ne. 6) stop 3
-        
+    end if
 
         ! Printing all offsets which return as section 2 in gf_unpack2
         print *,''//NEW_LINE('A')//'Offsets that give section 2:'
 
+        if (.false.) then
+            do i=1, 269
+                iofst = i
+                if(i .ne. 24 .and. i .ne. 117 .and. i .ne. 142 .and. i .ne. 169 .and. i .ne. 257) then
+                    call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
+                    if (ierr .eq. 0) deallocate(csec2)
+                end if
+            end do
+        end if
+
         do i=1, 269
             iofst = i
-            if(i .ne. 24 .and. i .ne. 117 .and. i .ne. 142 .and. i .ne. 169 .and. i .ne. 257) then
-                call gf_unpack2(fgrib, fgrib_len, iofst, lensec2, csec2, ierr)
-                if (ierr .eq. 0) deallocate(csec2)
-            end if
+            ierr=0
+            lencsec2=0
+            nullify(csec2)
+
+            call g2_gbytec(fgrib,lensec,iofst,32)        ! Get Length of Section
+            iofst=iofst+32    
+            lencsec2=lensec-5
+            call g2_gbytec(fgrib,isecnum,iofst,8)         ! Get Section Number
+            iofst=iofst+8     
+
+            if (isecnum .eq. 2) print *, 'Offset: ', i, ', length: ', lencsec2
         end do
-    end if
 
     print *, ''//NEW_LINE('A')//'SUCCESS!'
 
