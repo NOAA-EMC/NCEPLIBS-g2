@@ -162,27 +162,33 @@
     iofst = 81
     i = iofst
     call gf_unpack2(fgrib, fgrib_len, iofst, lencsec2, csec2, ierr)
+    deallocate(csec2)
     print *, 'Offset: ', i, 'length: ', lencsec2
     iofst = 129
     i = iofst
     call gf_unpack2(fgrib, fgrib_len, iofst, lencsec2, csec2, ierr)
+    deallocate(csec2)
     print *, 'Offset: ', i, 'length: ', lencsec2
     iofst = 185
     i = iofst
     call gf_unpack2(fgrib, fgrib_len, iofst, lencsec2, csec2, ierr)
+    deallocate(csec2)
     print *, 'Offset: ', i, 'length: ', lencsec2
     iofst = 296
     i = iofst
     call gf_unpack2(fgrib, fgrib_len, iofst, lencsec2, csec2, ierr)
+    deallocate(csec2)
     print *, 'Offset: ', i, 'length: ', lencsec2
     iofst = 465
     i = iofst
     call gf_unpack2(fgrib, fgrib_len, iofst, lencsec2, csec2, ierr)
+    deallocate(csec2)
     print *, 'Offset: ', i, 'length: ', lencsec2
 
     print *, ''//NEW_LINE('A')//'Calling gf_unpack with offset 24 ...'
     iofst = 24
     call gf_unpack2(fgrib, fgrib_len, iofst, lencsec2, csec2, ierr)
+    deallocate(csec2)
 
 
     print *, ''//NEW_LINE('A')//'SUCCESS!'
