@@ -9,7 +9,7 @@ program test_mkieee
 #ifdef KIND_4
   integer, parameter :: num = 9
   real :: rieee(num)
-  real :: a(num) = (/ 4.3, 5.6, 1.67, 2.33, -4.3, 0.33, 0.0, -400.0, 101029284739847594/)
+  real :: a(num) = (/ real :: 4.3, 5.6, 1.67, 2.33, -4.3, 0.33, 0.0, -400.0, 101029284739847594/)
   real :: b(num)
   integer :: i
 
