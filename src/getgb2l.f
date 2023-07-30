@@ -45,6 +45,7 @@
       INTEGER :: LSKIP,SKIP2
       CHARACTER(LEN=1):: CSIZE(4)
       CHARACTER(LEN=1),ALLOCATABLE :: CTEMP(:)
+      integer :: ilen, iofst, iskip, lread, ierr
 
       interface
          subroutine gf_unpack2(cgrib,lcgrib,iofst,lencsec2,csec2,ierr)
