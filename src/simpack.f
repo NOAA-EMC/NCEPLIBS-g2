@@ -23,8 +23,9 @@
 !>
 !>    @author Stephen Gilbert @date 2000-06-21
       subroutine simpack(fld,ndpts,idrstmpl,cpack,lcpack)
-
       use intmath
+      implicit none
+      
       integer,intent(in) :: ndpts
       real,intent(in) :: fld(ndpts)
       character(len=1),intent(out) :: cpack(*)
@@ -37,6 +38,9 @@ C     real(8) :: rmin,rmax
       integer(4) :: iref
       integer :: ifld(ndpts)
       integer,parameter :: zero=0
+      integer :: nbittot, nbits, maxnum, maxdif, left
+      integer :: imax, imin, j
+      real :: rmax, rmin, temp, dscale, bscale
       
       bscale=2.0**real(-idrstmpl(2))
       dscale=10.0**real(idrstmpl(3))
