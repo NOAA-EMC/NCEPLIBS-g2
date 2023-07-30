@@ -33,7 +33,6 @@
       integer,intent(out) :: lcpack
 
       real(4) :: ref,rmin4
-C     real(8) :: rmin,rmax
 
       integer(4) :: iref
       integer :: ifld(ndpts)
