@@ -34,8 +34,8 @@
 !>
 !> @author Stephen Gilbert @date 2002-05-07
       SUBROUTINE GETGB2L(LUGB,CINDEX,GFLD,IRET)
-
       USE GRIB_MOD
+      implicit none
 
       INTEGER,INTENT(IN) :: LUGB
       CHARACTER(LEN=1),INTENT(IN) :: CINDEX(*)
