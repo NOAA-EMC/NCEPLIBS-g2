@@ -40,6 +40,7 @@
 !>
 !> @author Stephen Gilbert @date 2000-05-26
       subroutine gf_unpack1(cgrib,lcgrib,iofst,ids,idslen,ierr)
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
@@ -48,6 +49,7 @@
       integer,intent(out) :: ierr,idslen
 
       integer,dimension(:) :: mapid(13)
+      integer :: i, istat, lensec, nbits
 
       data mapid /2,2,1,1,1,2,1,1,1,1,1,1,1/
 
