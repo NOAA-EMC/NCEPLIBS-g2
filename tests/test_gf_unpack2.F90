@@ -130,13 +130,14 @@
     if (ierr .ne. 6) stop 2
 
     if (.false.) then
-        ! Offset to section 2 data with already allocated csec2 array, should error and nullify csec2
+        ! Offset to section 2 data with already allocated csec2 array
+        ! should error and nullify csec2
         iofst = 296
         allocate(csec2(100))
         call gf_unpack2(fgrib, fgrib_len, iofst, lencsec2, csec2, ierr)
         print *,'ierr: ', ierr
         if (ierr .ne. 6) stop 3
-    end if
+    
 
     ! Printing all offsets which return as section 2 in gf_unpack2
     print *,''//NEW_LINE('A')//'Offsets that give section 2:'
@@ -189,6 +190,8 @@
     iofst = 24
     call gf_unpack2(fgrib, fgrib_len, iofst, lencsec2, csec2, ierr)
     deallocate(csec2)
+
+    end if
 
 
     print *, ''//NEW_LINE('A')//'SUCCESS!'
