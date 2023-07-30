@@ -29,12 +29,15 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
-
+  implicit none
+  
   integer,intent(in) :: width,height
   real,intent(in) :: fld(width*height)
   character(len=1),intent(out) :: cpack(*)
   integer,intent(inout) :: idrstmpl(*)
   integer,intent(inout) :: lcpack
+  integer :: ndpts, nbits, maxdif, imin, imax, j, nbytes
+  real :: dscale, bscale, temp
 
   interface
      function enc_jpeg2000(cin, width, height, nbits, ltype, ratio, retry, outjpc, jpclen) &
