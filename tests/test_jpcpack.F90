@@ -43,8 +43,9 @@ program test_jpcpack
     ! Pack the data.
     lcpack = 200
     call jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
+    ! The size of lcpack will depend on the version of jasper used to compress the data.
     print *,lcpack
-    if (lcpack .ne. 169) stop 2
+    if (lcpack .le. 0) stop 2
     
     ! Unpack the data.
     call jpcunpack(cpack, lcpack, idrstmpl, ndpts, fld2)
