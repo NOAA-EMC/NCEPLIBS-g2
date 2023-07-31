@@ -43,6 +43,7 @@ program test_jpcpack
     ! Pack the data.
     lcpack = 200
     call jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
+    print *,lcpack
     if (lcpack .ne. 169) stop 2
     
     ! Unpack the data.
