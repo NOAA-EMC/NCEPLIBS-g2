@@ -1,11 +1,12 @@
 !>    @file
 !>    @brief This subroutine packs up a spectral data field.
 !>    @author Stephen Gilbert @date 2002-12-19
-!>
 
 !>    This subroutine packs a spectral data field using the complex
 !>    packing algorithm for spherical harmonic data as defined in the
-!>    GRIB2 Data Representation Template 5.51.
+!>    GRIB2 [Data Representation Template
+!>    5.51](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-51.shtml).
+!>
 !>    @param[in] fld Contains the data values to pack.
 !>    @param[in] ndpts The number of data values in array fld.
 !>    @param[in] JJ J pentagonal resolution parameter.
@@ -17,8 +18,6 @@
 !>    @param[out] lcpack length of packed field cpack.
 !>
 !>    @author Stephen Gilbert @date 2002-12-19
-!>
-
       subroutine specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)
 
       real,intent(in) :: fld(ndpts)
@@ -54,9 +53,9 @@
       incp=1
       do m=0,MM
          Nm=JJ      ! triangular or trapezoidal
-         if ( KK .eq. JJ+MM ) Nm=JJ+m          ! rhombodial
+         if (KK .eq. JJ+MM) Nm=JJ+m          ! rhombodial
          Ns=Js      ! triangular or trapezoidal
-         if ( Ks .eq. Js+Ms ) Ns=Js+m          ! rhombodial
+         if (Ks .eq. Js+Ms) Ns=Js+m          ! rhombodial
          do n=m,Nm
             if (n.le.Ns .AND. m.le.Ms) then    ! save unpacked value
                unpk(incu)=fld(inc)         ! real part
