@@ -30,7 +30,7 @@
 !> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
   implicit none
-  
+
   integer,intent(in) :: width, height
   real,intent(in) :: fld(width * height)
   character(len=1),intent(out) :: cpack(*)
@@ -43,7 +43,7 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
      function enc_jpeg2000(cin, width, height, nbits, ltype, ratio, retry, outjpc, jpclen) &
           bind(c, name="g2c_enc_jpeg2000")
        use iso_c_binding
-       character(kind = c_char), intent(in) :: cin(*)       
+       character(kind = c_char), intent(in) :: cin(*)
        integer(c_int), value, intent(in) :: width, height, nbits, ltype, ratio, retry
        character(kind = c_char), intent(inout) :: outjpc(*)
        integer(c_size_t), value, intent(in) :: jpclen
@@ -152,4 +152,4 @@ subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
   idrstmpl(5) = 0         ! original data were reals.
   if (idrstmpl(6) .eq. 0) idrstmpl(7) = 255       ! lossy not used
 
-end subroutine
+end subroutine jpcpack
