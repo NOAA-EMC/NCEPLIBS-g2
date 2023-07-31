@@ -294,7 +294,7 @@
            integer,intent(in) :: number
            integer,intent(out) :: nummap,map(*),iret
            logical,intent(out) :: needext
-           integer :: index1
+           integer :: index
 
            iret=0
 
