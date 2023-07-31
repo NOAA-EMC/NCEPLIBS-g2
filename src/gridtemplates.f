@@ -414,7 +414,6 @@
               getgdtlen=templates(index)%mapgridlen
            endif
 
-         end function
-
+           end function
       end
 
