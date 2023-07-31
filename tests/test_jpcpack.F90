@@ -2,6 +2,7 @@
 ! project.
 !
 ! Brian Curtis 2021-10-18
+! Ed Hartnett, 7/31/23
 program test_jpcpack
     implicit none
 
