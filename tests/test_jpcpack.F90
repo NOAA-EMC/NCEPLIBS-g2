@@ -45,7 +45,31 @@ program test_jpcpack
     lcpack = 200
     call jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
     ! The size of lcpack will depend on the version of jasper used to compress the data.
-    print *,lcpack
+    !print *,lcpack
+    if (lcpack .le. 0) stop 2
+    
+    ! Unpack the data.
+    call jpcunpack(cpack, lcpack, idrstmpl, ndpts, fld2)
+
+    ! Compare each value to see match, remember, comparing reals.
+    !print *, fld
+    !print *, fld2
+    do ii = 1, ndpts
+        if (abs(fld(ii) - fld2(ii)) .gt. delta) then
+            print *, fld(ii), fld2(ii), 'do not match'
+            stop 4
+        end if
+    end do
+
+    print *, 'ok!'
+    print *, 'Testing jpcpack/jpcunpack with data and idrstmpl(2) = 0...'
+
+    ! Pack the data.
+    idrstmpl(2) = 0
+    lcpack = 200
+    call jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
+    ! The size of lcpack will depend on the version of jasper used to compress the data.
+    !print *,lcpack
     if (lcpack .le. 0) stop 2
     
     ! Unpack the data.
