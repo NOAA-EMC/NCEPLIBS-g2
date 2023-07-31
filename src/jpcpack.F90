@@ -1,8 +1,8 @@
 !> @file
-!> @brief Pack up a data field into a JPEG2000 code stream.
+!> @brief Pack a data field into a JPEG2000 code stream.
 !> @author Stephen Gilbert @date 2002-12-17
 
-!> Pack up a data field into a JPEG2000 code stream.
+!> Pack a data field into a JPEG2000 code stream.
 !>
 !> After the data field is scaled, and the reference value is
 !> subtracted out, it is treated as a grayscale image and passed to a
@@ -28,13 +28,16 @@
 !> the packed data in bytes.
 !>
 !> @author Stephen Gilbert @date 2002-12-17
-subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
-
-  integer,intent(in) :: width,height
-  real,intent(in) :: fld(width*height)
+subroutine jpcpack(fld, width, height, idrstmpl, cpack, lcpack)
+  implicit none
+  
+  integer,intent(in) :: width, height
+  real,intent(in) :: fld(width * height)
   character(len=1),intent(out) :: cpack(*)
   integer,intent(inout) :: idrstmpl(*)
   integer,intent(inout) :: lcpack
+  integer :: ndpts, nbytes, nbits, maxdif, j, imin, imax
+  real :: temp, dscale, bscale
 
   interface
      function enc_jpeg2000(cin, width, height, nbits, ltype, ratio, retry, outjpc, jpclen) &
@@ -48,25 +51,25 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
      end function enc_jpeg2000
   end interface
 
-  real(4) :: ref,rmin4
-  real(8) :: rmin,rmax
+  real(4) :: ref, rmin4
+  real(8) :: rmin, rmax
   integer(4) :: iref
   integer(8) :: nsize
-  integer :: ifld(width*height),retry
-  integer,parameter :: zero=0
+  integer :: ifld(width * height), retry
+  integer,parameter :: zero = 0
   character(len=1),allocatable :: ctemp(:)
 
-  ndpts=width*height
-  bscale=2.0**real(-idrstmpl(2))
-  dscale=10.0**real(idrstmpl(3))
+  ndpts = width * height
+  bscale = 2.0**real(-idrstmpl(2))
+  dscale = 10.0**real(idrstmpl(3))
 
   !  Find max and min values in the data
-  if(ndpts>0) then
-     rmax=fld(1)
-     rmin=fld(1)
+  if(ndpts > 0) then
+     rmax = fld(1)
+     rmin = fld(1)
   else
-     rmax=1.0
-     rmin=1.0
+     rmax = 1.0
+     rmin = 1.0
   endif
   do j=2,ndpts
      if (fld(j).gt.rmax) rmax=fld(j)
