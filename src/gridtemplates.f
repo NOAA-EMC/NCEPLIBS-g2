@@ -255,6 +255,7 @@
          integer function getgridindex(number)
            implicit none
            integer,intent(in) :: number
+           integer :: j
 
            getgridindex=-1
 
@@ -293,7 +294,7 @@
            integer,intent(in) :: number
            integer,intent(out) :: nummap,map(*),iret
            logical,intent(out) :: needext
-           integer :: index
+           integer :: index1
 
            iret=0
 
