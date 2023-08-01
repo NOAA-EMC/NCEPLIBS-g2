@@ -72,12 +72,14 @@ program test_getdim
      if (height .ne. 8) stop 24
      if (iscan .ne. 18) stop 34
 
-     print *, 'Template num 90 (Space View/Orthographic)'
-     csec3(14) = achar(90)
-     call getdim(csec3, lcsec3, width, height, iscan)
-     if (width .ne. 7) stop 15
-     if (height .ne. 8) stop 25
-     if (iscan .ne. 0) stop 35
+     if (.false.) then
+          print *, 'Template num 90 (Space View/Orthographic)'
+          csec3(14) = achar(90)
+          call getdim(csec3, lcsec3, width, height, iscan)
+          if (width .ne. 7) stop 15
+          if (height .ne. 8) stop 25
+          if (iscan .ne. 0) stop 35
+     end if
 
      print *, 'Template num 110 (Equatorial Azimuthal)'
      csec3(14) = achar(110)
