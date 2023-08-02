@@ -54,61 +54,61 @@ program test_addfield
   
     ! Add a grid section.
     call addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
-         ideflist, idefnum, ierr)
+        ideflist, idefnum, ierr)
     if (ierr .ne. 0) stop 300
     s3grib = cgrib
 
     print *, 'Testing addfield...'
-    ! Normal addfield call, error=0
+    print *, 'Normal addfield call, error=0'
     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-         & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-         & ngrdpts, ibmap, bmap, ierr)
+        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+        ngrdpts, ibmap, bmap, ierr)
     if (ierr .ne. 0) stop 1
     s7grib = cgrib
     cgrib = s3grib
 
-    ! No beggining 'GRIB', error=1
+    print *, 'No beggining GRIB, error=1'
     cgrib(1) = char(0)
     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-         & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-         & ngrdpts, ibmap, bmap, ierr)
+        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+        ngrdpts, ibmap, bmap, ierr)
     if (ierr .ne. 1) stop 2
     cgrib = s3grib
 
-    ! Message already complete, error=2
+    print *, 'Message already complete, error=2'
     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-         & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-         & ngrdpts, ibmap, bmap, ierr)
+        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+        ngrdpts, ibmap, bmap, ierr)
     if (ierr .ne. 0) stop 110
     call gribend(cgrib, lcgrib, lengrib, ierr)
     if (ierr .ne. 0) stop 120
     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-         & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-         & ngrdpts, ibmap, bmap, ierr)
+        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+        ngrdpts, ibmap, bmap, ierr)
     if (ierr .ne. 2) stop 3
     cgrib = s3grib
 
-    ! Byte count doesn't match total length, error=3
+    print *, 'Byte count doesnt match total length, error=3'
     cgrib(46) = char(48) ! Mess up section 3 length
     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-         & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-         & ngrdpts, ibmap, bmap, ierr)
+        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+        ngrdpts, ibmap, bmap, ierr)
     if (ierr .ne. 3) stop 4
     cgrib = s3grib
 
-    ! Last section not 3 or 7, error=4
+    print *, 'Last section not 3 or 7, error=4'
     cgrib = s2grib
     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-         & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-         & ngrdpts, ibmap, bmap, ierr)
+        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+        ngrdpts, ibmap, bmap, ierr)
     if (ierr .ne. 4) stop 5
 
-    ! Section 3 not previously defined, error=6
+    print *, 'Section 3 not previously defined, error=6'
     cgrib = s2grib
     cgrib(42) = char(7) ! Replace section 2 section number with 7
     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-        & coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-        & ngrdpts, ibmap, bmap, ierr)
+        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+        ngrdpts, ibmap, bmap, ierr)
     if (ierr .ne. 6) stop 6
     cgrib = s3grib
     
