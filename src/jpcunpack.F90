@@ -23,7 +23,6 @@ subroutine jpcunpack(cpack,len,idrstmpl,ndpts,fld)
   integer,intent(in) :: ndpts,len
   integer,intent(in) :: idrstmpl(*)
   real,intent(out) :: fld(ndpts)
-  integer :: iret, j, nbits
 
   integer :: ifld(ndpts)
   integer(4) :: ieee
