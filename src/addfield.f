@@ -74,6 +74,8 @@
      & idrstmplen,fld,ngrdpts,ibmap,bmap,ierr)
       use pdstemplates
       use drstemplates
+      implicit none
+      
       logical :: match
       character(len=1),intent(inout) :: cgrib(lcgrib)
       integer,intent(in) :: ipdsnum,ipdstmpl(*)
@@ -99,6 +101,10 @@
       integer width,height,ndpts
       integer lensec3,lensec4,lensec5,lensec6,lensec7
       logical issec3,needext,isprevbmap
+      integer :: nbits, newlen, nsize, lcpack, left
+      integer :: ibmprev, ilen, ioctet, iscan, isecnum, itemp
+      integer :: i, jj, kk, mm
+      integer :: iret, istat
 
       allones = int(Z'FFFFFFFF')
       ierr=0
