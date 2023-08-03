@@ -45,7 +45,7 @@ subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
   iofst = iofst + 32    ! Skip Length of Section.
   iofst = iofst + 8     ! Skip section number.
 
-  call g2_gbytec(cgrib, ibmap, iofst, 8)    ! Get bit-map indicator
+  call g2_gbytec(cgrib, ibmap, iofst, 8)    ! Get bit-map indicator.
   iofst = iofst + 8
 
   if (ibmap .eq. 0) then               ! Unpack bitmap
