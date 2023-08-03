@@ -42,12 +42,14 @@
 !>
 !> @author Stephen Gilbert @date 2003-06-17
 subroutine gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
-
+  implicit none
+  
   integer, intent(in) :: idefnum
   integer, intent(in) :: igds(*), igdstmpl(*), ideflist(*)
   integer, intent(out) :: kgds(*), igrid, iret
 
   integer :: kgds72(200), kgds71(200), idum(200), jdum(200)
+  integer :: ierr, j
 
   iret = 0
   idum = 0
