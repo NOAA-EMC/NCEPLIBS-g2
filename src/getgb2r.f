@@ -37,7 +37,7 @@
 !>
 !> @author Stephen Gilbert @date 2002-01-11
       SUBROUTINE GETGB2R(LUGB,CINDEX,GFLD,IRET)
-      USE GRIB_MOD
+      use grib_mod
       implicit none
 
       INTEGER,INTENT(IN) :: LUGB
@@ -49,7 +49,7 @@
       CHARACTER(LEN=1):: CSIZE(4)
       CHARACTER(LEN=1),ALLOCATABLE :: CTEMP(:)
       real,pointer,dimension(:) :: newfld
-      integer :: iskip, j, lread, n, idum, ierr, ilen, iofst
+      integer :: n, lread, j, iskip, iofst, ilen, ierr, idum
 
       interface
          subroutine gf_unpack6(cgrib,lcgrib,iofst,ngpts,ibmap,

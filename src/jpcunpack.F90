@@ -34,7 +34,7 @@ subroutine jpcunpack(cpack,len,idrstmpl,ndpts,fld)
      function dec_jpeg2000(cin, len, ifld) &
           bind(c, name="g2c_dec_jpeg2000")
        use iso_c_binding
-       character(kind = c_char), intent(in) :: cin(*)       
+       character(kind = c_char), intent(in) :: cin(*)
        integer(c_size_t), value, intent(in) :: len
        integer(c_int), intent(inout) :: ifld(*)
        integer(c_int) :: dec_jpeg2000
