@@ -52,6 +52,7 @@
 !> @author Stephen Gilbert @date 2000-05-25
 subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
      numfields, numlocal, maxlocal, ierr)
+  implicit none
 
   character(len = 1), intent(in) :: cgrib(lcgrib)
   integer, intent(in) :: lcgrib
@@ -63,7 +64,9 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
   integer, parameter :: zero = 0, one = 1
   integer, parameter :: mapsec1len = 13
   integer, parameter :: mapsec1(mapsec1len) = (/ 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1 /)
-  integer iofst, istart
+  integer :: iofst, istart
+  integer :: nbits, lensec1, lensec0, lensec, lenposs, lengrib, j
+  integer :: i, ipos, isecnum
 
   ierr = 0
   numlocal = 0
