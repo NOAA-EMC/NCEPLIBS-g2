@@ -29,6 +29,7 @@ subroutine jpcunpack(cpack,len,idrstmpl,ndpts,fld)
   integer(4) :: ieee
   integer(8) :: len8
   real :: ref,bscale,dscale
+  integer :: nbits, j, iret
 
   interface
      function dec_jpeg2000(cin, len, ifld) &

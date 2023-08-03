@@ -19,7 +19,7 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-11
       subroutine getdim(csec3,lcsec3,width,height,iscan)
-!      use grib_mod
+      implicit none
     
       character(len=1),intent(in) :: csec3(*)
       integer,intent(in) :: lcsec3

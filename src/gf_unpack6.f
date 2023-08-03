@@ -27,6 +27,7 @@
 !>
 !> @author Stephen Gilbert @date 2000-05-26
       subroutine gf_unpack6(cgrib,lcgrib,iofst,ngpts,ibmap,bmap,ierr)
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib,ngpts
@@ -34,8 +35,8 @@
       integer,intent(out) :: ibmap
       integer,intent(out) :: ierr
       logical*1,pointer,dimension(:) :: bmap
-
       integer :: intbmap(ngpts)
+      integer :: istat, j
 
       ierr=0
       nullify(bmap)

@@ -33,7 +33,8 @@
 !>
 !> @author Stephen Gilbert @date 2003-12-31
       SUBROUTINE GETGB2RP(LUGB,CINDEX,EXTRACT,GRIBM,LENG,IRET)
-
+      implicit none
+      
       INTEGER,INTENT(IN) :: LUGB
       CHARACTER(LEN=1),INTENT(IN) :: CINDEX(*)
       LOGICAL,INTENT(IN) :: EXTRACT
@@ -43,6 +44,9 @@
       INTEGER,PARAMETER :: ZERO=0
       CHARACTER(LEN=1),ALLOCATABLE,DIMENSION(:) :: CSEC2,CSEC6,CSEC7
       CHARACTER(LEN=4) :: Ctemp
+      integer :: lencur, lread, len0, ibmap, ipos, iskip
+      integer :: len7, len8, len3, len4, len5, len6, len1, len2
+      integer :: iskp2, iskp6, iskp7
 
       IRET=0
 

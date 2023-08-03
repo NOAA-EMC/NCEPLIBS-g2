@@ -50,6 +50,7 @@
       CHARACTER(LEN=1),ALLOCATABLE :: CTEMP(:)
       real,pointer,dimension(:) :: newfld
       integer :: n, lread, j, iskip, iofst, ilen, ierr, idum
+      integer :: iskip, j, lread, n, idum, ierr, ilen, iofst
 
       interface
          subroutine gf_unpack6(cgrib,lcgrib,iofst,ngpts,ibmap,

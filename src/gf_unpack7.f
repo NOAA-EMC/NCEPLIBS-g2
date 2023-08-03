@@ -38,7 +38,8 @@
 !>
 !> @author Stephen Gilbert @date 2002-01-24
       subroutine gf_unpack7(cgrib,lcgrib,iofst,igdsnum,igdstmpl,
-     & idrsnum,idrstmpl,ndpts,fld,ierr)
+     &     idrsnum,idrstmpl,ndpts,fld,ierr)
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib,ndpts,igdsnum,idrsnum
@@ -46,7 +47,7 @@
       integer,pointer,dimension(:) :: igdstmpl,idrstmpl
       integer,intent(out) :: ierr
       real,pointer,dimension(:) :: fld
-
+      integer :: ier, ipos, istat, lensec, ieee
 
       ierr=0
       nullify(fld)
