@@ -23,6 +23,7 @@
 !>
 !> @author Stephen Gilbert @date 2002-04-09
       subroutine gf_unpack2(cgrib,lcgrib,iofst,lencsec2,csec2,ierr)
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
@@ -30,6 +31,7 @@
       integer,intent(out) :: lencsec2
       integer,intent(out) :: ierr
       character(len=1),pointer,dimension(:) :: csec2
+      integer :: lensec, istat, isecnum, ipos
 
       ierr=0
       lencsec2=0

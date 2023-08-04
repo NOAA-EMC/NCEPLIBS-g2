@@ -52,19 +52,31 @@
 !>
 !> @author Mark Iredell @date 1995-10-31
       SUBROUTINE IXGB2(LUGB,LSKIP,LGRIB,CBUF,NUMFLD,MLEN,IRET)
-      USE RE_ALLOC          ! NEEDED FOR SUBROUTINE REALLOC
+      USE RE_ALLOC              ! NEEDED FOR SUBROUTINE REALLOC
+      implicit none
+      
       CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
+
+      CHARACTER CVER,CDISC
+      CHARACTER(LEN=4) :: CTEMP
+      INTEGER LOCLUS,LOCGDS,LENGDS,LOCBMS
+      integer :: indbmp, numsec, next, newsize, mova2i, mbuf, lindex
+      integer :: linmax, ixskp
+      integer :: mxspd, mxskp, mxsgd, mxsdr, mxsbm, mxlus
+      integer :: mxlen, mxds, mxfld, mxbms
+      integer :: init, ixlus, lugb, lskip, lgrib, numfld, mlen, iret
+      integer :: ixsgd, ibread, ibskip, ilndrs, ilnpds, istat, ixds
+      integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
+      integer :: lbread, lensec, lensec1
       PARAMETER(LINMAX=5000,INIT=50000,NEXT=10000)
       PARAMETER(IXSKP=4,IXLUS=8,IXSGD=12,IXSPD=16,IXSDR=20,IXSBM=24,
      &          IXDS=28,IXLEN=36,IXFLD=42,IXIDS=44)
       PARAMETER(MXSKP=4,MXLUS=4,MXSGD=4,MXSPD=4,MXSDR=4,MXSBM=4,
      &          MXDS=4,MXLEN=4,MXFLD=2,MXBMS=6)
-      CHARACTER CBREAD(LINMAX),CINDEX(LINMAX)
-      CHARACTER CVER,CDISC
-      CHARACTER CIDS(LINMAX),CGDS(LINMAX)
-      CHARACTER(LEN=4) :: CTEMP
-      INTEGER LOCLUS,LOCGDS,LENGDS,LOCBMS
 
+      CHARACTER CBREAD(LINMAX),CINDEX(LINMAX)
+      CHARACTER CIDS(LINMAX),CGDS(LINMAX)
+      
       LOCLUS=0
       IRET=0
       MLEN=0
