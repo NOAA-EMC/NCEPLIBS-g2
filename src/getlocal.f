@@ -32,6 +32,7 @@
 !>
 !> @author Stephen Gilbert @date 2000-05-25
       subroutine getlocal(cgrib,lcgrib,localnum,csec2,lcsec2,ierr)
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib,localnum
@@ -42,6 +43,7 @@
       character(len=4) :: ctemp
       integer :: listsec0(2)
       integer iofst,istart,numlocal
+      integer :: lengrib, lensec, lensec0, j, ipos, isecnum
 
       ierr=0
       numlocal=0

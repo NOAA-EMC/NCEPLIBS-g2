@@ -34,8 +34,8 @@
 !>
 !> @author Stephen Gilbert @date 2002-05-07
       SUBROUTINE GETGB2L(LUGB,CINDEX,GFLD,IRET)
-
       USE GRIB_MOD
+      implicit none
 
       INTEGER,INTENT(IN) :: LUGB
       CHARACTER(LEN=1),INTENT(IN) :: CINDEX(*)
@@ -45,6 +45,7 @@
       INTEGER :: LSKIP,SKIP2
       CHARACTER(LEN=1):: CSIZE(4)
       CHARACTER(LEN=1),ALLOCATABLE :: CTEMP(:)
+      integer :: ilen, iofst, iskip, lread, ierr
 
       interface
          subroutine gf_unpack2(cgrib,lcgrib,iofst,lencsec2,csec2,ierr)

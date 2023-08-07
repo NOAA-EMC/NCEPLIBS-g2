@@ -13,7 +13,9 @@
 !> @param[inout] iofst Bit offset of the beginning/end (returned) of
 !> Section 2.
 !> @param[out] lencsec2 Length (in octets) of Local Use data.
-!> @param[out] csec2 Pointer to a character*1 array containing local use data.
+!> @param[out] csec2 Pointer to a character*1 array containing local use data. 
+!> Caller should pass in an unassociated pointer, and must free memory allocated 
+!> by this subroutine by calling deallocate on this pointer.
 !> @param[out] ierr Error return code.
 !> - 0 no error.
 !> - 2 Array passed is not section 2.
@@ -21,6 +23,7 @@
 !>
 !> @author Stephen Gilbert @date 2002-04-09
       subroutine gf_unpack2(cgrib,lcgrib,iofst,lencsec2,csec2,ierr)
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
@@ -28,6 +31,7 @@
       integer,intent(out) :: lencsec2
       integer,intent(out) :: ierr
       character(len=1),pointer,dimension(:) :: csec2
+      integer :: lensec, istat, isecnum, ipos
 
       ierr=0
       lencsec2=0

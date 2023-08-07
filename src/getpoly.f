@@ -18,6 +18,8 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-11
       subroutine getpoly(csec3,lcsec3,jj,kk,mm)
+      implicit none
+      
       character(len=1),intent(in) :: csec3(*)
       integer,intent(in) :: lcsec3
       integer,intent(out) :: jj,kk,mm
