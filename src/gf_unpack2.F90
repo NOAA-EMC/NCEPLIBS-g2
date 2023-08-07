@@ -1,4 +1,5 @@
-!> @file @brief Unpack Section 2 ([Local Use Section]
+!> @file
+!> @brief Unpack Section 2 ([Local Use Section]
 !> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_sect2.shtml))
 !> of a GRIB2 message.  @author Stephen Gilbert @date 2002-04-09
 
