@@ -62,8 +62,8 @@
                unpk(incu+1)=fld(inc+1)     ! imaginary part
                inc=inc+2
                incu=incu+2
-            else                         ! Save value to be packed and scale
-                                         ! Laplacian scale factor
+            else
+               ! Save value to be packed and scale Laplacian scale factor.
                tfld(incp)=fld(inc)*pscale(n)         ! real part
                tfld(incp+1)=fld(inc+1)*pscale(n)     ! imaginary part
                inc=inc+2
@@ -82,23 +82,23 @@
          Ts=incu
       endif
 
-!     Add unpacked values to the packed data array in 32-bit IEEE format
+!     Add unpacked values to the packed data array in 32-bit IEEE format.
       call mkieee(unpk,cpack,Ts)
       ipos=4*Ts
 
-!     Scale and pack the rest of the coefficients
+!     Scale and pack the rest of the coefficients.
       tmplsim(2)=idrstmpl(2)
       tmplsim(3)=idrstmpl(3)
       tmplsim(4)=idrstmpl(4)
       call simpack(tfld,ndpts-Ts,tmplsim,cpack(ipos+1),lcpack)
       lcpack=lcpack+ipos
 
-!     Fill in Template 5.51
+!     Fill in Template 5.51.
       idrstmpl(1)=tmplsim(1)
       idrstmpl(2)=tmplsim(2)
       idrstmpl(3)=tmplsim(3)
       idrstmpl(4)=tmplsim(4)
       idrstmpl(9)=Ts
-      idrstmpl(10)=1         ! Unpacked spectral data is 32-bit IEEE
+      idrstmpl(10)=1 ! Unpacked spectral data is 32-bit IEEE
 
       end

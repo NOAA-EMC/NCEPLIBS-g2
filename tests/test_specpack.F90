@@ -7,16 +7,19 @@ program test_specpack
 
   integer, parameter :: width = 2, height = 2, ndpts = 4
   real, parameter :: delta = 0.2
-  real :: fld(ndpts)
-  real :: fld2(ndpts)
+  real :: fld(ndpts*2)
+  real :: fld2(ndpts*2)
   integer :: idrstmpl(10)
   character*1 :: cpack(200)
   integer :: lcpack = 200
-  integer :: ii, jj, kk, mm
+  !integer :: ii
+  integer :: jj, kk, mm
 
   ! Create the fld variable with data to pack.
-  fld = (/1.1, 2.2, 3.3, 4.4/)
-  fld2 = (/0, 0, 0, 0/)
+  fld = (/1.1, 2.2, 3.3, 4.4, 1.1, 2.2, 3.3, 4.4/)
+  fld2 = (/0, 0, 0, 0, 0, 0, 0, 0/)
+!  fld = (/1.1, 2.2, 3.3, 4.4/)
+!  fld2 = (/0, 0, 0, 0/)
 
   idrstmpl(1) = 0
   idrstmpl(2) = 1
