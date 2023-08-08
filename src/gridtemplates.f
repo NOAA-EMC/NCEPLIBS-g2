@@ -253,8 +253,9 @@
 !>
 !>    @author Stephen Gilbert @date 2001-06-28
          integer function getgridindex(number)
-
+           implicit none
            integer,intent(in) :: number
+           integer :: j
 
            getgridindex=-1
 
@@ -288,10 +289,12 @@
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
          subroutine getgridtemplate(number,nummap,map,needext,iret)
+           implicit none
 
            integer,intent(in) :: number
            integer,intent(out) :: nummap,map(*),iret
            logical,intent(out) :: needext
+           integer :: index
 
            iret=0
 
@@ -329,9 +332,11 @@
 !>
 !>    @author Stephen Gilbert @date 2000-05-09
          subroutine extgridtemplate(number,list,nummap,map)
+           implicit none
 
            integer,intent(in) :: number,list(*)
            integer,intent(out) :: nummap,map(*)
+           integer i, index, n, ni, nj
 
            index=getgridindex(number)
            if (index.eq.-1) return
@@ -396,8 +401,10 @@
 !>
 !>    @author Stephen Gilbert @date 2004-05-11
          integer function getgdtlen(number)
+           implicit none
 
            integer,intent(in) :: number
+           integer :: index
 
            getgdtlen=0
 
@@ -407,7 +414,6 @@
               getgdtlen=templates(index)%mapgridlen
            endif
 
-         end function
-
+           end function
       end
 

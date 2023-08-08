@@ -39,40 +39,41 @@
 !> - 6 memory allocation error.
 !>
 !> @author Stephen Gilbert @date 2000-05-26
-      subroutine gf_unpack1(cgrib,lcgrib,iofst,ids,idslen,ierr)
+subroutine gf_unpack1(cgrib, lcgrib, iofst, ids, idslen, ierr)
+  implicit none
 
-      character(len=1),intent(in) :: cgrib(lcgrib)
-      integer,intent(in) :: lcgrib
-      integer,intent(inout) :: iofst
-      integer,pointer,dimension(:) :: ids
-      integer,intent(out) :: ierr,idslen
+  character(len=1), intent(in) :: cgrib(lcgrib)
+  integer, intent(in) :: lcgrib
+  integer, intent(inout) :: iofst
+  integer, pointer, dimension(:) :: ids
+  integer, intent(out) :: ierr, idslen
+  integer, dimension(:) :: mapid(13)
+  integer :: i, istat, lensec, nbits
 
-      integer,dimension(:) :: mapid(13)
+  data mapid /2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1/
 
-      data mapid /2,2,1,1,1,2,1,1,1,1,1,1,1/
+  ierr = 0
+  idslen = 13
+  nullify(ids)
 
-      ierr=0
-      idslen=13
-      nullify(ids)
+  call g2_gbytec(cgrib, lensec, iofst, 32)        ! Get Length of Section
+  iofst = iofst + 32
+  iofst = iofst + 8     ! skip section number
 
-      call g2_gbytec(cgrib,lensec,iofst,32)        ! Get Length of Section
-      iofst=iofst+32
-      iofst=iofst+8     ! skip section number
+  ! Unpack each value into array ids from the the appropriate number
+  ! of octets, which are specified in corresponding entries in array
+  ! mapid.
+  istat = 0
+  allocate(ids(idslen), stat = istat)
+  if (istat .ne. 0) then
+     ierr = 6
+     nullify(ids)
+     return
+  endif
 
-!   Unpack each value into array ids from the
-!   the appropriate number of octets, which are specified in
-!   corresponding entries in array mapid.
-      istat=0
-      allocate(ids(idslen),stat=istat)
-      if (istat.ne.0) then
-         ierr=6
-         nullify(ids)
-         return
-      endif
-      
-      do i=1,idslen
-        nbits=mapid(i)*8
-        call g2_gbytec(cgrib,ids(i),iofst,nbits)
-        iofst=iofst+nbits
-      enddo
-      end
+  do i = 1, idslen
+     nbits = mapid(i) * 8
+     call g2_gbytec(cgrib, ids(i), iofst, nbits)
+     iofst = iofst + nbits
+  enddo
+end subroutine gf_unpack1
