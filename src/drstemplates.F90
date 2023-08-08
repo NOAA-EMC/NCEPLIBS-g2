@@ -211,17 +211,15 @@ contains
     ! No implemented DRS templates need extensions.
     if (.not. templates(index)%needext) return
 
-    ! Uncomment the code below if we ever implement a template that
-    ! needs extension.
-    ! nummap = templates(index)%mapdrslen
-    ! map(1 : nummap) = templates(index)%mapdrs(1 : nummap)
+    nummap = templates(index)%mapdrslen
+    map(1 : nummap) = templates(index)%mapdrs(1 : nummap)
 
-    ! if (number .eq. 1) then
-    !    N = list(11) + list(13)
-    !    do i = 1, N
-    !       map(nummap + i)=4
-    !    enddo
-    !    nummap = nummap + N
-    ! endif
+    if (number .eq. 1) then
+       N = list(11) + list(13)
+       do i = 1, N
+          map(nummap + i)=4
+       enddo
+       nummap = nummap + N
+    endif
   end subroutine extdrstemplate
 end module drstemplates

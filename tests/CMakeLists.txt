@@ -97,7 +97,7 @@ if(FTP_TEST_FILES)
     create_test(test_ixgb2 ${kind})  
     create_test(test_getg2ir ${kind})  
     create_test(test_getidx ${kind})  
-#    create_test(test_getgb2rp ${kind})  
+    create_test(test_getgb2rp ${kind})  
     create_test(test_getgb2s ${kind})  
     create_test(test_getgb2p ${kind})  
     create_test(test_getgb2r ${kind})  
@@ -154,6 +154,8 @@ foreach(kind ${kinds})
   create_test(test_jpcpack ${kind})
   create_test(test_files ${kind})
   create_test(test_gb_info ${kind})
+  create_test(test_gettemplates ${kind})
+  create_test(test_gf_unpack2 ${kind})
 
   # This test depends on gdt2gds(), which is not present if the GRIB1
   # library is not also included in the build.

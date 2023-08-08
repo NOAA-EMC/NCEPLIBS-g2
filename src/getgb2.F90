@@ -27,6 +27,12 @@
 !> routine. Each component of the gribfield type is described in
 !> the OUTPUT ARGUMENT LIST section below.
 !>
+!> This subroutine calls getidx(), which allocates memory and stores the
+!> resulting pointers in an array that is a Fortran "save" variable. The
+!> result is that the memory will not be freed by the library and cannot
+!> be reached by the caller. To free this memory call gf_finalize()
+!> after all library operations are complete.
+!>
 !> @note Specify an index file if feasible to increase speed. Do
 !> not engage the same logical unit from more than one
 !> processor. Note that derived type gribfield contains pointers to
@@ -104,52 +110,51 @@
 !> - other gf_getfld grib2 unpacker return code
 !>
 !> @author Mark Iredell @date 1994-04-01
-      SUBROUTINE GETGB2(LUGB,LUGI,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT,
-     &                  UNPACK,K,GFLD,IRET)
-      USE GRIB_MOD
+SUBROUTINE GETGB2(LUGB, LUGI, J, JDISC, JIDS, JPDTN, JPDT, JGDTN, JGDT,  &
+     UNPACK, K, GFLD, IRET)
+  USE GRIB_MOD
+  implicit none
 
-      INTEGER,INTENT(IN) :: LUGB,LUGI,J,JDISC,JPDTN,JGDTN
-      INTEGER,DIMENSION(:) :: JIDS(*),JPDT(*),JGDT(*)
-      LOGICAL,INTENT(IN) :: UNPACK
-      INTEGER,INTENT(OUT) :: K,IRET
-      TYPE(GRIBFIELD),INTENT(OUT) :: GFLD
+  INTEGER, INTENT(IN) :: LUGB, LUGI, J, JDISC, JPDTN, JGDTN
+  INTEGER, DIMENSION(:) :: JIDS(*), JPDT(*), JGDT(*)
+  LOGICAL, INTENT(IN) :: UNPACK
+  INTEGER, INTENT(OUT) :: K, IRET
+  TYPE(GRIBFIELD), INTENT(OUT) :: GFLD
+  CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
+  integer :: nnum, nlen, lpos, jk, irgi, irgs
 
-      CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
+  ! Declare interfaces (required for cbuf pointer).
+  INTERFACE
+     SUBROUTINE GETIDX(LUGB, LUGI, CBUF, NLEN, NNUM, IRGI)
+       CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
+       INTEGER, INTENT(IN) :: LUGB, LUGI
+       INTEGER, INTENT(OUT) :: NLEN, NNUM, IRGI
+     END SUBROUTINE GETIDX
+  END INTERFACE
 
-C  DECLARE INTERFACES (REQUIRED FOR CBUF POINTER)
-      INTERFACE
-         SUBROUTINE GETIDX(LUGB,LUGI,CBUF,NLEN,NNUM,IRGI)
-            CHARACTER(LEN=1),POINTER,DIMENSION(:) :: CBUF
-            INTEGER,INTENT(IN) :: LUGB,LUGI
-            INTEGER,INTENT(OUT) :: NLEN,NNUM,IRGI
-         END SUBROUTINE GETIDX
-      END INTERFACE
+  ! Determine whether index buffer needs to be initialized.
+  IRGI = 0
+  CALL GETIDX(LUGB, LUGI, CBUF, NLEN, NNUM, IRGI)
+  IF (IRGI .GT. 1) THEN
+     IRET = 96
+     RETURN
+  ENDIF
 
-C     DETERMINE WHETHER INDEX BUFFER NEEDS TO BE INITIALIZED
-      IRGI=0
-      CALL GETIDX(LUGB,LUGI,CBUF,NLEN,NNUM,IRGI)
-      IF(IRGI.GT.1) THEN
-        IRET=96
-        RETURN
-      ENDIF
+  ! Search index buffer.
+  CALL GETGB2S(CBUF, NLEN, NNUM, J, JDISC, JIDS, JPDTN, JPDT, JGDTN, JGDT,  JK, &
+       GFLD, LPOS, IRGS)
+  IF (IRGS .NE. 0) THEN
+     IRET = 99
+     CALL GF_FREE(GFLD)
+     RETURN
+  ENDIF
 
-C  SEARCH INDEX BUFFER
-      CALL GETGB2S(CBUF,NLEN,NNUM,J,JDISC,JIDS,JPDTN,JPDT,JGDTN,JGDT,
-     &             JK,GFLD,LPOS,IRGS)
-      IF(IRGS.NE.0) THEN
-        IRET=99
-        CALL GF_FREE(GFLD)
-        RETURN
-      ENDIF
+  ! Read local use section, if available.
+  CALL GETGB2L(LUGB, CBUF(LPOS), GFLD, IRET)
 
-C  READ LOCAL USE SECTION, IF AVAILABLE
-      CALL GETGB2L(LUGB,CBUF(LPOS),GFLD,IRET)
-
-C  READ AND UNPACK GRIB RECORD
-      IF (UNPACK) THEN
-    !    NUMFLD=GFLD%IFLDNUM
-    !    CALL GF_FREE(GFLD)
-        CALL GETGB2R(LUGB,CBUF(LPOS),GFLD,IRET)
-      ENDIF
-      K=JK
-      END
+  ! Read and unpack grib record.
+  IF (UNPACK) THEN
+     CALL GETGB2R(LUGB, CBUF(LPOS), GFLD, IRET)
+  ENDIF
+  K = JK
+END SUBROUTINE GETGB2

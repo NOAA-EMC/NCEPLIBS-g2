@@ -36,7 +36,8 @@
      &                      mappdslen,coordlist,numcoord,ierr)
 
       use pdstemplates
-      use re_alloc        !  needed for subroutine realloc
+      use re_alloc              !  needed for subroutine realloc
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
@@ -50,6 +51,8 @@
       integer,allocatable :: mappds(:)
       integer :: mappdslen
       logical needext
+      integer :: lensec, nbits, newmappdslen
+      integer :: istat1, istat, isign, iret, i
 
       ierr=0
       nullify(ipdstmpl,coordlist)

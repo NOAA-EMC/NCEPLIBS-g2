@@ -8,10 +8,6 @@ program test_params
 
   integer :: g2disc, g2cat, g2num, g1val, g1ver
   character(len=8) :: abbrev
-  integer :: LU = 10;
-  integer :: g1_table_version, g1_val, g2_discipline, g2_category, g2_param_num
-  character(len = 8) :: g2_abbrev
-  integer :: ios, i
 
   print *, 'Testing the params module, ignore error messages.'
 
