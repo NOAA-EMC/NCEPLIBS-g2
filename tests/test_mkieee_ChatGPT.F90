@@ -1,3 +1,7 @@
+! Test the mkieee and rdieee functions in NCEPLIBS-g2 written by ChatGPT
+!
+! Aidan Hartnett
+
 program ieee_array_large_conversion_test
     implicit none
 
