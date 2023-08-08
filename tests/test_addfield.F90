@@ -58,17 +58,17 @@ program test_addfield
     if (ierr .ne. 0) stop 300
     s3grib = cgrib
 
-    print *, 'Testing addfield...'
-    print *, 'Normal addfield call, error=0'
-    call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-        ngrdpts, ibmap, bmap, ierr)
-    if (ierr .ne. 0) stop 1
-    s7grib = cgrib
-    cgrib = s3grib
-
     if(.false.) then
-    print *, 'No beggining GRIB, error=1'
+        print *, 'Testing addfield...'
+        print *, 'Normal addfield call, error=0'
+        call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+            coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+            ngrdpts, ibmap, bmap, ierr)
+        if (ierr .ne. 0) stop 1
+        s7grib = cgrib
+        cgrib = s3grib
+
+        print *, 'No beggining GRIB, error=1'
         cgrib(1) = char(0)
         call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
             coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
