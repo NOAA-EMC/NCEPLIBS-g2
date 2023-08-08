@@ -1,4 +1,4 @@
-! Test the mkieee and rdieee functions in NCEPLIBS-g2 written by ChatGPT
+! Test the mkieee and rdieee functions in NCEPLIBS-g2 written by ChatGPT using the prompt "write a fortran test program that tests an array of positive and negative values which includes a very large number and zero for the mkieee()/rdieee() functions of the NCEPLIBS-g2 library"
 !
 ! Aidan Hartnett
 
