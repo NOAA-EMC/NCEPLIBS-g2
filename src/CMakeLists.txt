@@ -11,7 +11,7 @@ getgb2r.f getgb2rp.f getgb2s.F90 getidx.F90 getlocal.F90 getpoly.f
 gettemplates.F90 gf_free.F90 gf_getfld.F90 gf_unpack1.F90 gf_unpack2.F90
 gf_unpack3.F90 gf_unpack4.f gf_unpack5.f gf_unpack6.F90 gf_unpack7.f
 gribcreate.F90 gribend.F90 gribinfo.F90
-${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.f intmath.f
+${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.F90 intmath.f
 ixgb2.f jpcpack.F90 jpcunpack.F90 misspack.f mkieee.f pack_gp.f
 params_ecmwf.F90 params.F90 pdstemplates.F90 pngpack.F90 pngunpack.F90
 putgb2.F90 rdieee.f realloc.f reduce.f simpack.f simunpack.F90 skgb.F90
