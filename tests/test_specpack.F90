@@ -4,7 +4,7 @@
 ! Ed Hartnett 7/31/23
 program test_specpack
   implicit none
-#ifdef KIND_4
+
   integer, parameter :: width = 2, height = 2, ndpts = 4
   real, parameter :: delta = 0.2
   real :: fld(ndpts*2)
@@ -45,12 +45,12 @@ program test_specpack
 !  print *, 'fld  ', fld
 !  print *, 'fld2 ', fld2
   do ii = 1, ndpts
+#ifdef KIND_4
      if (abs(fld(ii) - fld2(ii)) .gt. delta) then
         print *, fld(ii), fld2(ii), 'do not match'
         stop 4
      end if
-  end do
-
-  print *, 'SUCCESS!'
 #endif
+  end do
+  print *, 'SUCCESS!'
 end program test_specpack
