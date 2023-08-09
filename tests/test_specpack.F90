@@ -12,14 +12,12 @@ program test_specpack
   integer :: idrstmpl(10)
   character*1 :: cpack(200)
   integer :: lcpack = 200
-  !integer :: ii
+  integer :: ii
   integer :: jj, kk, mm
 
   ! Create the fld variable with data to pack.
   fld = (/1.1, 2.2, 3.3, 4.4, 1.1, 2.2, 3.3, 4.4/)
   fld2 = (/0, 0, 0, 0, 0, 0, 0, 0/)
-!  fld = (/1.1, 2.2, 3.3, 4.4/)
-!  fld2 = (/0, 0, 0, 0/)
 
   idrstmpl(1) = 0
   idrstmpl(2) = 1
@@ -36,23 +34,21 @@ program test_specpack
   jj = 1
   kk = 1
   mm = 1
-  print *, fld
   call specpack(fld, ndpts, jj, kk, mm, idrstmpl, cpack, lcpack)
   print *, 'lcpack: ', lcpack
 
   ! Unpack the data.
-  ! call specunpack(cpack, lcpack, idrstmpl, ndpts, jj, kk, mm, fld2)
-  ! print *, 'fld2 ', fld2
+  call specunpack(cpack, lcpack, idrstmpl, ndpts, jj, kk, mm, fld2)
 
-  ! ! Compare each value to see match, remember, comparing reals
-  ! print *, 'fld ', fld
-  ! print *, 'fld2 ', fld2
-  ! do ii = 1, ndpts
-  !    if (abs(fld(ii) - fld2(ii)) .gt. delta) then
-  !       print *, fld(ii), fld2(ii), 'do not match'
-  !       stop 4
-  !    end if
-  ! end do
+  ! Compare each value to see match, remember, comparing reals
+  print *, 'fld  ', fld
+  print *, 'fld2 ', fld2
+  do ii = 1, ndpts
+     if (abs(fld(ii) - fld2(ii)) .gt. delta) then
+        print *, fld(ii), fld2(ii), 'do not match'
+        stop 4
+     end if
+  end do
 
   print *, 'SUCCESS!'
 end program test_specpack
