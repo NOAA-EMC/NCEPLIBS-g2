@@ -42,8 +42,8 @@ program test_specpack
   call specunpack(cpack, lcpack, idrstmpl, ndpts, jj, kk, mm, fld2)
 
   ! Compare each value to see match, remember, comparing reals
-  print *, 'fld  ', fld
-  print *, 'fld2 ', fld2
+!  print *, 'fld  ', fld
+!  print *, 'fld2 ', fld2
   do ii = 1, ndpts
      if (abs(fld(ii) - fld2(ii)) .gt. delta) then
         print *, fld(ii), fld2(ii), 'do not match'
