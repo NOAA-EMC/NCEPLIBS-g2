@@ -37,7 +37,7 @@ program test_addfield
   integer :: idrstmpl(idrstmplen) = (/ 0, 1, 1, 8, 0 /)
   integer :: ibmap = 255
   logical :: bmap(1) = .false.
-  real(4) :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
+  real :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   ! Section 8
   integer :: ierr, lengrib
