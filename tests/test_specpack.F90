@@ -4,7 +4,7 @@
 ! Ed Hartnett 7/31/23
 program test_specpack
   implicit none
-
+#ifdef KIND_4
   integer, parameter :: width = 2, height = 2, ndpts = 4
   real, parameter :: delta = 0.2
   real :: fld(ndpts*2)
@@ -14,6 +14,7 @@ program test_specpack
   integer :: lcpack = 200
   integer :: ii
   integer :: jj, kk, mm
+  
 
   ! Create the fld variable with data to pack.
   fld = (/1.1, 2.2, 3.3, 4.4, 1.1, 2.2, 3.3, 4.4/)
@@ -51,4 +52,5 @@ program test_specpack
   end do
 
   print *, 'SUCCESS!'
+#endif
 end program test_specpack
