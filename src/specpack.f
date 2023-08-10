@@ -1,11 +1,12 @@
 !>    @file
 !>    @brief This subroutine packs up a spectral data field.
 !>    @author Stephen Gilbert @date 2002-12-19
-!>
 
 !>    This subroutine packs a spectral data field using the complex
 !>    packing algorithm for spherical harmonic data as defined in the
-!>    GRIB2 Data Representation Template 5.51.
+!>    GRIB2 [Data Representation Template
+!>    5.51](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-51.shtml).
+!>
 !>    @param[in] fld Contains the data values to pack.
 !>    @param[in] ndpts The number of data values in array fld.
 !>    @param[in] JJ J pentagonal resolution parameter.
@@ -17,8 +18,6 @@
 !>    @param[out] lcpack length of packed field cpack.
 !>
 !>    @author Stephen Gilbert @date 2002-12-19
-!>
-
       subroutine specpack(fld,ndpts,JJ,KK,MM,idrstmpl,cpack,lcpack)
 
       real,intent(in) :: fld(ndpts)
@@ -54,17 +53,17 @@
       incp=1
       do m=0,MM
          Nm=JJ      ! triangular or trapezoidal
-         if ( KK .eq. JJ+MM ) Nm=JJ+m          ! rhombodial
+         if (KK .eq. JJ+MM) Nm=JJ+m          ! rhombodial
          Ns=Js      ! triangular or trapezoidal
-         if ( Ks .eq. Js+Ms ) Ns=Js+m          ! rhombodial
+         if (Ks .eq. Js+Ms) Ns=Js+m          ! rhombodial
          do n=m,Nm
             if (n.le.Ns .AND. m.le.Ms) then    ! save unpacked value
                unpk(incu)=fld(inc)         ! real part
                unpk(incu+1)=fld(inc+1)     ! imaginary part
                inc=inc+2
                incu=incu+2
-            else                         ! Save value to be packed and scale
-                                         ! Laplacian scale factor
+            else
+               ! Save value to be packed and scale Laplacian scale factor.
                tfld(incp)=fld(inc)*pscale(n)         ! real part
                tfld(incp+1)=fld(inc+1)*pscale(n)     ! imaginary part
                inc=inc+2
@@ -83,23 +82,23 @@
          Ts=incu
       endif
 
-!     Add unpacked values to the packed data array in 32-bit IEEE format
+!     Add unpacked values to the packed data array in 32-bit IEEE format.
       call mkieee(unpk,cpack,Ts)
       ipos=4*Ts
 
-!     Scale and pack the rest of the coefficients
+!     Scale and pack the rest of the coefficients.
       tmplsim(2)=idrstmpl(2)
       tmplsim(3)=idrstmpl(3)
       tmplsim(4)=idrstmpl(4)
       call simpack(tfld,ndpts-Ts,tmplsim,cpack(ipos+1),lcpack)
       lcpack=lcpack+ipos
 
-!     Fill in Template 5.51
+!     Fill in Template 5.51.
       idrstmpl(1)=tmplsim(1)
       idrstmpl(2)=tmplsim(2)
       idrstmpl(3)=tmplsim(3)
       idrstmpl(4)=tmplsim(4)
       idrstmpl(9)=Ts
-      idrstmpl(10)=1         ! Unpacked spectral data is 32-bit IEEE
+      idrstmpl(10)=1 ! Unpacked spectral data is 32-bit IEEE
 
       end
