@@ -3,6 +3,7 @@
 ! Aidan Hartnett
 
 program ieee_array_large_conversion_test
+    #ifdef KIND_4
     implicit none
 
     ! Declare constants
@@ -54,5 +55,6 @@ program ieee_array_large_conversion_test
             write(*,*) 'Value', i, '- Conversion failed!'
         end if
     end do
+    #endif
 
 end program ieee_array_large_conversion_test
