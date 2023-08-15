@@ -1,5 +1,5 @@
 !> @file
-!> @brief This subroutine finds and unpacks a GRIB2 file.
+!> @brief This subroutine finds and unpacks a GRIB2 message.
 !> @author Mark Iredell @date 1994-04-01
 
 !> This subroutine finds and unpacks a GRIB2 message. It reads
@@ -27,20 +27,18 @@
 !> routine. Each component of the gribfield type is described in
 !> the OUTPUT ARGUMENT LIST section below.
 !>
+!> The derived type gribfield contains pointers to many arrays of
+!> data. The memory for these arrays must be freed by the caller by
+!> calling gf_free().
+!>
 !> This subroutine calls getidx(), which allocates memory and stores the
 !> resulting pointers in an array that is a Fortran "save" variable. The
 !> result is that the memory will not be freed by the library and cannot
 !> be reached by the caller. To free this memory call gf_finalize()
 !> after all library operations are complete.
 !>
-!> @note Specify an index file if feasible to increase speed. Do
-!> not engage the same logical unit from more than one
-!> processor. Note that derived type gribfield contains pointers to
-!> many arrays of data. The memory for these arrays is allocated
-!> when the values in the arrays are set, to help minimize problems
-!> with array overloading. Because of this users should free this
-!> memory, when it is no longer needed, by a call to subroutine
-!> gf_free().
+!> @note Specifing an index file may increase speed. Do not engage the
+!> same logical unit from more than one processor.
 !>
 !> @param[in] LUGB integer unit of the unblocked grib data file.
 !> File must be opened with [baopen() or baopenr()]
