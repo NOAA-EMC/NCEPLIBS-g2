@@ -1,6 +1,6 @@
 !> @file
-!> @brief Find the number of gridded fields and
-!> Local Use Sections in a GRIB2 message.
+!> @brief Find the number of gridded fields and Local Use Sections in
+!> a GRIB2 message.
 !> @author Stephen Gilbert @date 2000-05-25
 
 !> Find the number of gridded fields and Local Use Sections in a GRIB2
