@@ -12,7 +12,7 @@ program test_file_blend
   parameter (FILE_NAME = 'data/blend.t19z.core.f001.co.grib2')
   integer :: LUGI
   parameter (LUGI = 3)
-  character*(2000) :: cbuf
+  character(len = 1), pointer, dimension(:) :: cbuf
   integer :: numfld, mlen, lgrib
   integer :: msk1, msk2, lskip
   parameter(msk1 = 32000, msk2 = 4000)  
