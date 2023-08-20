@@ -14,10 +14,10 @@ program test_file_blend
   parameter (LUGI = 3)
   character(len = 1), pointer, dimension(:) :: cbuf
   integer :: numfld, mlen, lgrib
-  integer :: msk1, msk2, lskip
+  integer :: msk1, msk2
   parameter(msk1 = 32000, msk2 = 4000)  
-  integer :: iseek
-  character(len = 1), allocatable, dimension(:) :: cgrib  
+!  integer :: iseek, lskip
+!  character(len = 1), allocatable, dimension(:) :: cgrib  
   integer :: iret
 
   print *, 'Testing reading file ', FILE_NAME
@@ -27,7 +27,8 @@ program test_file_blend
   if (iret .ne. 0) stop 3
 
   ! Use ixgb2 to generate an index record.
-  lgrib = 2000
+  lgrib = 0
+  nullify(cbuf)
   call ixgb2(LUGI, 0, lgrib, cbuf, numfld, mlen, iret)
 !  print *,iret, numfld, mlen
   if (iret .ne. 0) stop 101
