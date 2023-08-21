@@ -82,7 +82,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
 
   integer*8 iseek8, mseek8, lskip8, lgrib8
   integer*8 ks8, kn8, kz8, k8, kg8, k48, km8
-  integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg, km, ks, kz
+  integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg, km
   parameter(lseek = 512)
   character z(lseek)
   character z4(4)
@@ -92,21 +92,17 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
 !  print *,'iseek ', iseek, ' mseek ', mseek, ' lskip ', lskip
 
   lgrib8 = 0
-  ks = iseek
   ks8 = iseek8
   kn8 = min(int(lseek, kind = 8), mseek8)
-  kz = lseek
   kz8 = lseek
 
   !  loop until grib message is found
-  do while (lgrib8 .eq. 0 .and. kn8 .ge. 8 .and. kz .eq. lseek)
+  do while (lgrib8 .eq. 0 .and. kn8 .ge. 8 .and. kz8 .eq. lseek)
      !  read partial section
-     ks8 = ks
      print *, 'ks8 ', ks8, ' kn8 ', kn8, ' kz8 ', kz8
      call bareadl(lugb, ks8, kn8, kz8, z)
-     kz = kz8
      
-     km = kz - 8 + 1
+     km = kz8 - 8 + 1
      km8 = kz8 - 8 + 1
      k = 0
      !  look for 'grib...1' in partial section
@@ -117,9 +113,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
            !  look for '7777' at end of grib message
            if (i1 .eq. 1) call g2_gbytec(z, kg, (k + 4) * 8, 3 * 8)
            if (i1 .eq. 2) call g2_gbytec(z, kg, (k + 12) * 8, 4 * 8)
-           !call baread(lugb, ks + k + kg-4, 4, k4, z4)
            
-           ks8 = ks
            k8 = k
            kg8 = kg
            call bareadl(lugb, ks8 + k8 + kg8 - 4, 4_8, k48, z4)
@@ -135,7 +129,6 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
         endif
         k = k + 1
      enddo
-     ks = ks + km
      ks8 = ks8 + km
      kn8 = min(int(lseek, kind = 8), iseek8 + mseek8 - ks8)
   enddo
