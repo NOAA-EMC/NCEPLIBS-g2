@@ -76,18 +76,21 @@ end subroutine skgb
 !> @param[out] lgrib Number of bytes in message (0 if not found).
 !>
 !> @author Mark Iredell @date 1995-10-31
-subroutine skgb8(lugb, iseek, mseek, lskip, lgrib)
+subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   implicit none
 
-  integer :: lugb
-  integer(kind = 8) :: iseek, mseek, lskip, lgrib
-  integer(kind = 8) :: lseek, k4, kg, km, ks, kz, kn
-  integer :: i4, k, i1
+  integer lugb
+  integer iseek, mseek, lskip, lgrib
+  integer*8 iseek8, mseek8, lskip8, lgrib8
+  integer i1, i4, k, k4, kg, km, ks, kz, kn
+  integer lseek
   parameter(lseek = 512)
   character z(lseek)
   character z4(4)
 
-  kg = 0
+  iseek = iseek8
+  mseek = mseek8
+
   lgrib = 0
   ks = iseek
   kn = min(lseek, mseek)
@@ -96,7 +99,7 @@ subroutine skgb8(lugb, iseek, mseek, lskip, lgrib)
   !  loop until grib message is found
   do while (lgrib .eq. 0 .and. kn .ge. 8 .and. kz .eq. lseek)
      !  read partial section
-     call bareadl(lugb, ks, kn, kz, z)
+     call baread(lugb, ks, kn, kz, z)
      km = kz - 8 + 1
      k = 0
      !  look for 'grib...1' in partial section
@@ -105,9 +108,9 @@ subroutine skgb8(lugb, iseek, mseek, lskip, lgrib)
         call g2_gbytec(z, i1, (k + 7) * 8, 1 * 8)
         if (i4 .eq. 1196575042 .and. (i1 .eq. 1 .or. i1 .eq. 2)) then
            !  look for '7777' at end of grib message
-           if (i1 .eq. 1) call g2_gbytec(z, int(kg), (k + 4) * 8, 3 * 8)
-           if (i1 .eq. 2) call g2_gbytec(z, int(kg), (k + 12) * 8, 4 * 8)
-           call bareadl(lugb, ks + k + kg - 4, 4_8, k4, z4)
+           if (i1 .eq. 1) call g2_gbytec(z, kg, (k + 4) * 8, 3 * 8)
+           if (i1 .eq. 2) call g2_gbytec(z, kg, (k + 12) * 8, 4 * 8)
+           call baread(lugb, ks + k + kg-4, 4, k4, z4)
            if (k4 .eq. 4) then
               call g2_gbytec(z4, i4, 0, 4 * 8)
               if (i4 .eq. 926365495) then
@@ -122,4 +125,8 @@ subroutine skgb8(lugb, iseek, mseek, lskip, lgrib)
      ks = ks + km
      kn = min(lseek, iseek + mseek - ks)
   enddo
+
+  lskip8 = lskip
+  lgrib8 = lgrib
+  
 end subroutine skgb8
