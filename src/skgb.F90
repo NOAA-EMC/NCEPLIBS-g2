@@ -25,6 +25,7 @@ subroutine skgb(lugb, iseek, mseek, lskip, lgrib)
   character z(lseek)
   character z4(4)
 
+!  print *,'iseek ', iseek, ' mseek ', mseek, ' lskip ', lskip
   lgrib = 0
   ks = iseek
   kn = min(lseek, mseek)
@@ -79,31 +80,29 @@ end subroutine skgb
 subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   implicit none
 
-  integer lugb
-  integer iseek, mseek, lskip, lgrib
   integer*8 iseek8, mseek8, lskip8, lgrib8
-  integer i1, i4, k, k4, kg, km, ks, kz, kn
-  integer lseek
+  integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg, km, ks, kz, kn
   parameter(lseek = 512)
   character z(lseek)
   character z4(4)
 
-  iseek = iseek8
-  mseek = mseek8
+  iseek = int(iseek8, kind=4)
+  mseek = int(mseek8, kind=4)
+!  print *,'iseek ', iseek, ' mseek ', mseek, ' lskip ', lskip
 
-  lgrib = 0
+  lgrib8 = 0
   ks = iseek
   kn = min(lseek, mseek)
   kz = lseek
 
   !  loop until grib message is found
-  do while (lgrib .eq. 0 .and. kn .ge. 8 .and. kz .eq. lseek)
+  do while (lgrib8 .eq. 0 .and. kn .ge. 8 .and. kz .eq. lseek)
      !  read partial section
      call baread(lugb, ks, kn, kz, z)
      km = kz - 8 + 1
      k = 0
      !  look for 'grib...1' in partial section
-     do while (lgrib .eq. 0 .and. k .lt. km)
+     do while (lgrib8 .eq. 0 .and. k .lt. km)
         call g2_gbytec(z, i4, (k + 0) * 8, 4 * 8)
         call g2_gbytec(z, i1, (k + 7) * 8, 1 * 8)
         if (i4 .eq. 1196575042 .and. (i1 .eq. 1 .or. i1 .eq. 2)) then
@@ -115,8 +114,8 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
               call g2_gbytec(z4, i4, 0, 4 * 8)
               if (i4 .eq. 926365495) then
                  !  grib message found
-                 lskip = ks + k
-                 lgrib = kg
+                 lskip8 = ks + k
+                 lgrib8 = kg
               endif
            endif
         endif
@@ -125,8 +124,4 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
      ks = ks + km
      kn = min(lseek, iseek + mseek - ks)
   enddo
-
-  lskip8 = lskip
-  lgrib8 = lgrib
-  
 end subroutine skgb8

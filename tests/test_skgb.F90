@@ -34,14 +34,14 @@ program test_skgb
 
   ! Open a real GRIB2 file.
   call baopenr(lugb, TEST_FILE_WW3_WEST, iret)
-  if (iret .ne. 0) stop 100
+  if (iret .ne. 0) stop 1
 
   ! Loop through the file, checking location of each message.
   start = 0
   do i = 1, NUM_MSG
      call skgb(lugb, start, 10000, lskip, lgrib)
-     print *, i, lskip, lgrib
-     if (lskip .ne. expected_lskip(i) .or. lgrib .ne. expected_lgrib(i)) stop 101
+!     print *, 'i', i, ' lskip ', lskip, ' lgrib ',lgrib
+     if (lskip .ne. expected_lskip(i) .or. lgrib .ne. expected_lgrib(i)) stop 10
      start = start + lgrib
   end do
 
@@ -52,7 +52,7 @@ program test_skgb
 
   ! Close the file.
   call baclose(lugb, iret)
-  if (iret .ne. 0) stop 199
+  if (iret .ne. 0) stop 20
 
   print *, 'OK!'
   print *, 'Testing skgb8()...'
@@ -61,17 +61,17 @@ program test_skgb
   if (iret .ne. 0) stop 100
 
   ! Loop through the file, checking location of each message.
-  start = 0
+  start8 = 0
   do i = 1, NUM_MSG
      call skgb8(lugb, start8, 10000_8, lskip8, lgrib8)
-     print *, i, lskip8, lgrib8
-     if (lskip8 .ne. expected_lskip(i) .or. lgrib8 .ne. expected_lgrib(i)) stop 101
+!     print *, 'i', i, ' lskip8 ', lskip8, ' lgrib8 ',lgrib8
+     if (lskip8 .ne. expected_lskip(i) .or. lgrib8 .ne. expected_lgrib(i)) stop 110
      start8 = start8 + lgrib8
   end do
 
   ! Close the file.
   call baclose(lugb, iret)
-  if (iret .ne. 0) stop 199
+  if (iret .ne. 0) stop 120
   print *, 'SUCCESS!...'
 
 end program test_skgb
