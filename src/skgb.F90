@@ -70,10 +70,10 @@ end subroutine skgb
 !> search is terminated if an eof or i/o error is encountered.
 !>
 !> @param[in] lugb Unit of the unblocked grib file.
-!> @param[in] iseek Number of bytes to skip before search.
-!> @param[in] mseek Maximum number of bytes to search.
-!> @param[out] lskip Number of bytes to skip before message.
-!> @param[out] lgrib Number of bytes in message (0 if not found).
+!> @param[in] iseek8 Number of bytes to skip before search.
+!> @param[in] mseek8 Maximum number of bytes to search.
+!> @param[out] lskip8 Number of bytes to skip before message.
+!> @param[out] lgrib8 Number of bytes in message (0 if not found).
 !>
 !> @author Mark Iredell @date 1995-10-31
 subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
