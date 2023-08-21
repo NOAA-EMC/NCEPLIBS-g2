@@ -82,14 +82,12 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
 
   integer*8 iseek8, mseek8, lskip8, lgrib8
   integer*8 ks8, kn8, kz8, k8, kg8, k48, km8
-  integer lseek, lugb, iseek, mseek, i1, i4, k, kg
+  integer lseek, lugb, mseek, i1, i4, k, kg
   parameter(lseek = 512)
   character z(lseek)
   character z4(4)
 
-  iseek = int(iseek8, kind=4)
   mseek = int(mseek8, kind=4)
-!  print *,'iseek ', iseek, ' mseek ', mseek, ' lskip ', lskip
 
   lgrib8 = 0
   ks8 = iseek8
