@@ -81,7 +81,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   implicit none
 
   integer*8 iseek8, mseek8, lskip8, lgrib8
-  integer*8 ks8, kn8, kz8, k8, kg8, k48
+  integer*8 ks8, kn8, kz8, k8, kg8, k48, km8
   integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg, km, ks, kz, kn
   parameter(lseek = 512)
   character z(lseek)
@@ -95,7 +95,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   ks = iseek
   ks8 = iseek8
   kn = min(lseek, mseek)
-  kn8 = min(lseek, mseek8)
+  kn8 = min(int(lseek, kind = 8), mseek8)
   kz = lseek
   kz8 = lseek
 
@@ -111,6 +111,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
      kz = kz8
      
      km = kz - 8 + 1
+     km8 = kz8 - 8 + 1
      k = 0
      !  look for 'grib...1' in partial section
      do while (lgrib8 .eq. 0 .and. k .lt. km)
@@ -131,7 +132,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
               call g2_gbytec(z4, i4, 0, 4 * 8)
               if (i4 .eq. 926365495) then
                  !  grib message found
-                 lskip8 = ks + k
+                 lskip8 = ks8 + k
                  lgrib8 = kg
               endif
            endif
@@ -139,6 +140,8 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
         k = k + 1
      enddo
      ks = ks + km
+     ks8 = ks8 + km
      kn = min(lseek, iseek + mseek - ks)
+     kn8 = min(lseek, iseek8 + mseek8 - ks8)
   enddo
 end subroutine skgb8
