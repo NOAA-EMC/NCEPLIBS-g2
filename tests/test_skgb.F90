@@ -40,7 +40,7 @@ program test_skgb
   start = 0
   do i = 1, NUM_MSG
      call skgb(lugb, start, 10000, lskip, lgrib)
-!     print *, 'i', i, ' lskip ', lskip, ' lgrib ',lgrib
+     print *, 'i', i, ' lskip ', lskip, ' lgrib ',lgrib
      if (lskip .ne. expected_lskip(i) .or. lgrib .ne. expected_lgrib(i)) stop 10
      start = start + lgrib
   end do
@@ -64,7 +64,7 @@ program test_skgb
   start8 = 0
   do i = 1, NUM_MSG
      call skgb8(lugb, start8, 10000_8, lskip8, lgrib8)
-!     print *, 'i', i, ' lskip8 ', lskip8, ' lgrib8 ',lgrib8
+     print *, 'i', i, ' lskip8 ', lskip8, ' lgrib8 ',lgrib8
      if (lskip8 .ne. expected_lskip(i) .or. lgrib8 .ne. expected_lgrib(i)) stop 110
      start8 = start8 + lgrib8
   end do

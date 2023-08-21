@@ -76,11 +76,12 @@ end subroutine skgb
 !> @param[out] lskip8 Number of bytes to skip before message.
 !> @param[out] lgrib8 Number of bytes in message (0 if not found).
 !>
-!> @author Mark Iredell @date 1995-10-31
+!> @author Edward Hartnett @date 2023-08-21
 subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   implicit none
 
   integer*8 iseek8, mseek8, lskip8, lgrib8
+  integer*8 ks8, kn8, kz8, k8, kg8, k48
   integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg, km, ks, kz, kn
   parameter(lseek = 512)
   character z(lseek)
@@ -92,13 +93,21 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
 
   lgrib8 = 0
   ks = iseek
+  ks8 = iseek8
   kn = min(lseek, mseek)
   kz = lseek
 
   !  loop until grib message is found
   do while (lgrib8 .eq. 0 .and. kn .ge. 8 .and. kz .eq. lseek)
      !  read partial section
-     call baread(lugb, ks, kn, kz, z)
+     print *, 'ks  ', ks, ' kn  ', kn, ' kz  ', kz
+     !call baread(lugb, ks, kn, kz, z)
+     kn8 = kn
+     ks8 = ks
+     print *, 'ks8 ', ks8, ' kn8 ', kn8, ' kz8 ', kz8
+     call bareadl(lugb, ks8, kn8, kz8, z)
+     kz = kz8
+     
      km = kz - 8 + 1
      k = 0
      !  look for 'grib...1' in partial section
@@ -109,7 +118,13 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
            !  look for '7777' at end of grib message
            if (i1 .eq. 1) call g2_gbytec(z, kg, (k + 4) * 8, 3 * 8)
            if (i1 .eq. 2) call g2_gbytec(z, kg, (k + 12) * 8, 4 * 8)
-           call baread(lugb, ks + k + kg-4, 4, k4, z4)
+           !call baread(lugb, ks + k + kg-4, 4, k4, z4)
+           
+           ks8 = ks
+           k8 = k
+           kg8 = kg
+           call bareadl(lugb, ks8 + k8 + kg8 - 4, 4_8, k48, z4)
+           k4 = k48
            if (k4 .eq. 4) then
               call g2_gbytec(z4, i4, 0, 4 * 8)
               if (i4 .eq. 926365495) then
