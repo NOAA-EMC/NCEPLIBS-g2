@@ -117,7 +117,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
               if (i4 .eq. 926365495) then
                  !  grib message found
                  lskip8 = ks8 + k
-                 lgrib8 = kg
+                 lgrib8 = kg8
               endif
            endif
         endif
