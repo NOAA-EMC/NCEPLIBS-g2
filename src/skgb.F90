@@ -95,7 +95,9 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   ks = iseek
   ks8 = iseek8
   kn = min(lseek, mseek)
+  kn8 = min(lseek, mseek8)
   kz = lseek
+  kz8 = lseek
 
   !  loop until grib message is found
   do while (lgrib8 .eq. 0 .and. kn .ge. 8 .and. kz .eq. lseek)
