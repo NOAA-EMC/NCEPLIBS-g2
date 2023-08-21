@@ -81,7 +81,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   implicit none
 
   integer*8 iseek8, mseek8, lskip8, lgrib8
-  integer*8 ks8, kn8, kz8, kg8, k48, km8
+  integer*8 ks8, kn8, kz8, k48, km8
   integer lseek, lugb, i1, i4, k, kg
   parameter(lseek = 512)
   character z(lseek)
@@ -109,14 +109,13 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
            if (i1 .eq. 1) call g2_gbytec(z, kg, (k + 4) * 8, 3 * 8)
            if (i1 .eq. 2) call g2_gbytec(z, kg, (k + 12) * 8, 4 * 8)
            
-           kg8 = kg
-           call bareadl(lugb, ks8 + k + kg8 - 4, 4_8, k48, z4)
+           call bareadl(lugb, ks8 + k + kg - 4, 4_8, k48, z4)
            if (k48 .eq. 4) then
               call g2_gbytec(z4, i4, 0, 4 * 8)
               if (i4 .eq. 926365495) then
                  !  grib message found
                  lskip8 = ks8 + k
-                 lgrib8 = kg8
+                 lgrib8 = kg
               endif
            endif
         endif
