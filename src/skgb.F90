@@ -82,7 +82,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
 
   integer*8 iseek8, mseek8, lskip8, lgrib8
   integer*8 ks8, kn8, kz8, k8, kg8, k48, km8
-  integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg, km
+  integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg
   parameter(lseek = 512)
   character z(lseek)
   character z4(4)
@@ -102,11 +102,10 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
      print *, 'ks8 ', ks8, ' kn8 ', kn8, ' kz8 ', kz8
      call bareadl(lugb, ks8, kn8, kz8, z)
      
-     km = kz8 - 8 + 1
      km8 = kz8 - 8 + 1
      k = 0
      !  look for 'grib...1' in partial section
-     do while (lgrib8 .eq. 0 .and. k .lt. km)
+     do while (lgrib8 .eq. 0 .and. k .lt. km8)
         call g2_gbytec(z, i4, (k + 0) * 8, 4 * 8)
         call g2_gbytec(z, i1, (k + 7) * 8, 1 * 8)
         if (i4 .eq. 1196575042 .and. (i1 .eq. 1 .or. i1 .eq. 2)) then
@@ -129,7 +128,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
         endif
         k = k + 1
      enddo
-     ks8 = ks8 + km
+     ks8 = ks8 + km8
      kn8 = min(int(lseek, kind = 8), iseek8 + mseek8 - ks8)
   enddo
 end subroutine skgb8
