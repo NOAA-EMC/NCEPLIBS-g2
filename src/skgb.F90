@@ -82,7 +82,7 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
 
   integer*8 iseek8, mseek8, lskip8, lgrib8
   integer*8 ks8, kn8, kz8, k8, kg8, k48, km8
-  integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg, km, ks, kz, kn
+  integer lseek, lugb, iseek, mseek, i1, i4, k, k4, kg, km, ks, kz
   parameter(lseek = 512)
   character z(lseek)
   character z4(4)
@@ -94,17 +94,13 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   lgrib8 = 0
   ks = iseek
   ks8 = iseek8
-  kn = min(lseek, mseek)
   kn8 = min(int(lseek, kind = 8), mseek8)
   kz = lseek
   kz8 = lseek
 
   !  loop until grib message is found
-  do while (lgrib8 .eq. 0 .and. kn .ge. 8 .and. kz .eq. lseek)
+  do while (lgrib8 .eq. 0 .and. kn8 .ge. 8 .and. kz .eq. lseek)
      !  read partial section
-     print *, 'ks  ', ks, ' kn  ', kn, ' kz  ', kz
-     !call baread(lugb, ks, kn, kz, z)
-     kn8 = kn
      ks8 = ks
      print *, 'ks8 ', ks8, ' kn8 ', kn8, ' kz8 ', kz8
      call bareadl(lugb, ks8, kn8, kz8, z)
@@ -141,7 +137,6 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
      enddo
      ks = ks + km
      ks8 = ks8 + km
-     kn = min(lseek, iseek + mseek - ks)
-     kn8 = min(lseek, iseek8 + mseek8 - ks8)
+     kn8 = min(int(lseek, kind = 8), iseek8 + mseek8 - ks8)
   enddo
 end subroutine skgb8
