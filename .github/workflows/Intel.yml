@@ -83,7 +83,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/Jasper
-        key: jasper-intel-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
+        key: jasper-intel-${{ matrix.compilers }}-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
