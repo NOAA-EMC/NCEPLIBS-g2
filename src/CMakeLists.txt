@@ -29,7 +29,6 @@ set(c_src dec_jpeg2000.c dec_png.c enc_jpeg2000.c enc_png.c mova2i.c)
 # substituted in.
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gribmod.F90.in" "${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90" @ONLY)
 
-set(kinds "4" "d")
 foreach(kind ${kinds})
 
   # Figure out the library name and the include directory.
