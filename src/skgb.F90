@@ -67,7 +67,6 @@ subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)
   !  loop until grib message is found
   do while (lgrib8 .eq. 0 .and. kn8 .ge. 8 .and. kz8 .eq. lseek)
      !  read partial section
-     print *, 'ks8 ', ks8, ' kn8 ', kn8, ' kz8 ', kz8
      call bareadl(lugb, ks8, kn8, kz8, z)
      
      km8 = kz8 - 8 + 1
