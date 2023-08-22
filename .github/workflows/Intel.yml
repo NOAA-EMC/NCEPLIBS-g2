@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest]
+        compilers: ["CC=icc FC=ifort", "CC=icx FC=ifx"]
 
     steps:
 
@@ -51,7 +51,7 @@ jobs:
         cd bacio
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
+        ${{ matrix.compilers }} cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
         make -j2
         make install
 
@@ -67,7 +67,7 @@ jobs:
         cd w3emc
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc -DBUILD_WITH_BUFR=OFF ..
+        ${{ matrix.compilers }} cmake -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc -DBUILD_WITH_BUFR=OFF ..
         make -j2
         make install
         
@@ -83,14 +83,14 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/Jasper
-        key: jasper-intel-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
+        key: jasper-intel-${{ matrix.compilers }}-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
       run: |
         cd jasper
         mkdir build-jasper && cd build-jasper
-        cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
+        ${{ matrix.compilers }} cmake .. -DCMAKE_INSTALL_PREFIX=~/Jasper
         make -j2
         make install
 
@@ -104,7 +104,7 @@ jobs:
         cd g2
         mkdir build 
         cd build
-        cmake -DOPENMP=ON -DCMAKE_PREFIX_PATH="~/Jasper;~/bacio;~/w3emc" ..
+        ${{ matrix.compilers }} cmake -DCMAKE_PREFIX_PATH="~/Jasper;~/bacio;~/w3emc" ..
         make -j2
     
     - name: test
