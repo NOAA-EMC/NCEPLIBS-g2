@@ -152,9 +152,11 @@ foreach(kind ${kinds})
   create_test(test_getfield ${kind})
   create_test(test_pngpack ${kind})
   create_test(test_jpcpack ${kind})
+  create_test(test_specpack ${kind})
   create_test(test_files ${kind})
   create_test(test_gb_info ${kind})
   create_test(test_gettemplates ${kind})
+  create_test(test_addfield ${kind})
   create_test(test_gf_unpack2 ${kind})
 
   # This test depends on gdt2gds(), which is not present if the GRIB1
