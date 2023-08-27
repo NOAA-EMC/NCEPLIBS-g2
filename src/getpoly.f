@@ -1,9 +1,9 @@
 !> @file
-!> @brief This subroutine returns the J, K, and M pentagonal
+!> @brief Return the J, K, and M pentagonal
 !> resolution parameters specified in a GRIB2 Grid Definition Section.
 !> @author Stephen Gilbert @date 2002-12-11
 
-!> This subroutine returns the J, K, and M pentagonal resolution
+!> Return the J, K, and M pentagonal resolution
 !> parameters specified in a GRIB2 Grid Definition Section used
 !> spherical harmonic coefficients using GDT 5.50 through 5.53.
 !>
@@ -18,6 +18,8 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-11
       subroutine getpoly(csec3,lcsec3,jj,kk,mm)
+      implicit none
+      
       character(len=1),intent(in) :: csec3(*)
       integer,intent(in) :: lcsec3
       integer,intent(out) :: jj,kk,mm

@@ -32,9 +32,9 @@
 !> @author Stephen Gilbert @date 2000-05-26
       subroutine gf_unpack5(cgrib,lcgrib,iofst,ndpts,idrsnum,idrstmpl,
      &                   mapdrslen,ierr)
-
       use drstemplates
-      use re_alloc        !  needed for subroutine realloc
+      use re_alloc              !  needed for subroutine realloc
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
@@ -46,6 +46,7 @@
       integer,allocatable :: mapdrs(:)
       integer :: mapdrslen
       logical needext
+      integer :: newmapdrslen, nbits, istat, isign, lensec, iret, i
 
       ierr=0
       nullify(idrstmpl)

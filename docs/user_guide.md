@@ -72,40 +72,40 @@ large enough.
 Subroutine getlocal() will return the requested occurrence of Section 2
 from a given GRIB2 message. 
 
-GF_GETFLD can be used to get all information pertaining to the nth 
-data field in the message. The subroutine returns all the unpacked values
-for each Section and Template in a Fortran 90 derived type gribfield,
-which is defined in module GRIB_MOD. An option exists that lets the
-user decide if the subroutine should unpack the Bit-map (if
+GF_GETFLD can be used to get all information pertaining to the nth
+data field in the message. The subroutine returns all the unpacked
+values for each Section and Template in a Fortran 90 derived type
+gribfield, which is defined in module GRIB_MOD. An option exists that
+lets the user decide if the subroutine should unpack the Bit-map (if
 applicable) and the data values or just return the field description
 information.
+
 Note that derived type gribfield contains pointers to dynamically
-allocated space that holds the contents of all arrays, and users are encouraged 
-to free up this memory, when it is no longer needed, by an explicit call
-to subroutine GF_FREE().
+allocated memory; callers must free this memory by calling subroutine
+gf_free().
 
 # Extracting GRIB2 Fields from a GRIB2 file
 
-Subroutine getgb2() can be used to extract a specified field from a file
-containing many GRIB2 messages. getgb2() searches an index to find the 
-location of the user specified field. The index can be supplied from a
-seperate GRIB2 index file, or it can be generated internally.
+Subroutine getgb2() can be used to extract a specified field from a
+file containing many GRIB2 messages. getgb2() searches an index to
+find the location of the user specified field. The index can be
+supplied from a seperate GRIB2 index file, or it can be generated
+internally. If getgb2() is used, call gf_finalize() to free all
+memory. gf_finalize() only needs to be called once, no matter how many
+times getgb2() is called.
 
 The GRIB2 file (and the index file, if supplied) must be opened with
-a call to subroutine BAOPEN() prior to the call to GETGB2.
+a call to subroutine baopen() prior to the call to getgb2().
 
 The decoded information for the selected GRIB field is returned in a 
 derived type variable, gfld. Gfld is of type gribfield, which is defined
 in module grib_mod, so users of this routine will need to include
-the line "USE GRIB_MOD" in their calling routine. Each component of the
-gribfield type is described in the OUTPUT ARGUMENT LIST in the docblock
-for subroutine getgb2() below.
+the line "USE GRIB_MOD" in their calling routine.
 
 Note that derived type gribfield contains pointers to many arrays of data.
 The memory for these arrays is allocated when the values in the arrays 
 are set, to help minimize problems with array overloading. Because of this,
-users are encouraged to free up this memory, when it is no longer
-needed, by an explicit call to subroutine GF_FREE().
+users must free this memory by calling subroutine gf_free().
 
 Example usage:
 
@@ -145,11 +145,11 @@ Example usage:
       
 # GRIB2 Tables/Templates
 
-WMO's GRIB2 specification "FM 92-XII GRIB - General Regularly-distributed
-Information in Binary Form" contains descriptions of each template
-and code table information. This document can be found at
-http://www.wmo.ch/web/www/WMOCodes.html
-(PDF and MSWord formats are available)
+WMO's GRIB2 specification "FM 92-XII GRIB - General
+Regularly-distributed Information in Binary Form" contains
+descriptions of each template and code table information. This
+document can be found at http://www.wmo.ch/web/www/WMOCodes.html (PDF
+and MSWord formats are available)
 
 MDL has made an HTML version of the document available at
 http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm.

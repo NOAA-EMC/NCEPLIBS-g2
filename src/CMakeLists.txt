@@ -5,21 +5,21 @@
 
 # These are the fortran source files.
 set(fortran_src addfield.f addgrid.F90 addlocal.F90 cmplxpack.f compack.f
-comunpack.f drstemplates.F90 g2_gbytesc.F90 g2grids.F90 gb_info.f
-getdim.f getfield.F90 getg2i.f getg2ir.f getgb2.f getgb2l.f getgb2p.F90
-getgb2r.f getgb2rp.f getgb2s.f getidx.F90 getlocal.f getpoly.f
-gettemplates.f gf_free.f gf_getfld.F90 gf_unpack1.f gf_unpack2.f
-gf_unpack3.F90 gf_unpack4.f gf_unpack5.f gf_unpack6.f gf_unpack7.f
+comunpack.f drstemplates.F90 g2_gbytesc.F90 g2grids.F90 gb_info.F90
+getdim.f getfield.F90 getg2i.F90 getg2ir.F90 getgb2.F90 getgb2l.F90 getgb2p.F90
+getgb2r.F90 getgb2rp.f getgb2s.F90 getidx.F90 getlocal.F90 getpoly.f
+gettemplates.F90 gf_free.F90 gf_getfld.F90 gf_unpack1.F90 gf_unpack2.F90
+gf_unpack3.F90 gf_unpack4.f gf_unpack5.f gf_unpack6.F90 gf_unpack7.f
 gribcreate.F90 gribend.F90 gribinfo.F90
-${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.f intmath.f
+${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.F90 intmath.f
 ixgb2.f jpcpack.F90 jpcunpack.F90 misspack.f mkieee.f pack_gp.f
-params_ecmwf.f params.F90 pdstemplates.F90 pngpack.F90 pngunpack.F90
-putgb2.F90 rdieee.f realloc.f reduce.f simpack.f simunpack.f skgb.F90
+params_ecmwf.F90 params.F90 pdstemplates.F90 pngpack.F90 pngunpack.F90
+putgb2.F90 rdieee.f realloc.f reduce.f simpack.f simunpack.F90 skgb.F90
 specpack.f specunpack.f)
 
 # This function calls NCEPLIBS-w3emc.
 if (BUILD_WITH_W3EMC)
-  set(fortran_src ${fortran_src} gdt2gds.f)
+  set(fortran_src ${fortran_src} gdt2gds.F90)
 endif()
 
 # These are the C source files.
@@ -29,7 +29,6 @@ set(c_src dec_jpeg2000.c dec_png.c enc_jpeg2000.c enc_png.c mova2i.c)
 # substituted in.
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gribmod.F90.in" "${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90" @ONLY)
 
-set(kinds "4" "d")
 foreach(kind ${kinds})
 
   # Figure out the library name and the include directory.

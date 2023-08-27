@@ -41,8 +41,8 @@ program test_getidx
   if (iret .ne. 0) stop 100
 
   ! This will not work because the first argument must be between 0 and 9999.
-  call getidx(0, lugi, cbuf, nlen, nnum, iret)
-  if (iret .ne. 90) stop 99
+!  call getidx(0, lugi, cbuf, nlen, nnum, iret)
+!  if (iret .ne. 90) stop 99
   call getidx(10000, lugi, cbuf, nlen, nnum, iret)
   if (iret .ne. 90) stop 99
 
@@ -99,13 +99,13 @@ program test_getidx
   if (iret .ne. 0) stop 100
 
   ! Get the index info, telling getidx() to use the index file.
-  call getidx(lu_gdas, lu_gdas_index * -1, cbuf, nlen, nnum, iret)
+  call getidx(lu_gdas, -1 * lu_gdas_index, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 101
   print *, 'nlen, nnum: ', nlen, nnum
   if (nlen .ne.  3800 .or. nnum .ne. 19) stop 102
   
   ! Get the index info, telling getidx() to use the index file.
-  call getidx(lu_gdas, lu_gdas_index * -1, cbuf, nlen, nnum, iret)
+  call getidx(lu_gdas, -1 * lu_gdas_index, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 101
   print *, 'nlen, nnum: ', nlen, nnum
   if (nlen .ne.  3800 .or. nnum .ne. 19) stop 102

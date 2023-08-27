@@ -24,7 +24,7 @@
 !> @param[out] coordlist Pointer to real array containing floating
 !> point values intended to document the vertical discretisation
 !> associated to model data on hybrid coordinate vertical
-!> levels (part of Section 4).
+!> levels (part of Section 4). Must be deallocated by caller.
 !> @param[out] numcoord Number of values in array coordlist.
 !> @param[out] ierr Error return code.
 !> - 0 no error.
@@ -36,7 +36,8 @@
      &                      mappdslen,coordlist,numcoord,ierr)
 
       use pdstemplates
-      use re_alloc        !  needed for subroutine realloc
+      use re_alloc              !  needed for subroutine realloc
+      implicit none
 
       character(len=1),intent(in) :: cgrib(lcgrib)
       integer,intent(in) :: lcgrib
@@ -50,6 +51,8 @@
       integer,allocatable :: mappds(:)
       integer :: mappdslen
       logical needext
+      integer :: lensec, nbits, newmappdslen
+      integer :: istat1, istat, isign, iret, i
 
       ierr=0
       nullify(ipdstmpl,coordlist)

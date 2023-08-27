@@ -27,7 +27,7 @@ program test_getgb2_mem
   integer lugb
   parameter(lugb = 10)
   integer :: ios
-  integer :: i
+  integer :: i, iret
   
   test_file = [character(len=120) :: TEST_FILE_GEP19_BCF144, TEST_FILE_GEAVG, TEST_FILE_GEC00, &
        TEST_FILE_GEGFS_F144, TEST_FILE_GEGFS_MEF144, TEST_FILE_GEP19_F144]
@@ -46,6 +46,10 @@ program test_getgb2_mem
      call baclose(lugb + i, ios)
      if (ios .ne. 0) stop 11
   end do
+
+  ! Free all memory.
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 12
 
 end program test_getgb2_mem
 
