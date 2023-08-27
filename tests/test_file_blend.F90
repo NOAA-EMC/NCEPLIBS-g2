@@ -79,7 +79,7 @@ program test_file_blend
   call baclose(lugi, iret)
   if (iret .ne. 0) stop 5
 
-  ! Free memory.
+  ! Free memory...
   deallocate(cbuf)
   
   print *, 'OK!'
