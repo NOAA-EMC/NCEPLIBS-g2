@@ -80,6 +80,9 @@ program test_file_blend
   ! Close the file.
   call baclose(lugi, iret)
   if (iret .ne. 0) stop 5
+
+  ! Free memory.
+  deallocate(cbuf)
   
   print *, 'OK!'
   print *, 'SUCCESS!'
