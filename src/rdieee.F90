@@ -13,6 +13,7 @@
 !>
 !> @author Stephen Gilbert @date 2000-05-09
 subroutine rdieee(rieee,a,num)
+  implicit none
   
   real(4), intent(in) :: rieee(num)
   real, intent(out) :: a(num)
@@ -21,6 +22,8 @@ subroutine rdieee(rieee,a,num)
   integer(4) :: ieee
   real, parameter :: two23 = scale(1.0,-23)
   real, parameter :: two126 = scale(1.0,-126)
+  integer :: iexp, imant, isign, j
+  real :: sign, temp
 
   do j = 1, num
      ! Transfer IEEE bit string to integer variable.

@@ -11,7 +11,8 @@
 !>
 !> @author Stephen Gilbert @date 2000-05-09
 subroutine mkieee(a, rieee, num)
-
+  implicit none
+  
   real(4), intent(in) :: a(num)
   real(4), intent(out) :: rieee(num)
   integer, intent(in) :: num
@@ -19,6 +20,8 @@ subroutine mkieee(a, rieee, num)
   integer(4) :: ieee
   real, parameter :: two23 = scale(1.0,23)
   real, parameter :: two126 = scale(1.0,126)
+  real :: alog2, atemp
+  integer :: iexp, imant, j, n
 
   alog2 = alog(2.0)
 
