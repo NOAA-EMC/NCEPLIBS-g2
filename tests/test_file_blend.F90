@@ -17,7 +17,7 @@ program test_file_blend
   integer :: msk1, msk2
   parameter(msk1 = 32000, msk2 = 4000)  
   integer :: iseek, lskip
-  integer :: iret, lengrib, icount, itot, numfields, maxlocal, numlocal
+  integer :: iret, lengrib, numfields, maxlocal, numlocal
   integer :: listsec0(3), listsec1(13), j
   integer :: expected_listsec0(3) = (/ 0, 2, 1584506 /)
   integer :: expected_listsec1(13) = (/ 7, 14, 1, 1, 1, 2022, 11, 17, 19, 0, 0, 0, 1 /)
@@ -54,8 +54,7 @@ program test_file_blend
   call baread(LUGI, lskip, lgrib, lengrib, cbuf)
   if (lgrib .ne. lengrib) stop 111
   iseek = lskip + lgrib
-  icount = icount + 1
-  print *,' GRIB MESSAGE  ', icount, '  starts at ', lskip + 1
+  print *,' GRIB MESSAGE starts at ', lskip + 1
 
   ! Get info about the message.
   call gb_info(cbuf, lengrib, listsec0, listsec1,  &
@@ -64,7 +63,6 @@ program test_file_blend
      write(6, '(A,I0)') ' ERROR extracting field = ', iret
      stop 10
   endif
-  itot = itot + numfields
   write(6, '(A,3(1x,I0))')'  SECTION 0: ', (listsec0(j), j = 1, 3)
   do j = 1, 3
      if (listsec0(j) .ne. expected_listsec0(j)) stop 500
