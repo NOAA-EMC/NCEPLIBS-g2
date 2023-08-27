@@ -79,10 +79,8 @@ if(FTP_TEST_FILES)
   set(FILE_GEP19_F144 "gep19.t00z.pgrb2a.0p50.f144")
   set(AQM "aqm.t12z.max_8hr_o3.227.grib2")
   
-  if(FTP_EXTRA_TEST_FILES)    
-    if(FTP_LARGE_TEST_FILES)
-      set(FILE_FV3_ATM "fv3lam.t00z.prslev.f000.grib2")
-    endif()
+  if(FTP_LARGE_TEST_FILES)
+    set(FILE_FV3_ATM "fv3lam.t00z.prslev.f000.grib2")
   endif()
   
   # Get each of the test data files.

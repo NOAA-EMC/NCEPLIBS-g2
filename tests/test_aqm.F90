@@ -25,12 +25,19 @@ program test_aqm
   jpdt = -9999
   jgdt = -9999
   call getgb2(lugb, 0, jskp, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-          unpack, jskp, gfld, iret)
+       unpack, jskp, gfld, iret)
   if (iret .ne. 0) stop 3
 
   ! Close the file.
   call baclose(lugb, iret)  
   if (iret .ne. 0) stop 200
+
+  ! Free memory in derived type gribfield.
+  call gf_free(gfld)
+  
+  ! Free library memory used by getidx().
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 201
   
   print *, 'SUCCESS!'
 end program test_aqm
