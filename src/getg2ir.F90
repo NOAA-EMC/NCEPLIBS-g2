@@ -31,6 +31,7 @@
 !> - 0 No error.
 !> - 1 Not enough memory available to hold full index buffer.
 !> - 2 Not enough memory to allocate initial index buffer.
+!> - 3 Error deallocating memory.
 !>
 !> @author Mark Iredell @date 1995-10-31
 SUBROUTINE GETG2IR(LUGB, MSK1, MSK2, MNUM, CBUF, NLEN, NNUM, NMESS, IRET)
@@ -97,7 +98,8 @@ SUBROUTINE GETG2IR(LUGB, MSK1, MSK2, MNUM, CBUF, NLEN, NNUM, NMESS, IRET)
         DEALLOCATE(CBUFTMP, STAT = ISTAT)
         IF (ISTAT.NE.0) THEN
            PRINT *, ' deallocating cbuftmp ... ', istat
-           stop 99
+           IRET = 3
+           RETURN
         ENDIF
         NULLIFY(CBUFTMP)
         NNUM = NNUM + NUMFLD
