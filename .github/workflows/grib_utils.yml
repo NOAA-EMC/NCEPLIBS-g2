@@ -21,10 +21,9 @@ jobs:
       CC: gcc
 
     strategy:
-      fail-fast: true
       matrix:
-        grib_util-branch: [v1.2.4, develop]
-        jasper-vesion: [3.0.3, 4.0.0]
+        grib_util-branch: [develop]
+        jasper-version: [2.0.33, 3.0.5, 4.0.0]
 
     steps:
 

@@ -21,6 +21,7 @@ function(PULL_DATA THE_URL THE_FILE)
     endif()
   endif()
   if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}")
+    message(STATUS "Downloading file ${THE_URL}/${THE_FILE} to test data directory.")    
     file(DOWNLOAD
       ${THE_URL}/${THE_FILE}
       ${CMAKE_CURRENT_BINARY_DIR}/data/${THE_FILE}
@@ -77,15 +78,17 @@ if(FTP_TEST_FILES)
   set(FILE_GEGFS_F144 "gegfs.t00z.pgrb2a.0p50.f144")
   set(FILE_GEGFS_MEF144 "gegfs.t00z.pgrb2a.0p50_mef144")
   set(FILE_GEP19_F144 "gep19.t00z.pgrb2a.0p50.f144")
-  if(FTP_EXTRA_TEST_FILES)    
-    if(FTP_LARGE_TEST_FILES)
-      set(FILE_FV3_ATM "fv3lam.t00z.prslev.f000.grib2")
-    endif()
+  set(FILE_GDAS_12Z "gdas.t12z.pgrb2.1p00.anl.grib2")
+  set(FILE_BLEND "blend.t19z.core.f001.co.grib2")
+  set(AQM "aqm.t12z.max_8hr_o3.227.grib2")
+  
+  if(FTP_LARGE_TEST_FILES)
+    set(FILE_FV3_ATM "fv3lam.t00z.prslev.f000.grib2")
   endif()
   
   # Get each of the test data files.
   foreach(THE_FILE IN LISTS WW3_WEST_FILE FILE_GEP19_BCF144 FILE_GEAVG FILE_GEC00
-      FILE_GEGFS_F144 FILE_GEGFS_MEF144 FILE_GEP19_F144 FILE_FV3_ATM) 
+      FILE_GEGFS_F144 FILE_GEGFS_MEF144 FILE_GEP19_F144 FILE_FV3_ATM FILE_GDAS_12Z FILE_BLEND AQM) 
     PULL_DATA(${G2_FTP_URL} ${THE_FILE})
   endforeach()
 
@@ -102,6 +105,8 @@ if(FTP_TEST_FILES)
     create_test(test_getgb2p ${kind})  
     create_test(test_getgb2r ${kind})  
     create_test(test_getgb2ir ${kind})
+    create_test(test_file_blend ${kind})
+    create_test(test_aqm ${kind})
     # This test depends on gdt2gds(), which is not present if the GRIB1
     # library is not also included in the build.
     if (BUILD_WITH_W3EMC)
