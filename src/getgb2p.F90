@@ -18,14 +18,10 @@
 !> file and unpacked. If the GRIB field is not found, then the return
 !> code will be nonzero.
 !>
-!> Note that derived type @ref grib_mod::gribfield contains pointers
-!> to many arrays of data. The memory for these arrays is allocated
-!> when the values in the arrays are set, to help minimize problems
-!> with array overloading. Because of this users are should free this
-!> memory, when it is no longer needed, by a call to subroutine
-!> gf_free().
+!> The derived type @ref grib_mod::gribfield contains allocated memory
+!> that must be freed by the caller with subroutine gf_free().
 !>
-!> @note Specify an index file if feasible to increase speed.
+!> @note Specifing an index file may increase speed.
 !> Do not engage the same logical unit from more than one processor.
 !>
 !> @param[in] lugb Unit of the unblocked GRIB data file. The
