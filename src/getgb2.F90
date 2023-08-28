@@ -1,44 +1,45 @@
 !> @file
-!> @brief This subroutine finds and unpacks a GRIB2 message.
+> @brief Find and unpack a GRIB2 message in a file.
 !> @author Mark Iredell @date 1994-04-01
 
-!> This subroutine finds and unpacks a GRIB2 message. It reads
-!> a GRIB index file (or optionally the GRIB file itself) to
-!> get the index buffer (i.e. table of contents) for the GRIB file.
+!> Find and unpack a GRIB2 message in a file. It reads a GRIB index
+!> file (or optionally the GRIB file itself) to get the index buffer
+!> (i.e. table of contents) for the GRIB file.
 !>
 !> Find in the index buffer a reference to the GRIB field requested.
 !>
-!> The GRIB field request specifies the number of fields to skip
-!> and the unpacked identification section, grid definition template
-!> and product defintion section parameters. (A requested parameter
-!> of -9999 means to allow any value of this parameter to be found.)
+!> The GRIB field request specifies the number of fields to skip and
+!> the unpacked identification section, grid definition template and
+!> product defintion section parameters. (A requested parameter of
+!> -9999 means to allow any value of this parameter to be found.)
 !>
-!> If the requested GRIB field is found, then it is read from the
-!> GRIB file and unpacked. Its number is returned along with
-!> the associated unpacked parameters. the bitmap (if any);
-!> the data values are unpacked only if argument "unpack" is set to
-!> true. If the GRIB field is not found, then the return code
-!> will be nonzero.
+!> If the requested GRIB field is found, then it is read from the GRIB
+!> file and unpacked. Its number is returned along with the associated
+!> unpacked parameters. the bitmap (if any); the data values are
+!> unpacked only if argument unpack is set to true. If the GRIB
+!> field is not found, then the return code will be nonzero.
 !>
-!> The decoded information for the selected GRIB field is returned
-!> in a derived type variable, gfld. Gfld is of type gribfield,
-!> which is defined in module grib_mod, so users of this routine
-!> will need to include the line "USE GRIB_MOD" in their calling
-!> routine. Each component of the gribfield type is described in
-!> the OUTPUT ARGUMENT LIST section below.
+!> The decoded information for the selected GRIB field is returned in
+!> a derived type variable, gfld, which is of type @ref
+!> grib_mod::gribfield. Users of this routine will need to include the
+!> line "use grib_mod" in their calling routine.
 !>
-!> The derived type gribfield contains pointers to many arrays of
-!> data. The memory for these arrays must be freed by the caller by
-!> calling gf_free().
+!> Derived type @ref grib_mod::gribfield contains pointers to many
+!> arrays of data. Users must free this memory by calling gf_free().
 !>
-!> This subroutine calls getidx(), which allocates memory and stores the
-!> resulting pointers in an array that is a Fortran "save" variable. The
-!> result is that the memory will not be freed by the library and cannot
-!> be reached by the caller. To free this memory call gf_finalize()
-!> after all library operations are complete.
+!> This subroutine calls getidx(), which allocates memory and stores
+!> the resulting pointers in an array that is a Fortran "save"
+!> variable. The result is that the memory will not be freed by the
+!> library and cannot be reached by the caller. To free this memory
+!> call gf_finalize() after all library operations are complete.
 !>
-!> @note Specifing an index file may increase speed. Do not engage the
-!> same logical unit from more than one processor.
+!> @note Specify an index file if feasible to increase speed. Do not
+!> engage the same logical unit from more than one processor. Note
+!> that derived type gribfield contains pointers to many arrays of
+!> data. The memory for these arrays is allocated when the values in
+!> the arrays are set, to help minimize problems with array
+!> overloading. Because of this users should free this memory, when it
+!> is no longer needed, by a call to subroutine gf_free().
 !>
 !> @param[in] LUGB integer unit of the unblocked grib data file.
 !> File must be opened with [baopen() or baopenr()]

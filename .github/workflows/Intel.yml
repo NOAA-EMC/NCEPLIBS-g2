@@ -1,3 +1,8 @@
+# This is a GitHub actions workflow for NCEPLIBS-g2.
+#
+# This builds on the Intel compilers.
+#
+# Ed Hartnett, 12/22/22, Alex Richert
 name: Intel
 on:
   push:
