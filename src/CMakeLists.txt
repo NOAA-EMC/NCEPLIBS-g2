@@ -7,7 +7,7 @@
 set(fortran_src addfield.f addgrid.F90 addlocal.F90 cmplxpack.f compack.f
 comunpack.f drstemplates.F90 g2_gbytesc.F90 g2grids.F90 gb_info.F90
 getdim.f getfield.F90 getg2i.F90 getg2ir.F90 getgb2.F90 getgb2l.F90 getgb2p.F90
-getgb2r.F90 getgb2rp.f getgb2s.F90 getidx.F90 getlocal.F90 getpoly.f
+getgb2r.F90 getgb2rp.F90 getgb2s.F90 getidx.F90 getlocal.F90 getpoly.f
 gettemplates.F90 gf_free.F90 gf_getfld.F90 gf_unpack1.F90 gf_unpack2.F90
 gf_unpack3.F90 gf_unpack4.f gf_unpack5.f gf_unpack6.F90 gf_unpack7.f
 gribcreate.F90 gribend.F90 gribinfo.F90
