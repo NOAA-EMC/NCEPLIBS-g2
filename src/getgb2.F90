@@ -1,5 +1,5 @@
 !> @file
-> @brief Find and unpack a GRIB2 message in a file.
+!> @brief Find and unpack a GRIB2 message in a file.
 !> @author Mark Iredell @date 1994-04-01
 
 !> Find and unpack a GRIB2 message in a file. It reads a GRIB index
