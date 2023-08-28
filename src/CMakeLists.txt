@@ -15,7 +15,7 @@ ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.F90 intmath.f
 ixgb2.f jpcpack.F90 jpcunpack.F90 misspack.f mkieee.f pack_gp.f
 params_ecmwf.F90 params.F90 pdstemplates.F90 pngpack.F90 pngunpack.F90
 putgb2.F90 rdieee.f realloc.f reduce.f simpack.f simunpack.F90 skgb.F90
-specpack.f specunpack.f)
+specpack.F90 specunpack.F90)
 
 # This function calls NCEPLIBS-w3emc.
 if (BUILD_WITH_W3EMC)

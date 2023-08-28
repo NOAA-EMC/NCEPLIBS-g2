@@ -33,7 +33,8 @@
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !> @param[in] lskip Number of bytes to skip before GRIB message.
-!> @param[in] lGRIB Number of bytes in GRIB message.
+!> @param[in] lgrib Number of bytes in GRIB message. When subroutine is
+!> called, this must be set to the size of the cbuf buffer.
 !> @param[out] cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
