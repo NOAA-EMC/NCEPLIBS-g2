@@ -1,9 +1,11 @@
 ![Status](https://github.com/NOAA-EMC/NCEPLIBS-g2/workflows/developer/badge.svg)
 
-# NCEPLIBS G2 Library
+# NCEPLIBS-g2 Library
 
-This library contains
-Fortran 90 decoder/encoder routines for GRIB edition 2. This is part of the
+The NCEPLIBS-g2 library reads and writes GRIB2 files. GRIdded Binary or General 
+Regularly-distributed Information in Binary form (GRIB) is a data format for 
+meteorological and forecast data, standardized by the World Meteorological 
+Organization (WMO). This library is part of the
 [NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
 
 For more detailed documentation see
