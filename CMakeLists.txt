@@ -13,6 +13,7 @@ include(GNUInstallDirs)
 
 # Handle user build options.
 option(ENABLE_DOCS "Enable generation of doxygen-based documentation." OFF)
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(FTP_TEST_FILES "Fetch and test with files on FTP site." OFF)
 option(FTP_LARGE_TEST_FILES "Fetch and test with very large files on FTP site." OFF)
 option(FTP_EXTRA_TEST_FILES "Test with files not yet available via FTP." OFF)
