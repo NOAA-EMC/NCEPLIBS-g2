@@ -103,7 +103,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/jasper
-        key: jasper-${{ runner.os }}-${{ matrix.jasper-version }}
+        key: jasper-${{ runner.os }}-4.0.0
 
     - name: checkout-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
