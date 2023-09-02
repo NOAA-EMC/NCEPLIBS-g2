@@ -2,9 +2,10 @@
 
 # NCEPLIBS-g2 Library
 
-The NCEPLIBS-g2 library reads and writes GRIB edition 2 files. GRIdded
-Binary or General Regularly-distributed Information in Binary form
-(GRIB) is a data format for meteorological and forecast data,
+The NCEPLIBS-g2 library reads and writes GRIB edition 2 files.
+
+GRIdded Binary or General Regularly-distributed Information in Binary
+form (GRIB) is a data format for meteorological and forecast data,
 standardized by the World Meteorological Organization (WMO). GRIB
 edition 2 (GRIB2) was approved by the WMO is 2003.
 
@@ -51,6 +52,7 @@ This package requires the following NCEPLIBS libraries:
 
 Repository | Notes
 -----------|------
+[NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc) | Coders/decoders for GRIB1
 [NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util) | Utilities for GRIB1 and GRIB2
 [NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) | C implementation of the GRIB 2 functions
 [NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl) | Utilities for GRIB2 templates
