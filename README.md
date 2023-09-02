@@ -46,6 +46,14 @@ This package requires the following NCEPLIBS libraries:
 - [NCEPLIBS-bacio](https://github.com/NOAA-EMC/NCEPLIBS-bacio)
 - [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc) (optional)
 
+## Other Related NCEPLIBS Projects
+
+Repository | Notes
+-----------|------
+[NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util) | Utilities for GRIB1 and GRIB2
+[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) | C implementation of the GRIB 2 functions
+[NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl) | Utilities for GRIB2 templates
+
 ## Building
 
 ```
