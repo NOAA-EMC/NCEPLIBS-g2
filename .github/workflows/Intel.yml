@@ -81,14 +81,14 @@ jobs:
       with:
         repository: jasper-software/jasper
         path: jasper
-        ref: version-2.0.25
+        ref: version-4.0.0
 
     - name: cache-jasper
       id: cache-jasper
       uses: actions/cache@v3
       with:
         path: ~/Jasper
-        key: jasper-intel-${{ matrix.compilers }}-${{ runner.os }}-${{ hashFiles('jasper/VERSION') }}
+        key: jasper-intel-${{ matrix.compilers }}-${{ runner.os }}-4.0.0
 
     - name: build-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
