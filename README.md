@@ -28,7 +28,8 @@ Hartnett](mailto:edward.hartnett@noaa.gov) (secondary point of contact
 ## Authors
 
 Harry Glahn, Kyle Gerheiser, Stephen Gilbert, Brent Gordon, Edward
-Hartnett, Mark Iredell, Hang Lei, Boi Vuong, other NCEP/EMC Developers
+Hartnett, Mark Iredell, Hang Lei, Boi Vuong, and other NOAA scientists
+and developers.
 
 Code Manager : [Hang Lei](mailto:hang.lei@noaa.gov), [Ed
 Hartnett](mailto:edward.hartnett@noaa.gov)
