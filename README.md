@@ -2,16 +2,21 @@
 
 # NCEPLIBS-g2 Library
 
-The NCEPLIBS-g2 library reads and writes GRIB2 files. GRIdded Binary or General 
-Regularly-distributed Information in Binary form (GRIB) is a data format for 
-meteorological and forecast data, standardized by the World Meteorological 
-Organization (WMO). This library is part of the
+The NCEPLIBS-g2 library reads and writes GRIB edition 2 files. GRIdded
+Binary or General Regularly-distributed Information in Binary form
+(GRIB) is a data format for meteorological and forecast data,
+standardized by the World Meteorological Organization (WMO). GRIB
+edition 2 (GRIB2) was approved by the WMO is 2003.
+
+This library is part of the
 [NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
 
 For more detailed documentation see
 https://noaa-emc.github.io/NCEPLIBS-g2/. For the NCEP WMO GRIB2
 Documentation see
-https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/.
+https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/. For the GRIB1
+libraries, see
+[NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc).
 
 To submit bug reports, feature requests, or other code-related issues
 including installation and usage questions, please create a [GitHub
@@ -22,7 +27,8 @@ Hartnett](mailto:edward.hartnett@noaa.gov) (secondary point of contact
 
 ## Authors
 
-Stephen Gilbert, NCEP/EMC Developers
+Harry Glahn, Kyle Gerheiser, Stephen Gilbert, Brent Gordon, Edward
+Hartnett, Mark Iredell, Hang Lei, Boi Vuong, otehr NCEP/EMC Developers
 
 Code Manager : [Hang Lei](mailto:hang.lei@noaa.gov), [Ed
 Hartnett](mailto:edward.hartnett@noaa.gov)
