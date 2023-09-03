@@ -88,7 +88,8 @@ if(FTP_TEST_FILES)
   
   # Get each of the test data files.
   foreach(THE_FILE IN LISTS WW3_WEST_FILE FILE_GEP19_BCF144 FILE_GEAVG FILE_GEC00
-      FILE_GEGFS_F144 FILE_GEGFS_MEF144 FILE_GEP19_F144 FILE_FV3_ATM FILE_GDAS_12Z FILE_BLEND AQM) 
+      FILE_GEGFS_F144 FILE_GEGFS_MEF144 FILE_GEP19_F144 FILE_FV3_ATM FILE_GDAS_12Z
+      FILE_BLEND AQM FILE_FV3_ATM) 
     PULL_DATA(${G2_FTP_URL} ${THE_FILE})
   endforeach()
 
@@ -113,10 +114,8 @@ if(FTP_TEST_FILES)
       create_test(test_getgb2_mem ${kind})
     endif()
     # This test depends on a very large file downloaded from FTP.
-    if(FTP_EXTRA_TEST_FILES)    
-      if(FTP_LARGE_TEST_FILES)    
-        create_test(test_fv3 ${kind})
-      endif()
+    if(FTP_LARGE_TEST_FILES)    
+      create_test(test_fv3 ${kind})
     endif()
   endforeach()  
 endif()
