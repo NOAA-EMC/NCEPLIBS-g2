@@ -61,6 +61,12 @@ foreach(kind ${kinds})
     target_link_libraries(${lib_name} PUBLIC w3emc::w3emc_${kind})    
   endif()
 
+  # For shared, set SOVERSION; increment it if API changes (other than
+  # adding new functions).
+  if(BUILD_SHARED_LIBS)
+    set_target_properties(${lib_name} PROPERTIES SOVERSION 0)
+  endif()
+
   # Include directories.
   target_include_directories(${lib_name} INTERFACE
     $<BUILD_INTERFACE:${module_dir}>
