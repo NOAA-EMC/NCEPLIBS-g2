@@ -26,6 +26,15 @@ NCEPLIBS inquiries, contact [Edward
 Hartnett](mailto:edward.hartnett@noaa.gov) (secondary point of contact
 [Alex Richert](mailto:alexander.richert@noaa.gov)).
 
+## Related NCEPLIBS Projects
+
+Repository | Notes
+-----------|------
+[NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc) | Coders/decoders for GRIB1
+[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) | C implementation of the GRIB 2 functions
+[NCEPLIBS-grib_util](https://github.com/NOAA-EMC/NCEPLIBS-grib_util) | A collection of GRIB1 and GRIB2 utilities
+[NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl) | Utilities for GRIB2 templates
+
 ## Authors
 
 Harry Glahn, Kyle Gerheiser, Stephen Gilbert, Brent Gordon, Edward
