@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NCEPLIBS-g2
-   &#160;<span id="projectnumber">3.4.6</span>
+   &#160;<span id="projectnumber">3.4.7</span>
    </div>
   </td>
  </tr>
@@ -163,6 +163,7 @@ Functions/Subroutines</h2></td></tr>
 <p>Find, read or generate a GRIB2 index for the GRIB2 file associated with unit lugb. </p>
 <p>If the index already exists, it is returned, otherwise, the index is (1) read from an existing indexfile associated with unit lugi or (2) generated from the GRIB2 file lugb.</p>
 <p>Users can force a regeneration of an index: if lugi equals lugb, the index will be regenerated from the data in file lugb. If lugi is less than zero, then the index is re-read from index file abs(lugi).</p>
+<p>This subroutine allocates memory and stores the resulting pointers in an array that is a Fortran "save" variable. The result is that the memory will not be freed by the library and cannot be reached by the caller. To free this memory call <a class="el" href="getidx_8F90.html#ac02dafd6109baa69a66dc278d6b0c083" title="Free all memory associated with the library.">gf_finalize()</a> after all library operations are complete.</p>
 <dl class="section note"><dt>Note</dt><dd>The file unit numbers must be in range 1 - 9999.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -183,11 +184,11 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2005-03-15 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="getidx_8F90_source.html#l00037">37</a> of file <a class="el" href="getidx_8F90_source.html">getidx.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getidx_8F90_source.html#l00043">43</a> of file <a class="el" href="getidx_8F90_source.html">getidx.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="getg2i_8f_source.html#l00059">getg2i()</a>, and <a class="el" href="getg2ir_8f_source.html#l00037">getg2ir()</a>.</p>
+<p class="reference">References <a class="el" href="getg2i_8F90_source.html#l00059">getg2i()</a>, and <a class="el" href="getg2ir_8F90_source.html#l00038">getg2ir()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="getgb2_8f_source.html#l00109">getgb2()</a>, and <a class="el" href="getidx_8F90_source.html#l00155">gf_finalize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="getgb2_8F90_source.html#l00114">getgb2()</a>, and <a class="el" href="getidx_8F90_source.html#l00161">gf_finalize()</a>.</p>
 
 </div>
 </div>
@@ -221,9 +222,9 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Ed Hartnett </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>7/16/23 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="getidx_8F90_source.html#l00154">154</a> of file <a class="el" href="getidx_8F90_source.html">getidx.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getidx_8F90_source.html#l00160">160</a> of file <a class="el" href="getidx_8F90_source.html">getidx.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="getidx_8F90_source.html#l00038">getidx()</a>.</p>
+<p class="reference">References <a class="el" href="getidx_8F90_source.html#l00044">getidx()</a>.</p>
 
 </div>
 </div>

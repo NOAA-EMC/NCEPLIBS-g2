@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NCEPLIBS-g2
-   &#160;<span id="projectnumber">3.4.6</span>
+   &#160;<span id="projectnumber">3.4.7</span>
    </div>
   </td>
  </tr>
@@ -209,8 +209,8 @@ Functions/Subroutines</h2></td></tr>
 <p>This subroutine reads a GRIB index file (or optionally the GRIB file itself) to get the index buffer (i.e. table of contents) for the GRIB file. It finds in the index buffer a reference to the GRIB field requested.</p>
 <p>The GRIB field request specifies the number of fields to skip and the unpacked identification section, grid definition template and product defintion section parameters. (A requested parameter of -9999 means to allow any value of this parameter to be found.)</p>
 <p>If the requested GRIB field is found, then it is read from the GRIB file and unpacked. If the GRIB field is not found, then the return code will be nonzero.</p>
-<p>Note that derived type <a class="el" href="namespacegrib__mod.html#structgrib__mod_1_1gribfield">grib_mod::gribfield</a> contains pointers to many arrays of data. The memory for these arrays is allocated when the values in the arrays are set, to help minimize problems with array overloading. Because of this users are should free this memory, when it is no longer needed, by a call to subroutine <a class="el" href="gf__free_8f.html#a027efd02c99c9464153fc76d9bb9627e" title="Free memory that was used to store array values in derived type grib_mod::gribfield.">gf_free()</a>.</p>
-<dl class="section note"><dt>Note</dt><dd>Specify an index file if feasible to increase speed. Do not engage the same logical unit from more than one processor.</dd></dl>
+<p>The derived type <a class="el" href="namespacegrib__mod.html#structgrib__mod_1_1gribfield">grib_mod::gribfield</a> contains allocated memory that must be freed by the caller with subroutine <a class="el" href="gf__free_8F90.html#a027efd02c99c9464153fc76d9bb9627e" title="Free memory that was used to store array values in derived type grib_mod::gribfield.">gf_free()</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>Specifing an index file may increase speed. Do not engage the same logical unit from more than one processor.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lugb</td><td>Unit of the unblocked GRIB data file. The file must have been opened with <a href="https://noaa-emc.github.io/NCEPLIBS-bacio/">baopen() or baopenr()</a> before calling this routine. </td></tr>
@@ -264,9 +264,9 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Mark Iredell </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>1994-04-01 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="getgb2p_8F90_source.html#l00096">96</a> of file <a class="el" href="getgb2p_8F90_source.html">getgb2p.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="getgb2p_8F90_source.html#l00092">92</a> of file <a class="el" href="getgb2p_8F90_source.html">getgb2p.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="getg2i_8f_source.html#l00059">getg2i()</a>, <a class="el" href="getg2ir_8f_source.html#l00037">getg2ir()</a>, <a class="el" href="getgb2rp_8f_source.html#l00036">getgb2rp()</a>, <a class="el" href="getgb2s_8f_source.html#l00080">getgb2s()</a>, and <a class="el" href="gf__free_8f_source.html#l00012">gf_free()</a>.</p>
+<p class="reference">References <a class="el" href="getg2i_8F90_source.html#l00059">getg2i()</a>, <a class="el" href="getg2ir_8F90_source.html#l00038">getg2ir()</a>, <a class="el" href="getgb2rp_8F90_source.html#l00039">getgb2rp()</a>, <a class="el" href="getgb2s_8F90_source.html#l00080">getgb2s()</a>, and <a class="el" href="gf__free_8F90_source.html#l00012">gf_free()</a>.</p>
 
 </div>
 </div>

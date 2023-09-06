@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NCEPLIBS-g2
-   &#160;<span id="projectnumber">3.4.6</span>
+   &#160;<span id="projectnumber">3.4.7</span>
    </div>
   </td>
  </tr>
@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('pngunpack_8F90_source.html',''); initR
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keyword">end interface</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  ieee = idrstmpl(1)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">call </span><a class="code" href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(ieee, ref, 1)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">call </span><a class="code" href="rdieee_8F90.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a>(ieee, ref, 1)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  bscale = 2.0**real(idrstmpl(2))</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  dscale = 10.0**real(-idrstmpl(3))</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  nbits = idrstmpl(4)</div>
@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('pngunpack_8F90_source.html',''); initR
 <div class="ttc" id="adec__png_8c_html_a2d370c4ca9daeca099b249a1ed3e4500"><div class="ttname"><a href="dec__png_8c.html#a2d370c4ca9daeca099b249a1ed3e4500">dec_png</a></div><div class="ttdeci">int dec_png(unsigned char *pngbuf, g2int *width, g2int *height, char *cout)</div><div class="ttdoc">Decode some PNG compressed data.</div><div class="ttdef"><b>Definition:</b> <a href="dec__png_8c_source.html#l00064">dec_png.c:64</a></div></div>
 <div class="ttc" id="ag2__gbytesc_8F90_html_a257b7f2466cdf820903102d69ef2f93e"><div class="ttname"><a href="g2__gbytesc_8F90.html#a257b7f2466cdf820903102d69ef2f93e">g2_gbytesc</a></div><div class="ttdeci">subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)</div><div class="ttdoc">Extract arbitrary size values from a packed bit string, right justifying each value in the unpacked a...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8F90_source.html#l00062">g2_gbytesc.F90:63</a></div></div>
 <div class="ttc" id="apngunpack_8F90_html_a6c975c7eb4bd5f8a7971420fe6fad457"><div class="ttname"><a href="pngunpack_8F90.html#a6c975c7eb4bd5f8a7971420fe6fad457">pngunpack</a></div><div class="ttdeci">subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)</div><div class="ttdoc">Unpack a data field packed into a PNG image format.</div><div class="ttdef"><b>Definition:</b> <a href="pngunpack_8F90_source.html#l00019">pngunpack.F90:20</a></div></div>
-<div class="ttc" id="ardieee_8f_html_a291f738ad3d63df5491d5ba7357050c4"><div class="ttname"><a href="rdieee_8f.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a></div><div class="ttdeci">subroutine rdieee(rieee, a, num)</div><div class="ttdoc">This subroutine reads a list of real values in 32-bit IEEE floating point format, and copies them to ...</div><div class="ttdef"><b>Definition:</b> <a href="rdieee_8f_source.html#l00014">rdieee.f:15</a></div></div>
+<div class="ttc" id="ardieee_8F90_html_a291f738ad3d63df5491d5ba7357050c4"><div class="ttname"><a href="rdieee_8F90.html#a291f738ad3d63df5491d5ba7357050c4">rdieee</a></div><div class="ttdeci">subroutine rdieee(rieee, a, num)</div><div class="ttdoc">Copy array of 32-bit IEEE floating point values to local floating point representation.</div><div class="ttdef"><b>Definition:</b> <a href="rdieee_8F90_source.html#l00015">rdieee.F90:16</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

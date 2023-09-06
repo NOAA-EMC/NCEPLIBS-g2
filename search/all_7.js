@@ -27,6 +27,6 @@ var searchData=
   ['ipdtlen_155',['ipdtlen',['../namespacegrib__mod.html#a0f1d79b789a896261b6446e76d683c33',1,'grib_mod::gribfield']]],
   ['ipdtmpl_156',['ipdtmpl',['../namespacegrib__mod.html#a4a48ef74804e26c60a871c3d53645720',1,'grib_mod::gribfield']]],
   ['ipdtnum_157',['ipdtnum',['../namespacegrib__mod.html#a6f28eb2e413a99f5bfe02fee137cdc3d',1,'grib_mod::gribfield']]],
-  ['ixgb2_158',['ixgb2',['../ixgb2_8f.html#a497283dd9abc5761d4dfa0eefa43e35e',1,'ixgb2.f']]],
-  ['ixgb2_2ef_159',['ixgb2.f',['../ixgb2_8f.html',1,'']]]
+  ['ixgb2_158',['ixgb2',['../ixgb2_8F90.html#a497283dd9abc5761d4dfa0eefa43e35e',1,'ixgb2.F90']]],
+  ['ixgb2_2ef90_159',['ixgb2.F90',['../ixgb2_8F90.html',1,'']]]
 ];
