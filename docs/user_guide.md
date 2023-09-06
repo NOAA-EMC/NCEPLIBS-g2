@@ -2,6 +2,7 @@
 
 ## Documentation for Previous Versions of NCEPLIBS-g2
 
+* [NCEPLIBS-g2 Version 3.4.6](ver-3.4.6/index.html)
 * [NCEPLIBS-g2 Version 3.4.5](ver-3.4.5/index.html)
 
 # Introduction
