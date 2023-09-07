@@ -1,0 +1,16 @@
+# Spack environment file to build NCEPLIBS-g2 dependencies.
+#
+# Ed Hartnett 9/6/23
+spack:
+  packages:
+    all:
+      compiler:
+      - intel
+      - gcc@10:10
+  specs:
+  - bacio@2.5.0
+  - w3emc@2.10.0
+  view: true
+  concretizer:
+    unify: true
+
