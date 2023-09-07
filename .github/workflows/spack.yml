@@ -43,7 +43,7 @@ jobs:
         cp $GITHUB_WORKSPACE/g2/spack/package.py $SPACK_ROOT/var/spack/repos/builtin/packages/g2/package.py
         mv $GITHUB_WORKSPACE/g2 $SPACK_ENV/g2
         spack develop --no-clone g2@develop
-        spack add g2@develop%gcc@11 ${{ matrix.shared }}
+        spack add g2@develop%gcc@11 ${{ matrix.shared }} ${{ matrix.build_with_w3emc }}
         spack external find cmake gmake
         spack concretize
         spack install --verbose --test root
