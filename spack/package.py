@@ -42,6 +42,7 @@ class G2(CMakePackage):
         args.append(self.define_from_variant("BUILD_SHARED_LIBS", "shared"))
         if self.spec.satisfies("@3.4.5:"):
             args.append(self.define_from_variant("BUILD_WITH_W3EMC", "build_with_w3emc"))
+        return args
 
     def setup_run_environment(self, env):
         for suffix in ("4", "d"):
