@@ -22,10 +22,9 @@ jobs:
 
     strategy:
       matrix:
-        openmp: ["+openmp", "~openmp"]
         sharedlibs: ["+shared", "~shared"]
-        pic: ["+pic", "~pic"]
-        precision: ["precision=d", "precision=4", "precision=8"]
+#        pic: ["+pic", "~pic"]
+#        precision: ["precision=d", "precision=4", "precision=8"]
 
     steps:
     
