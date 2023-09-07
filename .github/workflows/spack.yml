@@ -38,7 +38,7 @@ jobs:
       run: |
         git clone -c feature.manyFiles=true https://github.com/spack/spack
         . spack/share/spack/setup-env.sh
-        spack env create g2-env g2/spack/dependencies.yaml
+        spack env create g2-env g2/spack/dependencies.yml
         spack env activate g2-env
         cp $GITHUB_WORKSPACE/g2/spack/package.py $SPACK_ROOT/var/spack/repos/builtin/packages/g2/package.py
         mv $GITHUB_WORKSPACE/g2 $SPACK_ENV/g2
