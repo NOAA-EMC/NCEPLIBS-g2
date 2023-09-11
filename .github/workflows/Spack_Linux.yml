@@ -17,11 +17,10 @@ on:
 
 jobs:
   # This job builds with Spack using every combination of variants and runs the CTest suite each time
-  Linux:
-    runs-on: ubuntu-latest
-
+  Spack:
     strategy:
       matrix:
+        os: ["ubuntu-latest", "macos-latest"]
         sharedlibs: ["+shared", "~shared"]
         pic: ["+pic", "~pic"]
         precision: ["precision=d", "precision=4"]
