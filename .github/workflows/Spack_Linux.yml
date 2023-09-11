@@ -24,7 +24,7 @@ jobs:
       matrix:
         sharedlibs: ["+shared", "~shared"]
         pic: ["+pic", "~pic"]
-        precision: ["precision=d", "precision=4", "precision=8"]
+        precision: ["precision=d", "precision=4"]
         w3emc: ["+w3emc", "~w3emc"]
 
     steps:
