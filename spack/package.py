@@ -28,8 +28,8 @@ class G2(CMakePackage):
     variant("pic", default=True, description="Build with position-independent-code")
     variant(
         "precision",
-        default=["4", "d"],
-        values=["4", "d"],
+        default=("4", "d"),
+        values=("4", "d"),
         multi=True,
         description="Set precision (_4/_d library versions)",
         when="@3.4.6:",
@@ -39,9 +39,10 @@ class G2(CMakePackage):
     depends_on("jasper@:2.0.32")
     depends_on("libpng")
     depends_on("bacio", when="@3.4.6:")
-    depends_on("w3emc", when="@3.4.6: +w3emc")
-    depends_on("w3emc precision=4", when="precision=4 +w3emc")
-    depends_on("w3emc precision=d", when="precision=d +w3emc")
+    with when("+w3emc"):
+        depends_on("w3emc")
+        depends_on("w3emc precision=4", when="precision=4")
+        depends_on("w3emc precision=d", when="precision=d")
 
     def cmake_args(self):
         args = [
@@ -54,7 +55,9 @@ class G2(CMakePackage):
         return args
 
     def setup_run_environment(self, env):
-        precisions = self.spec.variants["precision"].value if self.spec.satisfies("@3.4.6:") else ("4", "d")
+        precisions = (
+            self.spec.variants["precision"].value if self.spec.satisfies("@3.4.6:") else ("4", "d")
+        )
         for suffix in precisions:
             lib = find_libraries("libg2_" + suffix, root=self.prefix, shared=False, recursive=True)
             env.set("G2_LIB" + suffix, lib[0])
