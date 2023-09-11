@@ -32,7 +32,7 @@ class G2(CMakePackage):
         values=["4", "d"],
         multi=True,
         description="Set precision (_4/_d library versions)",
-        when="@develop",
+        when="@3.4.6:",
     )
     variant("w3emc", default=True, description="Enable GRIB1 through w3emc", when="@3.4.6:")
     variant("shared", default=False, description="Build shared library", when="@3.4.7:")
@@ -57,7 +57,7 @@ class G2(CMakePackage):
 
     def setup_run_environment(self, env):
         shared = self.spec.variants["shared"].value if self.spec.satisfies("@3.4.7:") else False
-        precisions = self.spec.variants["precision"].value if self.spec.satisfies("@develop") else ("4", "d")
+        precisions = self.spec.variants["precision"].value if self.spec.satisfies("@3.4.6:") else ("4", "d")
         for suffix in precisions:
             lib = find_libraries("libg2_" + suffix, root=self.prefix, shared=shared, recursive=True)
             env.set("G2_LIB" + suffix, lib[0])
