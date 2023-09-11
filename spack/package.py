@@ -50,12 +50,14 @@ class G2(CMakePackage):
             self.define_from_variant("BUILD_WITH_W3EMC", "w3emc"),
             self.define("BUILD_4", self.spec.satisfies("precision=4")),
             self.define("BUILD_D", self.spec.satisfies("precision=d")),
+            self.define("BUILD_SHARED_LIBS", self.define_from_variant("shared")),
         ]
 
         return args
 
     def setup_run_environment(self, env):
+        shared = self.spec.variants["shared"].value if self.spec.satisfies("@3.4.7:") else False
         for suffix in ("4", "d"):
-            lib = find_libraries("libg2_" + suffix, root=self.prefix, shared=False, recursive=True)
+            lib = find_libraries("libg2_" + suffix, root=self.prefix, shared=shared, recursive=True)
             env.set("G2_LIB" + suffix, lib[0])
             env.set("G2_INC" + suffix, join_path(self.prefix, "include_" + suffix))
