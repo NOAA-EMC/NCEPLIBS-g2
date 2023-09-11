@@ -57,7 +57,8 @@ class G2(CMakePackage):
 
     def setup_run_environment(self, env):
         shared = self.spec.variants["shared"].value if self.spec.satisfies("@3.4.7:") else False
-        for suffix in ("4", "d"):
-            lib = find_libraries("libg2_" + suffix, root=self.prefix, shared=shared, recursive=True)
+        precisions = self.spec.variants["precision"].value if self.spec.satisfies("@develop") else ("4", "d")
+        for suffix in precisions:
+            lib = find_libraries("libg2_" + suffix, shared=shared)
             env.set("G2_LIB" + suffix, lib[0])
             env.set("G2_INC" + suffix, join_path(self.prefix, "include_" + suffix))
