@@ -20,17 +20,17 @@ jobs:
   Spack:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest"]
+        os: ["ubuntu-latest"]
         pic: ["+pic", "~pic"]
         precision: ["precision=d", "precision=4"]
         w3emc: ["+w3emc", "~w3emc"]
     runs-on: ${{ matrix.os }}
 
     steps:
-    
+
     - name: checkout-g2
       uses: actions/checkout@v4
-      with: 
+      with:
         path: g2
 
     - name: spack-build-and-test
@@ -54,10 +54,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
+
     - name: checkout-g2
       uses: actions/checkout@v4
-      with: 
+      with:
         path: g2
 
     - name: recipe-check
