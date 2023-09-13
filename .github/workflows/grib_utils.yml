@@ -79,23 +79,14 @@ jobs:
         path: w3emc
         ref: develop
 
-    - name: cache-sp
-      id: cache-sp
-      uses: actions/cache@v3
-      with:
-        path: ~/sp
-        key: sp-developer-${{ runner.os }}-2.3.3
-
     - name: checkout-sp
-      if: steps.cache-sp.outputs.cache-hit != 'true'
       uses: actions/checkout@v3
       with:
         repository: NOAA-EMC/NCEPLIBS-sp
         path: sp
-        ref: v2.3.3
+        ref: develop
 
     - name: build-sp
-      if: steps.cache-sp.outputs.cache-hit != 'true'
       run: |
         cd sp
         mkdir build
@@ -109,7 +100,7 @@ jobs:
       with:
         repository: NOAA-EMC/NCEPLIBS-ip
         path: ip
-        ref: v3.3.3
+        ref: develop
 
     - name: build-ip
       run: |
