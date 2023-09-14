@@ -47,10 +47,6 @@ int_dec_jpeg2000(char *injpc, g2int bufsize, void *outfld, int out_is_g2int)
     /* Initialize Jasper. */
 #ifdef JASPER3
     jas_conf_clear();
-    /* static jas_std_allocator_t allocator; */
-    /* jas_std_allocator_init(&allocator); */
-    /* jas_conf_set_allocator(JAS_CAST(jas_std_allocator_t *, &allocator)); */
-    jas_conf_set_max_mem_usage(10000000);
     jas_conf_set_multithread(true);
     if (jas_init_library())
         return G2_JASPER_INIT;
