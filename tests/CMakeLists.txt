@@ -60,6 +60,16 @@ function(create_test name kind)
   target_compile_definitions(${name}_${kind} PUBLIC -DKIND_${kind})  
 endfunction()
 
+# This function runs a test script.
+function(gu_test name)
+  # Copy the test scripts.
+  file(COPY "${CMAKE_SOURCE_DIR}/tests/${name}.sh"
+    DESTINATION ${CMAKE_BINARY_DIR}/tests
+    FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+  # Add the shell script as a test.
+  add_test(NAME ${name}.sh COMMAND bash ${name}.sh)
+endfunction()
+
 # Copy the VERSION file, it's needed in a test.
 FILE(COPY ${CMAKE_SOURCE_DIR}/VERSION DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -124,6 +134,7 @@ endif()
 copy_test_data(testdata_g2grids)
 copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.grb2index)
 copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
+copy_test_data(ref_test_jpcpack_4_output.txt)
 
 # Build a _4 and _d version of each test and link them to the _4 and
 # _d builds of the library, for 4-byte real, and 8-byte real.
@@ -169,4 +180,7 @@ foreach(kind ${kinds})
     create_test(test_gdt2gds ${kind})
   endif()
 endforeach()
+
+# Add this script to ensure that jasper is not issuing warnings.
+gu_test(run_jasper_warning_test)  
 
