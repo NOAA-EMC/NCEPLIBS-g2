@@ -136,6 +136,7 @@ enc_jpeg2000(unsigned char *cin, g2int width, g2int height, g2int nbits,
     /* Initialize Jasper. */
 #ifdef JASPER3
     jas_conf_clear();
+    jas_conf_set_max_mem_usage(G2C_JASPER_MAX_MEMORY);
     jas_conf_set_multithread(true);
     if (jas_init_library())
         return G2_JASPER_INIT;

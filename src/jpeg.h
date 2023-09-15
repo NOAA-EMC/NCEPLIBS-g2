@@ -23,3 +23,7 @@ typedef float g2float;
 
 /** Name of JPEG codec in Jasper. */
 #define G2C_JASPER_JPEG_FORMAT_NAME "jpc"
+
+/** Max memory size setting for Jasper. */
+#define G2C_JASPER_MAX_MEMORY 10000000
+

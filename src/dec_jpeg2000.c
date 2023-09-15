@@ -48,6 +48,7 @@ int_dec_jpeg2000(char *injpc, g2int bufsize, void *outfld, int out_is_g2int)
 #ifdef JASPER3
     jas_conf_clear();
     jas_conf_set_multithread(true);
+    jas_conf_set_max_mem_usage(G2C_JASPER_MAX_MEMORY);
     if (jas_init_library())
         return G2_JASPER_INIT;
     if (jas_init_thread())
