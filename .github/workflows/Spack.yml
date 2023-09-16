@@ -39,6 +39,7 @@ jobs:
         . spack/share/spack/setup-env.sh
         spack env create g2-env
         spack env activate g2-env
+        echo $GITHUB_WORKSPACE
         cp $GITHUB_WORKSPACE/g2/spack/package.py $SPACK_ROOT/var/spack/repos/builtin/packages/g2/package.py
         spack develop --no-clone --path $GITHUB_WORKSPACE/g2 g2@develop
         spack add g2@develop%gcc@11 ${{ matrix.pic }} ${{ matrix.precision }} ${{ matrix.w3emc }}
