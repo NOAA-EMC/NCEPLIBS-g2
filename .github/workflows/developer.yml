@@ -1,7 +1,7 @@
 # This is a GitHub actions workflow for NCEPLIBS-g2.
 #
 # This builds the develop branch with documentation, warning check,
-# and address sanitizer.
+# and address sanitizer, also the ctest memchecker.
 #
 # Ed Hartnett, 12/22/22
 name: developer
@@ -131,7 +131,7 @@ jobs:
       if: matrix.config == 'memcheck'
       run: |
         cd $GITHUB_WORKSPACE/g2/build        
-        ctest -T memcheck
+        ctest -LE "^noMemcheck$" -T memcheck
 
     - name: cache-data
       if: steps.cache-data.outputs.cache-hit != 'true'
