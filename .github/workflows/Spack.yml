@@ -54,7 +54,7 @@ jobs:
       with:
         name: g2-test-failurre
         path: |
-          /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/g2/spack-build-ngvepvd/Testing/Temporary/LastTest.log
+          /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/g2/spack-build-ngvepvd/tests/test_jpcpack_4_output.txt
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
