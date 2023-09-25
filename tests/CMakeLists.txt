@@ -184,3 +184,4 @@ endforeach()
 # Add this script to ensure that jasper is not issuing warnings.
 gu_test(run_jasper_warning_test)  
 set_tests_properties(run_jasper_warning_test.sh PROPERTIES LABELS noMemcheck)
+execute_process(COMMAND "cat /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/g2/spack-build-ngvepvd/Testing/Temporary/LastTest.log")
