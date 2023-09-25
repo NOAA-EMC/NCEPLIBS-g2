@@ -53,8 +53,8 @@ jobs:
       uses: actions/upload-artifact@v3
       if: ${{ failure() }}
       with:
-        name: test-output
-        path: /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/g2/spack-build-*/Testing/Temporary/LastTest.log
+        name: spackci-test-output-${{ matrix.os }}-${{ matrix.pic }}-${{ matrix.precision }}-${{ matrix.w3emc }}
+        path: ${{ env.GITHUB_WORKSPACE }}/g2/spack-build-*/Testing/Temporary/LastTest.log
 
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
