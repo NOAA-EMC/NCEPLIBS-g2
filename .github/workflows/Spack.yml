@@ -53,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@v3
       if: ${{ always() }}
       with:
-        name: spackci-test-output-${{ matrix.os }}-${{ matrix.pic }}-${{ matrix.precision }}-${{ matrix.w3emc }}
+        name: spackci-ctest-output-${{ matrix.os }}-${{ matrix.pic }}-${{ matrix.precision }}-${{ matrix.w3emc }}
         path: ${{ github.workspace }}/g2/spack-build-*/Testing/Temporary/LastTest.log
 
 
