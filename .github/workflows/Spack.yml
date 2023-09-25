@@ -54,7 +54,7 @@ jobs:
       if: ${{ failure() }}
       with:
         name: spackci-test-output-${{ matrix.os }}-${{ matrix.pic }}-${{ matrix.precision }}-${{ matrix.w3emc }}
-        path: ${{ env.GITHUB_WORKSPACE }}/g2/spack-build-*/Testing/Temporary/LastTest.log
+        path: ${{ github.workspace }}/g2/spack-build-*/Testing/Temporary/LastTest.log
 
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
