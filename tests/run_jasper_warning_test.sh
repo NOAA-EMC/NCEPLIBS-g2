@@ -17,7 +17,6 @@ set -x
 # Run the test and capture output.
 ls -l
 ./test_jpcpack_4
-#cat /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/g2/spack-build-nadofrz/Testing/Temporary/LastTest.log
 # cat test_jpcpack_4_output.txt
 
 # # Check against expected output.
