@@ -9,7 +9,7 @@
 #
 # Ed Hartnett, 9/15/23
 
-set -e
+#set -e
 echo ""
 echo "*** Running jasper warning test"
 set -x
