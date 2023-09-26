@@ -21,8 +21,8 @@ ls -l
 ./test_jpcpack_4 &> test_jpcpack_4_output.txt
 cat test_jpcpack_4_output.txt
 
-# # Check against expected output.
-# diff -w test_jpcpack_4_output.txt ref_test_jpcpack_4_output.txt
+# Check against expected output.
+diff -w test_jpcpack_4_output.txt ref_test_jpcpack_4_output.txt
 
 set -x
 echo "*** SUCCESS!"
