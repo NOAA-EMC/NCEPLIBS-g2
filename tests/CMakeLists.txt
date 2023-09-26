@@ -179,9 +179,11 @@ foreach(kind ${kinds})
   if (BUILD_WITH_W3EMC)
     create_test(test_gdt2gds ${kind})
   endif()
+
+  if (${kind} == "4")
+    # Add this script to ensure that jasper is not issuing warnings.
+    gu_test(run_jasper_warning_test)  
+    set_tests_properties(run_jasper_warning_test.sh PROPERTIES LABELS noMemcheck)
+  endif()
 endforeach()
 
-# Add this script to ensure that jasper is not issuing warnings.
-gu_test(run_jasper_warning_test)  
-set_tests_properties(run_jasper_warning_test.sh PROPERTIES LABELS noMemcheck)
-execute_process(COMMAND "cat test_jpcpack_4_output.txt")
