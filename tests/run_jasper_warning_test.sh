@@ -15,7 +15,9 @@ echo "*** Running jasper warning test"
 set -x
 
 # Run the test and capture output.
-ls -l test_jpcpack_4
+pwd
+ls -l
+#ls -l test_jpcpack_4
 ./test_jpcpack_4 &> test_jpcpack_4_output.txt
 cat test_jpcpack_4_output.txt
 
