@@ -180,7 +180,7 @@ foreach(kind ${kinds})
     create_test(test_gdt2gds ${kind})
   endif()
 
-  if (${kind} == "4")
+  if (${kind} EQUAL "4")
     # Add this script to ensure that jasper is not issuing warnings.
     gu_test(run_jasper_warning_test)  
     set_tests_properties(run_jasper_warning_test.sh PROPERTIES LABELS noMemcheck)
