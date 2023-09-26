@@ -98,6 +98,7 @@ enc_jpeg2000(unsigned char *cin, g2int width, g2int height, g2int nbits,
     jas_image_cmpt_t cmpt, *pcmpt;
     char opts[MAXOPTSSIZE];
     int fmt;
+    char *g2jaspermaxmem;
 
     /* Set lossy compression options, if requested. */
     if (ltype != 1)
@@ -139,7 +140,10 @@ enc_jpeg2000(unsigned char *cin, g2int width, g2int height, g2int nbits,
     /* static jas_std_allocator_t allocator; */
     /* jas_std_allocator_init(&allocator); */
     /* jas_conf_set_allocator(JAS_CAST(jas_std_allocator_t *, &allocator)); */
-    /* jas_conf_set_max_mem_usage(10000000); */
+    if (( g2jaspermaxmem = getenv("G2_JASPER_MAXMEM")) != NULL )
+        jas_conf_set_max_mem_usage(atoi(g2jaspermaxmem));
+    else
+        jas_conf_set_max_mem_usage(1073741824);
     jas_conf_set_multithread(true);
     if (jas_init_library())
         return G2_JASPER_INIT;
