@@ -125,6 +125,10 @@ program test_getgb2
   call gf_finalize(iret)
   if (iret .ne. 0) stop 5
 
+  ! Call finalize again, should do nothing.
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 5
+
   print *, 'OK!'
   print *, 'SUCCESS!'
 end program test_getgb2
