@@ -54,9 +54,8 @@ int_dec_jpeg2000(char *injpc, g2int bufsize, void *outfld, int out_is_g2int)
     if (( g2jaspermaxmem = getenv("G2_JASPER_MAXMEM")) != NULL )
         jas_conf_set_max_mem_usage(atoi(g2jaspermaxmem));
     else
-        jas_conf_set_max_mem_usage(1073741824);
+        jas_conf_set_max_mem_usage(G2C_JASPER_MAX_MEMORY);
     jas_conf_set_multithread(true);
-    jas_conf_set_max_mem_usage(G2C_JASPER_MAX_MEMORY);
     if (jas_init_library())
         return G2_JASPER_INIT;
     if (jas_init_thread())
