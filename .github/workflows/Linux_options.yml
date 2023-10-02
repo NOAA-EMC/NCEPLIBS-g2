@@ -177,7 +177,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         make install
-        if [ "${{ matrix.options }}" = "-DENABLE_SHARED=ON" ]; then 
+        if [ "${{ matrix.config.options }}" = "-DENABLE_SHARED=ON" ]; then 
           ls -l ~/g2/install/lib*.so || exit 1
         fi
         
