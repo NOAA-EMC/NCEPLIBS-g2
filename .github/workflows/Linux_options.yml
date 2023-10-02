@@ -178,7 +178,8 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         make install
-        ls -l ~/g2/install/lib
+        ls -l ~/g2/install/lib*.so || exit 1
+        
         
 
 
