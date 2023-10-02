@@ -179,6 +179,8 @@ jobs:
         make install
         if [ "${{ matrix.config.options }}" = "-DENABLE_SHARED=ON" ]; then 
           ls -l ~/g2/install/lib*.so || exit 1
+        else
+          ls -l ~/g2/install/lib*.a || exit 1
         fi
         
         
