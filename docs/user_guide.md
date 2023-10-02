@@ -1,10 +1,5 @@
 @mainpage
 
-## Documentation for Previous Versions of NCEPLIBS-g2
-
-* [NCEPLIBS-g2 Version 3.4.6](ver-3.4.6/index.html)
-* [NCEPLIBS-g2 Version 3.4.5](ver-3.4.5/index.html)
-
 # Introduction
 
 This document briefly describes the routines available for encoding/decoding
@@ -154,4 +149,10 @@ and MSWord formats are available)
 
 MDL has made an HTML version of the document available at
 http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm.
+
+## Documentation for Previous Versions of NCEPLIBS-g2
+
+* [NCEPLIBS-g2 Version 3.4.7](ver-3.4.7/index.html)
+* [NCEPLIBS-g2 Version 3.4.6](ver-3.4.6/index.html)
+* [NCEPLIBS-g2 Version 3.4.5](ver-3.4.5/index.html)
 
