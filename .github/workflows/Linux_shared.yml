@@ -13,14 +13,14 @@ on:
     - develop
 
 jobs:
-  Linux_options:
+  Linux_shared:
     runs-on: ubuntu-latest
     env:
       FC: gfortran
       CC: gcc
       LD_LIBRARY_PATH: /home/runner/jasper/lib
     strategy:
-#      fail-fast: true
+      fail-fast: true
       matrix:
         bacio-version: [2.6.0]
         w3emc-version: [2.11.0]
