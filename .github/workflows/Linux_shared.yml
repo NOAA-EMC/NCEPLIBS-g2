@@ -53,7 +53,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/bacio
-        key: bacio-${{ runner.os }}-${{ matrix.bacio-version }}
+        key: bacio-${{ runner.os }}-${{ matrix.bacio-version }}-shared
         
     - name: checkout-bacio
       if: steps.cache-bacio.outputs.cache-hit != 'true'
@@ -78,7 +78,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/w3emc
-        key: w3emc-${{ runner.os }}-${{ matrix.w3emc-version }}-${{ matrix.bacio-version }}
+        key: w3emc-${{ runner.os }}-${{ matrix.w3emc-version }}-${{ matrix.bacio-version }}-shared
         
     - name: checkout-w3emc
       if: steps.cache-w3emc.outputs.cache-hit != 'true'
@@ -103,7 +103,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/jasper
-        key: jasper-${{ runner.os }}-4.0.0
+        key: jasper-${{ runner.os }}-4.0.0-shared
 
     - name: checkout-jasper
       if: steps.cache-jasper.outputs.cache-hit != 'true'
