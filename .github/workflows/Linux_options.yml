@@ -173,12 +173,13 @@ jobs:
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose --rerun-failed --output-on-failure
 
-    - name: check_shared
-      if: ${{ matrix.options }} = "-DENABLE_SHARED=ON"
+    - name: check_install
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         make install
-        ls -l ~/g2/install/lib*.so || exit 1
+        if [ "${{ matrix.options }}" = "-DENABLE_SHARED=ON" ]; then 
+          ls -l ~/g2/install/lib*.so || exit 1
+        fi
         
         
 
