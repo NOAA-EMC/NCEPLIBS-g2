@@ -29,12 +29,6 @@ jobs:
             options: "-DCMAKE_BUILD_TYPE=Debug"
           }
         - {
-            options: '-DCMAKE_C_Fortran_FLAGS="-g" -DLOGGING=ON'
-          }
-        - {
-            options: "-DCMAKE_BUILD_TYPE=Debug"
-          }
-        - {
             options: "-DBUILD_WITH_W3EMC=OFF"
           }
         - {
