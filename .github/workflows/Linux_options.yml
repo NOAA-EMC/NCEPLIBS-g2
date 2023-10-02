@@ -173,5 +173,7 @@ jobs:
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose --rerun-failed --output-on-failure
         make install
+        ls -l ~/g2/install/lib
+        
 
 
