@@ -63,7 +63,7 @@ jobs:
         cd bacio
         mkdir build
         cd build
-        cmake -DCMAKE_INSTALL_PREFIX=~/bacio -DENABLE_SHARED=ON ..
+        cmake -DCMAKE_INSTALL_PREFIX=~/bacio -DBUILD_SHARED_LIBS=ON ..
         make -j2
         make install
         
