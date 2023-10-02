@@ -150,7 +150,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake ${{ matrix.config.options }} -DCMAKE_PREFIX_PATH="~/jasper;~/g2c;~/bacio;~/w3emc" -DCMAKE_INSTALL_PREFIX="~/g2/install" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DENABLE_SHARED=ON ..
+        cmake ${{ matrix.config.options }} -DCMAKE_PREFIX_PATH="~/jasper;~/g2c;~/bacio;~/w3emc" -DCMAKE_INSTALL_PREFIX="~/g2/install" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DBUILD_SHARED_LIBS=ON ..
         make -j2 VERBOSE=1
 
     - name: cache-data
