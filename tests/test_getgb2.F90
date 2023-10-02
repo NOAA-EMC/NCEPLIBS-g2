@@ -123,11 +123,11 @@ program test_getgb2
   ! Free the memory.
   call gf_free(gfld)
   call gf_finalize(iret)
-  if (iret .ne. 0) stop 5
+  if (iret .ne. 0) stop 205
 
   ! Call finalize again, should do nothing.
   call gf_finalize(iret)
-  if (iret .ne. 0) stop 5
+  if (iret .ne. 0) stop 207
 
   print *, 'OK!'
   print *, 'SUCCESS!'
