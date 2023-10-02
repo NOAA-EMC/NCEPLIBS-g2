@@ -159,7 +159,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake ${{ matrix.config.options }} -DCMAKE_PREFIX_PATH="~/jasper;~/g2c;~/bacio;~/w3emc" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data ..
+        cmake ${{ matrix.config.options }} -DCMAKE_PREFIX_PATH="~/jasper;~/g2c;~/bacio;~/w3emc" -DCMAKE_INSTALL_PREFIX="~/g2/install" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data ..
         make -j2 VERBOSE=1
 
     - name: cache-data
@@ -172,5 +172,6 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/g2/build
         ctest --verbose --rerun-failed --output-on-failure
+        make install
 
 
