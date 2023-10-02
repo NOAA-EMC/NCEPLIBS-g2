@@ -58,7 +58,7 @@ foreach(kind ${kinds})
   endif()
 
   # Assemble the library.
-  add_library(${lib_name} STATIC $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
+  add_library(${lib_name} $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
   
   # Link to bacio, and jasper always.
   target_link_libraries(${lib_name} PUBLIC bacio::bacio ${PNG_LIBRARIES} ${JASPER_LIBRARIES})
