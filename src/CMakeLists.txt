@@ -41,7 +41,10 @@ foreach(kind ${kinds})
     "${fortran_${kind}_flags}")
   set_target_properties(${lib_name}_f PROPERTIES Fortran_MODULE_DIRECTORY
     ${module_dir})
-
+ if(BUILD_SHARED_LIBS)
+    set_property(TARGET ${lib_name}_f PROPERTY POSITION_INDEPENDENT_CODE 1)
+  endif()
+  
   # Set preprocessor define so code can know what kind of library is
   # being built.
   target_compile_definitions(${lib_name}_f PUBLIC KIND=${kind})
@@ -50,6 +53,9 @@ foreach(kind ${kinds})
   add_library(${lib_name}_c OBJECT ${c_src})
   target_include_directories(${lib_name}_c PRIVATE ${JASPER_INCLUDE_DIR})
   target_link_libraries(${lib_name}_c PRIVATE PNG::PNG)
+ if(BUILD_SHARED_LIBS)
+    set_property(TARGET ${lib_name}_c PROPERTY POSITION_INDEPENDENT_CODE 1)
+  endif()
 
   # Assemble the library.
   add_library(${lib_name} $<TARGET_OBJECTS:${lib_name}_f> $<TARGET_OBJECTS:${lib_name}_c>)
