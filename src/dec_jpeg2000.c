@@ -150,32 +150,6 @@ int_dec_jpeg2000(char *injpc, g2int bufsize, void *outfld, int out_is_g2int)
  * stream.
  * @param bufsize Length (in bytes) of the buffer that holds the input
  * JPEG2000 code stream.
- * @param outfld Pointer to int array, already allocated, that gets
- * the unpacked data.
- *
- * @return
- * - ::G2_JASPER_DECODE Error decode jpeg2000 code stream.
- * - ::G2_JASPER_DECODE_COLOR decoded image had multiple color
- *     components. Only grayscale is expected.
- * - ::G2_JASPER_INIT Error inializing Jasper library.
- *
- * @author Ed Hartnett @date 9/7/22
- */
-int
-g2c_dec_jpeg2000(char *injpc, size_t bufsize, int *outfld)
-{
-    return int_dec_jpeg2000(injpc, bufsize, outfld, 0);
-}
-
-/**
- * This Function decodes a JPEG2000 code stream specified in the
- * JPEG2000 Part-1 standard (i.e., ISO/IEC 15444-1) using [JasPer
- * Software](https://github.com/jasper-software/jasper).
- *
- * @param injpc Pointer to buffer that holds the input JPEG2000 code
- * stream.
- * @param bufsize Length (in bytes) of the buffer that holds the input
- * JPEG2000 code stream.
  * @param outfld Pointer to g2int array, already allocated, that gets
  * the unpacked data.
  *
