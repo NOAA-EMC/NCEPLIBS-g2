@@ -23,7 +23,7 @@ jobs:
 #      fail-fast: true
       matrix:
         bacio-version: [2.6.0]
-        w3emc-version: [2.10.0]
+        w3emc-version: [2.10.0, 2.11.0]
         config:
         - {
             options: "-DCMAKE_BUILD_TYPE=Debug"
@@ -32,16 +32,7 @@ jobs:
             options: '-DCMAKE_C_Fortran_FLAGS="-g" -DLOGGING=ON'
           }
         - {
-            options: "-DCMAKE_BUILD_TYPE=Debug"
-          }
-        - {
             options: "-DBUILD_WITH_W3EMC=OFF"
-          }
-        - {
-            options: "-DBUILD_WITH_W3EMC=OFF -DCMAKE_BUILD_TYPE=Debug"
-          }
-        - {
-            options: "-DENABLE_SHARED=ON"
           }
 
     steps:
