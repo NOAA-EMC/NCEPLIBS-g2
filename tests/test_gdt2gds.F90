@@ -74,6 +74,25 @@ program test_gdt2gds
      if (kgds(i) .ne. latloni_kgds(i)) stop 101
   end do
   idefnum = 0
+
+  ! This test code does not work, see
+  ! https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/385.
+  ! print *, 'testing with Lat/lon grid with irregular grid stuff with igdstmpl(9) = -1...'
+  ! igds(5) = 0
+  ! do i = 1, MAXIGDS
+  !    igdstmpl(i) = 1000
+  ! end do
+  ! igdstmpl(8) = -1
+  ! igdstmpl(9) = -1
+  ! idefnum = 1
+  ! ideflist(1) = 0
+  ! call gdt2gds(igds, igdstmpl, idefnum, ideflist, kgds, igrid, iret)
+  ! if (iret .ne. 0) stop 41
+  ! do i = 1, MAXIGDS
+  !    print *, i, kgds(i), latloni_kgds(i)
+  !    if (kgds(i) .ne. latloni_kgds(i)) stop 101
+  ! end do
+  ! idefnum = 0
   
   print *, 'testing with Mercator grid...'
   igds(5) = 10
