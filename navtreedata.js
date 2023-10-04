@@ -25,13 +25,14 @@
 var NAVTREE =
 [
   [ "NCEPLIBS-g2", "index.html", [
-    [ "Introduction", "index.html#autotoc_md1", null ],
-    [ "GRIB2 Encoding Routines", "index.html#autotoc_md2", null ],
-    [ "GRIB2 Decoding Routines", "index.html#autotoc_md3", null ],
-    [ "Extracting GRIB2 Fields from a GRIB2 file", "index.html#autotoc_md4", null ],
-    [ "GRIB2 Tables/Templates", "index.html#autotoc_md5", null ],
+    [ "Introduction", "index.html#autotoc_md0", null ],
+    [ "GRIB2 Encoding Routines", "index.html#autotoc_md1", null ],
+    [ "GRIB2 Decoding Routines", "index.html#autotoc_md2", null ],
+    [ "Extracting GRIB2 Fields from a GRIB2 file", "index.html#autotoc_md3", null ],
+    [ "GRIB2 Tables/Templates", "index.html#autotoc_md4", [
+      [ "Documentation for Previous Versions of NCEPLIBS-g2", "index.html#autotoc_md5", null ]
+    ] ],
     [ "Modules", "namespaces.html", [
-      [ "Documentation for Previous Versions of NCEPLIBS-g2", "index.html#autotoc_md0", null ],
       [ "Modules List", "namespaces.html", "namespaces_dup" ],
       [ "Module Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
@@ -62,7 +63,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "addfield_8f.html",
-"namespaceg2grids.html#a56a2c4fcd16e58123d22462da272f67e"
+"namespaceg2grids.html#a3189c0bf23a43b2088d020cbdc78f15f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

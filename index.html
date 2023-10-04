@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NCEPLIBS-g2
-   &#160;<span id="projectnumber">3.4.7</span>
+   &#160;<span id="projectnumber">3.4.8</span>
    </div>
   </td>
  </tr>
@@ -86,13 +86,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="title">NCEPLIBS-g2 Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2><a class="anchor" id="autotoc_md0"></a>
-Documentation for Previous Versions of NCEPLIBS-g2</h2>
-<ul>
-<li><a href="ver-3.4.6/index.html">NCEPLIBS-g2 Version 3.4.6</a></li>
-<li><a href="ver-3.4.5/index.html">NCEPLIBS-g2 Version 3.4.5</a></li>
-</ul>
-<h1><a class="anchor" id="autotoc_md1"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
 Introduction</h1>
 <p>This document briefly describes the routines available for encoding/decoding GRIB Edition 2 (GRIB2) messages. A basic familiarity with GRIB is assumed.</p>
 <p>A GRIB Edition 2 message is a machine independent format for storing one or more gridded data fields. Each GRIB2 message consists of the following sections:</p>
@@ -108,7 +102,7 @@ SECTION 7 - Data Section                  }             }            }
 SECTION 8 - End Section                   }             }            }
 </pre><p>Sequences of GRIB sections 2 to 7, 3 to 7, or sections 4 to 7 may be repeated within a single GRIB message. All sections within such repeated sequences must be present and shall appear in the numerical order noted above. Unrepeated sections remain in effect until redefined.</p>
 <p>The above overview was taken from WMO's FM 92-XII GRIB description of the experimental GRIB Edition 2 form.</p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md1"></a>
 GRIB2 Encoding Routines</h1>
 <p>Since a GRIB2 message can contain gridded fields for many parameters on a number of different grids, several routines are used to encode a message. This should give users more flexibility in how to organize data within one or more GRIB2 messages.</p>
 <p>To start a new GRIB2 message, call subroutine <a class="el" href="gribcreate_8F90.html#a1b722f74a2a9d7c2e4612f7780d64f31" title="This subroutine initializes a new GRIB2 message and packs GRIB2 sections 0 (Indicator Section) and 1 ...">gribcreate()</a>. It encodes Sections 0 and 1 at the beginning of the message. This routine must be used to create each message.</p>
@@ -116,13 +110,13 @@ GRIB2 Encoding Routines</h1>
 <p>Subroutine <a class="el" href="addgrid_8F90.html#a0550b62ab5fac8de78235d0c77c49c21" title="Add a Grid Definition Section (Section 3) to a GRIB2 message.">addgrid()</a> is used to encode a grid definition into Section 3. This grid definition defines the geometry of the the data values in the fields that follow it. <a class="el" href="addgrid_8F90.html#a0550b62ab5fac8de78235d0c77c49c21" title="Add a Grid Definition Section (Section 3) to a GRIB2 message.">addgrid()</a> can be called again to change the grid definition describing subsequent data fields.</p>
 <p>Each data field is added to the GRIB2 message using routine <a class="el" href="addfield_8f.html#abe47d00e9129168f66617de9260d91e2" title="Pack up Sections 4 through 7 for a given field and add them to a GRIB2 message.">addfield()</a>, which adds Sections 4, 5, 6, and 7 to the message.</p>
 <p>After all desired data fields have been added to the GRIB2 message, a call to routine <a class="el" href="gribend_8F90.html#acb8e7c48285d0121896b0341d9aed8e9" title="Finalize a GRIB2 message after all grids and fields have been added.">gribend()</a> is needed to add the final section 8 to the message and to update the length of the message. A call to GRIBEND() is required for each GRIB2 message.</p>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md2"></a>
 GRIB2 Decoding Routines</h1>
 <p>Subroutine <a class="el" href="gb__info_8F90.html#a56f9a0b651490e6240eb18fc12754e17" title="Find the number of gridded fields and Local Use Sections in a GRIB2 message.">gb_info()</a> can be used to find out how many Local Use sections and data fields are contained in a given GRIB2 message. In addition, this routine also returns the number of octets of the largest Local Use section in the message. This value can be used to ensure that the output array of subroutine GETLOCAL() (described below) is dimensioned large enough.</p>
 <p>Subroutine <a class="el" href="getlocal_8F90.html#a8a95b82becb1fddb48f1fc08bb7a5717" title="This subroutine returns the contents of Section 2 from a GRIB2 message.">getlocal()</a> will return the requested occurrence of Section 2 from a given GRIB2 message.</p>
 <p>GF_GETFLD can be used to get all information pertaining to the nth data field in the message. The subroutine returns all the unpacked values for each Section and Template in a Fortran 90 derived type gribfield, which is defined in module GRIB_MOD. An option exists that lets the user decide if the subroutine should unpack the Bit-map (if applicable) and the data values or just return the field description information.</p>
 <p>Note that derived type gribfield contains pointers to dynamically allocated memory; callers must free this memory by calling subroutine <a class="el" href="gf__free_8F90.html#a027efd02c99c9464153fc76d9bb9627e" title="Free memory that was used to store array values in derived type grib_mod::gribfield.">gf_free()</a>.</p>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md3"></a>
 Extracting GRIB2 Fields from a GRIB2 file</h1>
 <p>Subroutine <a class="el" href="getgb2_8F90.html#a59b91d6ac5c93ac460bb89760bf41694" title="Find and unpack a GRIB2 message in a file.">getgb2()</a> can be used to extract a specified field from a file containing many GRIB2 messages. <a class="el" href="getgb2_8F90.html#a59b91d6ac5c93ac460bb89760bf41694" title="Find and unpack a GRIB2 message in a file.">getgb2()</a> searches an index to find the location of the user specified field. The index can be supplied from a seperate GRIB2 index file, or it can be generated internally. If <a class="el" href="getgb2_8F90.html#a59b91d6ac5c93ac460bb89760bf41694" title="Find and unpack a GRIB2 message in a file.">getgb2()</a> is used, call <a class="el" href="getidx_8F90.html#ac02dafd6109baa69a66dc278d6b0c083" title="Free all memory associated with the library.">gf_finalize()</a> to free all memory. <a class="el" href="getidx_8F90.html#ac02dafd6109baa69a66dc278d6b0c083" title="Free all memory associated with the library.">gf_finalize()</a> only needs to be called once, no matter how many times <a class="el" href="getgb2_8F90.html#a59b91d6ac5c93ac460bb89760bf41694" title="Find and unpack a GRIB2 message in a file.">getgb2()</a> is called.</p>
 <p>The GRIB2 file (and the index file, if supplied) must be opened with a call to subroutine baopen() prior to the call to <a class="el" href="getgb2_8F90.html#a59b91d6ac5c93ac460bb89760bf41694" title="Find and unpack a GRIB2 message in a file.">getgb2()</a>.</p>
@@ -160,11 +154,18 @@ Extracting GRIB2 Fields from a GRIB2 file</h1>
 <div class="line"> </div>
 <div class="line">    stop</div>
 <div class="line">    end</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
 GRIB2 Tables/Templates</h1>
 <p>WMO's GRIB2 specification "FM 92-XII GRIB - General
 Regularly-distributed Information in Binary Form" contains descriptions of each template and code table information. This document can be found at <a href="http://www.wmo.ch/web/www/WMOCodes.html">http://www.wmo.ch/web/www/WMOCodes.html</a> (PDF and MSWord formats are available)</p>
-<p>MDL has made an HTML version of the document available at <a href="http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm">http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm</a>. </p>
+<p>MDL has made an HTML version of the document available at <a href="http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm">http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm</a>.</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Documentation for Previous Versions of NCEPLIBS-g2</h2>
+<ul>
+<li><a href="ver-3.4.7/index.html">NCEPLIBS-g2 Version 3.4.7</a></li>
+<li><a href="ver-3.4.6/index.html">NCEPLIBS-g2 Version 3.4.6</a></li>
+<li><a href="ver-3.4.5/index.html">NCEPLIBS-g2 Version 3.4.5</a> </li>
+</ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
