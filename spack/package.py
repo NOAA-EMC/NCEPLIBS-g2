@@ -38,7 +38,7 @@ class G2(CMakePackage):
     variant("w3emc", default=True, description="Enable GRIB1 through w3emc", when="@3.4.6:")
 
     depends_on("jasper@:2.0.32", when="@:3.4.7")
-    depends_on("jasper", when="@3.4.8:")
+    depends_on("jasper")
     depends_on("libpng")
     depends_on("bacio", when="@3.4.6:")
     with when("+w3emc"):
