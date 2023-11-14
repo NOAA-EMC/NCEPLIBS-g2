@@ -35,6 +35,7 @@ jobs:
     # See https://software.intel.com/content/www/us/en/develop/articles/oneapi-repo-instructions.html
     - name: install-intel
       run: |
+        set -x
         cd /tmp
         wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
         sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
@@ -56,6 +57,7 @@ jobs:
         cd bacio
         mkdir build
         cd build
+        which ifort || which ifx
         ${{ matrix.compilers }} cmake .. -DCMAKE_INSTALL_PREFIX=~/bacio
         make -j2
         make install
