@@ -1,9 +1,9 @@
 !> @file
-!> @brief Pack up Sections 4 through 7 for a given field and add them
+!> @brief Pack up Sections 4 through 7 for a field and add them
 !> to a GRIB2 message.
 !> @author Stephen Gilbert @date 2000-05-02
 
-!> Pack up Sections 4 through 7 for a given field and add them to a
+!> Pack up Sections 4 through 7 for a field and add them to a
 !> GRIB2 message.
 !>
 !> They are the Product Definition Section, Data Representation

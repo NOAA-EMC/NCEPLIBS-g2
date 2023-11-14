@@ -1,14 +1,15 @@
 !> @file
-!> @brief Contains subroutines returns the Grid Definition, and
-!> Product Definition for a given data field.
+!> @brief Return the Grid Definition, and Product Definition for a
+!> given data field.
 !> @author Stephen Gilbert @date 2000-05-26
 
-!> This subroutine returns the Grid Definition, Product Definition,
-!> Bit-map (if applicable), and the unpacked data for a given data
-!> field. All of the information returned is stored in a derived type
-!> variable, gfld. Gfld is of type gribfield, which is defined in
-!> module grib_mod, so users of this routine will need to include the
-!> line "USE GRIB_MOD" in their calling routine.
+!> @brief Return the Grid Definition, and Product Definition for a
+!> given data field.
+!>
+!> All of the information returned is stored in a derived type
+!> variable, gfld. Gfld is of type grib_mod::gribfield, which is
+!> defined in gribmod.F90; users of this routine will need to include
+!> the line "USE GRIB_MOD" in their calling routine.
 !>
 !> Since there can be multiple data fields packed into a GRIB2
 !> message, the calling routine indicates which field is being

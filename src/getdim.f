@@ -1,10 +1,10 @@
 !> @file
-!> @brief This subroutine returns the info of GRIB2 Grid Definition
-!> Section 3 format.
+!> @brief Return info from section 3, the GRIB2 Grid Definition
+!> Section.
 !> @author Stephen Gilbert @date 2002-12-11
 
-!> This subroutine returns the dimensions and scanning mode of a grid
-!> definition packed in GRIB2 Grid Definition Section 3 format.
+!> Return the dimensions and scanning mode of a grid
+!> definition packed in the Grid Definition Section.
 !>
 !> @param[in] csec3 Character array that contains the packed GRIB2
 !> GDS.

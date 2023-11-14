@@ -1,6 +1,6 @@
 !> @file
-!> @brief Return the J, K, and M pentagonal
-!> resolution parameters specified in a GRIB2 Grid Definition Section.
+!> @brief Return the J, K, and M pentagonal resolution parameters
+!> specified in a GRIB2 Grid Definition Section.
 !> @author Stephen Gilbert @date 2002-12-11
 
 !> Return the J, K, and M pentagonal resolution
