@@ -1,8 +1,12 @@
 !> @file
-!> @brief Unpack a data field from a JPEG2000 code stream.
+!> @brief Unpack a data field from a JPEG2000 code stream as defined in
+!> [Data Representation Template
+!> 5.40](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-40.shtml).
 !> @author Stephen Gilbert @date 2002-12-17
 
-!> Unpack a data field from a JPEG2000 code stream.
+!> Unpack a data field from a JPEG2000 code stream as defined in
+!> [Data Representation Template
+!> 5.40](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-40.shtml).
 !>
 !> This subroutine unpacks a data field that was packed into a
 !> JPEG2000 code stream using info from the GRIB2 Data Representation

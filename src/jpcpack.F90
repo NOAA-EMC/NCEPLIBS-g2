@@ -1,13 +1,16 @@
 !> @file
-!> @brief Pack a data field into a JPEG2000 code stream.
+!> @brief Pack a data field into a JPEG2000 code stream as defined in
+!> [Data Representation Template
+!> 5.40](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-40.shtml).
 !> @author Stephen Gilbert @date 2002-12-17
 
-!> Pack a data field into a JPEG2000 code stream.
+!> Pack a data field into a JPEG2000 code stream as defined in
+!> [Data Representation Template
+!> 5.40](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-40.shtml).
 !>
 !> After the data field is scaled, and the reference value is
 !> subtracted out, it is treated as a grayscale image and passed to a
-!> JPEG2000 encoder. It also fills in [GRIB2 - TABLE 5.40 TYPE OF
-!> COMPRESSION](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-40.shtml).
+!> JPEG2000 encoder. This subroutine also fills in the DRT values.
 !>
 !> @param[in] fld The data values to pack.
 !> @param[in] width number of points in the x direction

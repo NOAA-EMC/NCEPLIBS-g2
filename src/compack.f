@@ -1,17 +1,22 @@
 !> @file
-!> @brief This subroutine packs up a GRIB2 data field.
+!> @brief Pack a data field with complex packing with
+!> or without spatial differences defined in [Data Representation
+!> Template5.2 - Grid point data - complex
+!> packing](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-2.shtml)
+!> and [Data Representation Template 5.3 - Grid point data - complex
+!> packing and spatial
+!> differencing](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-3.shtml).
 !> @author Stephen Gilbert @date 2000-06-21
 
-!> This subroutine supports GRIB2 complex packing templates with or
-!> without spatial differences, Data Representation Templates (DRT)
-!> [GRIB2 - DATA REPRESENTATION TEMPLATE 5.2 - Grid point data -
-!> complex
+!> Pack a data field with complex packing with or
+!> without spatial differences, defined in [Data Representation
+!> Template5.2 - Grid point data - complex
 !> packing](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-2.shtml)
-!> and [GRIB2 - DATA REPRESENTATION TEMPLATE 5.3 - Grid point data -
-!> complex packing and spatial
+!> and [Data Representation Template 5.3 - Grid point data - complex
+!> packing and spatial
 !> differencing](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-3.shtml).
 !>
-!> It also fills in GRIB2 Data Representation Template 5.2 or 5.3 with
+!> It also fills in Data Representation Template 5.2 or 5.3 with
 !> the appropriate values.
 !>
 !> @param[in] fld The data values to pack.
