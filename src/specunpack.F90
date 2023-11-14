@@ -1,24 +1,24 @@
-!>    @file
-!>    @brief This subroutine packs up a data field.
-!>    @author Stephen Gilbert @date 2002-12-19
+!> @file
+!> @brief Unpack a spectral data field using the complex packing algorithm
+!> for spherical harmonic data, [Data Representation Template
+!> 5.51](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-51.shtml).
+!> @author Stephen Gilbert @date 2002-12-19
 
-!>    This subroutine unpacks a spectral data field that was packed
-!>    using the complex packing algorithm for spherical harmonic data as
-!>    defined in the GRIB2 documention, using info from the GRIB2 [Data
-!>    Representation Template
-!>    5.51](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-51.shtml).
+!> Unpack a spectral data field using the complex packing algorithm
+!> for spherical harmonic data, [Data Representation Template
+!> 5.51](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-51.shtml).
 !>
-!>    @param[in] cpack The packed data field (character*1 array).
-!>    @param[in] len length of packed field cpack.
-!>    @param[in] idrstmpl Contains the array of values for Data
-!>    Representation Template 5.51.
-!>    @param[in] ndpts The number of data values in array fld.
-!>    @param[in] JJ J pentagonal resolution parameter.
-!>    @param[in] KK K pentagonal resolution parameter.
-!>    @param[in] MM M pentagonal resolution parameter.
-!>    @param[out] fld Contains the unpacked data values.
+!> @param[in] cpack The packed data field (character*1 array).
+!> @param[in] len length of packed field cpack.
+!> @param[in] idrstmpl Contains the array of values for Data
+!> Representation Template 5.51.
+!> @param[in] ndpts The number of data values in array fld.
+!> @param[in] JJ J pentagonal resolution parameter.
+!> @param[in] KK K pentagonal resolution parameter.
+!> @param[in] MM M pentagonal resolution parameter.
+!> @param[out] fld Contains the unpacked data values.
 !>
-!>    @author Stephen Gilbert @date 2002-12-19
+!> @author Stephen Gilbert @date 2002-12-19
 subroutine specunpack(cpack,len,idrstmpl,ndpts,JJ,KK,MM,fld)
 
   character(len=1),intent(in) :: cpack(len)

@@ -1,10 +1,13 @@
 !> @file
-!> @brief This subroutine packs up a spectral data field.
+!> @brief Pack a spectral data field using the complex
+!> packing algorithm for spherical harmonic data as defined in 
+!> [Data Representation Template
+!> 5.51](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-51.shtml).
 !> @author Stephen Gilbert @date 2002-12-19
 
-!> This subroutine packs a spectral data field using the complex
-!> packing algorithm for spherical harmonic data as defined in the
-!> GRIB2 [Data Representation Template
+!> Pack a spectral data field using the complex
+!> packing algorithm for spherical harmonic data as defined in 
+!> [Data Representation Template
 !> 5.51](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-51.shtml).
 !>
 !> @param[in] fld Contains the data values to pack.

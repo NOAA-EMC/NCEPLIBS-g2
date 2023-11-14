@@ -1,13 +1,12 @@
 !> @file
-!> @brief Find, read or generate a GRIB2 index for the GRIB2 file
-!> associated with unit lugb.
+!> @brief Find, read or generate a GRIB2 index for a GRIB2 file.
 !> @author Stephen Gilbert @date 2005-03-15
 
-!> Find, read or generate a GRIB2 index for the GRIB2 file associated
-!> with unit lugb. If the index already exists, it is returned,
-!> otherwise, the index is (1) read from an existing indexfile
-!> associated with unit lugi or (2) generated from the GRIB2 file
-!> lugb.
+!> @brief Find, read or generate a GRIB2 index for a GRIB2 file.
+!>
+!> If the index already exists in library memory, it is returned,
+!> otherwise, the index is read from an existing indexfile associated
+!> with unit lugi or generated from the GRIB2 file lugb.
 !>
 !> Users can force a regeneration of an index: if lugi equals lugb,
 !> the index will be regenerated from the data in file lugb. If lugi
@@ -22,10 +21,11 @@
 !>
 !> @note The file unit numbers must be in range 1 - 9999.
 !>
-!> @param[in] lugb integer unit of the GRIB2 data file.
-!> File must have been opened with [baopen() or baopenr()]
-!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
-!> this routine. If 0, then all saved memory will be released.
+!> @param[in] lugb integer unit of the GRIB2 data file.  File must
+!> have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> routine. If 0, then all saved memory will be released (necessary
+!> for g2_finalize()).
 !> @param[in] lugi integer unit of the GRIB2 index file.
 !> If nonzero, file must have been opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before

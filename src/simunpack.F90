@@ -1,11 +1,13 @@
 !> @file
-!> @brief This subroutine packs up a data field.
+!> @brief Unpack a data field that was packed using a simple packing, [Data
+!> Representation Template
+!> 5.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-0.shtml).
 !> @author Stephen Gilbert @date 2000-06-21
 !>
 
-!> This subroutine unpacks a data field that was packed using a simple
-!> packing algorithm as defined in the GRIB2 documention, using info
-!> from the GRIB2 Data Representation Template 5.0.
+!> Unpack a data field that was packed using a simple packing, [Data
+!> Representation Template
+!> 5.0](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-0.shtml).
 !>    
 !> @param[in] cpack The packed data field (character*1 array).
 !> @param[in] len length of packed field cpack.

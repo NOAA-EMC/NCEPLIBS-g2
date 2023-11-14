@@ -1,10 +1,9 @@
 !> @file
-!> @brief This subroutine returns the contents of Section 2 from a
-!> GRIB2 message.
+!> @brief Return the contents of Section 2 (Local Use) from a GRIB2
+!> message.
 !> @author Stephen Gilbert @date 2000-05-25
 
-!> This subroutine returns the contents of Section 2 from a GRIB2
-!> message.
+!> Return the contents of Section 2 (Local Use) from a GRIB2 message.
 !>
 !> Since there can be multiple occurrences of Section 2 within a GRIB
 !> message, the calling routine indicates which occurrence is being

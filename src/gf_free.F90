@@ -1,5 +1,5 @@
 !> @file
-!> @brief Frees memory in derived type grib_mod::gribfield.
+!> @brief Free memory in derived type grib_mod::gribfield.
 !> @author Stephen Gilbert @date 2000-05-26
 
 !> Free memory that was used to store

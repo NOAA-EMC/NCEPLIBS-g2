@@ -1,10 +1,10 @@
 !> @file
-!> @brief This subroutines initializes a new GRIB2 message and packs
-!> GRIB2 Indicator Section and Identification Section.
+!> @brief Initialize a new GRIB2 message and pack GRIB2 sections 0
+!> (Indicator) and 1 (Identification).
 !> @author Stephen Gilbert @date 2000-04-28
 
-!> This subroutine initializes a new GRIB2 message and packs GRIB2
-!> sections 0 (Indicator Section) and 1 (Identification Section).
+!> Initialize a new GRIB2 message and pack GRIB2 sections 0
+!> (Indicator) and 1 (Identification).
 !>
 !> This routine is used with routines addlocal(), addgrid(), addfield(),
 !> and gribend() to create a complete GRIB2 message. Subroutine

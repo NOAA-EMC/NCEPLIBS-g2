@@ -1,13 +1,16 @@
 !> @file
-!> @brief Contains subroutines obtain grid information and the
-!> unpacked data (section 3 - 6) for a field from a GRIB2 file.
+!> @brief Return the Grid Definition, Product Definition, Bit-map (if
+!> applicable), and the unpacked data for a data field.
 !> @author Stephen Gilbert @date 2000-05-26
 
-!> This subroutine returns the Grid Definition, Product Definition,
-!> Bit-map (if applicable), and the unpacked data for a given data
-!> field. Since there can be multiple data fields packed into a GRIB2
-!> message, the calling routine indicates which field is being
-!> requested with the ifldnum argument.
+!> Return the Grid Definition, Product Definition, Bit-map (if
+!> applicable), and the unpacked data for a data field. Since there
+!> can be multiple data fields packed into a GRIB2 message, the
+!> calling routine indicates which field is being requested with the
+!> ifldnum argument.
+!>
+!> @note Note that subroutine gribinfo() can be used to first
+!> determine how many data fields exist in a given GRIB message.
 !>
 !> @param[in] cgrib Character array that contains the GRIB2 message.
 !> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
@@ -98,9 +101,6 @@
 !> - 12 Error unpacking Section 5.
 !> - 13 Error unpacking Section 6.
 !> - 14 Error unpacking Section 7.
-!>
-!> @note Note that subroutine gribinfo can be used to first determine
-!> how many data fields exist in a given GRIB message.
 !>
 !> @author Stephen Gilbert @date 2000-05-26
 subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
