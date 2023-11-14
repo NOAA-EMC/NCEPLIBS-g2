@@ -44,8 +44,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-mpi-devel intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
         echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
-        which ifort
-        which ifx
+        which ifort || which ifx
       
     - name: checkout-bacio
       uses: actions/checkout@v3
