@@ -1,8 +1,12 @@
 !> @file
-!> @brief Unpack a data field packed into a PNG image format.
+!> @brief Unpack a data field with PNG, defined in [Data
+!> Representation Template
+!> 5.40](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-40.shtml).
 !> @author Stephen Gilbert @date 2000-06-21
 
-!> Unpack a data field packed into a PNG image format.
+!> Unpack a data field with PNG, defined in [Data Representation
+!> Template
+!> 5.40](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-40.shtml).
 !>
 !> This subroutine unpacks a data field that was packed into a
 !> PNG image format using info from the GRIB2 Data Representation

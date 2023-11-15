@@ -1,20 +1,14 @@
 !> @file
 !> @brief Pack a data field with complex packing with
 !> or without spatial differences defined in [Data Representation
-!> Template5.2 - Grid point data - complex
-!> packing](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-2.shtml)
-!> and [Data Representation Template 5.3 - Grid point data - complex
-!> packing and spatial
-!> differencing](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-3.shtml).
+!> Template5.2](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-2.shtml)
+!> and [Data Representation Template 5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-3.shtml).
 !> @author Stephen Gilbert @date 2000-06-21
 
 !> Pack a data field with complex packing with or
 !> without spatial differences, defined in [Data Representation
-!> Template5.2 - Grid point data - complex
-!> packing](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-2.shtml)
-!> and [Data Representation Template 5.3 - Grid point data - complex
-!> packing and spatial
-!> differencing](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-3.shtml).
+!> Template 5.2](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-2.shtml)
+!> and [Data Representation Template 5.3](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-3.shtml).
 !>
 !> It also fills in Data Representation Template 5.2 or 5.3 with
 !> the appropriate values.

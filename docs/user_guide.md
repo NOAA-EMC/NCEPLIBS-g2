@@ -3,7 +3,7 @@
 # Introduction
 
 This document briefly describes the routines available for encoding/decoding
-GRIB Edition 2 (GRIB2) messages. A basic familiarity with GRIB is assumed.
+GRIB Edition 2 (GRIB2) messages. 
 
 A GRIB Edition 2 message is a machine independent format for storing
 one or more gridded data fields. Each GRIB2 message consists of the 
@@ -31,11 +31,6 @@ of the experimental GRIB Edition 2 form.
 
 # GRIB2 Encoding Routines
 
-Since a GRIB2 message can contain gridded fields for many parameters on
-a number of different grids, several routines are used to encode a message.
-This should give users more flexibility in how to organize data
-within one or more GRIB2 messages.
-
 To start a new GRIB2 message, call subroutine gribcreate(). It
 encodes Sections 0 and 1 at the beginning of the message. This routine 
 must be used to create each message.
@@ -53,28 +48,24 @@ which adds Sections 4, 5, 6, and 7 to the message.
 
 After all desired data fields have been added to the GRIB2 message, a
 call to routine gribend() is needed to add the final section 8 to the
-message and to update the length of the message. A call to GRIBEND()
-is required for each GRIB2 message.
+message and to update the length of the message. 
 
 # GRIB2 Decoding Routines
 
-Subroutine gb_info() can be used to find out how many Local Use sections
-and data fields are contained in a given GRIB2 message. In addition,
-this routine also returns the number of octets of the largest Local Use 
-section in the message. This value can be used to ensure that the 
-output array of subroutine GETLOCAL() (described below) is dimensioned
-large enough.
+Subroutine gb_info() can be used to find out how many Local Use
+sections and data fields are contained in a given GRIB2 message. This
+routine also returns the number of octets of the largest Local Use
+section in the message. This value can be used to ensure that the
+output array of subroutine getlocal() is dimensioned large enough.
 
 Subroutine getlocal() will return the requested occurrence of Section 2
 from a given GRIB2 message. 
 
-GF_GETFLD can be used to get all information pertaining to the nth
+gf_getfld() can be used to get all information pertaining to the any
 data field in the message. The subroutine returns all the unpacked
 values for each Section and Template in a Fortran 90 derived type
-gribfield, which is defined in module GRIB_MOD. An option exists that
-lets the user decide if the subroutine should unpack the Bit-map (if
-applicable) and the data values or just return the field description
-information.
+grib_mod::gribfield, defined in gribmod.F90. The subroutine may also
+unpack the Bit-map and the data values.
 
 Note that derived type gribfield contains pointers to dynamically
 allocated memory; callers must free this memory by calling subroutine
@@ -86,17 +77,18 @@ Subroutine getgb2() can be used to extract a specified field from a
 file containing many GRIB2 messages. getgb2() searches an index to
 find the location of the user specified field. The index can be
 supplied from a seperate GRIB2 index file, or it can be generated
-internally. If getgb2() is used, call gf_finalize() to free all
+internally.
+
+If getgb2() is used, call gf_finalize() to free all
 memory. gf_finalize() only needs to be called once, no matter how many
 times getgb2() is called.
 
 The GRIB2 file (and the index file, if supplied) must be opened with
 a call to subroutine baopen() prior to the call to getgb2().
 
-The decoded information for the selected GRIB field is returned in a 
-derived type variable, gfld. Gfld is of type gribfield, which is defined
-in module grib_mod, so users of this routine will need to include
-the line "USE GRIB_MOD" in their calling routine.
+The decoded information for the selected GRIB field is returned in a
+derived type variable, gfld. Gfld is of type grib_mod::gribfield;
+callers will need to include the line "use grib_mod".
 
 Note that derived type gribfield contains pointers to many arrays of data.
 The memory for these arrays is allocated when the values in the arrays 
