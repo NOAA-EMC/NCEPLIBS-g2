@@ -1,12 +1,16 @@
 !> @file
-!> @brief This subroutine packs up a data field into PNG image format.
+!> @brief Pack a data field into PNG image format, defined in [Data Representation
+!> Template 5.40](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-40.shtml).
 !> @author Stephen Gilbert @date 2002-12-21
 
-!> This subroutine packs up a data field into PNG image format. After
-!> the data field is scaled, and the reference value is subtracted out,
-!> it is treated as a grayscale image and passed to a PNG encoder. It
-!> also fills in GRIB2 Data Representation Template 5.41 or 5.40010
-!> with the appropriate values.
+!> Pack a data field into PNG image format, defined in [Data
+!> Representation Template
+!> 5.41](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-41.shtml).
+!>
+!> After the data field is scaled, and the reference value is
+!> subtracted out, it is treated as a grayscale image and passed to a
+!> PNG encoder. It also fills in GRIB2 Data Representation Template
+!> 5.41 or 5.40010 with the appropriate values.
 !>
 !> @param[in] fld Contains the data values to pack.
 !> @param[in] width number of points in the x direction.
