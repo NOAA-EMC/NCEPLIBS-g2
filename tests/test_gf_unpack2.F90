@@ -7,7 +7,7 @@ program test_gf_unpack2
   implicit none
 
   character, dimension(269) :: fgrib
-  integer :: n1, n2, n3, nan, fgrib_len
+  integer :: n1, n2, n3, fgrib_len
   integer :: iofst, lencsec2, ierr
   integer :: numlocal, numfields
   integer :: listsec0(3), listsec1(13), maxvals(7)
@@ -76,8 +76,8 @@ program test_gf_unpack2
        & char(0), char(0), char(0), char(47), char(5),  char(0),  &
        & char(0), char(0), char(100), char(0), char(2),  char(0), &
        & char(0), char(0), char(0), char(0), char(0),  char(0),   &
-       & char(1), char(8), char(1), char(1), char(1), char(Nan),  &
-       & char(Nan), char(Nan), char(Nan), char(0), char(0),        &
+       & char(1), char(8), char(1), char(1), char(1), char(0),  &
+       & char(0), char(0), char(0), char(0), char(0),        &
        & char(0), char(0), char(0), char(0), char(0), char(0),    &
        & char(0), char(0), char(0), char(0), char(0), char(0),    &
        & char(0), char(0), char(0), char(0), char(0), char(0),    &
@@ -87,7 +87,7 @@ program test_gf_unpack2
        & char(0), char(0), char(0), char(12), char(7),  char(1),  &
        & char(0), char(0), char(0), char(0), char(0),  char(0),   &
                                 ! section 8
-       & "7", "7", "7", "7" /) 
+       & "7", "7", "7", "7" /)
 
   print *, ''//NEW_LINE('A')//'Calling grib_info ...'
   call gribinfo(fgrib, fgrib_len, listsec0, listsec1,  &
