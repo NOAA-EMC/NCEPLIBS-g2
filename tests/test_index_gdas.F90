@@ -302,7 +302,7 @@ program test_index_gdas
      if (i .eq. 2) then
         call getidx(LUGB, LUGI, cbuf, nlen, nnum, iret)
      elseif (i .eq. 3) then
-        call getidx(LUGB, LUGI * -1, cbuf, nlen, nnum, iret)
+        call getidx(LUGB, LUGI * (-1), cbuf, nlen, nnum, iret)
      else
         call getidx(LUGB, 0, cbuf, nlen, nnum, iret)
      endif
