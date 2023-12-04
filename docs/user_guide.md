@@ -18,7 +18,7 @@ SECTION 4 - Product Definition Section    }             }            }(repeated)
 SECTION 5 - Data Representation Section   }             }(repeated)  }
 SECTION 6 - Bit-map Section               }(repeated)   }            }
 SECTION 7 - Data Section                  }             }            }
-SECTION 8 - End Section                   }             }            }
+SECTION 8 - End Section
 </pre>
 
 Sequences of GRIB sections 2 to 7, 3 to 7, or sections 4 to 7 may be repeated
