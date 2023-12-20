@@ -68,6 +68,19 @@ make install
 ## References
 
 ```
+Hartnett, E., Ator, J, Lei, H., Richert, A., Woollen, J., King, A.,
+Hartnett, A., [NCEPLIBS GRIB and BUFR Libraries: Maintaining and
+Modernizing NOAA's Libraries for WMO Data
+Formats](https://www.researchgate.net/publication/376390180_NCEPLIBS_GRIB_and_BUFR_Libraries_Maintaining_and_Modernizing_NOAA's_Libraries_for_WMO_Data_Formats),
+American Geophysical Union (AGU) 2023. (See also
+[poster](https://www.researchgate.net/publication/376582005_Poster_-_IN51B-0416_NCEPLIBS_GRIB_and_BUFR_Libraries_Maintaining_and_Modernizing_NOAA's_Libraries_for_WMO_Data_Formats)).
+
+Hartnett, E., Lei, H., Curtis, B, Gerheiser K., [Presentation -
+Improving Documentation, Testing, Process, and Code for Legacy NOAA
+GRIB2 C Fortran
+Libraries](https://www.researchgate.net/publication/360757566_Presentation_-_Improving_Documentation_Testing_Process_and_Code_for_Legacy_NOAA_GRIB2_C_Fortran_Libraries),
+NCAR Improving Scientific Software, April 2022.  .
+
 Kumar, V. Krishna, Gilbert, Stephen A., [GRIB2 conversion and its
 usage at NCEP](docs/GRIB2_conversion_and_its_usage_at_NCEP.pdf), 14-18
 November 2005, 10th Workshop on Meteorological Operational Systems
