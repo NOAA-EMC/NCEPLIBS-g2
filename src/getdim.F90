@@ -42,7 +42,7 @@ subroutine getdim(csec3,lcsec3,width,height,iscan)
   end interface
 
   nullify(igdstmpl,list_opt)
-  !
+
   iofst=0       ! set offset to beginning of section
   call gf_unpack3(csec3,lcsec3,iofst,igds,igdstmpl, &
        igdtlen,list_opt,num_opt,jerr)
