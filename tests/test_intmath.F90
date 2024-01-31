@@ -35,5 +35,39 @@ program test_intmath
   print *, 'ok'
 
   print *, 'SUCCESS!'
+
+  ! Here is some legacy test code that could be recovered...
+!       program test_intmath
+!       use intmath
+!       implicit none
+!       real(kind=16) :: temp
+!       real(kind=16), parameter :: alog2=log(2.0_16)
+!       integer(kind=8), parameter  :: &
+!      &     one=1,big=Z'7FFFFFFFFFFFFFFF',small=-2000000_8, &
+!      &     check=Z'1FFFFFFF'
+!       integer(kind=8) :: ival, iret
+!       !$OMP PARALLEL DO PRIVATE(ival,temp,iret)
+!       do ival=small,big
+!  10      format(Z16,' -- MISMATCH: ',I0,'=>',I0,' (',I0,' = ',F0.10,')')
+!  20      format(Z16,' -- OKAY:     ',I0,'=>',I0,' (',I0,' = ',F0.10,')')
+!          if(ival+one<ival) then
+!             temp=log(real(max(ival,one),kind=16))/alog2
+!          else
+!             temp=log(real(max(ival+one,one),kind=16))/alog2
+!          endif
+!          iret=i1log2(ival)
+!          if(iret/=ceiling(temp) .or. ival==0 .or. ival==check) then
+!             !$OMP CRITICAL
+!             if(iret/=ceiling(temp)) then
+!                print 10, ival, ival, iret,ceiling(temp),temp
+!             else
+!                print 20, ival, ival, iret,ceiling(temp),temp
+!             endif
+!             !$OMP END CRITICAL
+!          endif
+!       enddo
+!       !$OMP END PARALLEL DO
+!       end program test_intmath
+  
 end program test_intmath
 
