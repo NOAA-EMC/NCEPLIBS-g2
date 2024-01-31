@@ -6,14 +6,13 @@
 # These are the fortran source files.
 set(fortran_src addfield.F90 addgrid.F90 addlocal.F90 cmplxpack.F90
 compack.F90 comunpack.F90 drstemplates.F90 g2_gbytesc.F90 g2grids.F90
-gb_info.F90 getdim.F90 getfield.F90 getg2i.F90 getg2ir.F90 getgb2.F90
-getgb2l.F90 getgb2p.F90 getgb2r.F90 getgb2rp.F90 getgb2s.F90
-getidx.F90 getlocal.F90 getpoly.F90 gettemplates.F90 gf_free.F90
-gf_getfld.F90 gf_unpack1.F90 gf_unpack2.F90 gf_unpack3.F90
-gf_unpack4.F90 gf_unpack5.F90 gf_unpack6.F90 gf_unpack7.F90
-gribcreate.F90 gribend.F90 gribinfo.F90
+gb_info.F90 getdim.F90 getfield.F90 getgb2.F90 getgb2l.F90 getgb2p.F90
+getgb2r.F90 getgb2rp.F90 g2index.F90 getlocal.F90 getpoly.F90
+gettemplates.F90 gf_free.F90 gf_getfld.F90 gf_unpack1.F90
+gf_unpack2.F90 gf_unpack3.F90 gf_unpack4.F90 gf_unpack5.F90
+gf_unpack6.F90 gf_unpack7.F90 gribcreate.F90 gribend.F90 gribinfo.F90
 ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.F90 intmath.F90
-ixgb2.F90 jpcpack.F90 jpcunpack.F90 misspack.F90 mkieee.F90 pack_gp.f
+jpcpack.F90 jpcunpack.F90 misspack.F90 mkieee.F90 pack_gp.f
 params_ecmwf.F90 params.F90 pdstemplates.F90 pngpack.F90 pngunpack.F90
 putgb2.F90 rdieee.F90 realloc.F90 reduce.f simpack.F90 simunpack.F90
 skgb.F90 specpack.F90 specunpack.F90)
