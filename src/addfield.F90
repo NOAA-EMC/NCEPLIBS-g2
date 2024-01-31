@@ -412,8 +412,8 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   ! If specifying a previously defined bit-map, make sure
   ! one already exists in the current GRIB message.
   if ((ibmap.eq.254).and.(.not.isprevbmap)) then
-     print *,'addfield: Requested previously defined bitmap, ',
-     & ' but one does not exist in the current GRIB message.'
+     print *,'addfield: Requested previously defined bitmap, ', &
+          ' but one does not exist in the current GRIB message.'
      ierr=8
      return
   endif
