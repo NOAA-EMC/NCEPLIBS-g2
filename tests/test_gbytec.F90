@@ -219,6 +219,24 @@ program test_gbytec
   print *, in8_1
   if (in8_1(1) .ne. in8(1)) stop 150
 
+  print *, '   testing g2_sbytec() with 64-bit int array of size 4...'
+  do i = 1, 4
+     in84(i) = 1
+  end do
+  do i = 1, 256
+     out256(i) = char(0)
+  end do
+  print *, in84
+  call g2_sbytec(out256, in84, iskip, 64, 0, 4)
+  do i = 1, 256
+     print '(i3, x, z2.2)', i, out8(i)
+     ! if (i .lt. 8) then
+     !    if (ichar(out8(i)) .ne. 0) stop 140
+     ! else
+     !    if (ichar(out8(i)) .ne. 1) stop 140
+     ! endif
+  end do
+
   print *, 'SUCCESS!'
 
 end program test_gbytec
