@@ -11,6 +11,7 @@ program test_gbytec
   character*1 :: out5(5)
   character*1 :: out8(8)
   character*1 :: out10(10)
+  character*1 :: out256(256)
   integer :: in4(4), in1(1)
   integer, parameter :: n = 1
   integer :: in(n)
@@ -25,6 +26,7 @@ program test_gbytec
   integer :: nskip = 0
   integer :: i
   integer :: num
+  integer(kind = 8) :: in8(1), in8_1(1), in84(4), in84_1(4)
   
   print *, 'Testing g2_gbytesc.F90 subroutines.'
 
@@ -196,6 +198,21 @@ program test_gbytec
   if (ichar(out8(5)) .ne. 63 .and. ichar(out8(6)) .ne. 128 .and. &
        ichar(out8(7)) .ne. 0 .and. ichar(out8(8)) .ne. 0) stop 130
   ! print '(z2.2)', out4(1)  
+
+  print *, '   testing g2_sbytec() with 64-bit int...'
+  in8(1) = 1
+  do i = 1, 8
+     out8(i) = char(0)
+  end do
+  call g2_sbytec(out8, in8, iskip, 64)
+  do i = 1, 8
+     !print '(z2.2)', out8(i)
+     if (i .lt. 8) then
+        if (ichar(out8(i)) .ne. 0) stop 140
+     else
+        if (ichar(out8(i)) .ne. 1) stop 140
+     endif
+  end do
 
   print *, 'SUCCESS!'
 
