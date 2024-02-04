@@ -249,7 +249,6 @@ END SUBROUTINE GETG2I
 !> @param[in] msk1 Number of bytes to search for first message.
 !> @param[in] msk2 Number of bytes to search for other messages.
 !> @param[in] mnum Number of GRIB messages to skip (usually 0).
-!> @param[in] idxver Index version, 1 for legacy, 2 for files > 2 GB.
 !> @param[out] cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
@@ -273,6 +272,15 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   character(len = 1), pointer, dimension(:) :: cbuf
   integer, intent(in) :: lugb, msk1, msk2, mnum
   integer, intent(out) :: nlen, nnum, nmess, iret
+  
+  interface      ! required for cbuf pointer
+     subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, &
+          nnum, nmess, iret)
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(in) :: lugb, msk1, msk2, mnum, idxver
+       integer, intent(out) :: nlen, nnum, nmess, iret
+     end subroutine getg2i2r
+  end interface
 
   call getg2i2r(lugb, msk1, msk2, mnum, 1, cbuf, nlen, nnum, nmess, iret)
 end subroutine getg2ir
@@ -283,6 +291,10 @@ end subroutine getg2ir
 !> and byte offsets within the message to each section. The index file
 !> record format is documented in subroutine ixgb2().
 !>
+!> This subroutine is like getg2ir(), but this subroutine can generate
+!> index files in version 1 or 2 format. Use index version 2 for files
+!> > 2 GB.
+!>
 !> @note Subprogram can be called from a multiprocessing environment.
 !> Do not engage the same logical unit from more than one processor.
 !>
@@ -292,6 +304,7 @@ end subroutine getg2ir
 !> @param[in] msk1 Number of bytes to search for first message.
 !> @param[in] msk2 Number of bytes to search for other messages.
 !> @param[in] mnum Number of GRIB messages to skip (usually 0).
+!> @param[in] idxver Index version, 1 for legacy, 2 for files > 2 GB.
 !> @param[out] cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
@@ -308,7 +321,7 @@ end subroutine getg2ir
 !> - 2 Not enough memory to allocate initial index buffer.
 !> - 3 Error deallocating memory.
 !>
-!> @author Mark Iredell @date 1995-10-31
+!> @author Mark Iredell, Edward Hartnett @date Feb 4, 2024
 subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, &
      nnum, nmess, iret)
   use re_alloc              ! needed for subroutine realloc
@@ -324,11 +337,13 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, &
 
   interface      ! required for cbuf pointer
      subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
-       integer, intent(in) :: lugb, lskip, lgrib
+       integer :: lugb, lskip, lgrib
        character(len = 1), pointer, dimension(:) :: cbuf
-       integer, intent(out) :: numfld, mlen, iret
+       integer :: numfld, mlen, iret
      end subroutine ixgb2
   end interface
+
+  print *, idxver
 
   ! Initialize.
   iret = 0
@@ -387,7 +402,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, &
      ISEEK = LSKIP + LGRIB
      CALL SKGB(LUGB, ISEEK, MSK2, LSKIP, LGRIB)
   ENDDO
-END SUBROUTINE GETG2IR
+END SUBROUTINE GETG2I2R
 
 !> Find information about a GRIB field from the index and fill a @ref
 !> grib_mod::gribfield.
@@ -691,21 +706,21 @@ END SUBROUTINE GETGB2S
 !> - byte kk + 1-  ll the data representation section (drs)
 !> - byte ll + 1-ll + 6 first 6 bytes of the bit map section (bms)
 !>
-!> @param[in] lugb Unit of the unblocked GRIB file. Must
+!> @param lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
-!> @param[in] lskip Number of bytes to skip before GRIB message.
-!> @param[in] lgrib Number of bytes in GRIB message. When subroutine is
+!> @param lskip Number of bytes to skip before GRIB message.
+!> @param lgrib Number of bytes in GRIB message. When subroutine is
 !> called, this must be set to the size of the cbuf buffer.
-!> @param[out] cbuf Pointer to a buffer that will get the index
+!> @param cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
 !> will get an allocation of 5000 bytes. realloc() will be used to
 !> increase the size if necessary. Users must free memory that cbuf
 !> points to when cbuf is no longer needed.
-!> @param[out] numfld Number of index records created.
-!> @param[out] mlen Total length of all index records.
-!> @param[out] iret Return code
+!> @param numfld Number of index records created.
+!> @param mlen Total length of all index records.
+!> @param iret Return code
 !> - 0 No error
 !> - 1 Not enough memory available to hold full index buffer.
 !> - 2 I/O error in read.
