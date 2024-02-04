@@ -11,7 +11,8 @@ program test_gbytec
   character*1 :: out5(5)
   character*1 :: out8(8)
   character*1 :: out10(10)
-  character*1 :: out256(256)
+  character*1 :: out16(16)
+  character*1 :: out32(32)
   integer :: in4(4), in1(1)
   integer, parameter :: n = 1
   integer :: in(n)
@@ -26,6 +27,7 @@ program test_gbytec
   integer :: nskip = 0
   integer :: i
   integer :: num
+  integer(kind = 4) :: in44(4), in44_1(4)
   integer(kind = 8) :: in8(1), in8_1(1), in84(4), in84_1(4)
   
   print *, 'Testing g2_gbytesc.F90 subroutines.'
@@ -215,27 +217,50 @@ program test_gbytec
   end do
 
   print *, '   now unpack into 1 64-bit int with g2_gbytesc()...'
+  in8_1(1) = 0
   call g2_gbytesc(out8, in8_1, iskip, 64, 0, 1)
-  print *, in8_1
   if (in8_1(1) .ne. in8(1)) stop 150
+
+  print *, '   testing g2_sbytec() with 32-bit int array of size 4...'
+  do i = 1, 4
+     in44(i) = 1
+  end do
+  do i = 1, 16
+     out16(i) = char(0)
+  end do
+  call g2_sbytesc(out16, in44, iskip, 32, 0, 4)
+  do i = 1, 16
+     print '(i3, x, z2.2)', i, out16(i)
+  end do
+  
+  print *, '   now unpack into 4 32-bit ints with g2_gbytesc()...'
+  do i = 1, 4
+     in44_1(i) = 0
+  end do
+  call g2_gbytesc(out16, in44_1, iskip, 32, 0, 4)
+  do i = 1, 4
+     if (in44_1(i) .ne. in44(i)) stop 160
+  end do
 
   print *, '   testing g2_sbytec() with 64-bit int array of size 4...'
   do i = 1, 4
      in84(i) = 1
   end do
-  do i = 1, 256
-     out256(i) = char(0)
+  do i = 1, 32
+     out32(i) = char(0)
   end do
   print *, in84
-  call g2_sbytec(out256, in84, iskip, 64, 0, 4)
-  do i = 1, 256
-     print '(i3, x, z2.2)', i, out8(i)
-     ! if (i .lt. 8) then
-     !    if (ichar(out8(i)) .ne. 0) stop 140
-     ! else
-     !    if (ichar(out8(i)) .ne. 1) stop 140
-     ! endif
+  call g2_sbytesc(out32, in84, iskip, 64, 0, 4)
+  do i = 1, 32
+     print '(i3, x, z2.2)', i, out32(i)
   end do
+
+  print *, '   now unpack into 4 64-bit ints with g2_gbytesc()...'
+  do i = 1, 4
+     in84_1(i) = 0
+  end do
+  call g2_gbytesc(out32, in84_1, iskip, 64, 0, 4)
+  print *, in84_1
 
   print *, 'SUCCESS!'
 
