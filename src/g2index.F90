@@ -240,6 +240,49 @@ END SUBROUTINE GETG2I
 !> and byte offsets within the message to each section. The index file
 !> record format is documented in subroutine ixgb2().
 !>
+!> This is the legacy function, which always creates version 1 index
+!> files. To create index files of version 1 or 2, use getg2i2r().
+!>
+!> @param[in] lugb Unit of the unblocked GRIB file. Must
+!> be opened by [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
+!> @param[in] msk1 Number of bytes to search for first message.
+!> @param[in] msk2 Number of bytes to search for other messages.
+!> @param[in] mnum Number of GRIB messages to skip (usually 0).
+!> @param[in] idxver Index version, 1 for legacy, 2 for files > 2 GB.
+!> @param[out] cbuf Pointer to a buffer that will get the index
+!> records. If any memory is associated with cbuf when this subroutine
+!> is called, cbuf will be nullified in the subroutine. Initially cbuf
+!> will get an allocation of 5000 bytes. realloc() will be used to
+!> increase the size if necessary. Users must free memory that cbuf
+!> points to when cbuf is no longer needed.
+!> @param[out] nlen Total length of index record buffer in bytes.
+!> @param[out] nnum Number of index records, zero if no GRIB
+!> messages are found.
+!> @param[out] nmess Last GRIB message in file successfully processed
+!> @param[out] iret Return code.
+!> - 0 No error.
+!> - 1 Not enough memory available to hold full index buffer.
+!> - 2 Not enough memory to allocate initial index buffer.
+!> - 3 Error deallocating memory.
+!>
+!> @author Mark Iredell @date 1995-10-31
+subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+  use re_alloc              ! needed for subroutine realloc
+  implicit none
+  character(len = 1), pointer, dimension(:) :: cbuf
+  integer, intent(in) :: lugb, msk1, msk2, mnum
+  integer, intent(out) :: nlen, nnum, nmess, iret
+
+  call getg2i2r(lugb, msk1, msk2, mnum, 1, cbuf, nlen, nnum, nmess, iret)
+end subroutine getg2ir
+
+!> Generate an index record for a message in a GRIB2 file.
+!>
+!> The index record contains byte offsets to the message, it's length,
+!> and byte offsets within the message to each section. The index file
+!> record format is documented in subroutine ixgb2().
+!>
 !> @note Subprogram can be called from a multiprocessing environment.
 !> Do not engage the same logical unit from more than one processor.
 !>
@@ -266,45 +309,46 @@ END SUBROUTINE GETG2I
 !> - 3 Error deallocating memory.
 !>
 !> @author Mark Iredell @date 1995-10-31
-SUBROUTINE GETG2IR(LUGB, MSK1, MSK2, MNUM, CBUF, NLEN, NNUM, NMESS, IRET)
-  USE RE_ALLOC              ! NEEDED FOR SUBROUTINE REALLOC
+subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, &
+     nnum, nmess, iret)
+  use re_alloc              ! needed for subroutine realloc
   implicit none
 
-  CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
-  INTEGER, INTENT(IN) :: LUGB, MSK1, MSK2, MNUM
-  INTEGER, INTENT(OUT) :: NLEN, NNUM, NMESS, IRET
-  CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUFTMP
+  character(len = 1), pointer, dimension(:) :: cbuf
+  integer, intent(in) :: lugb, msk1, msk2, mnum, idxver
+  integer, intent(out) :: nlen, nnum, nmess, iret
+  character(len = 1), pointer, dimension(:) :: cbuftmp
   integer :: nbytes, newsize, next, numfld, m, mbuf, lskip, lgrib
   integer :: istat, iseek, init, iret1
-  PARAMETER(INIT = 50000, NEXT = 10000)
+  parameter(init = 50000, next = 10000)
 
-  INTERFACE      ! REQUIRED FOR CBUF POINTER
-     SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
-       INTEGER, INTENT(IN) :: LUGB, LSKIP, LGRIB
-       CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
-       INTEGER, INTENT(OUT) :: NUMFLD, MLEN, IRET
-     END SUBROUTINE IXGB2
-  END INTERFACE
+  interface      ! required for cbuf pointer
+     subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
+       integer, intent(in) :: lugb, lskip, lgrib
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: numfld, mlen, iret
+     end subroutine ixgb2
+  end interface
 
   ! Initialize.
-  IRET = 0
-  NULLIFY(CBUF)
-  MBUF = INIT
-  ALLOCATE(CBUF(MBUF), STAT = ISTAT)    ! Allocate initial space for cbuf.
-  IF (ISTAT .NE. 0) THEN
-     IRET = 2
-     RETURN
-  ENDIF
+  iret = 0
+  nullify(cbuf)
+  mbuf = init
+  allocate(cbuf(mbuf), stat = istat)    ! allocate initial space for cbuf.
+  if (istat .ne. 0) then
+     iret = 2
+     return
+  endif
 
   ! Search for first grib message.
-  ISEEK = 0
-  CALL SKGB(LUGB, ISEEK, MSK1, LSKIP, LGRIB)
-  DO M = 1, MNUM
-     IF(LGRIB.GT.0) THEN
-        ISEEK = LSKIP + LGRIB
-        CALL SKGB(LUGB, ISEEK, MSK2, LSKIP, LGRIB)
-     ENDIF
-  ENDDO
+  iseek = 0
+  call skgb(lugb, iseek, msk1, lskip, lgrib)
+  do m = 1, mnum
+     if(lgrib.gt.0) then
+        iseek = lskip + lgrib
+        call skgb(lugb, iseek, msk2, lskip, lgrib)
+     endif
+  enddo
 
   ! Get index records for every grib message found.
   NLEN = 0
