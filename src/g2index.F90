@@ -678,14 +678,17 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   integer :: numfld, mlen, iret
 
   interface
-     subroutine ix2gb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
-       integer :: lugb, lskip, lgrib
+     subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
+       integer :: lugb
+       integer :: lskip
+       integer :: idxver, lgrib
        character(len = 1), pointer, dimension(:) :: cbuf
        integer :: numfld, mlen, iret
      end subroutine ix2gb2
   end interface
-  
-  call ix2gb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
+
+  ! Always use index version 1 from this subroutine.
+  call ix2gb2(lugb, lskip, 1, lgrib, cbuf, numfld, mlen, iret)
 end subroutine ixgb2
 
   !> Generate an index record for each field in a GRIB2 message. The index
@@ -719,9 +722,10 @@ end subroutine ixgb2
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !> @param lskip Number of bytes to skip before GRIB message.
+!> @param idxver Index version, use 1 for legacy, 2 for GRIB2 files > 2 GB.
 !> @param lgrib Number of bytes in GRIB message. When subroutine is
 !> called, this must be set to the size of the cbuf buffer.
-!> @param[out] cbuf Pointer to a buffer that will get the index
+!> @param cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
 !> will get an allocation of 5000 bytes. realloc() will be used to
@@ -738,11 +742,13 @@ end subroutine ixgb2
 !> - 5 Unidentified GRIB section encountered.
 !>
 !> @author Mark Iredell @date 1995-10-31
-subroutine ix2gb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
+subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
 
-  integer :: lugb, lskip, lgrib
+  integer :: lugb
+  integer :: lskip
+  integer :: idxver, lgrib
   character(len = 1), pointer, dimension(:) :: cbuf
   integer :: numfld, mlen, iret
   
