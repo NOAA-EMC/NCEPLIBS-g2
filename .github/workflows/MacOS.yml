@@ -27,8 +27,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        jasper-version: [3.0.3, 4.0.0]
-        bacio-version: [2.4.1, 2.5.0, 2.6.0]
+        jasper-version: [4.0.0]
+        bacio-version: [2.4.1, 2.6.0]
         
     steps:
     - name: install-dependencies
