@@ -322,13 +322,16 @@ end subroutine getg2ir
 !> - 3 Error deallocating memory.
 !>
 !> @author Mark Iredell, Edward Hartnett @date Feb 4, 2024
-subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, &
+subroutine getg2i2r(lugb, msk18, msk28, mnum, idxver, cbuf, nlen, &
      nnum, nmess, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
 
   character(len = 1), pointer, dimension(:) :: cbuf
-  integer, intent(in) :: lugb, msk1, msk2, mnum, idxver
+  integer, intent(in) :: lugb
+  integer (kind = 8), intent(in) :: msk18, msk28
+  integer :: msk1, msk2
+  integer, intent(in) :: mnum, idxver
   integer, intent(out) :: nlen, nnum, nmess, iret
   character(len = 1), pointer, dimension(:) :: cbuftmp
   integer :: nbytes, newsize, next, numfld, m, mbuf, lskip, lgrib
@@ -343,7 +346,8 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, &
      end subroutine ixgb2
   end interface
 
-  print *, idxver
+  msk1 = msk18
+  msk2 = msk28
 
   ! Initialize.
   iret = 0

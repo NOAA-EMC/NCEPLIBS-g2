@@ -10,6 +10,7 @@ program test_getg2ir
   integer :: lugb = 3
   character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: msk1, msk2, mnum
+  integer (kind = 8) :: msk18, msk28
   integer :: nlen, nnum, nmess, iret
 
   interface
@@ -21,10 +22,12 @@ program test_getg2ir
   end interface
 
   interface
-     subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, &
+     subroutine getg2i2r(lugb, msk18, msk28, mnum, idxver, cbuf, nlen, &
           nnum, nmess, iret)
        character(len = 1), pointer, dimension(:) :: cbuf
-       integer, intent(in) :: lugb, msk1, msk2, mnum, idxver
+       integer, intent(in) :: lugb
+       integer (kind = 8), intent(in) :: msk18, msk28
+       integer, intent(in) :: mnum, idxver
        integer, intent(out) :: nlen, nnum, nmess, iret
      end subroutine getg2i2r
   end interface
@@ -42,12 +45,14 @@ program test_getg2ir
 
      msk1 = 1000
      msk2 = 1000
+     msk18 = 1000
+     msk28 = 1000
      mnum = 0
      if (t .eq. 1) then
         call getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
      else
         idxver = 1
-        call getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, iret)
+        call getg2i2r(lugb, msk18, msk28, mnum, idxver, cbuf, nlen, nnum, nmess, iret)
      endif
      if (iret .ne. 0) stop 101
      if (nlen .ne. 137600 .or. nnum .ne. 688 .or. nmess .ne. 688) stop 102
