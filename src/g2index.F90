@@ -683,7 +683,7 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
   integer :: mxlen, mxds, mxfld, mxbms
   integer :: init, ixlus, lugb, lskip, lgrib, numfld, mlen, iret
   integer :: ixsgd, ibread, ibskip, ilndrs, ilnpds, istat, ixds
-  integer (kind = 8) :: lskip8, ibread8, lbread8, ibskip8
+  integer (kind = 8) :: lskip8, ibread8, lbread8, ibskip8, lengds8
   integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lbread, lensec, lensec1
   parameter(linmax = 5000, init = 50000, next = 10000)
@@ -741,17 +741,19 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
      call g2_gbytec(cbread, lensec, 0 * 8, 4 * 8)
      call g2_gbytec(cbread, numsec, 4 * 8, 1 * 8)
 
-     IF (NUMSEC .EQ. 2) THEN                 ! SAVE LOCAL USE LOCATION
-        LOCLUS = IBSKIP-LSKIP
-     ELSEIF (NUMSEC .EQ. 3) THEN                 ! SAVE GDS INFO
-        LENGDS = LENSEC
-        CGDS = CHAR(0)
-        CALL BAREAD(LUGB, IBSKIP, LENGDS, LBREAD, CGDS)
-        IF (LBREAD .NE. LENGDS) THEN
-           IRET = 2
-           RETURN
-        ENDIF
-        LOCGDS = IBSKIP-LSKIP
+     if (numsec .eq. 2) then                 ! save local use location
+        loclus = ibskip-lskip
+     elseif (numsec .eq. 3) then                 ! save gds info
+        lengds = lensec
+        cgds = char(0)
+        ibskip8 = ibskip
+        lengds8 = lengds
+        call bareadl(lugb, ibskip8, lengds8, lbread8, cgds)
+        if (lbread8 .ne. lengds8) then
+           iret = 2
+           return
+        endif
+        locgds = ibskip-lskip
      ELSEIF (NUMSEC .EQ. 4) THEN                 ! FOUND PDS
         CINDEX = CHAR(0)
         CALL G2_SBYTEC(CINDEX, LSKIP, 8 * IXSKP, 8 * MXSKP)    ! BYTES TO SKIP
