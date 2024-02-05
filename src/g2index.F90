@@ -683,7 +683,7 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
   integer :: mxlen, mxds, mxfld, mxbms
   integer :: init, ixlus, lugb, lskip, lgrib, numfld, mlen, iret
   integer :: ixsgd, ibread, ibskip, ilndrs, ilnpds, istat, ixds
-  integer (kind = 8) :: lskip8, ibread8, lbread8, ibskip8, lengds8
+  integer (kind = 8) :: lskip8, ibread8, lbread8, ibskip8, lengds8, ilnpds8
   integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lbread, lensec, lensec1
   parameter(linmax = 5000, init = 50000, next = 10000)
@@ -754,27 +754,29 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
            return
         endif
         locgds = ibskip-lskip
-     ELSEIF (NUMSEC .EQ. 4) THEN                 ! FOUND PDS
-        CINDEX = CHAR(0)
-        CALL G2_SBYTEC(CINDEX, LSKIP, 8 * IXSKP, 8 * MXSKP)    ! BYTES TO SKIP
-        CALL G2_SBYTEC(CINDEX, LOCLUS, 8 * IXLUS, 8 * MXLUS)   ! LOCATION OF LOCAL USE
-        CALL G2_SBYTEC(CINDEX, LOCGDS, 8 * IXSGD, 8 * MXSGD)   ! LOCATION OF GDS
-        CALL G2_SBYTEC(CINDEX, IBSKIP-LSKIP, 8 * IXSPD, 8 * MXSPD)  ! LOCATION OF PDS
-        CALL G2_SBYTEC(CINDEX, LGRIB, 8 * IXLEN, 8 * MXLEN)    ! LEN OF GRIB2
-        CINDEX(41) = CVER
-        CINDEX(42) = CDISC
-        CALL G2_SBYTEC(CINDEX, NUMFLD + 1, 8 * IXFLD, 8 * MXFLD)   ! FIELD NUM
-        CINDEX(IXIDS + 1:IXIDS + LENSEC1) = CIDS(1:LENSEC1)
-        LINDEX = IXIDS + LENSEC1
-        CINDEX(LINDEX + 1:LINDEX + LENGDS) = CGDS(1:LENGDS)
-        LINDEX = LINDEX + LENGDS
-        ILNPDS = LENSEC
-        CALL BAREAD(LUGB, IBSKIP, ILNPDS, LBREAD, CINDEX(LINDEX + 1))
-        IF (LBREAD .NE. ILNPDS) THEN
-           IRET = 2
-           RETURN
-        ENDIF
-        LINDEX = LINDEX + ILNPDS
+     elseif (numsec .eq. 4) then                 ! found pds
+        cindex = char(0)
+        call g2_sbytec(cindex, lskip, 8 * ixskp, 8 * mxskp)    ! bytes to skip
+        call g2_sbytec(cindex, loclus, 8 * ixlus, 8 * mxlus)   ! location of local use
+        call g2_sbytec(cindex, locgds, 8 * ixsgd, 8 * mxsgd)   ! location of gds
+        call g2_sbytec(cindex, ibskip-lskip, 8 * ixspd, 8 * mxspd)  ! location of pds
+        call g2_sbytec(cindex, lgrib, 8 * ixlen, 8 * mxlen)    ! len of grib2
+        cindex(41) = cver
+        cindex(42) = cdisc
+        call g2_sbytec(cindex, numfld + 1, 8 * ixfld, 8 * mxfld)   ! field num
+        cindex(ixids + 1:ixids + lensec1) = cids(1:lensec1)
+        lindex = ixids + lensec1
+        cindex(lindex + 1:lindex + lengds) = cgds(1:lengds)
+        lindex = lindex + lengds
+        ilnpds = lensec
+        ibskip8 = ibskip
+        ilnpds8 = ilnpds        
+        call bareadl(lugb, ibskip8, ilnpds8, lbread8, cindex(lindex + 1))
+        if (lbread8 .ne. ilnpds8) then
+           iret = 2
+           return
+        endif
+        lindex = lindex + ilnpds
      ELSEIF (NUMSEC .EQ. 5) THEN                 ! FOUND DRS
         CALL G2_SBYTEC(CINDEX, IBSKIP-LSKIP, 8 * IXSDR, 8 * MXSDR)  ! LOCATION OF DRS
         ILNDRS = LENSEC
