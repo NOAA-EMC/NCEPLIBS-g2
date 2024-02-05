@@ -11,7 +11,7 @@
 !> has more elements, use g2_sbytesc().
 !>
 !> @param[in] in Array input.
-!> @param[out] iout Unpacked array output.
+!> @param[inout] iout Unpacked array output.
 !> @param[in] iskip Initial number of bits to skip.
 !> @param[in] nbits Number of bits of each integer in IN to take.
 !>
@@ -32,7 +32,7 @@ end subroutine g2_gbytec
 !> This should be used when input array IN has only one element. If IN
 !> has more elements, use G2_SBYTESC().
 !>
-!> @param[out] out packed array output
+!> @param[inout] out packed array output
 !> @param[in] in unpacked array input
 !> @param[in] iskip initial number of bits to skip
 !> @param[in] nbits Number of bits of each integer in OUT to fill.
