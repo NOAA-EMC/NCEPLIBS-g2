@@ -733,11 +733,89 @@ END SUBROUTINE GETGB2S
 !> - 5 Unidentified GRIB section encountered.
 !>
 !> @author Mark Iredell @date 1995-10-31
-SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
-  USE RE_ALLOC              ! NEEDED FOR SUBROUTINE REALLOC
+subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
+  implicit none
+  integer :: lugb, lskip, lgrib
+  character(len = 1), pointer, dimension(:) :: cbuf
+  integer :: numfld, mlen, iret
+  integer (kind = 8) :: lskip8
+
+  interface
+     subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
+       integer :: lugb
+       integer (kind = 8) :: lskip8
+       integer :: idxver, lgrib
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer :: numfld, mlen, iret
+     end subroutine ix2gb2
+  end interface
+
+  lskip8 = lskip
+  call ix2gb2(lugb, lskip8, 1, lgrib, cbuf, numfld, mlen, iret)
+end SUBROUTINE IXGB2
+
+!> Generate an index record for each field in a GRIB2 message. The index
+!> records are written to index buffer pointed to by cbuf. All integers
+!> in the index are in big-endian format.
+!>
+!> This subroutine is called by getg2ir(), which packages the index
+!> records into an index file.
+!>
+!> The index buffer returned contains index records with the
+!> format:
+!> - byte 001 - 004 length of index record
+!> - byte 005 - 008 bytes to skip in data file before GRIB message
+!> - byte 009 - 012 bytes to skip in message before lus (local use) set = 0, if no local section.
+!> - byte 013 - 016 bytes to skip in message before gds
+!> - byte 017 - 020 bytes to skip in message before pds
+!> - byte 021 - 024 bytes to skip in message before drs
+!> - byte 025 - 028 bytes to skip in message before bms
+!> - byte 029 - 032 bytes to skip in message before data section
+!> - byte 033 - 040 bytes total in the message
+!> - byte 041 - 041 GRIB version number (2)
+!> - byte 042 - 042 message discipline
+!> - byte 043 - 044 field number within GRIB2 message
+!> - byte 045 -  ii identification section (ids)
+!> - byte ii + 1-  jj grid definition section (gds)
+!> - byte jj + 1-  kk product definition section (pds)
+!> - byte kk + 1-  ll the data representation section (drs)
+!> - byte ll + 1-ll + 6 first 6 bytes of the bit map section (bms)
+!>
+!> @param lugb Unit of the unblocked GRIB file. Must
+!> be opened by [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
+!> @param lskip8 Number of bytes to skip before GRIB message.
+!> @param idxver Index version, 1 for legacy, 2 for GRIB2 files > 2 GB.
+!> @param lgrib Number of bytes in GRIB message. When subroutine is
+!> called, this must be set to the size of the cbuf buffer.
+!> @param cbuf Pointer to a buffer that will get the index
+!> records. If any memory is associated with cbuf when this subroutine
+!> is called, cbuf will be nullified in the subroutine. Initially cbuf
+!> will get an allocation of 5000 bytes. realloc() will be used to
+!> increase the size if necessary. Users must free memory that cbuf
+!> points to when cbuf is no longer needed.
+!> @param numfld Number of index records created.
+!> @param mlen Total length of all index records.
+!> @param iret Return code
+!> - 0 No error
+!> - 1 Not enough memory available to hold full index buffer.
+!> - 2 I/O error in read.
+!> - 3 GRIB message is not edition 2.
+!> - 4 Not enough memory to allocate extent to index buffer.
+!> - 5 Unidentified GRIB section encountered.
+!>
+!> @author Mark Iredell @date 1995-10-31
+subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
+  use re_alloc              ! needed for subroutine realloc
   implicit none
 
+  integer :: lugb
+  integer (kind = 8) :: lskip8
+  integer :: idxver, lgrib
   CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
+  integer :: numfld, mlen, iret
+  integer :: lskip
+  
   CHARACTER CVER, CDISC
   CHARACTER(LEN = 4) :: CTEMP
   INTEGER LOCLUS, LOCGDS, LENGDS, LOCBMS
@@ -745,7 +823,7 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
   integer :: linmax, ixskp
   integer :: mxspd, mxskp, mxsgd, mxsdr, mxsbm, mxlus
   integer :: mxlen, mxds, mxfld, mxbms
-  integer :: init, ixlus, lugb, lskip, lgrib, numfld, mlen, iret
+  integer :: init, ixlus
   integer :: ixsgd, ibread, ibskip, ilndrs, ilnpds, istat, ixds
   integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lbread, lensec, lensec1
@@ -757,6 +835,7 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
   CHARACTER CBREAD(LINMAX), CINDEX(LINMAX)
   CHARACTER CIDS(LINMAX), CGDS(LINMAX)
 
+  lskip = lskip8
   LOCLUS = 0
   IRET = 0
   MLEN = 0
@@ -875,7 +954,7 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
      ENDIF
      IBSKIP = IBSKIP + LENSEC
   ENDDO
-END SUBROUTINE IXGB2
+end subroutine ix2gb2
 
 !> Free all memory associated with the library.
 !>
