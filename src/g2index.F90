@@ -265,25 +265,25 @@ END SUBROUTINE GETG2I
 !> - 3 Error deallocating memory.
 !>
 !> @author Mark Iredell @date 1995-10-31
-SUBROUTINE GETG2IR(LUGB, MSK1, MSK2, MNUM, CBUF, NLEN, NNUM, NMESS, IRET)
-  USE RE_ALLOC              ! NEEDED FOR SUBROUTINE REALLOC
+subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+  use re_alloc              ! needed for subroutine realloc
   implicit none
 
-  CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
-  INTEGER, INTENT(IN) :: LUGB, MSK1, MSK2, MNUM
-  INTEGER, INTENT(OUT) :: NLEN, NNUM, NMESS, IRET
-  CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUFTMP
+  character(len = 1), pointer, dimension(:) :: cbuf
+  integer, intent(in) :: lugb, msk1, msk2, mnum
+  integer, intent(out) :: nlen, nnum, nmess, iret
+  character(len = 1), pointer, dimension(:) :: cbuftmp
   integer :: nbytes, newsize, next, numfld, m, mbuf, lskip, lgrib
   integer :: istat, iseek, init, iret1
-  PARAMETER(INIT = 50000, NEXT = 10000)
+  parameter(init = 50000, next = 10000)
 
-  INTERFACE      ! REQUIRED FOR CBUF POINTER
-     SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
-       INTEGER, INTENT(IN) :: LUGB, LSKIP, LGRIB
-       CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
-       INTEGER, INTENT(OUT) :: NUMFLD, MLEN, IRET
-     END SUBROUTINE IXGB2
-  END INTERFACE
+  interface      ! required for cbuf pointer
+     subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
+       integer :: lugb, lskip, lgrib
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer :: numfld, mlen, iret
+     end subroutine ixgb2
+  end interface
 
   ! Initialize.
   IRET = 0
@@ -683,58 +683,63 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
   integer :: mxlen, mxds, mxfld, mxbms
   integer :: init, ixlus, lugb, lskip, lgrib, numfld, mlen, iret
   integer :: ixsgd, ibread, ibskip, ilndrs, ilnpds, istat, ixds
+  integer (kind = 8) :: lskip8, ibread8, lbread8, ibskip8
   integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lbread, lensec, lensec1
-  PARAMETER(LINMAX = 5000, INIT = 50000, NEXT = 10000)
-  PARAMETER(IXSKP = 4, IXLUS = 8, IXSGD = 12, IXSPD = 16, IXSDR = 20, IXSBM = 24, &
-       IXDS = 28, IXLEN = 36, IXFLD = 42, IXIDS = 44)
-  PARAMETER(MXSKP = 4, MXLUS = 4, MXSGD = 4, MXSPD = 4, MXSDR = 4, MXSBM = 4, &
-       MXDS = 4, MXLEN = 4, MXFLD = 2, MXBMS = 6)
-  CHARACTER CBREAD(LINMAX), CINDEX(LINMAX)
-  CHARACTER CIDS(LINMAX), CGDS(LINMAX)
+  parameter(linmax = 5000, init = 50000, next = 10000)
+  parameter(ixskp = 4, ixlus = 8, ixsgd = 12, ixspd = 16, ixsdr = 20, ixsbm = 24, &
+       ixds = 28, ixlen = 36, ixfld = 42, ixids = 44)
+  parameter(mxskp = 4, mxlus = 4, mxsgd = 4, mxspd = 4, mxsdr = 4, mxsbm = 4, &
+       mxds = 4, mxlen = 4, mxfld = 2, mxbms = 6)
+  character cbread(linmax), cindex(linmax)
+  character cids(linmax), cgds(linmax)
 
-  LOCLUS = 0
-  IRET = 0
-  MLEN = 0
-  NUMFLD = 0
-  NULLIFY(CBUF)
-  MBUF = INIT
-  ALLOCATE(CBUF(MBUF), STAT = ISTAT)    ! ALLOCATE INITIAL SPACE FOR CBUF
-  IF (ISTAT .NE. 0) THEN
-     IRET = 1
-     RETURN
-  ENDIF
+  loclus = 0
+  iret = 0
+  mlen = 0
+  numfld = 0
+  nullify(cbuf)
+  mbuf = init
+  allocate(cbuf(mbuf), stat = istat)    ! allocate initial space for cbuf
+  if (istat .ne. 0) then
+     iret = 1
+     return
+  endif
 
-  ! Read sections 0 and 1 for versin number and discipline.
-  IBREAD = MIN(LGRIB, LINMAX)
-  CALL BAREAD(LUGB, LSKIP, IBREAD, LBREAD, CBREAD)
-  IF(LBREAD .NE. IBREAD) THEN
-     IRET = 2
-     RETURN
-  ENDIF
-  IF(CBREAD(8) .NE. CHAR(2)) THEN          !  NOT GRIB EDITION 2
-     IRET = 3
-     RETURN
-  ENDIF
-  CVER = CBREAD(8)
-  CDISC = CBREAD(7)
-  CALL G2_GBYTEC(CBREAD, LENSEC1, 16 * 8, 4 * 8)
-  LENSEC1 = MIN(LENSEC1, IBREAD)
-  CIDS(1:LENSEC1) = CBREAD(17:16 + LENSEC1)
-  IBSKIP = LSKIP + 16 + LENSEC1
+  ! Read sections 0 and 1 for GRIB version number and discipline.
+  ibread = min(lgrib, linmax)
+  lskip8 = lskip
+  ibread8 = ibread
+  call bareadl(lugb, lskip8, ibread8, lbread8, cbread)
+  if (lbread8 .ne. ibread8) then
+     iret = 2
+     return
+  endif
+  if(cbread(8) .ne. char(2)) then          !  not grib edition 2
+     iret = 3
+     return
+  endif
+  cver = cbread(8)
+  cdisc = cbread(7)
+  call g2_gbytec(cbread, lensec1, 16 * 8, 4 * 8)
+  lensec1 = min(lensec1, ibread)
+  cids(1:lensec1) = cbread(17:16 + lensec1)
+  ibskip = lskip + 16 + lensec1
 
   ! Loop through remaining sections creating an index for each field.
-  IBREAD = MAX(5, MXBMS)
-  DO
-     CALL BAREAD(LUGB, IBSKIP, IBREAD, LBREAD, CBREAD)
-     CTEMP = CBREAD(1)//CBREAD(2)//CBREAD(3)//CBREAD(4)
-     IF (CTEMP .EQ. '7777') RETURN        ! END OF MESSAGE FOUND
-     IF(LBREAD .NE. IBREAD) THEN
-        IRET = 2
-        RETURN
-     ENDIF
-     CALL G2_GBYTEC(CBREAD, LENSEC, 0 * 8, 4 * 8)
-     CALL G2_GBYTEC(CBREAD, NUMSEC, 4 * 8, 1 * 8)
+  ibread = max(5, mxbms)
+  do
+     ibskip8 = ibskip
+     ibread8 = ibread
+     call bareadl(lugb, ibskip8, ibread8, lbread8, cbread)
+     ctemp = cbread(1)//cbread(2)//cbread(3)//cbread(4)
+     if (ctemp .eq. '7777') return        ! end of message found
+     if (lbread8 .ne. ibread8) then
+        iret = 2
+        return
+     endif
+     call g2_gbytec(cbread, lensec, 0 * 8, 4 * 8)
+     call g2_gbytec(cbread, numsec, 4 * 8, 1 * 8)
 
      IF (NUMSEC .EQ. 2) THEN                 ! SAVE LOCAL USE LOCATION
         LOCLUS = IBSKIP-LSKIP
