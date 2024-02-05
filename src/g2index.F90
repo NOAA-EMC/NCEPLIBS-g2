@@ -683,7 +683,8 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
   integer :: mxlen, mxds, mxfld, mxbms
   integer :: init, ixlus, lugb, lskip, lgrib, numfld, mlen, iret
   integer :: ixsgd, ibread, ibskip, ilndrs, ilnpds, istat, ixds
-  integer (kind = 8) :: lskip8, ibread8, lbread8, ibskip8, lengds8, ilnpds8
+  integer (kind = 8) :: lskip8, ibread8, lbread8, ibskip8, lengds8
+  integer (kind = 8) :: ilnpds8, ilndrs8
   integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lbread, lensec, lensec1
   parameter(linmax = 5000, init = 50000, next = 10000)
@@ -777,15 +778,17 @@ SUBROUTINE IXGB2(LUGB, LSKIP, LGRIB, CBUF, NUMFLD, MLEN, IRET)
            return
         endif
         lindex = lindex + ilnpds
-     ELSEIF (NUMSEC .EQ. 5) THEN                 ! FOUND DRS
-        CALL G2_SBYTEC(CINDEX, IBSKIP-LSKIP, 8 * IXSDR, 8 * MXSDR)  ! LOCATION OF DRS
-        ILNDRS = LENSEC
-        CALL BAREAD(LUGB, IBSKIP, ILNDRS, LBREAD, CINDEX(LINDEX + 1))
-        IF (LBREAD .NE. ILNDRS) THEN
-           IRET = 2
-           RETURN
-        ENDIF
-        LINDEX = LINDEX + ILNDRS
+     elseif (numsec .eq. 5) then                 ! found drs
+        call g2_sbytec(cindex, ibskip-lskip, 8 * ixsdr, 8 * mxsdr)  ! location of drs
+        ilndrs = lensec
+        ibskip8 = ibskip
+        ilndrs8 = ilndrs
+        call bareadl(lugb, ibskip8, ilndrs8, lbread8, cindex(lindex + 1))
+        if (lbread8 .ne. ilndrs8) then
+           iret = 2
+           return
+        endif
+        lindex = lindex + ilndrs
      ELSEIF (NUMSEC .EQ. 6) THEN                 ! FOUND BMS
         INDBMP = MOVA2I(CBREAD(6))
         IF (INDBMP.LT.254) THEN
