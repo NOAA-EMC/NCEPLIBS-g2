@@ -301,8 +301,8 @@ end subroutine getg2ir
 !> @param[in] lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
-!> @param[in] msk1 Number of bytes to search for first message.
-!> @param[in] msk2 Number of bytes to search for other messages.
+!> @param[in] msk18 Number of bytes to search for first message.
+!> @param[in] msk28 Number of bytes to search for other messages.
 !> @param[in] mnum Number of GRIB messages to skip (usually 0).
 !> @param[in] idxver Index version, 1 for legacy, 2 for files > 2 GB.
 !> @param[out] cbuf Pointer to a buffer that will get the index
