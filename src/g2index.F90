@@ -652,7 +652,7 @@ END SUBROUTINE GETGB2S
 !> @param lskip Number of bytes to skip before GRIB message.
 !> @param lgrib Number of bytes in GRIB message. When subroutine is
 !> called, this must be set to the size of the cbuf buffer.
-!> @param[out] cbuf Pointer to a buffer that will get the index
+!> @param cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
 !> will get an allocation of 5000 bytes. realloc() will be used to
