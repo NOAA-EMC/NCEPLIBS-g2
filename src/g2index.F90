@@ -691,7 +691,7 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   call ix2gb2(lugb, lskip, 1, lgrib, cbuf, numfld, mlen, iret)
 end subroutine ixgb2
 
-  !> Generate an index record for each field in a GRIB2 message. The index
+!> Generate an index record for each field in a GRIB2 message. The index
 !> records are written to index buffer pointed to by cbuf. All integers
 !> in the index are in big-endian format.
 !>
@@ -741,7 +741,7 @@ end subroutine ixgb2
 !> - 4 Not enough memory to allocate extent to index buffer.
 !> - 5 Unidentified GRIB section encountered.
 !>
-!> @author Mark Iredell @date 1995-10-31
+!> @author Ed Hartnett, Mark Iredell @date Feb 5, 2024
 subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
