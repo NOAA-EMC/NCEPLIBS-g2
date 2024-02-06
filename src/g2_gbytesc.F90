@@ -3,9 +3,8 @@
 !> string and unpacked array.
 !> @author Stephen Gilbert @date 2004-04-27
 
-!> Extract arbitrary size values from a packed bit string, right
-!> justifying each value in the unpacked array without skip and
-!> interations.
+!> Extract one arbitrary size value (up to 32 bits) from a packed bit
+!> string, right justifying each value in the unpacked array.
 !>
 !> This should be used when input array IN has only one element. If in
 !> has more elements, use g2_sbytesc().
@@ -13,7 +12,8 @@
 !> @param[in] in Array input.
 !> @param[inout] iout Unpacked array output.
 !> @param[in] iskip Initial number of bits to skip.
-!> @param[in] nbits Number of bits of each integer in IN to take.
+!> @param[in] nbits Number of bits of each integer in IN to take. Must
+!> be 32 or less.
 !>
 !> @author Stephen Gilbert @date 2004-04-27
 subroutine g2_gbytec(in, iout, iskip, nbits)
@@ -25,36 +25,14 @@ subroutine g2_gbytec(in, iout, iskip, nbits)
   call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
 end subroutine g2_gbytec
 
-!> Put arbitrary size values into a packed bit string, taking the low
-!> order bits from each value in the unpacked array without skip and
-!> interation.
-!>
-!> This should be used when input array IN has only one element. If IN
-!> has more elements, use g2_sbytesc().
-!>
-!> @param[inout] out packed array output
-!> @param[in] in unpacked array input
-!> @param[in] iskip initial number of bits to skip
-!> @param[in] nbits Number of bits of each integer in OUT to fill.
-!>
-!> @author Stephen Gilbert @date 2004-04-27
-subroutine g2_sbytec(out, in, iskip, nbits)
-  implicit none
-
-  character*1, intent(inout) :: out(*)
-  integer, intent(in) :: in(*)
-  integer, intent(in) :: iskip, nbits
-  call g2_sbytesc(out, in, iskip, nbits, 0, 1)
-end subroutine g2_sbytec
-
-!> Extract arbitrary size values from a packed bit string, right
-!> justifying each value in the unpacked array with skip and
-!> interation options.
+!> Extract arbitrary size values (up to 32 bits each) from a packed
+!> bit string, right justifying each value in the unpacked array.
 !>
 !> @param[in] in array input
 !> @param[out] iout unpacked array output
 !> @param[in] iskip initial number of bits to skip
-!> @param[in] nbits Number of bits of each integer in IN to take.
+!> @param[in] nbits Number of bits of each integer in IN to take. Must
+!> be 32 or less.
 !> @param[in] nskip Additional number of bits to skip on each iteration.
 !> @param[in] n Number of integers to extract.
 !>
@@ -104,14 +82,116 @@ subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)
 
 end subroutine g2_gbytesc
 
-!> Put arbitrary size values into a packed bit string, taking the low
-!> order bits from each value in the unpacked array with skip and
-!> interation options.
+!> Extract one arbitrary sized (up to 64-bits) values from a packed bit
+!> string, right justifying each value in the unpacked array.
+!>
+!> This should be used when input array in has only one element. If in
+!> has more elements, use g2_sbytesc().
+!>
+!> @param[in] in Array input.
+!> @param[inout] iout Unpacked array output.
+!> @param[in] iskip Initial number of bits to skip.
+!> @param[in] nbits Number of bits of each integer in IN to take. Must
+!> be 64 or less.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_gbytec8(in, iout, iskip, nbits)
+  implicit none
+
+  character*1, intent(in) :: in(*)
+  integer (kind = 8), intent(inout) :: iout(*)
+  integer, intent(in) :: iskip, nbits
+  call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
+end subroutine g2_gbytec8
+
+!> Extract arbitrary sized (up to 64-bits) values from a packed bit
+!> string, right justifying each value in the unpacked array.
+!>
+!> @param[in] in array input
+!> @param[out] iout unpacked array output
+!> @param[in] iskip initial number of bits to skip
+!> @param[in] nbits Number of bits of each integer in IN to take. Must
+!> be 64 or less.
+!> @param[in] nskip Additional number of bits to skip on each iteration.
+!> @param[in] n Number of integers to extract.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
+  implicit none
+
+  character*1, intent(in) :: in(*)
+  integer (kind = 8), intent(out) :: iout(*)
+  integer, intent(in) :: iskip, nbits, nskip, n
+  integer :: tbit, bitcnt
+  integer, parameter :: ones(8) = (/ 1, 3, 7, 15, 31, 63, 127, 255 /)
+
+  integer :: nbit, i, index, ibit, itmp
+  integer, external :: mova2i
+
+  !     nbit is the start position of the field in bits
+  nbit = iskip
+  do i = 1, n
+     bitcnt = nbits
+     index = nbit / 8 + 1
+     ibit = mod(nbit, 8)
+     nbit = nbit + nbits + nskip
+
+     !        first byte
+     tbit = min(bitcnt, 8 - ibit)
+     itmp = iand(mova2i(in(index)), ones(8 - ibit))
+     if (tbit .ne. 8 - ibit) itmp = ishft(itmp, tbit - 8 + ibit)
+     index = index + 1
+     bitcnt = bitcnt - tbit
+
+     !        now transfer whole bytes
+     do while (bitcnt .ge. 8)
+        itmp = ior(ishft(itmp,8), mova2i(in(index)))
+        bitcnt = bitcnt - 8
+        index = index + 1
+     enddo
+
+     !        get data from last byte
+     if (bitcnt .gt. 0) then
+        itmp = ior(ishft(itmp, bitcnt), iand(ishft(mova2i(in(index)), &
+             - (8 - bitcnt)), ones(bitcnt)))
+     endif
+
+     iout(i) = itmp
+  enddo
+
+end subroutine g2_gbytesc8
+
+!> Put one arbitrary sized (up to 32 bits) values into a packed bit
+!> string, taking the low order bits from the value in the unpacked
+!> array.
+!>
+!> This should be used when input array IN has only one element. If IN
+!> has more elements, use g2_sbytesc().
+!>
+!> @param[inout] out packed array output
+!> @param[in] in unpacked array input
+!> @param[in] iskip initial number of bits to skip
+!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_sbytec(out, in, iskip, nbits)
+  implicit none
+
+  character*1, intent(inout) :: out(*)
+  integer, intent(in) :: in(*)
+  integer, intent(in) :: iskip, nbits
+  call g2_sbytesc(out, in, iskip, nbits, 0, 1)
+end subroutine g2_sbytec
+
+!> Put arbitrary size (up to 32 bits each) values into a packed bit
+!> string, taking the low order bits from each value in the unpacked
+!> array.
 !>
 !> @param[out] out Packed array output.
 !> @param[in] in Unpacked array input.
 !> @param[in] iskip Initial number of bits to skip.
-!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!> @param[in] nbits Number of bits of each integer in OUT to
+!> fill. Must be 32 or less.
 !> @param[in] nskip Additional number of bits to skip on each iteration.
 !> @param[in] n Number of iterations.
 !>
@@ -170,9 +250,9 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
 
 end subroutine g2_sbytesc
 
-!> Put arbitrary size values into a packed bit string, taking the low
-!> order bits from each value in the unpacked array without skip and
-!> interation.
+!> Put one arbitrary sized (up to 64 bits) values into a packed bit
+!> string, taking the low order bits from each value in the unpacked
+!> array.
 !>
 !> This should be used when input array IN has only one element. If IN
 !> has more elements, use g2_sbytesc().
@@ -180,7 +260,8 @@ end subroutine g2_sbytesc
 !> @param[inout] out packed array output
 !> @param[in] in unpacked array input
 !> @param[in] iskip initial number of bits to skip
-!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!> @param[in] nbits Number of bits of each integer in OUT to
+!> fill. Must be 64 or less.
 !>
 !> @author Stephen Gilbert @date 2004-04-27
 subroutine g2_sbytec8(out, in, iskip, nbits)
@@ -192,14 +273,15 @@ subroutine g2_sbytec8(out, in, iskip, nbits)
   call g2_sbytesc8(out, in, iskip, nbits, 0, 1)
 end subroutine g2_sbytec8
 
-!> Put arbitrary size values into a packed bit string, taking the low
-!> order bits from each value in the unpacked array with skip and
-!> interation options.
+!> Put arbitrary sized (up to 64 bits each) values into a packed bit
+!> string, taking the low order bits from each value in the unpacked
+!> array.
 !>
 !> @param[out] out Packed array output.
 !> @param[in] in Unpacked array input.
 !> @param[in] iskip Initial number of bits to skip.
-!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!> @param[in] nbits Number of bits of each integer in OUT to
+!> fill. Must be 64 or less.
 !> @param[in] nskip Additional number of bits to skip on each iteration.
 !> @param[in] n Number of iterations.
 !>

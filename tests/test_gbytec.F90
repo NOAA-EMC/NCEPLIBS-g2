@@ -201,7 +201,7 @@ program test_gbytec
        ichar(out8(7)) .ne. 0 .and. ichar(out8(8)) .ne. 0) stop 130
   ! print '(z2.2)', out4(1)  
 
-  print *, '   testing g2_sbytec() with 64-bit int...'
+  print *, '   testing g2_sbytec8() with 64-bit int...'
   in8(1) = 1
   do i = 1, 8
      out8(i) = char(0)
@@ -221,7 +221,7 @@ program test_gbytec
   ! call g2_gbytesc(out8, in8_1, iskip, 64, 0, 1)
   ! if (in8_1(1) .ne. in8(1)) stop 150
 
-  print *, '   testing g2_sbytec() with 32-bit int array of size 4...'
+  print *, '   testing g2_sbytec8() with 32-bit int array of size 4...'
   do i = 1, 4
      in44(i) = 1
   end do
