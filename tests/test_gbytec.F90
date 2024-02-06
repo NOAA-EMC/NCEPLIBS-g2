@@ -216,10 +216,10 @@ program test_gbytec
      endif
   end do
 
-  ! print *, '   now unpack into 1 64-bit int with g2_gbytesc()...'
-  ! in8_1(1) = 0
-  ! call g2_gbytesc(out8, in8_1, iskip, 64, 0, 1)
-  ! if (in8_1(1) .ne. in8(1)) stop 150
+  print *, '   now unpack into 1 64-bit int with g2_gbytesc()...'
+  in8_1(1) = 0
+  call g2_gbytesc8(out8, in8_1, iskip, 64, 0, 1)
+  if (in8_1(1) .ne. in8(1)) stop 150
 
   print *, '   testing g2_sbytec8() with 32-bit int array of size 4...'
   do i = 1, 4
