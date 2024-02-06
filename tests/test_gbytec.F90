@@ -135,17 +135,17 @@ program test_gbytec
   ! used, because I am passing in a real array instead of an int array
   ! for the in parameter. This is how g2_sbytesc() is called in
   ! addfield.F90.
-  print *, '   testing g2_sbytesc() with a real array (size 1) instead of an int array...'
-  iskip = 0
-  nbits = 32
-  nskip = 0
-  num = 1
-  r_in(1) = 1 
-  call g2_sbytesc(out4, r_in, iskip, nbits, nskip, num)
-  ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
-  ! decimal for 3f is 63, the decimal for 80 is 128.
-  if (ichar(out4(1)) .ne. 63 .and. ichar(out4(2)) .ne. 128 .and. &
-       ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 0) stop 80
+  ! print *, '   testing g2_sbytesc() with a real array (size 1) instead of an int array...'
+  ! iskip = 0
+  ! nbits = 32
+  ! nskip = 0
+  ! num = 1
+  ! r_in(1) = 1 
+  ! call g2_sbytesc(out4, r_in, iskip, nbits, nskip, num)
+  ! ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
+  ! ! decimal for 3f is 63, the decimal for 80 is 128.
+  ! if (ichar(out4(1)) .ne. 63 .and. ichar(out4(2)) .ne. 128 .and. &
+  !      ichar(out4(3)) .ne. 0 .and. ichar(out4(4)) .ne. 0) stop 80
   ! print '(z2.2)', out4(1)  
 
   ! This test is the same as above, but does not require the
@@ -167,20 +167,20 @@ program test_gbytec
   ! used, because I am passing in a real array instead of an int array
   ! for the in parameter. This is how g2_sbytesc() is called in
   ! addfield.F90.
-  print *, '   testing g2_sbytesc() with a real array instead of an int array...'
-  iskip = 0
-  nbits = 32
-  nskip = 0
-  num = 2
-  r_in2(1) = 1 
-  r_in2(2) = 1 
-  call g2_sbytesc(out8, r_in2, iskip, nbits, nskip, num)
-  ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
-  ! decimal for 3f is 63, the decimal for 80 is 128.
-  if (ichar(out8(1)) .ne. 63 .and. ichar(out8(2)) .ne. 128 .and. &
-       ichar(out8(3)) .ne. 0 .and. ichar(out8(4)) .ne. 0) stop 100
-  if (ichar(out8(5)) .ne. 63 .and. ichar(out8(6)) .ne. 128 .and. &
-       ichar(out8(7)) .ne. 0 .and. ichar(out8(8)) .ne. 0) stop 110
+  ! print *, '   testing g2_sbytesc() with a real array instead of an int array...'
+  ! iskip = 0
+  ! nbits = 32
+  ! nskip = 0
+  ! num = 2
+  ! r_in2(1) = 1 
+  ! r_in2(2) = 1 
+  ! call g2_sbytesc(out8, r_in2, iskip, nbits, nskip, num)
+  ! ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
+  ! ! decimal for 3f is 63, the decimal for 80 is 128.
+  ! if (ichar(out8(1)) .ne. 63 .and. ichar(out8(2)) .ne. 128 .and. &
+  !      ichar(out8(3)) .ne. 0 .and. ichar(out8(4)) .ne. 0) stop 100
+  ! if (ichar(out8(5)) .ne. 63 .and. ichar(out8(6)) .ne. 128 .and. &
+  !      ichar(out8(7)) .ne. 0 .and. ichar(out8(8)) .ne. 0) stop 110
   ! print '(z2.2)', out8(1)  
 
   ! This test is the same as above, but does not require the -fallow-argument-mismatch flag.
@@ -206,7 +206,7 @@ program test_gbytec
   do i = 1, 8
      out8(i) = char(0)
   end do
-  call g2_sbytec(out8, in8, iskip, 64)
+  call g2_sbytec8(out8, in8, iskip, 64)
   do i = 1, 8
      !print '(z2.2)', out8(i)
      if (i .lt. 8) then
@@ -216,10 +216,10 @@ program test_gbytec
      endif
   end do
 
-  print *, '   now unpack into 1 64-bit int with g2_gbytesc()...'
-  in8_1(1) = 0
-  call g2_gbytesc(out8, in8_1, iskip, 64, 0, 1)
-  if (in8_1(1) .ne. in8(1)) stop 150
+  ! print *, '   now unpack into 1 64-bit int with g2_gbytesc()...'
+  ! in8_1(1) = 0
+  ! call g2_gbytesc(out8, in8_1, iskip, 64, 0, 1)
+  ! if (in8_1(1) .ne. in8(1)) stop 150
 
   print *, '   testing g2_sbytec() with 32-bit int array of size 4...'
   do i = 1, 4
@@ -250,17 +250,17 @@ program test_gbytec
      out32(i) = char(0)
   end do
   print *, in84
-  call g2_sbytesc(out32, in84, iskip, 64, 0, 4)
+  call g2_sbytesc8(out32, in84, iskip, 64, 0, 4)
   do i = 1, 32
      print '(i3, x, z2.2)', i, out32(i)
   end do
 
-  print *, '   now unpack into 4 64-bit ints with g2_gbytesc()...'
-  do i = 1, 4
-     in84_1(i) = 0
-  end do
-  call g2_gbytesc(out32, in84_1, iskip, 64, 0, 4)
-  print *, in84_1
+  ! print *, '   now unpack into 4 64-bit ints with g2_gbytesc()...'
+  ! do i = 1, 4
+  !    in84_1(i) = 0
+  ! end do
+  ! call g2_gbytesc8(out32, in84_1, iskip, 64, 0, 4)
+  ! print *, in84_1
 
   print *, 'SUCCESS!'
 

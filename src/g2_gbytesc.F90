@@ -30,7 +30,7 @@ end subroutine g2_gbytec
 !> interation.
 !>
 !> This should be used when input array IN has only one element. If IN
-!> has more elements, use G2_SBYTESC().
+!> has more elements, use g2_sbytesc().
 !>
 !> @param[inout] out packed array output
 !> @param[in] in unpacked array input
@@ -169,3 +169,90 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
   enddo
 
 end subroutine g2_sbytesc
+
+!> Put arbitrary size values into a packed bit string, taking the low
+!> order bits from each value in the unpacked array without skip and
+!> interation.
+!>
+!> This should be used when input array IN has only one element. If IN
+!> has more elements, use g2_sbytesc().
+!>
+!> @param[inout] out packed array output
+!> @param[in] in unpacked array input
+!> @param[in] iskip initial number of bits to skip
+!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_sbytec8(out, in, iskip, nbits)
+  implicit none
+
+  character*1, intent(inout) :: out(*)
+  integer (kind = 8), intent(in) :: in(*)
+  integer, intent(in) :: iskip, nbits
+  call g2_sbytesc8(out, in, iskip, nbits, 0, 1)
+end subroutine g2_sbytec8
+
+!> Put arbitrary size values into a packed bit string, taking the low
+!> order bits from each value in the unpacked array with skip and
+!> interation options.
+!>
+!> @param[out] out Packed array output.
+!> @param[in] in Unpacked array input.
+!> @param[in] iskip Initial number of bits to skip.
+!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!> @param[in] nskip Additional number of bits to skip on each iteration.
+!> @param[in] n Number of iterations.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
+  implicit none
+
+  character*1, intent(out) :: out(*)
+  integer (kind = 8), intent(in) :: in(n)
+  integer, intent(in) :: iskip, nbits, nskip, n
+  
+  integer :: bitcnt, tbit
+  integer, parameter :: ones(8)=(/ 1,  3,  7, 15, 31, 63, 127, 255/)
+  integer :: nbit, i, itmp, index, ibit, imask, itmp2, itmp3
+  integer, external :: mova2i
+
+  ! number bits from zero to ...
+  ! nbit is the last bit of the field to be filled
+  nbit = iskip + nbits - 1
+  do i = 1, n
+     itmp = int(in(i), kind(8))
+     bitcnt = nbits
+     index = nbit / 8 + 1
+     ibit = mod(nbit, 8)
+     nbit = nbit + nbits + nskip
+
+     ! make byte aligned
+     if (ibit .ne. 7) then
+        tbit = min(bitcnt, ibit + 1)
+        imask = ishft(ones(tbit), 7 - ibit)
+        itmp2 = iand(ishft(itmp, 7 - ibit),imask)
+        itmp3 = iand(mova2i(out(index)), 255 - imask)
+        out(index) = char(ior(itmp2, itmp3))
+        bitcnt = bitcnt - tbit
+        itmp = ishft(itmp, -tbit)
+        index = index - 1
+     endif
+
+     ! now byte aligned
+
+     ! do by bytes
+     do while (bitcnt .ge. 8)
+        out(index) = char(iand(itmp, 255))
+        itmp = ishft(itmp, -8)
+        bitcnt = bitcnt - 8
+        index = index - 1
+     enddo
+
+     ! do last byte
+     if (bitcnt .gt. 0) then
+        itmp2 = iand(itmp, ones(bitcnt))
+        itmp3 = iand(mova2i(out(index)), 255 - ones(bitcnt))
+        out(index) = char(ior(itmp2, itmp3))
+     endif
+  enddo
+end subroutine g2_sbytesc8
