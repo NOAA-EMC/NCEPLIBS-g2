@@ -255,12 +255,15 @@ program test_gbytec
      print '(i3, x, z2.2)', i, out32(i)
   end do
 
-  ! print *, '   now unpack into 4 64-bit ints with g2_gbytesc()...'
-  ! do i = 1, 4
-  !    in84_1(i) = 0
-  ! end do
-  ! call g2_gbytesc8(out32, in84_1, iskip, 64, 0, 4)
-  ! print *, in84_1
+  print *, '   now unpack into 4 64-bit ints with g2_gbytesc()...'
+  do i = 1, 4
+     in84_1(i) = 0
+  end do
+  call g2_gbytesc8(out32, in84_1, iskip, 64, 0, 4)
+  print *, in84_1
+  do i = 1, 4
+     if (in84_1(i) .ne. in84(i)) stop 200
+  end do
 
   print *, 'SUCCESS!'
 
