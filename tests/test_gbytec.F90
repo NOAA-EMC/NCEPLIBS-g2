@@ -242,7 +242,7 @@ program test_gbytec
      if (in44_1(i) .ne. in44(i)) stop 160
   end do
 
-  print *, '   testing g2_sbytec() with 64-bit int array of size 4...'
+  print *, '   testing g2_sbytec8() with 64-bit int array of size 4...'
   do i = 1, 4
      in84(i) = 1
   end do
@@ -255,7 +255,7 @@ program test_gbytec
      print '(i3, x, z2.2)', i, out32(i)
   end do
 
-  print *, '   now unpack into 4 64-bit ints with g2_gbytesc()...'
+  print *, '   now unpack into 4 64-bit ints with g2_gbytesc8()...'
   do i = 1, 4
      in84_1(i) = 0
   end do
@@ -264,6 +264,24 @@ program test_gbytec
   do i = 1, 4
      if (in84_1(i) .ne. in84(i)) stop 200
   end do
+
+  print *, '   testing g2_sbytec8() with very large 64-bit int...'
+  ! largest 4 byte signed int, plus 1.
+  in8(1) = 2147483647 + 1
+  do i = 1, 8
+     out8(i) = char(0)
+  end do
+  call g2_sbytec8(out8, in8, iskip, 64)
+  do i = 1, 8
+     print '(z2.2)', out8(i)
+  end do
+
+  print *, '   now unpack into 1 64-bit int with g2_gbytesc8()...'
+  in8_1(1) = 0
+  call g2_gbytesc8(out8, in8_1, iskip, 64, 0, 1)
+  print *, in8_1
+!  if (in8_1(1) .ne. in8(1)) stop 150
+
 
   print *, 'SUCCESS!'
 
