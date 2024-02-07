@@ -832,7 +832,11 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
         locgds = ibskip-lskip
      elseif (numsec .eq. 4) then                 ! found pds
         cindex = char(0)
-        call g2_sbytec(cindex, lskip, 8 * ixskp, 8 * mxskp)    ! bytes to skip
+        if (idxver .eq. 1) then
+           call g2_sbytec(cindex, lskip, 8 * ixskp, 8 * mxskp)    ! bytes to skip
+        else
+           call g2_sbytec8(cindex, lskip8, 8 * ixskp, 8 * mxskp)    ! bytes to skip
+        endif
         call g2_sbytec(cindex, loclus, 8 * ixlus, 8 * mxlus)   ! location of local use
         call g2_sbytec(cindex, locgds, 8 * ixsgd, 8 * mxsgd)   ! location of gds
         call g2_sbytec(cindex, ibskip-lskip, 8 * ixspd, 8 * mxspd)  ! location of pds
