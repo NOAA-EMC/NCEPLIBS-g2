@@ -803,6 +803,7 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
   lensec1 = min(lensec1, int(ibread8, kind(lensec1)))
   cids(1:lensec1) = cbread(17:16 + lensec1)
   ibskip = lskip + 16 + lensec1
+  ibskip8 = lskip8 + 16_8 + int(lensec1, kind(8))
 
   ! Loop through remaining sections creating an index for each field.
   ibread8 = max(5, mxbms)
@@ -819,17 +820,16 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
      call g2_gbytec(cbread, numsec, 4 * 8, 1 * 8)
 
      if (numsec .eq. 2) then                 ! save local use location
-        loclus = ibskip-lskip
+        loclus = int(ibskip8 - lskip8, kind(4))
      elseif (numsec .eq. 3) then                 ! save gds info
         lengds8 = lensec
         cgds = char(0)
-        ibskip8 = ibskip
         call bareadl(lugb, ibskip8, lengds8, lbread8, cgds)
         if (lbread8 .ne. lengds8) then
            iret = 2
            return
         endif
-        locgds = ibskip-lskip
+        locgds = int(ibskip8 - lskip8, kind(4))
      elseif (numsec .eq. 4) then                 ! found pds
         cindex = char(0)
         if (idxver .eq. 1) then
@@ -839,7 +839,7 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
         endif
         call g2_sbytec(cindex, loclus, 8 * ixlus, 8 * mxlus)   ! location of local use
         call g2_sbytec(cindex, locgds, 8 * ixsgd, 8 * mxsgd)   ! location of gds
-        call g2_sbytec(cindex, ibskip-lskip, 8 * ixspd, 8 * mxspd)  ! location of pds
+        call g2_sbytec(cindex, int(ibskip - lskip, kind(4)), 8 * ixspd, 8 * mxspd)  ! location of pds
         call g2_sbytec(cindex, lgrib, 8 * ixlen, 8 * mxlen)    ! len of grib2
         cindex(41) = cver
         cindex(42) = cdisc
@@ -849,7 +849,6 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
         cindex(lindex + 1:lindex + lengds8) = cgds(1:lengds8)
         lindex = lindex + int(lengds8, kind(lindex))
         ilnpds = lensec
-        ibskip8 = ibskip
         ilnpds8 = ilnpds        
         call bareadl(lugb, ibskip8, ilnpds8, lbread8, cindex(lindex + 1))
         if (lbread8 .ne. ilnpds8) then
@@ -858,9 +857,8 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
         endif
         lindex = lindex + ilnpds
      elseif (numsec .eq. 5) then                 ! found drs
-        call g2_sbytec(cindex, ibskip-lskip, 8 * ixsdr, 8 * mxsdr)  ! location of drs
+        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixsdr, 8 * mxsdr)  ! location of drs
         ilndrs = lensec
-        ibskip8 = ibskip
         ilndrs8 = ilndrs
         call bareadl(lugb, ibskip8, ilndrs8, lbread8, cindex(lindex + 1))
         if (lbread8 .ne. ilndrs8) then
@@ -871,18 +869,18 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
      elseif (numsec .eq. 6) then                 ! found bms
         indbmp = mova2i(cbread(6))
         if (indbmp.lt.254) then
-           locbms = ibskip-lskip
+           locbms = int(ibskip8 - lskip8, kind(4))
            call g2_sbytec(cindex, locbms, 8 * ixsbm, 8 * mxsbm)  ! loc. of bms
         elseif (indbmp.eq.254) then
            call g2_sbytec(cindex, locbms, 8 * ixsbm, 8 * mxsbm)  ! loc. of bms
         elseif (indbmp.eq.255) then
-           call g2_sbytec(cindex, ibskip-lskip, 8 * ixsbm, 8 * mxsbm)  ! loc. of bms
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixsbm, 8 * mxsbm)  ! loc. of bms
         endif
         cindex(lindex + 1:lindex + mxbms) = cbread(1:mxbms)
         lindex = lindex + mxbms
         call g2_sbytec(cindex, lindex, 0, 8 * 4)    ! num bytes in index record
      elseif (numsec .eq. 7) then                 ! found data section
-        call g2_sbytec(cindex, ibskip-lskip, 8 * ixds, 8 * mxds)   ! loc. of data sec.
+        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixds, 8 * mxds)   ! loc. of data sec.
         numfld = numfld + 1
         if ((lindex + mlen) .gt. mbuf) then ! allocate more space if necessary
            newsize = max(mbuf + next, mbuf + lindex)
@@ -900,6 +898,7 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
         iret = 5
         return
      endif
+     ibskip8 = ibskip8 + lensec
      ibskip = ibskip + lensec
   enddo
 end subroutine ix2gb2
