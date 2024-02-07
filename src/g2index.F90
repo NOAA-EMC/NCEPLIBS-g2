@@ -278,10 +278,11 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   integer (kind = 8) :: msk1_8, msk2_8
   
   interface
-     subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+     subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
+          nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb
        integer (kind = 8), intent(in) :: msk1, msk2
-       integer, intent(in) :: mnum
+       integer, intent(in) :: mnum, idxver
        character(len = 1), pointer, dimension(:) :: cbuf
        integer, intent(out) :: nlen, nnum, nmess, iret
      end subroutine getg2i2r
@@ -289,7 +290,7 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
 
   msk1_8 = msk1
   msk2_8 = msk2
-  call getg2i2r(lugb, msk1_8, msk2_8, mnum, cbuf, nlen, nnum, nmess, iret)
+  call getg2i2r(lugb, msk1_8, msk2_8, mnum, 1, cbuf, nlen, nnum, nmess, iret)
 end subroutine getg2ir
      
 !> Generate an index record for a message in a GRIB2 file.
@@ -306,6 +307,7 @@ end subroutine getg2ir
 !> @param[in] msk1 Number of bytes to search for first message.
 !> @param[in] msk2 Number of bytes to search for other messages.
 !> @param[in] mnum Number of GRIB messages to skip (usually 0).
+!> @param[in] idxver Index version number. Use 1 for legacy, 2 for files > 2 GB.
 !> @param[out] cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
@@ -323,13 +325,13 @@ end subroutine getg2ir
 !> - 3 Error deallocating memory.
 !>
 !> @author Mark Iredell @date 1995-10-31
-subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
 
   integer, intent(in) :: lugb
   integer (kind = 8), intent(in) :: msk1, msk2
-  integer, intent(in) :: mnum
+  integer, intent(in) :: mnum, idxver
   character(len = 1), pointer, dimension(:) :: cbuf
   integer, intent(out) :: nlen, nnum, nmess, iret
   
@@ -375,7 +377,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   nmess = mnum
   do while(iret .eq. 0 .and. lgrib .gt. 0)
      lgrib4 = int(lgrib, kind(4))
-     call ix2gb2(lugb, lskip, 1, lgrib4, cbuftmp, numfld, nbytes, iret1)
+     call ix2gb2(lugb, lskip, idxver, lgrib4, cbuftmp, numfld, nbytes, iret1)
      if (iret1 .ne. 0) print *, ' SAGT ', numfld, nbytes, iret1
      if((nbytes + nlen) .gt. mbuf) then             ! Allocate more space, if necessary.
         newsize = max(mbuf + next, mbuf + nbytes)
