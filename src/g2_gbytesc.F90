@@ -313,14 +313,14 @@ subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
   ! number bits from zero to ...
   ! nbit is the last bit of the field to be filled
   nbit = iskip + nbits - 1
-  !print *, 'nbit', nbit, 'nbits ', nbits, 'nskip', nskip, 'n', n
+  print *, 'nbit', nbit, 'nbits ', nbits, 'nskip', nskip, 'n', n
   do i = 1, n
      itmp8 = in(i)
      bitcnt = nbits
      index = nbit / 8 + 1
      ibit = mod(nbit, 8)
      nbit = nbit + nbits + nskip
-     !print *, 'i', i, 'itmp8', itmp8, 'bitcnt', bitcnt, 'index', index, 'ibit', ibit, 'nbit', nbit 
+     print *, 'i', i, 'itmp8', itmp8, 'bitcnt', bitcnt, 'index', index, 'ibit', ibit, 'nbit', nbit 
 
      ! make byte aligned
      if (ibit .ne. 7) then

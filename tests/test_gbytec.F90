@@ -280,7 +280,7 @@ program test_gbytec
   print *, '   testing g2_sbytec8() with very large 64-bit int...'
   ! largest 4 byte signed int, plus 1.
   in8(1) = 2147483647 + 1
-  !print '(z16.16)', in8(1)
+  print '(z16.16)', in8(1)
   do i = 1, 8
      out8(i) = char(0)
   end do
