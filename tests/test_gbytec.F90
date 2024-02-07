@@ -285,7 +285,7 @@ program test_gbytec
   end do
   call g2_sbytec8(out8, in8, iskip, 64)
   do i = 1, 8
-     !print '(z2.2)', out8(i)
+     print '(z2.2)', out8(i)
      if (i .eq. 5) then
         if (ichar(out8(i)) .ne. 128) stop 210
      else
