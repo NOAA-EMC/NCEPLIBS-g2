@@ -39,7 +39,7 @@
 !> - 90 Unit number out of range.
 !> - 96 Error reading/creating index file.
 !>
-!> @author Stephen Gilbert @date 2005-03-15
+!> @author Stephen Gilbert, Ed Hartnett @date 2005-03-15
 subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
   implicit none
 
