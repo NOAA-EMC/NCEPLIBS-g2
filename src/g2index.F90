@@ -676,11 +676,12 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   integer :: lugb, lskip, lgrib
   character(len = 1), pointer, dimension(:) :: cbuf
   integer :: numfld, mlen, iret
+  integer (kind = 8) :: lskip8
 
   interface
-     subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
+     subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
        integer :: lugb
-       integer :: lskip
+       integer (kind = 8) :: lskip8
        integer :: idxver, lgrib
        character(len = 1), pointer, dimension(:) :: cbuf
        integer :: numfld, mlen, iret
@@ -688,7 +689,8 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   end interface
 
   ! Always use index version 1 from this subroutine.
-  call ix2gb2(lugb, lskip, 1, lgrib, cbuf, numfld, mlen, iret)
+  lskip8 = lskip
+  call ix2gb2(lugb, lskip8, 1, lgrib, cbuf, numfld, mlen, iret)
 end subroutine ixgb2
 
 !> Generate an index record for each field in a GRIB2 message. The index
@@ -721,7 +723,7 @@ end subroutine ixgb2
 !> @param lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
-!> @param lskip Number of bytes to skip before GRIB message.
+!> @param lskip8 Number of bytes to skip before GRIB message.
 !> @param idxver Index version, use 1 for legacy, 2 for GRIB2 files > 2 GB.
 !> @param lgrib Number of bytes in GRIB message. When subroutine is
 !> called, this must be set to the size of the cbuf buffer.
@@ -742,12 +744,12 @@ end subroutine ixgb2
 !> - 5 Unidentified GRIB section encountered.
 !>
 !> @author Ed Hartnett, Mark Iredell @date Feb 5, 2024
-subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
+subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
 
   integer :: lugb
-  integer :: lskip
+  integer (kind = 8) :: lskip8
   integer :: idxver, lgrib
   character(len = 1), pointer, dimension(:) :: cbuf
   integer :: numfld, mlen, iret
@@ -759,9 +761,9 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
   integer :: linmax, ixskp
   integer :: mxspd, mxskp, mxsgd, mxsdr, mxsbm, mxlus
   integer :: mxlen, mxds, mxfld, mxbms
-  integer :: init, ixlus
-  integer :: ixsgd, ibskip, ilndrs, ilnpds, istat, ixds
-  integer (kind = 8) :: lskip8, ibread8, lbread8, ibskip8, lengds8
+  integer :: init, ixlus, lskip
+  integer :: ixsgd, ilndrs, ilnpds, istat, ixds
+  integer (kind = 8) :: ibread8, lbread8, ibskip8, lengds8
   integer (kind = 8) :: ilnpds8, ilndrs8
   integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lensec, lensec1
@@ -787,7 +789,6 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
 
   ! Read sections 0 and 1 for GRIB version number and discipline.
   ibread8 = min(lgrib, linmax)
-  lskip8 = lskip
   call bareadl(lugb, lskip8, ibread8, lbread8, cbread)
   if (lbread8 .ne. ibread8) then
      iret = 2
@@ -802,13 +803,11 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
   call g2_gbytec(cbread, lensec1, 16 * 8, 4 * 8)
   lensec1 = min(lensec1, int(ibread8, kind(lensec1)))
   cids(1:lensec1) = cbread(17:16 + lensec1)
-  ibskip = lskip + 16 + lensec1
   ibskip8 = lskip8 + 16_8 + int(lensec1, kind(8))
 
   ! Loop through remaining sections creating an index for each field.
   ibread8 = max(5, mxbms)
   do
-     ibskip8 = ibskip
      call bareadl(lugb, ibskip8, ibread8, lbread8, cbread)
      ctemp = cbread(1)//cbread(2)//cbread(3)//cbread(4)
      if (ctemp .eq. '7777') return        ! end of message found
@@ -833,13 +832,14 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
      elseif (numsec .eq. 4) then                 ! found pds
         cindex = char(0)
         if (idxver .eq. 1) then
+           lskip = int(lskip8, kind(4))
            call g2_sbytec(cindex, lskip, 8 * ixskp, 8 * mxskp)    ! bytes to skip
         else
            call g2_sbytec8(cindex, lskip8, 8 * ixskp, 8 * mxskp)    ! bytes to skip
         endif
         call g2_sbytec(cindex, loclus, 8 * ixlus, 8 * mxlus)   ! location of local use
         call g2_sbytec(cindex, locgds, 8 * ixsgd, 8 * mxsgd)   ! location of gds
-        call g2_sbytec(cindex, int(ibskip - lskip, kind(4)), 8 * ixspd, 8 * mxspd)  ! location of pds
+        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixspd, 8 * mxspd)  ! location of pds
         call g2_sbytec(cindex, lgrib, 8 * ixlen, 8 * mxlen)    ! len of grib2
         cindex(41) = cver
         cindex(42) = cdisc
@@ -899,7 +899,6 @@ subroutine ix2gb2(lugb, lskip, idxver, lgrib, cbuf, numfld, mlen, iret)
         return
      endif
      ibskip8 = ibskip8 + lensec
-     ibskip = ibskip + lensec
   enddo
 end subroutine ix2gb2
 
