@@ -275,17 +275,21 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   character(len = 1), pointer, dimension(:) :: cbuf
   integer, intent(out) :: nlen, nnum, nmess, iret
 
+  integer (kind = 8) :: msk1_8, msk2_8
+  
   interface
      subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb
-       integer, intent(in) :: msk1, msk2
+       integer (kind = 8), intent(in) :: msk1, msk2
        integer, intent(in) :: mnum
        character(len = 1), pointer, dimension(:) :: cbuf
        integer, intent(out) :: nlen, nnum, nmess, iret
      end subroutine getg2i2r
   end interface
 
-  call getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+  msk1_8 = msk1
+  msk2_8 = msk2
+  call getg2i2r(lugb, msk1_8, msk2_8, mnum, cbuf, nlen, nnum, nmess, iret)
 end subroutine getg2ir
      
 !> Generate an index record for a message in a GRIB2 file.
@@ -297,9 +301,8 @@ end subroutine getg2ir
 !> @note Subprogram can be called from a multiprocessing environment.
 !> Do not engage the same logical unit from more than one processor.
 !>
-!> @param[in] lugb Unit of the unblocked GRIB file. Must
-!> be opened by [baopen() or baopenr()]
-!> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
+!> @param[in] lugb Unit of the GRIB file. Must be opened by [baopen()
+!> or baopenr()] (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !> @param[in] msk1 Number of bytes to search for first message.
 !> @param[in] msk2 Number of bytes to search for other messages.
 !> @param[in] mnum Number of GRIB messages to skip (usually 0).
@@ -325,22 +328,25 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   implicit none
 
   integer, intent(in) :: lugb
-  integer, intent(in) :: msk1, msk2
+  integer (kind = 8), intent(in) :: msk1, msk2
   integer, intent(in) :: mnum
   character(len = 1), pointer, dimension(:) :: cbuf
   integer, intent(out) :: nlen, nnum, nmess, iret
   
   character(len = 1), pointer, dimension(:) :: cbuftmp
-  integer :: nbytes, newsize, next, numfld, m, mbuf, lskip, lgrib
-  integer :: istat, iseek, init, iret1
+  integer :: nbytes, newsize, next, numfld, m, mbuf
+  integer (kind = 8) :: iseek, lskip, lgrib
+  integer :: istat, init, iret1, lgrib4
   parameter(init = 50000, next = 10000)
 
   interface      ! required for cbuf pointer
-     subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
-       integer :: lugb, lskip, lgrib
+     subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
+       integer :: lugb
+       integer (kind = 8) :: lskip8
+       integer :: idxver, lgrib
        character(len = 1), pointer, dimension(:) :: cbuf
        integer :: numfld, mlen, iret
-     end subroutine ixgb2
+     end subroutine ix2gb2
   end interface
 
   ! Initialize.
@@ -354,12 +360,12 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   endif
 
   ! search for first grib message.
-  iseek = 0
-  call skgb(lugb, iseek, msk1, lskip, lgrib)
+  iseek = 0_8
+  call skgb8(lugb, iseek, msk1, lskip, lgrib)
   do m = 1, mnum
      if(lgrib.gt.0) then
         iseek = lskip + lgrib
-        call skgb(lugb, iseek, msk2, lskip, lgrib)
+        call skgb8(lugb, iseek, msk2, lskip, lgrib)
      endif
   enddo
 
@@ -368,7 +374,8 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   nnum = 0
   nmess = mnum
   do while(iret .eq. 0 .and. lgrib .gt. 0)
-     call ixgb2(lugb, lskip, lgrib, cbuftmp, numfld, nbytes, iret1)
+     lgrib4 = int(lgrib, kind(4))
+     call ix2gb2(lugb, lskip, 1, lgrib4, cbuftmp, numfld, nbytes, iret1)
      if (iret1 .ne. 0) print *, ' SAGT ', numfld, nbytes, iret1
      if((nbytes + nlen) .gt. mbuf) then             ! Allocate more space, if necessary.
         newsize = max(mbuf + next, mbuf + nbytes)
@@ -398,7 +405,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
 
      ! Look for next grib message.
      iseek = lskip + lgrib
-     call skgb(lugb, iseek, msk2, lskip, lgrib)
+     call skgb8(lugb, iseek, msk2, lskip, lgrib)
   enddo
 end subroutine getg2i2r
 
