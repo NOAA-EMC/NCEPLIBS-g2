@@ -294,11 +294,11 @@ program test_gbytec
      endif
   end do
 
-  ! print *, '   now unpack into 1 64-bit int with g2_gbytesc8()...'
-  ! in8_1(1) = 0
-  ! call g2_gbytesc8(out8, in8_1, iskip, 64, 0, 1)
-  ! !print *, in8_1
-  ! if (in8_1(1) .ne. in8(1)) stop 150
+  print *, '   now unpack into 1 64-bit int with g2_gbytesc8()...'
+  in8_1(1) = 0
+  call g2_gbytesc8(out8, in8_1, iskip, 64, 0, 1)
+  !print *, in8_1
+  if (in8_1(1) .ne. in8(1)) stop 150
 
   print *, 'SUCCESS!'
 
