@@ -277,22 +277,22 @@ program test_gbytec
      if (in84_1(i) .ne. in84(i)) stop 200
   end do
 
-  ! print *, '   testing g2_sbytec8() with very large 64-bit int...'
-  ! ! largest 4 byte signed int, plus 1.
-  ! in8(1) = 2147483647 + 1
-  ! !print '(z16.16)', in8(1)
-  ! do i = 1, 8
-  !    out8(i) = char(0)
-  ! end do
-  ! call g2_sbytec8(out8, in8, iskip, 64)
-  ! do i = 1, 8
-  !    print '(z2.2)', out8(i)
-  !    if (i .eq. 5) then
-  !       if (mova2i(out8(i)) .ne. 128) stop 210
-  !    else
-  !       if (mova2i(out8(i)) .ne. 0) stop 210
-  !    endif
-  ! end do
+  print *, '   testing g2_sbytec8() with very large 64-bit int...'
+  ! largest 4 byte signed int, plus 1.
+  in8(1) = 2147483647 + 1
+  !print '(z16.16)', in8(1)
+  do i = 1, 8
+     out8(i) = char(0)
+  end do
+  call g2_sbytec8(out8, in8, iskip, 64)
+  do i = 1, 8
+     print '(z2.2)', out8(i)
+     if (i .eq. 5) then
+        if (mova2i(out8(i)) .ne. 128) stop 210
+     else
+        if (mova2i(out8(i)) .ne. 0) stop 210
+     endif
+  end do
 
   ! print *, '   now unpack into 1 64-bit int with g2_gbytesc8()...'
   ! in8_1(1) = 0
