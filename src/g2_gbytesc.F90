@@ -101,7 +101,7 @@ subroutine g2_gbytec8(in, iout, iskip, nbits)
   character*1, intent(in) :: in(*)
   integer (kind = 8), intent(inout) :: iout(*)
   integer, intent(in) :: iskip, nbits
-  call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
+  call g2_gbytesc8(in, iout, iskip, nbits, 0, 1)
 end subroutine g2_gbytec8
 
 !> Extract arbitrary sized (up to 64-bits) values from a packed bit
@@ -211,13 +211,15 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
   ! number bits from zero to ...
   ! nbit is the last bit of the field to be filled
   nbit = iskip + nbits - 1
+  !print *, 'nbit', nbit, 'nbits ', nbits, 'nskip', nskip, 'n', n
   do i = 1, n
      itmp = in(i)
      bitcnt = nbits
      index = nbit / 8 + 1
      ibit = mod(nbit, 8)
      nbit = nbit + nbits + nskip
-
+     !print *, 'i', i, 'itmp', itmp, 'bitcnt', bitcnt, 'index', index, 'ibit', ibit, 'nbit', nbit
+     
      ! make byte aligned
      if (ibit .ne. 7) then
         tbit = min(bitcnt, ibit + 1)
@@ -235,14 +237,16 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
      ! do by bytes
      do while (bitcnt .ge. 8)
         out(index) = char(iand(itmp, 255))
+        !print '(z2.2, x, z2.2, x, z2.2)', out(index), itmp, iand(itmp, 255)
         itmp = ishft(itmp, -8)
         bitcnt = bitcnt - 8
         index = index - 1
      enddo
 
-     ! do last byte
+     ! Do left over bits.
      if (bitcnt .gt. 0) then
         itmp2 = iand(itmp, ones(bitcnt))
+        !print '(z2.2, x, z2.2)', ones(bitcnt), itmp2
         itmp3 = iand(mova2i(out(index)), 255 - ones(bitcnt))
         out(index) = char(ior(itmp2, itmp3))
      endif
@@ -295,44 +299,50 @@ subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
   
   integer :: bitcnt, tbit
   integer, parameter :: ones(8)=(/ 1,  3,  7, 15, 31, 63, 127, 255/)
-  integer :: nbit, i, itmp, index, ibit, imask, itmp2, itmp3
+  integer :: nbit, i, index, ibit, imask, itmp1, itmp2, itmp3
+  integer (kind = 8) :: itmp8, itmp8_2
   integer, external :: mova2i
 
   ! number bits from zero to ...
   ! nbit is the last bit of the field to be filled
   nbit = iskip + nbits - 1
+  !print *, 'nbit', nbit, 'nbits ', nbits, 'nskip', nskip, 'n', n
   do i = 1, n
-     itmp = int(in(i), kind(8))
+     itmp8 = in(i)
      bitcnt = nbits
      index = nbit / 8 + 1
      ibit = mod(nbit, 8)
      nbit = nbit + nbits + nskip
+     !print *, 'i', i, 'itmp8', itmp8, 'bitcnt', bitcnt, 'index', index, 'ibit', ibit, 'nbit', nbit 
 
      ! make byte aligned
      if (ibit .ne. 7) then
         tbit = min(bitcnt, ibit + 1)
         imask = ishft(ones(tbit), 7 - ibit)
-        itmp2 = iand(ishft(itmp, 7 - ibit),imask)
+        itmp1 = int(ishft(itmp8, int(7 - ibit, kind(8))), kind(4))
+        itmp2 = iand(itmp1, imask)
         itmp3 = iand(mova2i(out(index)), 255 - imask)
         out(index) = char(ior(itmp2, itmp3))
         bitcnt = bitcnt - tbit
-        itmp = ishft(itmp, -tbit)
+        itmp8 = ishft(itmp8, -tbit)
         index = index - 1
      endif
 
      ! now byte aligned
 
-     ! do by bytes
+     ! Process a byte at a time.
      do while (bitcnt .ge. 8)
-        out(index) = char(iand(itmp, 255))
-        itmp = ishft(itmp, -8)
+        !print *, bitcnt, iand(itmp8, 255_8)
+        out(index) = char(iand(itmp8, 255_8))
+        itmp8 = ishft(itmp8, -8)
         bitcnt = bitcnt - 8
         index = index - 1
      enddo
 
-     ! do last byte
+     ! Take care of left over bits.
      if (bitcnt .gt. 0) then
-        itmp2 = iand(itmp, ones(bitcnt))
+        itmp8_2 = int(ones(bitcnt), kind(8))
+        itmp2 = int(iand(itmp8, itmp8_2), kind(4))
         itmp3 = iand(mova2i(out(index)), 255 - ones(bitcnt))
         out(index) = char(ior(itmp2, itmp3))
      endif
