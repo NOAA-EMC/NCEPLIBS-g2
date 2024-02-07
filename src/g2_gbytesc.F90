@@ -126,7 +126,9 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
   integer, parameter :: ones(8) = (/ 1, 3, 7, 15, 31, 63, 127, 255 /)
 
   integer :: nbit, i, index, ibit, itmp
+  integer (kind = 8) :: itmp8, itmp8_2, itmp8_3
   integer, external :: mova2i
+  integer (kind = 8), external :: mova2i8
 
   !     nbit is the start position of the field in bits
   nbit = iskip
@@ -138,25 +140,30 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
 
      !        first byte
      tbit = min(bitcnt, 8 - ibit)
+     itmp8 = iand(mova2i8(in(index)), int(ones(8 - ibit), kind = 8))
      itmp = iand(mova2i(in(index)), ones(8 - ibit))
      if (tbit .ne. 8 - ibit) itmp = ishft(itmp, tbit - 8 + ibit)
+     if (tbit .ne. 8 - ibit) itmp8 = ishft(itmp8, tbit - 8 + ibit)
      index = index + 1
      bitcnt = bitcnt - tbit
 
      !        now transfer whole bytes
      do while (bitcnt .ge. 8)
         itmp = ior(ishft(itmp,8), mova2i(in(index)))
+        itmp8 = ior(ishft(itmp8,8), mova2i8(in(index)))
         bitcnt = bitcnt - 8
         index = index + 1
      enddo
 
      !        get data from last byte
      if (bitcnt .gt. 0) then
-        itmp = ior(ishft(itmp, bitcnt), iand(ishft(mova2i(in(index)), &
-             - (8 - bitcnt)), ones(bitcnt)))
+        itmp = ior(ishft(itmp, bitcnt), iand(ishft(mova2i(in(index)), - (8 - bitcnt)), ones(bitcnt)))
+        itmp8_2 = ishft(mova2i8(in(index)), int(-(8 - bitcnt), kind(8)))
+        itmp8_3 = int(ones(bitcnt), kind(8))
+        itmp8 = ior(ishft(itmp8, bitcnt), iand(itmp8_2, itmp8_3))
      endif
 
-     iout(i) = itmp
+     iout(i) = itmp8
   enddo
 
 end subroutine g2_gbytesc8
