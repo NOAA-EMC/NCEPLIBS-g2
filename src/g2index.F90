@@ -274,6 +274,61 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   integer, intent(in) :: mnum
   character(len = 1), pointer, dimension(:) :: cbuf
   integer, intent(out) :: nlen, nnum, nmess, iret
+
+  interface
+     subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+       integer, intent(in) :: lugb
+       integer, intent(in) :: msk1, msk2
+       integer, intent(in) :: mnum
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: nlen, nnum, nmess, iret
+     end subroutine getg2i2r
+  end interface
+
+  call getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+end subroutine getg2ir
+     
+!> Generate an index record for a message in a GRIB2 file.
+!>
+!> The index record contains byte offsets to the message, it's length,
+!> and byte offsets within the message to each section. The index file
+!> record format is documented in subroutine ixgb2().
+!>
+!> @note Subprogram can be called from a multiprocessing environment.
+!> Do not engage the same logical unit from more than one processor.
+!>
+!> @param[in] lugb Unit of the unblocked GRIB file. Must
+!> be opened by [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
+!> @param[in] msk1 Number of bytes to search for first message.
+!> @param[in] msk2 Number of bytes to search for other messages.
+!> @param[in] mnum Number of GRIB messages to skip (usually 0).
+!> @param[out] cbuf Pointer to a buffer that will get the index
+!> records. If any memory is associated with cbuf when this subroutine
+!> is called, cbuf will be nullified in the subroutine. Initially cbuf
+!> will get an allocation of 5000 bytes. realloc() will be used to
+!> increase the size if necessary. Users must free memory that cbuf
+!> points to when cbuf is no longer needed.
+!> @param[out] nlen Total length of index record buffer in bytes.
+!> @param[out] nnum Number of index records, zero if no GRIB
+!> messages are found.
+!> @param[out] nmess Last GRIB message in file successfully processed
+!> @param[out] iret Return code.
+!> - 0 No error.
+!> - 1 Not enough memory available to hold full index buffer.
+!> - 2 Not enough memory to allocate initial index buffer.
+!> - 3 Error deallocating memory.
+!>
+!> @author Mark Iredell @date 1995-10-31
+subroutine getg2i2r(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
+  use re_alloc              ! needed for subroutine realloc
+  implicit none
+
+  integer, intent(in) :: lugb
+  integer, intent(in) :: msk1, msk2
+  integer, intent(in) :: mnum
+  character(len = 1), pointer, dimension(:) :: cbuf
+  integer, intent(out) :: nlen, nnum, nmess, iret
   
   character(len = 1), pointer, dimension(:) :: cbuftmp
   integer :: nbytes, newsize, next, numfld, m, mbuf, lskip, lgrib
@@ -344,8 +399,8 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
      ! Look for next grib message.
      iseek = lskip + lgrib
      call skgb(lugb, iseek, msk2, lskip, lgrib)
-  ENDDO
-END SUBROUTINE GETG2IR
+  enddo
+end subroutine getg2i2r
 
 !> Find information about a GRIB field from the index and fill a @ref
 !> grib_mod::gribfield.
