@@ -2,10 +2,11 @@
 !> @brief Subroutines for dealing with indexes.
 !> @author Edward Hartnett @date Jan 31, 2024
 
-!> Find, read or generate a GRIB2 index for a GRIB2 file.
+!> Find, read or generate a version 1 GRIB2 index for a GRIB2 file
+!> (which must be < 2 GB).
 !>
 !> If the index already exists in library memory, it is returned,
-!> otherwise, the index is read from an existing indexfile associated
+!> otherwise, the index is read from an existing index file associated
 !> with unit lugi or generated from the GRIB2 file lugb.
 !>
 !> Users can force a regeneration of an index: if lugi equals lugb,
@@ -44,11 +45,73 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
   implicit none
 
   integer, intent(in) :: lugb, lugi
-  integer, intent(out) :: nlen, nnum, iret
   character(len = 1), pointer, dimension(:) :: cindex
+  integer, intent(out) :: nlen, nnum, iret
+
+  interface
+     subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+       integer, intent(in) :: lugb, lugi, idxver
+       character(len = 1), pointer, dimension(:) :: cindex
+       integer, intent(out) :: nlen, nnum, iret
+     end subroutine getidx2
+  end interface
+
+  ! When getidx() is called, always use index version 1. Call
+  ! getidx2() for a chance to set the index version.
+  call getidx2(lugb, lugi, 1, cindex, nlen, nnum, iret)  
+
+end subroutine getidx
+
+!> Find, read or generate a version 1 or 2 GRIB2 index for a GRIB2
+!> file (which may be > 2 GB).
+!>
+!> If the index already exists in library memory, it is returned,
+!> otherwise, the index is read from an existing index file associated
+!> with unit lugi or generated from the GRIB2 file lugb.
+!>
+!> Users can force a regeneration of an index: if lugi equals lugb,
+!> the index will be regenerated from the data in file lugb. If lugi
+!> is less than zero, then the index is re-read from index file
+!> abs(lugi).
+!>
+!> This subroutine allocates memory and stores the resulting pointers
+!> in an array that is a Fortran "save" variable. The result is that
+!> the memory will not be freed by the library and cannot be reached
+!> by the caller. To free this memory call gf_finalize() after all
+!> library operations are complete.
+!>
+!> @note The file unit numbers must be in range 1 - 9999.
+!>
+!> @param[in] lugb integer unit of the GRIB2 data file.  File must
+!> have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> routine. If 0, then all saved memory will be released (necessary
+!> for g2_finalize()).
+!> @param[in] lugi integer unit of the GRIB2 index file.
+!> If nonzero, file must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before
+!> calling this routine. Set to 0 to get index information from the GRIB2 file.
+!> @param[in] idxver Index version, 1 for legacy, 2 if files may be > 2 GB.
+!> index records.
+!> @param[inout] cindex character*1 Pointer to a buffer that will get
+!> index records.
+!> @param[out] nlen integer Total length of all index records.
+!> @param[out] nnum integer Number of index records.
+!> @param[out] iret integer Return code:
+!> - 0 No error.
+!> - 90 Unit number out of range.
+!> - 96 Error reading/creating index file.
+!>
+!> @author Stephen Gilbert, Ed Hartnett @date 2005-03-15
+subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+  implicit none
+
+  integer, intent(in) :: lugb, lugi, idxver
+  character(len = 1), pointer, dimension(:) :: cindex
+  integer, intent(out) :: nlen, nnum, iret
+  
   integer, parameter :: maxidx = 10000
   integer (kind = 8), parameter :: msk1 = 32000_8, msk2 = 4000_8
-
   integer :: lux
   integer :: irgi, mskp, nmess, i
 
@@ -93,7 +156,7 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      return
   endif
 
-  !  determine whether index buffer needs to be initialized
+  ! Determine whether index buffer needs to be initialized.
   lux = 0
   iret = 0
   if (lugb .le. 0 .or. lugb .gt. 9999) then
@@ -102,7 +165,9 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      iret = 90
      return
   endif
-  if (lugi .eq. lugb) then      ! force regeneration of index from grib2 file
+
+  ! Force regeneration of index from GRIB2 file.
+  if (lugi .eq. lugb) then      
      if (associated(idxlist(lugb)%cbuf))  &
           deallocate(idxlist(lugb)%cbuf)
      !print *, 'Force regeneration'
@@ -112,7 +177,8 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      lux = 0
   endif
 
-  if (lugi .lt. 0) then      ! force re-read of index from indexfile
+  ! Force re-read of index from indexfile.
+  if (lugi .lt. 0) then      
      ! associated with unit abs(lugi)
      if (associated(idxlist(lugb)%cbuf))  &
           deallocate(idxlist(lugb)%cbuf)
@@ -123,7 +189,7 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      lux = abs(lugi)
   endif
 
-  !  check if index already exists in memory
+  !  Check if index already exists in memory.
   if (associated(idxlist(lugb)%cbuf)) then
      !print *, 'Index exists in memory!'
      cindex => idxlist(lugb)%cbuf
@@ -132,26 +198,32 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      return
   endif
 
+  ! Either read index record from index file, or generate it from the
+  ! GRIB2 file.
   irgi = 0
   if (lux .gt. 0) then
      call getg2i(lux, idxlist(lugb)%cbuf, nlen, nnum, irgi)
   elseif (lux .le. 0) then
      mskp = 0
-     call getg2i2r(lugb, msk1, msk2, mskp, 1, idxlist(lugb)%cbuf, &
+     call getg2i2r(lugb, msk1, msk2, mskp, idxver, idxlist(lugb)%cbuf, &
           nlen, nnum, nmess, irgi)
   endif
-  if (irgi .eq. 0) then
-     cindex => idxlist(lugb)%cbuf
-     idxlist(lugb)%nlen = nlen
-     idxlist(lugb)%nnum = nnum
-  else
+
+  ! Handle errors.
+  if (irgi .ne. 0) then
      nlen = 0
      nnum = 0
      print *, ' error reading index file '
      iret = 96
      return
   endif
-end subroutine getidx
+
+  ! Fill these values.
+  cindex => idxlist(lugb)%cbuf
+  idxlist(lugb)%nlen = nlen
+  idxlist(lugb)%nnum = nnum
+
+end subroutine getidx2
 
 !> Read a GRIB2 index file and return its contents.
 !>
@@ -986,10 +1058,10 @@ subroutine gf_finalize(iret)
 
   ! Declare interfaces (required for cbuf pointer).
   interface
-     subroutine getidx(lugb,lugi,cbuf,nlen,nnum,irgi)
-       character(len=1),pointer,dimension(:) :: cbuf
-       integer,intent(in) :: lugb,lugi
-       integer,intent(out) :: nlen,nnum,irgi
+     subroutine getidx(lugb, lugi, cbuf, nlen, nnum, irgi)
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(in) :: lugb, lugi
+       integer, intent(out) :: nlen, nnum, irgi
      end subroutine getidx
   end interface
 
