@@ -1075,9 +1075,9 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         cindex = char(0)
         if (idxver .eq. 1) then
            lskip = int(lskip8, kind(4))
-           call g2_sbytec(cindex, lskip, 8 * ixskp, 8 * mxskp)    ! bytes to skip
+           call g2_sbytec(cindex, lskip, INT4_BITS, INT4_BITS)    ! bytes to skip
         else
-           call g2_sbytec8(cindex, lskip8, 8 * ixskp, 8 * mxskp)    ! bytes to skip
+           call g2_sbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)    ! bytes to skip
         endif
         call g2_sbytec(cindex, loclus, 8 * ixlus, 8 * mxlus)   ! location of local use
         call g2_sbytec(cindex, locgds, 8 * ixsgd, 8 * mxsgd)   ! location of gds
