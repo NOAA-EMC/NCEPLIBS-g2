@@ -1079,10 +1079,10 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         else
            call g2_sbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)    ! bytes to skip
         endif
-        call g2_sbytec(cindex, loclus, 8 * ixlus, 8 * mxlus)   ! location of local use
-        call g2_sbytec(cindex, locgds, 8 * ixsgd, 8 * mxsgd)   ! location of gds
-        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixspd, 8 * mxspd)  ! location of pds
-        call g2_sbytec(cindex, lgrib, 8 * ixlen, 8 * mxlen)    ! len of grib2
+        call g2_sbytec(cindex, loclus, 8 * ixlus, INT4_BITS)   ! location of local use
+        call g2_sbytec(cindex, locgds, 8 * ixsgd, INT4_BITS)   ! location of gds
+        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixspd, INT4_BITS)  ! location of pds
+        call g2_sbytec(cindex, lgrib, 8 * ixlen, INT4_BITS)    ! len of grib2
         cindex(41) = cver
         cindex(42) = cdisc
         call g2_sbytec(cindex, numfld + 1, 8 * ixfld, 8 * mxfld)   ! field num
