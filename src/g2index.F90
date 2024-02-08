@@ -557,19 +557,19 @@ end subroutine getg2i2r
 !> - other gf_getfld GRIB2 unpacker return code.
 !>
 !> @author Stephen Gilbert @date 2002-01-15
-SUBROUTINE GETGB2S(CBUF, NLEN, NNUM, J, JDISC, JIDS, JPDTN, JPDT, JGDTN, &
-     JGDT, K, GFLD, LPOS, IRET)
-  USE GRIB_MOD
+subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+     jgdt, k, gfld, lpos, iret)
+  use grib_mod
   implicit none
 
-  CHARACTER(LEN = 1), INTENT(IN) :: CBUF(NLEN)
-  INTEGER, INTENT(IN) :: NLEN, NNUM, J, JDISC, JPDTN, JGDTN
-  INTEGER, DIMENSION(:) :: JIDS(*), JPDT(*), JGDT(*)
-  INTEGER, INTENT(OUT) :: K, LPOS, IRET
-  TYPE(GRIBFIELD), INTENT(OUT) :: GFLD
+  character(len = 1), intent(in) :: cbuf(nlen)
+  integer, intent(in) :: nlen, nnum, j, jdisc, jpdtn, jgdtn
+  integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
+  integer, intent(out) :: k, lpos, iret
+  type(gribfield), intent(out) :: gfld
 
-  INTEGER :: KGDS(5)
-  LOGICAL :: MATCH1, MATCH3, MATCH4
+  integer :: kgds(5)
+  logical :: match1, match3, match4
   integer :: i, icnd, inlen, iof, ipos, jpos, lsec1, lsec3, lsec4, lsec5, numgdt, numpdt
 
   interface
@@ -610,155 +610,159 @@ SUBROUTINE GETGB2S(CBUF, NLEN, NNUM, J, JDISC, JIDS, JPDTN, JPDT, JGDTN, &
      end subroutine gf_unpack5
   end interface
 
-  !     INITIALIZE
-  K = 0
-  LPOS = 0
-  IRET = 1
-  IPOS = 0
+  ! Initialize.
+  k = 0
+  lpos = 0
+  iret = 1
+  ipos = 0
   nullify(gfld%idsect, gfld%local)
   nullify(gfld%list_opt, gfld%igdtmpl, gfld%ipdtmpl)
   nullify(gfld%coord_list, gfld%idrtmpl, gfld%bmap, gfld%fld)
 
-  !     SEARCH FOR REQUEST
-  DO WHILE(IRET.NE.0 .and. K.LT.NNUM)
-     K = K + 1
-     CALL G2_GBYTEC(CBUF, INLEN, IPOS * 8, 4 * 8)    ! GET LENGTH OF CURRENT
-     ! INDEX RECORD
-     IF (K.LE.J) THEN           ! SKIP THIS INDEX
-        IPOS = IPOS + INLEN
-        CYCLE
-     ENDIF
+  ! Search for request.
+  do while(iret.ne.0 .and. k.lt.nnum)
+     k = k + 1
+     ! Get length of current index record.
+     call g2_gbytec(cbuf, inlen, ipos * 8, 4 * 8)    
+     if (k.le.j) then           ! skip this index
+        ipos = ipos + inlen
+        cycle
+     endif
 
-     !     CHECK IF GRIB2 DISCIPLINE IS A MATCH
-     CALL G2_GBYTEC(CBUF, GFLD%DISCIPLINE, (IPOS + 41)*8, 1*8)
-     IF ((JDISC.NE.-1) .and. (JDISC.NE.GFLD%DISCIPLINE)) THEN
-        IPOS = IPOS + INLEN
-        CYCLE
-     ENDIF
+     ! Check if grib2 discipline is a match.
+     call g2_gbytec(cbuf, gfld%discipline, (ipos + 41) * 8, 1 * 8)
+     if (jdisc .ne. -1 .and. jdisc .ne. gfld%discipline) then
+        ipos = ipos + inlen
+        cycle
+     endif
 
-     !     CHECK IF IDENTIFICATION SECTION IS A MATCH
-     MATCH1 = .FALSE.
-     CALL G2_GBYTEC(CBUF, LSEC1, (IPOS + 44) * 8, 4 * 8)  ! GET LENGTH OF IDS 
-     IOF = 0
-     CALL GF_UNPACK1(CBUF(IPOS + 45), LSEC1, IOF, GFLD%IDSECT, GFLD%IDSECTLEN, ICND)
-     IF (ICND .eq. 0) THEN
-        MATCH1 = .TRUE.
-        DO I = 1, GFLD%IDSECTLEN
-           IF ((JIDS(I).NE.-9999) .and.  (JIDS(I).NE.GFLD%IDSECT(I))) THEN
-              MATCH1 = .FALSE.
-              EXIT
-           ENDIF
-        ENDDO
-     ENDIF
-     IF (.NOT. MATCH1) THEN
-        DEALLOCATE(GFLD%IDSECT)
-        IPOS = IPOS + INLEN
-        CYCLE
-     ENDIF
+     ! Check if identification section is a match.
+     match1 = .false.
+     ! Get length of ids.
+     call g2_gbytec(cbuf, lsec1, (ipos + 44) * 8, 4 * 8)  
+     iof = 0
+     call gf_unpack1(cbuf(ipos + 45), lsec1, iof, gfld%idsect, gfld%idsectlen, icnd)
+     if (icnd .eq. 0) then
+        match1 = .true.
+        do i = 1, gfld%idsectlen
+           if (jids(i) .ne. -9999 .and. jids(i) .ne. gfld%idsect(i)) then
+              match1 = .false.
+              exit
+           endif
+        enddo
+     endif
+     if (.not. match1) then
+        deallocate(gfld%idsect)
+        ipos = ipos + inlen
+        cycle
+     endif
 
-     !     CHECK IF GRID DEFINITION TEMPLATE IS A MATCH
-     JPOS = IPOS + 44 + LSEC1
-     MATCH3 = .FALSE.
-     CALL G2_GBYTEC(CBUF, LSEC3, JPOS * 8, 4 * 8)  ! GET LENGTH OF GDS 
-     IF (JGDTN .eq. -1) THEN
-        MATCH3 = .TRUE.
-     ELSE
-        CALL G2_GBYTEC(CBUF, NUMGDT, (JPOS + 12) * 8, 2 * 8)  ! GET GDT TEMPLATE NO.
-        IF (JGDTN .eq. NUMGDT) THEN
-           IOF = 0
-           CALL GF_UNPACK3(CBUF(JPOS + 1), LSEC3, IOF, KGDS, GFLD%IGDTMPL, &
-                GFLD%IGDTLEN, GFLD%LIST_OPT, GFLD%NUM_OPT, ICND)
-           IF (ICND .eq. 0) THEN
-              MATCH3 = .TRUE.
-              DO I = 1, GFLD%IGDTLEN
-                 IF ((JGDT(I).NE.-9999) .and.  (JGDT(I).NE.GFLD%IGDTMPL(I))) THEN
-                    MATCH3 = .FALSE.
-                    EXIT
-                 ENDIF
-              ENDDO
-           ENDIF
-        ENDIF
-     ENDIF
-     IF (.NOT. MATCH3) THEN
-        IF (ASSOCIATED(GFLD%IDSECT)) DEALLOCATE(GFLD%IDSECT)
-        IF (ASSOCIATED(GFLD%IGDTMPL)) DEALLOCATE(GFLD%IGDTMPL)
-        IF (ASSOCIATED(GFLD%LIST_OPT)) DEALLOCATE(GFLD%LIST_OPT)
-        IPOS = IPOS + INLEN
-        CYCLE
-     ELSE
-        GFLD%GRIDDEF = KGDS(1)
-        GFLD%NGRDPTS = KGDS(2)
-        GFLD%NUMOCT_OPT = KGDS(3)
-        GFLD%INTERP_OPT = KGDS(4)
-        GFLD%IGDTNUM = KGDS(5)
-     ENDIF
+     ! Check if grid definition template is a match.
+     jpos = ipos + 44 + lsec1
+     match3 = .false.
+     call g2_gbytec(cbuf, lsec3, jpos * 8, 4 * 8)  ! get length of gds 
+     if (jgdtn .eq. -1) then
+        match3 = .true.
+     else
+        call g2_gbytec(cbuf, numgdt, (jpos + 12) * 8, 2 * 8)  ! get gdt template no.
+        if (jgdtn .eq. numgdt) then
+           iof = 0
+           call gf_unpack3(cbuf(jpos + 1), lsec3, iof, kgds, gfld%igdtmpl, &
+                gfld%igdtlen, gfld%list_opt, gfld%num_opt, icnd)
+           if (icnd .eq. 0) then
+              match3 = .true.
+              do i = 1, gfld%igdtlen
+                 if (jgdt(i) .ne. -9999 .and. jgdt(i).ne.gfld%igdtmpl(i)) then
+                    match3 = .false.
+                    exit
+                 endif
+              enddo
+           endif
+        endif
+     endif
+     if (.not. match3) then
+        if (associated(gfld%idsect)) deallocate(gfld%idsect)
+        if (associated(gfld%igdtmpl)) deallocate(gfld%igdtmpl)
+        if (associated(gfld%list_opt)) deallocate(gfld%list_opt)
+        ipos = ipos + inlen
+        cycle
+     else
+        gfld%griddef = kgds(1)
+        gfld%ngrdpts = kgds(2)
+        gfld%numoct_opt = kgds(3)
+        gfld%interp_opt = kgds(4)
+        gfld%igdtnum = kgds(5)
+     endif
 
-     !     CHECK IF PRODUCT DEFINITION TEMPLATE IS A MATCH
-     JPOS = JPOS + LSEC3
-     MATCH4 = .FALSE.
-     CALL G2_GBYTEC(CBUF, LSEC4, JPOS * 8, 4 * 8)  ! GET LENGTH OF PDS 
-     IF (JPDTN .eq. -1) THEN
-        MATCH4 = .TRUE.
-     ELSE
-        CALL G2_GBYTEC(CBUF, NUMPDT, (JPOS + 7) * 8, 2 * 8)  ! GET PDT TEMPLATE NO.
-        IF (JPDTN .eq. NUMPDT) THEN
-           IOF = 0
-           CALL GF_UNPACK4(CBUF(JPOS + 1), LSEC4, IOF, GFLD%IPDTNUM, &
-                GFLD%IPDTMPL, GFLD%IPDTLEN, GFLD%COORD_LIST, GFLD%NUM_COORD, ICND)
-           IF (ICND .eq. 0) THEN
-              MATCH4 = .TRUE.
-              DO I = 1, GFLD%IPDTLEN
-                 IF ((JPDT(I).NE.-9999) .and.  (JPDT(I).NE.GFLD%IPDTMPL(I))) THEN
-                    MATCH4 = .FALSE.
-                    EXIT
-                 ENDIF
-              ENDDO
-           ENDIF
-        ENDIF
-     ENDIF
-     IF (.NOT. MATCH4) THEN
-        IF (ASSOCIATED(GFLD%IDSECT)) DEALLOCATE(GFLD%IDSECT)
-        IF (ASSOCIATED(GFLD%IPDTMPL)) DEALLOCATE(GFLD%IPDTMPL)
-        IF (ASSOCIATED(GFLD%COORD_LIST)) DEALLOCATE(GFLD%COORD_LIST)
-     ENDIF
+     ! Check if product definition template is a match.
+     jpos = jpos + lsec3
+     match4 = .false.
 
-     !     IF REQUEST IS FOUND
-     !     SET VALUES FOR DERIVED TYPE GFLD AND RETURN
-     IF(MATCH1 .and. MATCH3 .and. MATCH4) THEN
-        LPOS = IPOS + 1
-        CALL G2_GBYTEC(CBUF, GFLD%VERSION, (IPOS + 40) * 8, 1 * 8)
-        CALL G2_GBYTEC(CBUF, GFLD%IFLDNUM, (IPOS + 42) * 8, 2 * 8)
-        GFLD%UNPACKED = .FALSE.
-        JPOS = IPOS + 44 + LSEC1
-        IF (JGDTN.EQ.-1) THEN     ! UNPACK GDS, IF NOT DONE BEFORE
-           IOF = 0
-           CALL GF_UNPACK3(CBUF(JPOS + 1), LSEC3, IOF, KGDS, GFLD%IGDTMPL, &
-                GFLD%IGDTLEN, GFLD%LIST_OPT, GFLD%NUM_OPT, ICND)
-           GFLD%GRIDDEF = KGDS(1)
-           GFLD%NGRDPTS = KGDS(2)
-           GFLD%NUMOCT_OPT = KGDS(3)
-           GFLD%INTERP_OPT = KGDS(4)
-           GFLD%IGDTNUM = KGDS(5)
-        ENDIF
-        JPOS = JPOS + LSEC3
-        IF (JPDTN.EQ.-1 ) THEN     ! UNPACK PDS, IF NOT DONE BEFORE
-           IOF = 0
-           CALL GF_UNPACK4(CBUF(JPOS + 1), LSEC4, IOF, GFLD%IPDTNUM, &
-                GFLD%IPDTMPL, GFLD%IPDTLEN, GFLD%COORD_LIST, GFLD%NUM_COORD, ICND)
-        ENDIF
-        JPOS = JPOS + LSEC4
-        CALL G2_GBYTEC(CBUF, LSEC5, JPOS * 8, 4 * 8)  ! GET LENGTH OF DRS 
-        IOF = 0
-        CALL GF_UNPACK5(CBUF(JPOS + 1), LSEC5, IOF, GFLD%NDPTS, &
-             GFLD%IDRTNUM, GFLD%IDRTMPL, GFLD%IDRTLEN, ICND)
-        JPOS = JPOS + LSEC5
-        CALL G2_GBYTEC(CBUF, GFLD%IBMAP, (JPOS + 5)*8, 1 * 8)  ! GET IBMAP
-        IRET = 0
-     ELSE      ! PDT DID NOT MATCH
-        IPOS = IPOS+INLEN
-     ENDIF
-  ENDDO
-END SUBROUTINE GETGB2S
+     ! Get length of pds.      
+     call g2_gbytec(cbuf, lsec4, jpos * 8, 4 * 8)  
+     if (jpdtn .eq. -1) then
+        match4 = .true.
+     else
+        ! Get pdt template no.        
+        call g2_gbytec(cbuf, numpdt, (jpos + 7) * 8, 2 * 8)  
+        if (jpdtn .eq. numpdt) then
+           iof = 0
+           call gf_unpack4(cbuf(jpos + 1), lsec4, iof, gfld%ipdtnum, &
+                gfld%ipdtmpl, gfld%ipdtlen, gfld%coord_list, gfld%num_coord, icnd)
+           if (icnd .eq. 0) then
+              match4 = .true.
+              do i = 1, gfld%ipdtlen
+                 if (jpdt(i) .ne. -9999 .and. jpdt(i) .ne. gfld%ipdtmpl(i)) then
+                    match4 = .false.
+                    exit
+                 endif
+              enddo
+           endif
+        endif
+     endif
+     if (.not. match4) then
+        if (associated(gfld%idsect)) deallocate(gfld%idsect)
+        if (associated(gfld%ipdtmpl)) deallocate(gfld%ipdtmpl)
+        if (associated(gfld%coord_list)) deallocate(gfld%coord_list)
+     endif
+
+     !     if request is found
+     !     set values for derived type gfld and return
+     if (match1 .and. match3 .and. match4) then
+        lpos = ipos + 1
+        call g2_gbytec(cbuf, gfld%version, (ipos + 40) * 8, 1 * 8)
+        call g2_gbytec(cbuf, gfld%ifldnum, (ipos + 42) * 8, 2 * 8)
+        gfld%unpacked = .false.
+        jpos = ipos + 44 + lsec1
+        if (jgdtn .eq. -1) then     ! unpack gds, if not done before
+           iof = 0
+           call gf_unpack3(cbuf(jpos + 1), lsec3, iof, kgds, gfld%igdtmpl, &
+                gfld%igdtlen, gfld%list_opt, gfld%num_opt, icnd)
+           gfld%griddef = kgds(1)
+           gfld%ngrdpts = kgds(2)
+           gfld%numoct_opt = kgds(3)
+           gfld%interp_opt = kgds(4)
+           gfld%igdtnum = kgds(5)
+        endif
+        jpos = jpos + lsec3
+        if (jpdtn .eq. -1) then     ! unpack pds, if not done before
+           iof = 0
+           call gf_unpack4(cbuf(jpos + 1), lsec4, iof, gfld%ipdtnum, &
+                gfld%ipdtmpl, gfld%ipdtlen, gfld%coord_list, gfld%num_coord, icnd)
+        endif
+        jpos = jpos + lsec4
+        call g2_gbytec(cbuf, lsec5, jpos * 8, 4 * 8)  ! get length of drs 
+        iof = 0
+        call gf_unpack5(cbuf(jpos + 1), lsec5, iof, gfld%ndpts, &
+             gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen, icnd)
+        jpos = jpos + lsec5
+        call g2_gbytec(cbuf, gfld%ibmap, (jpos + 5)*8, 1 * 8)  ! get ibmap
+        iret = 0
+     else      ! pdt did not match
+        ipos = ipos+inlen
+     endif
+  enddo
+end subroutine getgb2s
 
 !> Generate an index record for each field in a GRIB2 message. The index
 !> records are written to index buffer pointed to by cbuf. All integers
