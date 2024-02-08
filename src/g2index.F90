@@ -47,7 +47,7 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
   integer, intent(out) :: nlen, nnum, iret
   character(len = 1), pointer, dimension(:) :: cindex
   integer, parameter :: maxidx = 10000
-  integer, parameter :: msk1 = 32000, msk2 = 4000
+  integer (kind = 8), parameter :: msk1 = 32000_8, msk2 = 4000_8
 
   integer :: lux
   integer :: irgi, mskp, nmess, i
@@ -69,12 +69,14 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
        integer, intent(in) :: lugi
        integer, intent(out) :: nlen, nnum, iret
      end subroutine getg2i
-     subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, &
-          nmess, iret)
+     subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
+          nlen, nnum, nmess, iret)
+       integer, intent(in) :: lugb
+       integer (kind = 8), intent(in) :: msk1, msk2
+       integer, intent(in) :: mnum, idxver
        character(len = 1), pointer, dimension(:) :: cbuf
-       integer, intent(in) :: lugb, msk1, msk2, mnum
        integer, intent(out) :: nlen, nnum, nmess, iret
-     end subroutine getg2ir
+     end subroutine getg2i2r
   end interface
 
   ! Free all associated memory and exit.
@@ -135,7 +137,7 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
      call getg2i(lux, idxlist(lugb)%cbuf, nlen, nnum, irgi)
   elseif (lux .le. 0) then
      mskp = 0
-     call getg2ir(lugb, msk1, msk2, mskp, idxlist(lugb)%cbuf, &
+     call getg2i2r(lugb, msk1, msk2, mskp, 1, idxlist(lugb)%cbuf, &
           nlen, nnum, nmess, irgi)
   endif
   if (irgi .eq. 0) then
@@ -204,34 +206,34 @@ end subroutine getidx
 !> - 4 error reading index file header
 !>
 !> @author Mark Iredell @date 2000-05-26
-SUBROUTINE GETG2I(LUGI, CBUF, NLEN, NNUM, IRET)
+subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
   implicit none
   
-  CHARACTER(LEN=1), POINTER, DIMENSION(:) :: CBUF
-  INTEGER, INTENT(IN) :: LUGI
-  INTEGER, INTENT(OUT) :: NLEN, NNUM, IRET
-  CHARACTER CHEAD*162
+  character(len=1), pointer, dimension(:) :: cbuf
+  integer, intent(in) :: lugi
+  integer, intent(out) :: nlen, nnum, iret
+  character chead*162
   integer :: ios, istat, lbuf, lhead, nskp
 
-  NULLIFY(CBUF)
-  NLEN = 0
-  NNUM = 0
-  IRET = 4
-  CALL BAREAD(LUGI, 0, 162, LHEAD, CHEAD)
-  IF (LHEAD .EQ. 162 .AND. CHEAD(42:47) .EQ. 'GB2IX1') THEN
-     READ(CHEAD(82:162), '(8X, 3I10, 2X, A40)', IOSTAT = IOS) NSKP, NLEN, NNUM
-     IF (IOS .EQ. 0) THEN
-        ALLOCATE(CBUF(NLEN), STAT = ISTAT)    ! ALLOCATE SPACE FOR CBUF
-        IF (ISTAT .NE. 0) THEN
-           IRET = 2
-           RETURN
-        ENDIF
-        IRET = 0
-        CALL BAREAD(LUGI, NSKP, NLEN, LBUF, CBUF)
-        IF (LBUF .NE. NLEN) IRET = 3
-     ENDIF
-  ENDIF
-END SUBROUTINE GETG2I
+  nullify(cbuf)
+  nlen = 0
+  nnum = 0
+  iret = 4
+  call baread(lugi, 0, 162, lhead, chead)
+  if (lhead .eq. 162 .and. chead(42:47) .eq. 'GB2IX1') then
+     read(chead(82:162), '(8x, 3i10, 2x, a40)', iostat = ios) nskp, nlen, nnum
+     if (ios .eq. 0) then
+        allocate(cbuf(nlen), stat = istat)    ! Allocate space for cbuf.
+        if (istat .ne. 0) then
+           iret = 2
+           return
+        endif
+        iret = 0
+        call baread(lugi, nskp, nlen, lbuf, cbuf)
+        if (lbuf .ne. nlen) iret = 3
+     endif
+  endif
+end subroutine getg2i
 
 !> Generate an index record for a message in a GRIB2 file.
 !>
