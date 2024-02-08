@@ -1014,6 +1014,8 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
        mxds = 4, mxlen = 4, mxfld = 2, mxbms = 6)
   character cbread(linmax), cindex(linmax)
   character cids(linmax), cgds(linmax)
+  integer :: INT1_BITS, INT4_BITS, INT8_BITS
+  parameter(INT1_BITS = 8, INT4_BITS = 32, INT8_BITS = 64)
 
   loclus = 0
   iret = 0
@@ -1055,8 +1057,8 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         iret = 2
         return
      endif
-     call g2_gbytec(cbread, lensec, 0 * 8, 4 * 8)
-     call g2_gbytec(cbread, numsec, 4 * 8, 1 * 8)
+     call g2_gbytec(cbread, lensec, 0, INT4_BITS)
+     call g2_gbytec(cbread, numsec, INT4_BITS, INT1_BITS)
 
      if (numsec .eq. 2) then                 ! save local use location
         loclus = int(ibskip8 - lskip8, kind(4))
