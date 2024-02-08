@@ -119,23 +119,37 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 
   ! Declare interfaces (required for cbuf pointer).
   interface
-     subroutine getidx(lugb, lugi, cbuf, nlen, nnum, irgi)
-       character(len = 1), pointer, dimension(:) :: cbuf
-       integer, intent(in) :: lugb, lugi
-       integer, intent(out) :: nlen, nnum, irgi
-     end subroutine getidx
+     subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+       integer, intent(in) :: lugb, lugi, idxver
+       character(len = 1), pointer, dimension(:) :: cindex
+       integer, intent(out) :: nlen, nnum, iret
+     end subroutine getidx2
+     subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+          jgdt, k, gfld, lpos, iret)
+       import gribfield
+       character(len = 1), intent(in) :: cbuf(nlen)
+       integer, intent(in) :: idxver, nlen, nnum, j, jdisc
+       integer, dimension(:) :: jids(*)
+       integer, intent(in) :: jpdtn
+       integer, dimension(:) :: jpdt(*)
+       integer, intent(in) :: jgdtn
+       integer, dimension(:) :: jgdt(*)
+       integer, intent(out) :: k
+       type(gribfield), intent(out) :: gfld
+       integer, intent(out) :: lpos, iret
+     end subroutine getgb2s2
   end interface
 
   ! Determine whether index buffer needs to be initialized.
   irgi = 0
-  call getidx(lugb, lugi, cbuf, nlen, nnum, irgi)
+  call getidx2(lugb, lugi, 1, cbuf, nlen, nnum, irgi)
   if (irgi .gt. 1) then
      iret = 96
      return
   endif
 
   ! search index buffer.
-  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  jk, &
+  call getgb2s2(cbuf, 1, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  jk, &
        gfld, lpos, irgs)
   if (irgs .ne. 0) then
      iret = 99
