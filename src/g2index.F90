@@ -563,14 +563,132 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
   implicit none
 
   character(len = 1), intent(in) :: cbuf(nlen)
-  integer, intent(in) :: nlen, nnum, j, jdisc, jpdtn, jgdtn
-  integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
-  integer, intent(out) :: k, lpos, iret
+  integer, intent(in) :: nlen, nnum, j, jdisc
+  integer, dimension(:) :: jids(*)
+  integer, intent(in) :: jpdtn
+  integer, dimension(:) :: jpdt(*)
+  integer, intent(in) :: jgdtn
+  integer, dimension(:) :: jgdt(*)
+  integer, intent(out) :: k
   type(gribfield), intent(out) :: gfld
+  integer, intent(out) :: lpos, iret
+
+  interface
+     subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+          jgdt, k, gfld, lpos, iret)
+       import gribfield
+       character(len = 1), intent(in) :: cbuf(nlen)
+       integer, intent(in) :: idxver, nlen, nnum, j, jdisc
+       integer, dimension(:) :: jids(*)
+       integer, intent(in) :: jpdtn
+       integer, dimension(:) :: jpdt(*)
+       integer, intent(in) :: jgdtn
+       integer, dimension(:) :: jgdt(*)
+       integer, intent(out) :: k
+       type(gribfield), intent(out) :: gfld
+       integer, intent(out) :: lpos, iret
+     end subroutine getgb2s2
+  end interface
+
+  ! When getgb2s() is called, always use index version 1. Call
+  ! getgb2s2() to handle version 1 or 2.
+  call getgb2s2(cbuf, 1, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, k, gfld, lpos, iret)
+
+end subroutine getgb2s
+
+!> Find information about a GRIB field from the index and fill a @ref
+!> grib_mod::gribfield.
+!>
+!> For a description of the index record see getg2i().
+!>
+!> Users of this routine will need to include the line "use grib_mod"
+!> in their calling routine.
+!>
+!> The unpacked bitmap and bitmap data field are the only components
+!> of the @ref grib_mod::gribfield type not set by this routine.
+!>
+!> @note This subprogram is intended for private use by getgb2()
+!> routines only. Note that derived type @ref grib_mod::gribfield contains
+!> pointers to many arrays of data. The memory for these arrays is
+!> allocated when the values in the arrays are set. Users must free this
+!> memory, when it is no longer needed, by a call to subroutine
+!> gf_free().
+!>
+!> @param[in] cbuf Buffer (of size nlen bytes) containing index data.
+!> @param[in] idxver Index version, 1 for legacy, 2 if files may be > 2 GB.
+!> @param[in] nlen Total length of all index records.
+!> @param[in] nnum Number of index records.
+!> @param[in] j Number of fields to skip (0 to search from beginning).
+!> @param[in] jdisc GRIB2 discipline number of requested field. See
+!> [GRIB2 - TABLE 0.0 -
+!> DISCIPLINE](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml).
+!> Use -1 to accept any discipline.
+!> @param[in] jids Array of values in the identification
+!> section. (Set to -9999 for wildcard.)
+!> - jids(1) Identification of originating centre. See [TABLE 0 -
+!>   NATIONAL/INTERNATIONAL ORIGINATING
+!>   CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html).
+!> - jids(2) Identification of originating sub-centre. See [TABLE C -
+!>   NATIONAL
+!>   SUB-CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html).
+!> - jids(3) GRIB master tables version number. See [GRIB2 - TABLE 1.0
+!>   - GRIB Master Tables Version
+!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml).
+!> - jids(4) GRIB local tables version number. See [GRIB2 - TABLE 1.1
+!>   - GRIB Local Tables Version
+!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml).
+!> - jids(5) Significance of reference time. See [GRIB2 - TABLE 1.2 -
+!>   Significance of Reference
+!>   Time](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-2.shtml).
+!> - jids(6) year (4 digits)
+!> - jids(7) month
+!> - jids(8) day
+!> - jids(9) hour
+!> - jids(10) minute
+!> - jids(11) second
+!> - jids(12) Production status of processed data. See [GRIB2 - TABLE
+!>   1.3 - Production Status of
+!>   Data](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml).
+!> - jids(13) Type of processed data. See [GRIB2 - TABLE 1.4 - TYPE OF
+!>   DATA](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml).
+!> @param[in] jpdtn Product Definition Template (PDT) number (n)
+!> (if = -1, don't bother matching PDT - accept any).
+!> @param[in] jpdt Array of values defining the Product Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] jgdtn Grid Definition Template (GDT) number (if = -1,
+!> don't bother matching GDT - accept any).
+!> @param[in] jgdt array of values defining the Grid Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[out] k Field number unpacked.
+!> @param[out] gfld Derived type @ref grib_mod::gribfield.
+!> @param[out] lpos Starting position of the found index record
+!> within the complete index buffer, CBUF. = 0, if request not found.
+!> @param[out] iret integer return code:
+!> - 0 No error.
+!> - 97 Error reading GRIB file.
+!> - other gf_getfld GRIB2 unpacker return code.
+!>
+!> @author Stephen Gilbert @date 2002-01-15
+subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+     jgdt, k, gfld, lpos, iret)
+  use grib_mod
+  implicit none
+
+  character(len = 1), intent(in) :: cbuf(nlen)
+  integer, intent(in) :: idxver, nlen, nnum, j, jdisc
+  integer, dimension(:) :: jids(*)
+  integer, intent(in) :: jpdtn
+  integer, dimension(:) :: jpdt(*)
+  integer, intent(in) :: jgdtn
+  integer, dimension(:) :: jgdt(*)
+  integer, intent(out) :: k
+  type(gribfield), intent(out) :: gfld
+  integer, intent(out) :: lpos, iret
 
   integer :: kgds(5)
   logical :: match1, match3, match4
-  integer :: i, icnd, inlen, iof, ipos, jpos, lsec1, lsec3, lsec4, lsec5, numgdt, numpdt
+  integer :: i, icnd, inlen, iof, ipos, jpos, lsec1, lsec3, lsec4, lsec5, numgdt, numpdt, inc
 
   interface
      subroutine gf_unpack1(cgrib, lcgrib, iofst, ids, idslen, ierr)
@@ -618,6 +736,13 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
   nullify(gfld%idsect, gfld%local)
   nullify(gfld%list_opt, gfld%igdtmpl, gfld%ipdtmpl)
   nullify(gfld%coord_list, gfld%idrtmpl, gfld%bmap, gfld%fld)
+  if (idxver .eq. 1) then
+     inc = 0
+  else
+     ! Add the extra 4 bytes in the version 2 index record, starting
+     ! at byte 9.
+     inc = 4
+  endif
 
   ! Search for request.
   do while(iret.ne.0 .and. k.lt.nnum)
@@ -630,7 +755,7 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      endif
 
      ! Check if grib2 discipline is a match.
-     call g2_gbytec(cbuf, gfld%discipline, (ipos + 41) * 8, 1 * 8)
+     call g2_gbytec(cbuf, gfld%discipline, (ipos + inc + 41) * 8, 1 * 8)
      if (jdisc .ne. -1 .and. jdisc .ne. gfld%discipline) then
         ipos = ipos + inlen
         cycle
@@ -639,7 +764,7 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      ! Check if identification section is a match.
      match1 = .false.
      ! Get length of ids.
-     call g2_gbytec(cbuf, lsec1, (ipos + 44) * 8, 4 * 8)  
+     call g2_gbytec(cbuf, lsec1, (ipos + inc + 44) * 8, 4 * 8)  
      iof = 0
      call gf_unpack1(cbuf(ipos + 45), lsec1, iof, gfld%idsect, gfld%idsectlen, icnd)
      if (icnd .eq. 0) then
@@ -658,7 +783,7 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      endif
 
      ! Check if grid definition template is a match.
-     jpos = ipos + 44 + lsec1
+     jpos = ipos + 44 + inc + lsec1
      match3 = .false.
      call g2_gbytec(cbuf, lsec3, jpos * 8, 4 * 8)  ! get length of gds 
      if (jgdtn .eq. -1) then
@@ -726,14 +851,13 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
         if (associated(gfld%coord_list)) deallocate(gfld%coord_list)
      endif
 
-     !     if request is found
-     !     set values for derived type gfld and return
+     ! If request is found set values for derived type gfld and return.
      if (match1 .and. match3 .and. match4) then
         lpos = ipos + 1
-        call g2_gbytec(cbuf, gfld%version, (ipos + 40) * 8, 1 * 8)
-        call g2_gbytec(cbuf, gfld%ifldnum, (ipos + 42) * 8, 2 * 8)
+        call g2_gbytec(cbuf, gfld%version, (ipos + inc + 40) * 8, 1 * 8)
+        call g2_gbytec(cbuf, gfld%ifldnum, (ipos + inc + 42) * 8, 2 * 8)
         gfld%unpacked = .false.
-        jpos = ipos + 44 + lsec1
+        jpos = ipos + 44 + inc + lsec1
         if (jgdtn .eq. -1) then     ! unpack gds, if not done before
            iof = 0
            call gf_unpack3(cbuf(jpos + 1), lsec3, iof, kgds, gfld%igdtmpl, &
@@ -756,13 +880,13 @@ subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
         call gf_unpack5(cbuf(jpos + 1), lsec5, iof, gfld%ndpts, &
              gfld%idrtnum, gfld%idrtmpl, gfld%idrtlen, icnd)
         jpos = jpos + lsec5
-        call g2_gbytec(cbuf, gfld%ibmap, (jpos + 5)*8, 1 * 8)  ! get ibmap
+        call g2_gbytec(cbuf, gfld%ibmap, (jpos + 5) * 8, 1 * 8)  ! get ibmap
         iret = 0
      else      ! pdt did not match
-        ipos = ipos+inlen
+        ipos = ipos + inlen
      endif
   enddo
-end subroutine getgb2s
+end subroutine getgb2s2
 
 !> Generate an index record for each field in a GRIB2 message. The index
 !> records are written to index buffer pointed to by cbuf. All integers
