@@ -1016,6 +1016,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
   character cids(linmax), cgds(linmax)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
+  integer :: mypos
 
   loclus = 0
   iret = 0
@@ -1042,7 +1043,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
   endif
   cver = cbread(8)
   cdisc = cbread(7)
-  call g2_gbytec(cbread, lensec1, 16 * 8, 4 * 8)
+  call g2_gbytec(cbread, lensec1, 16 * 8, INT4_BITS)
   lensec1 = min(lensec1, int(ibread8, kind(lensec1)))
   cids(1:lensec1) = cbread(17:16 + lensec1)
   ibskip8 = lskip8 + 16_8 + int(lensec1, kind(8))
