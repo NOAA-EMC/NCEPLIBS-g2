@@ -109,7 +109,7 @@ end subroutine getidx
 !> - 90 Unit number out of range.
 !> - 96 Error reading/creating index file.
 !>
-!> @author Stephen Gilbert, Ed Hartnett @date 2005-03-15
+!> @author Stephen Gilbert, Ed Hartnett @date Feb 9, 2024
 subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
   implicit none
 
@@ -264,7 +264,7 @@ end subroutine getidx2
 !> - 4 error reading index file header
 !> - 5 index format 2 detected
 !>
-!> @author Mark Iredell @date 2000-05-26
+!> @author Mark Iredell, Ed Hartnett @date 2000-05-26
 subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
   implicit none
   
@@ -288,7 +288,6 @@ subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
   if (idxver .eq. 2) iret = 5
 
 end subroutine getg2i
-     
   
 !> Read a version 1 or 2 index file and return its contents.
 !>
@@ -410,7 +409,7 @@ end subroutine getg2i2
 !> - 2 Not enough memory to allocate initial index buffer.
 !> - 3 Error deallocating memory.
 !>
-!> @author Mark Iredell @date 1995-10-31
+!> @author Mark Iredell, Ed Hartnett @date 1995-10-31
 subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
@@ -470,7 +469,7 @@ end subroutine getg2ir
 !> - 2 Not enough memory to allocate initial index buffer.
 !> - 3 Error deallocating memory.
 !>
-!> @author Mark Iredell @date 1995-10-31
+!> @author Mark Iredell, Ed Hartnett @date 1995-10-31
 subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
@@ -628,7 +627,7 @@ end subroutine getg2i2r
 !> - 97 Error reading GRIB file.
 !> - other gf_getfld GRIB2 unpacker return code.
 !>
-!> @author Stephen Gilbert @date 2002-01-15
+!> @author Stephen Gilbert, Ed Hartnett @date 2002-01-15
 subroutine getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jgdt, k, gfld, lpos, iret)
   use grib_mod
@@ -741,7 +740,7 @@ end subroutine getgb2s
 !> - 97 Error reading GRIB file.
 !> - other gf_getfld GRIB2 unpacker return code.
 !>
-!> @author Stephen Gilbert @date 2002-01-15
+!> @author Stephen Gilbert, Ed Hartnett @date Feb 9 2024
 subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jgdt, k, gfld, lpos, iret)
   use grib_mod
@@ -992,7 +991,7 @@ end subroutine getgb2s2
 !> - 4 Not enough memory to allocate extent to index buffer.
 !> - 5 Unidentified GRIB section encountered.
 !>
-!> @author Mark Iredell @date 1995-10-31
+!> @author Mark Iredell, Ed Hartnett @date 1995-10-31
 subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
