@@ -557,7 +557,7 @@ end subroutine getg2i2r
 !> Find information about a GRIB field from the index and fill a @ref
 !> grib_mod::gribfield.
 !>
-!> For a description of the index record see getg2i().
+!> For a description of the index record see getg2i2().
 !>
 !> Users of this routine will need to include the line "use grib_mod"
 !> in their calling routine.
@@ -669,7 +669,7 @@ end subroutine getgb2s
 !> Find information about a GRIB field from the index and fill a @ref
 !> grib_mod::gribfield.
 !>
-!> For a description of the index record see getg2i().
+!> For a description of the index record see getg2i2().
 !>
 !> Users of this routine will need to include the line "use grib_mod"
 !> in their calling routine.
@@ -965,7 +965,7 @@ end subroutine getgb2s2
 !> This subroutine is called by getg2ir(), which packages the index
 !> records into an index file.
 !>
-!> See getg2i() for thr format of the index buffer records.
+!> See getg2i2() for thr format of the index buffer records.
 !>
 !> @param lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
@@ -1023,7 +1023,7 @@ end subroutine ixgb2
 !> This subroutine is called by getg2ir(), which packages the index
 !> records into an index file.
 !>
-!> See getg2i() for thr format of the index buffer records.
+!> See getg2i2() for thr format of the index buffer records.
 !>
 !> @param lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
