@@ -1084,7 +1084,15 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
   character cids(linmax), cgds(linmax)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
-  integer :: mypos
+  integer :: mypos, inc
+
+  if (idxver .eq. 1) then
+     inc = 0
+  else
+     ! Add the extra 4 bytes in the version 2 index record, starting
+     ! at byte 9.
+     inc = 4
+  endif
 
   loclus = 0
   iret = 0
@@ -1142,19 +1150,29 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         locgds = int(ibskip8 - lskip8, kind(4))
      elseif (numsec .eq. 4) then                 ! found pds
         cindex = char(0)
+        mypos = INT4_BITS
         if (idxver .eq. 1) then
            lskip = int(lskip8, kind(4))
-           call g2_sbytec(cindex, lskip, INT4_BITS, INT4_BITS)    ! bytes to skip
+           call g2_sbytec(cindex, lskip, mypos, INT4_BITS)    ! bytes to skip
+           mypos = mypos + INT4_BITS
         else
-           call g2_sbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)    ! bytes to skip
+           call g2_sbytec8(cindex, lskip8, mypos, INT8_BITS)    ! bytes to skip
+           mypos = mypos + INT8_BITS
         endif
-        call g2_sbytec(cindex, loclus, 8 * ixlus, INT4_BITS)   ! location of local use
-        call g2_sbytec(cindex, locgds, 8 * ixsgd, INT4_BITS)   ! location of gds
-        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixspd, INT4_BITS)  ! location of pds
-        call g2_sbytec(cindex, lgrib, 8 * ixlen, INT4_BITS)    ! len of grib2
-        cindex(41) = cver
-        cindex(42) = cdisc
-        call g2_sbytec(cindex, numfld + 1, 8 * ixfld, INT2_BITS)   ! field num
+        call g2_sbytec(cindex, loclus, mypos, INT4_BITS)   ! location of local use
+        mypos = mypos + INT4_BITS
+        call g2_sbytec(cindex, locgds, mypos, INT4_BITS)   ! location of gds
+        mypos = mypos + INT4_BITS
+        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
+        mypos = mypos + INT4_BITS * 5 ! skip ahead in cbuf
+        call g2_sbytec(cindex, lgrib, mypos, INT4_BITS)    ! len of grib2
+        mypos = mypos + INT4_BITS
+        cindex(int(mypos / 8) + 1) = cver
+        mypos = mypos + INT1_BITS
+        cindex(int(mypos / 8) + 1) = cdisc
+        mypos = mypos + INT1_BITS
+        call g2_sbytec(cindex, numfld + 1, mypos, INT2_BITS)   ! field num
+        mypos = mypos + INT2_BITS
         cindex(ixids + 1:ixids + lensec1) = cids(1:lensec1)
         lindex = ixids + lensec1
         cindex(lindex + 1:lindex + lengds8) = cgds(1:lengds8)
@@ -1168,7 +1186,8 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         endif
         lindex = lindex + ilnpds
      elseif (numsec .eq. 5) then                 ! found drs
-        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixsdr, INT4_BITS)  ! location of drs
+        mypos = (ixsdr + inc) * INT1_BITS
+        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of drs
         ilndrs = lensec
         ilndrs8 = ilndrs
         call bareadl(lugb, ibskip8, ilndrs8, lbread8, cindex(lindex + 1))
@@ -1179,19 +1198,21 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         lindex = lindex + ilndrs
      elseif (numsec .eq. 6) then                 ! found bms
         indbmp = mova2i(cbread(6))
+        mypos = (ixsbm + inc) * INT1_BITS           
         if (indbmp.lt.254) then
            locbms = int(ibskip8 - lskip8, kind(4))
-           call g2_sbytec(cindex, locbms, 8 * ixsbm, INT4_BITS)  ! loc. of bms
+           call g2_sbytec(cindex, locbms, mypos, INT4_BITS)  ! loc. of bms
         elseif (indbmp.eq.254) then
-           call g2_sbytec(cindex, locbms, 8 * ixsbm, INT4_BITS)  ! loc. of bms
+           call g2_sbytec(cindex, locbms, mypos, INT4_BITS)  ! loc. of bms
         elseif (indbmp.eq.255) then
-           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixsbm, INT4_BITS)  ! loc. of bms
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! loc. of bms
         endif
         cindex(lindex + 1:lindex + mxbms) = cbread(1:mxbms)
         lindex = lindex + mxbms
-        call g2_sbytec(cindex, lindex, 0, 8 * 4)    ! num bytes in index record
+        call g2_sbytec(cindex, lindex, 0, INT4_BITS)    ! num bytes in index record
      elseif (numsec .eq. 7) then                 ! found data section
-        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), 8 * ixds, INT4_BITS)   ! loc. of data sec.
+        mypos = (ixds + inc) * INT1_BITS           
+        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)   ! loc. of data sec.
         numfld = numfld + 1
         if ((lindex + mlen) .gt. mbuf) then ! allocate more space if necessary
            newsize = max(mbuf + next, mbuf + lindex)
