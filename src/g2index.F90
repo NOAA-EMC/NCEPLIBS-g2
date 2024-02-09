@@ -39,6 +39,7 @@
 !> - 0 No error.
 !> - 90 Unit number out of range.
 !> - 96 Error reading/creating index file.
+!> - 97 Index version 2 detected.
 !>
 !> @author Stephen Gilbert, Ed Hartnett @date 2005-03-15
 subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
@@ -47,10 +48,12 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
   integer, intent(in) :: lugb, lugi
   character(len = 1), pointer, dimension(:) :: cindex
   integer, intent(out) :: nlen, nnum, iret
+  integer :: idxver
 
   interface
      subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
-       integer, intent(in) :: lugb, lugi, idxver
+       integer, intent(in) :: lugb, lugi
+       integer, intent(inout) :: idxver
        character(len = 1), pointer, dimension(:) :: cindex
        integer, intent(out) :: nlen, nnum, iret
      end subroutine getidx2
@@ -58,7 +61,11 @@ subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
 
   ! When getidx() is called, always use index version 1. Call
   ! getidx2() for a chance to set the index version.
-  call getidx2(lugb, lugi, 1, cindex, nlen, nnum, iret)  
+  idxver = 1
+  call getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+
+  ! If index version 2 is being used, return error.
+  if (iret .eq. 0 .and. idxver .eq. 2) iret = 97
 
 end subroutine getidx
 
@@ -106,7 +113,8 @@ end subroutine getidx
 subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
   implicit none
 
-  integer, intent(in) :: lugb, lugi, idxver
+  integer, intent(in) :: lugb, lugi
+  integer, intent(inout) :: idxver
   character(len = 1), pointer, dimension(:) :: cindex
   integer, intent(out) :: nlen, nnum, iret
   
@@ -127,11 +135,11 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
 
   !  declare interfaces (required for cbuf pointer)
   interface
-     subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
-       character(len = 1), pointer, dimension(:) :: cbuf
+     subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
        integer, intent(in) :: lugi
-       integer, intent(out) :: nlen, nnum, iret
-     end subroutine getg2i
+       character(len=1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: idxver, nlen, nnum, iret
+     end subroutine getg2i2
      subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
           nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb
@@ -202,7 +210,7 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
   ! GRIB2 file.
   irgi = 0
   if (lux .gt. 0) then
-     call getg2i(lux, idxlist(lugb)%cbuf, nlen, nnum, irgi)
+     call getg2i2(lux, idxlist(lugb)%cbuf, idxver, nlen, nnum, irgi)
   elseif (lux .le. 0) then
      mskp = 0
      call getg2i2r(lugb, msk1, msk2, mskp, idxver, idxlist(lugb)%cbuf, &
