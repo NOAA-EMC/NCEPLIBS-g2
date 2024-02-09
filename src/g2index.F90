@@ -121,11 +121,12 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
   integer, parameter :: maxidx = 10000
   integer (kind = 8), parameter :: msk1 = 32000_8, msk2 = 4000_8
   integer :: lux
-  integer :: irgi, mskp, nmess, i
+  integer :: irgi, mskp, nmess, i, myidxver
 
   type gindex
      integer :: nlen
      integer :: nnum
+     integer :: idxver
      character(len = 1), pointer, dimension(:) :: cbuf
   end type gindex
 
@@ -203,6 +204,7 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
      cindex => idxlist(lugb)%cbuf
      nlen = idxlist(lugb)%nlen
      nnum = idxlist(lugb)%nnum
+     idxver = idxlist(lugb)%idxver
      return
   endif
 
@@ -230,6 +232,7 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
   cindex => idxlist(lugb)%cbuf
   idxlist(lugb)%nlen = nlen
   idxlist(lugb)%nnum = nnum
+  idxlist(lugb)%idxver = idxver
 
 end subroutine getidx2
 

@@ -115,7 +115,7 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   integer, intent(out) :: k, iret
   type(gribfield), intent(out) :: gfld
   character(len = 1), pointer, dimension(:) :: cbuf
-  integer :: nnum, nlen, lpos, jk, irgi, irgs
+  integer :: nnum, nlen, lpos, jk, irgi, irgs, idxver
 
   ! Declare interfaces (required for cbuf pointer).
   interface
@@ -142,14 +142,15 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 
   ! Determine whether index buffer needs to be initialized.
   irgi = 0
-  call getidx2(lugb, lugi, 1, cbuf, nlen, nnum, irgi)
+  idxver = 1
+  call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, irgi)
   if (irgi .gt. 1) then
      iret = 96
      return
   endif
 
   ! search index buffer.
-  call getgb2s2(cbuf, 1, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  jk, &
+  call getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  jk, &
        gfld, lpos, irgs)
   if (irgs .ne. 0) then
      iret = 99
