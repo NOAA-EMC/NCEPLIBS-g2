@@ -34,30 +34,25 @@
 !> call gf_finalize() after all library operations are complete.
 !>
 !> @note Specify an index file if feasible to increase speed. Do not
-!> engage the same logical unit from more than one processor. Note
-!> that derived type gribfield contains pointers to many arrays of
-!> data. The memory for these arrays is allocated when the values in
-!> the arrays are set, to help minimize problems with array
-!> overloading. Because of this users should free this memory, when it
-!> is no longer needed, by a call to subroutine gf_free().
+!> engage the same logical unit from more than one processor.
 !>
-!> @param[in] LUGB integer unit of the unblocked grib data file.
+!> @param[in] lugb integer unit of the unblocked grib data file.
 !> File must be opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
 !> this routine.
-!> @param[in] LUGI integer unit of the unblocked grib index file.
+!> @param[in] lugi integer unit of the unblocked grib index file.
 !> If nonzero, file must be opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before
-!> calling this routine.
-!> - >0 read index from index file lugi, if index doesn"t already exist.
-!> - =0 to get index buffer from the grib file, if index
+!> calling this routine. lugi may be:
+!> - > 0 read index from index file lugi, if index doesn"t already exist.
+!> - = 0 to get index buffer from the grib file, if index
 !> doesn"t already exist.
-!> - <0 force reread of index from index file abs(lugi).
-!> - =lugb force regeneration of index from grib2 file lugb.
-!> @param[in] J integer number of fields to skip
-!> (=0 to search from beginning)
-!> @param[in] JDISC grib2 discipline number of requested field
-!> (if = -1, accept any discipline see code table 0.0)
+!> - < 0 force reread of index from index file abs(lugi).
+!> - = lugb force regeneration of index from GRIB2 file lugb.
+!> @param[in] j integer number of fields to skip (0 to search from
+!> beginning).
+!> @param[in] jdisc GRIB2 discipline number of requested field:
+!> --1 accept any discipline
 !> - 0 meteorological products
 !> - 1 hydrological products
 !> - 2 land surface products
@@ -88,20 +83,20 @@
 !> products; 3 control forecast products; 4 perturbed forecast products;
 !> 5 control and perturbed forecast products; 6 processed satellite
 !> observations; 7 processed radar observations.
-!> @param[in] JPDTN integer product definition template number (n)
+!> @param[in] jpdtn integer product definition template number (n)
 !> (if = -1, don't bother matching pdt - accept any)
 !> @param[in] JPDT integer array of values defining the product definition
 !> template 4.n of the field for which to search (=-9999 for wildcard)
-!> @param[in] JGDTN integer grid definition template number (m)
+!> @param[in] jgdtn integer grid definition template number (m)
 !> (if = -1, don't bother matching gdt - accept any )
 !> @param[in] JGDT integer array of values defining the grid definition
 !> template 3.m of the field for which to search (=-9999 for wildcard)
-!> @param[in] UNPACK logical value indicating whether to unpack bitmap/data
+!> @param[in] unpack logical value indicating whether to unpack bitmap/data
 !> - .TRUE. unpack bitmap and data values
 !> - .FALSE. do not unpack bitmap and data values
-!> @param[out] K integer field number unpacked
-!> @param[out] GFLD derived type @ref grib_mod::gribfield.
-!> @param[out] IRET integer return code
+!> @param[out] k integer field number unpacked
+!> @param[out] gfld derived type @ref grib_mod::gribfield.
+!> @param[out] iret integer return code
 !> - 0 all ok
 !> - 96 error reading index
 !> - 97 error reading grib file
@@ -109,51 +104,66 @@
 !> - other gf_getfld grib2 unpacker return code
 !>
 !> @author Mark Iredell @date 1994-04-01
-SUBROUTINE GETGB2(LUGB, LUGI, J, JDISC, JIDS, JPDTN, JPDT, JGDTN, JGDT,  &
-     UNPACK, K, GFLD, IRET)
-  USE GRIB_MOD
+subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+     unpack, k, gfld, iret)
+  use grib_mod
   implicit none
 
-  INTEGER, INTENT(IN) :: LUGB, LUGI, J, JDISC, JPDTN, JGDTN
-  INTEGER, DIMENSION(:) :: JIDS(*), JPDT(*), JGDT(*)
-  LOGICAL, INTENT(IN) :: UNPACK
-  INTEGER, INTENT(OUT) :: K, IRET
-  TYPE(GRIBFIELD), INTENT(OUT) :: GFLD
-  CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
-  integer :: nnum, nlen, lpos, jk, irgi, irgs
+  integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
+  integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
+  logical, intent(in) :: unpack
+  integer, intent(out) :: k, iret
+  type(gribfield), intent(out) :: gfld
+  character(len = 1), pointer, dimension(:) :: cbuf
+  integer :: nnum, nlen, lpos, jk, irgi, irgs, idxver
 
   ! Declare interfaces (required for cbuf pointer).
-  INTERFACE
-     SUBROUTINE GETIDX(LUGB, LUGI, CBUF, NLEN, NNUM, IRGI)
-       CHARACTER(LEN = 1), POINTER, DIMENSION(:) :: CBUF
-       INTEGER, INTENT(IN) :: LUGB, LUGI
-       INTEGER, INTENT(OUT) :: NLEN, NNUM, IRGI
-     END SUBROUTINE GETIDX
-  END INTERFACE
+  interface
+     subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+       integer, intent(in) :: lugb, lugi, idxver
+       character(len = 1), pointer, dimension(:) :: cindex
+       integer, intent(out) :: nlen, nnum, iret
+     end subroutine getidx2
+     subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+          jgdt, k, gfld, lpos, iret)
+       import gribfield
+       character(len = 1), intent(in) :: cbuf(nlen)
+       integer, intent(in) :: idxver, nlen, nnum, j, jdisc
+       integer, dimension(:) :: jids(*)
+       integer, intent(in) :: jpdtn
+       integer, dimension(:) :: jpdt(*)
+       integer, intent(in) :: jgdtn
+       integer, dimension(:) :: jgdt(*)
+       integer, intent(out) :: k
+       type(gribfield), intent(out) :: gfld
+       integer, intent(out) :: lpos, iret
+     end subroutine getgb2s2
+  end interface
 
   ! Determine whether index buffer needs to be initialized.
-  IRGI = 0
-  CALL GETIDX(LUGB, LUGI, CBUF, NLEN, NNUM, IRGI)
-  IF (IRGI .GT. 1) THEN
-     IRET = 96
-     RETURN
-  ENDIF
+  irgi = 0
+  idxver = 1
+  call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, irgi)
+  if (irgi .gt. 1) then
+     iret = 96
+     return
+  endif
 
-  ! Search index buffer.
-  CALL GETGB2S(CBUF, NLEN, NNUM, J, JDISC, JIDS, JPDTN, JPDT, JGDTN, JGDT,  JK, &
-       GFLD, LPOS, IRGS)
-  IF (IRGS .NE. 0) THEN
-     IRET = 99
-     CALL GF_FREE(GFLD)
-     RETURN
-  ENDIF
+  ! search index buffer.
+  call getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  jk, &
+       gfld, lpos, irgs)
+  if (irgs .ne. 0) then
+     iret = 99
+     call gf_free(gfld)
+     return
+  endif
 
   ! Read local use section, if available.
-  CALL GETGB2L(LUGB, CBUF(LPOS), GFLD, IRET)
+  call getgb2l(lugb, cbuf(lpos), gfld, iret)
 
   ! Read and unpack grib record.
-  IF (UNPACK) THEN
-     CALL GETGB2R(LUGB, CBUF(LPOS), GFLD, IRET)
-  ENDIF
-  K = JK
-END SUBROUTINE GETGB2
+  if (unpack) then
+     call getgb2r(lugb, cbuf(lpos), gfld, iret)
+  endif
+  k = jk
+end subroutine getgb2
