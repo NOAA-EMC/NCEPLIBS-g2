@@ -21,7 +21,7 @@ program test_getidx
   integer :: lugb = 3
   integer :: nlen, nnum, iret
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer :: total_bytes, grib_version, discipline, field_number, i
+  integer :: total_bytes, grib_version, discipline, field_number, i, idxver
 
   integer :: lu_gdas = 4, lu_gdas_index = 5
 
@@ -56,7 +56,8 @@ program test_getidx
      ! Get the index info, telling getidx() to generate it directly from
      ! the GRIB2 file.
      lugi = 0
-     call getidx(lugb, lugi, cbuf, nlen, nnum, iret)
+     idxver = 1
+     call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
      if (iret .ne. 0) stop 101
      if (nlen .ne. 137600 .or. nnum .ne. 688) stop 102
      print *, 'nlen, nnum: ', nlen, nnum
