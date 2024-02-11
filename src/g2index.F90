@@ -510,7 +510,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
   iseek = 0_8
   call skgb8(lugb, iseek, msk1, lskip, lgrib)
   do m = 1, mnum
-     if(lgrib.gt.0) then
+     if (lgrib .gt. 0) then
         iseek = lskip + lgrib
         call skgb8(lugb, iseek, msk2, lskip, lgrib)
      endif
@@ -520,7 +520,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
   nlen = 0
   nnum = 0
   nmess = mnum
-  do while(iret .eq. 0 .and. lgrib .gt. 0)
+  do while (iret .eq. 0 .and. lgrib .gt. 0)
      lgrib4 = int(lgrib, kind(4))
      call ix2gb2(lugb, lskip, idxver, lgrib4, cbuftmp, numfld, nbytes, iret1)
      if (iret1 .ne. 0) print *, ' SAGT ', numfld, nbytes, iret1
@@ -539,7 +539,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
      if (associated(cbuftmp)) then
         cbuf(nlen + 1 : nlen + nbytes) = cbuftmp(1 : nbytes)
         deallocate(cbuftmp, stat = istat)
-        if (istat.ne.0) then
+        if (istat .ne. 0) then
            print *, ' deallocating cbuftmp ... ', istat
            iret = 3
            return

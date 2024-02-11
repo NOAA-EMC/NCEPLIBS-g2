@@ -142,7 +142,7 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 
   ! Determine whether index buffer needs to be initialized.
   irgi = 0
-  idxver = 1
+  idxver = 2
   call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, irgi)
   if (irgi .gt. 1) then
      iret = 96
