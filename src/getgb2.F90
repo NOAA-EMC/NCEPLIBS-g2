@@ -138,6 +138,13 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        type(gribfield), intent(out) :: gfld
        integer, intent(out) :: lpos, iret
      end subroutine getgb2s2
+     subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
+       use grib_mod
+       integer, intent(in) :: lugb, idxver
+       character(len = 1), intent(in) :: cindex(*)
+       type(gribfield) :: gfld
+       integer, intent(out) :: iret
+     end subroutine getgb2l2
   end interface
 
   ! Determine whether index buffer needs to be initialized.
@@ -159,7 +166,7 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   endif
 
   ! Read local use section, if available.
-  call getgb2l(lugb, cbuf(lpos), gfld, iret)
+  call getgb2l2(lugb, idxver, cbuf(lpos), gfld, iret)
 
   ! Read and unpack grib record.
   if (unpack) then
@@ -248,9 +255,13 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
   integer, intent(out) :: iret
 
   integer :: lskip, skip2
+  integer (kind = 8) :: lskip8, iskip8, lread8, ilen8
   character(len = 1):: csize(4)
   character(len = 1), allocatable :: ctemp(:)
   integer :: ilen, iofst, iskip, lread, ierr
+  integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
+  parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
+  integer :: mypos
 
   interface
      subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
@@ -266,21 +277,32 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
   ! Get info.
   nullify(gfld%local)
   iret = 0
-  call g2_gbytec(cindex, lskip, 4 * 8, 4 * 8)
-  call g2_gbytec(cindex, skip2, 8 * 8, 4 * 8)
+  mypos = INT4_BITS
+  if (idxver .eq. 1) then
+     call g2_gbytec(cindex, lskip, mypos, INT4_BITS)
+     mypos = mypos + INT4_BITS
+  else
+     call g2_gbytec8(cindex, lskip8, mypos, INT8_BITS)
+     lskip = int(lskip8, kind(4))
+     mypos = mypos + INT8_BITS
+  endif
+  call g2_gbytec(cindex, skip2, mypos, INT4_BITS)
 
   ! Read and unpack local use section, if present.
   if (skip2 .ne. 0) then
      iskip = lskip + skip2
+     iskip8 = lskip8 + skip2
 
      ! Get length of section.
-     call baread(lugb, iskip, 4, lread, csize)    
+     call bareadl(lugb, iskip8, 4_8, lread8, csize)    
+!     call baread(lugb, iskip, 4, lread, csize)    
      call g2_gbytec(csize, ilen, 0, 32)
      allocate(ctemp(ilen))
+     ilen8 = ilen
 
      ! Read in section.
-     call baread(lugb, iskip, ilen, lread, ctemp)  
-     if (ilen .ne. lread) then
+     call bareadl(lugb, iskip8, ilen8, lread8, ctemp)  
+     if (ilen8 .ne. lread8) then
         iret = 97
         deallocate(ctemp)
         return
