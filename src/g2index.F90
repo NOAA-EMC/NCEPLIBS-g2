@@ -1164,17 +1164,11 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         mypos = mypos + INT4_BITS
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
         mypos = mypos + INT4_BITS * 4 ! skip ahead in cbuf
-        print *, 'total_bytes mypos ', mypos
         call g2_sbytec(cindex, lgrib, mypos, INT8_BITS)    ! len of grib2
         mypos = mypos + INT8_BITS
-        print *, 'storing cver at byte, bit', mypos/8 + 1, ((mypos / 8) + 1) * 8
         cindex((mypos / 8) + 1) = cver
         mypos = mypos + INT1_BITS
         cindex((mypos / 8) + 1) = cdisc
-        print '(z2.2)', cindex((mypos / 8) - 1)
-        print '(z2.2)', cindex((mypos / 8) + 0)
-        print '(z2.2)', cindex((mypos / 8) + 1)
-        print '(z2.2)', cindex((mypos / 8) + 2)
         mypos = mypos + INT1_BITS
         call g2_sbytec(cindex, numfld + 1, mypos, INT2_BITS)   ! field num
         mypos = mypos + INT2_BITS

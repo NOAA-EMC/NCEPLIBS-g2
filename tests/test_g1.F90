@@ -56,9 +56,9 @@ program test_getidx
      else
         if (nlen .ne. 204) stop 23
      endif
-     do j = 1, nlen
-        print '(i3, x, z2.2)', j, cbuf(j)
-     end do
+     ! do j = 1, nlen
+     !    print '(i3, x, z2.2)', j, cbuf(j)
+     ! end do
 
      ! Break out the index record into component values and check them for correctness.
      mypos = 0
@@ -103,17 +103,11 @@ program test_getidx
      
      if (total_bytes .ne. 15254) stop 39
      mypos = mypos + INT8_BITS
-     print *, 'test_getidx expecting grib_version after byte, bit ', mypos, mypos/8
-     print '(z2.2)', cbuf(mypos/8 + 0)
-     print '(z2.2)', cbuf(mypos/8 + 1)
-     print '(z2.2)', cbuf(mypos/8 + 2)
-     print '(z2.2)', cbuf(mypos/8 + 3)
      call g2_gbytec(cbuf, grib_version, mypos, INT1_BITS)
      print *, grib_version, mypos
      if (grib_version .ne. 2) stop 40
      mypos = mypos + INT1_BITS
      call g2_gbytec(cbuf, discipline, mypos, INT1_BITS)
-     print *, 'discipline', discipline
      if (discipline .ne. 0) stop 41
      mypos = mypos + INT1_BITS
      call g2_gbytec(cbuf, field_number, mypos, INT2_BITS)
