@@ -258,7 +258,7 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
   integer (kind = 8) :: lskip8, iskip8, lread8, ilen8
   character(len = 1):: csize(4)
   character(len = 1), allocatable :: ctemp(:)
-  integer :: ilen, iofst, iskip, lread, ierr
+  integer :: ilen, iofst, ierr
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos
@@ -281,21 +281,19 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
   if (idxver .eq. 1) then
      call g2_gbytec(cindex, lskip, mypos, INT4_BITS)
      mypos = mypos + INT4_BITS
+     lskip8 = lskip
   else
      call g2_gbytec8(cindex, lskip8, mypos, INT8_BITS)
-     lskip = int(lskip8, kind(4))
      mypos = mypos + INT8_BITS
   endif
   call g2_gbytec(cindex, skip2, mypos, INT4_BITS)
 
   ! Read and unpack local use section, if present.
   if (skip2 .ne. 0) then
-     iskip = lskip + skip2
      iskip8 = lskip8 + skip2
 
      ! Get length of section.
      call bareadl(lugb, iskip8, 4_8, lread8, csize)    
-!     call baread(lugb, iskip, 4, lread, csize)    
      call g2_gbytec(csize, ilen, 0, 32)
      allocate(ctemp(ilen))
      ilen8 = ilen
