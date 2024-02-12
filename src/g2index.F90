@@ -1178,7 +1178,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         mypos = mypos + INT1_BITS
         call g2_sbytec(cindex, numfld + 1, mypos, INT2_BITS)   ! field num
         mypos = mypos + INT2_BITS
-        cindex(ixids + 1:ixids + lensec1) = cids(1:lensec1)
+        cindex(ixids + 1 + inc:ixids + lensec1 + inc) = cids(1:lensec1)
         lindex = ixids + lensec1 + inc
         cindex(lindex + 1:lindex + lengds8) = cgds(1:lengds8)
         lindex = lindex + int(lengds8, kind(lindex))

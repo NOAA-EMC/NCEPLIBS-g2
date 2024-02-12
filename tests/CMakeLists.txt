@@ -39,6 +39,7 @@ endfunction()
 # Some very small test files may be committed to the repo. This
 # function copies such a data file to the build directory.
 function(copy_test_data name)
+  message(STATUS "Copying test file ${name}")
   file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${name}"
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
@@ -133,6 +134,7 @@ endif()
 # Copy test data files that are in the repo to the build directory.
 copy_test_data(testdata_g2grids)
 copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.grb2index)
+copy_test_data(g1.grib2)
 copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 copy_test_data(ref_test_jpcpack_4_output.txt)
 
@@ -142,6 +144,7 @@ foreach(kind ${kinds})
 #  create_test(test_g2cf ${kind})
   create_test(test_misc ${kind})
   create_test(test_g2 ${kind})
+  create_test(test_g1 ${kind})
   create_test(test_g2_encode ${kind})
   create_test(test_g2_decode ${kind})
   create_test(test_gridtemplates ${kind})

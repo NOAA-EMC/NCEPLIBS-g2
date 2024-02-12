@@ -44,8 +44,7 @@ program test_getidx
 
   print *, 'Testing the getidx() subroutine - expect and ignore error messages during test...'
 
-  !do i = 1, 2
-  do i = 1, 1
+  do i = 1, 2
      ! Open a real GRIB2 file.
      print *, 'Indexing a real GRIB2 file: ', TEST_FILE_WW3_WEST
      call baopenr(lugb, TEST_FILE_WW3_WEST, iret)
