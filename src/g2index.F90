@@ -837,7 +837,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
      ! Get length of ids.
      call g2_gbytec(cbuf, lsec1, (ipos + inc + 44) * 8, 4 * 8)  
      iof = 0
-     call gf_unpack1(cbuf(ipos + 45), lsec1, iof, gfld%idsect, gfld%idsectlen, icnd)
+     call gf_unpack1(cbuf(ipos + inc + 45), lsec1, iof, gfld%idsect, gfld%idsectlen, icnd)
      if (icnd .eq. 0) then
         match1 = .true.
         do i = 1, gfld%idsectlen
@@ -924,7 +924,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
 
      ! If request is found set values for derived type gfld and return.
      if (match1 .and. match3 .and. match4) then
-        lpos = ipos + 1
+        lpos = ipos + inc + 1
         call g2_gbytec(cbuf, gfld%version, (ipos + inc + 40) * 8, 1 * 8)
         call g2_gbytec(cbuf, gfld%ifldnum, (ipos + inc + 42) * 8, 2 * 8)
         gfld%unpacked = .false.
