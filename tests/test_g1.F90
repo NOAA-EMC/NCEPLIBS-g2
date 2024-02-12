@@ -1,9 +1,11 @@
 ! This is a test program for NCEPLIBS-g2.
 !
-! This program tests getidx().
+! This program tests getidx() with a file containing only one GRIB2
+! message, the first message from file
+! gdaswave.t00z.wcoast.0p16.f000.grib2.
 !
-! Ed Hartnett 7/26/22
-program test_getidx
+! Ed Hartnett 2/12/24
+program test_g1
   use bacio_module
   implicit none
 
@@ -14,10 +16,10 @@ program test_getidx
   integer :: lugb = 3
   integer :: nlen, nnum, iret
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer :: total_bytes, grib_version, discipline, field_number, i, idxver, j
+  integer :: total_bytes, grib_version, discipline, field_number, i, idxver
   integer (kind = 8) :: b2s_message8
 
-  integer :: lu_gdas = 4, lu_gdas_index = 5, mypos
+  integer :: mypos
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
 
@@ -127,4 +129,4 @@ program test_getidx
   
   print *, 'SUCCESS!...'
 
-end program test_getidx
+end program test_g1
