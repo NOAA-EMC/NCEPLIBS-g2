@@ -121,7 +121,7 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
   integer, parameter :: maxidx = 10000
   integer (kind = 8), parameter :: msk1 = 32000_8, msk2 = 4000_8
   integer :: lux
-  integer :: irgi, mskp, nmess, i, myidxver
+  integer :: irgi, mskp, nmess, i
 
   type gindex
      integer :: nlen
@@ -924,7 +924,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
 
      ! If request is found set values for derived type gfld and return.
      if (match1 .and. match3 .and. match4) then
-        lpos = ipos + inc + 1
+        lpos = ipos + 1
         call g2_gbytec(cbuf, gfld%version, (ipos + inc + 40) * 8, 1 * 8)
         call g2_gbytec(cbuf, gfld%ifldnum, (ipos + inc + 42) * 8, 2 * 8)
         gfld%unpacked = .false.
