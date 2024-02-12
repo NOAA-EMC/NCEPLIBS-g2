@@ -1,11 +1,12 @@
 !> @file
 !> @brief Read and unpack a local use section from a GRIB2 index
-!> record.
+!> record and file.
 !> @author Stephen Gilbert @date 2002-05-07
 
-!> Read and unpack a local use section from a GRIB2 index record.
+!> Read and unpack a local use section from a GRIB2 index record and
+!> file.
 !>
-!> This subroutine decodes information for the selected grib field and
+!> This subroutine decodes information for the selected GRIB2 field and
 !> returns it in a derived type variable, gfld. gfld is of type @ref
 !> grib_mod::gribfield. Users of this routine will need to include the
 !> line "use grib_mod" in their calling routine.
@@ -31,6 +32,54 @@ subroutine getgb2l(lugb, cindex, gfld, iret)
   implicit none
 
   integer, intent(in) :: lugb
+  character(len = 1), intent(in) :: cindex(*)
+  type(gribfield) :: gfld
+  integer, intent(out) :: iret
+
+  interface
+     subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
+       use grib_mod
+       integer, intent(in) :: lugb, idxver
+       character(len = 1), intent(in) :: cindex(*)
+       type(gribfield) :: gfld
+       integer, intent(out) :: iret
+     end subroutine getgb2l2
+  end interface
+
+  call getgb2l2(lugb, 1, cindex, gfld, iret)
+
+end subroutine getgb2l
+  
+!> Read and unpack a local use section from a GRIB2 index record and
+!> file.
+!>
+!> This subroutine decodes information for the selected GRIB2 field and
+!> returns it in a derived type variable, gfld. gfld is of type @ref
+!> grib_mod::gribfield. Users of this routine will need to include the
+!> line "use grib_mod" in their calling routine.
+!>
+!> This subprogram is intended for private use by getgb2() routine
+!> only.
+!>
+!> Note that derived type gribfield contains pointers to many arrays
+!> of data. Users must free this memory with gf_free().
+!>
+!> @param[in] lugb integer unit of the unblocked grib data file.
+!> @param[in] idxver Index version of the cindex buffer.
+!> @param[in] cindex index record of the grib field (see ix2gb2() for
+!> description of an index record.)
+!> @param[out] gfld derived type gribfield @ref grib_mod::gribfield.
+!> @param[out] iret integer return code
+!> - 0 all ok
+!> - 97 error reading grib file
+!> - other gf_getfld grib2 unpacker return code
+!>
+!> @author Stephen Gilbert @date 2002-05-07
+subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
+  use grib_mod
+  implicit none
+
+  integer, intent(in) :: lugb, idxver
   character(len = 1), intent(in) :: cindex(*)
   type(gribfield) :: gfld
   integer, intent(out) :: iret
@@ -84,4 +133,4 @@ subroutine getgb2l(lugb, cindex, gfld, iret)
   else
      gfld%locallen = 0
   endif
-end subroutine getgb2l
+end subroutine getgb2l2
