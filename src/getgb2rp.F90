@@ -110,7 +110,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos
-  integer (kind = 8) :: lread8, iskip8, leng8, len2_8, len7_8
+  integer (kind = 8) :: lread8, iskip8, leng8, len2_8, len7_8, len6_8
 
   iret = 0
 
@@ -206,10 +206,12 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
         lencur = lencur + len6
      else
         call g2_gbytec(cindex, iskp6, 24*8, INT4_BITS)    ! bytes to skip for section 6
-        call baread(lugb, iskip + iskp6, 4, lread, ctemp)
+        !call baread(lugb, iskip + iskp6, 4, lread, ctemp)
+        call bareadl(lugb, iskip8 + iskp6, 4_8, lread8, ctemp)
         call g2_gbytec(ctemp, len6, 0, INT4_BITS)      ! length of section 6
         allocate(csec6(len6))
-        call baread(lugb, iskip + iskp6, len6, lread, csec6)
+        len6_8 = len6
+        call bareadl(lugb, iskip8 + iskp6, len6_8, lread8, csec6)
         gribm(lencur + 1:lencur + len6) = csec6(1:len6)
         lencur = lencur + len6
         if (allocated(csec6)) deallocate(csec6)
