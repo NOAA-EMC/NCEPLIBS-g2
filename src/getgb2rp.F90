@@ -158,7 +158,8 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      call bareadl(lugb, int(iskip + iskp7, kind(8)), 4_8, lread8, ctemp)
      call g2_gbytec(ctemp, len7, 0, INT4_BITS)      ! length of section 7
      allocate(csec7(len7))
-     call baread(lugb, iskip + iskp7, len7, lread, csec7)
+     !call baread(lugb, iskip + iskp7, len7, lread, csec7)
+     call bareadl(lugb, int(iskip + iskp7, kind(8)), int(len7, kind(8)), lread8, csec7)
 
      leng = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
      if (.not. associated(gribm)) allocate(gribm(leng))
