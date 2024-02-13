@@ -14,16 +14,14 @@ program test_getgb2rp
   logical :: extract
   integer :: leng
   character(len=1), pointer, dimension(:) :: gribm
-  integer :: idxver = 1
   
   ! Interfaces are needed due to pointers in the parameter lists.
   interface
-     subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+     subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
        integer, intent(in) :: lugb, lugi
-       integer, intent(inout) :: idxver
-       character(len = 1), pointer, dimension(:) :: cindex
        integer, intent(out) :: nlen, nnum, iret
-     end subroutine getidx2
+       character(len = 1), pointer, dimension(:) :: cindex
+     end subroutine getidx
   end interface
 
   interface
@@ -44,7 +42,7 @@ program test_getgb2rp
   if (iret .ne. 0) stop 100
 
   lugi = 0
-  call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
+  call getidx(lugb, lugi, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 101
   if (nlen .ne. 137600 .or. nnum .ne. 688) stop 102
   print *, 'nlen, nnum: ', nlen, nnum
