@@ -104,7 +104,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer, parameter :: zero = 0
   character(len = 1), allocatable, dimension(:) :: csec2, csec6, csec7
   character(len = 4) :: ctemp
-  integer :: lencur, len0, ibmap, ipos, iskip
+  integer :: lencur, len0, ibmap = 0, ipos, iskip
   integer :: len7, len8, len3, len4, len5, len6, len1, len2
   integer :: iskp2, iskp6, iskp7
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
