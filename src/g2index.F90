@@ -121,7 +121,7 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
   integer, parameter :: maxidx = 10000
   integer (kind = 8), parameter :: msk1 = 32000_8, msk2 = 4000_8
   integer :: lux
-  integer :: irgi, mskp, nmess, i, myidxver
+  integer :: irgi, mskp, nmess, i
 
   type gindex
      integer :: nlen
@@ -837,7 +837,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
      ! Get length of ids.
      call g2_gbytec(cbuf, lsec1, (ipos + inc + 44) * 8, 4 * 8)  
      iof = 0
-     call gf_unpack1(cbuf(ipos + 45), lsec1, iof, gfld%idsect, gfld%idsectlen, icnd)
+     call gf_unpack1(cbuf(ipos + inc + 45), lsec1, iof, gfld%idsect, gfld%idsectlen, icnd)
      if (icnd .eq. 0) then
         match1 = .true.
         do i = 1, gfld%idsectlen

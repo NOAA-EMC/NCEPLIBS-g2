@@ -138,6 +138,13 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        type(gribfield), intent(out) :: gfld
        integer, intent(out) :: lpos, iret
      end subroutine getgb2s2
+     subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
+       use grib_mod
+       integer, intent(in) :: lugb, idxver
+       character(len = 1), intent(in) :: cindex(*)
+       type(gribfield) :: gfld
+       integer, intent(out) :: iret
+     end subroutine getgb2l2
   end interface
 
   ! Determine whether index buffer needs to be initialized.
@@ -159,7 +166,7 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   endif
 
   ! Read local use section, if available.
-  call getgb2l(lugb, cbuf(lpos), gfld, iret)
+  call getgb2l2(lugb, idxver, cbuf(lpos), gfld, iret)
 
   ! Read and unpack grib record.
   if (unpack) then
@@ -167,3 +174,146 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   endif
   k = jk
 end subroutine getgb2
+
+!> Read and unpack a local use section from a GRIB2 index record
+!> (index format 1) and GRIB2 file.
+!>
+!> This subprogram is intended for private use by getgb2() routine
+!> only.
+!>
+!> Note that derived type gribfield contains pointers to many arrays
+!> of data. Users must free this memory with gf_free().
+!>
+!> This subroutine supports only index format 1, which will not work
+!> for files > 2 GB. New code should use getgb2l2().
+!>
+!> @param[in] lugb integer unit of the unblocked grib data file.
+!> @param[in] cindex index record of the grib field (see ix2gb2() for
+!> description of an index record.)
+!> @param[out] gfld derived type gribfield @ref grib_mod::gribfield.
+!> @param[out] iret integer return code
+!> - 0 all ok
+!> - 97 error reading grib file
+!> - other gf_getfld grib2 unpacker return code
+!>
+!> @author Stephen Gilbert @date 2002-05-07
+subroutine getgb2l(lugb, cindex, gfld, iret)
+  use grib_mod
+  implicit none
+
+  integer, intent(in) :: lugb
+  character(len = 1), intent(in) :: cindex(*)
+  type(gribfield) :: gfld
+  integer, intent(out) :: iret
+
+  interface
+     subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
+       use grib_mod
+       integer, intent(in) :: lugb, idxver
+       character(len = 1), intent(in) :: cindex(*)
+       type(gribfield) :: gfld
+       integer, intent(out) :: iret
+     end subroutine getgb2l2
+  end interface
+
+  call getgb2l2(lugb, 1, cindex, gfld, iret)
+
+end subroutine getgb2l
+  
+!> Read and unpack a local use section from a GRIB2 index record
+!> (index format 1 or 2) and GRIB2 file.
+!>
+!> This subroutine decodes information for the selected GRIB2 field and
+!> returns it in a derived type variable, gfld. gfld is of type @ref
+!> grib_mod::gribfield. Users of this routine will need to include the
+!> line "use grib_mod" in their calling routine.
+!>
+!> This subprogram is intended for private use by getgb2() routine
+!> only.
+!>
+!> Note that derived type gribfield contains pointers to many arrays
+!> of data. Users must free this memory with gf_free().
+!>
+!> @param[in] lugb integer unit of the unblocked grib data file.
+!> @param[in] idxver Index version of the cindex buffer.
+!> @param[in] cindex index record of the grib field (see ix2gb2() for
+!> description of an index record.)
+!> @param[out] gfld derived type gribfield @ref grib_mod::gribfield.
+!> @param[out] iret integer return code
+!> - 0 all ok
+!> - 97 error reading grib file
+!> - other gf_getfld grib2 unpacker return code
+!>
+!> @author Stephen Gilbert @date 2002-05-07
+subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
+  use grib_mod
+  implicit none
+
+  integer, intent(in) :: lugb, idxver
+  character(len = 1), intent(in) :: cindex(*)
+  type(gribfield) :: gfld
+  integer, intent(out) :: iret
+
+  integer :: lskip, skip2
+  integer (kind = 8) :: lskip8, iskip8, lread8, ilen8
+  character(len = 1):: csize(4)
+  character(len = 1), allocatable :: ctemp(:)
+  integer :: ilen, iofst, ierr
+  integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
+  parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
+  integer :: mypos
+
+  interface
+     subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
+       character(len = 1), intent(in) :: cgrib(lcgrib)
+       integer, intent(in) :: lcgrib
+       integer, intent(inout) :: iofst
+       integer, intent(out) :: lencsec2
+       integer, intent(out) :: ierr
+       character(len = 1), pointer, dimension(:) :: csec2
+     end subroutine gf_unpack2
+  end interface
+
+  ! Get info.
+  nullify(gfld%local)
+  iret = 0
+  mypos = INT4_BITS
+  if (idxver .eq. 1) then
+     call g2_gbytec(cindex, lskip, mypos, INT4_BITS)
+     mypos = mypos + INT4_BITS
+     lskip8 = lskip
+  else
+     call g2_gbytec8(cindex, lskip8, mypos, INT8_BITS)
+     mypos = mypos + INT8_BITS
+  endif
+  call g2_gbytec(cindex, skip2, mypos, INT4_BITS)
+
+  ! Read and unpack local use section, if present.
+  if (skip2 .ne. 0) then
+     iskip8 = lskip8 + skip2
+
+     ! Get length of section.
+     call bareadl(lugb, iskip8, 4_8, lread8, csize)    
+     call g2_gbytec(csize, ilen, 0, 32)
+     allocate(ctemp(ilen))
+     ilen8 = ilen
+
+     ! Read in section.
+     call bareadl(lugb, iskip8, ilen8, lread8, ctemp)  
+     if (ilen8 .ne. lread8) then
+        iret = 97
+        deallocate(ctemp)
+        return
+     endif
+     iofst = 0
+     call gf_unpack2(ctemp, ilen, iofst, gfld%locallen, gfld%local, ierr)
+     if (ierr .ne. 0) then
+        iret = 98
+        deallocate(ctemp)
+        return
+     endif
+     deallocate(ctemp)
+  else
+     gfld%locallen = 0
+  endif
+end subroutine getgb2l2
