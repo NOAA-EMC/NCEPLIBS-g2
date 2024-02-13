@@ -110,7 +110,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos
-  integer (kind = 8) :: lread8, iskip8, leng8
+  integer (kind = 8) :: lread8, iskip8, leng8, len2_8, len7_8
 
   iret = 0
 
@@ -122,6 +122,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      if (idxver .eq. 1) then
         call g2_gbytec(cindex, iskip, mypos, INT4_BITS)    ! bytes to skip in file
         mypos = mypos + INT4_BITS
+        iskip8 = iskip
      else
         call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
@@ -129,10 +130,11 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      endif
      call g2_gbytec(cindex, iskp2, mypos, INT4_BITS)    ! bytes to skip for section 2
      if (iskp2 .gt. 0) then
-        call baread(lugb, iskip + iskp2, 4, lread, ctemp)
+        call bareadl(lugb, iskip8 + iskp2, 4_8, lread8, ctemp)
         call g2_gbytec(ctemp, len2, 0, INT4_BITS)      ! length of section 2
         allocate(csec2(len2))
-        call baread(lugb, iskip + iskp2, len2, lread, csec2)
+        len2_8 = len2
+        call bareadl(lugb, iskip8 + iskp2, len2_8, lread8, csec2)
      else
         len2 = 0
      endif
@@ -149,16 +151,20 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      call g2_gbytec(cindex, ibmap, ipos*8, 1*8)      ! bitmap indicator
      if (ibmap .eq. 254) then
         call g2_gbytec(cindex, iskp6, 24*8, INT4_BITS)    ! bytes to skip for section 6
-        call baread(lugb, iskip + iskp6, 4, lread, ctemp)
+        !call baread(lugb, iskip + iskp6, 4, lread, ctemp)
+        call bareadl(lugb, iskip8 + iskp6, 4_8, lread8, ctemp)
         call g2_gbytec(ctemp, len6, 0, INT4_BITS)      ! length of section 6
      endif
 
      !  read in section 7 from file
      call g2_gbytec(cindex, iskp7, 28*8, INT4_BITS)    ! bytes to skip for section 7
-     call baread(lugb, iskip + iskp7, 4, lread, ctemp)
+     !call baread(lugb, iskip + iskp7, 4, lread, ctemp)
+     call bareadl(lugb, iskip8 + iskp7, 4_8, lread8, ctemp)
      call g2_gbytec(ctemp, len7, 0, INT4_BITS)      ! length of section 7
      allocate(csec7(len7))
-     call baread(lugb, iskip + iskp7, len7, lread, csec7)
+     !call baread(lugb, iskip + iskp7, len7, lread, csec7)
+     len7_8 = len7
+     call bareadl(lugb, iskip8 + iskp7, len7_8, lread8, csec7)
 
      leng = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
      if (.not. associated(gribm)) allocate(gribm(leng))
