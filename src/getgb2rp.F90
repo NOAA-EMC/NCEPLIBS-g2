@@ -110,7 +110,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos
-  integer (kind = 8) :: lread8, iskip8
+  integer (kind = 8) :: lread8, iskip8, leng8
 
   iret = 0
 
@@ -226,16 +226,17 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      if (idxver .eq. 1) then
         call g2_gbytec(cindex, iskip, mypos, INT4_BITS)    ! bytes to skip in file
         mypos = mypos + INT4_BITS
+        iskip8 = iskip
      else
         call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
-        iskip = int(iskip8, kind(4))
      endif
      mypos = mypos + 7 * INT4_BITS
      call g2_gbytec(cindex, leng, mypos, INT4_BITS)      ! length of grib message
      if (.not. associated(gribm)) allocate(gribm(leng))
-     call baread(lugb, iskip, leng, lread, gribm)
-     if (leng .ne. lread ) then
+     leng8 = leng
+     call bareadl(lugb, iskip8, leng8, lread8, gribm)
+     if (leng8 .ne. lread8) then
         deallocate(gribm)
         nullify(gribm)
         iret = 97
