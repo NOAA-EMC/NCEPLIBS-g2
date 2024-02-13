@@ -510,7 +510,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
   iseek = 0_8
   call skgb8(lugb, iseek, msk1, lskip, lgrib)
   do m = 1, mnum
-     if(lgrib.gt.0) then
+     if (lgrib .gt. 0) then
         iseek = lskip + lgrib
         call skgb8(lugb, iseek, msk2, lskip, lgrib)
      endif
@@ -520,7 +520,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
   nlen = 0
   nnum = 0
   nmess = mnum
-  do while(iret .eq. 0 .and. lgrib .gt. 0)
+  do while (iret .eq. 0 .and. lgrib .gt. 0)
      lgrib4 = int(lgrib, kind(4))
      call ix2gb2(lugb, lskip, idxver, lgrib4, cbuftmp, numfld, nbytes, iret1)
      if (iret1 .ne. 0) print *, ' SAGT ', numfld, nbytes, iret1
@@ -539,7 +539,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
      if (associated(cbuftmp)) then
         cbuf(nlen + 1 : nlen + nbytes) = cbuftmp(1 : nbytes)
         deallocate(cbuftmp, stat = istat)
-        if (istat.ne.0) then
+        if (istat .ne. 0) then
            print *, ' deallocating cbuftmp ... ', istat
            iret = 3
            return
@@ -820,7 +820,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
      k = k + 1
      ! Get length of current index record.
      call g2_gbytec(cbuf, inlen, ipos * 8, 4 * 8)    
-     if (k.le.j) then           ! skip this index
+     if (k .le. j) then           ! skip this index
         ipos = ipos + inlen
         cycle
      endif
@@ -1163,17 +1163,17 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         call g2_sbytec(cindex, locgds, mypos, INT4_BITS)   ! location of gds
         mypos = mypos + INT4_BITS
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
-        mypos = mypos + INT4_BITS * 5 ! skip ahead in cbuf
-        call g2_sbytec(cindex, lgrib, mypos, INT4_BITS)    ! len of grib2
-        mypos = mypos + INT4_BITS
-        cindex(int(mypos / 8) + 1) = cver
+        mypos = mypos + INT4_BITS * 4 ! skip ahead in cbuf
+        call g2_sbytec(cindex, lgrib, mypos, INT8_BITS)    ! len of grib2
+        mypos = mypos + INT8_BITS
+        cindex((mypos / 8) + 1) = cver
         mypos = mypos + INT1_BITS
-        cindex(int(mypos / 8) + 1) = cdisc
+        cindex((mypos / 8) + 1) = cdisc
         mypos = mypos + INT1_BITS
         call g2_sbytec(cindex, numfld + 1, mypos, INT2_BITS)   ! field num
         mypos = mypos + INT2_BITS
-        cindex(ixids + 1:ixids + lensec1) = cids(1:lensec1)
-        lindex = ixids + lensec1
+        cindex(ixids + 1 + inc:ixids + lensec1 + inc) = cids(1:lensec1)
+        lindex = ixids + lensec1 + inc
         cindex(lindex + 1:lindex + lengds8) = cgds(1:lengds8)
         lindex = lindex + int(lengds8, kind(lindex))
         ilnpds = lensec
