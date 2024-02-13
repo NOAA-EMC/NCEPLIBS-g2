@@ -155,7 +155,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
 
      ! Read in section 7 from file.
      call g2_gbytec(cindex, iskp7, 28*8, INT4_BITS)    ! bytes to skip for section 7
-     call baread(lugb, iskip + iskp7, 4, lread, ctemp)
+     call bareadl(lugb, int(iskip + iskp7, kind(8)), 4_8, lread8, ctemp)
      call g2_gbytec(ctemp, len7, 0, INT4_BITS)      ! length of section 7
      allocate(csec7(len7))
      call baread(lugb, iskip + iskp7, len7, lread, csec7)
