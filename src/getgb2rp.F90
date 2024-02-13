@@ -3,8 +3,11 @@
 !> field.
 !> @author Stephen Gilbert @date 2003-12-31
 
-!> Extract a grib message from a file given the index of the requested
-!> field.
+!> Extract a grib message from a file given the index (index format 1)
+!> of the requested field.
+!>
+!> This subroutine is maintained for backward compatibility. New code
+!> should use getgb2rp2().
 !>
 !> The GRIB message returned can contain only the requested field
 !> (extract=.true.), or the complete GRIB message originally
@@ -22,6 +25,60 @@
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
 !> routine.
 !> @param[in] cindex Index record of the grib field (see docunentation of
+!> subroutine ix2gb2() for description of an index record.)
+!> @param[in] extract Logical value indicating whether to return a
+!> GRIB2 message with just the requested field, or the entire
+!> GRIB2 message containing the requested field.
+!> - .true. = return grib2 message containing only the requested field.
+!> - .false. = return entire grib2 message containing the requested field.
+!> @param[out] gribm Returned grib message.
+!> @param[out] leng Length of returned grib message in bytes.
+!> @param[out] iret Return code:
+!> - 0 No error.
+!> - 97 Error reading grib file.
+!>
+!> @author Stephen Gilbert, Ed Hartnett @date 2003-12-31
+subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
+  implicit none
+
+  integer, intent(in) :: lugb
+  character(len = 1), intent(in) :: cindex(*)
+  logical, intent(in) :: extract
+  character(len = 1), pointer, dimension(:) :: gribm
+  integer, intent(out) :: leng, iret
+
+  interface
+     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+       integer, intent(in) :: lugb, idxver
+       character(len = 1), intent(in) :: cindex(*)
+       logical, intent(in) :: extract
+       character(len = 1), pointer, dimension(:) :: gribm
+       integer, intent(out) :: leng, iret
+     end subroutine getgb2rp2
+  end interface
+
+  call getgb2rp2(lugb, 1, cindex, extract, gribm, leng, iret)
+
+end subroutine getgb2rp
+
+!> Extract a grib message from a file given the version 1 or 2 index
+!> of the requested field.
+!>
+!> The GRIB message returned can contain only the requested field
+!> (extract=.true.), or the complete GRIB message originally
+!> containing the desired field can be returned (extract=.false.) even
+!> if other fields were included in the GRIB message.
+!>
+!> If the GRIB field is not found, then the return code will be
+!> nonzero.
+!>
+!> @param[in] lugb integer unit of the unblocked grib data file.  file
+!> must be opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> routine.
+!> @param[in] idxver Version of index, use 1 for legacy, 2 if files
+!> may be > 2 GB.
+!> @param[in] cindex Index record of the grib field (see docunentation of
 !> subroutine ixgb2() for description of an index record.)
 !> @param[in] extract Logical value indicating whether to return a
 !> GRIB2 message with just the requested field, or the entire
@@ -34,11 +91,11 @@
 !> - 0 No error.
 !> - 97 Error reading grib file.
 !>
-!> @author Stephen Gilbert @date 2003-12-31
-subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
+!> @author Edward Hartnett, Stephen Gilbert @date Feb 13, 2024
+subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   implicit none
 
-  integer, intent(in) :: lugb
+  integer, intent(in) :: lugb, idxver
   character(len = 1), intent(in) :: cindex(*)
   logical, intent(in) :: extract
   integer, intent(out) :: leng, iret
@@ -165,4 +222,4 @@ subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
         RETURN
      ENDIF
   ENDIF
-END SUBROUTINE GETGB2RP
+END SUBROUTINE GETGB2RP2
