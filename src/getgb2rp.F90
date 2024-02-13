@@ -109,19 +109,25 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: iskp2, iskp6, iskp7
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
+  integer :: mypos
+  integer (kind = 8) :: lread8, iskip8
 
   iret = 0
 
   ! Extract grib message from file.
+  mypos = INT4_BITS
   if (extract) then
      len0 = 16
      len8 = 4
      if (idxver .eq. 1) then
-        call g2_gbytec(cindex, iskip, INT4_BITS, INT4_BITS)    ! bytes to skip in file
+        call g2_gbytec(cindex, iskip, mypos, INT4_BITS)    ! bytes to skip in file
+        mypos = mypos + INT4_BITS
      else
-        call g2_gbytec(cindex, iskip, INT4_BITS, INT4_BITS)    ! bytes to skip in file
+        call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
+        mypos = mypos + INT8_BITS
+        iskip = int(iskip8, kind(4))
      endif
-     call g2_gbytec(cindex, iskp2, 8*8, INT4_BITS)    ! bytes to skip for section 2
+     call g2_gbytec(cindex, iskp2, mypos, INT4_BITS)    ! bytes to skip for section 2
      if (iskp2 .gt. 0) then
         call baread(lugb, iskip + iskp2, 4, lread, ctemp)
         call g2_gbytec(ctemp, len2, 0, INT4_BITS)      ! length of section 2
@@ -217,12 +223,16 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      if (allocated(csec2)) deallocate(csec2)
      if (allocated(csec7)) deallocate(csec7)
   else    ! do not extract field from message :  get entire message
-     call g2_gbytec(cindex, iskip, INT4_BITS, INT4_BITS)    ! bytes to skip in file
      if (idxver .eq. 1) then
-        call g2_gbytec(cindex, leng, 36*8, INT4_BITS)      ! length of grib message
+        call g2_gbytec(cindex, iskip, mypos, INT4_BITS)    ! bytes to skip in file
+        mypos = mypos + INT4_BITS
      else
-        call g2_gbytec(cindex, leng, 36*8, INT4_BITS)      ! length of grib message
+        call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
+        mypos = mypos + INT8_BITS
+        iskip = int(iskip8, kind(4))
      endif
+     mypos = mypos + 7 * INT4_BITS
+     call g2_gbytec(cindex, leng, mypos, INT4_BITS)      ! length of grib message
      if (.not. associated(gribm)) allocate(gribm(leng))
      call baread(lugb, iskip, leng, lread, gribm)
      if (leng .ne. lread ) then
