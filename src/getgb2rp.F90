@@ -107,6 +107,8 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: lencur, lread, len0, ibmap, ipos, iskip
   integer :: len7, len8, len3, len4, len5, len6, len1, len2
   integer :: iskp2, iskp6, iskp7
+  integer :: mypos
+  integer (kind = 8) :: iskip8, lread8, len2_8
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
 
@@ -116,13 +118,21 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   if (extract) then
      len0 = 16
      len8 = 4
-     call g2_gbytec(cindex, iskip, INT4_BITS, INT4_BITS)    ! bytes to skip in file
-     call g2_gbytec(cindex, iskp2, 8*8, INT4_BITS)    ! bytes to skip for section 2
+     if (idxver .eq. 1) then
+        call g2_gbytec(cindex, iskip, INT4_BITS, INT4_BITS)    ! bytes to skip in file
+        mypos = INT4_BITS + INT4_BITS
+     else
+        call g2_gbytec8(cindex, iskip8, INT4_BITS, INT8_BITS)    ! bytes to skip in file
+        mypos = INT4_BITS + INT8_BITS
+        iskip = int(iskip8, kind(4))
+     endif
+     call g2_gbytec(cindex, iskp2, mypos, INT4_BITS)    ! bytes to skip for section 2
      if (iskp2 .gt. 0) then
-        call baread(lugb, iskip + iskp2, 4, lread, ctemp)
+        call bareadl(lugb, int(iskip + iskp2, kind(8)), 4_8, lread8, ctemp)
         call g2_gbytec(ctemp, len2, 0, INT4_BITS)      ! length of section 2
         allocate(csec2(len2))
-        call baread(lugb, iskip + iskp2, len2, lread, csec2)
+        len2_8 = len2
+        call bareadl(lugb, int(iskip + iskp2, kind(8)), len2_8, lread8, csec2)
      else
         len2 = 0
      endif
@@ -139,7 +149,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      call g2_gbytec(cindex, ibmap, ipos*8, 1*8)      ! bitmap indicator
      if (ibmap .eq. 254) then
         call g2_gbytec(cindex, iskp6, 24*8, INT4_BITS)    ! bytes to skip for section 6
-        call baread(lugb, iskip + iskp6, 4, lread, ctemp)
+        call bareadl(lugb, int(iskip + iskp6, kind(8)), 4_8, lread8, ctemp)
         call g2_gbytec(ctemp, len6, 0, INT4_BITS)      ! length of section 6
      endif
 
