@@ -23,24 +23,82 @@
 !> @note Do not engage the same logical unit from more than one
 !> processor.
 !>
-!> @param[in] LUGB integer unit of the unblocked grib data file.
+!> @param[in] lugb integer unit of the unblocked grib data file.
 !> File must be opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
 !> this routine.
-!> @param[in] CINDEX index record of the grib field (see
+!> @param[in] cindex index record of the grib field (see
 !> subroutine ixgb2() for description of an index record.)
-!> @param[out] GFLD derived type @ref grib_mod::gribfield.
-!> @param[out] IRET integer return code
+!> @param[out] gfld derived type @ref grib_mod::gribfield.
+!> @param[out] iret integer return code
 !> - 0 all ok
 !> - 97 error reading grib file
 !> - other gf_getfld grib2 unpacker return code
 !>
-!> @author Stephen Gilbert @date 2002-01-11
+!> @author Stephen Gilbert, Ed Hartnett @date 2002-01-11
 subroutine getgb2r(lugb, cindex, gfld, iret)
   use grib_mod
   implicit none
 
   integer, intent(in) :: lugb
+  character(len=1), intent(in) :: cindex(*)
+  type(gribfield) :: gfld
+  integer, intent(out) :: iret
+
+  interface
+     subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
+       integer, intent(in) :: lugb, idxver
+       character(len=1), intent(in) :: cindex(*)
+       type(gribfield) :: gfld
+       integer, intent(out) :: iret
+     end subroutine getgb2r2
+  end interface
+
+  call getgb2r2(lugb, 1, cindex, gfld, iret)
+
+end subroutine getgb2r
+
+!> Read and unpack sections 6 and 7 from a GRIB2 message.
+!>
+!> It assumes that the metadata for this field already exists in
+!> derived type @ref grib_mod::gribfield. Specifically, it requires
+!> gfld\%ibmap, gfld\%ngrdpts, gfld\%idrtnum, gfld\%idrtmpl, and
+!> gfld\%ndpts.
+!>
+!> It decodes information for the selected grib field and returns it
+!> in a derived type variable, gfld, of type @ref
+!> grib_mod::gribfield. Users of this routine will need to include the
+!> line "use grib_mod" in their calling routine.
+!>
+!> This subprogram is intended for private use by getgb2()
+!> routines only.
+!>
+!> Derived type gribfield contains pointers to many arrays of
+!> data. Users must free this memory by calling gf_free().
+!>
+!> @note Do not engage the same logical unit from more than one
+!> processor.
+!>
+!> @param[in] lugb integer unit of the unblocked grib data file.
+!> File must be opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
+!> this routine.
+!> @param[in] idxver Index version, 1 for legacy, 2 if file may be >
+!> 2 GB.
+!> @param[in] cindex index record of the grib field (see
+!> subroutine ixgb2() for description of an index record.)
+!> @param[out] gfld derived type @ref grib_mod::gribfield.
+!> @param[out] iret integer return code
+!> - 0 all ok
+!> - 97 error reading grib file
+!> - other gf_getfld grib2 unpacker return code
+!>
+!> @author Ed Hartnett, Stephen Gilbert @date Feb 14, 2024
+subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
+  use grib_mod
+  implicit none
+
+  integer, intent(in) :: lugb, idxver
   character(len=1), intent(in) :: cindex(*)
   type(gribfield) :: gfld
   integer, intent(out) :: iret
@@ -149,4 +207,4 @@ subroutine getgb2r(lugb, cindex, gfld, iret)
   else
      gfld%expanded = .true.
   endif
-end subroutine getgb2r
+end subroutine getgb2r2
