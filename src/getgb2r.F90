@@ -47,6 +47,8 @@ subroutine getgb2r(lugb, cindex, gfld, iret)
 
   interface
      subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
+       use grib_mod
+       implicit none
        integer, intent(in) :: lugb, idxver
        character(len=1), intent(in) :: cindex(*)
        type(gribfield) :: gfld
