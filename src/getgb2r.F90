@@ -181,8 +181,6 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   ! Read and unpack data field.
   iskip = lskip + skip7
   iskip8 = lskip8 + skip7
-  print *, lskip, lskip8
-  print *, iskip, iskip8
   
   ! Get length of section.
   call bareadl(lugb, iskip8, 4_8, lread8, csize)    
