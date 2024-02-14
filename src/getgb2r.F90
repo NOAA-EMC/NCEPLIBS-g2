@@ -36,18 +36,18 @@
 !> - other gf_getfld grib2 unpacker return code
 !>
 !> @author Stephen Gilbert @date 2002-01-11
-SUBROUTINE GETGB2R(LUGB, CINDEX, GFLD, IRET)
+subroutine getgb2r(lugb, cindex, gfld, iret)
   use grib_mod
   implicit none
 
-  INTEGER, INTENT(IN) :: LUGB
-  CHARACTER(LEN=1), INTENT(IN) :: CINDEX(*)
-  TYPE(GRIBFIELD) :: GFLD
-  INTEGER, INTENT(OUT) :: IRET
+  integer, intent(in) :: lugb
+  character(len=1), intent(in) :: cindex(*)
+  type(gribfield) :: gfld
+  integer, intent(out) :: iret
 
-  INTEGER :: LSKIP, SKIP6, SKIP7
-  CHARACTER(LEN=1):: CSIZE(4)
-  CHARACTER(LEN=1), ALLOCATABLE :: CTEMP(:)
+  integer :: lskip, skip6, skip7
+  character(len=1):: csize(4)
+  character(len=1), allocatable :: ctemp(:)
   real, pointer, dimension(:) :: newfld
   integer :: n, lread, j, iskip, iofst, ilen, ierr, idum
 
@@ -72,63 +72,63 @@ SUBROUTINE GETGB2R(LUGB, CINDEX, GFLD, IRET)
   end interface
 
   ! Get info.
-  NULLIFY(gfld%bmap, gfld%fld)
-  IRET = 0
-  CALL G2_GBYTEC(CINDEX, LSKIP, 4*8, 4*8)
-  CALL G2_GBYTEC(CINDEX, SKIP6, 24*8, 4*8)
-  CALL G2_GBYTEC(CINDEX, SKIP7, 28*8, 4*8)
+  nullify(gfld%bmap, gfld%fld)
+  iret = 0
+  call g2_gbytec(cindex, lskip, 4*8, 4*8)
+  call g2_gbytec(cindex, skip6, 24*8, 4*8)
+  call g2_gbytec(cindex, skip7, 28*8, 4*8)
 
   ! Read and unpack bit_map, if present.
-  IF (gfld%ibmap .eq. 0 .OR. gfld%ibmap .eq. 254) THEN
-     ISKIP = LSKIP + SKIP6
+  if (gfld%ibmap .eq. 0 .or. gfld%ibmap .eq. 254) then
+     iskip = lskip + skip6
 
-     ! Get length of section.
-     CALL BAREAD(LUGB, ISKIP, 4, LREAD, CSIZE)
-     CALL G2_GBYTEC(CSIZE, ILEN, 0, 32)
-     ALLOCATE(CTEMP(ILEN))
+     ! get length of section.
+     call baread(lugb, iskip, 4, lread, csize)
+     call g2_gbytec(csize, ilen, 0, 32)
+     allocate(ctemp(ilen))
 
-     ! Read in section.
-     CALL BAREAD(LUGB, ISKIP, ILEN, LREAD, CTEMP)  
-     IF (ILEN .NE. LREAD) THEN
-        IRET = 97
-        DEALLOCATE(CTEMP)
-        RETURN
-     ENDIF
-     IOFST = 0
-     CALL GF_UNPACK6(CTEMP, ILEN, IOFST, gfld%ngrdpts, idum, gfld%bmap, ierr)
-     IF (IERR .NE. 0) THEN
-        IRET = 98
-        DEALLOCATE(CTEMP)
-        RETURN
-     ENDIF
-     DEALLOCATE(CTEMP)
-  ENDIF
+     ! read in section.
+     call baread(lugb, iskip, ilen, lread, ctemp)  
+     if (ilen .ne. lread) then
+        iret = 97
+        deallocate(ctemp)
+        return
+     endif
+     iofst = 0
+     call gf_unpack6(ctemp, ilen, iofst, gfld%ngrdpts, idum, gfld%bmap, ierr)
+     if (ierr .ne. 0) then
+        iret = 98
+        deallocate(ctemp)
+        return
+     endif
+     deallocate(ctemp)
+  endif
 
   ! Read and unpack data field.
-  ISKIP = LSKIP + SKIP7
+  iskip = lskip + skip7
   
   ! Get length of section.
-  CALL BAREAD(LUGB, ISKIP, 4, LREAD, CSIZE)    
-  CALL G2_GBYTEC(CSIZE, ILEN, 0, 32)
+  call baread(lugb, iskip, 4, lread, csize)    
+  call g2_gbytec(csize, ilen, 0, 32)
   if (ilen .lt. 6) ilen = 6
-  ALLOCATE(CTEMP(ILEN))
+  allocate(ctemp(ilen))
 
   ! Read in section.
-  CALL BAREAD(LUGB, ISKIP, ILEN, LREAD, CTEMP)  
-  IF (ILEN .NE. LREAD) THEN
-     IRET = 97
-     DEALLOCATE(CTEMP)
-     RETURN
-  ENDIF
-  IOFST = 0
-  CALL GF_UNPACK7(CTEMP, ILEN, IOFST, gfld%igdtnum, gfld%igdtmpl, &
+  call baread(lugb, iskip, ilen, lread, ctemp)  
+  if (ilen .ne. lread) then
+     iret = 97
+     deallocate(ctemp)
+     return
+  endif
+  iofst = 0
+  call gf_unpack7(ctemp, ilen, iofst, gfld%igdtnum, gfld%igdtmpl, &
        gfld%idrtnum, gfld%idrtmpl, gfld%ndpts, gfld%fld, ierr)
-  IF (IERR .NE. 0) THEN
-     IRET = 98
-     DEALLOCATE(CTEMP)
-     RETURN
-  ENDIF
-  DEALLOCATE(CTEMP)
+  if (ierr .ne. 0) then
+     iret = 98
+     deallocate(ctemp)
+     return
+  endif
+  deallocate(ctemp)
 
   ! If bitmap is used with this field, expand data field
   ! to grid, if possible.
@@ -149,4 +149,4 @@ SUBROUTINE GETGB2R(LUGB, CINDEX, GFLD, IRET)
   else
      gfld%expanded = .true.
   endif
-END SUBROUTINE GETGB2R
+end subroutine getgb2r
