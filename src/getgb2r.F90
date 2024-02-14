@@ -1,27 +1,28 @@
 !> @file
-!> @brief Read and unpack sections 6 and 7 from a GRIB2 message.
+!> @brief Read and unpack sections 6 and 7 from a GRIB2 message using
+!> an index record.
 !> @author Stephen Gilbert @date 2002-01-11
 
-!> Read and unpack sections 6 and 7 from a GRIB2 message.
+!> Read and unpack sections 6 and 7 from a GRIB2 message using a
+!> version 1 index record.
 !>
-!> It assumes that the metadata for this field already exists in
-!> derived type @ref grib_mod::gribfield. Specifically, it requires
-!> gfld\%ibmap, gfld\%ngrdpts, gfld\%idrtnum, gfld\%idrtmpl, and
-!> gfld\%ndpts.
+!> This function is maintained for backward compatibility. New code
+!> should use getgb2r2(), which can handle both version 1 and version
+!> 2 index records.
 !>
-!> It decodes information for the selected grib field and returns it
-!> in a derived type variable, gfld, of type @ref
-!> grib_mod::gribfield. Users of this routine will need to include the
-!> line "use grib_mod" in their calling routine.
+!> Metadata for the field must already exists in derived type @ref
+!> grib_mod::gribfield. Specifically, it requires gfld\%ibmap,
+!> gfld\%ngrdpts, gfld\%idrtnum, gfld\%idrtmpl, and gfld\%ndpts.
+!>
+!> The field data is returned in derived type variable, gfld, of type
+!> @ref grib_mod::gribfield. Users of this routine will need to
+!> include the line "use grib_mod" in their calling routine.
 !>
 !> This subprogram is intended for private use by getgb2()
 !> routines only.
 !>
 !> Derived type gribfield contains pointers to many arrays of
 !> data. Users must free this memory by calling gf_free().
-!>
-!> @note Do not engage the same logical unit from more than one
-!> processor.
 !>
 !> @param[in] lugb integer unit of the unblocked grib data file.
 !> File must be opened with [baopen() or baopenr()]
@@ -60,17 +61,16 @@ subroutine getgb2r(lugb, cindex, gfld, iret)
 
 end subroutine getgb2r
 
-!> Read and unpack sections 6 and 7 from a GRIB2 message.
+!> Read and unpack sections 6 and 7 from a GRIB2 message using a
+!> version 1 or version 2 index record.
 !>
-!> It assumes that the metadata for this field already exists in
-!> derived type @ref grib_mod::gribfield. Specifically, it requires
-!> gfld\%ibmap, gfld\%ngrdpts, gfld\%idrtnum, gfld\%idrtmpl, and
-!> gfld\%ndpts.
+!> Metadata for the field must already exists in derived type @ref
+!> grib_mod::gribfield. Specifically, it requires gfld\%ibmap,
+!> gfld\%ngrdpts, gfld\%idrtnum, gfld\%idrtmpl, and gfld\%ndpts.
 !>
-!> It decodes information for the selected grib field and returns it
-!> in a derived type variable, gfld, of type @ref
-!> grib_mod::gribfield. Users of this routine will need to include the
-!> line "use grib_mod" in their calling routine.
+!> The field data is returned in derived type variable, gfld, of type
+!> @ref grib_mod::gribfield. Users of this routine will need to
+!> include the line "use grib_mod" in their calling routine.
 !>
 !> This subprogram is intended for private use by getgb2()
 !> routines only.
