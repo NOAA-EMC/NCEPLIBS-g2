@@ -145,11 +145,19 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        type(gribfield) :: gfld
        integer, intent(out) :: iret
      end subroutine getgb2l2
+     subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
+       use grib_mod
+       implicit none
+       integer, intent(in) :: lugb, idxver
+       character(len=1), intent(in) :: cindex(*)
+       type(gribfield) :: gfld
+       integer, intent(out) :: iret
+     end subroutine getgb2r2
   end interface
 
   ! Determine whether index buffer needs to be initialized.
   irgi = 0
-  idxver = 1
+  idxver = 2
   call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, irgi)
   if (irgi .gt. 1) then
      iret = 96
@@ -170,7 +178,7 @@ subroutine getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 
   ! Read and unpack grib record.
   if (unpack) then
-     call getgb2r(lugb, cbuf(lpos), gfld, iret)
+     call getgb2r2(lugb, idxver, cbuf(lpos), gfld, iret)
   endif
   k = jk
 end subroutine getgb2
