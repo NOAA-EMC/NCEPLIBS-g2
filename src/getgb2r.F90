@@ -28,10 +28,10 @@
 !> File must be opened with [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling
 !> this routine.
-!> @param[in] cindex index record of the grib field (see
-!> subroutine ixgb2() for description of an index record.)
+!> @param[in] cindex version 1 index record of the field (see
+!> subroutine ix2gb2() for description of an index record.)
 !> @param[out] gfld derived type @ref grib_mod::gribfield.
-!> @param[out] iret integer return code
+!> @param[out] iret Return code:
 !> - 0 all ok
 !> - 97 error reading grib file
 !> - other gf_getfld grib2 unpacker return code
@@ -87,10 +87,10 @@ end subroutine getgb2r
 !> this routine.
 !> @param[in] idxver Index version, 1 for legacy, 2 if file may be >
 !> 2 GB.
-!> @param[in] cindex index record of the grib field (see
-!> subroutine ixgb2() for description of an index record.)
+!> @param[in] cindex version 1 or 2 index record of the grib field
+!> (see subroutine ixgb2() for description of an index record.)
 !> @param[out] gfld derived type @ref grib_mod::gribfield.
-!> @param[out] iret integer return code
+!> @param[out] iret Return code:
 !> - 0 all ok
 !> - 97 error reading grib file
 !> - other gf_getfld grib2 unpacker return code
@@ -110,6 +110,10 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   character(len=1), allocatable :: ctemp(:)
   real, pointer, dimension(:) :: newfld
   integer :: n, lread, j, iskip, iofst, ilen, ierr, idum
+  integer :: inc
+  integer (kind = 8) :: lskip8
+  integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
+  parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
 
   interface
      subroutine gf_unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
@@ -134,9 +138,16 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   ! Get info.
   nullify(gfld%bmap, gfld%fld)
   iret = 0
-  call g2_gbytec(cindex, lskip, 4*8, 4*8)
-  call g2_gbytec(cindex, skip6, 24*8, 4*8)
-  call g2_gbytec(cindex, skip7, 28*8, 4*8)
+  inc = 0
+  if (idxver .eq. 1) then
+     call g2_gbytec(cindex, lskip, INT4_BITS, INT4_BITS)
+  else
+     inc = 4
+     call g2_gbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)
+     lskip = int(lskip8, kind(4))
+  endif
+  call g2_gbytec(cindex, skip6, (24 + inc) * INT1_BITS, INT4_BITS)
+  call g2_gbytec(cindex, skip7, (28 + inc) * INT1_BITS, INT4_BITS)
 
   ! Read and unpack bit_map, if present.
   if (gfld%ibmap .eq. 0 .or. gfld%ibmap .eq. 254) then
