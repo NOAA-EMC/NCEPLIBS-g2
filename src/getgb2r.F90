@@ -159,7 +159,8 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
      call baread(lugb, iskip, 4, lread, csize)
      call g2_gbytec(csize, ilen, 0, 32)
      allocate(ctemp(ilen))
-
+     ilen8 = ilen
+     
      ! read in section.
      call baread(lugb, iskip, ilen, lread, ctemp)  
      if (ilen .ne. lread) then
@@ -186,6 +187,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   call g2_gbytec(csize, ilen, 0, 32)
   if (ilen .lt. 6) ilen = 6
   allocate(ctemp(ilen))
+  ilen8 = ilen
 
   ! Read in section.
   call baread(lugb, iskip, ilen, lread, ctemp)  
