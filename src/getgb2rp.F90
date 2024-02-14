@@ -105,7 +105,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   character(len = 1), allocatable, dimension(:) :: csec2, csec6, csec7
   character(len = 4) :: ctemp
   integer :: lencur, len0, ibmap = 0, ipos, iskip
-  integer :: len7, len8, len3, len4, len5, len6, len1, len2
+  integer :: len7 = 0, len8 = 0, len3 = 0, len4 = 0, len5 = 0, len6 = 0, len1 = 0, len2 = 0
   integer :: iskp2, iskp6, iskp7
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
@@ -156,7 +156,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      call g2_gbytec(cindex, len6, mypos, INT4_BITS)      ! length of section 6
      ipos = ipos + 5
      mypos = mypos + len6 * INT1_BITS ! skip ahead in the cindex
-     call g2_gbytec(cindex, ibmap, mypos, 1*8)      ! bitmap indicator
+     call g2_gbytec(cindex, ibmap, mypos, INT1_BITS)      ! bitmap indicator
      if (ibmap .eq. 254) then
         call g2_gbytec(cindex, iskp6, (24 + inc) * INT1_BITS, INT4_BITS)    ! bytes to skip for section 6
         !call baread(lugb, iskip + iskp6, 4, lread, ctemp)
