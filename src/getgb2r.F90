@@ -111,7 +111,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   real, pointer, dimension(:) :: newfld
   integer :: n, lread, j, iskip, iofst, ilen, ierr, idum
   integer :: inc
-  integer (kind = 8) :: lskip8
+  integer (kind = 8) :: lskip8, lread8, ilen8, iskip8
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
 
@@ -141,6 +141,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   inc = 0
   if (idxver .eq. 1) then
      call g2_gbytec(cindex, lskip, INT4_BITS, INT4_BITS)
+     iskip8 = iskip
   else
      inc = 4
      call g2_gbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)
@@ -152,6 +153,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   ! Read and unpack bit_map, if present.
   if (gfld%ibmap .eq. 0 .or. gfld%ibmap .eq. 254) then
      iskip = lskip + skip6
+     iskip8 = lskip8 + skip6
 
      ! get length of section.
      call baread(lugb, iskip, 4, lread, csize)
@@ -177,6 +179,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
 
   ! Read and unpack data field.
   iskip = lskip + skip7
+  iskip8 = lskip8 + skip7
   
   ! Get length of section.
   call baread(lugb, iskip, 4, lread, csize)    
