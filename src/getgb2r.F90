@@ -141,7 +141,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   inc = 0
   if (idxver .eq. 1) then
      call g2_gbytec(cindex, lskip, INT4_BITS, INT4_BITS)
-     iskip8 = iskip
+     lskip8 = lskip
   else
      inc = 4
      call g2_gbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)
@@ -156,14 +156,14 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
      iskip8 = lskip8 + skip6
 
      ! get length of section.
-     call baread(lugb, iskip, 4, lread, csize)
+     call bareadl(lugb, iskip8, 4_8, lread8, csize)
      call g2_gbytec(csize, ilen, 0, 32)
      allocate(ctemp(ilen))
      ilen8 = ilen
      
      ! read in section.
-     call baread(lugb, iskip, ilen, lread, ctemp)  
-     if (ilen .ne. lread) then
+     call bareadl(lugb, iskip8, ilen8, lread8, ctemp)  
+     if (ilen8 .ne. lread8) then
         iret = 97
         deallocate(ctemp)
         return
@@ -181,17 +181,19 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   ! Read and unpack data field.
   iskip = lskip + skip7
   iskip8 = lskip8 + skip7
+  print *, lskip, lskip8
+  print *, iskip, iskip8
   
   ! Get length of section.
-  call baread(lugb, iskip, 4, lread, csize)    
+  call bareadl(lugb, iskip8, 4_8, lread8, csize)    
   call g2_gbytec(csize, ilen, 0, 32)
   if (ilen .lt. 6) ilen = 6
   allocate(ctemp(ilen))
   ilen8 = ilen
 
   ! Read in section.
-  call baread(lugb, iskip, ilen, lread, ctemp)  
-  if (ilen .ne. lread) then
+  call bareadl(lugb, iskip8, ilen8, lread8, ctemp)  
+  if (ilen8 .ne. lread8) then
      iret = 97
      deallocate(ctemp)
      return
