@@ -13,14 +13,14 @@
 subroutine g2_create_index(cgb, cgi, idxver, iret)
   implicit none
   
-  character, intent(in) :: cgb*256,cgi*256
+  character, intent(in) :: cgb * 256, cgi * 256
   integer, intent(in) :: idxver
   integer, intent(out) :: iret
   
   integer :: msk1, msk2
-  parameter(msk1=32000,msk2=4000)
-  character(len=1),pointer,dimension(:) :: cbuf
-  character carg*300
+  parameter(msk1 = 32000, msk2 = 4000)
+  character(len=1), pointer, dimension(:) :: cbuf
+  character carg * 300
   integer :: numtot, nnum, nlen, ncgi, mnum, lcarg, kw
   integer :: ios, iret1, irgi, iw, ncgb, nmess
   
@@ -35,7 +35,7 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
 
   ! Open GRIB2 file for reading.
   ncgb = len_trim(cgb)
-  call baopenr(11,cgb(1:ncgb), ios)
+  call baopenr(11, cgb(1:ncgb), ios)
   if (ios .ne. 0) then
      lcarg = len('grb2index:  Error accessing file '//cgb(1:ncgb))
      carg(1:lcarg) = 'grb2index:  Error accessing file '//cgb(1:ncgb)
