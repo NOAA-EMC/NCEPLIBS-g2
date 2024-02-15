@@ -24,8 +24,8 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   integer (kind = 8) :: msk1, msk2
   parameter(msk1 = 32000_8, msk2 = 4000_8)
   character(len=1), pointer, dimension(:) :: cbuf
-  integer :: numtot, nnum, nlen, ncgi, mnum, kw
-  integer :: ios, iret1, irgi, iw, ncgb, nmess
+  integer :: numtot, nnum, nlen, mnum, kw
+  integer :: ios, iret1, irgi, iw, nmess
   
   interface
      subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
@@ -42,16 +42,14 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   iret = 0
   
   ! Open GRIB2 file for reading.
-  ncgb = len_trim(cgb)
-  call baopenr(11, cgb(1:ncgb), ios)
+  call baopenr(11, cgb(1:len_trim(cgb)), ios)
   if (ios .ne. 0) then
      iret = 90
      return
   endif
 
   ! Open output file where index will be written.
-  ncgi = len_trim(cgi)
-  call baopen(31, cgi(1:ncgi), ios)
+  call baopen(31, cgi(1:len_trim(cgi)), ios)
   if (ios .ne. 0) then
      iret = 91
      return
@@ -70,7 +68,7 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   mnum = mnum + nmess
 
   ! Write headers.
-  call wrgi1h(31, nlen, numtot, cgb(1:ncgb))
+  call wrgi1h(31, nlen, numtot, cgb(1:len_trim(cgb)))
   iw = 162
 
   ! Write the index data we have so far.
@@ -93,7 +91,8 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
            iw = iw + nlen
         endif
      enddo
-     call wrgi1h(31, iw, numtot, cgb(1:ncgb))
+     ! Go back and overwrite headers with new info.
+     call wrgi1h(31, iw, numtot, cgb(1:len_trim(cgb)))
   endif
   call baclose(11, iret1)
   call baclose(31, iret1)
