@@ -17,8 +17,8 @@ program test_create_index
 
   print *, 'Testing g2_create_index on ', TEST_FILE_GDAS
 
-  ! call g2_create_index(TEST_FILE_GDAS, TEST_FILE_GDAS_INDEX, idxver, iret)
-  ! if (iret .ne. 0) stop 10
+  call g2_create_index(TEST_FILE_GDAS, TEST_FILE_GDAS_INDEX, idxver, iret)
+  if (iret .ne. 0) stop 10
 
   ! ! Open the index file.
   ! call baopen(lugi, TEST_FILE_GDAS_INDEX, iret)
