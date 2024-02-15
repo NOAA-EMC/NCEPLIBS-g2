@@ -21,20 +21,21 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   integer, intent(in) :: idxver
   integer, intent(out) :: iret
   
-  integer :: msk1, msk2
-  parameter(msk1 = 32000, msk2 = 4000)
+  integer (kind = 8) :: msk1, msk2
+  parameter(msk1 = 32000_8, msk2 = 4000_8)
   character(len=1), pointer, dimension(:) :: cbuf
-  character carg * 300
-  integer :: numtot, nnum, nlen, ncgi, mnum, lcarg, kw
+  integer :: numtot, nnum, nlen, ncgi, mnum, kw
   integer :: ios, iret1, irgi, iw, ncgb, nmess
   
   interface
-     subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, &
-          nmess, iret)
-       integer,intent(in) :: lugb, msk1, msk2, mnum
-       character(len=1),pointer,dimension(:) :: cbuf
-       integer,intent(out) :: nlen, nnum, nmess, iret
-     end subroutine getg2ir
+     subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
+          nlen, nnum, nmess, iret)
+       integer, intent(in) :: lugb
+       integer (kind = 8), intent(in) :: msk1, msk2
+       integer, intent(in) :: mnum, idxver
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: nlen, nnum, nmess, iret
+     end subroutine getg2i2r
   end interface
 
   ! Assume success.
@@ -56,17 +57,23 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
      return
   endif
 
-  ! Write index file.
+  ! Generate index records for all messages in file, or until memory
+  ! runs out.
   mnum = 0
-  call getg2ir(11, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, irgi)
+  call getg2i2r(11, msk1, msk2, mnum, idxver, cbuf, &
+       nlen, nnum, nmess, irgi)
   if (irgi .gt. 1 .or. nnum .eq. 0 .or. nlen .eq. 0) then
      iret = 92
      return
   endif
   numtot = numtot + nnum
   mnum = mnum + nmess
+
+  ! Write headers.
   call wrgi1h(31, nlen, numtot, cgb(1:ncgb))
   iw = 162
+
+  ! Write the index data we have so far.
   call bawrite(31, iw, nlen, kw, cbuf)
   iw = iw + nlen
 
@@ -77,7 +84,8 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
            deallocate(cbuf)
            nullify(cbuf)
         endif
-        call getg2ir(11, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, irgi)
+        call getg2i2r(11, msk1, msk2, mnum, idxver, cbuf, &
+             nlen, nnum, nmess, irgi)
         if (irgi .le. 1 .and. nnum .gt. 0) then
            numtot = numtot + nnum
            mnum = mnum + nmess
