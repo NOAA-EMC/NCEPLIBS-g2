@@ -55,6 +55,7 @@ program test_intmath
      if (iret /= ceiling(temp) .or. ival == 0 .or. ival == check) then
         if (iret /= ceiling(temp)) then
            print 10, ival, ival, iret, ceiling(temp),temp
+           stop 10
         else
            print 20, ival, ival, iret, ceiling(temp),temp
         endif
