@@ -10,7 +10,7 @@ program test_create_index
   character(*) :: TEST_FILE_GDAS
   parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: TEST_FILE_GDAS_INDEX
-  parameter (TEST_FILE_GDAS_INDEX = 'gdaswave.t00z.wcoast.0p16.f000.grb2index')
+  parameter (TEST_FILE_GDAS_INDEX = 'test_create_index_gdaswave.grb2index')
   character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: idxver = 1, nlen, nnum, lugi = 31, lugb = 11
   integer :: iret, ios
