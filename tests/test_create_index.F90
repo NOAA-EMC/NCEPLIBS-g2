@@ -30,6 +30,9 @@ program test_create_index
   ! ! Close the index file.
   ! call baclose(lugi, iret)
   ! if (iret .ne. 0) stop 100
+
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 200
   
   print *, 'SUCCESS!...'
 end program test_create_index

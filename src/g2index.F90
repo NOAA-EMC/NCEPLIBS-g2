@@ -96,6 +96,7 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   endif
   call baclose(11, iret1)
   call baclose(31, iret1)
+  deallocate(cbuf)  
 
 end subroutine g2_create_index
 
@@ -150,7 +151,7 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, cgb)
 
   !  fill second 81-byte header
   chead(2) = 'IX1FORM:'
-  write(chead(2)(9:38),'(3i10)') 162,nlen,nnum
+  write(chead(2)(9:38),'(3i10)') 162, nlen, nnum
   chead(2)(41:80) = cgb(ncgb1:ncgb)
   chead(2)(81:81) = char(10)
 
