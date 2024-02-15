@@ -68,7 +68,7 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   mnum = mnum + nmess
 
   ! Write headers.
-  call wrgi1h(31, nlen, numtot, cgb(1:len_trim(cgb)))
+  call g2_write_index_headers(31, nlen, numtot, cgb(1:len_trim(cgb)))
   iw = 162
 
   ! Write the index data we have so far.
@@ -92,7 +92,7 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
         endif
      enddo
      ! Go back and overwrite headers with new info.
-     call wrgi1h(31, iw, numtot, cgb(1:len_trim(cgb)))
+     call g2_write_index_headers(31, iw, numtot, cgb(1:len_trim(cgb)))
   endif
   call baclose(11, iret1)
   call baclose(31, iret1)
@@ -107,7 +107,7 @@ end subroutine g2_create_index
 !> @param[in] cgb character name of GRIB file
 !>
 !> @author Iredell @date 93-11-22
-subroutine wrgi1h(lugi, nlen, nnum, cgb)
+subroutine g2_write_index_headers(lugi, nlen, nnum, cgb)
   implicit none
 
   integer :: lugi, nlen, nnum
@@ -120,12 +120,12 @@ subroutine wrgi1h(lugi, nlen, nnum, cgb)
   integer hostnm
 #endif
   character chead(2)*81
-  integer :: kw, ncgb, ncgb1, ncgb2, ncbase
+  integer :: kw, ncgb, ncgb1, ncgb2, g2_ncbase
 
   !  fill first 81-byte header
   ncgb = len(cgb)
-  ncgb1 = ncbase(cgb,ncgb)
-  ncgb2 = ncbase(cgb,ncgb1-2)
+  ncgb1 = g2_ncbase(cgb,ncgb)
+  ncgb2 = g2_ncbase(cgb,ncgb1-2)
   call date_and_time(cd8,ct10)
   chead(1) = '!GFHDR!'
   chead(1)(9:10) = ' 1'
@@ -158,7 +158,7 @@ subroutine wrgi1h(lugi, nlen, nnum, cgb)
   call bawrite(lugi,0,162,kw,chead)
 
   return
-end subroutine wrgi1h
+end subroutine g2_write_index_headers
 
 !> Locate basename of a file.
 !>
@@ -172,7 +172,7 @@ end subroutine wrgi1h
 !> @return The index of the basename within the string.
 !>
 !> @author Iredell @date 93-11-22
-integer function ncbase(c,n)
+integer function g2_ncbase(c,n)
   implicit none
   character c*(*)
   integer :: n
@@ -182,9 +182,9 @@ integer function ncbase(c,n)
   do while (k .ge. 1 .and. c(k:k) .ne. '/')
      k = k - 1
   enddo
-  ncbase = k + 1
+  g2_ncbase = k + 1
 
-end function ncbase
+end function g2_ncbase
 
 !> Find, read or generate a version 1 GRIB2 index for a GRIB2 file
 !> (which must be < 2 GB).
