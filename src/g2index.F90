@@ -547,7 +547,6 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
   iret = 4
   call baread(lugi, 0, 162, lhead, chead)
   if (lhead .eq. 162 .and. chead(42:47) .eq. 'GB2IX1') then
-!     read(chead(82:162), '(8x, 3i10, 2x, a40)', iostat = ios) nskp, nlen, nnum
      read(chead(82:162), '(2x, i1, 5x, 3i10, 2x, a40)', iostat = ios) idxver, nskp, nlen, nnum
      if (ios .eq. 0) then
         allocate(cbuf(nlen), stat = istat)    ! Allocate space for cbuf.
