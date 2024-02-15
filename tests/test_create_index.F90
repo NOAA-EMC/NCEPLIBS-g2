@@ -52,12 +52,13 @@ program test_create_index
 
   ! Read the index file.
   call getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
-  print *, nlen, nnum, iret
+  if (nlen .ne. 3800 .or. nnum .ne. 59 .or. iret .ne. 0) stop 80
 
   ! Close the index file.
   call baclose(lugi, iret)
   if (iret .ne. 0) stop 100
 
+  deallocate(cbuf)
   call gf_finalize(iret)
   if (iret .ne. 0) stop 200
   
