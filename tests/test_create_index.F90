@@ -11,25 +11,52 @@ program test_create_index
   parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: TEST_FILE_GDAS_INDEX
   parameter (TEST_FILE_GDAS_INDEX = 'gdaswave.t00z.wcoast.0p16.f000.grb2index')
-  character(len=1), pointer, dimension(:) :: cbuf(:)  
-  integer :: idxver = 1, nlen, nnum, lugi = 31
-  integer :: iret
+  character(len=1), pointer, dimension(:) :: cbuf(:)
+  integer :: idxver = 1, nlen, nnum, lugi = 31, lugb = 11
+  integer :: iret, ios
+
+  interface
+     subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
+       integer, intent(in) :: lugi
+       character(len=1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: idxver, nlen, nnum, iret
+     end subroutine getg2i2
+     subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
+       integer, intent(in) :: lugb, lugi, idxver
+       character*(*) :: filename
+       integer, intent(out) :: iret
+     end subroutine g2_create_index
+  end interface
 
   print *, 'Testing g2_create_index on ', TEST_FILE_GDAS
 
-  call g2_create_index(TEST_FILE_GDAS, TEST_FILE_GDAS_INDEX, idxver, iret)
+  ! Open GRIB2 file for reading.
+  call baopenr(lugb, TEST_FILE_GDAS, ios)
+  if (ios .ne. 0) stop 2
+
+  ! Open output file where index will be written.
+  call baopen(lugi, TEST_FILE_GDAS_INDEX, ios)
+  if (ios .ne. 0) stop 3
+
+  call g2_create_index(lugb, lugi, idxver, TEST_FILE_GDAS, iret)
   if (iret .ne. 0) stop 10
 
-  ! ! Open the index file.
-  ! call baopen(lugi, TEST_FILE_GDAS_INDEX, iret)
-  ! if (iret .ne. 0) stop 20
+  call baclose(lugb, ios)
+  if (ios .ne. 0) stop 11
+  call baclose(lugi, ios)
+  if (ios .ne. 0) stop 12
 
-  ! ! Read the index file.
-  ! call getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
+  ! Open the index file.
+  call baopen(lugi, TEST_FILE_GDAS_INDEX, iret)
+  if (iret .ne. 0) stop 20
 
-  ! ! Close the index file.
-  ! call baclose(lugi, iret)
-  ! if (iret .ne. 0) stop 100
+  ! Read the index file.
+  call getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
+  print *, nlen, nnum, iret
+
+  ! Close the index file.
+  call baclose(lugi, iret)
+  if (iret .ne. 0) stop 100
 
   call gf_finalize(iret)
   if (iret .ne. 0) stop 200

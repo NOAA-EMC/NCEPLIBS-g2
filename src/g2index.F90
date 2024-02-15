@@ -4,9 +4,10 @@
 
 !> Create a version 1 or 2 index file for a GRIB2 file.
 !>
-!> @param[in] cgb Path to GRIB2 file.
-!> @param[in] cgi Path where index file will be written.
+!> @param[in] lugb Logical unit of opened GRIB2 file.
+!> @param[in] lugi Logical unit file opened to write index to.
 !> @param[in] idxver Index version.
+!> @param[in] filename Name of GRIB2 file. 
 !> @param[out] iret Return code:
 !> - 0 success
 !> - 90 problem opening GRIB2 file.
@@ -14,18 +15,18 @@
 !> - 92 no messages found in GRIB2 file.
 !>
 !> @author Ed Hartnett, Mark Iredell @date Feb 15, 2024
-subroutine g2_create_index(cgb, cgi, idxver, iret)
+subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
   implicit none
   
-  character, intent(in) :: cgb * 256, cgi * 256
-  integer, intent(in) :: idxver
+  integer, intent(in) :: lugb, lugi, idxver
+  character*(*) :: filename
   integer, intent(out) :: iret
   
   integer (kind = 8) :: msk1, msk2
   parameter(msk1 = 32000_8, msk2 = 4000_8)
   character(len=1), pointer, dimension(:) :: cbuf
   integer :: numtot, nnum, nlen, mnum, kw
-  integer :: ios, iret1, irgi, iw, nmess
+  integer :: irgi, iw, nmess
   
   interface
      subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
@@ -40,25 +41,11 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
 
   ! Assume success.
   iret = 0
-  
-  ! Open GRIB2 file for reading.
-  call baopenr(11, cgb(1:len_trim(cgb)), ios)
-  if (ios .ne. 0) then
-     iret = 90
-     return
-  endif
-
-  ! Open output file where index will be written.
-  call baopen(31, cgi(1:len_trim(cgi)), ios)
-  if (ios .ne. 0) then
-     iret = 91
-     return
-  endif
 
   ! Generate index records for all messages in file, or until memory
   ! runs out.
   mnum = 0
-  call getg2i2r(11, msk1, msk2, mnum, idxver, cbuf, &
+  call getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
        nlen, nnum, nmess, irgi)
   if (irgi .gt. 1 .or. nnum .eq. 0 .or. nlen .eq. 0) then
      iret = 92
@@ -68,11 +55,11 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   mnum = mnum + nmess
 
   ! Write headers.
-  call g2_write_index_headers(31, nlen, numtot, cgb(1:len_trim(cgb)))
+  call g2_write_index_headers(lugi, nlen, numtot, filename)
   iw = 162
 
   ! Write the index data we have so far.
-  call bawrite(31, iw, nlen, kw, cbuf)
+  call bawrite(lugi, iw, nlen, kw, cbuf)
   iw = iw + nlen
 
   ! Extend index file if index buffer length too large to hold in memory.
@@ -87,15 +74,13 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
         if (irgi .le. 1 .and. nnum .gt. 0) then
            numtot = numtot + nnum
            mnum = mnum + nmess
-           call bawrite(31, iw, nlen, kw, cbuf)
+           call bawrite(lugi, iw, nlen, kw, cbuf)
            iw = iw + nlen
         endif
      enddo
      ! Go back and overwrite headers with new info.
-     call g2_write_index_headers(31, iw, numtot, cgb(1:len_trim(cgb)))
+     call g2_write_index_headers(lugi, iw, numtot, filename)
   endif
-  call baclose(11, iret1)
-  call baclose(31, iret1)
   deallocate(cbuf)  
 
 end subroutine g2_create_index
@@ -105,14 +90,14 @@ end subroutine g2_create_index
 !> @param[in] lugi integer logical unit of output index file
 !> @param[in] nlen integer total length of index records
 !> @param[in] nnum integer number of index records
-!> @param[in] cgb character name of GRIB file
+!> @param[in] filename character name of GRIB file
 !>
 !> @author Iredell @date 93-11-22
-subroutine g2_write_index_headers(lugi, nlen, nnum, cgb)
+subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
   implicit none
 
   integer :: lugi, nlen, nnum
-  character cgb*(*)
+  character :: filename*(*)
   character cd8*8, ct10*10, hostname*15
 #ifdef __GFORTRAN__
   integer istat
@@ -124,17 +109,17 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, cgb)
   integer :: kw, ncgb, ncgb1, ncgb2, g2_ncbase
 
   !  fill first 81-byte header
-  ncgb = len(cgb)
-  ncgb1 = g2_ncbase(cgb,ncgb)
-  ncgb2 = g2_ncbase(cgb,ncgb1-2)
-  call date_and_time(cd8,ct10)
+  ncgb = len(filename)
+  ncgb1 = g2_ncbase(filename, ncgb)
+  ncgb2 = g2_ncbase(filename, ncgb1-2)
+  call date_and_time(cd8, ct10)
   chead(1) = '!GFHDR!'
   chead(1)(9:10) = ' 1'
   chead(1)(12:14) = '  1'
   write(chead(1)(16:20),'(i5)') 162
   chead(1)(22:31) = cd8(1:4) // '-' // cd8(5:6) // '-' // cd8(7:8)
   chead(1)(33:40) = ct10(1:2) // ':' // ct10(3:4) // ':' // ct10(5:6)
-  chead(1)(42:47) = 'gb2ix1'
+  chead(1)(42:47) = 'GB2IX1'
   chead(1)(49:54) = '      '
 #ifdef __GFORTRAN__
   istat = hostnm(hostname)
@@ -152,7 +137,7 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, cgb)
   !  fill second 81-byte header
   chead(2) = 'IX1FORM:'
   write(chead(2)(9:38),'(3i10)') 162, nlen, nnum
-  chead(2)(41:80) = cgb(ncgb1:ncgb)
+  chead(2)(41:80) = filename(ncgb1:ncgb)
   chead(2)(81:81) = char(10)
 
   !  write headers at beginning of index file
