@@ -7,7 +7,11 @@
 !> @param[in] cgb Path to GRIB2 file.
 !> @param[in] cgi Path where index file will be written.
 !> @param[in] idxver Index version.
-!> @param[out] iret Return code, 0 for success.
+!> @param[out] iret Return code:
+!> - 0 success
+!> - 90 problem opening GRIB2 file.
+!> - 91 problem opening index file.
+!> - 92 no messages found in GRIB2 file.
 !>
 !> @author Ed Hartnett, Mark Iredell @date Feb 15, 2024
 subroutine g2_create_index(cgb, cgi, idxver, iret)
@@ -33,34 +37,31 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
      end subroutine getg2ir
   end interface
 
+  ! Assume success.
+  iret = 0
+  
   ! Open GRIB2 file for reading.
   ncgb = len_trim(cgb)
   call baopenr(11, cgb(1:ncgb), ios)
   if (ios .ne. 0) then
-     lcarg = len('grb2index:  Error accessing file '//cgb(1:ncgb))
-     carg(1:lcarg) = 'grb2index:  Error accessing file '//cgb(1:ncgb)
-     call errmsg(carg(1:lcarg))
-     call errexit(8)
+     iret = 90
+     return
   endif
 
   ! Open output file where index will be written.
   ncgi = len_trim(cgi)
   call baopen(31, cgi(1:ncgi), ios)
   if (ios .ne. 0) then
-     lcarg = len('grb2index:  Error accessing file '//cgi(1:ncgi))
-     carg(1:lcarg) = 'grb2index:  Error accessing file '//cgi(1:ncgi)
-     call errmsg(carg(1:lcarg))
-     call errexit(8)
+     iret = 91
+     return
   endif
 
   ! Write index file.
   mnum = 0
   call getg2ir(11, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, irgi)
   if (irgi .gt. 1 .or. nnum .eq. 0 .or. nlen .eq. 0) then
-     call errmsg('grb2index:  No GRIB messages detected in file ' // cgb(1:ncgb))
-     call baclose(11, iret1)
-     call baclose(31, iret1)
-     call errexit(1)
+     iret = 92
+     return
   endif
   numtot = numtot + nnum
   mnum = mnum + nmess
@@ -69,7 +70,7 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   call bawrite(31, iw, nlen, kw, cbuf)
   iw = iw + nlen
 
-  !  extend index file if index buffer length too large to hold in memory
+  ! Extend index file if index buffer length too large to hold in memory.
   if (irgi .eq. 1) then
      do while (irgi .eq. 1 .and. nnum .gt. 0)
         if (associated(cbuf)) then
@@ -88,7 +89,6 @@ subroutine g2_create_index(cgb, cgi, idxver, iret)
   endif
   call baclose(11, iret1)
   call baclose(31, iret1)
-  iret = 0
 
 end subroutine g2_create_index
 
@@ -555,7 +555,7 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
   endif
 end subroutine getg2i2
 
-!> Generate an index record for a message in a GRIB2 file.
+!> Generate a version 1 index record for each message in a GRIB2 file.
 !>
 !> The index record contains byte offsets to the message, it's length,
 !> and byte offsets within the message to each section. The index file
@@ -615,7 +615,8 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   call getg2i2r(lugb, msk1_8, msk2_8, mnum, 1, cbuf, nlen, nnum, nmess, iret)
 end subroutine getg2ir
      
-!> Generate an index record for a message in a GRIB2 file.
+!> Generate a version 1 or 2 index record for each message in a GRIB2
+!> file.
 !>
 !> The index record contains byte offsets to the message, it's length,
 !> and byte offsets within the message to each section. The index file
