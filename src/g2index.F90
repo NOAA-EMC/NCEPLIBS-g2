@@ -2,6 +2,150 @@
 !> @brief Subroutines for dealing with indexes.
 !> @author Edward Hartnett @date Jan 31, 2024
 
+!> Create a version 1 or 2 index file for a GRIB2 file.
+!>
+!> @param[in] lugb Logical unit of opened GRIB2 file.
+!> @param[in] lugi Logical unit file opened to write index to.
+!> @param[in] idxver Index version.
+!> @param[in] filename Name of GRIB2 file. 
+!> @param[out] iret Return code:
+!> - 0 success
+!> - 90 problem opening GRIB2 file.
+!> - 91 problem opening index file.
+!> - 92 no messages found in GRIB2 file.
+!>
+!> @author Ed Hartnett, Mark Iredell @date Feb 15, 2024
+subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
+  implicit none
+  
+  integer, intent(in) :: lugb, lugi, idxver
+  character*(*) :: filename
+  integer, intent(out) :: iret
+  
+  integer (kind = 8) :: msk1, msk2
+  parameter(msk1 = 32000_8, msk2 = 4000_8)
+  character(len=1), pointer, dimension(:) :: cbuf
+  integer :: numtot, nnum, nlen, mnum, kw
+  integer :: irgi, iw, nmess
+  
+  interface
+     subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
+          nlen, nnum, nmess, iret)
+       integer, intent(in) :: lugb
+       integer (kind = 8), intent(in) :: msk1, msk2
+       integer, intent(in) :: mnum, idxver
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: nlen, nnum, nmess, iret
+     end subroutine getg2i2r
+  end interface
+
+  ! Assume success.
+  iret = 0
+  numtot = 0
+  nlen = 0
+
+  ! Generate index records for all messages in file, or until memory
+  ! runs out.
+  mnum = 0
+  call getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
+       nlen, nnum, nmess, irgi)
+  if (irgi .gt. 1 .or. nnum .eq. 0 .or. nlen .eq. 0) then
+     iret = 92
+     return
+  endif
+  numtot = numtot + nnum
+  mnum = mnum + nmess
+
+  ! Write headers.
+  call g2_write_index_headers(lugi, nlen, numtot, filename)
+  iw = 162
+
+  ! Write the index data we have so far.
+  call bawrite(lugi, iw, nlen, kw, cbuf)
+  iw = iw + nlen
+
+  ! Extend index file if index buffer length too large to hold in memory.
+  if (irgi .eq. 1) then
+     do while (irgi .eq. 1 .and. nnum .gt. 0)
+        if (associated(cbuf)) then
+           deallocate(cbuf)
+           nullify(cbuf)
+        endif
+        call getg2i2r(11, msk1, msk2, mnum, idxver, cbuf, &
+             nlen, nnum, nmess, irgi)
+        if (irgi .le. 1 .and. nnum .gt. 0) then
+           numtot = numtot + nnum
+           mnum = mnum + nmess
+           call bawrite(lugi, iw, nlen, kw, cbuf)
+           iw = iw + nlen
+        endif
+     enddo
+     ! Go back and overwrite headers with new info.
+     call g2_write_index_headers(lugi, iw, numtot, filename)
+  endif
+  deallocate(cbuf)  
+
+end subroutine g2_create_index
+
+!> Write index headers.
+!>
+!> @param[in] lugi integer logical unit of output index file
+!> @param[in] nlen integer total length of index records
+!> @param[in] nnum integer number of index records
+!> @param[in] filename character name of GRIB file
+!>
+!> @author Iredell @date 93-11-22
+subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
+  implicit none
+
+  integer, intent(in) :: lugi, nlen, nnum
+  character, intent(in) :: filename*(*)
+  
+  character cd8*8, ct10*10, hostname*15
+#ifdef __GFORTRAN__
+  integer istat
+#else
+  character hostnam*15
+  integer hostnm
+#endif
+  character chead(2)*81
+  integer :: kw
+
+  !  fill first 81-byte header
+  call date_and_time(cd8, ct10)
+  chead(1) = '!GFHDR!'
+  chead(1)(9:10) = ' 1'
+  chead(1)(12:14) = '  1'
+  write(chead(1)(16:20),'(i5)') 162
+  chead(1)(22:31) = cd8(1:4) // '-' // cd8(5:6) // '-' // cd8(7:8)
+  chead(1)(33:40) = ct10(1:2) // ':' // ct10(3:4) // ':' // ct10(5:6)
+  chead(1)(42:47) = 'GB2IX1'
+  chead(1)(49:54) = '      '
+#ifdef __GFORTRAN__
+  istat = hostnm(hostname)
+  if (istat .eq. 0) then
+     chead(1)(56:70) = '0000'
+  else
+     chead(1)(56:70) = '0001'
+  endif
+#else
+  chead(1)(56:70) = hostnam(hostname)
+#endif
+  chead(1)(72:80) = 'grb2index'
+  chead(1)(81:81) = char(10)
+
+  !  fill second 81-byte header
+  chead(2) = 'IX1FORM:'
+  write(chead(2)(9:38),'(3i10)') 162, nlen, nnum
+  chead(2)(41:80) = filename
+  chead(2)(81:81) = char(10)
+
+  !  write headers at beginning of index file
+  call bawrite(lugi, 0, 162, kw, chead)
+
+  return
+end subroutine g2_write_index_headers
+
 !> Find, read or generate a version 1 GRIB2 index for a GRIB2 file
 !> (which must be < 2 GB).
 !>
@@ -363,7 +507,6 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
   iret = 4
   call baread(lugi, 0, 162, lhead, chead)
   if (lhead .eq. 162 .and. chead(42:47) .eq. 'GB2IX1') then
-!     read(chead(82:162), '(8x, 3i10, 2x, a40)', iostat = ios) nskp, nlen, nnum
      read(chead(82:162), '(2x, i1, 5x, 3i10, 2x, a40)', iostat = ios) idxver, nskp, nlen, nnum
      if (ios .eq. 0) then
         allocate(cbuf(nlen), stat = istat)    ! Allocate space for cbuf.
@@ -378,7 +521,7 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
   endif
 end subroutine getg2i2
 
-!> Generate an index record for a message in a GRIB2 file.
+!> Generate a version 1 index record for each message in a GRIB2 file.
 !>
 !> The index record contains byte offsets to the message, it's length,
 !> and byte offsets within the message to each section. The index file
@@ -438,7 +581,8 @@ subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum, nmess, iret)
   call getg2i2r(lugb, msk1_8, msk2_8, mnum, 1, cbuf, nlen, nnum, nmess, iret)
 end subroutine getg2ir
      
-!> Generate an index record for a message in a GRIB2 file.
+!> Generate a version 1 or 2 index record for each message in a GRIB2
+!> file.
 !>
 !> The index record contains byte offsets to the message, it's length,
 !> and byte offsets within the message to each section. The index file
@@ -816,7 +960,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
   endif
 
   ! Search for request.
-  do while(iret.ne.0 .and. k.lt.nnum)
+  do while(iret .ne. 0 .and. k .lt. nnum)
      k = k + 1
      ! Get length of current index record.
      call g2_gbytec(cbuf, inlen, ipos * 8, 4 * 8)    
