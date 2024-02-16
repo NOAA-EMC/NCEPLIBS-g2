@@ -57,7 +57,7 @@ subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
   mnum = mnum + nmess
 
   ! Write headers.
-  call g2_write_index_headers(lugi, nlen, numtot, filename)
+  call g2_write_index_headers(lugi, nlen, numtot, idxver, filename)
   iw = 162
 
   ! Write the index data we have so far.
@@ -81,7 +81,7 @@ subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
         endif
      enddo
      ! Go back and overwrite headers with new info.
-     call g2_write_index_headers(lugi, iw, numtot, filename)
+     call g2_write_index_headers(lugi, iw, numtot, idxver, filename)
   endif
   deallocate(cbuf)  
 
@@ -92,13 +92,15 @@ end subroutine g2_create_index
 !> @param[in] lugi integer logical unit of output index file
 !> @param[in] nlen integer total length of index records
 !> @param[in] nnum integer number of index records
+!> @param[in] idxver Index version, 1 for legacy, 2 for files that may
+!> be > 2 GB.
 !> @param[in] filename character name of GRIB file
 !>
-!> @author Iredell @date 93-11-22
-subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
+!> @author Iredell, Ed Hartnett @date 93-11-22
+subroutine g2_write_index_headers(lugi, nlen, nnum, idxver, filename)
   implicit none
 
-  integer, intent(in) :: lugi, nlen, nnum
+  integer, intent(in) :: lugi, nlen, nnum, idxver
   character, intent(in) :: filename*(*)
   
   character cd8*8, ct10*10, hostname*15
@@ -135,7 +137,11 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
   chead(1)(81:81) = char(10)
 
   !  fill second 81-byte header
-  chead(2) = 'IX1FORM:'
+  if (idxver .eq. 1) then
+     chead(2) = 'IX1FORM:'
+  else
+     chead(2) = 'IX2FORM:'
+  endif
   write(chead(2)(9:38),'(3i10)') 162, nlen, nnum
   chead(2)(41:80) = filename
   chead(2)(81:81) = char(10)
