@@ -47,7 +47,30 @@ program test_create_index
        0, 7, 2, 0, 11, 0, 0, 1, 0, 241, 0, 3, 255, 0, 0 /), &
        shape(expected_ipdtmpl))
   
-  integer :: expected_idrtmpl(7) = (/ 1092616192, 0, 2, 11, 0, 0, 255 /)
+  ! These are the DRT templates of the 19 messages in the test file,
+  ! verified with degrib2.
+  integer :: expected_idrtmpl(7, 19) = reshape((/ &
+        1092616192, 0, 2, 11, 0, 0, 255, &
+        1065353216, 0, 2, 16, 0, 0, 255, &
+        -1006403584, 0, 2, 11, 0, 0, 255, &
+        -996777984, 0, 2, 12, 0, 0, 255, &
+        1102053376, 0, 2, 9, 0, 0, 255, &
+        1144815616, 0, 2, 10, 0, 0, 255, &
+        1185159680, 0, 2, 14, 0, 0, 255, &
+        1086324736, 0, 2, 9, 0, 0, 255, &
+        1095761920, 0, 2, 9, 0, 0, 255, &
+        1086324736, 0, 2, 8, 0, 0, 255, &
+        1084227584, 0, 2, 7, 0, 0, 255, &
+        1125908480, 0, 2, 11, 0, 0, 255, &
+        1136328704, 0, 2, 11, 0, 0, 255, &
+        1135411200, 0, 2, 11, 0, 0, 255, &
+        1133510656, 0, 2, 11, 0, 0, 255, &
+        0, 0, 2, 16, 0, 0, 255, &
+        1183603200, 0, 2, 14, 0, 0, 255, &
+        1140424704, 0, 2, 16, 0, 0, 255, &
+        1092616192, 0, 2, 16, 0, 0, 255 /), &
+        shape(expected_idrtmpl))
+
   integer :: ios
 
   interface
@@ -150,15 +173,20 @@ program test_create_index
      end do
      do i = 1, gfld%ipdtlen
         if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i, j)) then
-           print *, i, gfld%ipdtmpl(i), expected_ipdtmpl(j, i)
+           print *, i, gfld%ipdtmpl(i), expected_ipdtmpl(i, j)
            print *, 'gfld%ipdtmpl', gfld%ipdtmpl
            print *, 'expected_ipdtmpl', expected_ipdtmpl
            stop 220
         endif
      end do
-     ! do i = 5, gfld%idrtlen
-     !    if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 300
-     ! end do
+     do i = 1, gfld%idrtlen
+        if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i, j)) then
+           print *, i, gfld%idrtmpl(i), expected_idrtmpl(i, j)
+           print *, 'gfld%idrtmpl', gfld%idrtmpl
+           print *, 'expected_idrtmpl', expected_idrtmpl
+           stop 230
+        endif
+     end do
 
      ! Free memory.
      call gf_free(gfld)
