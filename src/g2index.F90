@@ -107,12 +107,9 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
   integer hostnm
 #endif
   character chead(2)*81
-  integer :: kw, ncgb, ncgb1, ncgb2, g2_ncbase
+  integer :: kw
 
   !  fill first 81-byte header
-  ncgb = len(filename)
-  ncgb1 = g2_ncbase(filename, ncgb)
-  ncgb2 = g2_ncbase(filename, ncgb1 - 2)
   call date_and_time(cd8, ct10)
   chead(1) = '!GFHDR!'
   chead(1)(9:10) = ' 1'
@@ -138,7 +135,7 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
   !  fill second 81-byte header
   chead(2) = 'IX1FORM:'
   write(chead(2)(9:38),'(3i10)') 162, nlen, nnum
-  chead(2)(41:80) = filename(ncgb1:ncgb)
+  chead(2)(41:80) = filename
   chead(2)(81:81) = char(10)
 
   !  write headers at beginning of index file
