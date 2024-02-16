@@ -960,7 +960,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
   endif
 
   ! Search for request.
-  do while(iret.ne.0 .and. k.lt.nnum)
+  do while(iret .ne. 0 .and. k .lt. nnum)
      k = k + 1
      ! Get length of current index record.
      call g2_gbytec(cbuf, inlen, ipos * 8, 4 * 8)    
