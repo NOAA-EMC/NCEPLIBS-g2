@@ -96,8 +96,9 @@ end subroutine g2_create_index
 subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
   implicit none
 
-  integer :: lugi, nlen, nnum
-  character :: filename*(*)
+  integer, intent(in) :: lugi, nlen, nnum
+  character, intent(in) :: filename*(*)
+  
   character cd8*8, ct10*10, hostname*15
 #ifdef __GFORTRAN__
   integer istat
@@ -111,7 +112,7 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
   !  fill first 81-byte header
   ncgb = len(filename)
   ncgb1 = g2_ncbase(filename, ncgb)
-  ncgb2 = g2_ncbase(filename, ncgb1-2)
+  ncgb2 = g2_ncbase(filename, ncgb1 - 2)
   call date_and_time(cd8, ct10)
   chead(1) = '!GFHDR!'
   chead(1)(9:10) = ' 1'
@@ -141,7 +142,7 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
   chead(2)(81:81) = char(10)
 
   !  write headers at beginning of index file
-  call bawrite(lugi,0,162,kw,chead)
+  call bawrite(lugi, 0, 162, kw, chead)
 
   return
 end subroutine g2_write_index_headers
