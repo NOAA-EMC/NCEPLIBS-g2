@@ -146,32 +146,6 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, filename)
   return
 end subroutine g2_write_index_headers
 
-!> Locate basename of a file.
-!>
-!> This subprogram locates the character number after the last '/' in a
-!> character string. For unix filenames, the character number returned
-!> marks the beginning of the basename of the file.
-!>
-!> @param[in] c character string to search
-!> @param[in] n integer length of string
-!>
-!> @return The index of the basename within the string.
-!>
-!> @author Iredell @date 93-11-22
-integer function g2_ncbase(c,n)
-  implicit none
-  character c*(*)
-  integer :: n
-  integer :: k
-
-  k = n
-  do while (k .ge. 1 .and. c(k:k) .ne. '/')
-     k = k - 1
-  enddo
-  g2_ncbase = k + 1
-
-end function g2_ncbase
-
 !> Find, read or generate a version 1 GRIB2 index for a GRIB2 file
 !> (which must be < 2 GB).
 !>
