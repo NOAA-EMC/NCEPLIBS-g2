@@ -13,7 +13,7 @@ program test_create_index
   character(*) :: TEST_FILE_GDAS_INDEX
   parameter (TEST_FILE_GDAS_INDEX = 'test_create_index_gdaswave.grb2index')
   character(len=1), pointer, dimension(:) :: cbuf(:)
-  integer :: idxver = 1, nlen, nnum, lugi = 31, lugb = 11
+  integer :: idxver = 2, nlen, nnum, lugi = 31, lugb = 11
   integer :: j, jdisc, jpdtn, jgdtn
   integer :: jids(13), jpdt(100), jgdt(250)
   integer :: i
@@ -67,7 +67,13 @@ program test_create_index
 
   ! Read the index file.
   call getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
-  if (nlen .ne. 3800 .or. nnum .ne. 19 .or. iret .ne. 0) stop 80
+  print *, nlen, nnum, iret
+  if (idxver .eq. 1) then
+     if (nlen .ne. 3800) stop 80
+  else
+     if (nlen .ne. 3876) stop 80
+  endif
+  if (nnum .ne. 19 .or. iret .ne. 0) stop 81
 
   ! Close the index file.
   call baclose(lugi, iret)
