@@ -41,6 +41,8 @@ subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
 
   ! Assume success.
   iret = 0
+  numtot = 0
+  nlen = 0
 
   ! Generate index records for all messages in file, or until memory
   ! runs out.
