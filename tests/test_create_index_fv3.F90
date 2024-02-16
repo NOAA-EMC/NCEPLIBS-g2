@@ -19,9 +19,9 @@ program test_create_index_fv3
   integer :: i
   integer :: k, lpos, iret
   type(gribfield) :: gfld
-  integer :: expected_idsect(13) = (/ 7, 0, 2, 1, 1, 2021, 11, 30, 0, 0, 0, 0, 1 /)
-  integer :: expected_igdtmpl(19) = (/ 6, 0, 0, 0, 0, 0, 0, 241, 151, 0, 0, 50000000, &
-       210000000, 48, 25000000, 250000000, 166667, 166667, 0 /)
+  integer :: expected_idsect(13) = (/ 7, 0, 2, 1, 1, 2022, 6, 21, 0, 0, 0, 0, 1 /)
+  integer :: expected_igdtmpl(22) = (/ 6, 0, 0, 0, 0, 0, 0, 4881, 2961, 0, 0, &
+       -37000000, 299000000, 48, 37000000, 61000000, 25000, 25000, 64, -35000000, 247000000, 0 /)
 
   ! These are the PDT templates of the 19 messages in the test file,
   ! verified with degrib2.
@@ -116,13 +116,8 @@ program test_create_index_fv3
   ! Read the index file.
   call getg2i2(lugi, cbuf, myidxver, nlen, nnum, iret)
   print *, myidxver, nlen, nnum, iret
-  ! if (myidxver .ne. idxver) stop 79
-  ! if (idxver .eq. 1) then
-  !    if (nlen .ne. 3800) stop 80
-  ! else
-  !    if (nlen .ne. 3876) stop 80
-  ! endif
-  ! if (nnum .ne. 19 .or. iret .ne. 0) stop 81
+  if (nlen .ne. 259722) stop 80
+  if (nnum .ne. 1081 .or. iret .ne. 0) stop 81
 
   ! Close the index file.
   call baclose(lugi, iret)
@@ -130,74 +125,100 @@ program test_create_index_fv3
 
   print *, '   OK!'
 
-  ! ! Parse the index info in cbuf, and fill gfld with the info about
-  ! ! the first message.
-  ! jdisc = -1
-  ! do i = 1, 13
-  !    jids(i) = -9999
-  ! end do
-  ! jpdtn = -1
-  ! do i = 1, 100
-  !    jpdt(i) = -9999
-  ! end do
-  ! jgdtn = -1
-  ! do i = 1, 250
-  !    jgdt(i) = -9999
-  ! end do
-  ! do j = 1, 19
-  !    print *, '   testing unpacking index buffer with getgb2s2() for message', j
-  !    call getgb2s2(cbuf, idxver, nlen, nnum, j - 1, jdisc, jids, jpdtn, jpdt, jgdtn, &
-  !         jgdt, k, gfld, lpos, iret)
-  !    if (iret .ne. 0) stop 101
+  ! Parse the index info in cbuf, and fill gfld with the info about
+  ! the first message.
+  jdisc = -1
+  do i = 1, 13
+     jids(i) = -9999
+  end do
+  jpdtn = -1
+  do i = 1, 100
+     jpdt(i) = -9999
+  end do
+  jgdtn = -1
+  do i = 1, 250
+     jgdt(i) = -9999
+  end do
+  do j = 1, nnum
+     print *, '   testing unpacking index buffer with getgb2s2() for message', j
+     call getgb2s2(cbuf, idxver, nlen, nnum, j - 1, jdisc, jids, jpdtn, jpdt, jgdtn, &
+          jgdt, k, gfld, lpos, iret)
+     if (iret .ne. 0) stop 101
 
-  !    ! Check that the information is correct for the first record.
-  !    if (gfld%version .ne. 2) stop 102
-  !    if (j .lt. 5) then
-  !       if (gfld%discipline .ne. 0) stop 103
-  !    else
-  !       if (gfld%discipline .ne. 10) stop 104
-  !    end if
-  !    if (gfld%idsectlen .ne. 13) stop 110
-  !    if (gfld%ifldnum .ne. 1) stop 111
-  !    if (gfld%griddef .ne. 0) stop 112
-  !    if (gfld%ngrdpts .ne. 36391) stop 120
-  !    if (gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. gfld%num_opt .ne. 0) stop 122
-  !    if (gfld%igdtnum .ne. 0 .or. gfld%igdtlen .ne. 19) stop 123
-  !    if (gfld%ipdtnum .ne. 0 .or. gfld%ipdtlen .ne. 15 .or. gfld%num_coord .ne. 0) stop 130
-  !    if (gfld%unpacked .neqv. .FALSE.) stop 131
-  !    if (gfld%ibmap .ne. 0) stop 132
-  !    do i = 1, gfld%idsectlen
-  !       if (gfld%idsect(i) .ne. expected_idsect(i)) stop 200
-  !    end do
-  !    do i = 1, gfld%igdtlen
-  !       if (gfld%igdtmpl(i) .ne. expected_igdtmpl(i)) stop 210
-  !    end do
-  !    do i = 1, gfld%ipdtlen
-  !       if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i, j)) then
-  !          print *, i, gfld%ipdtmpl(i), expected_ipdtmpl(i, j)
-  !          print *, 'gfld%ipdtmpl', gfld%ipdtmpl
-  !          print *, 'expected_ipdtmpl', expected_ipdtmpl
-  !          stop 220
-  !       endif
-  !    end do
-  !    do i = 1, gfld%idrtlen
-  !       if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i, j)) then
-  !          print *, i, gfld%idrtmpl(i), expected_idrtmpl(i, j)
-  !          print *, 'gfld%idrtmpl', gfld%idrtmpl
-  !          print *, 'expected_idrtmpl', expected_idrtmpl
-  !          stop 230
-  !       endif
-  !    end do
+     ! Check that the information is correct for many records.
+     if (gfld%version .ne. 2) stop 102
+     if (j .lt. 47) then
+        if (gfld%discipline .ne. 0) stop 103
+     elseif (j .eq. 47) then
+        if (gfld%discipline .ne. 2) stop 104
+     elseif (j .lt. 756) then
+        if (gfld%discipline .ne. 0) stop 104
+     elseif (j .eq. 756) then
+        if (gfld%discipline .ne. 2) stop 104
+     elseif (j .lt. 818) then
+        if (gfld%discipline .ne. 0) stop 104
+     elseif (j .lt. 834) then
+        if (gfld%discipline .ne. 2) stop 104
+     elseif (j .lt. 837) then
+        if (gfld%discipline .ne. 0) stop 104
+     elseif (j .lt. 839) then
+        if (gfld%discipline .ne. 2) stop 104
+     elseif (j .lt. 854) then
+        if (gfld%discipline .ne. 0) stop 104
+     elseif (j .eq. 854) then
+        if (gfld%discipline .ne. 1) stop 104
+     elseif (j .lt. 861) then
+        if (gfld%discipline .ne. 0) stop 104
+     elseif (j .lt. 862) then
+        if (gfld%discipline .ne. 2) stop 104
+     end if
 
-  !    ! Free memory.
-  !    call gf_free(gfld)
-  !    print *, '   OK!'
-  ! end do
+     ! Check the values of the last message.
+     if (j .eq. nnum) then
+        print *, '   Checking values of last message index...'
+           if (gfld%idsectlen .ne. 13) stop 110
+           if (gfld%ifldnum .ne. 1) stop 111
+           if (gfld%griddef .ne. 0) stop 112
+           if (gfld%ngrdpts .ne. 14452641) stop 120
+           if (gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. gfld%num_opt .ne. 0) stop 122
+           if (gfld%igdtnum .ne. 1 .or. gfld%igdtlen .ne. 22) stop 123
+           if (gfld%ipdtnum .ne. 0 .or. gfld%ipdtlen .ne. 15 .or. gfld%num_coord .ne. 0) stop 130
+           if (gfld%unpacked .neqv. .FALSE.) stop 131
+           if (gfld%ibmap .ne. 0) stop 132
+           do i = 1, gfld%idsectlen
+              if (gfld%idsect(i) .ne. expected_idsect(i)) stop 200
+           end do
+           do i = 1, gfld%igdtlen
+              if (gfld%igdtmpl(i) .ne. expected_igdtmpl(i)) stop 210
+           end do
+        !    do i = 1, gfld%ipdtlen
+        !       if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i, j)) then
+        !          print *, i, gfld%ipdtmpl(i), expected_ipdtmpl(i, j)
+        !          print *, 'gfld%ipdtmpl', gfld%ipdtmpl
+        !          print *, 'expected_ipdtmpl', expected_ipdtmpl
+        !          stop 220
+        !       endif
+        !    end do
+        !    do i = 1, gfld%idrtlen
+        !       if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i, j)) then
+        !          print *, i, gfld%idrtmpl(i), expected_idrtmpl(i, j)
+        !          print *, 'gfld%idrtmpl', gfld%idrtmpl
+        !          print *, 'expected_idrtmpl', expected_idrtmpl
+        !          stop 230
+        !       endif
+        !    end do
+        print *, '   OK!'
+     endif
+        
+     ! Free memory.
+     call gf_free(gfld)
+     print *, '   OK!'
+  end do
 
-  ! ! Clean up.
-  ! deallocate(cbuf)
-  ! call gf_finalize(iret)
-  ! if (iret .ne. 0) stop 200
+  ! Clean up.
+  deallocate(cbuf)
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 200
 
   print *, 'SUCCESS!...'
 end program test_create_index_fv3
