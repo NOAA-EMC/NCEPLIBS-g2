@@ -25,51 +25,12 @@ program test_create_index_fv3
 
   ! These are the PDT templates of the 19 messages in the test file,
   ! verified with degrib2.
-  integer :: expected_ipdtmpl(15, 19) = reshape((/ &
-       2, 1, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       2, 0, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       2, 2, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       2, 3, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       0, 3, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       0, 11, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       0, 10, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       0, 5, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       0, 8, 2, 0, 11, 0, 0, 1, 0, 241, 0, 1, 255, 0, 0, &
-       0, 8, 2, 0, 11, 0, 0, 1, 0, 241, 0, 2, 255, 0, 0, &
-       0, 8, 2, 0, 11, 0, 0, 1, 0, 241, 0, 3, 255, 0, 0, &
-       0, 6, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       0, 9, 2, 0, 11, 0, 0, 1, 0, 241, 0, 1, 255, 0, 0, &
-       0, 9, 2, 0, 11, 0, 0, 1, 0, 241, 0, 2, 255, 0, 0, &
-       0, 9, 2, 0, 11, 0, 0, 1, 0, 241, 0, 3, 255, 0, 0, &
-       0, 4, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0, &
-       0, 7, 2, 0, 11, 0, 0, 1, 0, 241, 0, 1, 255, 0, 0, &
-       0, 7, 2, 0, 11, 0, 0, 1, 0, 241, 0, 2, 255, 0, 0, &
-       0, 7, 2, 0, 11, 0, 0, 1, 0, 241, 0, 3, 255, 0, 0 /), &
-       shape(expected_ipdtmpl))
+  integer :: expected_ipdtmpl(15) = (/ 3, 0, 2, 0, 134, 0, 0, 1, 0, 1, 0, 0, 255, 0, 0 /)
   
   ! These are the DRT templates of the 19 messages in the test file,
   ! verified with degrib2.
-  integer :: expected_idrtmpl(7, 19) = reshape((/ &
-        1092616192, 0, 2, 11, 0, 0, 255, &
-        1065353216, 0, 2, 16, 0, 0, 255, &
-        -1006403584, 0, 2, 11, 0, 0, 255, &
-        -996777984, 0, 2, 12, 0, 0, 255, &
-        1102053376, 0, 2, 9, 0, 0, 255, &
-        1144815616, 0, 2, 10, 0, 0, 255, &
-        1185159680, 0, 2, 14, 0, 0, 255, &
-        1086324736, 0, 2, 9, 0, 0, 255, &
-        1095761920, 0, 2, 9, 0, 0, 255, &
-        1086324736, 0, 2, 8, 0, 0, 255, &
-        1084227584, 0, 2, 7, 0, 0, 255, &
-        1125908480, 0, 2, 11, 0, 0, 255, &
-        1136328704, 0, 2, 11, 0, 0, 255, &
-        1135411200, 0, 2, 11, 0, 0, 255, &
-        1133510656, 0, 2, 11, 0, 0, 255, &
-        0, 0, 2, 16, 0, 0, 255, &
-        1183603200, 0, 2, 14, 0, 0, 255, &
-        1140424704, 0, 2, 16, 0, 0, 255, &
-        1092616192, 0, 2, 16, 0, 0, 255 /), &
-        shape(expected_idrtmpl))
+  integer :: expected_idrtmpl(18) = (/ 1216637952, 0, 3, 17, 0, 1, 0, 0, 0, &
+       560759, 0, 5, 1, 1, 63, 6, 2, 3 /)
 
   integer :: ios
 
@@ -106,8 +67,8 @@ program test_create_index_fv3
   call baclose(lugi, ios)
   if (ios .ne. 0) stop 12
 
-  print *, '   OK!'
-  print *, '   testing that index file can be read with getg2i2()...'
+  print *, 'OK!'
+  print *, 'testing that index file can be read with getg2i2()...'
 
   ! Open the index file.
   call baopen(lugi, TEST_FILE_FV3_INDEX, iret)
@@ -123,7 +84,7 @@ program test_create_index_fv3
   call baclose(lugi, iret)
   if (iret .ne. 0) stop 100
 
-  print *, '   OK!'
+  print *, 'OK!'
 
   ! Parse the index info in cbuf, and fill gfld with the info about
   ! the first message.
@@ -139,8 +100,8 @@ program test_create_index_fv3
   do i = 1, 250
      jgdt(i) = -9999
   end do
+  print *, 'testing unpacking index buffer with getgb2s2() for all messages...'
   do j = 1, nnum
-     print *, '   testing unpacking index buffer with getgb2s2() for message', j
      call getgb2s2(cbuf, idxver, nlen, nnum, j - 1, jdisc, jids, jpdtn, jpdt, jgdtn, &
           jgdt, k, gfld, lpos, iret)
      if (iret .ne. 0) stop 101
@@ -191,28 +152,17 @@ program test_create_index_fv3
            do i = 1, gfld%igdtlen
               if (gfld%igdtmpl(i) .ne. expected_igdtmpl(i)) stop 210
            end do
-        !    do i = 1, gfld%ipdtlen
-        !       if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i, j)) then
-        !          print *, i, gfld%ipdtmpl(i), expected_ipdtmpl(i, j)
-        !          print *, 'gfld%ipdtmpl', gfld%ipdtmpl
-        !          print *, 'expected_ipdtmpl', expected_ipdtmpl
-        !          stop 220
-        !       endif
-        !    end do
-        !    do i = 1, gfld%idrtlen
-        !       if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i, j)) then
-        !          print *, i, gfld%idrtmpl(i), expected_idrtmpl(i, j)
-        !          print *, 'gfld%idrtmpl', gfld%idrtmpl
-        !          print *, 'expected_idrtmpl', expected_idrtmpl
-        !          stop 230
-        !       endif
-        !    end do
+           do i = 1, gfld%ipdtlen
+              if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i)) stop 220
+           end do
+           do i = 1, gfld%idrtlen
+              if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 230
+           end do
         print *, '   OK!'
      endif
         
      ! Free memory.
      call gf_free(gfld)
-     print *, '   OK!'
   end do
 
   ! Clean up.
