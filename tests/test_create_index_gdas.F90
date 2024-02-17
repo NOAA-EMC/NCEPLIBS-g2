@@ -118,13 +118,13 @@ program test_create_index_gdas
              jgdt, k, gfld, lpos, iret)
         if (iret .ne. 0) stop 101
 
-        print *, gfld%version, gfld%discipline, gfld%idsectlen, gfld%ifldnum, gfld%griddef
-        print *, gfld%ngrdpts, gfld%numoct_opt, gfld%interp_opt, gfld%num_opt
-        print *, gfld%igdtnum, gfld%igdtlen
-        print *, gfld%ipdtnum, gfld%ipdtlen, gfld%num_coord
-        print *, gfld%unpacked, gfld%ibmap
-        print *, 'sec1:', gfld%idsect
-        print *, 'gdt:', gfld%igdtmpl
+        ! print *, gfld%version, gfld%discipline, gfld%idsectlen, gfld%ifldnum, gfld%griddef
+        ! print *, gfld%ngrdpts, gfld%numoct_opt, gfld%interp_opt, gfld%num_opt
+        ! print *, gfld%igdtnum, gfld%igdtlen
+        ! print *, gfld%ipdtnum, gfld%ipdtlen, gfld%num_coord
+        ! print *, gfld%unpacked, gfld%ibmap
+        ! print *, 'sec1:', gfld%idsect
+        ! print *, 'gdt:', gfld%igdtmpl
 
         ! Check that the information is correct for the first record.
         if (gfld%version .ne. 2) stop 102
