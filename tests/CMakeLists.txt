@@ -120,6 +120,7 @@ if(FTP_TEST_FILES)
     create_test(test_getgb2ir ${kind})
     create_test(test_file_blend ${kind})
     create_test(test_aqm ${kind})
+    create_test(test_index_gdas ${kind})
     # This test depends on gdt2gds(), which is not present if the GRIB1
     # library is not also included in the build.
     if (BUILD_WITH_W3EMC)
