@@ -128,6 +128,7 @@ if(FTP_TEST_FILES)
     # This test depends on a very large file downloaded from FTP.
     if(FTP_LARGE_TEST_FILES)    
       create_test(test_fv3 ${kind})
+      create_test(test_create_index_fv3 ${kind})
     endif()
   endforeach()  
 endif()
