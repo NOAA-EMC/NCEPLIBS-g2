@@ -96,11 +96,15 @@ if(FTP_TEST_FILES)
   if(FTP_LARGE_TEST_FILES)
     set(FILE_FV3_ATM "fv3lam.t00z.prslev.f000.grib2")
   endif()
+  if(FTP_EXTRA_TEST_FILES)
+    set(FILE_GFSPRS "GFSPRS.GrbF06")
+    set(FILE_RRFS "rrfs.t18z.prslev.f000.grib2")
+  endif()
   
   # Get each of the test data files.
   foreach(THE_FILE IN LISTS WW3_WEST_FILE FILE_GEP19_BCF144 FILE_GEAVG FILE_GEC00
       FILE_GEGFS_F144 FILE_GEGFS_MEF144 FILE_GEP19_F144 FILE_FV3_ATM FILE_GDAS_12Z
-      FILE_BLEND AQM FILE_FV3_ATM) 
+      FILE_BLEND AQM FILE_FV3_ATM FILE_GFSPRS FILE_RRFS) 
     PULL_DATA(${G2_FTP_URL} ${THE_FILE})
   endforeach()
 
@@ -129,6 +133,9 @@ if(FTP_TEST_FILES)
     if(FTP_LARGE_TEST_FILES)    
       create_test(test_fv3 ${kind})
       create_test(test_create_index_fv3 ${kind})
+    endif()
+    if(FTP_EXTRA_TEST_FILES)    
+      create_test(test_create_index_gfsprs ${kind})
     endif()
   endforeach()  
 endif()
