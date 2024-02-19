@@ -11,7 +11,7 @@ program test_create_index_fv3
   character(*) :: TEST_FILE_FV3
   parameter (TEST_FILE_FV3 = 'fv3lam.t00z.prslev.f000.grib2')
   character(*) :: TEST_FILE_FV3_INDEX
-  parameter (TEST_FILE_FV3_INDEX = 'test_create_index_large_gdaswave.grb2index')
+  parameter (TEST_FILE_FV3_INDEX = 'test_create_index_fv3.grb2index')
   character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: idxver, myidxver, nlen, nnum, lugi = 31, lugb = 11
   integer :: j, jdisc, jpdtn, jgdtn
