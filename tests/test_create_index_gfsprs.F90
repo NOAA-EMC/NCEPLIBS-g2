@@ -1,6 +1,8 @@
 ! This is a test program for NCEPLIBS-g2.
 !
-! This program tests index file functionality with g2_create_index() with a file > 2 GB.
+! This program tests index file functionality with g2_create_index()
+! with a file > 2 GB. This test will not be run unless the
+! FTP_EXTRA_TEST_FILES cmake option is set to ON.
 !
 ! Ed Hartnett 2/19/24
 program test_create_index_gfsprs
@@ -19,18 +21,19 @@ program test_create_index_gfsprs
   integer :: i
   integer :: k, lpos, iret
   type(gribfield) :: gfld
-  integer :: expected_idsect(13) = (/ 7, 0, 2, 1, 1, 2022, 6, 21, 0, 0, 0, 0, 1 /)
-  integer :: expected_igdtmpl(22) = (/ 6, 0, 0, 0, 0, 0, 0, 4881, 2961, 0, 0, &
-       -37000000, 299000000, 48, 37000000, 61000000, 25000, 25000, 64, -35000000, 247000000, 0 /)
+  integer :: expected_idsect(13) = (/ 7, 0, 2, 1, 1, 2020, 2, 13, 0, 0, 0, 0, 1 /)
+  integer :: expected_igdtmpl(19) = (/ 6, 0, 0, 0, 0, 0, 0, 4608, 2304, 0, 0, &
+       89940208, 0, 48, -89940208, 359921875, 78125, 1152, 0 /)
 
   ! These are the PDT templates of the 19 messages in the test file,
   ! verified with degrib2.
-  integer :: expected_ipdtmpl(15) = (/ 3, 0, 2, 0, 134, 0, 0, 1, 0, 1, 0, 0, 255, 0, 0 /)
+  integer :: expected_ipdtmpl(15) = (/ 2, 192, 2, 0, 96, 0, 0, 1, 6, 109, 9, &
+       -2000, 255, 0, 0 /)
   
   ! These are the DRT templates of the 19 messages in the test file,
   ! verified with degrib2.
-  integer :: expected_idrtmpl(18) = (/ 1216637952, 0, 3, 17, 0, 1, 0, 0, 0, &
-       560759, 0, 5, 1, 1, 63, 6, 2, 3 /)
+  integer :: expected_idrtmpl(18) = (/ -1028259840, 0, 3, 9, 0, 1, 0, 0, 0, &
+       490333, 0, 4, 1, 1, 32, 5, 2, 2 /)
 
   integer :: ios
 
@@ -76,7 +79,7 @@ program test_create_index_gfsprs
 
   ! Read the index file.
   call getg2i2(lugi, cbuf, myidxver, nlen, nnum, iret)
-  print *, myidxver, nlen, nnum, iret
+  !print *, myidxver, nlen, nnum, iret
   if (nlen .ne. 254378) stop 80
   if (nnum .ne. 1103 .or. iret .ne. 0) stop 81
 
@@ -106,69 +109,56 @@ program test_create_index_gfsprs
           jgdt, k, gfld, lpos, iret)
      if (iret .ne. 0) stop 101
 
-     print *, '************** message', j
-     print *, gfld%version, gfld%discipline, gfld%idsectlen, gfld%ifldnum, gfld%griddef
-     print *, gfld%ngrdpts, gfld%numoct_opt, gfld%interp_opt, gfld%num_opt
-     print *, gfld%igdtnum, gfld%igdtlen
-     print *, gfld%ipdtnum, gfld%ipdtlen, gfld%num_coord
-     print *, gfld%unpacked, gfld%ibmap
-     print *, 'sec1:', gfld%idsect
-     print *, 'gdt:', gfld%igdtmpl
+     ! print *, '************** message', j
+     ! print *, gfld%version, gfld%discipline, gfld%idsectlen, gfld%ifldnum, gfld%griddef
+     ! print *, gfld%ngrdpts, gfld%numoct_opt, gfld%interp_opt, gfld%num_opt
+     ! print *, gfld%igdtnum, gfld%igdtlen
+     ! print *, gfld%ipdtnum, gfld%ipdtlen, gfld%num_coord
+     ! print *, gfld%unpacked, gfld%ibmap
+     ! print *, 'sec1:', gfld%idsect
+     ! print *, 'gdt:', gfld%igdtmpl
      
      ! Check that the information is correct for many records.
-     ! if (gfld%version .ne. 2) stop 102
-     ! if (j .lt. 47) then
-     !    if (gfld%discipline .ne. 0) stop 103
-     ! elseif (j .eq. 47) then
-     !    if (gfld%discipline .ne. 2) stop 104
-     ! elseif (j .lt. 756) then
-     !    if (gfld%discipline .ne. 0) stop 104
-     ! elseif (j .eq. 756) then
-     !    if (gfld%discipline .ne. 2) stop 104
-     ! elseif (j .lt. 818) then
-     !    if (gfld%discipline .ne. 0) stop 104
-     ! elseif (j .lt. 834) then
-     !    if (gfld%discipline .ne. 2) stop 104
-     ! elseif (j .lt. 837) then
-     !    if (gfld%discipline .ne. 0) stop 104
-     ! elseif (j .lt. 839) then
-     !    if (gfld%discipline .ne. 2) stop 104
-     ! elseif (j .lt. 854) then
-     !    if (gfld%discipline .ne. 0) stop 104
-     ! elseif (j .eq. 854) then
-     !    if (gfld%discipline .ne. 1) stop 104
-     ! elseif (j .lt. 861) then
-     !    if (gfld%discipline .ne. 0) stop 104
-     ! elseif (j .lt. 862) then
-     !    if (gfld%discipline .ne. 2) stop 104
-     ! end if
+     if (gfld%version .ne. 0 .and. gfld%version .ne. 2) stop 102
 
-     ! ! Check the values of the last message.
-     ! if (j .eq. nnum) then
-     !    print *, '   Checking values of last message index...'
-     !       if (gfld%idsectlen .ne. 13) stop 110
-     !       if (gfld%ifldnum .ne. 1) stop 111
-     !       if (gfld%griddef .ne. 0) stop 112
-     !       if (gfld%ngrdpts .ne. 14452641) stop 120
-     !       if (gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. gfld%num_opt .ne. 0) stop 122
-     !       if (gfld%igdtnum .ne. 1 .or. gfld%igdtlen .ne. 22) stop 123
-     !       if (gfld%ipdtnum .ne. 0 .or. gfld%ipdtlen .ne. 15 .or. gfld%num_coord .ne. 0) stop 130
-     !       if (gfld%unpacked .neqv. .FALSE.) stop 131
-     !       if (gfld%ibmap .ne. 0) stop 132
-     !       do i = 1, gfld%idsectlen
-     !          if (gfld%idsect(i) .ne. expected_idsect(i)) stop 200
-     !       end do
-     !       do i = 1, gfld%igdtlen
-     !          if (gfld%igdtmpl(i) .ne. expected_igdtmpl(i)) stop 210
-     !       end do
-     !       do i = 1, gfld%ipdtlen
-     !          if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i)) stop 220
-     !       end do
-     !       do i = 1, gfld%idrtlen
-     !          if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 230
-     !       end do
-     !    print *, '   OK!'
-     ! endif
+     ! Check the values of the last message.
+     if (j .eq. nnum) then
+        print *, 'Checking values of last message index...'
+           if (gfld%idsectlen .ne. 13) stop 110
+           if (gfld%ifldnum .ne. 1) stop 111
+           if (gfld%griddef .ne. 0) stop 112
+           if (gfld%ngrdpts .ne. 10616832) stop 120
+           if (gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. gfld%num_opt .ne. 0) stop 122
+           if (gfld%igdtnum .ne. 40 .or. gfld%igdtlen .ne. 19) stop 123
+           if (gfld%ipdtnum .ne. 0 .or. gfld%ipdtlen .ne. 15 .or. gfld%num_coord .ne. 0) stop 130
+           if (gfld%unpacked .neqv. .FALSE.) stop 131
+           if (gfld%ibmap .ne. 0 .or. gfld%idrtlen .ne. 18) stop 132
+           do i = 1, gfld%idsectlen
+              if (gfld%idsect(i) .ne. expected_idsect(i)) then
+                 print *, gfld%idsect
+                 stop 200
+              endif
+           end do
+           do i = 1, gfld%igdtlen
+              if (gfld%igdtmpl(i) .ne. expected_igdtmpl(i)) then
+                 print *, gfld%igdtmpl
+                 stop 210
+              endif
+           end do
+           do i = 1, gfld%ipdtlen
+              if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i)) then
+                 print *, gfld%ipdtmpl
+                 stop 220
+              endif
+           end do
+           do i = 1, gfld%idrtlen
+              if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) then
+                 print *, gfld%idrtmpl
+                 stop 230
+              endif
+           end do
+        print *, 'OK!'
+     endif
         
      ! Free memory.
      call gf_free(gfld)
