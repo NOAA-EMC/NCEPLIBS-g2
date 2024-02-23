@@ -81,26 +81,27 @@ if(FTP_TEST_FILES)
   set(G2_FTP_URL "https://ftp.emc.ncep.noaa.gov/static_files/public/NCEPLIBS-g2")
 
   # These are the test data files.
-  set(WW3_WEST_FILE "WW3_Regional_US_West_Coast_20220718_0000.grib2")
-  set(WW3_EAST_FILE "WW3_Regional_US_East_Coast_20220717_0600.grib2")
-  set(FILE_GEP19_BCF144 "gep19.t00z.pgrb2a.0p50_bcf144")
-  set(FILE_GEAVG "geavg.t00z.pgrb2a.0p50_mecomf144")
-  set(FILE_GEC00 "gec00.t00z.pgrb2a.0p50.f144")
-  set(FILE_GEGFS_F144 "gegfs.t00z.pgrb2a.0p50.f144")
-  set(FILE_GEGFS_MEF144 "gegfs.t00z.pgrb2a.0p50_mef144")
-  set(FILE_GEP19_F144 "gep19.t00z.pgrb2a.0p50.f144")
-  set(FILE_GDAS_12Z "gdas.t12z.pgrb2.1p00.anl.grib2")
-  set(FILE_BLEND "blend.t19z.core.f001.co.grib2")
-  set(AQM "aqm.t12z.max_8hr_o3.227.grib2")
-  
+  set(FTP_FILES WW3_Regional_US_West_Coast_20220718_0000.grib2
+    WW3_Regional_US_East_Coast_20220717_0600.grib2
+    gep19.t00z.pgrb2a.0p50_bcf144 geavg.t00z.pgrb2a.0p50_mecomf144
+    gec00.t00z.pgrb2a.0p50.f144 gegfs.t00z.pgrb2a.0p50.f144
+    gegfs.t00z.pgrb2a.0p50_mef144 gep19.t00z.pgrb2a.0p50.f144
+    gdas.t12z.pgrb2.1p00.anl.grib2 blend.t19z.core.f001.co.grib2
+    aqm.t12z.max_8hr_o3.227.grib2 seaice.t00z.grb.grib2)
+
+  # User may also ask for large test file.
   if(FTP_LARGE_TEST_FILES)
-    set(FILE_FV3_ATM "fv3lam.t00z.prslev.f000.grib2")
+    set(FTP_FILES ${FTP_FILES} fv3lam.t00z.prslev.f000.grib2)
   endif()
+
+  # User may also ask for extra large test files.
+  if(FTP_EXTRA_TEST_FILES)
+    set(FTP_FILES ${FTP_FILES} GFSPRS.GrbF06 rrfs.t18z.prslev.f000.grib2)
+  endif()
+  message(STATUS "Getting these files from FTP: ${FTP_FILES}.")      
   
   # Get each of the test data files.
-  foreach(THE_FILE IN LISTS WW3_WEST_FILE FILE_GEP19_BCF144 FILE_GEAVG FILE_GEC00
-      FILE_GEGFS_F144 FILE_GEGFS_MEF144 FILE_GEP19_F144 FILE_FV3_ATM FILE_GDAS_12Z
-      FILE_BLEND AQM FILE_FV3_ATM) 
+  foreach(THE_FILE IN LISTS FTP_FILES) 
     PULL_DATA(${G2_FTP_URL} ${THE_FILE})
   endforeach()
 
@@ -130,6 +131,9 @@ if(FTP_TEST_FILES)
     if(FTP_LARGE_TEST_FILES)    
       create_test(test_fv3 ${kind})
       create_test(test_create_index_fv3 ${kind})
+    endif()
+    if(FTP_EXTRA_TEST_FILES)    
+      create_test(test_create_index_gfsprs ${kind})
     endif()
   endforeach()  
 endif()
