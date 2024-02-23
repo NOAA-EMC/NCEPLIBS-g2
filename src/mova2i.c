@@ -19,7 +19,7 @@
  * 
  * @author Stephen Gilbert @date 2002-08-15
  * */
-int mova2i_(unsigned char *a)
+int g2_mova2i_(unsigned char *a)
 {
     return (int)(*a);
 }
@@ -35,7 +35,7 @@ int mova2i_(unsigned char *a)
  * 
  * @author Ed Hartnett @date Feb 7, 2024
  * */
-int mova2i8_(unsigned char *a)
+int g2_mova2i8_(unsigned char *a)
 {
     return (long long int)(*a);
 }

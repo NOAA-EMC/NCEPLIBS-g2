@@ -29,7 +29,7 @@ program test_gbytec
   integer :: num
   integer(kind = 4) :: in44(4), in44_1(4)
   integer(kind = 8) :: in8(1), in8_1(1), in84(4), in84_1(4)
-  integer, external :: mova2i
+  integer, external :: g2_mova2i
   
   print *, 'Testing g2_gbytesc.F90 subroutines.'
 
@@ -37,7 +37,7 @@ program test_gbytec
   in(1) = 3
   out(1) = char(0)
   call g2_sbytec(out, in, iskip, nbits)
-  if (mova2i(out(1)) .ne. in(1)) stop 10
+  if (g2_mova2i(out(1)) .ne. in(1)) stop 10
   !print '(z2.2)', out(1)
   
   print *, '       packing one 32-bit int into 32 bits of a char array in big-endian...'
@@ -52,13 +52,13 @@ program test_gbytec
   
   print *, '   testing g2_gbytec()...'
   call g2_gbytec(out, in, iskip, nbits)
-  if (mova2i(out(1)) .ne. in(1)) stop 11
+  if (g2_mova2i(out(1)) .ne. in(1)) stop 11
 
   print *, '   testing g2_sbytesc()...'
   in(1) = 3
   out(1) = char(0)
   call g2_sbytesc(out, in, iskip, nbits, nskip, n)
-  if (mova2i(out(1)) .ne. in(1)) stop 20
+  if (g2_mova2i(out(1)) .ne. in(1)) stop 20
 
   ! This will pack the numbers 1 and 2 into the first two chars of the
   ! buffer. The rest of the output buffer will remain zeros.
@@ -72,9 +72,9 @@ program test_gbytec
   call g2_sbytesc(out8, in2, iskip, nbits, nskip, n2)
   do i = 1, 8
      if (i .le. 2) then
-        if (mova2i(out8(i)) .ne. in2(i)) stop 30;
+        if (g2_mova2i(out8(i)) .ne. in2(i)) stop 30;
      else
-        if (mova2i(out8(i)) .ne. 0) stop 31;
+        if (g2_mova2i(out8(i)) .ne. 0) stop 31;
      endif
   end do
 
@@ -92,7 +92,7 @@ program test_gbytec
   end do
   call g2_sbytesc(out5, in5, iskip, nbits, nskip, n5)
   do i = 1, 5
-     if (mova2i(out5(i)) .ne. in5(i)) stop 40;     
+     if (g2_mova2i(out5(i)) .ne. in5(i)) stop 40;     
   end do
 
   ! Now pack 5 values into the 10 character array out10. Skip every
@@ -107,9 +107,9 @@ program test_gbytec
   do i = 1, 10
      ! print '(z2.2)', out10(i)
      if (mod(i, 2) .gt. 0) then
-        if (mova2i(out10(i)) .ne. in5(int(i/2) + 1)) stop 51;
+        if (g2_mova2i(out10(i)) .ne. in5(int(i/2) + 1)) stop 51;
      else
-        if (mova2i(out10(i)) .ne. 0) stop 52;
+        if (g2_mova2i(out10(i)) .ne. 0) stop 52;
      endif
   end do
 
@@ -117,7 +117,7 @@ program test_gbytec
   in(1) = 1
   out(1) = char(0)
   call g2_sbytec(out, in, 1, 6)
-  if (mova2i(out(1)) .ne. 2) stop 53
+  if (g2_mova2i(out(1)) .ne. 2) stop 53
 
   print *, '   testing g2_sbytesc() with a size 4 output array...'
   iskip = 0
@@ -126,8 +126,8 @@ program test_gbytec
   num = 1
   in(1) = 1
   call g2_sbytesc(out4, in, iskip, nbits, nskip, num)
-  if (mova2i(out4(1)) .ne. 0 .and. mova2i(out4(2)) .ne. 0 .and. &
-       mova2i(out4(3)) .ne. 0 .and. mova2i(out4(4)) .ne. 1) stop 60
+  if (g2_mova2i(out4(1)) .ne. 0 .and. g2_mova2i(out4(2)) .ne. 0 .and. &
+       g2_mova2i(out4(3)) .ne. 0 .and. g2_mova2i(out4(4)) .ne. 1) stop 60
 
   print *, '   now unpack into 4 ints with g2_gbytesc()...'
   call g2_gbytesc(out4, in4, iskip, 8, 0, 4)
@@ -156,8 +156,8 @@ program test_gbytec
   ! call g2_sbytesc(out4, r_in, iskip, nbits, nskip, num)
   ! ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
   ! ! decimal for 3f is 63, the decimal for 80 is 128.
-  ! if (mova2i(out4(1)) .ne. 63 .and. mova2i(out4(2)) .ne. 128 .and. &
-  !      mova2i(out4(3)) .ne. 0 .and. mova2i(out4(4)) .ne. 0) stop 80
+  ! if (g2_mova2i(out4(1)) .ne. 63 .and. g2_mova2i(out4(2)) .ne. 128 .and. &
+  !      g2_mova2i(out4(3)) .ne. 0 .and. g2_mova2i(out4(4)) .ne. 0) stop 80
   ! print '(z2.2)', out4(1)  
 
   ! This test is the same as above, but does not require the
@@ -172,8 +172,8 @@ program test_gbytec
   call g2_sbytesc(out4, in, iskip, nbits, nskip, num)
   ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
   ! decimal for 3f is 63, the decimal for 80 is 128.
-  if (mova2i(out4(1)) .ne. 63 .and. mova2i(out4(2)) .ne. 128 .and. &
-       mova2i(out4(3)) .ne. 0 .and. mova2i(out4(4)) .ne. 0) stop 90
+  if (g2_mova2i(out4(1)) .ne. 63 .and. g2_mova2i(out4(2)) .ne. 128 .and. &
+       g2_mova2i(out4(3)) .ne. 0 .and. g2_mova2i(out4(4)) .ne. 0) stop 90
 
   ! For this test to pass the -fallow-argument-mismatch flag must be
   ! used, because I am passing in a real array instead of an int array
@@ -189,10 +189,10 @@ program test_gbytec
   ! call g2_sbytesc(out8, r_in2, iskip, nbits, nskip, num)
   ! ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
   ! ! decimal for 3f is 63, the decimal for 80 is 128.
-  ! if (mova2i(out8(1)) .ne. 63 .and. mova2i(out8(2)) .ne. 128 .and. &
-  !      mova2i(out8(3)) .ne. 0 .and. mova2i(out8(4)) .ne. 0) stop 100
-  ! if (mova2i(out8(5)) .ne. 63 .and. mova2i(out8(6)) .ne. 128 .and. &
-  !      mova2i(out8(7)) .ne. 0 .and. mova2i(out8(8)) .ne. 0) stop 110
+  ! if (g2_mova2i(out8(1)) .ne. 63 .and. g2_mova2i(out8(2)) .ne. 128 .and. &
+  !      g2_mova2i(out8(3)) .ne. 0 .and. g2_mova2i(out8(4)) .ne. 0) stop 100
+  ! if (g2_mova2i(out8(5)) .ne. 63 .and. g2_mova2i(out8(6)) .ne. 128 .and. &
+  !      g2_mova2i(out8(7)) .ne. 0 .and. g2_mova2i(out8(8)) .ne. 0) stop 110
   ! print '(z2.2)', out8(1)  
 
   ! This test is the same as above, but does not require the -fallow-argument-mismatch flag.
@@ -207,10 +207,10 @@ program test_gbytec
   call g2_sbytesc(out8, in2, iskip, nbits, nskip, num)
   ! Note that the 32-bit IEEE representation of 1.0 is 3f800000. The
   ! decimal for 3f is 63, the decimal for 80 is 128.
-  if (mova2i(out4(1)) .ne. 63 .and. mova2i(out4(2)) .ne. 128 .and. &
-       mova2i(out4(3)) .ne. 0 .and. mova2i(out4(4)) .ne. 0) stop 120
-  if (mova2i(out8(5)) .ne. 63 .and. mova2i(out8(6)) .ne. 128 .and. &
-       mova2i(out8(7)) .ne. 0 .and. mova2i(out8(8)) .ne. 0) stop 130
+  if (g2_mova2i(out4(1)) .ne. 63 .and. g2_mova2i(out4(2)) .ne. 128 .and. &
+       g2_mova2i(out4(3)) .ne. 0 .and. g2_mova2i(out4(4)) .ne. 0) stop 120
+  if (g2_mova2i(out8(5)) .ne. 63 .and. g2_mova2i(out8(6)) .ne. 128 .and. &
+       g2_mova2i(out8(7)) .ne. 0 .and. g2_mova2i(out8(8)) .ne. 0) stop 130
   !print '(z2.2)', out4(1)  
 
   print *, '   testing g2_sbytec8() with 64-bit int...'
@@ -222,9 +222,9 @@ program test_gbytec
   do i = 1, 8
      !print '(z2.2)', out8(i)
      if (i .lt. 8) then
-        if (mova2i(out8(i)) .ne. 0) stop 140
+        if (g2_mova2i(out8(i)) .ne. 0) stop 140
      else
-        if (mova2i(out8(i)) .ne. 1) stop 140
+        if (g2_mova2i(out8(i)) .ne. 1) stop 140
      endif
   end do
 
@@ -288,9 +288,9 @@ program test_gbytec
   do i = 1, 8
      print '(z2.2)', out8(i)
      if (i .eq. 5) then
-        if (mova2i(out8(i)) .ne. 128) stop 210
+        if (g2_mova2i(out8(i)) .ne. 128) stop 210
      else
-        if (mova2i(out8(i)) .ne. 0) stop 210
+        if (g2_mova2i(out8(i)) .ne. 0) stop 210
      endif
   end do
 

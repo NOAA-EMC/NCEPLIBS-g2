@@ -7,7 +7,9 @@
 !> @param[in] lugb Logical unit of opened GRIB2 file.
 !> @param[in] lugi Logical unit file opened to write index to.
 !> @param[in] idxver Index version.
-!> @param[in] filename Name of GRIB2 file. 
+!> @param[in] filename Name of GRIB2 file. This file must already be
+!> open, with logical unit passed to the lugb parameter. The filename
+!> is also encoded in one of the index header records.
 !> @param[out] iret Return code:
 !> - 0 success
 !> - 90 problem opening GRIB2 file.
@@ -1214,7 +1216,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
   character cver, cdisc
   character(len = 4) :: ctemp
   integer loclus, locgds, locbms
-  integer :: indbmp, numsec, next, newsize, mova2i, mbuf, lindex
+  integer :: indbmp, numsec, next, newsize, g2_mova2i, mbuf, lindex
   integer :: linmax, ixskp
   integer :: mxspd, mxskp, mxsgd, mxsdr, mxsbm, mxlus
   integer :: mxlen, mxds, mxfld, mxbms
@@ -1346,7 +1348,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         endif
         lindex = lindex + ilndrs
      elseif (numsec .eq. 6) then                 ! found bms
-        indbmp = mova2i(cbread(6))
+        indbmp = g2_mova2i(cbread(6))
         mypos = (ixsbm + inc) * INT1_BITS           
         if (indbmp.lt.254) then
            locbms = int(ibskip8 - lskip8, kind(4))
