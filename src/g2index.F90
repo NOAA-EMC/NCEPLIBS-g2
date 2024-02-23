@@ -1214,7 +1214,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
   character cver, cdisc
   character(len = 4) :: ctemp
   integer loclus, locgds, locbms
-  integer :: indbmp, numsec, next, newsize, mova2i, mbuf, lindex
+  integer :: indbmp, numsec, next, newsize, g2_mova2i, mbuf, lindex
   integer :: linmax, ixskp
   integer :: mxspd, mxskp, mxsgd, mxsdr, mxsbm, mxlus
   integer :: mxlen, mxds, mxfld, mxbms
@@ -1346,7 +1346,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         endif
         lindex = lindex + ilndrs
      elseif (numsec .eq. 6) then                 ! found bms
-        indbmp = mova2i(cbread(6))
+        indbmp = g2_mova2i(cbread(6))
         mypos = (ixsbm + inc) * INT1_BITS           
         if (indbmp.lt.254) then
            locbms = int(ibskip8 - lskip8, kind(4))
