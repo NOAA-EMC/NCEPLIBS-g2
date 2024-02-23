@@ -7,7 +7,9 @@
 !> @param[in] lugb Logical unit of opened GRIB2 file.
 !> @param[in] lugi Logical unit file opened to write index to.
 !> @param[in] idxver Index version.
-!> @param[in] filename Name of GRIB2 file. 
+!> @param[in] filename Name of GRIB2 file. This file must already be
+!> open, with logical unit passed to the lugb parameter. The filename
+!> is also encoded in one of the index header records.
 !> @param[out] iret Return code:
 !> - 0 success
 !> - 90 problem opening GRIB2 file.
