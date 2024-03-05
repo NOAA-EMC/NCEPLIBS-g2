@@ -74,6 +74,7 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
      idrstmplen,fld,ngrdpts,ibmap,bmap,ierr)
   use pdstemplates
   use drstemplates
+  use g2
   implicit none
 
   logical :: match
@@ -95,16 +96,16 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   real(4) :: coordieee(numcoord),re00
   integer(4) :: ire00,allones
   integer :: mappds(ipdstmplen),intbmap(ngrdpts),mapdrs(idrstmplen)
-  integer,parameter :: zero=0,one=1,four=4,five=5,six=6,seven=7
+  integer,parameter :: zero=0,one(1)=1,four(1)=4,five=5,six=6,seven=7
   integer,parameter :: minsize=50000
-  integer iofst,ibeg,lencurr,len,mappdslen,mapdrslen,lpos3
+  integer iofst,ibeg,lencurr(1),len,mappdslen,mapdrslen,lpos3
   integer width,height,ndpts
   integer lensec3,lensec4,lensec5,lensec6,lensec7
   logical issec3,needext,isprevbmap
   integer :: nbits, newlen, nsize, lcpack, left
-  integer :: ibmprev, ilen, ioctet, iscan, isecnum, itemp
+  integer :: ibmprev(1), ilen(1), ioctet, iscan, isecnum(1), itemp
   integer :: i, jj, kk, mm
-  integer :: iret, istat
+  integer :: iret, istat, nc(1), ipds(1)
 
   allones = int(Z'FFFFFFFF')
   ierr=0
@@ -127,7 +128,7 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   call g2_gbytec(cgrib,lencurr,96,32)
 
   !     Check to see if GRIB message is already complete
-  ctemp=cgrib(lencurr-3)//cgrib(lencurr-2)//cgrib(lencurr-1) //cgrib(lencurr)
+  ctemp=cgrib(lencurr(1)-3)//cgrib(lencurr(1)-2)//cgrib(lencurr(1)-1) //cgrib(lencurr(1))
   if (ctemp.eq.c7777) then
      print *,'addfield: GRIB message already complete.  Cannot add new section.'
      ierr=2
@@ -148,36 +149,36 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
      iofst=iofst+8
      ! Check if previous Section 3 exists and save location of
      ! the section 3 in case needed later.
-     if (isecnum.eq.3) then
+     if (isecnum(1).eq.3) then
         issec3=.true.
         lpos3=len+1
-        lensec3=ilen
+        lensec3=ilen(1)
      endif
      ! Check if a previous defined bitmap exists
-     if (isecnum.eq.6) then
+     if (isecnum(1).eq.6) then
         call g2_gbytec(cgrib,ibmprev,iofst,8)
         iofst=iofst+8
-        if ((ibmprev.ge.0).and.(ibmprev.le.253)) isprevbmap=.true.
+        if ((ibmprev(1).ge.0).and.(ibmprev(1).le.253)) isprevbmap=.true.
      endif
-     len=len+ilen
+     len=len+ilen(1)
      ! Exit loop if last section reached
-     if (len.eq.lencurr) exit
+     if (len.eq.lencurr(1)) exit
      ! If byte count for each section does not match current
      ! total length, then there is a problem.
-     if (len.gt.lencurr) then
+     if (len.gt.lencurr(1)) then
         print *,'addfield: Section byte counts don''t add to total.'
         print *,'addfield: Sum of section byte counts = ',len
-        print *,'addfield: Total byte count in Section 0 = ',lencurr
+        print *,'addfield: Total byte count in Section 0 = ',lencurr(1)
         ierr=3
         return
      endif
   enddo
 
   !     Sections 4 through 7 can only be added after section 3 or 7.
-  if ((isecnum.ne.3) .and. (isecnum.ne.7)) then
+  if ((isecnum(1).ne.3) .and. (isecnum(1).ne.7)) then
      print *,'addfield: Sections 4-7 can only be added after', &
           ' Section 3 or 7.'
-     print *,'addfield: Section ',isecnum,' was the last found in', &
+     print *,'addfield: Section ',isecnum(1),' was the last found in', &
           ' given GRIB message.'
      ierr=4
      return
@@ -194,13 +195,15 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   endif
 
   !     Add Section 4 - Product Definition Section
-  ibeg=lencurr*8 ! Calculate offset for beginning of section 4
+  ibeg=lencurr(1)*8 ! Calculate offset for beginning of section 4
   iofst=ibeg+32 ! leave space for length of section
   call g2_sbytec(cgrib,four,iofst,8) ! Store section number (4)
   iofst=iofst+8
-  call g2_sbytec(cgrib,numcoord,iofst,16) ! Store num of coordinate values
+  nc(1) = numcoord ! silence warning
+  call g2_sbytec(cgrib,nc,iofst,16) ! Store num of coordinate values
   iofst=iofst+16
-  call g2_sbytec(cgrib,ipdsnum,iofst,16) ! Store Prod Def Template num.
+  ipds(1) = ipdsnum
+  call g2_sbytec(cgrib,ipds,iofst,16) ! Store Prod Def Template num.
   iofst=iofst+16
 
   ! Get Product Definition Template
@@ -227,7 +230,8 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
         call g2_sbytec(cgrib,ipdstmpl(i),iofst,nbits)
      else
         call g2_sbytec(cgrib,one,iofst,1)
-        call g2_sbytec(cgrib,iabs(ipdstmpl(i)),iofst+1,nbits-1)
+        ipds(1) = iabs(ipdstmpl(i))
+        call g2_sbytec(cgrib,ipds,iofst+1,nbits-1)
      endif
      iofst=iofst+nbits
   enddo
@@ -448,7 +452,7 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   if(allocated(cpack) )deallocate(cpack)
 
   !     Update current byte total of message in Section 0
-  newlen=lencurr+lensec4+lensec5+lensec6+lensec7
+  newlen=lencurr(1)+lensec4+lensec5+lensec6+lensec7
   call g2_sbytec(cgrib,newlen,96,32)
 
   return
