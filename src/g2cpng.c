@@ -9,20 +9,16 @@
 #include <string.h>
 #include <png.h>
 
-typedef int g2int; /**< Long integer type. */ 
+typedef int g2int; /**< Integer type. */
 
-/**
- * location to write PNG stream
-*/
-struct png_stream {
-
-   unsigned char *stream_ptr;
-/*
-**  number of bytes written
-*/
-   g2int stream_len;
+/** Location to write PNG stream. */
+struct png_stream
+{
+    unsigned char *stream_ptr;     /**< location to write PNG stream */
+    g2int stream_len;              /**< number of bytes written */
 };
-typedef struct png_stream png_stream; /**< location to write PNG stream. */
+
+typedef struct png_stream png_stream; /**< location to write PNG stream */
 
 /**
  * Custom write function used to that libpng will write to memory
@@ -147,17 +143,6 @@ enc_png(char *data, g2int *width, g2int *height, g2int *nbits, char *pngbuf)
     return pnglen;
 
 }
-
-typedef int g2int; /**< Integer type. */
-
-/** Location to write PNG stream. */
-struct png_stream
-{
-    unsigned char *stream_ptr;     /**< location to write PNG stream */
-    g2int stream_len;              /**< number of bytes written */
-};
-
-typedef struct png_stream png_stream; /**< location to write PNG stream */
 
 /**
  * Custom read function used so that libpng will read a PNG stream
