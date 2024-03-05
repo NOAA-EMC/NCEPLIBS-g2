@@ -20,7 +20,7 @@ if (BUILD_WITH_W3EMC)
 endif()
 
 # These are the C source files.
-set(c_src dec_png.c enc_png.c mova2i.c)
+set(c_src enc_png.c mova2i.c)
 
 # Create this fortran file, which has the contents of the VERSION file
 # substituted in.
