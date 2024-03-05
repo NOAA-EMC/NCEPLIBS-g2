@@ -6,14 +6,13 @@
 # These are the fortran source files.
 set(fortran_src addfield.F90 addgrid.F90 addlocal.F90 cmplxpack.F90
 compack.F90 comunpack.F90 drstemplates.F90 g2bytes.F90 g2grids.F90
-gb_info.F90 getdim.F90 getfield.F90 getgb2.F90 getgb2p.F90
-getgb2r.F90 getgb2rp.F90 g2index.F90 getlocal.F90 getpoly.F90
-gettemplates.F90 gf_free.F90 gf_getfld.F90 g2unpack.F90 gribcreate.F90
-gribend.F90 gribinfo.F90 ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90
-gridtemplates.F90 intmath.F90 g2jpc.F90 misspack.F90 mkieee.F90
-pack_gp.f params_ecmwf.F90 params.F90 pdstemplates.F90 g2png.F90
-putgb2.F90 rdieee.F90 realloc.F90 reduce.f g2sim.F90 skgb.F90
-g2spec.F90)
+gb_info.F90 getdim.F90 getfield.F90 getgb2.F90 getgb2p.F90 getgb2r.F90
+getgb2rp.F90 g2index.F90 getlocal.F90 getpoly.F90 gettemplates.F90
+gf_free.F90 gf_getfld.F90 g2unpack.F90 gribcreate.F90 gribend.F90
+gribinfo.F90 ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.F90
+intmath.F90 g2jpc.F90 misspack.F90 pack_gp.f params_ecmwf.F90
+params.F90 pdstemplates.F90 g2png.F90 putgb2.F90 realloc.F90 reduce.f
+g2sim.F90 skgb.F90 g2spec.F90)
 
 # This function calls NCEPLIBS-w3emc.
 if (BUILD_WITH_W3EMC)
