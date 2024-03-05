@@ -20,7 +20,7 @@ if (BUILD_WITH_W3EMC)
 endif()
 
 # These are the C source files.
-set(c_src enc_png.c mova2i.c)
+set(c_src g2cpng.c mova2i.c)
 
 # Create this fortran file, which has the contents of the VERSION file
 # substituted in.
@@ -81,7 +81,7 @@ foreach(kind ${kinds})
     message(STATUS "Found JASPER:")
     message(STATUS "      JASPER include directories ${JASPER_INCLUDE_DIR}")
     message(STATUS "      JASPER libraries ${JASPER_LIBRARIES} version ${JASPER_VERSION}")
-    target_sources(${lib_name} PRIVATE enc_jpeg2000.c)
+    target_sources(${lib_name} PRIVATE g2cjpeg2000.c)
     target_compile_definitions(${lib_name} PRIVATE USE_JPEG2000)
     target_include_directories(${lib_name} PRIVATE "${JASPER_INCLUDE_DIR}")
     set(G2_JPEG2000_ENABLED ON)
