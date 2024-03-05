@@ -33,7 +33,7 @@ end subroutine g2_gbytec
 !> need to be converted, use g2_sbytesc().
 !>
 !> @param[in] in Character array input.
-!> @param[inout] iout Unpacked scalar integer output.
+!> @param[inout] siout Unpacked scalar integer output.
 !> @param[in] iskip Initial number of bits to skip.
 !> @param[in] nbits Number of bits of each integer to take. Must
 !> be 32 or less.
@@ -223,9 +223,9 @@ end subroutine g2_sbytec
 !> element is to be packed, use g1_sbytec(). If more than one integer
 !> is to be packed, use g2_sbytesc().
 !>
-!> @param[inout] out packed array output
-!> @param[in] in unpacked array input
-!> @param[in] iskip initial number of bits to skip
+!> @param[inout] out packed characeter array output.
+!> @param[in] in unpacked scalar integer input.
+!> @param[in] iskip initial number of bits to skip.
 !> @param[in] nbits Number of bits of each integer in OUT to fill.
 !>
 !> @author Stephen Gilbert @date 2004-04-27

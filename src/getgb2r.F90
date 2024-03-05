@@ -109,7 +109,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   character(len=1):: csize(4)
   character(len=1), allocatable :: ctemp(:)
   real, pointer, dimension(:) :: newfld
-  integer :: n, lread, j, iskip, iofst, ilen, ierr, idum
+  integer :: n, j, iskip, iofst, ilen, ierr, idum
   integer :: inc
   integer (kind = 8) :: lskip8, lread8, ilen8, iskip8
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
