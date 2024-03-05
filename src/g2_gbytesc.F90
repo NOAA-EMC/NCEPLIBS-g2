@@ -3,11 +3,12 @@
 !> string and unpacked array.
 !> @author Stephen Gilbert @date 2004-04-27
 
-!> Extract one arbitrary size value (up to 32 bits) from a packed bit
-!> string, right justifying each value in the unpacked array.
+!> Extract one arbitrary size big-endian value (up to 32 bits) from a
+!> packed bit string into one element of an integer array.
 !>
-!> This should be used when input array IN has only one element. If in
-!> has more elements, use g2_sbytesc().
+!> This should be used converting one integer*4 value into an array
+!> element. If more values need to be converted, use g2_sbytesc(). To
+!> convert into a scalar integer, use g2_gbytec1().
 !>
 !> @param[in] in Array input.
 !> @param[inout] iout Unpacked array output.
@@ -24,6 +25,31 @@ subroutine g2_gbytec(in, iout, iskip, nbits)
   integer, intent(in) :: iskip, nbits
   call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
 end subroutine g2_gbytec
+
+!> Extract one arbitrary size big-endian value (up to 32 bits) from a
+!> packed bit string into a scalar integer.
+!>
+!> This should be used converting one integer*4 value. If more values
+!> need to be converted, use g2_sbytesc().
+!>
+!> @param[in] in Character array input.
+!> @param[inout] iout Unpacked scalar integer output.
+!> @param[in] iskip Initial number of bits to skip.
+!> @param[in] nbits Number of bits of each integer to take. Must
+!> be 32 or less.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_gbytec1(in, siout, iskip, nbits)
+  implicit none
+
+  character*1, intent(in) :: in(*)
+  integer, intent(inout) :: siout
+  integer, intent(in) :: iskip, nbits
+  integer (kind = 4) :: iout(1)
+  
+  call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
+  siout = iout(1)
+end subroutine g2_gbytec1
 
 !> Extract arbitrary size values (up to 32 bits each) from a packed
 !> bit string, right justifying each value in the unpacked array.
@@ -168,12 +194,12 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
 
 end subroutine g2_gbytesc8
 
-!> Put one arbitrary sized (up to 32 bits) values into a packed bit
-!> string, taking the low order bits from the value in the unpacked
-!> array.
+!> Put one arbitrary sized (up to 32 bits) value from an integer
+!> array, into a packed bit string, in big-endian format.
 !>
-!> This should be used when input array IN has only one element. If IN
-!> has more elements, use g2_sbytesc().
+!> This should be used when input is an array and one value is to be
+!> packed. If more values are to be packed, use g2_sbytesc(). If
+!> packing a scalar integer, use g2_sytec1().
 !>
 !> @param[inout] out packed array output
 !> @param[in] in unpacked array input
@@ -189,6 +215,30 @@ subroutine g2_sbytec(out, in, iskip, nbits)
   integer, intent(in) :: iskip, nbits
   call g2_sbytesc(out, in, iskip, nbits, 0, 1)
 end subroutine g2_sbytec
+
+!> Put one arbitrary sized (up to 32 bits) values from an integer
+!> scalar into a packed bit string, in big-endian format.
+!>
+!> This should be used when input array in is a scalar. If an array
+!> element is to be packed, use g1_sbytec(). If more than one integer
+!> is to be packed, use g2_sbytesc().
+!>
+!> @param[inout] out packed array output
+!> @param[in] in unpacked array input
+!> @param[in] iskip initial number of bits to skip
+!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_sbytec1(out, in, iskip, nbits)
+  implicit none
+
+  character*1, intent(inout) :: out(*)
+  integer, intent(in) :: in
+  integer, intent(in) :: iskip, nbits
+  integer :: ain(1)
+  ain(1) = in
+  call g2_sbytesc(out, ain, iskip, nbits, 0, 1)
+end subroutine g2_sbytec1
 
 !> Put arbitrary size (up to 32 bits each) values into a packed bit
 !> string, taking the low order bits from each value in the unpacked
