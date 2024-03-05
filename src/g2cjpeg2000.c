@@ -1,6 +1,6 @@
 /** @file
- * @brief Encodes JPEG2000 code stream.
- * @author Stephen Gilbert @date 2002-12-02
+ * @brief These functions code/decode a jpeg2000 stream.
+ * @author Ed Hartnett @date Mar 5, 2024
  */
 
 #include <stdio.h>

@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief These functions read/write PNG stream to/from memory.
- * @author Stephen Gilbert
+ * @author Ed Hartnett @date 3/5/24
  */
 
 #include <stdio.h>
