@@ -1,6 +1,6 @@
 !> @file
 !> @brief Extract or store arbitrary size values between packed bit
-!> string and unpacked array.
+!> string and integer or real scalars, or integer arrays.
 !> @author Stephen Gilbert @date 2004-04-27
 
 !> Extract one arbitrary size big-endian value (up to 32 bits) from a
@@ -405,3 +405,128 @@ subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
      endif
   enddo
 end subroutine g2_sbytesc8
+
+!> Copy array of 32-bit IEEE floating point values to local
+!> floating point representation.
+!>
+!> @param[in] rieee Input array of floating point values in 32-bit
+!> IEEE format.
+!> @param[out] a Output array of real values.
+!> @param[in] num Number of floating point values to convert.
+!>
+!> @author Stephen Gilbert @date 2000-05-09
+subroutine rdieee(rieee,a,num)
+  implicit none
+  
+  real(4), intent(in) :: rieee(num)
+  real, intent(out) :: a(num)
+  integer, intent(in) :: num
+
+  integer(4) :: ieee
+  real, parameter :: two23 = scale(1.0,-23)
+  real, parameter :: two126 = scale(1.0,-126)
+  integer :: iexp, imant, isign, j
+  real :: sign, temp
+
+  do j = 1, num
+     ! Transfer IEEE bit string to integer variable.
+     ieee = transfer(rieee(j), ieee)
+
+     ! Extract sign bit, exponent, and mantissa.
+     isign = ibits(ieee, 31, 1)
+     iexp = ibits(ieee, 23, 8)
+     imant = ibits(ieee, 0, 23)
+     sign = 1.0
+     if (isign .eq. 1) sign = -1.0
+
+     if (iexp .gt. 0 .and. iexp .lt. 255) then
+        temp = 2.0**(iexp - 127)
+        a(j) = sign * temp * (1.0 + (two23 * real(imant)))
+     elseif (iexp .eq. 0) then
+        if (imant .ne. 0) then
+           a(j) = sign * two126 * two23 * real(imant)
+        else
+           a(j) = sign * 0.0
+        endif
+     elseif (iexp .eq. 255) then
+        a(j) = sign * huge(a(j))
+     endif
+  enddo
+end subroutine rdieee
+
+!> Copy an array of real to an array of 32-bit IEEE floating points.
+!>
+!> @param[in] a Input array of floating point values.
+!> @param[out] rieee Output array of floating point values in 32-bit
+!> IEEE format.
+!> @param[in] num Number of floating point values to convert.
+!>
+!> @author Stephen Gilbert @date 2000-05-09
+subroutine mkieee(a, rieee, num)
+  implicit none
+  
+  real(4), intent(in) :: a(num)
+  real(4), intent(out) :: rieee(num)
+  integer, intent(in) :: num
+
+  integer(4) :: ieee
+  real, parameter :: two23 = scale(1.0,23)
+  real, parameter :: two126 = scale(1.0,126)
+  real :: alog2, atemp
+  integer :: iexp, imant, j, n
+
+  alog2 = alog(2.0)
+
+  do j = 1, num
+     ieee = 0
+     if (a(j) .eq. 0.) then
+        ieee = 0
+        rieee(j) = transfer(ieee, rieee(j))
+        cycle
+     endif
+
+     ! Set Sign bit (bit 31 - leftmost bit).
+     if (a(j) .lt. 0.0) then
+        ieee = ibset(ieee, 31)
+        atemp = abs(a(j))
+     else
+        ieee = ibclr(ieee, 31)
+        atemp = a(j)
+     endif
+
+     ! Determine exponent n with base 2.
+     if (atemp .ge. 1.0) then
+        n = 0
+        do while (2.0**(n+1) .le. atemp)
+           n = n + 1
+        enddo
+     else
+        n = -1
+        do while (2.0**n .gt. atemp )
+           n = n - 1
+        enddo
+     endif
+     iexp = n + 127
+     if (n .gt. 127) iexp = 255 ! overflow
+     if (n .lt. -127) iexp = 0
+     call mvbits(iexp, 0, 8, ieee, 23)
+
+     ! Determine Mantissa.
+     if (iexp .ne. 255) then
+        if (iexp .ne. 0) then
+           atemp = (atemp / (2.0**n)) - 1.0
+        else
+           atemp = atemp * two126
+        endif
+        imant = nint(atemp * two23)
+     else
+        imant = 0
+     endif
+     ! set mantissa bits (bits 22-0).
+     call mvbits(imant, 0, 23, ieee, 0)
+
+     ! Transfer IEEE bit string to real variable.
+     rieee(j) = transfer(ieee, rieee(j))
+  enddo
+end subroutine mkieee
+
