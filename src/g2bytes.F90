@@ -1,13 +1,14 @@
 !> @file
 !> @brief Extract or store arbitrary size values between packed bit
-!> string and unpacked array.
+!> string and integer or real scalars, or integer arrays.
 !> @author Stephen Gilbert @date 2004-04-27
 
-!> Extract one arbitrary size value (up to 32 bits) from a packed bit
-!> string, right justifying each value in the unpacked array.
+!> Extract one arbitrary size big-endian value (up to 32 bits) from a
+!> packed bit string into one element of an integer array.
 !>
-!> This should be used when input array IN has only one element. If in
-!> has more elements, use g2_sbytesc().
+!> This should be used converting one integer*4 value into an array
+!> element. If more values need to be converted, use g2_sbytesc(). To
+!> convert into a scalar integer, use g2_gbytec1().
 !>
 !> @param[in] in Array input.
 !> @param[inout] iout Unpacked array output.
@@ -24,6 +25,31 @@ subroutine g2_gbytec(in, iout, iskip, nbits)
   integer, intent(in) :: iskip, nbits
   call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
 end subroutine g2_gbytec
+
+!> Extract one arbitrary size big-endian value (up to 32 bits) from a
+!> packed bit string into a scalar integer.
+!>
+!> This should be used converting one integer*4 value. If more values
+!> need to be converted, use g2_sbytesc().
+!>
+!> @param[in] in Character array input.
+!> @param[inout] siout Unpacked scalar integer output.
+!> @param[in] iskip Initial number of bits to skip.
+!> @param[in] nbits Number of bits of each integer to take. Must
+!> be 32 or less.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_gbytec1(in, siout, iskip, nbits)
+  implicit none
+
+  character*1, intent(in) :: in(*)
+  integer, intent(inout) :: siout
+  integer, intent(in) :: iskip, nbits
+  integer (kind = 4) :: iout(1)
+  
+  call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
+  siout = iout(1)
+end subroutine g2_gbytec1
 
 !> Extract arbitrary size values (up to 32 bits each) from a packed
 !> bit string, right justifying each value in the unpacked array.
@@ -168,12 +194,12 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
 
 end subroutine g2_gbytesc8
 
-!> Put one arbitrary sized (up to 32 bits) values into a packed bit
-!> string, taking the low order bits from the value in the unpacked
-!> array.
+!> Put one arbitrary sized (up to 32 bits) value from an integer
+!> array, into a packed bit string, in big-endian format.
 !>
-!> This should be used when input array IN has only one element. If IN
-!> has more elements, use g2_sbytesc().
+!> This should be used when input is an array and one value is to be
+!> packed. If more values are to be packed, use g2_sbytesc(). If
+!> packing a scalar integer, use g2_sytec1().
 !>
 !> @param[inout] out packed array output
 !> @param[in] in unpacked array input
@@ -189,6 +215,30 @@ subroutine g2_sbytec(out, in, iskip, nbits)
   integer, intent(in) :: iskip, nbits
   call g2_sbytesc(out, in, iskip, nbits, 0, 1)
 end subroutine g2_sbytec
+
+!> Put one arbitrary sized (up to 32 bits) values from an integer
+!> scalar into a packed bit string, in big-endian format.
+!>
+!> This should be used when input array in is a scalar. If an array
+!> element is to be packed, use g1_sbytec(). If more than one integer
+!> is to be packed, use g2_sbytesc().
+!>
+!> @param[inout] out packed characeter array output.
+!> @param[in] in unpacked scalar integer input.
+!> @param[in] iskip initial number of bits to skip.
+!> @param[in] nbits Number of bits of each integer in OUT to fill.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_sbytec1(out, in, iskip, nbits)
+  implicit none
+
+  character*1, intent(inout) :: out(*)
+  integer, intent(in) :: in
+  integer, intent(in) :: iskip, nbits
+  integer :: ain(1)
+  ain(1) = in
+  call g2_sbytesc(out, ain, iskip, nbits, 0, 1)
+end subroutine g2_sbytec1
 
 !> Put arbitrary size (up to 32 bits each) values into a packed bit
 !> string, taking the low order bits from each value in the unpacked
@@ -355,3 +405,128 @@ subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
      endif
   enddo
 end subroutine g2_sbytesc8
+
+!> Copy array of 32-bit IEEE floating point values to local
+!> floating point representation.
+!>
+!> @param[in] rieee Input array of floating point values in 32-bit
+!> IEEE format.
+!> @param[out] a Output array of real values.
+!> @param[in] num Number of floating point values to convert.
+!>
+!> @author Stephen Gilbert @date 2000-05-09
+subroutine rdieee(rieee,a,num)
+  implicit none
+  
+  real(4), intent(in) :: rieee(num)
+  real, intent(out) :: a(num)
+  integer, intent(in) :: num
+
+  integer(4) :: ieee
+  real, parameter :: two23 = scale(1.0,-23)
+  real, parameter :: two126 = scale(1.0,-126)
+  integer :: iexp, imant, isign, j
+  real :: sign, temp
+
+  do j = 1, num
+     ! Transfer IEEE bit string to integer variable.
+     ieee = transfer(rieee(j), ieee)
+
+     ! Extract sign bit, exponent, and mantissa.
+     isign = ibits(ieee, 31, 1)
+     iexp = ibits(ieee, 23, 8)
+     imant = ibits(ieee, 0, 23)
+     sign = 1.0
+     if (isign .eq. 1) sign = -1.0
+
+     if (iexp .gt. 0 .and. iexp .lt. 255) then
+        temp = 2.0**(iexp - 127)
+        a(j) = sign * temp * (1.0 + (two23 * real(imant)))
+     elseif (iexp .eq. 0) then
+        if (imant .ne. 0) then
+           a(j) = sign * two126 * two23 * real(imant)
+        else
+           a(j) = sign * 0.0
+        endif
+     elseif (iexp .eq. 255) then
+        a(j) = sign * huge(a(j))
+     endif
+  enddo
+end subroutine rdieee
+
+!> Copy an array of real to an array of 32-bit IEEE floating points.
+!>
+!> @param[in] a Input array of floating point values.
+!> @param[out] rieee Output array of floating point values in 32-bit
+!> IEEE format.
+!> @param[in] num Number of floating point values to convert.
+!>
+!> @author Stephen Gilbert @date 2000-05-09
+subroutine mkieee(a, rieee, num)
+  implicit none
+  
+  real(4), intent(in) :: a(num)
+  real(4), intent(out) :: rieee(num)
+  integer, intent(in) :: num
+
+  integer(4) :: ieee
+  real, parameter :: two23 = scale(1.0,23)
+  real, parameter :: two126 = scale(1.0,126)
+  real :: alog2, atemp
+  integer :: iexp, imant, j, n
+
+  alog2 = alog(2.0)
+
+  do j = 1, num
+     ieee = 0
+     if (a(j) .eq. 0.) then
+        ieee = 0
+        rieee(j) = transfer(ieee, rieee(j))
+        cycle
+     endif
+
+     ! Set Sign bit (bit 31 - leftmost bit).
+     if (a(j) .lt. 0.0) then
+        ieee = ibset(ieee, 31)
+        atemp = abs(a(j))
+     else
+        ieee = ibclr(ieee, 31)
+        atemp = a(j)
+     endif
+
+     ! Determine exponent n with base 2.
+     if (atemp .ge. 1.0) then
+        n = 0
+        do while (2.0**(n+1) .le. atemp)
+           n = n + 1
+        enddo
+     else
+        n = -1
+        do while (2.0**n .gt. atemp )
+           n = n - 1
+        enddo
+     endif
+     iexp = n + 127
+     if (n .gt. 127) iexp = 255 ! overflow
+     if (n .lt. -127) iexp = 0
+     call mvbits(iexp, 0, 8, ieee, 23)
+
+     ! Determine Mantissa.
+     if (iexp .ne. 255) then
+        if (iexp .ne. 0) then
+           atemp = (atemp / (2.0**n)) - 1.0
+        else
+           atemp = atemp * two126
+        endif
+        imant = nint(atemp * two23)
+     else
+        imant = 0
+     endif
+     ! set mantissa bits (bits 22-0).
+     call mvbits(imant, 0, 23, ieee, 0)
+
+     ! Transfer IEEE bit string to real variable.
+     rieee(j) = transfer(ieee, rieee(j))
+  enddo
+end subroutine mkieee
+
