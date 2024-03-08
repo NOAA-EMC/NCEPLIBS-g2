@@ -4,7 +4,7 @@
 !
 ! Brian Curtis 11/09/2021, Ed Hartnett
 program test_pdstemplates
-  use pdstemplates
+  use g2
   implicit none
 
   integer :: idx
