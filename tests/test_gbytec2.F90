@@ -11,7 +11,7 @@ program test_gbytec2
   character (len = 1) :: c8(8)
   integer (kind = 4) :: i1
   integer :: i
-  real (kind = 4) :: r1(1)
+  real (kind = 4) :: r1(1), r2(2)
 
   ! Initialize some test data.
   do i = 1, 4
@@ -97,7 +97,7 @@ program test_gbytec2
      c8(3 + i * 4) = char(0)
      c8(4 + i * 4) = char(0)
   end do
-  call g2_gbytescr(c8, r2, 0, 32, 0, 1)
+  call g2_gbytescr(c8, r2, 0, 32, 0, 2)
   if (r2(1) .ne. 1.0 .or. r2(2) .ne. 1.0) stop 110
   print *, 'OK!'
   

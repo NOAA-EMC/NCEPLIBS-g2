@@ -519,7 +519,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
   character(len = 4) :: ctemp
   integer :: listsec0(2)
   integer :: iofst, istart
-  integer(4) :: ieee
+  real(4) :: ieee
   logical :: have3, have4, have5, have6, have7
   integer, intent(out) :: igdslen, ipdslen, idrslen
   integer :: numfld, j, lengrib, lensec0, ipos
@@ -679,7 +679,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         elseif (idrsnum .eq. 50) then
            call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl, &
                 ndpts - 1, fld(2))
-           ieee = idrstmpl(5)
+           ieee = transfer(idrstmpl(5), ieee)
            call rdieee(ieee, fld(1), 1)
            have7 = .true.
         elseif (idrsnum .eq. 40 .or. idrsnum .eq. 40000) then
@@ -967,7 +967,7 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
   ! Definition Template, if necessary.
   if (numcoord .ne. 0) then
      allocate (coordieee(numcoord))
-     call g2_gbytesc(cgrib, coordieee, iofst, 32, 0, numcoord)
+     call g2_gbytescr(cgrib, coordieee, iofst, 32, 0, numcoord)
      call rdieee(coordieee, coordlist, numcoord)
      deallocate (coordieee)
      iofst = iofst + (32*numcoord)
