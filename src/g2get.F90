@@ -274,7 +274,7 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
   maxdrstmpl = 1
   maxgridpts = 0
 
-  !     Check for beginning of GRIB message in the first 100 bytes
+  ! Check for beginning of GRIB message in the first 100 bytes
   istart = 0
   do j = 1, 100
      ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j + 3)
@@ -503,7 +503,6 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
      igdslen, ideflist, idefnum, ipdsnum, ipdstmpl, ipdslen, &
      coordlist, numcoord, ndpts, idrsnum, idrstmpl, idrslen,  &
      ibmap, bmap, fld, ierr)
-
   implicit none
 
   character(len = 1), intent(in) :: cgrib(lcgrib)
@@ -522,8 +521,6 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
   integer :: iofst, istart
   integer(4) :: ieee
   logical :: have3, have4, have5, have6, have7
-
-  !implicit none additions
   integer, intent(out) :: igdslen, ipdslen, idrslen
   integer :: numfld, j, lengrib, lensec0, ipos
   integer :: lensec, isecnum, jerr, ier, numlocal
@@ -537,7 +534,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
   numfld = 0
   numlocal = 0
 
-  !     Check for valid request number
+  ! Check for valid request number
   if (ifldnum .le. 0) then
      print *, 'getfield: Request for field number ' &
           ,'must be positive.'
@@ -545,7 +542,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
      return
   endif
 
-  !     Check for beginning of GRIB message in the first 100 bytes
+  ! Check for beginning of GRIB message in the first 100 bytes
   istart = 0
   do j = 1, 100
      ctemp = cgrib(j) // cgrib(j + 1) // cgrib(j + 2) // cgrib(j + 3)
@@ -560,7 +557,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
      return
   endif
 
-  !     Unpack Section 0 - Indicator Section
+  ! Unpack Section 0 - Indicator Section
   iofst = 8 * (istart + 5)
   call g2_gbytec(cgrib, listsec0(1), iofst, 8) ! Discipline
   iofst = iofst + 8
@@ -572,18 +569,18 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
   lensec0 = 16
   ipos = istart + lensec0
 
-  !     Currently handles only GRIB Edition 2.
+  ! Currently handles only GRIB Edition 2.
   if (listsec0(2) .ne. 2) then
      print *, 'getfield: can only decode GRIB edition 2.'
      ierr = 2
      return
   endif
 
-  !     Loop through the remaining sections keeping track of the length of
-  !     each. Also keep the latest Grid Definition Section info.  Unpack
-  !     the requested field number.
+  ! Loop through the remaining sections keeping track of the length of
+  ! each. Also keep the latest Grid Definition Section info. Unpack
+  ! the requested field number.
   do
-     !         Check to see if we are at end of GRIB message
+     ! Check to see if we are at end of GRIB message.
      ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // &
           cgrib(ipos + 3)
      if (ctemp .eq. c7777) then
@@ -604,9 +601,9 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
      call g2_gbytec(cgrib, isecnum, iofst, 8) ! Get Section number
      iofst = iofst + 8
 
-     !         If found Section 3, unpack the GDS info using the appropriate
-     !         template. Save in case this is the latest grid before the
-     !         requested field.
+     ! If found Section 3, unpack the GDS info using the appropriate
+     ! template. Save in case this is the latest grid before the
+     ! requested field.
      if (isecnum .eq. 3) then
         iofst = iofst - 40    ! reset offset to beginning of section
         call unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
@@ -619,8 +616,8 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         endif
      endif
 
-     !         If found Section 4, check to see if this field is the one
-     !         requested.
+     ! If found Section 4, check to see if this field is the one
+     ! requested.
      if (isecnum .eq. 4) then
         numfld = numfld + 1
         if (numfld .eq. ifldnum) then
@@ -636,8 +633,8 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         endif
      endif
 
-     !         If found Section 5, check to see if this field is the one
-     !         requested.
+     ! If found Section 5, check to see if this field is the one
+     ! requested.
      if ((isecnum .eq. 5) .and. (numfld .eq. ifldnum)) then
         iofst = iofst - 40    ! reset offset to beginning of section
         call unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum, &
@@ -664,8 +661,8 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         endif
      endif
 
-     !         If found Section 7, check to see if this field is the one
-     !         requested.
+     ! If found Section 7, check to see if this field is the one
+     ! requested.
      if ((isecnum .eq. 7) .and. (numfld .eq. ifldnum)) then
         if (idrsnum .eq. 0) then
            call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl, &
@@ -701,8 +698,8 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         endif
      endif
 
-     !         Check to see if we read pass the end of the GRIB message and
-     !         missed the terminator string '7777'.
+     ! Check to see if we read pass the end of the GRIB message and
+     ! missed the terminator string '7777'.
      ipos = ipos + lensec      ! Update beginning of section pointer
      if (ipos .gt. (istart + lengrib)) then
         print *, 'getfield: "7777"  not found at end' &
@@ -716,8 +713,8 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
 
   enddo
 
-  !     If exited from above loop, the end of the GRIB message was reached
-  !     before the requested field was found.
+  ! If exited from above loop, the end of the GRIB message was reached
+  ! before the requested field was found.
   print *, 'getfield: GRIB message contained ', numlocal,  &
        ' different fields.'
   print *, 'getfield: The request was for the ', ifldnum,  &
@@ -726,50 +723,48 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
 
 end subroutine getfield
 
-!>    This subroutine unpacks Section 3 (Grid Definition Section)
-!>    starting at octet 6 of that Section.
+!> This subroutine unpacks Section 3 (Grid Definition Section)
+!> starting at octet 6 of that Section.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message.
-!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning (in) or the end
-!>    (out) of Section 3.
-!>    @param[out] igds Contains information read from the appropriate
-!>    GRIB Grid Definition Section 3 for the field being returned. Must
-!>    be dimensioned >= 5.
+!> @param[in] cgrib Character array that contains the GRIB2 message.
+!> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!> @param[inout] iofst Bit offset of the beginning (in) or the end
+!> (out) of Section 3.
+!> @param[out] igds Contains information read from the appropriate
+!> GRIB Grid Definition Section 3 for the field being returned. Must
+!> be dimensioned >= 5.
 
-!>    - igds(1) Source of grid definition (see [Code Table - 3.0]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml))
-!>    - igds(2) Number of grid points in the defined grid.
-!>    - igds(3) Number of octets needed for each additional grid points
-!>    definition. Used to define number of points in each row (or
-!>    column) for non-regular grids. = 0, if using regular grid.
-!>    - igds(4) Interpretation of list for optional points
-!>    definition. ([Code Table 3.11]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
-!>    - igds(5) Grid Definition Template Number ([Code Table 3.1]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
-!>    @param[out] igdstmpl Contains the data values for the specified
-!>    Grid Definition Template (NN=igds(5)). Each element of this
-!>    integer array contains an entry (in the order specified) of Grid
-!>    Defintion Template 3.NN.
-!>    @param[out] mapgridlen Number of elements in igdstmpl -
-!>    i.e. number of entries in Grid Defintion Template 3.NN
-!>    (NN=igds(5)).
-!>    @param[out] ideflist (Used if igds(3) .ne. 0). This array contains
-!>    the number of grid points contained in each row (or column) (part
-!>    of Section 3).
-!>    @param[out] idefnum (Used if igds(3) .ne. 0). The number of
-!>    entries in array ideflist - i.e. number of rows (or columns) for
-!>    which optional grid points are defined.
-!>    @param[out] ierr Error return code.
-!>    - 0 no error.
-!>    - 5 "GRIB" message contains an undefined Grid Definition Template.
+!> - igds(1) Source of grid definition (see [Code Table - 3.0]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-0.shtml))
+!> - igds(2) Number of grid points in the defined grid.
+!> - igds(3) Number of octets needed for each additional grid points
+!> definition. Used to define number of points in each row (or
+!> column) for non-regular grids. = 0, if using regular grid.
+!> - igds(4) Interpretation of list for optional points
+!> definition. ([Code Table 3.11]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-11.shtml)).
+!> - igds(5) Grid Definition Template Number ([Code Table 3.1]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table3-1.shtml)).
+!> @param[out] igdstmpl Contains the data values for the specified
+!> Grid Definition Template (NN=igds(5)). Each element of this
+!> integer array contains an entry (in the order specified) of Grid
+!> Defintion Template 3.NN.
+!> @param[out] mapgridlen Number of elements in igdstmpl -
+!> i.e. number of entries in Grid Defintion Template 3.NN
+!> (NN=igds(5)).
+!> @param[out] ideflist (Used if igds(3) .ne. 0). This array contains
+!> the number of grid points contained in each row (or column) (part
+!> of Section 3).
+!> @param[out] idefnum (Used if igds(3) .ne. 0). The number of
+!> entries in array ideflist - i.e. number of rows (or columns) for
+!> which optional grid points are defined.
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 5 "GRIB" message contains an undefined Grid Definition Template.
 !>
-!>    @author Stephen Gilbert @date 2000-05-26
-!>
+!> @author Stephen Gilbert @date 2000-05-26
 subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
      mapgridlen, ideflist, idefnum, ierr)
-
   use gridtemplates
   implicit none
 
@@ -803,9 +798,8 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
   call g2_gbytec(cgrib, igds(5), iofst, 16) ! Get Grid Def Template num.
   iofst = iofst + 16
   if (igds(1) .eq. 0) then
-     !      if (igds(1).eq.0.OR.igds(1).eq.255) then  ! FOR ECMWF TEST ONLY
      allocate(mapgrid(lensec))
-     !         Get Grid Definition Template
+     ! Get Grid Definition Template
      call getgridtemplate(igds(5), mapgridlen, mapgrid, needext,  &
           iret)
      if (iret .ne. 0) then
@@ -813,14 +807,14 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
         return
      endif
   else
-     !        igdstmpl = -1
+     ! igdstmpl = -1
      mapgridlen = 0
      needext = .false.
   endif
 
-  !     Unpack each value into array igdstmpl from the the appropriate
-  !     number of octets, which are specified in corresponding entries in
-  !     array mapgrid.
+  ! Unpack each value into array igdstmpl from the the appropriate
+  ! number of octets, which are specified in corresponding entries in
+  ! array mapgrid.
   ibyttem = 0
   do i = 1, mapgridlen
      nbits = iabs(mapgrid(i)) * 8
@@ -835,9 +829,9 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
      ibyttem = ibyttem + iabs(mapgrid(i))
   enddo
 
-  !      Check to see if the Grid Definition Template needs to be
-  !      extended. The number of values in a specific template may vary
-  !      depending on data specified in the "static" part of the template.
+  ! Check to see if the Grid Definition Template needs to be
+  ! extended. The number of values in a specific template may vary
+  ! depending on data specified in the "static" part of the template.
   if (needext) then
      call extgridtemplate(igds(5), igdstmpl, newmapgridlen, &
           mapgrid)
@@ -871,35 +865,34 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
   if (allocated(mapgrid)) deallocate(mapgrid)
 end subroutine unpack3
 
-!>    This subroutine unpacks Section 4 (Product Definition Section)
-!>    starting at octet 6 of that Section.
+!> This subroutine unpacks Section 4 (Product Definition Section)
+!> starting at octet 6 of that Section.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message.
-!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning (in) or the end
-!>    (out) of Section 4.
-!>    @param[out] ipdsnum Product Definition Template Number (see [Code
-!>    Table 4.0]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
-!>    @param[out] ipdstmpl Contains the data values for the specified
-!>    Product Definition Template (N=ipdsnum). Each element of this
-!>    integer array contains an entry (in the order specified) of
-!>    Product Defintion Template 4.N.
-!>    @param[out] mappdslen Number of elements in ipdstmpl. i.e. number
-!>    of entries in Product Defintion Template 4.N (N=ipdsnum).
-!>    @param[out] coordlist- Array containg floating point values
-!>    intended to document the vertical discretisation associated to
-!>    model data on hybrid coordinate vertical levels (part of Section
-!>    4).
-!>    @param[out] numcoord number of values in array coordlist.
-!>    @param[out] ierr Error return code.
-!>    - 0 no error.
-!>    - 5 GRIB message contains an undefined Product Definition Template.
+!> @param[in] cgrib Character array that contains the GRIB2 message.
+!> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!> @param[inout] iofst Bit offset of the beginning (in) or the end
+!> (out) of Section 4.
+!> @param[out] ipdsnum Product Definition Template Number (see [Code
+!> Table 4.0]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table4-0.shtml)).
+!> @param[out] ipdstmpl Contains the data values for the specified
+!> Product Definition Template (N=ipdsnum). Each element of this
+!> integer array contains an entry (in the order specified) of
+!> Product Defintion Template 4.N.
+!> @param[out] mappdslen Number of elements in ipdstmpl. i.e. number
+!> of entries in Product Defintion Template 4.N (N=ipdsnum).
+!> @param[out] coordlist- Array containg floating point values
+!> intended to document the vertical discretisation associated to
+!> model data on hybrid coordinate vertical levels (part of Section
+!> 4).
+!> @param[out] numcoord number of values in array coordlist.
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 5 GRIB message contains an undefined Product Definition Template.
 !>
-!>    @author Stephen Gilbert @date 2000-05-26
+!> @author Stephen Gilbert @date 2000-05-26
 subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
      mappdslen, coordlist, numcoord, ierr)
-
   use pdstemplates
   implicit none
 
@@ -914,8 +907,6 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
   integer, allocatable :: mappds(:)
   integer :: mappdslen
   logical needext
-
-  !implicit none additions
   integer :: lensec, iret, i, nbits, isign, newmappdslen
 
   ierr = 0
@@ -929,16 +920,16 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
   iofst = iofst + 16
   call g2_gbytec(cgrib, ipdsnum, iofst, 16) ! Get Prod. Def Template num.
   iofst = iofst + 16
-  !     Get Product Definition Template.
+  ! Get Product Definition Template.
   call getpdstemplate(ipdsnum, mappdslen, mappds, needext, iret)
   if (iret.ne.0) then
      ierr = 5
      return
   endif
 
-  !     Unpack each value into array ipdstmpl from the the appropriate
-  !     number of octets, which are specified in corresponding entries in
-  !     array mappds.
+  ! Unpack each value into array ipdstmpl from the the appropriate
+  ! number of octets, which are specified in corresponding entries in
+  ! array mappds.
   do i = 1, mappdslen
      nbits = iabs(mappds(i))*8
      if (mappds(i).ge.0) then
@@ -951,9 +942,9 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
      iofst = iofst + nbits
   enddo
 
-  !     Check to see if the Product Definition Template needs to be
-  !     extended. The number of values in a specific template may vary
-  !     depending on data specified in the "static" part of the template.
+  ! Check to see if the Product Definition Template needs to be
+  ! extended. The number of values in a specific template may vary
+  ! depending on data specified in the "static" part of the template.
   if (needext) then
      call extpdstemplate(ipdsnum, ipdstmpl, newmappdslen, mappds)
 
@@ -972,8 +963,8 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
      mappdslen = newmappdslen
   endif
 
-  !     Get Optional list of vertical coordinate values after the Product
-  !     Definition Template, if necessary.
+  ! Get Optional list of vertical coordinate values after the Product
+  ! Definition Template, if necessary.
   if (numcoord .ne. 0) then
      allocate (coordieee(numcoord))
      call g2_gbytesc(cgrib, coordieee, iofst, 32, 0, numcoord)
@@ -984,28 +975,28 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
   if (allocated(mappds)) deallocate(mappds)
 end subroutine unpack4
 
-!>    This subroutine unpacks Section 5 (Data Representation Section)
-!>    starting at octet 6 of that Section.
+!> This subroutine unpacks Section 5 (Data Representation Section)
+!> starting at octet 6 of that Section.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message.
-!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning (in) or the
-!>    end(out) of Section 5.
-!>    @param[out] ndpts Number of data points unpacked and returned.
-!>    @param[out] idrsnum Data Representation Template Number (see [Code
-!>    Table 5.0]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml))
-!>    @param[out] idrstmpl Contains the data values for the specified
-!>    Data Representation Template (N = idrsnum). Each element of this
-!>    integer array contains an entry (in the order specified) of Data
-!>    Representation Template 5.N.
-!>    @param[out] mapdrslen Number of elements in idrstmpl. i.e. number
-!>    of entries in Data Representation Template 5.N (N = idrsnum).
-!>    @param[out] ierr Error return code.
-!>    - 0 no error.
-!>    - 7 GRIB message contains an undefined Data Representation Template.
+!> @param[in] cgrib Character array that contains the GRIB2 message.
+!> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!> @param[inout] iofst Bit offset of the beginning (in) or the
+!> end(out) of Section 5.
+!> @param[out] ndpts Number of data points unpacked and returned.
+!> @param[out] idrsnum Data Representation Template Number (see [Code
+!> Table 5.0]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table5-0.shtml))
+!> @param[out] idrstmpl Contains the data values for the specified
+!> Data Representation Template (N = idrsnum). Each element of this
+!> integer array contains an entry (in the order specified) of Data
+!> Representation Template 5.N.
+!> @param[out] mapdrslen Number of elements in idrstmpl. i.e. number
+!> of entries in Data Representation Template 5.N (N = idrsnum).
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 7 GRIB message contains an undefined Data Representation Template.
 !>
-!>    @author Stephen Gilbert @date 2000-05-26
+!> @author Stephen Gilbert @date 2000-05-26
 subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
      idrstmpl, mapdrslen, ierr)
 
@@ -1037,16 +1028,16 @@ subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
   iofst = iofst + 32
   call g2_gbytec(cgrib, idrsnum, iofst, 16) ! Get Data Rep Template Num.
   iofst = iofst + 16
-  !     Gen Data Representation Template
+  ! Gen Data Representation Template
   call getdrstemplate(idrsnum, mapdrslen, mapdrs, needext, iret)
   if (iret.ne.0) then
      ierr = 7
      return
   endif
 
-  !     Unpack each value into array ipdstmpl from the the appropriate
-  !     number of octets, which are specified in corresponding entries in
-  !     array mappds.
+  ! Unpack each value into array ipdstmpl from the the appropriate
+  ! number of octets, which are specified in corresponding entries in
+  ! array mappds.
   do i = 1, mapdrslen
      nbits = iabs(mapdrs(i))*8
      if (mapdrs(i).ge.0) then
@@ -1059,9 +1050,9 @@ subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
      iofst = iofst + nbits
   enddo
 
-  !     Check to see if the Data Representation Template needs to be
-  !     extended. The number of values in a specific template may vary
-  !     depending on data specified in the "static" part of the template.
+  ! Check to see if the Data Representation Template needs to be
+  ! extended. The number of values in a specific template may vary
+  ! depending on data specified in the "static" part of the template.
   if (needext) then
      call extdrstemplate(idrsnum, idrstmpl, newmapdrslen, mapdrs)
      !         Unpack the rest of the Data Representation Template

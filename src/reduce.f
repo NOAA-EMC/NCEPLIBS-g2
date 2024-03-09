@@ -52,6 +52,9 @@ C        NEWBOX( ) AND NEWBOXP( ) ARE AUTOMATIC ARRAYS.
 C
       DATA IFEED/12/
 C
+C     This is to supress a warning.
+      if (.false.) print *, kfildo
+C      
       IER=0
       IF(LX.EQ.1)GO TO 410
 C        IF THERE IS ONLY ONE GROUP, RETURN.

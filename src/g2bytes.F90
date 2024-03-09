@@ -415,7 +415,7 @@ end subroutine g2_sbytesc8
 !> @param[in] num Number of floating point values to convert.
 !>
 !> @author Stephen Gilbert @date 2000-05-09
-subroutine rdieee(rieee,a,num)
+subroutine rdieee(rieee, a, num)
   implicit none
   
   real(4), intent(in) :: rieee(num)
