@@ -10,6 +10,7 @@ program test_gbytec2
   character (len = 1) :: c4(4), c4_2(4)
   integer (kind = 4) :: i1
   integer :: i
+  real (kind = 4) :: r1(1)
 
   ! Initialize some test data.
   do i = 1, 4
@@ -76,6 +77,17 @@ program test_gbytec2
   if (any(c4 .ne. c4_2)) stop 25
 
   print *, 'OK!'
+  
+  print *, 'testing g2_gbytescr() with a single float...'
+  ! Reset array to IEEE float value 1.0.
+  c4(1) = char(63)
+  c4(2) = char(128)
+  c4(3) = char(0)
+  c4(4) = char(0)
+  call g2_gbytescr(c4, r1, 0, 32, 0, 1)
+  if (r1(1) .ne. 1.0) stop 100
+  print *, 'OK!'
+  
   print *, 'SUCCESS!'
 
 end program test_gbytec2

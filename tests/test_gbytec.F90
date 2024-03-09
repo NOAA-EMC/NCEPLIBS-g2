@@ -211,8 +211,8 @@ program test_gbytec
        g2_mova2i(out4(3)) .ne. 0 .and. g2_mova2i(out4(4)) .ne. 0) stop 120
   if (g2_mova2i(out8(5)) .ne. 63 .and. g2_mova2i(out8(6)) .ne. 128 .and. &
        g2_mova2i(out8(7)) .ne. 0 .and. g2_mova2i(out8(8)) .ne. 0) stop 130
-  !print '(z2.2)', out4(1)  
-
+  !print '(z2.2)', out4(1)
+  
   print *, '   testing g2_sbytec8() with 64-bit int...'
   in8(1) = 1
   do i = 1, 8
