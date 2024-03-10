@@ -51,15 +51,16 @@ subroutine g2_gbytec1(in, siout, iskip, nbits)
   siout = iout(1)
 end subroutine g2_gbytec1
 
-!> Extract arbitrary size big-endian floating-point values (32 bits
-!> each) from a packed bit string.
+!> Extract big-endian floating-point values (32 bits each) from a
+!> packed bit string.
 !>
 !> @param[in] in array input
 !> @param[out] iout unpacked array output
 !> @param[in] iskip initial number of bits to skip
 !> @param[in] nbits Number of bits of each real in IN to take. Must
 !> be 32.
-!> @param[in] nskip Additional number of bits to skip on each iteration.
+!> @param[in] nskip Additional number of bits to skip on each
+!iteration.
 !> @param[in] n Number of floats to extract.
 !>
 !> @author Stephen Gilbert @date 2004-04-27

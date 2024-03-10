@@ -350,8 +350,8 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
         coordlist_4(i) = real(coordlist(i), 4)
      end do
      call mkieee(coordlist_4, coordieee, numcoord)
-     call g2_sbytesc(cgrib,coordieee,iofst,32,0,numcoord)
-     iofst=iofst+(32*numcoord)
+     call g2_sbytesc(cgrib, coordieee, iofst, 32, 0, numcoord)
+     iofst = iofst + (32 * numcoord)
   endif
 
   ! Calculate length of section 4 and store it in octets
