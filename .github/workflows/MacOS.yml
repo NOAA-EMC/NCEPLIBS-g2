@@ -35,9 +35,9 @@ jobs:
       run: |
         find /Library/Frameworks/ -name "png*"
         sudo rm -rf /Library/Frameworks/Mono.framework
-        brew update
+        #brew update
         brew install libpng
-        #brew install jpeg-turbo
+        brew install jpeg-turbo
 
     - name: cache-bacio
       id: cache-bacio
