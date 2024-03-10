@@ -101,6 +101,34 @@ program test_gbytec2
   if (r2(1) .ne. 1.0 .or. r2(2) .ne. 1.0) stop 110
   print *, 'OK!'
   
+  print *, 'testing g2_sbytescr() with a single float...'
+  ! Reset array.
+  do i = 1, 4
+     c4(i) = '.'
+  end do
+  r1(1) = 1.0
+  call g2_sbytescr(c4, r1, 0, 32, 0, 1)
+  if (ichar(c4(1)) .ne. 63 .or. ichar(c4(2)) .ne. 128 .or. ichar(c4(3)) .ne. 0 .or. &
+       ichar(c4(4)) .ne. 0) stop 120
+  print *, 'OK!'
+
+  print *, 'testing g2_sbytescr() with a two floats...'
+  ! Reset array.
+  do i = 1, 8
+     c8(i) = '.'
+  end do
+  r2(1) = 1.0
+  r2(2) = 1.0
+  call g2_sbytescr(c8, r2, 0, 32, 0, 2)
+  ! do i = 1, 8
+  !    print '(z2.2)', c8(i)
+  ! end do
+  do i = 0, 1
+     if (ichar(c8(1 + i * 4)) .ne. 63 .or. ichar(c8(2 + i * 4)) .ne. 128 .or. &
+          ichar(c8(3 + i * 4)) .ne. 0 .or. ichar(c8(4 + i * 4)) .ne. 0) stop 130
+  end do
+  print *, 'OK!'
+
   print *, 'SUCCESS!'
 
 end program test_gbytec2
