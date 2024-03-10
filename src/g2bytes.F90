@@ -267,12 +267,36 @@ subroutine g2_sbytec1(out, in, iskip, nbits)
   call g2_sbytesc(out, ain, iskip, nbits, 0, 1)
 end subroutine g2_sbytec1
 
-!> Put arbitrary size (up to 32 bits each) values into a packed bit
-!> string, taking the low order bits from each value in the unpacked
-!> array.
+!> Put real values into a packed bit string in big-endian order.
 !>
-!> @param[out] out Packed array output.
-!> @param[in] in Unpacked array input.
+!> @param[out] out Packed character array output.
+!> @param[in] in real array input.
+!> @param[in] iskip Initial number of bits to skip.
+!> @param[in] nbits Number of bits of each integer in OUT to
+!> fill. Must be 32.
+!> @param[in] nskip Additional number of bits to skip on each iteration.
+!> @param[in] n Number of iterations.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_sbytescr(out, rin, iskip, nbits, nskip, n)
+  implicit none
+  character*1, intent(out) :: out(*)
+  real, intent(in) :: rin(n)
+  integer, intent(in) :: iskip, nbits, nskip, n
+  integer :: in(n)
+
+  ! Transfer real array to integer array.
+  in(1:n) = transfer(rin, in(1:n), n)
+
+  ! Pack into character array.
+  call g2_sbytesc(out, in, iskip, nbits, nskip, n)
+end subroutine g2_sbytescr
+
+!> Put arbitrary size (up to 32 bits each) integer values
+!> into a packed bit string in big-endian order.
+!>
+!> @param[out] out Packed character array output.
+!> @param[in] in Integer array input.
 !> @param[in] iskip Initial number of bits to skip.
 !> @param[in] nbits Number of bits of each integer in OUT to
 !> fill. Must be 32 or less.
