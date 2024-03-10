@@ -26,8 +26,8 @@ subroutine g2_gbytec(in, iout, iskip, nbits)
   call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
 end subroutine g2_gbytec
 
-!> Extract one arbitrary size big-endian value (up to 32 bits) from a
-!> packed bit string into a scalar integer.
+!> Extract one arbitrary size big-endian integer value (up to 32 bits)
+!> from a packed bit string into a scalar integer.
 !>
 !> This should be used converting one integer*4 value. If more values
 !> need to be converted, use g2_sbytesc().
@@ -51,8 +51,34 @@ subroutine g2_gbytec1(in, siout, iskip, nbits)
   siout = iout(1)
 end subroutine g2_gbytec1
 
-!> Extract arbitrary size values (up to 32 bits each) from a packed
-!> bit string, right justifying each value in the unpacked array.
+!> Extract arbitrary size big-endian floating-point values (32 bits
+!> each) from a packed bit string.
+!>
+!> @param[in] in array input
+!> @param[out] iout unpacked array output
+!> @param[in] iskip initial number of bits to skip
+!> @param[in] nbits Number of bits of each real in IN to take. Must
+!> be 32.
+!> @param[in] nskip Additional number of bits to skip on each iteration.
+!> @param[in] n Number of floats to extract.
+!>
+!> @author Stephen Gilbert @date 2004-04-27
+subroutine g2_gbytescr(in, rout, iskip, nbits, nskip, n)
+  implicit none
+  character*1, intent(in) :: in(*)
+  real (kind = 4), intent(out) :: rout(*)
+  integer, intent(in) :: iskip, nbits, nskip, n
+  integer (kind = 4) :: iout(n)
+
+  ! Unpack into integer array.
+  call g2_gbytesc(in, iout, iskip, nbits, nskip, n)
+
+  ! Transfer to real array.
+  rout(1:n) = transfer(iout, rout(1:n), n)
+end subroutine g2_gbytescr
+
+!> Extract arbitrary size big-endian integer values (up to 32 bits
+!> each) from a packed bit string.
 !>
 !> @param[in] in array input
 !> @param[out] iout unpacked array output
@@ -415,7 +441,7 @@ end subroutine g2_sbytesc8
 !> @param[in] num Number of floating point values to convert.
 !>
 !> @author Stephen Gilbert @date 2000-05-09
-subroutine rdieee(rieee,a,num)
+subroutine rdieee(rieee, a, num)
   implicit none
   
   real(4), intent(in) :: rieee(num)

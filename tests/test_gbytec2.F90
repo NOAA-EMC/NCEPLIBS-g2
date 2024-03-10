@@ -8,8 +8,10 @@ program test_gbytec2
 
   character (len = 1) :: c1(1) = 'a'
   character (len = 1) :: c4(4), c4_2(4)
+  character (len = 1) :: c8(8)
   integer (kind = 4) :: i1
   integer :: i
+  real (kind = 4) :: r1(1), r2(2)
 
   ! Initialize some test data.
   do i = 1, 4
@@ -76,6 +78,29 @@ program test_gbytec2
   if (any(c4 .ne. c4_2)) stop 25
 
   print *, 'OK!'
+  
+  print *, 'testing g2_gbytescr() with a single float...'
+  ! Reset array to IEEE float value 1.0.
+  c4(1) = char(63)
+  c4(2) = char(128)
+  c4(3) = char(0)
+  c4(4) = char(0)
+  call g2_gbytescr(c4, r1, 0, 32, 0, 1)
+  if (r1(1) .ne. 1.0) stop 100
+  print *, 'OK!'
+  
+  print *, 'testing g2_gbytescr() with a two floats...'
+  ! Reset array to IEEE float value 1.0, twice.
+  do i = 0, 1
+     c8(1 + i * 4) = char(63)
+     c8(2 + i * 4) = char(128)
+     c8(3 + i * 4) = char(0)
+     c8(4 + i * 4) = char(0)
+  end do
+  call g2_gbytescr(c8, r2, 0, 32, 0, 2)
+  if (r2(1) .ne. 1.0 .or. r2(2) .ne. 1.0) stop 110
+  print *, 'OK!'
+  
   print *, 'SUCCESS!'
 
 end program test_gbytec2
