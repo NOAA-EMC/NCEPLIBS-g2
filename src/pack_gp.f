@@ -51,7 +51,6 @@
 !> total bits required. If reduce() should abort, pack_gp() will be
 !> executed again without the call to reduce.
 !>
-!> @param[in] KFILDO unit number for output/print file.
 !> @param[in] IC array to hold data for packing. The values do not
 !> have to be positive at this point, but must be in the range
 !> -2**30 to +2**30 (the value of mallow). These integer values
@@ -111,7 +110,7 @@
 !> - 717 inc set = 1--non-fatal
 !>
 !> @author Harry Glahn @date 1994-02-01
-      SUBROUTINE PACK_GP(KFILDO,IC,NXY,IS523,MINPK,INC,MISSP,MISSS,
+      SUBROUTINE PACK_GP(IC,NXY,IS523,MINPK,INC,MISSP,MISSS,
      1                   JMIN,JMAX,LBIT,NOV,NDG,LX,IBIT,JBIT,KBIT,
      2                   NOVREF,LBITREF,IER)            
 
