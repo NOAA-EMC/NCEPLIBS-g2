@@ -55,7 +55,7 @@ end subroutine g2_gbytec1
 !> packed bit string.
 !>
 !> @param[in] in array input
-!> @param[out] iout unpacked array output
+!> @param[out] rout unpacked array output
 !> @param[in] iskip initial number of bits to skip
 !> @param[in] nbits Number of bits of each real in IN to take. Must
 !> be 32.
