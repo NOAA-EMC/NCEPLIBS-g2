@@ -100,7 +100,7 @@ subroutine compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
   integer :: igmax,nbitsgref,left,iwmax,i,ilmax,kk,ij
   integer :: ngwidthref,nbitsgwidth,nglenref,nglenlast
   integer :: maxorig,nbitorig,isd,ngroups,itemp,minpk
-  integer :: kfildo,inc,maxgrps,missopt,miss1,miss2,lg
+  integer :: inc,maxgrps,missopt,miss1,miss2,lg
   integer :: ibit,jbit,kbit,novref,lbitref,ier,ng,imax
   integer :: nbitsglen
   real(4) :: ref,rmin4
@@ -273,7 +273,6 @@ subroutine compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
      else
         ! Use Dr. Glahn's algorithm for determining grouping.
         !
-        kfildo=6
         minpk=10
         inc=1
         maxgrps=((ndpts+minpk-1)/minpk)
@@ -281,7 +280,7 @@ subroutine compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
         allocate(jmax(maxgrps))
         allocate(lbit(maxgrps))
         missopt=0
-        call pack_gp(kfildo,ifld,ndpts,missopt,minpk,inc,miss1,miss2, &
+        call pack_gp(ifld,ndpts,missopt,minpk,inc,miss1,miss2, &
              jmin,jmax,lbit,glen,maxgrps,ngroups,ibit,jbit, &
              kbit,novref,lbitref,ier)
         if(ier/=0) then
@@ -1083,14 +1082,13 @@ subroutine misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
   else
      ! Use Dr. Glahn's algorithm for determining grouping.
      !
-     kfildo=6
      minpk=10 
      inc=1
      maxgrps=(ndpts/minpk)+1
      allocate(jmin(maxgrps))
      allocate(jmax(maxgrps))
      allocate(lbit(maxgrps))
-     call pack_gp(kfildo,ifld,ndpts,missopt,minpk,inc,miss1,miss2, &
+     call pack_gp(ifld,ndpts,missopt,minpk,inc,miss1,miss2, &
           jmin,jmax,lbit,glen,maxgrps,ngroups,ibit,jbit, &
           kbit,novref,lbitref,ier)
      !print *,'SAGier = ',ier,ibit,jbit,kbit,novref,lbitref
