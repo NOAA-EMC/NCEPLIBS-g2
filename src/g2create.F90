@@ -910,7 +910,8 @@ subroutine gribend(cgrib, lcgrib, lengrib, ierr)
   integer, intent(out) :: lengrib, ierr
 
   integer ilen, isecnum
-  character(len = 4), parameter :: grib = 'GRIB', c7777 = '7777'
+  character(len = 4), parameter :: grib = 'GRIB'
+  character(len = 1), parameter :: c7777(4) = (/ '7', '7', '7', '7' /)
   character(len = 4):: ctemp
   integer iofst, lencurr, len
 
