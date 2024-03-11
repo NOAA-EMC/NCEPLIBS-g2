@@ -474,8 +474,8 @@ subroutine rdieee(rieee, a, num)
   integer, intent(in) :: num
 
   integer(4) :: ieee
-  real, parameter :: two23 = scale(1.0,-23)
-  real, parameter :: two126 = scale(1.0,-126)
+  real, parameter :: two23 = scale(1.0, -23)
+  real, parameter :: two126 = scale(1.0, -126)
   integer :: iexp, imant, isign, j
   real :: sign, temp
 

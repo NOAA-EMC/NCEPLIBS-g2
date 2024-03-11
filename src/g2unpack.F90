@@ -655,7 +655,9 @@ subroutine gf_unpack7(cgrib, lcgrib, iofst, igdsnum, igdstmpl,  &
   integer, pointer, dimension(:) :: igdstmpl, idrstmpl
   integer, intent(out) :: ierr
   real, pointer, dimension(:) :: fld
-  integer :: ier,  ipos,  istat,  lensec,  ieee
+  integer :: ier,  ipos,  istat,  lensec
+  real (kind = 4) :: ieee(1)
+  real :: tmpfld(1)
 
   ierr = 0
   nullify(fld)
@@ -682,8 +684,9 @@ subroutine gf_unpack7(cgrib, lcgrib, iofst, igdsnum, igdstmpl,  &
      endif
   elseif (idrsnum .eq. 50) then ! Spectral simple
      call simunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts-1, fld(2))
-     ieee = idrstmpl(5)
-     call rdieee(ieee, fld(1), 1)
+     ieee = transfer(idrstmpl(5), ieee, 1)
+     call rdieee(ieee, tmpfld, 1)
+     fld(1) = tmpfld(1)
   elseif (idrsnum .eq. 51) then ! Spectral complex
      if (igdsnum.ge.50.AND.igdsnum.le.53) then
         call specunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts,  &

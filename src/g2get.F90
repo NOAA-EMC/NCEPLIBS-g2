@@ -520,7 +520,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
   character(len = 4) :: ctemp
   integer :: listsec0(2)
   integer :: iofst, istart
-  integer(4) :: ieee
+  real (kind = 4) :: ieee(1)
   logical :: have3, have4, have5, have6, have7
 
   !implicit none additions
@@ -682,7 +682,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         elseif (idrsnum .eq. 50) then
            call simunpack(cgrib(ipos + 5), lensec - 6, idrstmpl, &
                 ndpts - 1, fld(2))
-           ieee = idrstmpl(5)
+           ieee = transfer(idrstmpl(5), ieee, 1)
            call rdieee(ieee, fld(1), 1)
            have7 = .true.
         elseif (idrsnum .eq. 40 .or. idrsnum .eq. 40000) then
