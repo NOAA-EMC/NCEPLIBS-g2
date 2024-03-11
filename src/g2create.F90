@@ -203,7 +203,7 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   character(len=4):: ctemp
   character(len=1),allocatable :: cpack(:)
   real,pointer,dimension(:) :: pfld
-  real(4) :: coordieee(numcoord),re00
+  real(4) :: coordieee(numcoord), re00, tmpre00(1)
   integer(4) :: ire00,allones
   integer :: mappds(ipdstmplen),intbmap(ngrdpts),mapdrs(idrstmplen)
   integer,parameter :: zero=0,one=1,four=4,five=5,six=6,seven=7
@@ -216,6 +216,7 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   integer :: ibmprev, ilen, ioctet, iscan, isecnum, itemp
   integer :: i, jj, kk, mm
   integer :: iret, istat
+  real (kind = 4) :: tmpfld(1)
 
   allones = int(Z'FFFFFFFF')
   ierr=0
@@ -398,10 +399,11 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
      call cmplxpack(pfld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
   elseif (idrsnum.eq.50) then ! Sperical Harmonic Simple Packing
      call simpack(pfld(2),ndpts-1,idrstmpl,cpack,lcpack)
-     call mkieee(real(pfld(1)),re00,1) ! ensure RE(0,0) value is IEEE format
-     !call g2_gbytec(re00,idrstmpl(5),0,32)
-     ire00=transfer(re00,ire00)
-     idrstmpl(5)=ire00
+     tmpfld(1) = real(pfld(1), 4)
+     call mkieee(tmpfld, tmpre00, 1) ! ensure RE(0,0) value is IEEE format
+     re00 = tmpre00(1)
+     ire00 = transfer(re00, ire00)
+     idrstmpl(5) = ire00
   elseif (idrsnum.eq.51) then ! Sperical Harmonic Complex Packing
      call getpoly(cgrib(lpos3),lensec3,jj,kk,mm)
      if (jj.ne.0 .AND. kk.ne.0 .AND. mm.ne.0) then
