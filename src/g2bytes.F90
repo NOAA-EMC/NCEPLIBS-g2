@@ -270,7 +270,7 @@ end subroutine g2_sbytec1
 !> Put real values into a packed bit string in big-endian order.
 !>
 !> @param[out] out Packed character array output.
-!> @param[in] in real array input.
+!> @param[in] rin real array input.
 !> @param[in] iskip Initial number of bits to skip.
 !> @param[in] nbits Number of bits of each integer in OUT to
 !> fill. Must be 32.
