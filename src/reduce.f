@@ -14,7 +14,6 @@
 !> kbit could be determined. This furnishes a starting point for the
 !> iterations in reduce.
 !>
-!> @param[in] KFILDO unit number for output/print file.
 !> @param[inout] JMIN the minimum of each group (j=1,lx). JMIN is
 !> really the group reference and doesn't have to be the smallest
 !> value.
@@ -39,7 +38,7 @@
 !> - 715 ngp not large enough in reduce--non-fatal
 !>
 !> @author Harry Glahn @date 2001-11-01
-      SUBROUTINE REDUCE(KFILDO,JMIN,JMAX,LBIT,NOV,LX,NDG,IBIT,JBIT,KBIT,
+      SUBROUTINE REDUCE(JMIN,JMAX,LBIT,NOV,LX,NDG,IBIT,JBIT,KBIT,
      1                  NOVREF,IBXX2,IER)            
 
       CHARACTER*1 CFEED
