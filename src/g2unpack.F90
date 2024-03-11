@@ -430,7 +430,7 @@ subroutine gf_unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
         if (allocated(coordieee)) deallocate(coordieee)
         return
      endif
-     call g2_gbytesc(cgrib, coordieee, iofst, 32, 0, numcoord)
+     call g2_gbytescr(cgrib, coordieee, iofst, 32, 0, numcoord)
      call rdieee(coordieee, coordlist, numcoord)
      deallocate (coordieee)
      iofst = iofst + (32 * numcoord)

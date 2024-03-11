@@ -976,7 +976,7 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
   !     Definition Template, if necessary.
   if (numcoord .ne. 0) then
      allocate (coordieee(numcoord))
-     call g2_gbytesc(cgrib, coordieee, iofst, 32, 0, numcoord)
+     call g2_gbytescr(cgrib, coordieee, iofst, 32, 0, numcoord)
      call rdieee(coordieee, coordlist, numcoord)
      deallocate (coordieee)
      iofst = iofst + (32*numcoord)
