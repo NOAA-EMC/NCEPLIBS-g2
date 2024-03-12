@@ -217,6 +217,7 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   integer :: i, jj, kk, mm
   integer :: iret, istat
   real (kind = 4) :: tmpfld(1)
+  real :: tmpfld2
 
   allones = int(Z'FFFFFFFF')
   ierr=0
@@ -397,8 +398,8 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
      call simpack(pfld,ndpts,idrstmpl,cpack,lcpack)
   elseif (idrsnum.eq.2.or.idrsnum.eq.3) then ! Complex Packing
      call cmplxpack(pfld,ndpts,idrsnum,idrstmpl,cpack,lcpack)
-  elseif (idrsnum.eq.50) then ! Sperical Harmonic Simple Packing
-     call simpack(pfld(2),ndpts-1,idrstmpl,cpack,lcpack)
+  elseif (idrsnum .eq. 50) then ! Sperical Harmonic Simple Packing
+     call simpack(pfld(2), ndpts - 1, idrstmpl, cpack, lcpack)
      tmpfld(1) = real(pfld(1), 4)
      call mkieee(tmpfld, tmpre00, 1) ! ensure RE(0,0) value is IEEE format
      re00 = tmpre00(1)
