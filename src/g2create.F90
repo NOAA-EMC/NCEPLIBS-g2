@@ -51,6 +51,7 @@
 !>
 !> @author Stephen Gilbert @date 2000-04-28
 subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
+  use g2bytes
   implicit none
 
   character(len = 1), intent(inout) :: cgrib(lcgrib)
