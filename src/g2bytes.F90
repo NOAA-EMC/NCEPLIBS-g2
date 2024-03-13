@@ -473,7 +473,6 @@ subroutine rdieeec(cieee, a, num)
   real, intent(out) :: a(num)
   integer, intent(in) :: num
   real (kind = 4) :: rieee(num)
-  integer :: i
 
   rieee(1:num) = transfer(cieee(1:num * 4), rieee, num)
   call rdieee(rieee, a, num)

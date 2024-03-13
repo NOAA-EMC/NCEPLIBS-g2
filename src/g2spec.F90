@@ -143,7 +143,7 @@ subroutine specunpack(cpack, len, idrstmpl, ndpts, JJ, KK, MM, fld)
   Ts = idrstmpl(9)
 
   if (idrstmpl(10) .eq. 1) then ! unpacked floats are 32-bit IEEE
-     call rdieee(cpack, unpk, Ts) ! read IEEE unpacked floats
+     call rdieeec(cpack, unpk, Ts) ! read IEEE unpacked floats
      iofst = 32 * Ts
      call g2_gbytesc(cpack, ifld, iofst, nbits, 0, ndpts - Ts)  ! unpack scaled data
 
