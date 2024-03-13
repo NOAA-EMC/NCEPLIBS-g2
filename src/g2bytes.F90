@@ -482,7 +482,8 @@ end subroutine rdieeec
 !> floating point representation.
 !>
 !> @param[in] rieee Input array of floating point values in 32-bit
-!> IEEE format.
+!> IEEE format. Note that this array is always 32-bit floats, even
+!> when compiled with -d.
 !> @param[out] a Output array of real values.
 !> @param[in] num Number of floating point values to convert.
 !>
@@ -530,7 +531,8 @@ end subroutine rdieee
 !>
 !> @param[in] a Input array of floating point values.
 !> @param[out] rieee Output array of floating point values in 32-bit
-!> IEEE format.
+!> IEEE format. Note that this array is always 32-bit floats, even
+!> when compiled with -d.
 !> @param[in] num Number of floating point values to convert.
 !>
 !> @author Stephen Gilbert @date 2000-05-09
