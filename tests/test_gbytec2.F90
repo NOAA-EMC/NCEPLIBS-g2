@@ -12,6 +12,7 @@ program test_gbytec2
   integer (kind = 4) :: i1
   integer :: i
   real (kind = 4) :: r1(1), r2(2)
+  real :: r1_2(1), r2_2(2)
 
   ! Initialize some test data.
   do i = 1, 4
@@ -135,9 +136,9 @@ program test_gbytec2
   c4(3) = char(128)
   c4(2) = char(0)
   c4(1) = char(0)
-  r1(1) = 0
-  call rdieee(c4, r1, 1)
-  if (r1(1) .ne. 1.0) stop 300
+  r1_2(1) = 0
+  call rdieee(c4, r1_2, 1)
+  if (r1_2(1) .ne. 1.0) stop 300
   print *, 'OK!'
 
   ! print *, 'testing rdieeec() with a two floats...'
