@@ -234,14 +234,14 @@ end subroutine g2_gbytesc8
 !> @param[in] nbits Number of bits of each integer in OUT to fill.
 !>
 !> @author Stephen Gilbert @date 2004-04-27
-subroutine g2_sbytec(out, in, iskip, nbits)
+subroutine g2_sbyteca(out, in, iskip, nbits)
   implicit none
 
   character*1, intent(inout) :: out(*)
   integer, intent(in) :: in(*)
   integer, intent(in) :: iskip, nbits
   call g2_sbytesc(out, in, iskip, nbits, 0, 1)
-end subroutine g2_sbytec
+end subroutine g2_sbyteca
 
 !> Put one arbitrary sized (up to 32 bits) values from an integer
 !> scalar into a packed bit string, in big-endian format.
@@ -256,7 +256,7 @@ end subroutine g2_sbytec
 !> @param[in] nbits Number of bits of each integer in OUT to fill.
 !>
 !> @author Stephen Gilbert @date 2004-04-27
-subroutine g2_sbytec1(out, in, iskip, nbits)
+subroutine g2_sbytec(out, in, iskip, nbits)
   implicit none
 
   character*1, intent(inout) :: out(*)
@@ -265,7 +265,7 @@ subroutine g2_sbytec1(out, in, iskip, nbits)
   integer :: ain(1)
   ain(1) = in
   call g2_sbytesc(out, ain, iskip, nbits, 0, 1)
-end subroutine g2_sbytec1
+end subroutine g2_sbytec
 
 !> Put real values into a packed bit string in big-endian order.
 !>

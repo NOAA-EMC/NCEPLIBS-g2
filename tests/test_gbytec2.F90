@@ -47,8 +47,8 @@ program test_gbytec2
   if (i1 .ne. 1633771873) stop 10
   print *, 'OK!'
   
-  print *, 'testing g2_sbytec1() with a single 8-bit value...'
-  call g2_sbytec1(c4_2, i1, 0, 8)
+  print *, 'testing g2_sbytec() with a single 8-bit value...'
+  call g2_sbytec(c4_2, i1, 0, 8)
   ! print '(z2.2)', c4_2(i)
   ! print '(z8.8)', i1
   ! print *, c4_2
@@ -61,9 +61,9 @@ program test_gbytec2
      c4_2(i) = '.'
   end do
   
-  print *, 'testing g2_sbytec1() with two 16-bit values...'
+  print *, 'testing g2_sbytec() with two 16-bit values...'
   do i = 1, 2
-     call g2_sbytec1(c4_2, i1, (i - 1) * 16, 16)
+     call g2_sbytec(c4_2, i1, (i - 1) * 16, 16)
   end do
   !print *, c4_2
   if (any(c4 .ne. c4_2)) stop 20
@@ -74,8 +74,8 @@ program test_gbytec2
      c4_2(i) = '.'
   end do
   
-  print *, 'testing g2_sbytec1() with a single 32-bit value...'
-  call g2_sbytec1(c4_2, i1, 0, 32)
+  print *, 'testing g2_sbytec() with a single 32-bit value...'
+  call g2_sbytec(c4_2, i1, 0, 32)
   if (any(c4 .ne. c4_2)) stop 25
 
   print *, 'OK!'
