@@ -12,6 +12,7 @@ program test_gbytec2
   integer (kind = 4) :: i1
   integer :: i
   real (kind = 4) :: r1(1), r2(2)
+  real :: r1_2(1), r2_2(2)
 
   ! Initialize some test data.
   do i = 1, 4
@@ -129,6 +130,32 @@ program test_gbytec2
   end do
   print *, 'OK!'
 
+  print *, 'testing rdieeec() with a float...'
+  ! Reset array to IEEE float value 1.0.
+  c4(4) = char(63)
+  c4(3) = char(128)
+  c4(2) = char(0)
+  c4(1) = char(0)
+  r1_2(1) = 0
+  call rdieee(c4, r1_2, 1)
+  if (r1_2(1) .ne. 1.0) stop 300
+  print *, 'OK!'
+
+  print *, 'testing rdieeec() with a two floats...'
+  ! Reset array to IEEE float value 1.0, twice.
+  do i = 0, 1
+     c8(4 + i * 4) = char(63)
+     c8(3 + i * 4) = char(128)
+     c8(2 + i * 4) = char(0)
+     c8(1 + i * 4) = char(0)
+  end do
+  r2_2(1) = 0
+  r2_2(2) = 0
+  call rdieeec(c8, r2_2, 2)
+  if (r2_2(1) .ne. 1.0 .or. r2_2(2) .ne. 1.0) stop 310
+  print *, 'OK!'
+
   print *, 'SUCCESS!'
 
 end program test_gbytec2
+
