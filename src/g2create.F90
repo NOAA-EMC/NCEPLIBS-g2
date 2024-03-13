@@ -84,15 +84,15 @@ subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   cgrib(2) = grib(2:2)
   cgrib(3) = grib(3:3)
   cgrib(4) = grib(4:4)
-  call g2_sbytec(cgrib, ZERO, 32, 16)           ! reserved for future use
-  call g2_sbytec(cgrib, listsec0(1), 48, 8)     ! Discipline
-  call g2_sbytec(cgrib, listsec0(2), 56, 8)     ! GRIB edition number
+  call g2_sbytec1(cgrib, ZERO, 32, 16)           ! reserved for future use
+  call g2_sbytec1(cgrib, listsec0(1), 48, 8)     ! Discipline
+  call g2_sbytec1(cgrib, listsec0(2), 56, 8)     ! GRIB edition number
   lensec0 = 16      ! bytes (octets)
 
   ! Pack Section 1 - Identification Section.
   ibeg = lensec0 * 8        !   Calculate offset for beginning of section 1
   iofst = ibeg + 32         !   leave space for length of section
-  call g2_sbytec(cgrib, ONE, iofst, 8)     ! Store section number ( 1 )
+  call g2_sbytec1(cgrib, ONE, iofst, 8)     ! Store section number ( 1 )
   iofst = iofst + 8
 
   ! Pack up each input value in array listsec1 into the the
@@ -100,18 +100,18 @@ subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   ! entries in array mapsec1.
   do i = 1, mapsec1len
      nbits = mapsec1(i) * 8
-     call g2_sbytec(cgrib, listsec1(i), iofst, nbits)
+     call g2_sbytec1(cgrib, listsec1(i), iofst, nbits)
      iofst = iofst + nbits
   enddo
 
   ! Calculate length of section 1 and store it in octets 1-4 of
   ! section 1.
   lensec1 = (iofst - ibeg) / 8
-  call g2_sbytec(cgrib, lensec1, ibeg, 32)
+  call g2_sbytec1(cgrib, lensec1, ibeg, 32)
 
   ! Put current byte total of message into Section 0.
-  call g2_sbytec(cgrib, ZERO, 64, 32)
-  call g2_sbytec(cgrib, lensec0 + lensec1, 96, 32)
+  call g2_sbytec1(cgrib, ZERO, 64, 32)
+  call g2_sbytec1(cgrib, lensec0 + lensec1, 96, 32)
 end subroutine gribcreate
 
 !> Pack up Sections 4 through 7 for a field and add them to a
@@ -308,12 +308,12 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   !     Add Section 4 - Product Definition Section
   ibeg=lencurr*8 ! Calculate offset for beginning of section 4
   iofst=ibeg+32 ! leave space for length of section
-  call g2_sbytec(cgrib,four,iofst,8) ! Store section number (4)
-  iofst=iofst+8
-  call g2_sbytec(cgrib,numcoord,iofst,16) ! Store num of coordinate values
-  iofst=iofst+16
-  call g2_sbytec(cgrib,ipdsnum,iofst,16) ! Store Prod Def Template num.
-  iofst=iofst+16
+  call g2_sbytec1(cgrib, four, iofst, 8) ! Store section number (4)
+  iofst = iofst + 8
+  call g2_sbytec1(cgrib, numcoord, iofst, 16) ! Store num of coordinate values
+  iofst = iofst + 16
+  call g2_sbytec1(cgrib, ipdsnum, iofst, 16) ! Store Prod Def Template num.
+  iofst = iofst + 16
 
   ! Get Product Definition Template
   call getpdstemplate(ipdsnum,mappdslen,mappds,needext,iret)
@@ -336,10 +336,10 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   do i=1,mappdslen
      nbits=iabs(mappds(i))*8
      if ((mappds(i).ge.0).or.(ipdstmpl(i).ge.0)) then
-        call g2_sbytec(cgrib,ipdstmpl(i),iofst,nbits)
+        call g2_sbytec1(cgrib,ipdstmpl(i),iofst,nbits)
      else
-        call g2_sbytec(cgrib,one,iofst,1)
-        call g2_sbytec(cgrib,iabs(ipdstmpl(i)),iofst+1,nbits-1)
+        call g2_sbytec1(cgrib, one, iofst, 1)
+        call g2_sbytec(cgrib, iabs(ipdstmpl(i)), iofst + 1, nbits - 1)
      endif
      iofst=iofst+nbits
   enddo
@@ -358,7 +358,7 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   ! Calculate length of section 4 and store it in octets
   ! 1-4 of section 4.
   lensec4=(iofst-ibeg)/8
-  call g2_sbytec(cgrib,lensec4,ibeg,32)
+  call g2_sbytec1(cgrib, lensec4, ibeg, 32)
 
   ! Pack Data using appropriate algorithm
 
@@ -482,11 +482,11 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   !     Add Section 5 - Data Representation Section
   ibeg=iofst ! Calculate offset for beginning of section 5
   iofst=ibeg+32 ! leave space for length of section
-  call g2_sbytec(cgrib,five,iofst,8) ! Store section number (5)
+  call g2_sbytec1(cgrib,five,iofst,8) ! Store section number (5)
   iofst=iofst+8
-  call g2_sbytec(cgrib,ndpts,iofst,32) ! Store num of actual data points
+  call g2_sbytec1(cgrib,ndpts,iofst,32) ! Store num of actual data points
   iofst=iofst+32
-  call g2_sbytec(cgrib,idrsnum,iofst,16) ! Store Data Repr. Template num.
+  call g2_sbytec1(cgrib,idrsnum,iofst,16) ! Store Data Repr. Template num.
   iofst=iofst+16
 
   ! Pack up each input value in array idrstmpl into the
@@ -495,10 +495,10 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   do i=1,mapdrslen
      nbits=iabs(mapdrs(i))*8
      if ((mapdrs(i).ge.0).or.(idrstmpl(i).ge.0)) then
-        call g2_sbytec(cgrib,idrstmpl(i),iofst,nbits)
+        call g2_sbytec1(cgrib,idrstmpl(i),iofst,nbits)
      else
-        call g2_sbytec(cgrib,one,iofst,1)
-        call g2_sbytec(cgrib,iabs(idrstmpl(i)),iofst+1,nbits-1)
+        call g2_sbytec1(cgrib,one,iofst,1)
+        call g2_sbytec1(cgrib,iabs(idrstmpl(i)),iofst+1,nbits-1)
      endif
      iofst=iofst+nbits
   enddo
@@ -506,14 +506,14 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   ! Calculate length of section 5 and store it in octets
   ! 1-4 of section 5.
   lensec5=(iofst-ibeg)/8
-  call g2_sbytec(cgrib,lensec5,ibeg,32)
+  call g2_sbytec1(cgrib,lensec5,ibeg,32)
 
   !     Add Section 6 - Bit-Map Section
   ibeg=iofst ! Calculate offset for beginning of section 6
   iofst=ibeg+32 ! leave space for length of section
-  call g2_sbytec(cgrib,six,iofst,8) ! Store section number (6)
+  call g2_sbytec1(cgrib,six,iofst,8) ! Store section number (6)
   iofst=iofst+8
-  call g2_sbytec(cgrib,ibmap,iofst,8) ! Store Bit Map indicator
+  call g2_sbytec1(cgrib,ibmap,iofst,8) ! Store Bit Map indicator
   iofst=iofst+8
 
   ! Store bitmap, if supplied
@@ -535,16 +535,16 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   ! 1-4 of section 6. Pad to end of octect, if necessary.
   left=8-mod(iofst,8)
   if (left.ne.8) then
-     call g2_sbytec(cgrib,zero,iofst,left) ! Pad with zeros to fill Octet
+     call g2_sbytec1(cgrib,zero,iofst,left) ! Pad with zeros to fill Octet
      iofst=iofst+left
   endif
   lensec6=(iofst-ibeg)/8
-  call g2_sbytec(cgrib,lensec6,ibeg,32)
+  call g2_sbytec1(cgrib,lensec6,ibeg,32)
 
   !     Add Section 7 - Data Section
   ibeg=iofst ! Calculate offset for beginning of section 7
   iofst=ibeg+32 ! leave space for length of section
-  call g2_sbytec(cgrib,seven,iofst,8) ! Store section number (7)
+  call g2_sbytec1(cgrib,seven,iofst,8) ! Store section number (7)
   iofst=iofst+8
   ! Store Packed Binary Data values, if non-constant field
   if (lcpack.ne.0) then
@@ -556,13 +556,13 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   ! Calculate length of section 7 and store it in octets
   ! 1-4 of section 7.
   lensec7=(iofst-ibeg)/8
-  call g2_sbytec(cgrib,lensec7,ibeg,32)
+  call g2_sbytec1(cgrib,lensec7,ibeg,32)
 
   if(allocated(cpack) )deallocate(cpack)
 
   !     Update current byte total of message in Section 0
   newlen=lencurr+lensec4+lensec5+lensec6+lensec7
-  call g2_sbytec(cgrib,newlen,96,32)
+  call g2_sbytec1(cgrib,newlen,96,32)
 
   return
 end subroutine addfield
@@ -699,23 +699,23 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   ! Add Section 3  - Grid Definition Section.
   ibeg = lencurr * 8        !   Calculate offset for beginning of section 3
   iofst = ibeg + 32         !   leave space for length of section
-  call g2_sbytec(cgrib, THREE, iofst, 8) ! Store section number (3)
+  call g2_sbytec1(cgrib, THREE, iofst, 8) ! Store section number (3)
   iofst = iofst + 8
-  call g2_sbytec(cgrib, igds(1), iofst, 8) ! Store source of Grid def.
+  call g2_sbytec1(cgrib, igds(1), iofst, 8) ! Store source of Grid def.
   iofst = iofst + 8
-  call g2_sbytec(cgrib, igds(2), iofst, 32) ! Store number of data pts.
+  call g2_sbytec1(cgrib, igds(2), iofst, 32) ! Store number of data pts.
   iofst = iofst + 32
-  call g2_sbytec(cgrib, igds(3), iofst, 8) ! Store number of extra octets.
+  call g2_sbytec1(cgrib, igds(3), iofst, 8) ! Store number of extra octets.
   iofst = iofst + 8
-  call g2_sbytec(cgrib, igds(4), iofst, 8) ! Store interp. of extra octets.
+  call g2_sbytec1(cgrib, igds(4), iofst, 8) ! Store interp. of extra octets.
   iofst = iofst + 8
 
   ! If Octet 6 is not equal to zero, Grid Definition Template may not
   ! be supplied.
   if (igds(1) .eq. 0) then
-     call g2_sbytec(cgrib, igds(5), iofst, 16) ! Store Grid Def Template num.
+     call g2_sbytec1(cgrib, igds(5), iofst, 16) ! Store Grid Def Template num.
   else
-     call g2_sbytec(cgrib, 65535, iofst, 16) ! Store missing value as Grid Def Template num.
+     call g2_sbytec1(cgrib, 65535, iofst, 16) ! Store missing value as Grid Def Template num.
   endif
   iofst = iofst + 16
 
@@ -745,10 +745,10 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   do i = 1, mapgridlen
      nbits = iabs(mapgrid(i)) * 8
      if ((mapgrid(i) .ge. 0) .or. (igdstmpl(i) .ge. 0)) then
-        call g2_sbytec(cgrib, igdstmpl(i), iofst, nbits)
+        call g2_sbytec1(cgrib, igdstmpl(i), iofst, nbits)
      else
-        call g2_sbytec(cgrib, ONE, iofst, 1)
-        call g2_sbytec(cgrib, iabs(igdstmpl(i)), iofst + 1, nbits &
+        call g2_sbytec1(cgrib, ONE, iofst, 1)
+        call g2_sbytec1(cgrib, iabs(igdstmpl(i)), iofst + 1, nbits &
              - 1)
      endif
      iofst = iofst + nbits
@@ -765,11 +765,11 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   ! Calculate length of section 3 and store it in octets 1-4 of
   ! section 3.
   lensec3 = (iofst - ibeg) / 8
-  call g2_sbytec(cgrib, lensec3, ibeg, 32)
+  call g2_sbytec1(cgrib, lensec3, ibeg, 32)
 
 
   ! Update current byte total of message in Section 0.
-  call g2_sbytec(cgrib, lencurr + lensec3, 96, 32)
+  call g2_sbytec1(cgrib, lencurr + lensec3, 96, 32)
 end subroutine addgrid
 
 !> Add a [Local Use Section (Section
@@ -868,17 +868,17 @@ subroutine addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   ! Add Section 2  - Local Use Section.
   ibeg = lencurr * 8  !    Calculate offset for beginning of section 2
   iofst = ibeg + 32   !    leave space for length of section
-  call g2_sbytec(cgrib, two, iofst, 8)     ! Store section number (2)
+  call g2_sbytec1(cgrib, two, iofst, 8)     ! Store section number (2)
   istart = lencurr + 5
   cgrib(istart + 1:istart + lcsec2) = csec2(1:lcsec2)
 
   ! Calculate length of section 2 and store it in octets 1-4 of
   ! section 2.
   lensec2 = lcsec2 + 5 !  bytes
-  call g2_sbytec(cgrib, lensec2, ibeg, 32)
+  call g2_sbytec1(cgrib, lensec2, ibeg, 32)
 
   ! Update current byte total of message in Section 0.
-  call g2_sbytec(cgrib, lencurr+lensec2, 96, 32)
+  call g2_sbytec1(cgrib, lencurr+lensec2, 96, 32)
 
 end subroutine addlocal
 
@@ -969,5 +969,5 @@ subroutine gribend(cgrib, lcgrib, lengrib, ierr)
 
   ! Update current byte total of message in Section 0.
   lengrib = lencurr + 4
-  call g2_sbytec(cgrib, lengrib, 96, 32)
+  call g2_sbytec1(cgrib, lengrib, 96, 32)
 end subroutine gribend
