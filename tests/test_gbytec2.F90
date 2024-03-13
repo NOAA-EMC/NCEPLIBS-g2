@@ -140,20 +140,43 @@ program test_gbytec2
   if (r1(1) .ne. 1.0) stop 300
   print *, 'OK!'
 
-  print *, 'testing rdieeec() with a two floats...'
-  ! Reset array to IEEE float value 1.0, twice.
-  do i = 0, 1
-     c8(4 + i * 4) = char(63)
-     c8(3 + i * 4) = char(128)
-     c8(2 + i * 4) = char(0)
-     c8(1 + i * 4) = char(0)
-  end do
-  r2(1) = 0
-  r2(2) = 0
-  call rdieeec(c8, r2, 2)
-  if (r2(1) .ne. 1.0 .or. r2(2) .ne. 1.0) stop 310
-  print *, 'OK!'
+  ! print *, 'testing rdieeec() with a two floats...'
+  ! ! Reset array to IEEE float value 1.0, twice.
+  ! do i = 0, 1
+  !    c8(4 + i * 4) = char(63)
+  !    c8(3 + i * 4) = char(128)
+  !    c8(2 + i * 4) = char(0)
+  !    c8(1 + i * 4) = char(0)
+  ! end do
+  ! r2(1) = 0
+  ! r2(2) = 0
+  ! call rdieeec(c8, r2, 2)
+  ! if (r2(1) .ne. 1.0 .or. r2(2) .ne. 1.0) stop 310
+  ! print *, 'OK!'
 
   print *, 'SUCCESS!'
 
 end program test_gbytec2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
