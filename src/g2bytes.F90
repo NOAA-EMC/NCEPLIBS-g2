@@ -457,6 +457,28 @@ subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
   enddo
 end subroutine g2_sbytesc8
 
+!> Copy array of 32-bit IEEE floating point values stored in char
+!> array to local floating point representation.
+!>
+!> @param[in] cieee Input char array containing floating point values
+!> in 32-bit IEEE format.
+!> @param[out] a Output array of real values.
+!> @param[in] num Number of floating point values to convert.
+!>
+!> @author Edward Hartnett @date Mar 12, 2024
+subroutine rdieeec(cieee, a, num)
+  implicit none
+  
+  character(len = 1), intent(in) :: cieee(*)
+  real, intent(out) :: a(num)
+  integer, intent(in) :: num
+  real (kind = 4) :: rieee(num)
+  integer :: i
+
+  rieee(1:num) = transfer(cieee(1:num * 4), rieee, num)
+  call rdieee(rieee, a, num)
+end subroutine rdieeec
+
 !> Copy array of 32-bit IEEE floating point values to local
 !> floating point representation.
 !>
