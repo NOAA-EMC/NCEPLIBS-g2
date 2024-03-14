@@ -51,6 +51,7 @@
 !>
 !> @author Stephen Gilbert @date 2000-04-28
 subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
+  use g2bytes
   implicit none
 
   character(len = 1), intent(inout) :: cgrib(lcgrib)
@@ -185,6 +186,7 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
      idrstmplen,fld,ngrdpts,ibmap,bmap,ierr)
   use pdstemplates
   use drstemplates
+  use g2bytes
   implicit none
 
   logical :: match
@@ -203,7 +205,9 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
   character(len=4):: ctemp
   character(len=1),allocatable :: cpack(:)
   real,pointer,dimension(:) :: pfld
-  real(4) :: coordieee(numcoord), re00, tmpre00(1)
+  real(4) :: re00, tmpre00(1)
+  real(4) :: coordieee_4(numcoord)
+  real :: coordieee(numcoord)
   integer(4) :: ire00,allones
   integer :: mappds(ipdstmplen),intbmap(ngrdpts),mapdrs(idrstmplen)
   integer,parameter :: zero=0,one=1,four=4,five=5,six=6,seven=7
@@ -350,7 +354,10 @@ subroutine addfield(cgrib,lcgrib,ipdsnum,ipdstmpl,ipdstmplen, &
      do i = 1, numcoord
         coordlist_4(i) = real(coordlist(i), 4)
      end do
-     call mkieee(coordlist_4, coordieee, numcoord)
+     call mkieee(coordlist_4, coordieee_4, numcoord)
+     do i = 1, numcoord
+        coordieee(i) = coordieee_4(i)
+     end do
      call g2_sbytescr(cgrib, coordieee, iofst, 32, 0, numcoord)
      iofst = iofst + (32 * numcoord)
   endif
@@ -613,6 +620,7 @@ end subroutine addfield
 subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      ideflist, idefnum, ierr)
   use gridtemplates
+  use g2bytes
   implicit none
 
   character(len = 1), intent(inout) :: cgrib(lcgrib)
@@ -797,6 +805,7 @@ end subroutine addgrid
 !>
 !> @author Stephen Gilbert @date 2000-05-01
 subroutine addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
+  use g2bytes
   implicit none
   
   character(len = 1), intent(inout) :: cgrib(lcgrib)
@@ -903,6 +912,7 @@ end subroutine addlocal
 !>
 !> @author Stephen Gilbert @date 2000-05-02
 subroutine gribend(cgrib, lcgrib, lengrib, ierr)
+  use g2bytes
   implicit none
 
   character(len = 1), intent(inout) :: cgrib(lcgrib)

@@ -32,6 +32,7 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-17
 subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
+  use g2bytes
   implicit none
   
   integer,intent(in) :: width,height
@@ -54,7 +55,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
      end function enc_jpeg2000
   end interface
 
-  real(4) :: ref, rmin4
+  real(4) :: ref, rmin4(1)
   real(8) :: rmin, rmax
   integer(4) :: iref
   integer(8) :: nsize
@@ -147,7 +148,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   endif
 
   ! Fill in ref value and number of bits in Template 5.0.
-  rmin4 = real(rmin, 4)
+  rmin4(1) = real(rmin, 4)
   call mkieee(rmin4, ref, 1)   ! ensure reference value is IEEE format.
   iref = transfer(ref, iref)
   idrstmpl(1) = iref
@@ -207,7 +208,6 @@ subroutine jpcunpack(cpack,len,idrstmpl,ndpts,fld)
   !  if nbits equals 0, we have a constant field where the reference value
   !  is the data value at each gridpoint
   if (nbits.ne.0) then
-     !         call g2_gbytesc(cpack,ifld,0,nbits,0,ndpts)
      len8 = len
      iret=dec_jpeg2000(cpack,len8,ifld)
      do j=1,ndpts
