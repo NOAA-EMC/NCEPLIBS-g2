@@ -177,6 +177,7 @@ end subroutine getgb2
 !> @param[in] unpack logical value indicating whether to unpack bitmap/data
 !> - .TRUE. unpack bitmap and data values
 !> - .FALSE. do not unpack bitmap and data values
+!> @param[in] idxver Index version of the cindex buffer.
 !> @param[out] k integer field number unpacked
 !> @param[out] gfld derived type @ref grib_mod::gribfield.
 !> @param[out] iret integer return code
