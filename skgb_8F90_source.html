@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NCEPLIBS-g2
-   &#160;<span id="projectnumber">3.4.8</span>
+   &#160;<span id="projectnumber">3.4.9</span>
    </div>
   </td>
  </tr>
@@ -126,16 +126,16 @@ $(document).ready(function(){initNavTree('skgb_8F90_source.html',''); initResiza
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;     k = 0</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;     <span class="comment">!  look for &#39;grib...1&#39; in partial section</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;     <span class="keywordflow">do</span> <span class="keywordflow">while</span> (lgrib8 .eq. 0 .and. k .lt. km8)</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z, i4, (k + 0) * 8, 4 * 8)</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z, i1, (k + 7) * 8, 1 * 8)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">call </span><a class="code" href="g2bytes_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z, i4, (k + 0) * 8, 4 * 8)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">call </span><a class="code" href="g2bytes_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z, i1, (k + 7) * 8, 1 * 8)</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">if</span> (i4 .eq. 1196575042 .and. (i1 .eq. 1 .or. i1 .eq. 2)) <span class="keywordflow">then</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;           <span class="comment">!  look for &#39;7777&#39; at end of grib message</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;           <span class="keywordflow">if</span> (i1 .eq. 1) <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z, kg, (k + 4) * 8, 3 * 8)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;           <span class="keywordflow">if</span> (i1 .eq. 2) <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z, kg, (k + 12) * 8, 4 * 8)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;           <span class="keywordflow">if</span> (i1 .eq. 1) <span class="keyword">call </span><a class="code" href="g2bytes_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z, kg, (k + 4) * 8, 3 * 8)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;           <span class="keywordflow">if</span> (i1 .eq. 2) <span class="keyword">call </span><a class="code" href="g2bytes_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z, kg, (k + 12) * 8, 4 * 8)</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;           </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;           <span class="keyword">call </span>bareadl(lugb, ks8 + k + kg - 4, 4_8, k48, z4)</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;           <span class="keywordflow">if</span> (k48 .eq. 4) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;              <span class="keyword">call </span><a class="code" href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z4, i4, 0, 4 * 8)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;              <span class="keyword">call </span><a class="code" href="g2bytes_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a>(z4, i4, 0, 4 * 8)</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;              <span class="keywordflow">if</span> (i4 .eq. 926365495) <span class="keywordflow">then</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                 <span class="comment">!  grib message found</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                 lskip8 = ks8 + k</div>
@@ -149,7 +149,7 @@ $(document).ready(function(){initNavTree('skgb_8F90_source.html',''); initResiza
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;     kn8 = min(int(lseek, kind = 8), iseek8 + mseek8 - ks8)</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keywordflow">  enddo</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="skgb_8F90.html#ac7df20bda5e12ce1a54da4b7abc1732c">skgb8</a></div>
-<div class="ttc" id="ag2__gbytesc_8F90_html_a2d1c1d6ddbb4b4d56637c32faa0ee7e1"><div class="ttname"><a href="g2__gbytesc_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a></div><div class="ttdeci">subroutine g2_gbytec(in, iout, iskip, nbits)</div><div class="ttdoc">Extract arbitrary size values from a packed bit string, right justifying each value in the unpacked a...</div><div class="ttdef"><b>Definition:</b> <a href="g2__gbytesc_8F90_source.html#l00019">g2_gbytesc.F90:20</a></div></div>
+<div class="ttc" id="ag2bytes_8F90_html_a2d1c1d6ddbb4b4d56637c32faa0ee7e1"><div class="ttname"><a href="g2bytes_8F90.html#a2d1c1d6ddbb4b4d56637c32faa0ee7e1">g2_gbytec</a></div><div class="ttdeci">subroutine g2_gbytec(in, iout, iskip, nbits)</div><div class="ttdoc">Extract one arbitrary size big-endian value (up to 32 bits) from a packed bit string into one element...</div><div class="ttdef"><b>Definition:</b> <a href="g2bytes_8F90_source.html#l00020">g2bytes.F90:21</a></div></div>
 <div class="ttc" id="askgb_8F90_html_a33d9c42574632a3c57ecc85d17c8e62a"><div class="ttname"><a href="skgb_8F90.html#a33d9c42574632a3c57ecc85d17c8e62a">skgb</a></div><div class="ttdeci">subroutine skgb(lugb, iseek, mseek, lskip, lgrib)</div><div class="ttdoc">Search a file for the next GRIB1 or GRIB2 message.</div><div class="ttdef"><b>Definition:</b> <a href="skgb_8F90_source.html#l00020">skgb.F90:21</a></div></div>
 <div class="ttc" id="askgb_8F90_html_ac7df20bda5e12ce1a54da4b7abc1732c"><div class="ttname"><a href="skgb_8F90.html#ac7df20bda5e12ce1a54da4b7abc1732c">skgb8</a></div><div class="ttdeci">subroutine skgb8(lugb, iseek8, mseek8, lskip8, lgrib8)</div><div class="ttdoc">Search a file for the next GRIB1 or GRIB2 message.</div><div class="ttdef"><b>Definition:</b> <a href="skgb_8F90_source.html#l00052">skgb.F90:53</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

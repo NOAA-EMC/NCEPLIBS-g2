@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NCEPLIBS-g2
-   &#160;<span id="projectnumber">3.4.8</span>
+   &#160;<span id="projectnumber">3.4.9</span>
    </div>
   </td>
  </tr>
@@ -89,32 +89,35 @@ $(document).ready(function(){initNavTree('mova2i_8c.html',''); initResizable(); 
 </div><!--header-->
 <div class="contents">
 
-<p>mova2i Moves a bit string from a char*1 to int  
+<p>Move bits from a char*1 to an int.  
 <a href="#details">More...</a></p>
 
 <p><a href="mova2i_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a923c319cc69c024ead3328d90e44efa7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mova2i_8c.html#a923c319cc69c024ead3328d90e44efa7">mova2i_</a> (unsigned char *a)</td></tr>
-<tr class="memdesc:a923c319cc69c024ead3328d90e44efa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This Function copies a bit string from a Character*1 variable to an integer variable.  <a href="mova2i_8c.html#a923c319cc69c024ead3328d90e44efa7">More...</a><br /></td></tr>
-<tr class="separator:a923c319cc69c024ead3328d90e44efa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a538a2ed19edf4eba13d275108844c9da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mova2i_8c.html#a538a2ed19edf4eba13d275108844c9da">g2_mova2i8_</a> (unsigned char *a)</td></tr>
+<tr class="memdesc:a538a2ed19edf4eba13d275108844c9da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derefrence char pointer and cast result as 64-bit int.  <a href="mova2i_8c.html#a538a2ed19edf4eba13d275108844c9da">More...</a><br /></td></tr>
+<tr class="separator:a538a2ed19edf4eba13d275108844c9da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a226353b915972928a0bb40363f54089e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mova2i_8c.html#a226353b915972928a0bb40363f54089e">g2_mova2i_</a> (unsigned char *a)</td></tr>
+<tr class="memdesc:a226353b915972928a0bb40363f54089e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derefrence char pointer and cast result as 32-bit int.  <a href="mova2i_8c.html#a226353b915972928a0bb40363f54089e">More...</a><br /></td></tr>
+<tr class="separator:a226353b915972928a0bb40363f54089e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>mova2i Moves a bit string from a char*1 to int </p>
+<div class="textblock"><p>Move bits from a char*1 to an int. </p>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2002-08-15 </dd></dl>
 
 <p class="definition">Definition in file <a class="el" href="mova2i_8c_source.html">mova2i.c</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a923c319cc69c024ead3328d90e44efa7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a923c319cc69c024ead3328d90e44efa7">&#9670;&nbsp;</a></span>mova2i_()</h2>
+<a id="a538a2ed19edf4eba13d275108844c9da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a538a2ed19edf4eba13d275108844c9da">&#9670;&nbsp;</a></span>g2_mova2i8_()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int mova2i_ </td>
+          <td class="memname">int g2_mova2i8_ </td>
           <td>(</td>
           <td class="paramtype">unsigned char *&#160;</td>
           <td class="paramname"><em>a</em></td><td>)</td>
@@ -123,19 +126,51 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This Function copies a bit string from a Character*1 variable to an integer variable. </p>
-<p>It is intended to replace the Fortran Intrinsic Function ICHAR, which only supports 0 &lt;= ICHAR(a) &lt;= 127 on the IBM SP. If "a" is greater than 127 in the collating sequence, ICHAR(a) does not return the expected bit value. This function can be used for all values 0 &lt;= ICHAR(a) &lt;= 255.</p>
+<p>Derefrence char pointer and cast result as 64-bit int. </p>
+<p>See mova2i_() for details.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">a</td><td>- Character*1 variable that holds the bitstring to extract </td></tr>
+    <tr><td class="paramname">a</td><td>Pointer to char.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>- &gt; mova2i - Integer value of the bitstring in character a</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>64-bit integer containing value of the bits.</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Ed Hartnett </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>Feb 7, 2024 </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="mova2i_8c_source.html#l00038">38</a> of file <a class="el" href="mova2i_8c_source.html">mova2i.c</a>.</p>
+
+</div>
+</div>
+<a id="a226353b915972928a0bb40363f54089e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a226353b915972928a0bb40363f54089e">&#9670;&nbsp;</a></span>g2_mova2i_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int g2_mova2i_ </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char *&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Derefrence char pointer and cast result as 32-bit int. </p>
+<p>This function is intended to replace the Fortran Intrinsic Function ICHAR, which only supports 0 &lt;= ICHAR(a) &lt;= 127 on the IBM SP. If "a" is greater than 127 in the collating sequence, ICHAR(a) does not return the expected bit value. This function can be used for all values 0 &lt;= ICHAR(a) &lt;= 255.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>Pointer to char.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>32-bit integer containing the value of the bits.</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2002-08-15 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mova2i_8c_source.html#l00020">20</a> of file <a class="el" href="mova2i_8c_source.html">mova2i.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mova2i_8c_source.html#l00022">22</a> of file <a class="el" href="mova2i_8c_source.html">mova2i.c</a>.</p>
 
 </div>
 </div>
