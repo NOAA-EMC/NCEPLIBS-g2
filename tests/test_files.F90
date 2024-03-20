@@ -17,14 +17,17 @@ program test_files
        210000000, 48, 25000000, 250000000, 166667, 166667, 0 /)
   integer :: expected_ipdtmpl(15) = (/ 2, 1, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
   integer :: expected_idrtmpl(7) = (/ 1092616192, 0, 2, 11, 0, 0, 255 /)
-  integer :: i, idxver, iret, j, k, idx_test
+  integer :: i, idxver, iret, j, k, idx_test, lugi_val(4) = (/ 11, 0, -11, 10 /)
   
   print *, 'Testing reading GRIB2 file gdaswave.t00z.wcoast.0p16.f000.grib2...'
 
-  do idx_test = 1, 1
+  ! The second parameter of getgb2i2() can have various values, we will test them all.
+  do idx_test = 1, 4
+     print *, '   testing lugi possibility', idx_test
+     ! Test with version 1 and 2 of index format.
      do j = 1, 2
         idxver = j
-        print *, '   testing with idxver', idxver
+        print *, '      testing with idxver', idxver
 
         ! Open the GRIB2 file.
         call baopenr(lugb, 'gdaswave.t00z.wcoast.0p16.f000.grib2', iret)
@@ -34,11 +37,15 @@ program test_files
         call baopenr(lugi, 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index', iret)
         if (iret .ne. 0) stop 2
 
-        ! Read the first message in the file.
+        ! Setting these to -9999 will cause any message to meet the
+        ! search criteria, so this will cause this program to read the
+        ! first message in the file.
         jids = -9999
         jpdt = -9999
         jgdt = -9999
-        call getgb2i2(lugb, 0, jskp, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+
+        ! Find and unpack the first GRIB2 message in the file.
+        call getgb2i2(lugb, lugi_val(idx_test), jskp, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
              unpack, idxver, k, gfld, iret)
         if (iret .ne. 0) stop 3
 
