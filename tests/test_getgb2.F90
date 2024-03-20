@@ -47,8 +47,8 @@ program test_getgb2
   if (iret .ne. 0) stop 3
 
   ! Read a field from the test file.
-  call getgb2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
-       unpack, k, gfld, iret)
+  call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
+       unpack, 2, k, gfld, iret)
   if (iret .ne. 0) stop 4
 
   ! Check results.
