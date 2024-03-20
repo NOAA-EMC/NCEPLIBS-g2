@@ -245,7 +245,9 @@ subroutine getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      end subroutine getgb2r2
   end interface
 
-  ! Determine whether index buffer needs to be initialized.
+  ! Fill cbuf with the index records of this file, by recalling them
+  ! from memory, reading them from the index file, or generating them
+  ! from the data file.
   irgi = 0
   call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, irgi)
   if (irgi .gt. 1) then
@@ -253,7 +255,8 @@ subroutine getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      return
   endif
 
-  ! Search index buffer.
+  ! Search the index in cbuf for the first message which meets our
+  ! search criteria.
   call getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  jk, &
        gfld, lpos, irgs)
   if (irgs .ne. 0) then
@@ -262,13 +265,15 @@ subroutine getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      return
   endif
 
-  ! Read local use section, if available.
+  ! Read local use section for the selected GRIB2 message, if available.
   call getgb2l2(lugb, idxver, cbuf(lpos), gfld, iret)
 
-  ! Read and unpack grib record.
+  ! Read and unpack grib record for the selected GRIB2 message.
   if (unpack) then
      call getgb2r2(lugb, idxver, cbuf(lpos), gfld, iret)
   endif
+
+  ! Return the number of the unpacked field to the caller.
   k = jk
 end subroutine getgb2i2
 

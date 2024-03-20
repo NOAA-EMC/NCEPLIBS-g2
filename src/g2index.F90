@@ -360,8 +360,9 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
      return
   endif
 
-  ! Either read index record from index file, or generate it from the
-  ! GRIB2 file.
+  ! Either read index from index file, or generate it from the GRIB2
+  ! file. This is an index for all messages in the file, each message
+  ! gets an index record, all stuffed into idxlist(lugbb)%cbuf.
   irgi = 0
   if (lux .gt. 0) then
      call getg2i2(lux, idxlist(lugb)%cbuf, idxver, nlen, nnum, irgi)
