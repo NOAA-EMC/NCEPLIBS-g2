@@ -143,6 +143,7 @@ endif()
 # Copy test data files that are in the repo to the build directory.
 copy_test_data(testdata_g2grids)
 copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.grb2index)
+copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.grb2index2)
 copy_test_data(g1.grib2)
 copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 copy_test_data(ref_test_jpcpack_4_output.txt)
