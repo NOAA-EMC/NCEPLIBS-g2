@@ -187,7 +187,7 @@ end subroutine getgb2
 !> - 99 request not found
 !> - other gf_getfld grib2 unpacker return code
 !>
-!> @author Ed Hartnett @date 2024-03-19
+!> @author Ed Hartnett, Mark Iredell @date 2024-03-19
 subroutine getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      unpack, idxver, k, gfld, iret)
   use grib_mod
