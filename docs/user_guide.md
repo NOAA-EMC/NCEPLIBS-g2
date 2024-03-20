@@ -73,18 +73,18 @@ gf_free().
 
 # Extracting GRIB2 Fields from a GRIB2 file
 
-Subroutine getgb2() can be used to extract a specified field from a
-file containing many GRIB2 messages. getgb2() searches an index to
+Subroutine getgb2i2() can be used to extract a specified field from a
+file containing many GRIB2 messages. getgb2i2() searches an index to
 find the location of the user specified field. The index can be
 supplied from a seperate GRIB2 index file, or it can be generated
 internally.
 
-If getgb2() is used, call gf_finalize() to free all
+If getgb2i2() is used, call gf_finalize() to free all
 memory. gf_finalize() only needs to be called once, no matter how many
-times getgb2() is called.
+times getgb2i2() is called.
 
 The GRIB2 file (and the index file, if supplied) must be opened with
-a call to subroutine baopen() prior to the call to getgb2().
+a call to subroutine baopen() prior to the call to getgb2i2().
 
 The decoded information for the selected GRIB field is returned in a
 derived type variable, gfld. Gfld is of type grib_mod::gribfield;
