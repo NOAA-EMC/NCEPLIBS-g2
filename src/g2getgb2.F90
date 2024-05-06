@@ -1173,7 +1173,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
 
      ! Copy Section 1
      gribm(17:16 + len1) = cindex(45 + inc:44 + inc + len1)
-     lencur = 16 + inc + len1
+     lencur = 16 + len1
      ipos = 44 + inc + len1
 
      ! Copy Section 2, if necessary
