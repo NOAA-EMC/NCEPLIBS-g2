@@ -678,7 +678,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
      lgrib4 = int(lgrib, kind(4))
      call ix2gb2(lugb, lskip, idxver, lgrib, cbuftmp, numfld, nbytes, iret1)
      if (iret1 .ne. 0) print *, ' SAGT ', numfld, nbytes, iret1
-     if((nbytes + nlen) .gt. mbuf) then             ! Allocate more space, if necessary.
+     if (nbytes + nlen .gt. mbuf) then             ! Allocate more space, if necessary.
         newsize = max(mbuf + next, mbuf + nbytes)
         call realloc(cbuf, nlen, newsize, istat)
         if (istat .ne. 0) then
@@ -1249,7 +1249,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   else
      ! Add the extra 4 bytes in the version 2 index record, starting
      ! at byte 9.
-     inc = 4
+     inc = 8
   endif
 
   loclus = 0
@@ -1376,7 +1376,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         mypos = (ixds + inc) * INT1_BITS           
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)   ! loc. of data sec.
         numfld = numfld + 1
-        if ((lindex + mlen) .gt. mbuf) then ! allocate more space if necessary
+        if (lindex + mlen .gt. mbuf) then ! allocate more space if necessary
            newsize = max(mbuf + next, mbuf + lindex)
            call realloc(cbuf, mlen, newsize, istat)
            if (istat .ne. 0) then

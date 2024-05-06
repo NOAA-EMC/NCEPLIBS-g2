@@ -118,9 +118,11 @@ program test_create_index
      !print *, myidxver, nlen, nnum, iret
      if (myidxver .ne. idxver) stop 79
      if (idxver .eq. 1) then
+        print *, nlen
         if (nlen .ne. 3800) stop 80
      else
-        if (nlen .ne. 3876) stop 80
+        print *, nlen
+        if (nlen .ne. 3952) stop 80
      endif
      if (nnum .ne. 19 .or. iret .ne. 0) stop 81
 
