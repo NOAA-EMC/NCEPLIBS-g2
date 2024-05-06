@@ -1189,7 +1189,7 @@ end subroutine ixgb2
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !> @param lskip8 Number of bytes to skip before GRIB message.
 !> @param idxver Index version, use 1 for legacy, 2 for GRIB2 files > 2 GB.
-!> @param lgrib Number of bytes in GRIB message. When subroutine is
+!> @param lgrib8 Number of bytes in GRIB message. When subroutine is
 !> called, this must be set to the size of the cbuf buffer.
 !> @param cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
