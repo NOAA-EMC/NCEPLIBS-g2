@@ -379,17 +379,25 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
   ! Get info.
   nullify(gfld%local)
   iret = 0
-  mypos = INT4_BITS
+  mypos = INT4_BITS ! Skip length of index record.
+
+  ! These are all 4-byte ints in index format 1, and 8-byte ints in
+  ! index version 2.
   if (idxver .eq. 1) then
+     ! Read bytes to skip in file before message.
      call g2_gbytec(cindex, lskip, mypos, INT4_BITS)
      mypos = mypos + INT4_BITS
      lskip8 = lskip
+     ! Read bytes to skip in msg before local use.
      call g2_gbytec(cindex, skip2, mypos, INT4_BITS)
      skip28 = skip2
   else
+     ! Read bytes to skip in file before message.
      call g2_gbytec8(cindex, lskip8, mypos, INT8_BITS)
      mypos = mypos + INT8_BITS
+     ! Read bytes to skip in msg before local use.
      call g2_gbytec8(cindex, skip28, mypos, INT8_BITS)
+     mypos = mypos + INT8_BITS
   endif
 
   ! Read and unpack local use section, if present.
@@ -900,7 +908,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
      call g2_gbytec(cindex, lskip, INT4_BITS, INT4_BITS)
      lskip8 = lskip
   else
-     inc = 4
+     inc = 8
      call g2_gbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)
      lskip = int(lskip8, kind(4))
   endif
