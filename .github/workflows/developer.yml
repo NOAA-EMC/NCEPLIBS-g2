@@ -103,7 +103,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/data
-        key: data-developer-1
+        key: data-developer-2
 
     - name: asan
       if: matrix.config == 'asan/code coverage'
