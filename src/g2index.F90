@@ -640,10 +640,11 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
   parameter(init = 50000, next = 10000)
 
   interface      ! required for cbuf pointer
-     subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
+     subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
        integer :: lugb
        integer (kind = 8) :: lskip8
-       integer :: idxver, lgrib
+       integer :: idxver
+       integer (kind = 8) :: lgrib8
        character(len = 1), pointer, dimension(:) :: cbuf
        integer :: numfld, mlen, iret
      end subroutine ix2gb2
@@ -675,7 +676,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
   nmess = mnum
   do while (iret .eq. 0 .and. lgrib .gt. 0)
      lgrib4 = int(lgrib, kind(4))
-     call ix2gb2(lugb, lskip, idxver, lgrib4, cbuftmp, numfld, nbytes, iret1)
+     call ix2gb2(lugb, lskip, idxver, lgrib, cbuftmp, numfld, nbytes, iret1)
      if (iret1 .ne. 0) print *, ' SAGT ', numfld, nbytes, iret1
      if((nbytes + nlen) .gt. mbuf) then             ! Allocate more space, if necessary.
         newsize = max(mbuf + next, mbuf + nbytes)
@@ -1152,13 +1153,14 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
   integer :: lugb, lskip, lgrib
   character(len = 1), pointer, dimension(:) :: cbuf
   integer :: numfld, mlen, iret
-  integer (kind = 8) :: lskip8
+  integer (kind = 8) :: lskip8, lgrib8
 
   interface
-     subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
+     subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
        integer :: lugb
        integer (kind = 8) :: lskip8
-       integer :: idxver, lgrib
+       integer :: idxver
+       integer (kind = 8) :: lgrib8
        character(len = 1), pointer, dimension(:) :: cbuf
        integer :: numfld, mlen, iret
      end subroutine ix2gb2
@@ -1166,7 +1168,9 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
 
   ! Always use index version 1 from this subroutine.
   lskip8 = lskip
-  call ix2gb2(lugb, lskip8, 1, lgrib, cbuf, numfld, mlen, iret)
+  lgrib8 = lgrib
+  call ix2gb2(lugb, lskip8, 1, lgrib8, cbuf, numfld, mlen, iret)
+  lgrib = int(lgrib8, 4)
 end subroutine ixgb2
 
 !> Generate a version 1 or 2 index record for each field in a GRIB2
@@ -1185,7 +1189,7 @@ end subroutine ixgb2
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
 !> @param lskip8 Number of bytes to skip before GRIB message.
 !> @param idxver Index version, use 1 for legacy, 2 for GRIB2 files > 2 GB.
-!> @param lgrib Number of bytes in GRIB message. When subroutine is
+!> @param lgrib8 Number of bytes in GRIB message. When subroutine is
 !> called, this must be set to the size of the cbuf buffer.
 !> @param cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
@@ -1204,13 +1208,14 @@ end subroutine ixgb2
 !> - 5 Unidentified GRIB section encountered.
 !>
 !> @author Ed Hartnett, Mark Iredell @date Feb 5, 2024
-subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
+subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
 
   integer :: lugb
   integer (kind = 8) :: lskip8
-  integer :: idxver, lgrib
+  integer :: idxver
+  integer (kind = 8) :: lgrib8
   character(len = 1), pointer, dimension(:) :: cbuf
   integer :: numfld, mlen, iret
   
@@ -1259,7 +1264,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
   endif
 
   ! Read sections 0 and 1 for GRIB version number and discipline.
-  ibread8 = min(lgrib, linmax)
+  ibread8 = min(lgrib8, linmax)
   call bareadl(lugb, lskip8, ibread8, lbread8, cbread)
   if (lbread8 .ne. ibread8) then
      iret = 2
@@ -1317,7 +1322,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib, cbuf, numfld, mlen, iret)
         mypos = mypos + INT4_BITS
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
         mypos = mypos + INT4_BITS * 4 ! skip ahead in cbuf
-        call g2_sbytec(cindex, lgrib, mypos, INT8_BITS)    ! len of grib2
+        call g2_sbytec8(cindex, lgrib8, mypos, INT8_BITS)    ! len of grib2
         mypos = mypos + INT8_BITS
         cindex((mypos / 8) + 1) = cver
         mypos = mypos + INT1_BITS
