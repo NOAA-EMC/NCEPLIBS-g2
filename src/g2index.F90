@@ -966,7 +966,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
   else
      ! Add the extra 8 bytes in the version 2 index record, starting
      ! at byte 9.
-     inc = 8
+     inc = 12
   endif
 
   ! Search for request.
@@ -1221,7 +1221,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   
   character cver, cdisc
   character(len = 4) :: ctemp
-  integer (kind = 8) :: loclus8
+  integer (kind = 8) :: loclus8, locgds8
   integer locgds, locbms, loclus
   integer :: indbmp, numsec, next, newsize, g2_mova2i, mbuf, lindex
   integer :: linmax, ixskp
@@ -1249,7 +1249,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   else
      ! Add the extra 4 bytes in the version 2 index record, starting
      ! at byte 9.
-     inc = 8
+     inc = 12
   endif
 
   loclus = 0
@@ -1308,6 +1308,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            return
         endif
         locgds = int(ibskip8 - lskip8, kind(4))
+        locgds8 = ibskip8 - lskip8
      elseif (numsec .eq. 4) then                 ! found pds
         cindex = char(0)
         mypos = INT4_BITS
@@ -1317,14 +1318,16 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            mypos = mypos + INT4_BITS
            call g2_sbytec(cindex, loclus, mypos, INT4_BITS)   ! location of local use
            mypos = mypos + INT4_BITS
+           call g2_sbytec(cindex, locgds, mypos, INT4_BITS)   ! location of gds
+           mypos = mypos + INT4_BITS
         else
            call g2_sbytec8(cindex, lskip8, mypos, INT8_BITS)    ! bytes to skip
            mypos = mypos + INT8_BITS
            call g2_sbytec8(cindex, loclus8, mypos, INT8_BITS)   ! location of local use
            mypos = mypos + INT8_BITS
+           call g2_sbytec8(cindex, locgds8, mypos, INT8_BITS)   ! location of gds
+           mypos = mypos + INT8_BITS
         endif
-        call g2_sbytec(cindex, locgds, mypos, INT4_BITS)   ! location of gds
-        mypos = mypos + INT4_BITS
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
         mypos = mypos + INT4_BITS * 4 ! skip ahead in cbuf
         call g2_sbytec8(cindex, lgrib8, mypos, INT8_BITS)    ! len of grib2

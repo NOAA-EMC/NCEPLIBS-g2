@@ -821,7 +821,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
      call g2_gbytec(cindex, lskip, INT4_BITS, INT4_BITS)
      lskip8 = lskip
   else
-     inc = 8
+     inc = 12
      call g2_gbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)
      lskip = int(lskip8, kind(4))
   endif
