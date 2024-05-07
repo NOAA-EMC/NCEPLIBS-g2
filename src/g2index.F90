@@ -462,23 +462,23 @@ end subroutine getg2i
 !>
 !> Index Version 1 | Index Version 2 | Contents
 !> ----------------|-----------------|---------
-!> 001 - 004 | 001 - 004 | length of index record
-!> 005 - 008 | 005 - 012 | bytes to skip in data file before grib message
-!> 009 - 012 | 013 - 016 | bytes to skip in message before lus (local use) set = 0, if no local section.
-!> 013 - 016 | 017 - 020 | bytes to skip in message before gds
-!> 017 - 020 | 021 - 024 | bytes to skip in message before pds
-!> 021 - 024 | 025 - 028 | bytes to skip in message before drs
-!> 025 - 028 | 029 - 032 | bytes to skip in message before bms
-!> 029 - 032 | 033 - 036 | bytes to skip in message before data section
-!> 033 - 040 | 037 - 044 | bytes total in the message
-!> 041 - 041 | 045 - 045 | grib version number (always 2)
-!> 042 - 042 | 046 - 046 | message discipline
-!> 043 - 044 | 047 - 048 | field number within grib2 message
-!> 045 -  ii | 045 -  ii | identification section (ids)
-!> ii+1-  jj | ii+1-  jj | grid definition section (gds)
-!> jj+1-  kk | jj+1-  kk | product definition section (pds)
-!> kk+1-  ll | kk+1-  ll | the data representation section (drs)
-!> ll+1-ll+6 | ll+1-ll+6 | first 6 bytes of the bit map section (bms)
+!> 001 - 004 | 001 - 004 | length of index record (4 bytes)
+!> 005 - 008 | 005 - 012 | bytes to skip in data file before grib message (4 or 8 bytes)
+!> 009 - 012 | 013 - 020 | bytes to skip in message before lus (local use) set = 0, if no local section. (4 or 8 bytes)
+!> 013 - 016 | 021 - 028 | bytes to skip in message before gds (4 or 8 bytes)
+!> 017 - 020 | 029 - 036 | bytes to skip in message before pds (4 or 8 bytes)
+!> 021 - 024 | 037 - 044 | bytes to skip in message before drs (4 or 8 bytes)
+!> 025 - 028 | 045 - 052 | bytes to skip in message before bms (4 or 8 bytes)
+!> 029 - 032 | 053 - 060 | bytes to skip in message before data section (4 or 8 bytes)
+!> 033 - 040 | 061 - 068 | bytes total in the message (4 or 8 bytes)
+!> 041 - 041 | 069 - 069 | grib version number (always 2) (1 byte)
+!> 042 - 042 | 060 - 070 | message discipline (1 byte)
+!> 043 - 044 | 071 - 072 | field number within grib2 message (2 bytes)
+!> 045 -  ii | 073 -  ii | identification section (ids) (array of 4 byte ints)
+!> ii+1-  jj | ii+1-  jj | grid definition section (gds) (array of 4 byte ints)
+!> jj+1-  kk | jj+1-  kk | product definition section (pds) (array of 4 byte ints)
+!> kk+1-  ll | kk+1-  ll | the data representation section (drs) (array of 4 byte ints)
+!> ll+1-ll+6 | ll+1-ll+6 | first 6 bytes of the bit map section (bms) (array of 4 byte ints)
 !>
 !> @note Subprogram can be called from a multiprocessing environment.
 !> Do not engage the same logical unit from more than one processor.
@@ -966,7 +966,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
   else
      ! Add the extra 8 bytes in the version 2 index record, starting
      ! at byte 9.
-     inc = 12
+     inc = 16
   endif
 
   ! Search for request.
@@ -1249,7 +1249,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   else
      ! Add the extra 4 bytes in the version 2 index record, starting
      ! at byte 9.
-     inc = 12
+     inc = 16
   endif
 
   loclus = 0
@@ -1320,6 +1320,8 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            mypos = mypos + INT4_BITS
            call g2_sbytec(cindex, locgds, mypos, INT4_BITS)   ! location of gds
            mypos = mypos + INT4_BITS
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
+           mypos = mypos + INT4_BITS
         else
            call g2_sbytec8(cindex, lskip8, mypos, INT8_BITS)    ! bytes to skip
            mypos = mypos + INT8_BITS
@@ -1327,9 +1329,10 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            mypos = mypos + INT8_BITS
            call g2_sbytec8(cindex, locgds8, mypos, INT8_BITS)   ! location of gds
            mypos = mypos + INT8_BITS
+           call g2_sbytec8(cindex, ibskip8 - lskip8, mypos, INT8_BITS)  ! location of pds
+           mypos = mypos + INT8_BITS
         endif
-        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
-        mypos = mypos + INT4_BITS * 4 ! skip ahead in cbuf
+        mypos = mypos + INT4_BITS * 3 ! skip ahead in cbuf
         call g2_sbytec8(cindex, lgrib8, mypos, INT8_BITS)    ! len of grib2
         mypos = mypos + INT8_BITS
         cindex((mypos / 8) + 1) = cver
