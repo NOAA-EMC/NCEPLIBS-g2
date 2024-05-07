@@ -27,7 +27,7 @@ jobs:
 
     strategy:
       matrix:
-        grib_util-branch: [develop]
+        grib_util-branch: [ejh_fix]
         jasper-version: [2.0.33, 3.0.5, 4.0.0]
 
     steps:
