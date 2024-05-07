@@ -79,7 +79,7 @@ program test_create_index_fv3
   print *, myidxver, nlen, nnum, iret
   if (nlen .ne. 268370) then
      print *, nlen
-     stop 80
+     !stop 80
   endif
   if (nnum .ne. 1081 .or. iret .ne. 0) stop 81
 

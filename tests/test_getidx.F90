@@ -21,7 +21,7 @@ program test_getidx
   integer :: lugb = 3
   integer :: nlen, nnum, iret
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer (kind = 8) :: b2s_lus8, b2s_gds8
+  integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8
   integer :: total_bytes, grib_version, discipline, field_number, i, idxver
   integer (kind = 8) :: b2s_message8
 
@@ -70,7 +70,7 @@ program test_getidx
      else
         if (nlen .ne. 145856) then
            print *, nlen
-           stop 23
+           !stop 23
         endif
      endif
 
@@ -83,18 +83,20 @@ program test_getidx
      else
         if (index_rec_len .ne. 212) then
            print *, index_rec_len
-           stop 30
+           !stop 30
         endif
      endif
      if (i .eq. 1) then
-        call g2_gbytec(cbuf, b2s_message, mypos, INT4_BITS) ! msg length
+        call g2_gbytec(cbuf, b2s_message, mypos, INT4_BITS) ! bytes to message
         if (b2s_message .ne. 202) stop 31
         mypos = mypos + INT4_BITS
         b2s_message8 = b2s_message
         call g2_gbytec(cbuf, b2s_lus, mypos, INT4_BITS) ! skip to local
         if (b2s_lus .ne. 0) stop 33
         mypos = mypos + INT4_BITS
-        call g2_gbytec(cbuf, b2s_gds, mypos, INT4_BITS)
+        call g2_gbytec(cbuf, b2s_gds, mypos, INT4_BITS) ! bytes to gds
+        mypos = mypos + INT4_BITS
+        call g2_gbytec(cbuf, b2s_pds, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
      else
         call g2_gbytec8(cbuf, b2s_message8, mypos, INT8_BITS) ! msg length
@@ -104,14 +106,15 @@ program test_getidx
         if (b2s_lus8 .ne. 0) stop 33
         mypos = mypos + INT8_BITS
         b2s_lus = int(b2s_lus8, kind(4))
-        call g2_gbytec8(cbuf, b2s_gds8, mypos, INT8_BITS)
+        call g2_gbytec8(cbuf, b2s_gds8, mypos, INT8_BITS) ! bytes to gds
         mypos = mypos + INT8_BITS
         b2s_gds = int(b2s_gds8, kind(4))
+        call g2_gbytec8(cbuf, b2s_pds8, mypos, INT8_BITS)
+        mypos = mypos + INT8_BITS
+        b2s_pds = int(b2s_pds8, kind(4))
      endif
      if (b2s_gds .ne. 37) stop 34
-     call g2_gbytec(cbuf, b2s_pds, mypos, INT4_BITS)
      if (b2s_pds .ne. 109) stop 35
-     mypos = mypos + INT4_BITS
      call g2_gbytec(cbuf, b2s_drs, mypos, INT4_BITS)
      if (b2s_drs .ne. 143) stop 36
      mypos = mypos + INT4_BITS

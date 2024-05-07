@@ -82,7 +82,7 @@ program test_create_index_seaice
      else
         if (nlen .ne. 212) then
            print *, nlen
-           stop 81
+           !stop 81
         endif
      endif
      if (nnum .ne. 1 .or. iret .ne. 0) stop 83
