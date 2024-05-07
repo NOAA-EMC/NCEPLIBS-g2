@@ -1030,7 +1030,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
         mypos = mypos + INT4_BITS
         iskp2_8 = iskp2
      else
-        inc = 4
+        inc = 12
         call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
         iskip = int(iskip8, kind(4))
