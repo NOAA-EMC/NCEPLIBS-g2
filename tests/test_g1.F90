@@ -15,8 +15,8 @@ program test_g1
   character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: lugb = 3
   integer :: nlen, nnum, iret
-  integer :: index_rec_len, b2s_message, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer (kind = 8) :: b2s_lus
+  integer :: index_rec_len, b2s_message, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data, b2s_lus
+  integer (kind = 8) :: b2s_lus8
   integer :: total_bytes, grib_version, discipline, field_number, i, idxver
   integer (kind = 8) :: b2s_message8
 
@@ -80,14 +80,15 @@ program test_g1
         b2s_message8 = b2s_message
         call g2_gbytec(cbuf, b2s_lus, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
+        b2s_lus = b2s_lus8
      else
         call g2_gbytec8(cbuf, b2s_message8, mypos, INT8_BITS)
         if (b2s_message8 .ne. 0) stop 32
         mypos = mypos + INT8_BITS
-        call g2_gbytec8(cbuf, b2s_lus, mypos, INT8_BITS)
+        call g2_gbytec8(cbuf, b2s_lus8, mypos, INT8_BITS)
         mypos = mypos + INT8_BITS
      endif
-     if (b2s_lus .ne. 0) stop 33
+     if (b2s_lus8 .ne. 0) stop 33
      call g2_gbytec(cbuf, b2s_gds, mypos, INT4_BITS)
      if (b2s_gds .ne. 37) stop 34
      mypos = mypos + INT4_BITS
@@ -119,7 +120,7 @@ program test_g1
      call g2_gbytec(cbuf, field_number, mypos, INT2_BITS)
      if (field_number .ne. 1) stop 42
      print *, 'index_rec_len = ', index_rec_len, ' b2s_message8 = ', b2s_message8
-     print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+     print *, 'b2s_lus8, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus8, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
      print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
 
      ! Clean up. Call gf_finalize or else index will be found in
