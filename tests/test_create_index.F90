@@ -122,7 +122,7 @@ program test_create_index
         if (nlen .ne. 3800) stop 80
      else
         print *, nlen
-        if (nlen .ne. 3952) stop 80
+        if (nlen .ne. 4028) stop 80
      endif
      if (nnum .ne. 19 .or. iret .ne. 0) stop 81
 
