@@ -80,7 +80,7 @@ program test_g1
         b2s_message8 = b2s_message
         call g2_gbytec(cbuf, b2s_lus, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
-        b2s_lus = b2s_lus8
+        b2s_lus8 = b2s_lus
      else
         call g2_gbytec8(cbuf, b2s_message8, mypos, INT8_BITS)
         if (b2s_message8 .ne. 0) stop 32

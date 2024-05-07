@@ -98,7 +98,7 @@ program test_getidx
         call g2_gbytec8(cbuf, b2s_lus8, mypos, INT8_BITS) ! skip to local
         if (b2s_lus8 .ne. 0) stop 33
         mypos = mypos + INT8_BITS
-        b2s_lus = b2s_lus8
+        b2s_lus = int(b2s_lus8, kind(4))
      endif
      call g2_gbytec(cbuf, b2s_gds, mypos, INT4_BITS)
      if (b2s_gds .ne. 37) stop 34
