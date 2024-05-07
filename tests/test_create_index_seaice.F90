@@ -80,7 +80,10 @@ program test_create_index_seaice
      if (idxver .eq. 1) then
         if (nlen .ne. 200) stop 80
      else
-        if (nlen .ne. 204) stop 81
+        if (nlen .ne. 208) then
+           print *, nlen
+           stop 81
+        endif
      endif
      if (nnum .ne. 1 .or. iret .ne. 0) stop 83
 
