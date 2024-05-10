@@ -1214,6 +1214,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   use re_alloc              ! needed for subroutine realloc
   implicit none
 
+  ! Subroutine parameters.
   integer :: lugb
   integer (kind = 8) :: lskip8
   integer :: idxver
@@ -1246,15 +1247,22 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   character cbread(LINMAX), cindex(LINMAX)
   character cids(LINMAX), cgds(LINMAX)
 
+  ! Are we using index version 1 (legacy), or version 2 (introduced to
+  ! handle files > 2 GB).
   if (idxver .eq. 1) then
      inc = 0
   else
-     ! Add the extra 4 bytes in the version 2 index record, starting
-     ! at byte 9.
+     ! Add the extra bytes in the version 2 index record, starting at
+     ! byte 9. This is because some values early in the index record
+     ! changed from 4-byte ints to 8-byte ints. This is the total
+     ! extra bytes that were added to the beginning of the index
+     ! record in version 2.
      inc = 12
   endif
 
-  ! Initialize values and allocate buffer to read data into.
+  ! Initialize values and allocate buffer (at the user-provided cbuf
+  ! pointer) where the index data will be written. When subroutine is
+  ! complete, cbuf will hold either version 1 or 2 index data.
   loclus = 0
   loclus8 = 0
   iret = 0
@@ -1287,7 +1295,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   cver = cbread(8)
   cdisc = cbread(7)
 
-  ! Read the length of section 1 from the buffer.
+  ! Read the length of section 1 from the file data buffer.
   call g2_gbytec(cbread, lensec1, 16 * 8, INT4_BITS)
   lensec1 = min(lensec1, int(ibread8, kind(lensec1)))
 
@@ -1301,20 +1309,35 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   ! field. This overwrites the cbread data buffer.
   ibread8 = max(5, MXBMS)
   do
+     ! Read 6 bytes from file into cbread buffer. (Why 6? Should this
+     ! be 5?)
      call bareadl(lugb, ibskip8, ibread8, lbread8, cbread)
+
+     ! Check if the first 4 bytes are '7777', indicating end of
+     ! message.
      ctemp = cbread(1)//cbread(2)//cbread(3)//cbread(4)
      if (ctemp .eq. '7777') return        ! end of message found
      if (lbread8 .ne. ibread8) then
         iret = 2
         return
      endif
+
+     ! Since this is not end of message, read the 4-byte section
+     ! length, and then the 1-byte section number. (What happens if
+     ! the 7777 ends the file? Note that we don't check the lbread8
+     ! parameter above, so we may not have read 6 bytes.)
      call g2_gbytec(cbread, lensec, 0, INT4_BITS)
      call g2_gbytec(cbread, numsec, INT4_BITS, INT1_BITS)
 
-     if (numsec .eq. 2) then                 ! save local use location
+     ! Based on the section number, generate index data for each
+     ! section.
+     if (numsec .eq. 2) then
+        ! Save the location of the local use section in the message.
         loclus8 = ibskip8 - lskip8
         loclus = int(ibskip8 - lskip8, kind(4))
-     elseif (numsec .eq. 3) then                 ! save gds info
+     elseif (numsec .eq. 3) then                 
+        ! For the GDS section, read the whole section into the cgds
+        ! buffer.
         lengds8 = lensec
         cgds = char(0)
         call bareadl(lugb, ibskip8, lengds8, lbread8, cgds)
@@ -1322,11 +1345,17 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            iret = 2
            return
         endif
+        ! Remember the GDS location in the message.        
         locgds = int(ibskip8 - lskip8, kind(4))
         locgds8 = ibskip8 - lskip8
-     elseif (numsec .eq. 4) then                 ! found pds
+     elseif (numsec .eq. 4) then
+        ! Having found the PDS, we write the beginning of the index
+        ! record into the cindex buffer.
         cindex = char(0)
         mypos = INT4_BITS
+
+        ! Index version 1 uses 4-byte ints for these values, index
+        ! version 2 uses 8-byte ints.
         if (idxver .eq. 1) then
            lskip = int(lskip8, kind(4))
            call g2_sbytec(cindex, lskip, mypos, INT4_BITS)    ! bytes to skip
@@ -1343,8 +1372,13 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            call g2_sbytec8(cindex, locgds8, mypos, INT8_BITS)   ! location of gds
            mypos = mypos + INT8_BITS
         endif
+
+        ! These ints are the same size in index version 1 and 2. The
+        ! mypos variable contains the proper offset, which is
+        ! different for index version 1 and 2.
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
-        mypos = mypos + INT4_BITS * 4 ! skip ahead in cbuf
+        mypos = mypos + INT4_BITS
+        mypos = mypos + INT4_BITS * 3 ! skip ahead in cbuf
         call g2_sbytec8(cindex, lgrib8, mypos, INT8_BITS)    ! len of grib2
         mypos = mypos + INT8_BITS
         cindex((mypos / 8) + 1) = cver
@@ -1353,10 +1387,16 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         mypos = mypos + INT1_BITS
         call g2_sbytec(cindex, numfld + 1, mypos, INT2_BITS)   ! field num
         mypos = mypos + INT2_BITS
+
+        ! Copy the section 1 values into the cindex buffer.
         cindex(IXIDS + 1 + inc:IXIDS + lensec1 + inc) = cids(1:lensec1)
         lindex = IXIDS + lensec1 + inc
+
+        ! Copy the GDS values into the cindex buffer.
         cindex(lindex + 1:lindex + lengds8) = cgds(1:lengds8)
         lindex = lindex + int(lengds8, kind(lindex))
+
+        ! Now read the PDS values from the file directly into cindex.
         ilnpds = lensec
         ilnpds8 = ilnpds        
         call bareadl(lugb, ibskip8, ilnpds8, lbread8, cindex(lindex + 1))
@@ -1365,9 +1405,12 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            return
         endif
         lindex = lindex + ilnpds
-     elseif (numsec .eq. 5) then                 ! found drs
+     elseif (numsec .eq. 5) then
+        ! Write the byte offset to the DRS section into the cindex buffer.
         mypos = (IXSDR + inc) * INT1_BITS
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of drs
+
+        ! Read the DRS section directly into the cindex buffer.
         ilndrs = lensec
         ilndrs8 = ilndrs
         call bareadl(lugb, ibskip8, ilndrs8, lbread8, cindex(lindex + 1))
@@ -1376,42 +1419,60 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            return
         endif
         lindex = lindex + ilndrs
-     elseif (numsec .eq. 6) then                 ! found bms
+     elseif (numsec .eq. 6) then    
+        ! Write the location of the BMS section in the message into
+        ! the cindex buffer.
         indbmp = g2_mova2i(cbread(6))
         mypos = (IXSBM + inc) * INT1_BITS           
-        if (indbmp.lt.254) then
+        if (indbmp .lt. 254) then
            locbms = int(ibskip8 - lskip8, kind(4))
            call g2_sbytec(cindex, locbms, mypos, INT4_BITS)  ! loc. of bms
-        elseif (indbmp.eq.254) then
+        elseif (indbmp .eq. 254) then
            call g2_sbytec(cindex, locbms, mypos, INT4_BITS)  ! loc. of bms
-        elseif (indbmp.eq.255) then
+        elseif (indbmp .eq. 255) then
            call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! loc. of bms
         endif
+        
+        ! Copy 6 bytes of the BMS from data buffer to the cindex buffer.
         cindex(lindex + 1:lindex + MXBMS) = cbread(1:MXBMS)
         lindex = lindex + MXBMS
+
+        ! The size of the index record is now known, so write it to
+        ! the cindex buffer.
         call g2_sbytec(cindex, lindex, 0, INT4_BITS)    ! num bytes in index record
      elseif (numsec .eq. 7) then                 ! found data section
+        ! Write the offset to the data section in the cindex buffer.
         mypos = (IXDS + inc) * INT1_BITS           
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)   ! loc. of data sec.
+
+        ! Increment the field count.
         numfld = numfld + 1
-        if (lindex + mlen .gt. mbuf) then ! allocate more space if necessary
+
+        ! Allocate more space in cbuf if necessary. The index record
+        ! will be copied there.
+        if (lindex + mlen .gt. mbuf) then 
            newsize = max(mbuf + NEXT, mbuf + lindex)
            call realloc(cbuf, mlen, newsize, istat)
            if (istat .ne. 0) then
-              numfld = numfld-1
+              numfld = numfld - 1
               iret = 4
               return
            endif
            mbuf = newsize
         endif
+
+        ! Copy the index record into cbuf.
         cbuf(mlen + 1:mlen + lindex) = cindex(1:lindex)
         mlen = mlen + lindex
-     else                           ! unrecognized section
+     else
+        ! Unrecognized section.
         iret = 5
         return
      endif
+
+     ! Skip past this section in the data buffer.
      ibskip8 = ibskip8 + lensec
-  enddo
+  enddo ! next section
 end subroutine ix2gb2
 
 !> Free all memory associated with the library.
