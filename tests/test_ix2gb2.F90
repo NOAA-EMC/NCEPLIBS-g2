@@ -60,6 +60,19 @@ program test_ix2gb2
   print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
 
+  if (index_rec_len .ne. 200) stop 105
+  if (b2s_message .ne. 0) stop 106
+  if (b2s_lus .ne. 0) stop 107
+  if (b2s_gds .ne. 37) stop 108
+  if (b2s_pds .ne. 109) stop 109
+  if (b2s_drs .ne. 143) stop 110
+  if (b2s_bms .ne. 166) stop 111
+  if (b2s_data .ne. 4721) stop 112
+  if (total_bytes .ne. 5000) stop 113
+  if (grib_version .ne. 2) stop 114
+  if (discipline .ne. 0) stop 115
+  if (field_number .ne. 1) stop 116
+
   ! Free allocated memory
   deallocate(cbuf)
 
@@ -86,44 +99,28 @@ subroutine read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds
   if (idxver .eq. 1) then
      inc = 0
      call g2_gbytec(cbuf, index_rec_len, 0, 8 * 4)
-     !if (index_rec_len .ne. 200) stop 105
      print *, 'index_rec_len', index_rec_len
      call g2_gbytec(cbuf, b2s_message, 8 * 4, 8 * 4)
-     !if (b2s_message .ne. 202) stop 106
      call g2_gbytec(cbuf, b2s_lus, 8 * 8, 8 * 4)
-     !if (b2s_lus .ne. 0) stop 107
      call g2_gbytec(cbuf, b2s_gds, 8 * 12, 8 * 4)
-     !if (b2s_gds .ne. 37) stop 108
   else
      inc = 16
      call g2_gbytec(cbuf, index_rec_len, 0, 8 * 8)
-     if (index_rec_len .ne. 200) stop 105
      print *, 'index_rec_len', index_rec_len
      call g2_gbytec(cbuf, b2s_message, 8 * 8, 8 * 8)
-     if (b2s_message .ne. 202) stop 106
      call g2_gbytec(cbuf, b2s_lus, 8 * 8, 8 * 8)
-     if (b2s_lus .ne. 0) stop 107
      call g2_gbytec(cbuf, b2s_gds, 8 * 12, 8 * 8)
-     if (b2s_gds .ne. 37) stop 108
      ! call g2_gbytec(cbuf, b2s_pds, 8 * 16, 8 * 8)
-     ! if (b2s_pds .ne. 109) stop 109
   endif
   call g2_gbytec(cbuf, b2s_pds, 8 * 16, 8 * 4)
-  !if (b2s_pds .ne. 109) stop 109
   call g2_gbytec(cbuf, b2s_drs, inc + 8 * 20, 8 * 4)
-  !if (b2s_drs .ne. 143) stop 110
   call g2_gbytec(cbuf, b2s_bms, inc + 8 * 24, 8 * 4)
-  !if (b2s_bms .ne. 166) stop 111
   call g2_gbytec(cbuf, b2s_data, inc + 8 * 28, 8 * 4)
-  !if (b2s_data .ne. 4721) stop 112
   call g2_gbytec(cbuf, total_bytes, inc + 8 * 32, 8 * 8)
-  !if (total_bytes .ne. 11183) stop 113
   call g2_gbytec(cbuf, grib_version, inc + 8 * 40, 8 * 1)
-  !if (grib_version .ne. 2) stop 113
   call g2_gbytec(cbuf, discipline, inc + 8 * 41, 8 * 1)
-  !if (discipline .ne. 10) stop 113
   call g2_gbytec(cbuf, field_number, inc + 8 * 42, 8 * 2)
-  !if (field_number .ne. 1) stop 113
+  
   iret = 0
 end subroutine read_index
 
