@@ -1314,18 +1314,18 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
      call bareadl(lugb, ibskip8, ibread8, lbread8, cbread)
 
      ! Check if the first 4 bytes are '7777', indicating end of
-     ! message.
+     ! message. If we found end of message, we are done.
      ctemp = cbread(1)//cbread(2)//cbread(3)//cbread(4)
      if (ctemp .eq. '7777') return        ! end of message found
+
+     ! If we did not find end of message, check that we read 6 bytes.
      if (lbread8 .ne. ibread8) then
         iret = 2
         return
      endif
 
-     ! Since this is not end of message, read the 4-byte section
-     ! length, and then the 1-byte section number. (What happens if
-     ! the 7777 ends the file? Note that we don't check the lbread8
-     ! parameter above, so we may not have read 6 bytes.)
+     ! Read the 4-byte section length, and then the 1-byte section
+     ! number.
      call g2_gbytec(cbread, lensec, 0, INT4_BITS)
      call g2_gbytec(cbread, numsec, INT4_BITS, INT1_BITS)
 
