@@ -1225,26 +1225,26 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   character(len = 4) :: ctemp
   integer (kind = 8) :: loclus8, locgds8
   integer locgds, locbms, loclus
-  integer :: indbmp, numsec, NEXT, newsize, g2_mova2i, mbuf, lindex
-  integer :: LINMAX
-  integer :: mxspd, mxskp, mxsgd, mxsdr, mxsbm, mxlus
-  integer :: mxlen, mxds, mxfld, MXBMS
-  integer :: INIT, lskip
-  integer :: ilndrs, ilnpds, istat, ixds
+  integer :: indbmp, numsec, newsize, g2_mova2i, mbuf, lindex
+  integer :: lskip
+  integer :: ilndrs, ilnpds, istat
   integer (kind = 8) :: ibread8, lbread8, ibskip8, lengds8
   integer (kind = 8) :: ilnpds8, ilndrs8
-  integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lensec, lensec1
-  parameter(LINMAX = 5000, INIT = 50000, NEXT = 10000)
-  parameter(ixspd = 16, ixsdr = 20, ixsbm = 24, &
-       ixds = 28, ixlen = 36, ixfld = 42, ixids = 44)
-  parameter(mxskp = 4, mxlus = 4, mxsgd = 4, mxspd = 4, mxsdr = 4, mxsbm = 4, &
-       mxds = 4, mxlen = 4, mxfld = 2, MXBMS = 6)
-  character cbread(LINMAX), cindex(LINMAX)
-  character cids(LINMAX), cgds(LINMAX)
+  integer :: mypos, inc
+
+  ! Parameters.
+  integer :: LINMAX, NEXT, MXBMS, INIT, IXDS
+  integer :: IXIDS, IXSBM, IXSDR
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
-  integer :: mypos, inc
+  parameter(LINMAX = 5000, INIT = 50000, NEXT = 10000)
+  parameter(IXSDR = 20, IXSBM = 24, IXDS = 28, IXIDS = 44)
+  parameter(MXBMS = 6)
+
+  ! Buffers.
+  character cbread(LINMAX), cindex(LINMAX)
+  character cids(LINMAX), cgds(LINMAX)
 
   if (idxver .eq. 1) then
      inc = 0
@@ -1353,8 +1353,8 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         mypos = mypos + INT1_BITS
         call g2_sbytec(cindex, numfld + 1, mypos, INT2_BITS)   ! field num
         mypos = mypos + INT2_BITS
-        cindex(ixids + 1 + inc:ixids + lensec1 + inc) = cids(1:lensec1)
-        lindex = ixids + lensec1 + inc
+        cindex(IXIDS + 1 + inc:IXIDS + lensec1 + inc) = cids(1:lensec1)
+        lindex = IXIDS + lensec1 + inc
         cindex(lindex + 1:lindex + lengds8) = cgds(1:lengds8)
         lindex = lindex + int(lengds8, kind(lindex))
         ilnpds = lensec
@@ -1366,7 +1366,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         endif
         lindex = lindex + ilnpds
      elseif (numsec .eq. 5) then                 ! found drs
-        mypos = (ixsdr + inc) * INT1_BITS
+        mypos = (IXSDR + inc) * INT1_BITS
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of drs
         ilndrs = lensec
         ilndrs8 = ilndrs
@@ -1378,7 +1378,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         lindex = lindex + ilndrs
      elseif (numsec .eq. 6) then                 ! found bms
         indbmp = g2_mova2i(cbread(6))
-        mypos = (ixsbm + inc) * INT1_BITS           
+        mypos = (IXSBM + inc) * INT1_BITS           
         if (indbmp.lt.254) then
            locbms = int(ibskip8 - lskip8, kind(4))
            call g2_sbytec(cindex, locbms, mypos, INT4_BITS)  ! loc. of bms
@@ -1391,7 +1391,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         lindex = lindex + MXBMS
         call g2_sbytec(cindex, lindex, 0, INT4_BITS)    ! num bytes in index record
      elseif (numsec .eq. 7) then                 ! found data section
-        mypos = (ixds + inc) * INT1_BITS           
+        mypos = (IXDS + inc) * INT1_BITS           
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)   ! loc. of data sec.
         numfld = numfld + 1
         if (lindex + mlen .gt. mbuf) then ! allocate more space if necessary
