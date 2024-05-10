@@ -1190,7 +1190,9 @@ end subroutine ixgb2
 !> @param lskip8 Number of bytes to skip before GRIB message.
 !> @param idxver Index version, use 1 for legacy, 2 for GRIB2 files > 2 GB.
 !> @param lgrib8 Number of bytes in GRIB message. When subroutine is
-!> called, this must be set to the size of the cbuf buffer.
+!> called, if this is < 5000, it will be used as the number of bytes
+!> initially read from the file. So for GRIB2 messages of < 5000 in
+!> size, this should be set to the size of the GRIB2 message.
 !> @param cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
@@ -1226,20 +1228,20 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   integer :: indbmp, numsec, next, newsize, g2_mova2i, mbuf, lindex
   integer :: linmax, ixskp
   integer :: mxspd, mxskp, mxsgd, mxsdr, mxsbm, mxlus
-  integer :: mxlen, mxds, mxfld, mxbms
+  integer :: mxlen, mxds, mxfld, MXBMS
   integer :: init, ixlus, lskip
   integer :: ixsgd, ilndrs, ilnpds, istat, ixds
   integer (kind = 8) :: ibread8, lbread8, ibskip8, lengds8
   integer (kind = 8) :: ilnpds8, ilndrs8
   integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lensec, lensec1
-  parameter(linmax = 5000, init = 50000, next = 10000)
+  parameter(LINMAX = 5000, INIT = 50000, next = 10000)
   parameter(ixskp = 4, ixlus = 8, ixsgd = 12, ixspd = 16, ixsdr = 20, ixsbm = 24, &
        ixds = 28, ixlen = 36, ixfld = 42, ixids = 44)
   parameter(mxskp = 4, mxlus = 4, mxsgd = 4, mxspd = 4, mxsdr = 4, mxsbm = 4, &
-       mxds = 4, mxlen = 4, mxfld = 2, mxbms = 6)
-  character cbread(linmax), cindex(linmax)
-  character cids(linmax), cgds(linmax)
+       mxds = 4, mxlen = 4, mxfld = 2, MXBMS = 6)
+  character cbread(LINMAX), cindex(LINMAX)
+  character cids(LINMAX), cgds(LINMAX)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos, inc
@@ -1252,39 +1254,52 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
      inc = 12
   endif
 
+  ! Initialize values and allocate buffer to read data into.
   loclus = 0
   loclus8 = 0
   iret = 0
   mlen = 0
   numfld = 0
   nullify(cbuf)
-  mbuf = init
+  mbuf = INIT
   allocate(cbuf(mbuf), stat = istat)    ! allocate initial space for cbuf
   if (istat .ne. 0) then
      iret = 1
      return
   endif
 
-  ! Read sections 0 and 1 for GRIB version number and discipline.
-  ibread8 = min(lgrib8, linmax)
+  ! Read up to 5000 bytes from the file into buffer cbread. lskip8
+  ! must be set to the beginning of a GRIB2 message in the file.
+  ibread8 = min(lgrib8, LINMAX)
   call bareadl(lugb, lskip8, ibread8, lbread8, cbread)
   if (lbread8 .ne. ibread8) then
      iret = 2
      return
   endif
+
+  ! Check GRIB version from section 0, must be 2.
   if(cbread(8) .ne. char(2)) then          !  not grib edition 2
      iret = 3
      return
   endif
+
+  ! Remember the GRIB version and discipline.
   cver = cbread(8)
   cdisc = cbread(7)
+
+  ! Read the length of section 1 from the buffer.
   call g2_gbytec(cbread, lensec1, 16 * 8, INT4_BITS)
   lensec1 = min(lensec1, int(ibread8, kind(lensec1)))
+
+  ! Copy section 1 values into cids array.
   cids(1:lensec1) = cbread(17:16 + lensec1)
+
+  ! Skip past section 1 in the data buffer.
   ibskip8 = lskip8 + 16_8 + int(lensec1, kind(8))
 
-  ! Loop through remaining sections creating an index for each field.
-  ibread8 = max(5, mxbms)
+  ! Loop through remaining sections creating an index for each
+  ! field. This overwrites the cbread data buffer.
+  ibread8 = max(5, MXBMS)
   do
      call bareadl(lugb, ibskip8, ibread8, lbread8, cbread)
      ctemp = cbread(1)//cbread(2)//cbread(3)//cbread(4)
@@ -1372,8 +1387,8 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         elseif (indbmp.eq.255) then
            call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! loc. of bms
         endif
-        cindex(lindex + 1:lindex + mxbms) = cbread(1:mxbms)
-        lindex = lindex + mxbms
+        cindex(lindex + 1:lindex + MXBMS) = cbread(1:MXBMS)
+        lindex = lindex + MXBMS
         call g2_sbytec(cindex, lindex, 0, INT4_BITS)    ! num bytes in index record
      elseif (numsec .eq. 7) then                 ! found data section
         mypos = (ixds + inc) * INT1_BITS           
