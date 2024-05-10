@@ -1352,10 +1352,15 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         ! Having found the PDS, we write the beginning of the index
         ! record into the cindex buffer.
         cindex = char(0)
+
+        ! The first 4 bytes are the length of the index record. We
+        ! don't know that yet, so skip it for now,
         mypos = INT4_BITS
 
-        ! Index version 1 uses 4-byte ints for these values, index
-        ! version 2 uses 8-byte ints.
+        ! Write the beginning of the index record. It contains bytes
+        ! to skip in the file to reach the message, and offsets to
+        ! each section within the message. Index version 1 uses 4-byte
+        ! ints for these values, index version 2 uses 8-byte ints.
         if (idxver .eq. 1) then
            lskip = int(lskip8, kind(4))
            call g2_sbytec(cindex, lskip, mypos, INT4_BITS)    ! bytes to skip

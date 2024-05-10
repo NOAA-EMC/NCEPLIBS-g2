@@ -1,17 +1,18 @@
 ! This is a test program for NCEPLIBS-g2.
 !
-! This program tests ix2gb2.F90
+! This program tests ix2gb2(). ix2gb2() creates the index record for
+! one GRIB2 message, and returns it in parameter cbuf.
 !
 ! Ed Hartnett 5/9/24
 program test_ix2gb2
   use bacio_module
   implicit none
 
-  character(*) :: TEST_FILE_WW3_WEST
-  parameter (TEST_FILE_WW3_WEST = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
+  character(*) :: TEST_FILE_GDAS
+  parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
   integer :: lugi = 3
   character(len=1), pointer, dimension(:) :: cbuf(:)
-  integer :: numfld, mlen, iret, i
+  integer :: numfld, mlen, iret
   integer (kind = 8) :: lskip8, lgrib8
   integer :: idxver = 1
 
@@ -29,7 +30,7 @@ program test_ix2gb2
      end subroutine ix2gb2
   end interface
 
-  call baopenr(lugi, TEST_FILE_WW3_WEST, iret)
+  call baopenr(lugi, TEST_FILE_GDAS, iret)
   if (iret .ne. 0) then
      print *, 'baopenr failed with iret value: ', iret
      stop 3
@@ -37,13 +38,14 @@ program test_ix2gb2
 
   ! This will return an error because lskip does not point to a valid
   ! GRIB message.
-  ! lskip8 = 0
-  ! lgrib8 = 5000
-  ! call ix2gb2(lugi, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
-  ! if (iret .ne. 3) stop 11
-
-  ! ! Free allocated memory
-  ! deallocate(cbuf)
+  lskip8 = 0
+  lgrib8 = 5000
+  call ix2gb2(lugi, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
+  if (numfld .ne. 1 .or. iret .ne. 0) stop 20
+  if (mlen .ne. 200) stop 20
+  
+  ! Free allocated memory
+  deallocate(cbuf)
 
   ! ! These numbers come from test_skgb.F90, which finds the
   ! ! offsets/lengths of all GRIB messages in this test file.
