@@ -1225,18 +1225,18 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   character(len = 4) :: ctemp
   integer (kind = 8) :: loclus8, locgds8
   integer locgds, locbms, loclus
-  integer :: indbmp, numsec, next, newsize, g2_mova2i, mbuf, lindex
-  integer :: linmax, ixskp
+  integer :: indbmp, numsec, NEXT, newsize, g2_mova2i, mbuf, lindex
+  integer :: LINMAX
   integer :: mxspd, mxskp, mxsgd, mxsdr, mxsbm, mxlus
   integer :: mxlen, mxds, mxfld, MXBMS
-  integer :: init, ixlus, lskip
-  integer :: ixsgd, ilndrs, ilnpds, istat, ixds
+  integer :: INIT, lskip
+  integer :: ilndrs, ilnpds, istat, ixds
   integer (kind = 8) :: ibread8, lbread8, ibskip8, lengds8
   integer (kind = 8) :: ilnpds8, ilndrs8
   integer :: ixspd, ixfld, ixids, ixlen, ixsbm, ixsdr
   integer :: lensec, lensec1
-  parameter(LINMAX = 5000, INIT = 50000, next = 10000)
-  parameter(ixskp = 4, ixlus = 8, ixsgd = 12, ixspd = 16, ixsdr = 20, ixsbm = 24, &
+  parameter(LINMAX = 5000, INIT = 50000, NEXT = 10000)
+  parameter(ixspd = 16, ixsdr = 20, ixsbm = 24, &
        ixds = 28, ixlen = 36, ixfld = 42, ixids = 44)
   parameter(mxskp = 4, mxlus = 4, mxsgd = 4, mxspd = 4, mxsdr = 4, mxsbm = 4, &
        mxds = 4, mxlen = 4, mxfld = 2, MXBMS = 6)
@@ -1395,7 +1395,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)   ! loc. of data sec.
         numfld = numfld + 1
         if (lindex + mlen .gt. mbuf) then ! allocate more space if necessary
-           newsize = max(mbuf + next, mbuf + lindex)
+           newsize = max(mbuf + NEXT, mbuf + lindex)
            call realloc(cbuf, mlen, newsize, istat)
            if (istat .ne. 0) then
               numfld = numfld-1
