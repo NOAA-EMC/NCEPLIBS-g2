@@ -27,7 +27,7 @@ program test_ix2gb2
   integer :: PDS_LEN
   parameter (PDS_LEN = 34)
   integer :: DRS_LEN
-  parameter (DRS_LEN = 34)
+  parameter (DRS_LEN = 23)
   integer :: lengds, lenpds, lendrs
   character :: sec1(SEC1_LEN), gds(GDS_LEN), pds(PDS_LEN), drs(DRS_LEN)
   character :: expected_sec1(SEC1_LEN) = (/  char(0), char(0), char(0), char(21), char(1), char(0), &
@@ -45,6 +45,9 @@ program test_ix2gb2
        char(0), char(0), char(2), char(1), char(2), char(0), char(11), char(0), char(0), char(0), char(1), &
        char(0), char(0), char(0), char(0), char(1), char(0), char(0), char(0), char(0), char(1), char(255), &
        char(0), char(0), char(0), char(0), char(0) /)
+  character :: expected_drs(DRS_LEN) = (/ char(0), char(0), char(0), char(23), char(5), char(0), char(0), &
+       char(43), char(33), char(0), char(40), char(65), char(32), char(0), char(0), char(0), char(0), char(0), &
+       char(2), char(11), char(0), char(0), char(255) /)
   integer :: i
 
   interface
@@ -143,6 +146,11 @@ program test_ix2gb2
      do i = 1, PDS_LEN
         !print *, i, ichar(pds(i))
         if (pds(i) .ne. expected_pds(i)) stop 210
+     enddo
+     if (lendrs .ne. DRS_LEN) stop 201
+     do i = 1, DRS_LEN
+        !print *, i, ichar(drs(i))
+        if (drs(i) .ne. expected_drs(i)) stop 210
      enddo
      
      ! Free allocated memory
