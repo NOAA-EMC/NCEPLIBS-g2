@@ -1438,6 +1438,10 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         cindex(lindex + 1:lindex + lengds8) = cgds(1:lengds8)
         !print *, 'gds:', lindex, lindex + lengds8
         lindex = lindex + int(lengds8, kind(lindex))
+        ! print *, 'gds:', lindex, lengds8
+        ! do i=1, lengds8
+        !    print *, i, ichar(cgds(i))
+        ! end do
 
         ! Now read the PDS values from the file directly into cindex.
         ilnpds = lensec

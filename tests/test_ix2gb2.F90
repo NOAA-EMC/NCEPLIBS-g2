@@ -22,10 +22,21 @@ program test_ix2gb2
   integer :: grib_version, discipline, field_number
   integer :: SEC1_LEN
   parameter (SEC1_LEN = 21)
-  character :: sec1(SEC1_LEN)
+  integer :: GDS_LEN
+  parameter (GDS_LEN = 72)
+  integer :: lengds
+  character :: sec1(SEC1_LEN), gds(GDS_LEN)
   character :: expected_sec1(SEC1_LEN) = (/  char(0), char(0), char(0), char(21), char(1), char(0), &
        char(7), char(0), char(0), char(2), char(1), &
        char(1), char(7), char(229), char(11), char(30), char(0), char(0), char(0), char(0), char(1)/)
+  character :: expected_gds(GDS_LEN) = (/ char(0), char(0), char(0), char(72), char(3), char(0), char(0), &
+       char(0), char(142), char(39), char(0), char(0), char(0), char(0), char(6), char(0), char(0), &
+       char(0), char(0), char(0), char(0), char(0), char(0), char(0), char(0), char(0), char(0), char(0), &
+       char(0), char(0), char(0), char(0), char(0), char(241), char(0), char(0), char(0), char(151), &
+       char(0), char(0), char(0), char(0), char(0), char(0), char(0), char(0), char(2), char(250), &
+       char(240), char(128), char(12), char(132), char(88), char(128), char(48), char(1), char(125), &
+       char(120), char(64), char(14), char(230), char(178), char(128), char(0), char(2), char(139), &
+       char(11), char(0), char(2), char(139), char(11), char(0) /)
   integer :: i
 
   interface
@@ -38,7 +49,7 @@ program test_ix2gb2
        integer :: numfld, mlen, iret
      end subroutine ix2gb2
      subroutine read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
-     b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, iret)
+     b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, lengds, gds, iret)
        character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
        integer, intent(in) :: idxver
        integer, intent(out) :: index_rec_len
@@ -46,6 +57,8 @@ program test_ix2gb2
        integer (kind = 8), intent(out) :: total_bytes
        integer, intent(out) :: grib_version, discipline, field_number
        character, intent(out) :: sec1(21)
+       integer, intent(inout) :: lengds
+       character, intent(out) :: gds(:)
        integer, intent(out) :: iret
      end subroutine read_index
   end interface
@@ -76,7 +89,7 @@ program test_ix2gb2
 
      ! Break out the index record into component values.
      call read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
-          b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, iret)
+          b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, lengds, gds, iret)
      if (iret .ne. 0) stop 21
 
      print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
@@ -103,10 +116,14 @@ program test_ix2gb2
      if (discipline .ne. 0) stop 115
      if (field_number .ne. 1) stop 116
      do i = 1, SEC1_LEN
-        print *, i, ichar(sec1(i))
+        !print *, i, ichar(sec1(i))
         if (sec1(i) .ne. expected_sec1(i)) stop 200
      enddo
-
+     if (lengds .ne. GDS_LEN) stop 201
+     do i = 1, GDS_LEN
+        !print *, i, ichar(gds(i))
+        if (gds(i) .ne. expected_gds(i)) stop 200
+     enddo
      ! Free allocated memory
      deallocate(cbuf)
 
@@ -127,7 +144,7 @@ end program test_ix2gb2
 ! Edward Hartnett, 5/11/24
 subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
      b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8, b2s_data8, total_bytes8, &
-     grib_version, discipline, field_number, sec1, iret)
+     grib_version, discipline, field_number, sec1, lengds, gds, iret)
   implicit none
 
   character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
@@ -137,6 +154,8 @@ subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
   integer (kind = 8), intent(out) :: total_bytes8
   integer, intent(out) :: grib_version, discipline, field_number
   character, intent(out) :: sec1(21)
+  integer, intent(inout) :: lengds
+  character, intent(out) :: gds(:)
   integer, intent(out) :: iret
   
   integer :: lensec1
@@ -232,6 +251,17 @@ subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
   print *, 'copying sec1', mypos/8
   do i = 1, lensec1
      sec1(i) = cbuf(mypos/8 + 1)
+     mypos = mypos + INT1_BITS
+  end do
+
+  ! Find the length of sec1. It should be 72.
+  call g2_gbytec1(cbuf, lengds, mypos, INT4_BITS)
+  
+  ! Copy GDS from the index record to output parameter. (mypos
+  ! is in bits, but i is in bytes.)
+  print *, 'copying gds', lengds, mypos/8
+  do i = 1, lengds
+     gds(i) = cbuf(mypos/8 + 1)
      mypos = mypos + INT1_BITS
   end do
 
