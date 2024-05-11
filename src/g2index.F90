@@ -1429,7 +1429,10 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         ! Copy the section 1 values into the cindex buffer.
         cindex(IXIDS + 1 + inc:IXIDS + lensec1 + inc) = cids(1:lensec1)
         lindex = IXIDS + lensec1 + inc
-        !print *, 'section 1:', IXIDS + inc, IXIDS + lensec1 + inc
+        ! print *, 'section 1:', IXIDS + inc, IXIDS + lensec1 + inc
+        ! do i=1, lensec1
+        !    print *, i, ichar(cids(i))
+        ! end do
 
         ! Copy the GDS values into the cindex buffer.
         cindex(lindex + 1:lindex + lengds8) = cgds(1:lengds8)

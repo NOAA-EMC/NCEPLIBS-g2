@@ -23,9 +23,9 @@ program test_ix2gb2
   integer :: SEC1_LEN
   parameter (SEC1_LEN = 21)
   character :: sec1(SEC1_LEN)
-  character :: expected_sec1(SEC1_LEN) = (/ char(21), char(1), char(0), char(7), char(0), char(0), char(2), char(1), &
-       char(1), char(7), char(229), char(11), char(30), char(0), char(0), char(0), char(0), char(1), char(0), &
-       char(0), char(0) /)
+  character :: expected_sec1(SEC1_LEN) = (/  char(0), char(0), char(0), char(21), char(1), char(0), &
+       char(7), char(0), char(0), char(2), char(1), &
+       char(1), char(7), char(229), char(11), char(30), char(0), char(0), char(0), char(0), char(1)/)
   integer :: i
 
   interface
@@ -225,12 +225,13 @@ subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
 
   ! Find the length of sec1. It should be 21.
   call g2_gbytec1(cbuf, lensec1, mypos, INT4_BITS)
-  mypos = mypos + INT4_BITS
+  !mypos = mypos + INT4_BITS
   
   ! Copy section 1 from the index record to output parameter. (mypos
   ! is in bits, but i is in bytes.)
+  print *, 'copying sec1', mypos/8
   do i = 1, lensec1
-     sec1(i) = cbuf(mypos/8)
+     sec1(i) = cbuf(mypos/8 + 1)
      mypos = mypos + INT1_BITS
   end do
 
