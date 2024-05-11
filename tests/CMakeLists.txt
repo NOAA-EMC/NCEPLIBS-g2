@@ -50,7 +50,7 @@ function(create_test name kind)
   if(${ARGC} GREATER 2)
     set(extra_files ${ARGN})
   endif()
-  add_executable(${name}_${kind} ${name}.F90 util.F90 ${extra_files})
+  add_executable(${name}_${kind} ${name}.F90 g2_test_util.F90 ${extra_files})
   target_link_libraries(${name}_${kind} PRIVATE g2_${kind} PNG::PNG)
   set_target_properties(${name}_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   set_target_properties(${name}_${kind} PROPERTIES Fortran_MODULE_DIRECTORY
