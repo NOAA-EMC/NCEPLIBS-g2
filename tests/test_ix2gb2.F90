@@ -26,8 +26,10 @@ program test_ix2gb2
   parameter (GDS_LEN = 72)
   integer :: PDS_LEN
   parameter (PDS_LEN = 34)
-  integer :: lengds, lenpds
-  character :: sec1(SEC1_LEN), gds(GDS_LEN), pds(PDS_LEN)
+  integer :: DRS_LEN
+  parameter (DRS_LEN = 34)
+  integer :: lengds, lenpds, lendrs
+  character :: sec1(SEC1_LEN), gds(GDS_LEN), pds(PDS_LEN), drs(DRS_LEN)
   character :: expected_sec1(SEC1_LEN) = (/  char(0), char(0), char(0), char(21), char(1), char(0), &
        char(7), char(0), char(0), char(2), char(1), &
        char(1), char(7), char(229), char(11), char(30), char(0), char(0), char(0), char(0), char(1)/)
@@ -56,7 +58,7 @@ program test_ix2gb2
      end subroutine ix2gb2
      subroutine read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
           b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, lengds, gds, lenpds, pds, &
-          iret)
+          lendrs, drs, iret)
        character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
        integer, intent(in) :: idxver
        integer, intent(out) :: index_rec_len
@@ -68,6 +70,8 @@ program test_ix2gb2
        character, intent(out) :: gds(:)
        integer, intent(inout) :: lenpds
        character, intent(out) :: pds(:)
+       integer, intent(inout) :: lendrs
+       character, intent(out) :: drs(:)
        integer, intent(out) :: iret
      end subroutine read_index
   end interface
@@ -99,13 +103,13 @@ program test_ix2gb2
      ! Break out the index record into component values.
      call read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
           b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, lengds, gds, &
-          lenpds, pds, iret)
+          lenpds, pds, lendrs, drs, iret)
      if (iret .ne. 0) stop 21
 
      print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
      print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
      print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
-     print *, 'lengds, lenpds', lengds, lenpds
+     print *, 'lengds, lenpds, lendrs', lengds, lenpds, lendrs
 
      if (idxver .eq. 1) then
         if (index_rec_len .ne. 200) stop 105
@@ -161,7 +165,8 @@ end program test_ix2gb2
 ! Edward Hartnett, 5/11/24
 subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
      b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8, b2s_data8, total_bytes8, &
-     grib_version, discipline, field_number, sec1, lengds, gds, lenpds, pds, iret)
+     grib_version, discipline, field_number, sec1, lengds, gds, lenpds, pds, &
+     lendrs, drs, iret)
   implicit none
 
   character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
@@ -175,6 +180,8 @@ subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
   character, intent(out) :: gds(:)
   integer, intent(inout) :: lenpds
   character, intent(out) :: pds(:)
+  integer, intent(inout) :: lendrs
+  character, intent(out) :: drs(:)
   integer, intent(out) :: iret
   
   integer :: lensec1
@@ -293,6 +300,18 @@ subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
   do i = 1, lenpds
      pds(i) = cbuf(mypos/8 + 1)
      !print *, ichar(pds(i)), ','
+     mypos = mypos + INT1_BITS
+  end do
+
+  ! Find the length of drs. It should be 72.
+  call g2_gbytec1(cbuf, lendrs, mypos, INT4_BITS)
+  
+  ! Copy DRS from the index record to output parameter. (mypos
+  ! is in bits, but i is in bytes.)
+  print *, 'copying drs', lendrs, mypos/8
+  do i = 1, lendrs
+     drs(i) = cbuf(mypos/8 + 1)
+     !print *, ichar(drs(i)), ','
      mypos = mypos + INT1_BITS
   end do
 
