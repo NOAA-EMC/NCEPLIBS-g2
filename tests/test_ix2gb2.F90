@@ -50,54 +50,74 @@ program test_ix2gb2
      end subroutine read_index
   end interface
 
-  call baopenr(lugi, TEST_FILE_GDAS, iret)
-  if (iret .ne. 0) then
-     print *, 'baopenr failed with iret value: ', iret
-     stop 3
-  end if
+  print *, 'Testing ix2gb2().'
+  do idxver = 1, 2
+     print *, '   testing with idxver', idxver
+     call baopenr(lugi, TEST_FILE_GDAS, iret)
+     if (iret .ne. 0) then
+        print *, 'baopenr failed with iret value: ', iret
+        stop 3
+     end if
 
-  ! Create an index record for the first message in the gdas test
-  ! file.
-  lskip8 = 0
-  lgrib8 = 5000
-  call ix2gb2(lugi, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
-  if (numfld .ne. 1 .or. iret .ne. 0) stop 20
-  if (mlen .ne. 200) stop 20
+     ! Create an index record for the first message in the gdas test
+     ! file.
+     lskip8 = 0
+     lgrib8 = 5000
+     call ix2gb2(lugi, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
+     if (numfld .ne. 1 .or. iret .ne. 0) stop 10
+     if (idxver .eq. 1) then
+        if (mlen .ne. 200) stop 11
+     else
+        if (mlen .ne. 212) then
+           print *, mlen
+           stop 11
+        endif
+     endif
+
+     ! Break out the index record into component values.
+     call read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
+          b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, iret)
+     if (iret .ne. 0) stop 21
+
+     print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
+     print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+     print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
+
+     if (idxver .eq. 1) then
+        if (index_rec_len .ne. 200) stop 105
+     else
+        if (index_rec_len .ne. 212) then
+           print *, index_rec_len
+           stop 105
+        endif
+     endif
+     if (b2s_message .ne. 0) stop 106
+     if (b2s_lus .ne. 0) stop 107
+     if (b2s_gds .ne. 37) stop 108
+     if (b2s_pds .ne. 109) stop 109
+     if (b2s_drs .ne. 143) stop 110
+     if (b2s_bms .ne. 166) stop 111
+     if (b2s_data .ne. 4721) stop 112
+     if (total_bytes .ne. 5000) stop 113
+     if (grib_version .ne. 2) stop 114
+     if (discipline .ne. 0) stop 115
+     if (field_number .ne. 1) stop 116
+     do i = 1, SEC1_LEN
+        print *, i, ichar(sec1(i))
+        if (sec1(i) .ne. expected_sec1(i)) stop 200
+     enddo
+
+     ! Free allocated memory
+     deallocate(cbuf)
+
+     call baclose(lugi, iret)
+     if (iret .ne. 0) then
+        print *, 'baclose failed with iret value: ', iret
+        stop 5
+     end if
+     print *, '   ok!'
+  end do ! next idxver
   
-  ! Break out the index record into component values.
-  call read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
-       b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, iret)
-  if (iret .ne. 0) stop 21
-
-  print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
-  print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
-
-  if (index_rec_len .ne. 200) stop 105
-  if (b2s_message .ne. 0) stop 106
-  if (b2s_lus .ne. 0) stop 107
-  if (b2s_gds .ne. 37) stop 108
-  if (b2s_pds .ne. 109) stop 109
-  if (b2s_drs .ne. 143) stop 110
-  if (b2s_bms .ne. 166) stop 111
-  if (b2s_data .ne. 4721) stop 112
-  if (total_bytes .ne. 5000) stop 113
-  if (grib_version .ne. 2) stop 114
-  if (discipline .ne. 0) stop 115
-  if (field_number .ne. 1) stop 116
-  do i = 1, SEC1_LEN
-     print *, i, ichar(sec1(i))
-     if (sec1(i) .ne. expected_sec1(i)) stop 200
-  enddo
-
-  ! Free allocated memory
-  deallocate(cbuf)
-
-  call baclose(lugi, iret)
-  if (iret .ne. 0) then
-     print *, 'baclose failed with iret value: ', iret
-     stop 5
-  end if
   print *, 'Success!...'
 
 end program test_ix2gb2
