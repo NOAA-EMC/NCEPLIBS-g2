@@ -20,6 +20,13 @@ program test_ix2gb2
   integer (kind = 8) :: b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   integer (kind = 8) :: total_bytes
   integer :: grib_version, discipline, field_number
+  integer :: SEC1_LEN
+  parameter (SEC1_LEN = 21)
+  character :: sec1(SEC1_LEN)
+  character :: expected_sec1(SEC1_LEN) = (/ char(21), char(1), char(0), char(7), char(0), char(0), char(2), char(1), &
+       char(1), char(7), char(229), char(11), char(30), char(0), char(0), char(0), char(0), char(1), char(0), &
+       char(0), char(0) /)
+  integer :: i
 
   interface
      subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
@@ -31,13 +38,15 @@ program test_ix2gb2
        integer :: numfld, mlen, iret
      end subroutine ix2gb2
      subroutine read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
-     b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, iret)
+     b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, iret)
        character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
        integer, intent(in) :: idxver
        integer, intent(out) :: index_rec_len
        integer (kind = 8), intent(out) :: b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
        integer (kind = 8), intent(out) :: total_bytes
-       integer, intent(out) :: grib_version, discipline, field_number, iret
+       integer, intent(out) :: grib_version, discipline, field_number
+       character, intent(out) :: sec1(21)
+       integer, intent(out) :: iret
      end subroutine read_index
   end interface
 
@@ -57,9 +66,9 @@ program test_ix2gb2
   
   ! Break out the index record into component values.
   call read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
-       b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, iret)
+       b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, iret)
   if (iret .ne. 0) stop 21
-  
+
   print *, 'index_rec_len = ', index_rec_len, ' b2s_message = ', b2s_message
   print *, 'b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data: ', b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   print *, 'total_bytes, grib_version, discipline, field_number: ', total_bytes, grib_version, discipline, field_number
@@ -76,6 +85,10 @@ program test_ix2gb2
   if (grib_version .ne. 2) stop 114
   if (discipline .ne. 0) stop 115
   if (field_number .ne. 1) stop 116
+  do i = 1, SEC1_LEN
+     print *, i, ichar(sec1(i))
+     if (sec1(i) .ne. expected_sec1(i)) stop 200
+  enddo
 
   ! Free allocated memory
   deallocate(cbuf)
@@ -89,8 +102,12 @@ program test_ix2gb2
 
 end program test_ix2gb2
 
-subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, &
-     b2s_bms8, b2s_data8, total_bytes8, grib_version, discipline, field_number, iret)
+! Pull the values out of an index record.
+!
+! Edward Hartnett, 5/11/24
+subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
+     b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8, b2s_data8, total_bytes8, &
+     grib_version, discipline, field_number, sec1, iret)
   implicit none
 
   character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
@@ -98,64 +115,106 @@ subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, b2s_g
   integer, intent(out) :: index_rec_len
   integer (kind = 8), intent(out) :: b2s_message8, b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8, b2s_data8
   integer (kind = 8), intent(out) :: total_bytes8
-  integer, intent(out) :: grib_version, discipline, field_number, iret
+  integer, intent(out) :: grib_version, discipline, field_number
+  character, intent(out) :: sec1(21)
+  integer, intent(out) :: iret
+  
+  integer :: lensec1
 
   integer :: b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
   integer :: inc, mypos = 0
+  integer :: i
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
+  integer (kind = 8) :: INT8_BITS8
+  parameter(INT8_BITS8 = 64_8)
+
+  interface
+     subroutine g2_gbytec1(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec1
+     subroutine g2_gbytec(in, iout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: iout(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec
+     subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)
+       character*1, intent(in) :: in(*)
+       integer, intent(out) :: iout(*)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_gbytesc
+     subroutine g2_gbytec8(in, iout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer (kind = 8), intent(inout) :: iout(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec8
+  end interface
 
   ! Get the index record len (4 byte int).
-  call g2_gbytec(cbuf, index_rec_len, 0, INT4_BITS)
+  call g2_gbytec1(cbuf, index_rec_len, 0, INT4_BITS)
   print *, '************************'
   print *, 'read_index(): index_rec_len', index_rec_len
   mypos = INT4_BITS
 
   if (idxver .eq. 1) then
      inc = 0
-     call g2_gbytec(cbuf, b2s_message, mypos, INT4_BITS)
+     call g2_gbytec1(cbuf, b2s_message, mypos, INT4_BITS)
      print '(i3, a12, z4)', mypos/8, ' b2s_message', b2s_message
      mypos = mypos + INT4_BITS
      b2s_message8 = b2s_message
-     call g2_gbytec(cbuf, b2s_lus, mypos, INT4_BITS)
+     call g2_gbytec1(cbuf, b2s_lus, mypos, INT4_BITS)
      print '(i3, a8, z4)', mypos/8, ' b2s_lus', b2s_lus
      mypos = mypos + INT4_BITS
      b2s_lus8 = b2s_lus
-     call g2_gbytec(cbuf, b2s_gds, mypos, INT4_BITS)
+     call g2_gbytec1(cbuf, b2s_gds, mypos, INT4_BITS)
      print '(i3, a8, z4)', mypos/8, ' b2s_gds', b2s_gds
      mypos = mypos + INT4_BITS
      b2s_gds8 = b2s_gds
   else
      inc = 12
-     call g2_gbytec8(cbuf, b2s_message, 8 * 4, INT8_BITS)
+     call g2_gbytec81(cbuf, b2s_message8, 8 * 4, INT8_BITS)
      mypos = mypos + INT8_BITS
-     call g2_gbytec8(cbuf, b2s_lus, 8 * 12, INT8_BITS)
+     call g2_gbytec81(cbuf, b2s_lus8, 8 * 12, INT8_BITS)
      mypos = mypos + INT8_BITS
-     call g2_gbytec8(cbuf, b2s_gds, 8 * 20, INT8_BITS)
+     call g2_gbytec81(cbuf, b2s_gds8, 8 * 20, INT8_BITS)
      mypos = mypos + INT8_BITS
      ! call g2_gbytec(cbuf, b2s_pds, 8 * 16, INT8_BITS)
   endif
-  call g2_gbytec(cbuf, b2s_pds, mypos, INT4_BITS)
+  call g2_gbytec1(cbuf, b2s_pds, mypos, INT4_BITS)
   mypos = mypos + INT4_BITS
   b2s_pds8 = b2s_pds
-  call g2_gbytec(cbuf, b2s_drs, mypos, INT4_BITS)
+  call g2_gbytec1(cbuf, b2s_drs, mypos, INT4_BITS)
   mypos = mypos + INT4_BITS  
   b2s_drs8 = b2s_drs
-  call g2_gbytec(cbuf, b2s_bms, mypos, INT4_BITS)
+  call g2_gbytec1(cbuf, b2s_bms, mypos, INT4_BITS)
   mypos = mypos + INT4_BITS  
   b2s_bms8 = b2s_bms
-  call g2_gbytec(cbuf, b2s_data, mypos, INT4_BITS)
+  call g2_gbytec1(cbuf, b2s_data, mypos, INT4_BITS)
   mypos = mypos + INT4_BITS  
   b2s_data8 = b2s_data
-  call g2_gbytec8(cbuf, total_bytes8, mypos, INT8_BITS)
+  call g2_gbytec81(cbuf, total_bytes8, mypos, INT8_BITS)
   mypos = mypos + INT8_BITS
-  call g2_gbytec(cbuf, grib_version, mypos, INT1_BITS)
+  call g2_gbytec1(cbuf, grib_version, mypos, INT1_BITS)
   mypos = mypos + INT1_BITS  
-  call g2_gbytec(cbuf, discipline, mypos, INT1_BITS)
+  call g2_gbytec1(cbuf, discipline, mypos, INT1_BITS)
   mypos = mypos + INT1_BITS  
-  call g2_gbytec(cbuf, field_number, mypos, INT2_BITS)
-  mypos = mypos + INT2_BITS  
+  call g2_gbytec1(cbuf, field_number, mypos, INT2_BITS)
+  mypos = mypos + INT2_BITS
+
+  ! Find the length of sec1. It should be 21.
+  call g2_gbytec1(cbuf, lensec1, mypos, INT4_BITS)
+  mypos = mypos + INT4_BITS
   
+  ! Copy section 1 from the index record to output parameter. (mypos
+  ! is in bits, but i is in bytes.)
+  do i = 1, lensec1
+     sec1(i) = cbuf(mypos/8)
+     mypos = mypos + INT1_BITS
+  end do
+
+  ! Return success.
   iret = 0
 end subroutine read_index
 

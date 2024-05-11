@@ -474,7 +474,7 @@ end subroutine getg2i
 !> 041 - 041 | 045 - 045 | grib version number (always 2)
 !> 042 - 042 | 046 - 046 | message discipline
 !> 043 - 044 | 047 - 048 | field number within grib2 message
-!> 045 -  ii | 045 -  ii | identification section (ids)
+!> 045 -  ii | 045 -  ii | length of sec1 (4-bytes), identification section (ids) (character)
 !> ii+1-  jj | ii+1-  jj | grid definition section (gds)
 !> jj+1-  kk | jj+1-  kk | product definition section (pds)
 !> kk+1-  ll | kk+1-  ll | the data representation section (drs)
@@ -1232,7 +1232,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   integer (kind = 8) :: ibread8, lbread8, ibskip8, lengds8
   integer (kind = 8) :: ilnpds8, ilndrs8
   integer :: lensec, lensec1
-  integer :: mypos, inc
+  integer :: mypos, inc, i
 
   ! Parameters.
   ! Size of the internal char buffers used in this subroutine.
@@ -1303,7 +1303,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   endif
 
   ! Check GRIB version from section 0, must be 2.
-  if(cbread(8) .ne. char(2)) then          !  not grib edition 2
+  if (cbread(8) .ne. char(2)) then          !  not grib edition 2
      iret = 3
      return
   endif
@@ -1318,6 +1318,9 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
 
   ! Copy section 1 values into cids array.
   cids(1:lensec1) = cbread(17:16 + lensec1)
+  do i = 1, lensec1
+     print *, i, ichar(cids(i))
+  end do
 
   ! Skip past section 1 in the data buffer.
   ibskip8 = lskip8 + 16_8 + int(lensec1, kind(8))

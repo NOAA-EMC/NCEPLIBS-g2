@@ -28,7 +28,7 @@ program test_gbytec
   integer :: i
   integer :: num
   integer(kind = 4) :: in44(4), in44_1(4)
-  integer(kind = 8) :: in8(1), in8_1(1), in84(4), in84_1(4)
+  integer(kind = 8) :: in8(1), in8_1(1), in84(4), in84_1(4), in8_scalar
   integer, external :: g2_mova2i
   
   print *, 'Testing g2_gbytesc.F90 subroutines.'
@@ -228,12 +228,12 @@ program test_gbytec
      endif
   end do
 
-  print *, '   now unpack into 1 64-bit int with g2_gbytesc()...'
+  print *, '   now unpack into 1 64-bit int with g2_gbytesc8()...'
   in8_1(1) = 0
   call g2_gbytesc8(out8, in8_1, iskip, 64, 0, 1)
   if (in8_1(1) .ne. in8(1)) stop 150
 
-  print *, '   testing g2_sbytec8() with 32-bit int array of size 4...'
+  print *, '   testing g2_sbytec() with 32-bit int array of size 4...'
   do i = 1, 4
      in44(i) = 1
   end do
@@ -276,6 +276,10 @@ program test_gbytec
   do i = 1, 4
      if (in84_1(i) .ne. in84(i)) stop 200
   end do
+
+  print *, '   testing g2_gbytec81() reading first value of 64-bit int array of size 4...'  
+  call g2_gbytec81(out32, in8_scalar, iskip, 64)
+  if (in8_scalar .ne. 1) stop 201
 
   print *, '   testing g2_sbytec8() with very large 64-bit int...'
   ! largest 4 byte signed int, plus 1.

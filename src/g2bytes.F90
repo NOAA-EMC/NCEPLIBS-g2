@@ -38,7 +38,7 @@ end subroutine g2_gbytec
 !> @param[in] nbits Number of bits of each integer to take. Must
 !> be 32 or less.
 !>
-!> @author Stephen Gilbert @date 2004-04-27
+!> @author Edward Hartnett @date 2024
 subroutine g2_gbytec1(in, siout, iskip, nbits)
   implicit none
 
@@ -63,7 +63,7 @@ end subroutine g2_gbytec1
 !iteration.
 !> @param[in] n Number of floats to extract.
 !>
-!> @author Stephen Gilbert @date 2004-04-27
+!> @author Edward Hartnett @date 2024
 subroutine g2_gbytescr(in, rout, iskip, nbits, nskip, n)
   implicit none
   character*1, intent(in) :: in(*)
@@ -147,7 +147,7 @@ end subroutine g2_gbytesc
 !> @param[in] nbits Number of bits of each integer in IN to take. Must
 !> be 64 or less.
 !>
-!> @author Stephen Gilbert @date 2004-04-27
+!> @author Edward Hartnett @date 2024
 subroutine g2_gbytec8(in, iout, iskip, nbits)
   implicit none
 
@@ -156,6 +156,31 @@ subroutine g2_gbytec8(in, iout, iskip, nbits)
   integer, intent(in) :: iskip, nbits
   call g2_gbytesc8(in, iout, iskip, nbits, 0, 1)
 end subroutine g2_gbytec8
+
+!> Extract one arbitrary size big-endian integer value (up to 64 bits)
+!> from a packed bit string into a scalar integer.
+!>
+!> This should be used converting one integer*4 value. If more values
+!> need to be converted, use g2_sbytesc().
+!>
+!> @param[in] in Character array input.
+!> @param[inout] siout Unpacked scalar integer output.
+!> @param[in] iskip Initial number of bits to skip.
+!> @param[in] nbits Number of bits of each integer to take. Must
+!> be 32 or less.
+!>
+!> @author Edward Hartnett @date 2024-05-11
+subroutine g2_gbytec81(in, siout, iskip, nbits)
+  implicit none
+
+  character*1, intent(in) :: in(*)
+  integer (kind = 8), intent(inout) :: siout
+  integer, intent(in) :: iskip, nbits
+  integer (kind = 8) :: iout(1)
+  
+  call g2_gbytesc8(in, iout, iskip, nbits, 0, 1)
+  siout = iout(1)
+end subroutine g2_gbytec81
 
 !> Extract arbitrary sized (up to 64-bits) values from a packed bit
 !> string, right justifying each value in the unpacked array.
@@ -168,7 +193,7 @@ end subroutine g2_gbytec8
 !> @param[in] nskip Additional number of bits to skip on each iteration.
 !> @param[in] n Number of integers to extract.
 !>
-!> @author Stephen Gilbert @date 2004-04-27
+!> @author Edward Hartnett, Stephen Gilbert @date 2024
 subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
   implicit none
 
@@ -183,7 +208,7 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
   integer, external :: g2_mova2i
   integer (kind = 8), external :: g2_mova2i8
 
-  !     nbit is the start position of the field in bits
+  ! Nbit is the start position of the field in bits.
   nbit = iskip
   do i = 1, n
      bitcnt = nbits
@@ -191,7 +216,7 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
      ibit = mod(nbit, 8)
      nbit = nbit + nbits + nskip
 
-     !        first byte
+     ! first byte
      tbit = min(bitcnt, 8 - ibit)
      itmp8 = iand(g2_mova2i8(in(index)), int(ones(8 - ibit), kind = 8))
      itmp = iand(g2_mova2i(in(index)), ones(8 - ibit))
@@ -200,7 +225,7 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
      index = index + 1
      bitcnt = bitcnt - tbit
 
-     !        now transfer whole bytes
+     ! now transfer whole bytes
      do while (bitcnt .ge. 8)
         itmp = ior(ishft(itmp,8), g2_mova2i(in(index)))
         itmp8 = ior(ishft(itmp8,8), g2_mova2i8(in(index)))
@@ -208,7 +233,7 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
         index = index + 1
      enddo
 
-     !        get data from last byte
+     ! get data from last byte
      if (bitcnt .gt. 0) then
         itmp = ior(ishft(itmp, bitcnt), iand(ishft(g2_mova2i(in(index)), - (8 - bitcnt)), ones(bitcnt)))
         itmp8_2 = ishft(g2_mova2i8(in(index)), int(-(8 - bitcnt), kind(8)))
@@ -218,7 +243,6 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
 
      iout(i) = itmp8
   enddo
-
 end subroutine g2_gbytesc8
 
 !> Put one arbitrary sized (up to 32 bits) value from an integer
@@ -255,7 +279,7 @@ end subroutine g2_sbytec
 !> @param[in] iskip initial number of bits to skip.
 !> @param[in] nbits Number of bits of each integer in OUT to fill.
 !>
-!> @author Stephen Gilbert @date 2004-04-27
+!> @author Edward Hartnett @date 2024
 subroutine g2_sbytec1(out, in, iskip, nbits)
   implicit none
 
@@ -277,7 +301,7 @@ end subroutine g2_sbytec1
 !> @param[in] nskip Additional number of bits to skip on each iteration.
 !> @param[in] n Number of iterations.
 !>
-!> @author Stephen Gilbert @date 2004-04-27
+!> @author Edward Hartnett @date 2024
 subroutine g2_sbytescr(out, rin, iskip, nbits, nskip, n)
   implicit none
   character*1, intent(out) :: out(*)
@@ -359,7 +383,6 @@ subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
         out(index) = char(ior(itmp2, itmp3))
      endif
   enddo
-
 end subroutine g2_sbytesc
 
 !> Put one arbitrary sized (up to 64 bits) values into a packed bit
@@ -367,7 +390,7 @@ end subroutine g2_sbytesc
 !> array.
 !>
 !> This should be used when input array IN has only one element. If IN
-!> has more elements, use g2_sbytesc().
+!> has more elements, use g2_sbytesc8().
 !>
 !> @param[inout] out packed array output
 !> @param[in] in unpacked array input
@@ -375,7 +398,7 @@ end subroutine g2_sbytesc
 !> @param[in] nbits Number of bits of each integer in OUT to
 !> fill. Must be 64 or less.
 !>
-!> @author Stephen Gilbert @date 2004-04-27
+!> @author Edward Hartnett @date 2024
 subroutine g2_sbytec8(out, in, iskip, nbits)
   implicit none
 
@@ -397,7 +420,7 @@ end subroutine g2_sbytec8
 !> @param[in] nskip Additional number of bits to skip on each iteration.
 !> @param[in] n Number of iterations.
 !>
-!> @author Stephen Gilbert @date 2004-04-27
+!> @author Edward Hartnett, Stephen Gilbert @date 2024
 subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
   implicit none
 
