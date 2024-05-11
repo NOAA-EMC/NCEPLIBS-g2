@@ -16,8 +16,10 @@ program test_ix2gb2
   integer (kind = 8) :: lskip8, lgrib8
   integer :: idxver = 1
 
-  integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer :: total_bytes, grib_version, discipline, field_number
+  integer :: index_rec_len
+  integer (kind = 8) :: b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+  integer (kind = 8) :: total_bytes
+  integer :: grib_version, discipline, field_number
 
   interface
      subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
@@ -32,8 +34,10 @@ program test_ix2gb2
      b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, iret)
        character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
        integer, intent(in) :: idxver
-       integer, intent(out) :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-       integer, intent(out) :: total_bytes, grib_version, discipline, field_number, iret
+       integer, intent(out) :: index_rec_len
+       integer (kind = 8), intent(out) :: b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+       integer (kind = 8), intent(out) :: total_bytes
+       integer, intent(out) :: grib_version, discipline, field_number, iret
      end subroutine read_index
   end interface
 
@@ -85,41 +89,72 @@ program test_ix2gb2
 
 end program test_ix2gb2
 
-subroutine read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
-     b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, iret)
+subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, &
+     b2s_bms8, b2s_data8, total_bytes8, grib_version, discipline, field_number, iret)
   implicit none
 
   character(len=1), pointer, dimension(:), intent(in) :: cbuf(:)
   integer, intent(in) :: idxver
-  integer, intent(out) :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer, intent(out) :: total_bytes, grib_version, discipline, field_number, iret
+  integer, intent(out) :: index_rec_len
+  integer (kind = 8), intent(out) :: b2s_message8, b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8, b2s_data8
+  integer (kind = 8), intent(out) :: total_bytes8
+  integer, intent(out) :: grib_version, discipline, field_number, iret
 
-  integer :: inc
+  integer :: b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
+  integer :: inc, mypos = 0
+  integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
+  parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
+
+  ! Get the index record len (4 byte int).
+  call g2_gbytec(cbuf, index_rec_len, 0, INT4_BITS)
+  print *, '************************'
+  print *, 'read_index(): index_rec_len', index_rec_len
+  mypos = INT4_BITS
 
   if (idxver .eq. 1) then
      inc = 0
-     call g2_gbytec(cbuf, index_rec_len, 0, 8 * 4)
-     print *, 'index_rec_len', index_rec_len
-     call g2_gbytec(cbuf, b2s_message, 8 * 4, 8 * 4)
-     call g2_gbytec(cbuf, b2s_lus, 8 * 8, 8 * 4)
-     call g2_gbytec(cbuf, b2s_gds, 8 * 12, 8 * 4)
+     call g2_gbytec(cbuf, b2s_message, mypos, INT4_BITS)
+     print '(i3, a12, z4)', mypos/8, ' b2s_message', b2s_message
+     mypos = mypos + INT4_BITS
+     b2s_message8 = b2s_message
+     call g2_gbytec(cbuf, b2s_lus, mypos, INT4_BITS)
+     print '(i3, a8, z4)', mypos/8, ' b2s_lus', b2s_lus
+     mypos = mypos + INT4_BITS
+     b2s_lus8 = b2s_lus
+     call g2_gbytec(cbuf, b2s_gds, mypos, INT4_BITS)
+     print '(i3, a8, z4)', mypos/8, ' b2s_gds', b2s_gds
+     mypos = mypos + INT4_BITS
+     b2s_gds8 = b2s_gds
   else
-     inc = 16
-     call g2_gbytec(cbuf, index_rec_len, 0, 8 * 8)
-     print *, 'index_rec_len', index_rec_len
-     call g2_gbytec(cbuf, b2s_message, 8 * 8, 8 * 8)
-     call g2_gbytec(cbuf, b2s_lus, 8 * 8, 8 * 8)
-     call g2_gbytec(cbuf, b2s_gds, 8 * 12, 8 * 8)
-     ! call g2_gbytec(cbuf, b2s_pds, 8 * 16, 8 * 8)
+     inc = 12
+     call g2_gbytec8(cbuf, b2s_message, 8 * 4, INT8_BITS)
+     mypos = mypos + INT8_BITS
+     call g2_gbytec8(cbuf, b2s_lus, 8 * 12, INT8_BITS)
+     mypos = mypos + INT8_BITS
+     call g2_gbytec8(cbuf, b2s_gds, 8 * 20, INT8_BITS)
+     mypos = mypos + INT8_BITS
+     ! call g2_gbytec(cbuf, b2s_pds, 8 * 16, INT8_BITS)
   endif
-  call g2_gbytec(cbuf, b2s_pds, 8 * 16, 8 * 4)
-  call g2_gbytec(cbuf, b2s_drs, inc + 8 * 20, 8 * 4)
-  call g2_gbytec(cbuf, b2s_bms, inc + 8 * 24, 8 * 4)
-  call g2_gbytec(cbuf, b2s_data, inc + 8 * 28, 8 * 4)
-  call g2_gbytec(cbuf, total_bytes, inc + 8 * 32, 8 * 8)
-  call g2_gbytec(cbuf, grib_version, inc + 8 * 40, 8 * 1)
-  call g2_gbytec(cbuf, discipline, inc + 8 * 41, 8 * 1)
-  call g2_gbytec(cbuf, field_number, inc + 8 * 42, 8 * 2)
+  call g2_gbytec(cbuf, b2s_pds, mypos, INT4_BITS)
+  mypos = mypos + INT4_BITS
+  b2s_pds8 = b2s_pds
+  call g2_gbytec(cbuf, b2s_drs, mypos, INT4_BITS)
+  mypos = mypos + INT4_BITS  
+  b2s_drs8 = b2s_drs
+  call g2_gbytec(cbuf, b2s_bms, mypos, INT4_BITS)
+  mypos = mypos + INT4_BITS  
+  b2s_bms8 = b2s_bms
+  call g2_gbytec(cbuf, b2s_data, mypos, INT4_BITS)
+  mypos = mypos + INT4_BITS  
+  b2s_data8 = b2s_data
+  call g2_gbytec8(cbuf, total_bytes8, mypos, INT8_BITS)
+  mypos = mypos + INT8_BITS
+  call g2_gbytec(cbuf, grib_version, mypos, INT1_BITS)
+  mypos = mypos + INT1_BITS  
+  call g2_gbytec(cbuf, discipline, mypos, INT1_BITS)
+  mypos = mypos + INT1_BITS  
+  call g2_gbytec(cbuf, field_number, mypos, INT2_BITS)
+  mypos = mypos + INT2_BITS  
   
   iret = 0
 end subroutine read_index
