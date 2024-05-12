@@ -1486,7 +1486,10 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         
         ! Copy 6 bytes of the BMS from data buffer to the cindex buffer.
         cindex(lindex + 1:lindex + MXBMS) = cbread(1:MXBMS)
-        !print *, 'bms:', lindex, lindex + MXBMS        
+        ! print *, 'bms:', lindex, lindex + MXBMS        
+        ! do i=1, MXBMS
+        !    print *, i, ichar(cindex(lindex + i))
+        ! end do
         lindex = lindex + MXBMS
 
         ! The size of the index record is now known, so write it to
