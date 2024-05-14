@@ -468,32 +468,6 @@ end subroutine getgb2l2
 !> Use -1 to accept any discipline.
 !> @param[in] jids Array of values in the identification
 !> section. (Set to -9999 for wildcard.)
-!> - jids(1) Identification of originating centre. See [TABLE 0 -
-!>   NATIONAL/INTERNATIONAL ORIGINATING
-!>   CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html).
-!> - jids(2) Identification of originating sub-centre. See [TABLE C -
-!>   NATIONAL
-!>   SUB-CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html).
-!> - jids(3) GRIB master tables version number. See [GRIB2 - TABLE 1.0
-!>   - GRIB Master Tables Version
-!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml).
-!> - jids(4) GRIB local tables version number. See [GRIB2 - TABLE 1.1
-!>   - GRIB Local Tables Version
-!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml).
-!> - jids(5) Significance of reference time. See [GRIB2 - TABLE 1.2 -
-!>   Significance of Reference
-!>   Time](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-2.shtml).
-!> - jids(6) year (4 digits)
-!> - jids(7) month
-!> - jids(8) day
-!> - jids(9) hour
-!> - jids(10) minute
-!> - jids(11) second
-!> - jids(12) Production status of processed data. See [GRIB2 - TABLE
-!>   1.3 - Production Status of
-!>   Data](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml).
-!> - jids(13) Type of processed data. See [GRIB2 - TABLE 1.4 - TYPE OF
-!>   DATA](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml).
 !> @param[in] jpdtn Product Definition Template (PDT) number (n)
 !> (if = -1, don't bother matching PDT - accept any)
 !> @param[in] jpdt Array of values defining the Product Definition
@@ -533,9 +507,11 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   character(len = 1), pointer, dimension(:) :: gribm
   integer, intent(out) :: leng, iret
 
+  integer :: idxver
+
   interface
      subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-          extract, k, gribm, leng, iret)
+          extract, idxver, k, gribm, leng, iret)
        use grib_mod
        integer, intent(in) :: lugb, lugi, j, jdisc
        integer, dimension(:) :: jids(*)
@@ -544,6 +520,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        integer, intent(in) :: jgdtn
        integer, dimension(:) :: jgdt(*)
        logical, intent(in) :: extract
+       integer, intent(in) :: idxver
        integer, intent(out) :: k
        character(len = 1), pointer, dimension(:) :: gribm
        integer, intent(out) :: leng, iret
@@ -551,9 +528,10 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   end interface
 
   ! Call the updated version of this subroutine, which handles index
-  ! version 2.
+  ! version 2. But if this subroutine is called, then use version 1.
+  idxver = 1
   call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-       extract, k, gribm, leng, iret)
+       extract, idxver, k, gribm, leng, iret)
 end subroutine getgb2p
 
 !> Find and extract a GRIB2 message from a file.
@@ -633,6 +611,8 @@ end subroutine getgb2p
 !> GRIB2 message containing the requested field.
 !> - .true. return GRIB2 message containing only the requested field.
 !> - .false. return entire GRIB2 message containing the requested field.
+!> @param[in] idxver Index version. Use version 2. Version 1 is for
+!> legacy purposes.
 !> @param[out] k field number unpacked.
 !> @param[out] gribm returned GRIB message.
 !> @param[out] leng length of returned GRIB message in bytes.
@@ -644,7 +624,7 @@ end subroutine getgb2p
 !>
 !> @author Ed Hartnett @date 05-14-2024
 subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-     extract, k, gribm, leng, iret)
+     extract, idxver, k, gribm, leng, iret)
   use grib_mod
   implicit none
 
@@ -655,6 +635,7 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   integer, intent(in) :: jgdtn
   integer, dimension(:) :: jgdt(*)
   logical, intent(in) :: extract
+  integer, intent(in) :: idxver
   integer, intent(out) :: k
   character(len = 1), pointer, dimension(:) :: gribm
   integer, intent(out) :: leng, iret

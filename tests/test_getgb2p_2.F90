@@ -53,9 +53,7 @@ PROGRAM test_getgb2p_2
   fileo='test_tocgrib2.output.grib2'
   call baopenw(lugo,fileo,iret1)
   if (iret1  .ne. 0) then
-     write(6,fmt='(" Error opening output transmission file: ", &
-          A200)') fileo
-     write(6,fmt='(" baopenw error = ",I5)') iret1
+     print *, " Error opening output transmission file: ", fileo
      stop 20
   endif
 
@@ -77,15 +75,12 @@ PROGRAM test_getgb2p_2
 
      READ (12,GRIBIDS,iostat=ios)
      if (ios .ne. 0) then
-        write(6,fmt='(" Error reading PDS from input file. iostat = " &
-             ,i5)') ios
+        print *, " Error reading PDS from input file. iostat = ", ios
         cycle
      endif
      nrec = nrec + 1
 
      !  Echo input record
-     WRITE(6,FMT='(/,''***********************************'', &
-          ''********************************************'')')
      write(6,'(A,I0)') ' Start new record no. =  ',nrec
      write(6,'(73A)') ' DESC=',DESC(1:73)
      write(6,'(11A)') ' WMOHEAD=',WMOHEAD(1:11)
