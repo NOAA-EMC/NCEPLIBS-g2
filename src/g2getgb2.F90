@@ -949,17 +949,21 @@ subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
   character(len = 1), pointer, dimension(:) :: gribm
   integer, intent(out) :: leng, iret
 
+  integer (kind = 8) :: leng8
+
   interface
-     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
        integer, intent(in) :: lugb, idxver
        character(len = 1), intent(in) :: cindex(*)
        logical, intent(in) :: extract
        character(len = 1), pointer, dimension(:) :: gribm
-       integer, intent(out) :: leng, iret
+       integer (kind = 8), intent(out) :: leng8
+       integer, intent(out) :: iret
      end subroutine getgb2rp2
   end interface
 
-  call getgb2rp2(lugb, 1, cindex, extract, gribm, leng, iret)
+  call getgb2rp2(lugb, 1, cindex, extract, gribm, leng8, iret)
+  leng = int(leng8, kind(8))
 
 end subroutine getgb2rp
 
