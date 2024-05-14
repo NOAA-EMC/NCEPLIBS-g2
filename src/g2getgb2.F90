@@ -522,12 +522,143 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   use grib_mod
   implicit none
 
-  integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
-  integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
+  integer, intent(in) :: lugb, lugi, j, jdisc
+  integer, dimension(:) :: jids(*)
+  integer, intent(in) :: jpdtn
+  integer, dimension(:) :: jpdt(*)
+  integer, intent(in) :: jgdtn
+  integer, dimension(:) :: jgdt(*)
   logical, intent(in) :: extract
-  integer, intent(out) :: k, iret, leng
+  integer, intent(out) :: k
   character(len = 1), pointer, dimension(:) :: gribm
+  integer, intent(out) :: leng, iret
 
+  interface
+     subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+          extract, k, gribm, leng, iret)
+       use grib_mod
+       integer, intent(in) :: lugb, lugi, j, jdisc
+       integer, dimension(:) :: jids(*)
+       integer, intent(in) :: jpdtn
+       integer, dimension(:) :: jpdt(*)
+       integer, intent(in) :: jgdtn
+       integer, dimension(:) :: jgdt(*)
+       logical, intent(in) :: extract
+       integer, intent(out) :: k
+       character(len = 1), pointer, dimension(:) :: gribm
+       integer, intent(out) :: leng, iret
+     end subroutine getgb2p2
+  end interface
+
+  ! Call the updated version of this subroutine, which handles index
+  ! version 2.
+  call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+       extract, k, gribm, leng, iret)
+end subroutine getgb2p
+
+!> Find and extract a GRIB2 message from a file.
+!>
+!> This subroutine reads a GRIB index file (or optionally the GRIB
+!> file itself) to get the index buffer (i.e. table of contents) for
+!> the GRIB file. It finds in the index buffer a reference to the
+!> GRIB field requested.
+!>
+!> The GRIB field request specifies the number of fields to skip and
+!> the unpacked identification section, grid definition template and
+!> product defintion section parameters. (A requested parameter of
+!> -9999 means to allow any value of this parameter to be found.)
+!>
+!> If the requested GRIB field is found, then it is read from the GRIB
+!> file and unpacked. If the GRIB field is not found, then the return
+!> code will be nonzero.
+!>
+!> The derived type @ref grib_mod::gribfield contains allocated memory
+!> that must be freed by the caller with subroutine gf_free().
+!>
+!> @note Specifing an index file may increase speed.
+!> Do not engage the same logical unit from more than one processor.
+!>
+!> @param[in] lugb Unit of the unblocked GRIB data file. The
+!> file must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> routine.
+!> @param[in] lugi Unit of the unblocked GRIB index file. If
+!> nonzero, file must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> subroutine. Set to 0 to get index buffer from the GRIB file.
+!> @param[in] j Number of fields to skip (set to 0 to search
+!> from beginning).
+!> @param[in] jdisc GRIB2 discipline number of requested field. See
+!> [GRIB2 - TABLE 0.0 -
+!> DISCIPLINE](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml).
+!> Use -1 to accept any discipline.
+!> @param[in] jids Array of values in the identification
+!> section. (Set to -9999 for wildcard.)
+!> - jids(1) Identification of originating centre. See [TABLE 0 -
+!>   NATIONAL/INTERNATIONAL ORIGINATING
+!>   CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/table0.html).
+!> - jids(2) Identification of originating sub-centre. See [TABLE C -
+!>   NATIONAL
+!>   SUB-CENTERS](https://www.nco.ncep.noaa.gov/pmb/docs/on388/tablec.html).
+!> - jids(3) GRIB master tables version number. See [GRIB2 - TABLE 1.0
+!>   - GRIB Master Tables Version
+!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-0.shtml).
+!> - jids(4) GRIB local tables version number. See [GRIB2 - TABLE 1.1
+!>   - GRIB Local Tables Version
+!>   Number](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-1.shtml).
+!> - jids(5) Significance of reference time. See [GRIB2 - TABLE 1.2 -
+!>   Significance of Reference
+!>   Time](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-2.shtml).
+!> - jids(6) year (4 digits)
+!> - jids(7) month
+!> - jids(8) day
+!> - jids(9) hour
+!> - jids(10) minute
+!> - jids(11) second
+!> - jids(12) Production status of processed data. See [GRIB2 - TABLE
+!>   1.3 - Production Status of
+!>   Data](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-3.shtml).
+!> - jids(13) Type of processed data. See [GRIB2 - TABLE 1.4 - TYPE OF
+!>   DATA](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table1-4.shtml).
+!> @param[in] jpdtn Product Definition Template (PDT) number (n)
+!> (if = -1, don't bother matching PDT - accept any)
+!> @param[in] jpdt Array of values defining the Product Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] jgdtn Grid Definition Template (GDT) number (if = -1,
+!> don't bother matching GDT - accept any).
+!> @param[in] jgdt array of values defining the Grid Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] extract value indicating whether to return a
+!> GRIB2 message with just the requested field, or the entire
+!> GRIB2 message containing the requested field.
+!> - .true. return GRIB2 message containing only the requested field.
+!> - .false. return entire GRIB2 message containing the requested field.
+!> @param[out] k field number unpacked.
+!> @param[out] gribm returned GRIB message.
+!> @param[out] leng length of returned GRIB message in bytes.
+!> @param[out] iret integer return code
+!> - 0 No error.
+!> - 96 Error reading index.
+!> - 97 Error reading GRIB file.
+!> - 99 Request not found.
+!>
+!> @author Ed Hartnett @date 05-14-2024
+subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+     extract, k, gribm, leng, iret)
+  use grib_mod
+  implicit none
+
+  integer, intent(in) :: lugb, lugi, j, jdisc
+  integer, dimension(:) :: jids(*)
+  integer, intent(in) :: jpdtn
+  integer, dimension(:) :: jpdt(*)
+  integer, intent(in) :: jgdtn
+  integer, dimension(:) :: jgdt(*)
+  logical, intent(in) :: extract
+  integer, intent(out) :: k
+  character(len = 1), pointer, dimension(:) :: gribm
+  integer, intent(out) :: leng, iret
+  
   type(gribfield) :: gfld
   integer :: msk1, irgi, irgs, jk, lpos, msk2, mskp, nlen, nmess, nnum
 
@@ -588,7 +719,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   if (associated(cbuf)) deallocate(cbuf)
   
   call gf_free(gfld)
-end subroutine getgb2p
+end subroutine getgb2p2
 
 ! subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 !      extract, k, gribm, leng, iret)

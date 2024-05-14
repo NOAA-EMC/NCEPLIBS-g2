@@ -1232,7 +1232,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   integer (kind = 8) :: ibread8, lbread8, ibskip8, lengds8
   integer (kind = 8) :: ilnpds8, ilndrs8
   integer :: lensec, lensec1
-  integer :: mypos, inc, i
+  integer :: mypos, inc
 
   ! Parameters.
   ! Size of the internal char buffers used in this subroutine.
