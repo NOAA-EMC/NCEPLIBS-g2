@@ -520,7 +520,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        integer, intent(in) :: jgdtn
        integer, dimension(:) :: jgdt(*)
        logical, intent(in) :: extract
-       integer, intent(in) :: idxver
+       integer, intent(inout) :: idxver
        integer, intent(out) :: k
        character(len = 1), pointer, dimension(:) :: gribm
        integer, intent(out) :: leng, iret
@@ -635,7 +635,7 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   integer, intent(in) :: jgdtn
   integer, dimension(:) :: jgdt(*)
   logical, intent(in) :: extract
-  integer, intent(in) :: idxver
+  integer, intent(inout) :: idxver
   integer, intent(out) :: k
   character(len = 1), pointer, dimension(:) :: gribm
   integer, intent(out) :: leng, iret
@@ -648,11 +648,11 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 
   ! Declare interfaces (required for cbuf pointer).
   interface
-     subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
-       character(len = 1), pointer, dimension(:) :: cbuf
+     subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
        integer, intent(in) :: lugi
-       integer, intent(out) :: nlen, nnum, iret
-     end subroutine getg2i
+       character(len=1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: idxver, nlen, nnum, iret
+     end subroutine getg2i2
      subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum,  &
           nmess, iret)
        character(len = 1), pointer, dimension(:) :: cbuf
@@ -671,7 +671,7 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   ! Initialize the index information in cbuf.
   irgi = 0
   if (lugi .gt. 0) then
-     call getg2i(lugi, cbuf, nlen, nnum, irgi)
+     call getg2i2(lugi, cbuf, idxver, nlen, nnum, irgi)
   elseif (lugi .le. 0) then
      mskp = 0
      call getg2ir(lugb, msk1, msk2, mskp, cbuf, nlen, nnum, nmess, irgi)
