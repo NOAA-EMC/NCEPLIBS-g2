@@ -642,6 +642,8 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   
   type(gribfield) :: gfld
   integer :: msk1, irgi, irgs, jk, lpos, msk2, mskp, nlen, nmess, nnum
+  integer (kind = 8) :: msk1_8, msk2_8
+  parameter(msk1_8 = 32000_8, msk2_8 = 4000_8)
 
   character(len = 1), pointer, dimension(:) :: cbuf
   parameter(msk1 = 32000, msk2 = 4000)
@@ -653,12 +655,35 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        character(len=1), pointer, dimension(:) :: cbuf
        integer, intent(out) :: idxver, nlen, nnum, iret
      end subroutine getg2i2
-     subroutine getg2ir(lugb, msk1, msk2, mnum, cbuf, nlen, nnum,  &
-          nmess, iret)
+     subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
+          nlen, nnum, nmess, iret)
+       integer, intent(in) :: lugb
+       integer (kind = 8), intent(in) :: msk1, msk2
+       integer, intent(in) :: mnum, idxver
        character(len = 1), pointer, dimension(:) :: cbuf
-       integer, intent(in) :: lugb, msk1, msk2, mnum
        integer, intent(out) :: nlen, nnum, nmess, iret
-     end subroutine getg2ir
+     end subroutine getg2i2r
+     subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+          jgdt, k, gfld, lpos, iret)
+       import gribfield
+       character(len = 1), intent(in) :: cbuf(nlen)
+       integer, intent(in) :: idxver, nlen, nnum, j, jdisc
+       integer, dimension(:) :: jids(*)
+       integer, intent(in) :: jpdtn
+       integer, dimension(:) :: jpdt(*)
+       integer, intent(in) :: jgdtn
+       integer, dimension(:) :: jgdt(*)
+       integer, intent(out) :: k
+       type(gribfield), intent(out) :: gfld
+       integer, intent(out) :: lpos, iret
+     end subroutine getgb2s2
+!      subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+!        integer, intent(in) :: lugb, idxver
+!        character(len = 1), intent(in) :: cindex(*)
+!        logical, intent(in) :: extract
+!        character(len = 1), pointer, dimension(:) :: gribm
+!        integer, intent(out) :: leng, iret
+!      end subroutine getgb2rp2
      subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
        integer, intent(in) :: lugb
        character(len = 1), intent(in) :: cindex(*)
@@ -674,7 +699,7 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      call getg2i2(lugi, cbuf, idxver, nlen, nnum, irgi)
   elseif (lugi .le. 0) then
      mskp = 0
-     call getg2ir(lugb, msk1, msk2, mskp, cbuf, nlen, nnum, nmess, irgi)
+     call getg2i2r(lugb, msk1_8, msk2_8, mskp, idxver, cbuf, nlen, nnum, nmess, irgi)
   endif
   if (irgi .gt. 1) then
      iret = 96
@@ -682,7 +707,7 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   endif
 
   ! Find info from index and fill a grib_mod::gribfield variable.
-  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+  call getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        jk, gfld, lpos, irgs)
   if (irgs .ne. 0) then
      iret = 99
@@ -1061,17 +1086,22 @@ subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
   character(len = 1), pointer, dimension(:) :: gribm
   integer, intent(out) :: leng, iret
 
+  integer (kind = 8) :: leng8
+
   interface
-     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
        integer, intent(in) :: lugb, idxver
        character(len = 1), intent(in) :: cindex(*)
        logical, intent(in) :: extract
        character(len = 1), pointer, dimension(:) :: gribm
-       integer, intent(out) :: leng, iret
+       integer(kind = 8), intent(out) :: leng8
+       integer, intent(out) :: iret
      end subroutine getgb2rp2
   end interface
 
-  call getgb2rp2(lugb, 1, cindex, extract, gribm, leng, iret)
+  ! Call with idxver = 1 for legacy purposes.
+  call getgb2rp2(lugb, 1, cindex, extract, gribm, leng8, iret)
+  leng = int(leng8, kind(4))
 
 end subroutine getgb2rp
 
@@ -1106,13 +1136,14 @@ end subroutine getgb2rp
 !> - 97 Error reading grib file.
 !>
 !> @author Edward Hartnett, Stephen Gilbert @date Feb 13, 2024
-subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
   implicit none
 
   integer, intent(in) :: lugb, idxver
   character(len = 1), intent(in) :: cindex(*)
   logical, intent(in) :: extract
-  integer, intent(out) :: leng, iret
+  integer(kind = 8), intent(out) :: leng8
+  integer, intent(out) :: iret
   character(len = 1), pointer, dimension(:) :: gribm
 
   integer, parameter :: zero = 0
@@ -1125,7 +1156,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos, inc = 0
-  integer (kind = 8) :: lread8, iskip8, leng8, len2_8, len7_8, len6_8
+  integer (kind = 8) :: lread8, iskip8, len2_8, len7_8, len6_8
 
   iret = 0
 
@@ -1192,8 +1223,8 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      len7_8 = len7
      call bareadl(lugb, iskip8 + iskp7, len7_8, lread8, csec7)
 
-     leng = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
-     if (.not. associated(gribm)) allocate(gribm(leng))
+     leng8 = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
+     if (.not. associated(gribm)) allocate(gribm(leng8))
 
      ! Create Section 0
      gribm(1) = 'G'
@@ -1208,7 +1239,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      gribm(10) = char(0)
      gribm(11) = char(0)
      gribm(12) = char(0)
-     call g2_sbytec(gribm, leng, 12*8, INT4_BITS)
+     call g2_sbytec8(gribm, leng8, 12*8, INT8_BITS)
 
      ! Copy Section 1
      gribm(17:16 + len1) = cindex(45 + inc:44 + inc + len1)
@@ -1265,9 +1296,8 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
         mypos = mypos + INT8_BITS
      endif
      mypos = mypos + 7 * INT4_BITS
-     call g2_gbytec(cindex, leng, mypos, INT4_BITS)      ! length of grib message
-     if (.not. associated(gribm)) allocate(gribm(leng))
-     leng8 = leng
+     call g2_gbytec8(cindex, leng8, mypos, INT8_BITS)      ! length of grib message
+     if (.not. associated(gribm)) allocate(gribm(leng8))
      call bareadl(lugb, iskip8, leng8, lread8, gribm)
      if (leng8 .ne. lread8) then
         deallocate(gribm)
