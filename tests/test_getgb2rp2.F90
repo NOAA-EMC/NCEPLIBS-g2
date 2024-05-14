@@ -14,7 +14,7 @@ program test_getgb2rp2
   logical :: extract
   integer (kind = 8) :: leng8
   character(len=1), pointer, dimension(:) :: gribm
-  integer :: idxver, i
+  integer :: idxver
   
   ! Interfaces are needed due to pointers in the parameter lists.
   interface
@@ -41,7 +41,7 @@ program test_getgb2rp2
   call baopenr(lugb, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
 
-  idxver = 2
+  idxver = 1
   lugi = lugb   ! Force regeneration of index from GRIB2 file.
   call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 101
