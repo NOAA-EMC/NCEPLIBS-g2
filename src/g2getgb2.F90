@@ -994,14 +994,14 @@ end subroutine getgb2rp
 !> - 97 Error reading grib file.
 !>
 !> @author Edward Hartnett, Stephen Gilbert @date Feb 13, 2024
-subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
   implicit none
 
   integer, intent(in) :: lugb, idxver
   character(len = 1), intent(in) :: cindex(*)
   logical, intent(in) :: extract
   character(len = 1), pointer, dimension(:) :: gribm
-  integer, intent(out) :: leng
+  integer(kind = 8), intent(out) :: leng8
   integer, intent(out) :: iret
 
   integer, parameter :: zero = 0
@@ -1014,7 +1014,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos, inc = 0
-  integer (kind = 8) :: lread8, iskip8, leng8, len2_8, len7_8, len6_8
+  integer (kind = 8) :: lread8, iskip8, len2_8, len7_8, len6_8
 
   iret = 0
 
@@ -1081,8 +1081,8 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      len7_8 = len7
      call bareadl(lugb, iskip8 + iskp7, len7_8, lread8, csec7)
 
-     leng = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
-     if (.not. associated(gribm)) allocate(gribm(leng))
+     leng8 = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
+     if (.not. associated(gribm)) allocate(gribm(leng8))
 
      ! Create Section 0
      gribm(1) = 'G'
@@ -1097,7 +1097,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      gribm(10) = char(0)
      gribm(11) = char(0)
      gribm(12) = char(0)
-     call g2_sbytec(gribm, leng, 12*8, INT4_BITS)
+     call g2_sbytec8(gribm, leng8, 12*8, INT8_BITS)
 
      ! Copy Section 1
      gribm(17:16 + len1) = cindex(45 + inc:44 + inc + len1)
@@ -1154,9 +1154,8 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
         mypos = mypos + INT8_BITS
      endif
      mypos = mypos + 7 * INT4_BITS
-     call g2_gbytec(cindex, leng, mypos, INT4_BITS)      ! length of grib message
-     if (.not. associated(gribm)) allocate(gribm(leng))
-     leng8 = leng
+     call g2_gbytec8(cindex, leng8, mypos, INT8_BITS)      ! length of grib message
+     if (.not. associated(gribm)) allocate(gribm(leng8))
      call bareadl(lugb, iskip8, leng8, lread8, gribm)
      if (leng8 .ne. lread8) then
         deallocate(gribm)

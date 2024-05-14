@@ -12,7 +12,7 @@ program test_getgb2rp2
   integer :: lugb = 3
   integer :: nlen, nnum, iret
   logical :: extract
-  integer :: leng
+  integer (kind = 8) :: leng8
   character(len=1), pointer, dimension(:) :: gribm
   integer :: idxver = 1
   
@@ -24,12 +24,12 @@ program test_getgb2rp2
        character(len = 1), pointer, dimension(:) :: cindex
        integer, intent(out) :: nlen, nnum, iret
      end subroutine getidx2
-     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
        integer, intent(in) :: lugb, idxver
        character(len = 1), intent(in) :: cindex(*)
        logical, intent(in) :: extract
        character(len = 1), pointer, dimension(:) :: gribm
-       integer, intent(out) :: leng
+       integer(kind = 8), intent(out) :: leng8
        integer, intent(out) :: iret
      end subroutine getgb2rp2
   end interface
@@ -50,17 +50,17 @@ program test_getgb2rp2
   ! Extract the whole message.
   extract = .false.
   nullify(gribm)
-  call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng, iret)
-  print *, 'leng ', leng
-  if (leng .ne. 11183) stop 110
+  call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng8, iret)
+  print *, 'leng8 ', leng8
+  if (leng8 .ne. 11183) stop 110
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
   
   ! Extract just the field (same result).
   extract = .true.
-  call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng, iret)
-  print *, 'leng ', leng
-  if (leng .ne. 11183) stop 110
+  call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng8, iret)
+  print *, 'leng8 ', leng8
+  if (leng8 .ne. 11183) stop 110
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
   
