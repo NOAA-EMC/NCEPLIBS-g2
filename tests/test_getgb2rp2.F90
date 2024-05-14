@@ -14,24 +14,24 @@ program test_getgb2rp2
   logical :: extract
   integer :: leng
   character(len=1), pointer, dimension(:) :: gribm
+  integer :: idxver = 1
   
   ! Interfaces are needed due to pointers in the parameter lists.
   interface
-     subroutine getidx(lugb, lugi, cindex, nlen, nnum, iret)
+     subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
        integer, intent(in) :: lugb, lugi
-       integer, intent(out) :: nlen, nnum, iret
+       integer, intent(inout) :: idxver
        character(len = 1), pointer, dimension(:) :: cindex
-     end subroutine getidx
-  end interface
-
-  interface
-     subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
-       integer, intent(in) :: lugb
-       character(len=1), intent(in) :: cindex(*)
+       integer, intent(out) :: nlen, nnum, iret
+     end subroutine getidx2
+     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+       integer, intent(in) :: lugb, idxver
+       character(len = 1), intent(in) :: cindex(*)
        logical, intent(in) :: extract
-       character(len=1), pointer, dimension(:) :: gribm       
-       integer, intent(out) :: leng, iret
-     end subroutine getgb2rp
+       character(len = 1), pointer, dimension(:) :: gribm
+       integer, intent(out) :: leng
+       integer, intent(out) :: iret
+     end subroutine getgb2rp2
   end interface
 
   print *, 'Testing the getgb2rp() subroutine - expect and ignore error messages during test...'
@@ -42,7 +42,7 @@ program test_getgb2rp2
   if (iret .ne. 0) stop 100
 
   lugi = 0
-  call getidx(lugb, lugi, cbuf, nlen, nnum, iret)
+  call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 101
   if (nlen .ne. 137600 .or. nnum .ne. 688) stop 102
   print *, 'nlen, nnum: ', nlen, nnum
@@ -50,7 +50,7 @@ program test_getgb2rp2
   ! Extract the whole message.
   extract = .false.
   nullify(gribm)
-  call getgb2rp(lugb, cbuf, extract, gribm, leng, iret)
+  call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng, iret)
   print *, 'leng ', leng
   if (leng .ne. 11183) stop 110
   ! Deallocate buffer that got GRIB message.
@@ -58,7 +58,7 @@ program test_getgb2rp2
   
   ! Extract just the field (same result).
   extract = .true.
-  call getgb2rp(lugb, cbuf, extract, gribm, leng, iret)
+  call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng, iret)
   print *, 'leng ', leng
   if (leng .ne. 11183) stop 110
   ! Deallocate buffer that got GRIB message.

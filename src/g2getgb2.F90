@@ -1000,8 +1000,9 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer, intent(in) :: lugb, idxver
   character(len = 1), intent(in) :: cindex(*)
   logical, intent(in) :: extract
-  integer, intent(out) :: leng, iret
   character(len = 1), pointer, dimension(:) :: gribm
+  integer, intent(out) :: leng
+  integer, intent(out) :: iret
 
   integer, parameter :: zero = 0
   character(len = 1), allocatable, dimension(:) :: csec2, csec6, csec7
