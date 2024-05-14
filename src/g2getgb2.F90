@@ -1034,6 +1034,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         call g2_gbytec(cindex, iskp2, mypos, INT4_BITS)    ! bytes to skip for section 2
         mypos = mypos + INT4_BITS
         iskp2_8 = iskp2
+        mypos = mypos + 32 * INT1_BITS ! skip ahead in the cindex
      else
         inc = 12
         call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
@@ -1041,6 +1042,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         iskip = int(iskip8, kind(4))
         call g2_gbytec8(cindex, iskp2_8, mypos, INT8_BITS)    ! bytes to skip for section 2
         mypos = mypos + INT8_BITS
+        mypos = mypos + 36 * INT1_BITS ! skip ahead in the cindex
      endif
      if (iskp2_8 .gt. 0) then
         call bareadl(lugb, iskip8 + iskp2_8, 4_8, lread8, ctemp)
@@ -1051,21 +1053,20 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      else
         len2 = 0
      endif
-     mypos = mypos + 32 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec(cindex, len1, mypos, INT4_BITS)      ! length of section 1
-     ipos = 44 + len1
+     !ipos = mypos/8 + len1
      mypos = mypos + len1 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec(cindex, len3, mypos, INT4_BITS)      ! length of section 3
-     ipos = ipos + len3
+     !ipos = ipos + len3
      mypos = mypos + len3 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec(cindex, len4, mypos, INT4_BITS)      ! length of section 4
-     ipos = ipos + len4
+     !ipos = ipos + len4
      mypos = mypos + len4 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec(cindex, len5, mypos, INT4_BITS)      ! length of section 5
-     ipos = ipos + len5
+     !ipos = ipos + len5
      mypos = mypos + len5 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec(cindex, len6, mypos, INT4_BITS)      ! length of section 6
-     ipos = ipos + 5
+     !ipos = ipos + 5
      mypos = mypos + len6 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec(cindex, ibmap, mypos, INT1_BITS)      ! bitmap indicator
      if (ibmap .eq. 254) then
@@ -1081,7 +1082,6 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      call bareadl(lugb, iskip8 + iskp7, 4_8, lread8, ctemp)
      call g2_gbytec(ctemp, len7, 0, INT4_BITS)      ! length of section 7
      allocate(csec7(len7))
-     !call baread(lugb, iskip + iskp7, len7, lread, csec7)
      len7_8 = len7
      call bareadl(lugb, iskip8 + iskp7, len7_8, lread8, csec7)
 
