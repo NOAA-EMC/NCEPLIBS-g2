@@ -992,7 +992,7 @@ end subroutine getgb2rp
 !> - .true. = return grib2 message containing only the requested field.
 !> - .false. = return entire grib2 message containing the requested field.
 !> @param[out] gribm Returned grib message.
-!> @param[out] leng Length of returned grib message in bytes.
+!> @param[out] leng8 Length of returned grib message in bytes.
 !> @param[out] iret Return code:
 !> - 0 No error.
 !> - 97 Error reading grib file.
