@@ -1087,6 +1087,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
 
      leng8 = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
      if (.not. associated(gribm)) allocate(gribm(leng8))
+     print *, 'lenght of message 1:', leng8
 
      ! Create Section 0
      gribm(1) = 'G'
@@ -1159,6 +1160,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         mypos = mypos + INT8_BITS
         mypos = mypos + 2 * INT8_BITS + 4 * INT4_BITS
      endif
+     print *, 'lenght of message 2:', leng8
      call g2_gbytec8(cindex, leng8, mypos, INT8_BITS)      ! length of grib message
      if (.not. associated(gribm)) allocate(gribm(leng8))
      call bareadl(lugb, iskip8, leng8, lread8, gribm)

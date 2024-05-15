@@ -42,7 +42,8 @@ program test_getgb2rp2
   if (iret .ne. 0) stop 100
 
   idxver = 1
-  lugi = lugb   ! Force regeneration of index from GRIB2 file.
+  lugi = 0
+  !lugi = lugb   ! Force regeneration of index from GRIB2 file.
   call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 101
   if (nnum .ne. 688) stop 102
