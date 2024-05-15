@@ -248,8 +248,7 @@ subroutine getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 
 #ifdef LOGGING
   write(g2_log_msg, '(a, i2, a, i2, a, i5, a, i5, a, l, a, i1)') 'getgb2i2: lugb ', lugb, ' lugi ', lugi, &
-       ' j ', j, ' jdisc ', jdisc, ' unpack ', unpack, ' idxver ', idxver, &
-       ' unpack ', unpack
+       ' j ', j, ' jdisc ', jdisc, ' unpack ', unpack, ' idxver ', idxver
   call g2_log(1)
 #endif
   
