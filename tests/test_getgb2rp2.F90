@@ -4,6 +4,7 @@
 !
 ! Ed Hartnett 5/14/24
 program test_getgb2rp2
+  use g2logging
   use bacio_module
   implicit none
 
@@ -43,6 +44,8 @@ program test_getgb2rp2
 
   idxver = 1
   lugi = 0
+  g2_log_level = 3
+  
   !lugi = lugb   ! Force regeneration of index from GRIB2 file.
   call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 101

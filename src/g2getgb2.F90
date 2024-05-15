@@ -1180,6 +1180,13 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      endif
      mypos = mypos + 7 * INT4_BITS
      call g2_gbytec(cindex, leng, mypos, INT4_BITS)      ! length of grib message
+#ifdef LOGGING
+     write(g2_log_msg, *) ' iskip8 ', iskip8, ' mypos/8 ', mypos/8, &
+          ' leng ', leng
+     call g2_log(2)
+#endif
+  
+     
      if (.not. associated(gribm)) allocate(gribm(leng))
      leng8 = leng
      call bareadl(lugb, iskip8, leng8, lread8, gribm)

@@ -1300,7 +1300,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
 
 #ifdef LOGGING
   ! Log results for debugging.
-  write(g2_log_msg, '(a, i2, a, i7, a, i1)') 'ix2gb2: lugb ', lugb, ' lskip8 ', lskip8, &
+  write(g2_log_msg, *) 'ix2gb2: lugb ', lugb, ' lskip8 ', lskip8, &
        ' idxver ', idxver
   call g2_log(1)
 #endif
