@@ -8,7 +8,7 @@ set(fortran_src compack.F90 drstemplates.F90 g2bytes.F90 g2grids.F90
 g2get.F90 g2getgb2.F90 g2index.F90 g2gf.F90 g2unpack.F90 g2create.F90
 ${CMAKE_CURRENT_BINARY_DIR}/gribmod.F90 gridtemplates.F90 intmath.F90
 g2jpc.F90 pack_gp.f params_ecmwf.F90 params.F90 pdstemplates.F90
-g2png.F90 realloc.F90 reduce.f g2sim.F90 skgb.F90 g2spec.F90)
+g2png.F90 realloc.F90 reduce.f g2sim.F90 skgb.F90 g2spec.F90 g2logging.F90)
 
 # This function calls NCEPLIBS-w3emc.
 if (BUILD_WITH_W3EMC)

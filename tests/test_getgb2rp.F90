@@ -5,6 +5,7 @@
 ! Ed Hartnett 7/26/22
 program test_getgb2rp
   use bacio_module
+  use g2logging
   implicit none
 
   integer :: lugi
@@ -50,7 +51,9 @@ program test_getgb2rp
   ! Extract the whole message.
   extract = .false.
   nullify(gribm)
+  g2_log_level = 3
   call getgb2rp(lugb, cbuf, extract, gribm, leng, iret)
+  g2_log_level = 0
   print *, 'leng ', leng
   if (leng .ne. 11183) stop 110
   ! Deallocate buffer that got GRIB message.

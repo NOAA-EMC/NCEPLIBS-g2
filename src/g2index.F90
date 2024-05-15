@@ -263,6 +263,7 @@ end subroutine getidx
 !>
 !> @author Stephen Gilbert, Ed Hartnett @date Feb 9, 2024
 subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+  use g2logging
   implicit none
 
   integer, intent(in) :: lugb, lugi
@@ -293,6 +294,8 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
        character(len=1), pointer, dimension(:) :: cbuf
        integer, intent(out) :: idxver, nlen, nnum, iret
      end subroutine getg2i2
+  end interface
+  interface
      subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
           nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb
@@ -302,6 +305,13 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
        integer, intent(out) :: nlen, nnum, nmess, iret
      end subroutine getg2i2r
   end interface
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i2, a, i2, a, i1)') 'getidx2: lugb ', lugb, ' lugi ', lugi, &
+       ' idxver ', idxver
+  call g2_log(1)
+#endif
 
   ! Free all associated memory and exit.
   if (lugb .eq. 0) then
@@ -501,6 +511,7 @@ end subroutine getg2i
 !>
 !> @author Ed Hartnett, Mark Iredell @date Feb 9, 2024
 subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
+  use g2logging
   implicit none
   
   integer, intent(in) :: lugi
@@ -509,6 +520,12 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
   
   character chead*162
   integer :: ios, istat, lbuf, lhead, nskp
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i2, a, i1)') 'getg2i2: lugi ', lugi, ' idxver ', idxver
+  call g2_log(1)
+#endif
 
   nullify(cbuf)
   nlen = 0
@@ -624,6 +641,7 @@ end subroutine getg2ir
 !>
 !> @author Mark Iredell, Ed Hartnett @date 1995-10-31
 subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, iret)
+  use g2logging
   use re_alloc              ! needed for subroutine realloc
   implicit none
 
@@ -649,6 +667,13 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
        integer :: numfld, mlen, iret
      end subroutine ix2gb2
   end interface
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i2, a, i7, a, i7, a, i5, a, i1)') 'getg2i2r: lugb ', lugb, ' msk1 ', msk1, ' msk2 ', msk2, &
+       ' mnum ', mnum, ' idxver ', idxver
+  call g2_log(1)
+#endif
 
   ! Initialize.
   iret = 0
@@ -898,6 +923,7 @@ end subroutine getgb2s
 subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jgdt, k, gfld, lpos, iret)
   use grib_mod
+  use g2logging
   implicit none
 
   character(len = 1), intent(in) :: cbuf(nlen)
@@ -952,6 +978,13 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
        integer, intent(out) :: ierr
      end subroutine gf_unpack5
   end interface
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i1, a, i5, a, i7, a, i3, a, i3)') 'getgb2s2: idxver ', idxver, ' nlen ', nlen, &
+       ' nnum ', nnum, ' j ', j, ' jdisc ', jdisc
+  call g2_log(1)
+#endif
 
   ! Initialize.
   k = 0
@@ -1212,6 +1245,7 @@ end subroutine ixgb2
 !> @author Ed Hartnett, Mark Iredell @date Feb 5, 2024
 subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   use re_alloc              ! needed for subroutine realloc
+  use g2logging
   implicit none
 
   ! Subroutine parameters.
@@ -1232,7 +1266,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   integer (kind = 8) :: ibread8, lbread8, ibskip8, lengds8
   integer (kind = 8) :: ilnpds8, ilndrs8
   integer :: lensec, lensec1
-  integer :: mypos, inc, i
+  integer :: mypos, inc
 
   ! Parameters.
   ! Size of the internal char buffers used in this subroutine.
@@ -1263,6 +1297,13 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   ! Buffers.
   character cbread(LINMAX), cindex(LINMAX)
   character cids(LINMAX), cgds(LINMAX)
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i2, a, i7, a, i1)') 'ix2gb2: lugb ', lugb, ' lskip8 ', lskip8, &
+       ' idxver ', idxver
+  call g2_log(1)
+#endif
 
   ! Are we using index version 1 (legacy), or version 2 (introduced to
   ! handle files > 2 GB).
