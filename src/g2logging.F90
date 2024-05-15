@@ -4,6 +4,8 @@
 
 !> @brief Logging for the g2 library.
 !>
+!> Set g2_log_level to turn on logging.
+!>
 !> @author Edward Hartnett @date 5/15/24
 module g2logging
   integer g2_log_level !< 0 for no logging.
