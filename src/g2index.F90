@@ -898,6 +898,7 @@ end subroutine getgb2s
 subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
      jgdt, k, gfld, lpos, iret)
   use grib_mod
+  use g2logging
   implicit none
 
   character(len = 1), intent(in) :: cbuf(nlen)
@@ -952,6 +953,9 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
        integer, intent(out) :: ierr
      end subroutine gf_unpack5
   end interface
+
+  ! Log results for debugging.
+  call g2_log(1, "*** logging getgb2s2")
 
   ! Initialize.
   k = 0

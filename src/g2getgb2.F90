@@ -995,6 +995,7 @@ end subroutine getgb2rp
 !>
 !> @author Edward Hartnett, Stephen Gilbert @date Feb 13, 2024
 subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+  use g2logging
   implicit none
 
   integer, intent(in) :: lugb, idxver
@@ -1015,6 +1016,11 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: mypos, inc = 0
   integer (kind = 8) :: lread8, iskip8, leng8, len2_8, len7_8, len6_8
 
+#ifdef LOGGING
+  write(g2_log_msg, '(a)') 'howdy'
+  call g2_log(1, g2_log_msg)
+#endif
+  
   iret = 0
 
   ! Extract grib message from file.
