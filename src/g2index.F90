@@ -511,6 +511,7 @@ end subroutine getg2i
 !>
 !> @author Ed Hartnett, Mark Iredell @date Feb 9, 2024
 subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
+  use g2logging
   implicit none
   
   integer, intent(in) :: lugi
@@ -519,6 +520,12 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
   
   character chead*162
   integer :: ios, istat, lbuf, lhead, nskp
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i2, a, i1)') 'getg2i2: lugi ', lugi, ' idxver ', idxver
+  call g2_log(1)
+#endif
 
   nullify(cbuf)
   nlen = 0
@@ -634,6 +641,7 @@ end subroutine getg2ir
 !>
 !> @author Mark Iredell, Ed Hartnett @date 1995-10-31
 subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, iret)
+  use g2logging
   use re_alloc              ! needed for subroutine realloc
   implicit none
 
@@ -659,6 +667,13 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
        integer :: numfld, mlen, iret
      end subroutine ix2gb2
   end interface
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i2, a, i7, a, i7, a, i5, a, i1)') 'getg2i2r: lugb ', lugb, ' msk1 ', msk1, ' msk2 ', msk2, &
+       ' mnum ', mnum, ' idxver ', idxver
+  call g2_log(1)
+#endif
 
   ! Initialize.
   iret = 0
@@ -1230,6 +1245,7 @@ end subroutine ixgb2
 !> @author Ed Hartnett, Mark Iredell @date Feb 5, 2024
 subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   use re_alloc              ! needed for subroutine realloc
+  use g2logging
   implicit none
 
   ! Subroutine parameters.
@@ -1281,6 +1297,13 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   ! Buffers.
   character cbread(LINMAX), cindex(LINMAX)
   character cids(LINMAX), cgds(LINMAX)
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i2, a, i7, a, i1)') 'ix2gb2: lugb ', lugb, ' lskip8 ', lskip8, &
+       ' idxver ', idxver
+  call g2_log(1)
+#endif
 
   ! Are we using index version 1 (legacy), or version 2 (introduced to
   ! handle files > 2 GB).
