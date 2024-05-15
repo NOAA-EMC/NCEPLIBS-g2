@@ -190,6 +190,7 @@ end subroutine getgb2
 !> @author Ed Hartnett, Mark Iredell @date 2024-03-19
 subroutine getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      unpack, idxver, k, gfld, iret)
+  use g2logging
   use grib_mod
   implicit none
 
@@ -245,6 +246,13 @@ subroutine getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      end subroutine getgb2r2
   end interface
 
+#ifdef LOGGING
+  write(g2_log_msg, '(a, i2, a, i2, a, i5, a, i5, a, l, a, i1)') 'getgb2i2: lugb ', lugb, ' lugi ', lugi, &
+       ' j ', j, ' jdisc ', jdisc, ' unpack ', unpack, ' idxver ', idxver, &
+       ' unpack ', unpack
+  call g2_log(1)
+#endif
+  
   ! Fill cbuf with the index records of this file, by recalling them
   ! from memory, reading them from the index file, or generating them
   ! from the data file.
@@ -348,6 +356,7 @@ end subroutine getgb2l
 !>
 !> @author Stephen Gilbert @date 2002-05-07
 subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
+  use g2logging
   use grib_mod
   implicit none
 
@@ -376,6 +385,11 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
      end subroutine gf_unpack2
   end interface
 
+#ifdef LOGGING
+  write(g2_log_msg, '(a, i2, a, i1)') 'getgb2l2: lugb ', lugb, ' idxver ', idxver
+  call g2_log(1)
+#endif
+  
   ! Get info.
   nullify(gfld%local)
   iret = 0
@@ -775,6 +789,7 @@ end subroutine getgb2r
 !>
 !> @author Ed Hartnett, Stephen Gilbert @date Feb 14, 2024
 subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
+  use g2logging
   use grib_mod
   implicit none
 
@@ -813,6 +828,11 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
      end subroutine gf_unpack7
   end interface
 
+#ifdef LOGGING
+  write(g2_log_msg, '(a, i2, a, i1)') 'getgb2r2: lugb ', lugb, ' idxver ', idxver
+  call g2_log(1)
+#endif
+  
   ! Get info.
   nullify(gfld%bmap, gfld%fld)
   iret = 0
