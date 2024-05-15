@@ -1017,8 +1017,9 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer (kind = 8) :: lread8, iskip8, leng8, len2_8, len7_8, len6_8
 
 #ifdef LOGGING
-  write(g2_log_msg, '(a)') 'howdy'
-  call g2_log(1, g2_log_msg)
+  write(g2_log_msg, '(a, i2, a, i1, a, l)') 'getgb2rp2: lugb ', lugb, ' idxver ', idxver, &
+       ' extract ', extract
+  call g2_log(1)
 #endif
   
   iret = 0

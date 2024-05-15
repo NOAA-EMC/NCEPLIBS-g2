@@ -10,12 +10,11 @@ module g2logging
   character* 120 g2_log_msg !< For messages.
 
 contains
-  subroutine g2_log(level, msg)
+  subroutine g2_log(level)
     integer, intent(in) :: level
-    character(*), intent(in) :: msg
 
     if (level .le. g2_log_level) then
-       print *, msg
+       print *, g2_log_msg
     endif
   end subroutine g2_log
 end module g2logging
