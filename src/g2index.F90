@@ -263,6 +263,7 @@ end subroutine getidx
 !>
 !> @author Stephen Gilbert, Ed Hartnett @date Feb 9, 2024
 subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+  use g2logging
   implicit none
 
   integer, intent(in) :: lugb, lugi
@@ -293,6 +294,8 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
        character(len=1), pointer, dimension(:) :: cbuf
        integer, intent(out) :: idxver, nlen, nnum, iret
      end subroutine getg2i2
+  end interface
+  interface
      subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
           nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb
@@ -302,6 +305,13 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
        integer, intent(out) :: nlen, nnum, nmess, iret
      end subroutine getg2i2r
   end interface
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '(a, i2, a, i2, a, i1)') 'getidx2: lugb ', lugb, ' lugi ', lugi, &
+       ' idxver ', idxver
+  call g2_log(1)
+#endif
 
   ! Free all associated memory and exit.
   if (lugb .eq. 0) then
@@ -954,8 +964,8 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
      end subroutine gf_unpack5
   end interface
 
-  ! Log results for debugging.
 #ifdef LOGGING
+  ! Log results for debugging.
   write(g2_log_msg, '(a, i1, a, i5, a, i7, a, i3, a, i3)') 'getgb2s2: idxver ', idxver, ' nlen ', nlen, &
        ' nnum ', nnum, ' j ', j, ' jdisc ', jdisc
   call g2_log(1)
@@ -1240,7 +1250,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   integer (kind = 8) :: ibread8, lbread8, ibskip8, lengds8
   integer (kind = 8) :: ilnpds8, ilndrs8
   integer :: lensec, lensec1
-  integer :: mypos, inc, i
+  integer :: mypos, inc
 
   ! Parameters.
   ! Size of the internal char buffers used in this subroutine.
