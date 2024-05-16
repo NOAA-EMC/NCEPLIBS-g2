@@ -97,14 +97,14 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/data
-        key: data-developer-4
+        key: data-memcheck-1
 
     - name: memcheck
       run: |
         cd g2
         mkdir build
         cd build
-        cmake -DFTP_LARGE_TEST_FILES=ON -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
 
     - name: test_memcheck
