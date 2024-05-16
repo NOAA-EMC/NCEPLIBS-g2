@@ -72,7 +72,7 @@ program test_getgb2rp2
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
 
-  ! Extract just the field (same result).
+  ! Extract just the field (same result). 
   extract = .true.
   nullify(gribm)
   call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng8, iret)
