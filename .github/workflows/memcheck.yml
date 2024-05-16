@@ -1,10 +1,9 @@
 # This is a GitHub actions workflow for NCEPLIBS-g2.
 #
-# This builds the develop branch with documentation, warning check,
-# and address sanitizer.
+# This builds the develop branch and does a memcheck with valgrind.
 #
-# Ed Hartnett, 12/22/22
-name: developer
+# Ed Hartnett, 5/16/24
+name: memcheck
 on:
   push:
     branches:
@@ -19,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  developer:
+  memcheck:
     runs-on: ubuntu-latest
     env:
       FC: gfortran
@@ -98,23 +97,20 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/data
-        key: data-developer-5
+        key: data-developer-4
 
-    - name: asan
+    - name: memcheck
       run: |
-        set -x
         cd g2
         mkdir build
-        doxygen --version
         cd build
-        cmake -DFTP_LARGE_TEST_FILES=ON -DENABLE_DOCS=On -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DFTP_LARGE_TEST_FILES=ON -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="~/bacio;~/w3emc" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
 
-    - name: test_asan
+    - name: test_memcheck
       run: |
-        cd $GITHUB_WORKSPACE/g2/build
-        ctest --verbose --output-on-failure --rerun-failed
-        gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
+        cd $GITHUB_WORKSPACE/g2/build        
+        ctest -LE "^noMemcheck$" -T memcheck
 
     - name: cache-data
       if: steps.cache-data.outputs.cache-hit != 'true'
@@ -122,11 +118,4 @@ jobs:
         mkdir ~/data
         cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
 
-    - name: upload-test-coverage
-      uses: actions/upload-artifact@v4
-      with:
-        name: g2-test-coverage
-        path: |
-          g2/build/*.html
-          g2/build/*.css
 
