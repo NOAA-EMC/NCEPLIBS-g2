@@ -967,18 +967,23 @@ subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
   logical, intent(in) :: extract
   character(len = 1), pointer, dimension(:) :: gribm
   integer, intent(out) :: leng, iret
+  integer (kind = 8) :: leng8
 
   interface
-     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
        integer, intent(in) :: lugb, idxver
        character(len = 1), intent(in) :: cindex(*)
        logical, intent(in) :: extract
        character(len = 1), pointer, dimension(:) :: gribm
-       integer, intent(out) :: leng, iret
+       integer (kind = 8), intent(out) :: leng8
+       integer, intent(out) :: iret
      end subroutine getgb2rp2
   end interface
 
-  call getgb2rp2(lugb, 1, cindex, extract, gribm, leng, iret)
+  ! Call the legacy version of this function. It will only work with
+  ! GRIB messages < 2 GB.
+  call getgb2rp2(lugb, 1, cindex, extract, gribm, leng8, iret)
+  leng = int(leng8, kind(4))
 
 end subroutine getgb2rp
 
@@ -1007,20 +1012,21 @@ end subroutine getgb2rp
 !> - .true. = return grib2 message containing only the requested field.
 !> - .false. = return entire grib2 message containing the requested field.
 !> @param[out] gribm Returned grib message.
-!> @param[out] leng Length of returned grib message in bytes.
+!> @param[out] leng8 Length of returned grib message in bytes.
 !> @param[out] iret Return code:
 !> - 0 No error.
 !> - 97 Error reading grib file.
 !>
 !> @author Edward Hartnett, Stephen Gilbert @date Feb 13, 2024
-subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
+subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
   use g2logging
   implicit none
 
   integer, intent(in) :: lugb, idxver
   character(len = 1), intent(in) :: cindex(*)
   logical, intent(in) :: extract
-  integer, intent(out) :: leng, iret
+  integer (kind = 8), intent(out) :: leng8
+  integer, intent(out) :: iret
   character(len = 1), pointer, dimension(:) :: gribm
 
   integer, parameter :: zero = 0
@@ -1033,7 +1039,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos, inc = 0
-  integer (kind = 8) :: lread8, iskip8, leng8, len2_8, len7_8, len6_8
+  integer (kind = 8) :: lread8, iskip8, len2_8, len7_8, len6_8
 
 #ifdef LOGGING
   write(g2_log_msg, '(a, i2, a, i1, a, l)') 'getgb2rp2: lugb ', lugb, ' idxver ', idxver, &
@@ -1107,8 +1113,8 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      len7_8 = len7
      call bareadl(lugb, iskip8 + iskp7, len7_8, lread8, csec7)
 
-     leng = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
-     if (.not. associated(gribm)) allocate(gribm(leng))
+     leng8 = len0 + len1 + len2 + len3 + len4 + len5 + len6 + len7 + len8
+     if (.not. associated(gribm)) allocate(gribm(leng8))
 
      ! Create Section 0
      gribm(1) = 'G'
@@ -1117,13 +1123,9 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      gribm(4) = 'B'
      gribm(5) = char(0)
      gribm(6) = char(0)
-     gribm(7) = cindex(42 + inc)
-     gribm(8) = cindex(41 + inc)
-     gribm(9) = char(0)
-     gribm(10) = char(0)
-     gribm(11) = char(0)
-     gribm(12) = char(0)
-     call g2_sbytec(gribm, leng, 12*8, INT4_BITS)
+     gribm(7) = cindex(42 + inc) ! discipline
+     gribm(8) = cindex(41 + inc) ! GRIB version
+     call g2_sbytec8(gribm, leng8, 8 * INT1_BITS, INT8_BITS)
 
      ! Copy Section 1
      gribm(17:16 + len1) = cindex(45 + inc:44 + inc + len1)
@@ -1183,15 +1185,13 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      endif
 
      call g2_gbytec8(cindex, leng8, mypos, INT8_BITS)      ! length of grib message
-     leng = int(leng8, kind(4))
 #ifdef LOGGING
      write(g2_log_msg, *) ' iskip8 ', iskip8, ' mypos/8 ', mypos/8, &
-          ' leng ', leng
+          ' leng8 ', leng8
      call g2_log(2)
 #endif
 
-     if (.not. associated(gribm)) allocate(gribm(leng))
-     leng8 = leng
+     if (.not. associated(gribm)) allocate(gribm(leng8))
      call bareadl(lugb, iskip8, leng8, lread8, gribm)
      if (leng8 .ne. lread8) then
         deallocate(gribm)

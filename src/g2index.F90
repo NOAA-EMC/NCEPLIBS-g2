@@ -659,12 +659,12 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
 
   interface      ! required for cbuf pointer
      subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
-       integer :: lugb
-       integer (kind = 8) :: lskip8
-       integer :: idxver
-       integer (kind = 8) :: lgrib8
-       character(len = 1), pointer, dimension(:) :: cbuf
-       integer :: numfld, mlen, iret
+       integer, intent(in) :: lugb
+       integer (kind = 8), intent(in) :: lskip8
+       integer, intent(in)  :: idxver
+       integer (kind = 8), intent(in) :: lgrib8
+       character(len = 1), pointer, intent(inout), dimension(:) :: cbuf
+       integer, intent(out)  :: numfld, mlen, iret
      end subroutine ix2gb2
   end interface
 
@@ -1190,12 +1190,12 @@ subroutine ixgb2(lugb, lskip, lgrib, cbuf, numfld, mlen, iret)
 
   interface
      subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
-       integer :: lugb
-       integer (kind = 8) :: lskip8
-       integer :: idxver
-       integer (kind = 8) :: lgrib8
-       character(len = 1), pointer, dimension(:) :: cbuf
-       integer :: numfld, mlen, iret
+       integer, intent(in) :: lugb
+       integer (kind = 8), intent(in) :: lskip8
+       integer, intent(in)  :: idxver
+       integer (kind = 8), intent(in) :: lgrib8
+       character(len = 1), pointer, intent(inout), dimension(:) :: cbuf
+       integer, intent(out)  :: numfld, mlen, iret
      end subroutine ix2gb2
   end interface
 
@@ -1217,24 +1217,24 @@ end subroutine ixgb2
 !>
 !> See getg2i2() for thr format of the index buffer records.
 !>
-!> @param lugb Unit of the unblocked GRIB file. Must
+!> @param[in] lugb Unit of the unblocked GRIB file. Must
 !> be opened by [baopen() or baopenr()]
 !> (https://noaa-emc.github.io/NCEPLIBS-bacio/).
-!> @param lskip8 Number of bytes to skip before GRIB message.
-!> @param idxver Index version, use 1 for legacy, 2 for GRIB2 files > 2 GB.
+!> @param[in] lskip8 Number of bytes to skip before GRIB message.
+!> @param[in] idxver Index version, use 1 for legacy, 2 for GRIB2 files > 2 GB.
 !> @param lgrib8 Number of bytes in GRIB message. When subroutine is
 !> called, if this is < 5000, it will be used as the number of bytes
 !> initially read from the file. So for GRIB2 messages of < 5000 in
 !> size, this should be set to the size of the GRIB2 message.
-!> @param cbuf Pointer to a buffer that will get the index
+!> @param[inout] cbuf Pointer to a buffer that will get the index
 !> records. If any memory is associated with cbuf when this subroutine
 !> is called, cbuf will be nullified in the subroutine. Initially cbuf
 !> will get an allocation of 5000 bytes. realloc() will be used to
 !> increase the size if necessary. Users must free memory that cbuf
 !> points to when cbuf is no longer needed.
-!> @param numfld Number of index records created.
-!> @param mlen Total length of all index records.
-!> @param iret Return code
+!> @param[out] numfld Number of index records created.
+!> @param[out] mlen Total length of all index records.
+!> @param[out] iret Return code
 !> - 0 No error
 !> - 1 Not enough memory available to hold full index buffer.
 !> - 2 I/O error in read.
@@ -1249,12 +1249,12 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   implicit none
 
   ! Subroutine parameters.
-  integer :: lugb
-  integer (kind = 8) :: lskip8
-  integer :: idxver
-  integer (kind = 8) :: lgrib8
-  character(len = 1), pointer, dimension(:) :: cbuf
-  integer :: numfld, mlen, iret
+  integer, intent(in) :: lugb
+  integer (kind = 8), intent(in) :: lskip8
+  integer, intent(in)  :: idxver
+  integer (kind = 8), intent(in) :: lgrib8
+  character(len = 1), pointer, intent(inout), dimension(:) :: cbuf
+  integer, intent(out)  :: numfld, mlen, iret
   
   character cver, cdisc
   character(len = 4) :: ctemp
