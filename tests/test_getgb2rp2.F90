@@ -65,7 +65,7 @@ program test_getgb2rp2
 
   ! Extract the whole message.
   extract = .false.
-  !     nullify(gribm)
+  nullify(gribm)
   call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng8, iret)
   print *, 'leng8 ', leng8
   if (leng8 .ne. 11183) stop 110
@@ -74,6 +74,7 @@ program test_getgb2rp2
 
   ! Extract just the field (same result).
   extract = .true.
+  nullify(gribm)
   call getgb2rp2(lugb, idxver, cbuf, extract, gribm, leng8, iret)
   print *, 'leng8 ', leng8
   if (leng8 .ne. 11183) stop 110
