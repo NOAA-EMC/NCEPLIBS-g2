@@ -1174,7 +1174,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
      if (idxver .eq. 1) then
         call g2_gbytec(cindex, iskip, mypos, INT4_BITS)    ! bytes to skip in file
         mypos = mypos + INT4_BITS
-        mypos = mypos + 7 * INT4_BITS
+        mypos = mypos + 6 * INT4_BITS
         iskip8 = iskip
      else
         call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
@@ -1182,7 +1182,8 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng, iret)
         mypos = mypos + 2 * INT8_BITS + 4 * INT4_BITS
      endif
 
-     call g2_gbytec(cindex, leng, mypos, INT4_BITS)      ! length of grib message
+     call g2_gbytec8(cindex, leng8, mypos, INT8_BITS)      ! length of grib message
+     leng = int(leng8, kind(4))
 #ifdef LOGGING
      write(g2_log_msg, *) ' iskip8 ', iskip8, ' mypos/8 ', mypos/8, &
           ' leng ', leng
