@@ -472,23 +472,23 @@ end subroutine getg2i
 !>
 !> Index Version 1 | Index Version 2 | Contents
 !> ----------------|-----------------|---------
-!> 001 - 004 | 001 - 004 | length of index record
-!> 005 - 008 | 005 - 012 | bytes to skip in data file before grib message
-!> 009 - 012 | 013 - 016 | bytes to skip in message before lus (local use) set = 0, if no local section.
-!> 013 - 016 | 017 - 020 | bytes to skip in message before gds
-!> 017 - 020 | 021 - 024 | bytes to skip in message before pds
-!> 021 - 024 | 025 - 028 | bytes to skip in message before drs
-!> 025 - 028 | 029 - 032 | bytes to skip in message before bms
-!> 029 - 032 | 033 - 036 | bytes to skip in message before data section
-!> 033 - 040 | 037 - 044 | bytes total in the message
-!> 041 - 041 | 045 - 045 | grib version number (always 2)
-!> 042 - 042 | 046 - 046 | message discipline
-!> 043 - 044 | 047 - 048 | field number within grib2 message
-!> 045 -  ii | 045 -  ii | length of sec1 (4-bytes), identification section (ids) (character)
-!> ii+1-  jj | ii+1-  jj | grid definition section (gds)
-!> jj+1-  kk | jj+1-  kk | product definition section (pds)
-!> kk+1-  ll | kk+1-  ll | the data representation section (drs)
-!> ll+1-ll+6 | ll+1-ll+6 | first 6 bytes of the bit map section (bms)
+!> 001 - 004 | 001 - 004 | length of index record (4 bytes)
+!> 005 - 008 | 005 - 012 | bytes to skip in data file before grib message (4/8 bytes)
+!> 009 - 012 | 013 - 020 | bytes to skip in message before lus (local use) set = 0, if no local section. (4/8 bytes)
+!> 013 - 016 | 021 - 028 | bytes to skip in message before gds (4/8 bytes)
+!> 017 - 020 | 029 - 032 | bytes to skip in message before pds (4 bytes)
+!> 021 - 024 | 033 - 036 | bytes to skip in message before drs (4 bytes)
+!> 025 - 028 | 037 - 040 | bytes to skip in message before bms (4 bytes)
+!> 029 - 032 | 041 - 044 | bytes to skip in message before data section (4 bytes)
+!> 033 - 040 | 045 - 052 | bytes total in the message (8 bytes)
+!> 041 - 041 | 053 - 053 | grib version number (always 2) (1 byte)
+!> 042 - 042 | 054 - 054 | message discipline (1 byte)
+!> 043 - 044 | 055 - 056 | field number within grib2 message (2 bytes)
+!> 045 -  ii | 057 -  ii | identification section (ids) (character)
+!> ii+1-  jj | ii+1-  jj | grid definition section (gds) (character)
+!> jj+1-  kk | jj+1-  kk | product definition section (pds) (character)
+!> kk+1-  ll | kk+1-  ll | the data representation section (drs) (character)
+!> ll+1-ll+6 | ll+1-ll+6 | first 6 bytes of the bit map section (bms) (character)
 !>
 !> @note Subprogram can be called from a multiprocessing environment.
 !> Do not engage the same logical unit from more than one processor.
