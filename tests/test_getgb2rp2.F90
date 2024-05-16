@@ -45,6 +45,7 @@ program test_getgb2rp2
 
      idxver = i
      lugi = 0
+     leng8 = 0
      g2_log_level = 1
 
      !lugi = lugb   ! Force regeneration of index from GRIB2 file.
