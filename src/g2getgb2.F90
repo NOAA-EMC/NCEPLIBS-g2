@@ -1192,6 +1192,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
 #endif
 
      if (.not. associated(gribm)) allocate(gribm(leng8))
+     leng = int(leng8, kind(4))
      call bareadl(lugb, iskip8, leng8, lread8, gribm)
      if (leng8 .ne. lread8) then
         deallocate(gribm)
