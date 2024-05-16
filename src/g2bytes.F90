@@ -23,6 +23,15 @@ subroutine g2_gbytec(in, iout, iskip, nbits)
   character*1, intent(in) :: in(*)
   integer, intent(inout) :: iout(*)
   integer, intent(in) :: iskip, nbits
+
+  interface
+     subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)
+       character*1, intent(in) :: in(*)
+       integer, intent(out) :: iout(*)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_gbytesc
+  end interface
+     
   call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
 end subroutine g2_gbytec
 
@@ -46,6 +55,14 @@ subroutine g2_gbytec1(in, siout, iskip, nbits)
   integer, intent(inout) :: siout
   integer, intent(in) :: iskip, nbits
   integer (kind = 4) :: iout(1)
+
+  interface
+     subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)
+       character*1, intent(in) :: in(*)
+       integer, intent(out) :: iout(*)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_gbytesc
+  end interface
   
   call g2_gbytesc(in, iout, iskip, nbits, 0, 1)
   siout = iout(1)
@@ -70,6 +87,14 @@ subroutine g2_gbytescr(in, rout, iskip, nbits, nskip, n)
   real (kind = 4), intent(out) :: rout(*)
   integer, intent(in) :: iskip, nbits, nskip, n
   integer (kind = 4) :: iout(n)
+
+  interface
+     subroutine g2_gbytesc(in, iout, iskip, nbits, nskip, n)
+       character*1, intent(in) :: in(*)
+       integer, intent(out) :: iout(*)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_gbytesc
+  end interface
 
   ! Unpack into integer array.
   call g2_gbytesc(in, iout, iskip, nbits, nskip, n)
@@ -154,6 +179,15 @@ subroutine g2_gbytec8(in, iout, iskip, nbits)
   character*1, intent(in) :: in(*)
   integer (kind = 8), intent(inout) :: iout(*)
   integer, intent(in) :: iskip, nbits
+
+  interface
+     subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
+       character*1, intent(in) :: in(*)
+       integer (kind = 8), intent(out) :: iout(*)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_gbytesc8
+  end interface
+     
   call g2_gbytesc8(in, iout, iskip, nbits, 0, 1)
 end subroutine g2_gbytec8
 
@@ -177,6 +211,14 @@ subroutine g2_gbytec81(in, siout, iskip, nbits)
   integer (kind = 8), intent(inout) :: siout
   integer, intent(in) :: iskip, nbits
   integer (kind = 8) :: iout(1)
+
+  interface
+     subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
+       character*1, intent(in) :: in(*)
+       integer (kind = 8), intent(out) :: iout(*)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_gbytesc8
+  end interface
   
   call g2_gbytesc8(in, iout, iskip, nbits, 0, 1)
   siout = iout(1)
@@ -200,6 +242,7 @@ subroutine g2_gbytesc8(in, iout, iskip, nbits, nskip, n)
   character*1, intent(in) :: in(*)
   integer (kind = 8), intent(out) :: iout(*)
   integer, intent(in) :: iskip, nbits, nskip, n
+  
   integer :: tbit, bitcnt
   integer, parameter :: ones(8) = (/ 1, 3, 7, 15, 31, 63, 127, 255 /)
 
@@ -264,6 +307,15 @@ subroutine g2_sbytec(out, in, iskip, nbits)
   character*1, intent(inout) :: out(*)
   integer, intent(in) :: in(*)
   integer, intent(in) :: iskip, nbits
+
+  interface
+     subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
+       character*1, intent(out) :: out(*)
+       integer, intent(in) :: in(n)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_sbytesc
+  end interface
+     
   call g2_sbytesc(out, in, iskip, nbits, 0, 1)
 end subroutine g2_sbytec
 
@@ -287,6 +339,15 @@ subroutine g2_sbytec1(out, in, iskip, nbits)
   integer, intent(in) :: in
   integer, intent(in) :: iskip, nbits
   integer :: ain(1)
+
+  interface
+     subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
+       character*1, intent(out) :: out(*)
+       integer, intent(in) :: in(n)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_sbytesc
+  end interface
+
   ain(1) = in
   call g2_sbytesc(out, ain, iskip, nbits, 0, 1)
 end subroutine g2_sbytec1
@@ -308,6 +369,14 @@ subroutine g2_sbytescr(out, rin, iskip, nbits, nskip, n)
   real, intent(in) :: rin(n)
   integer, intent(in) :: iskip, nbits, nskip, n
   integer :: in(n)
+
+  interface
+     subroutine g2_sbytesc(out, in, iskip, nbits, nskip, n)
+       character*1, intent(out) :: out(*)
+       integer, intent(in) :: in(n)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_sbytesc
+  end interface
 
   ! Transfer real array to integer array.
   in(1:n) = transfer(rin, in(1:n), n)
@@ -405,6 +474,15 @@ subroutine g2_sbytec8(out, in, iskip, nbits)
   character*1, intent(inout) :: out(*)
   integer (kind = 8), intent(in) :: in(*)
   integer, intent(in) :: iskip, nbits
+
+  interface
+     subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
+       character*1, intent(out) :: out(*)
+       integer (kind = 8), intent(in) :: in(n)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_sbytesc8
+  end interface
+  
   call g2_sbytesc8(out, in, iskip, nbits, 0, 1)
 end subroutine g2_sbytec8
 
@@ -496,6 +574,14 @@ subroutine rdieeec(cieee, a, num)
   real, intent(out) :: a(num)
   integer, intent(in) :: num
   real (kind = 4) :: rieee(num)
+
+  interface
+     subroutine rdieee(rieee, a, num)
+       real(4), intent(in) :: rieee(num)
+       real, intent(out) :: a(num)
+       integer, intent(in) :: num
+     end subroutine rdieee
+  end interface
 
   rieee(1:num) = transfer(cieee(1:num * 4), rieee, num)
   call rdieee(rieee, a, num)

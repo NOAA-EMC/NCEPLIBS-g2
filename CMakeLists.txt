@@ -53,7 +53,7 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
   set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
   set(CMAKE_C_FLAGS_DEBUG "-ggdb -Wall")
   set(CMAKE_Fortran_FLAGS "-g -funroll-loops ${CMAKE_Fortran_FLAGS}")
-  set(CMAKE_Fortran_FLAGS_DEBUG "-ggdb -Wall")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-ggdb -Wall -Wimplicit-interface")
   set(fortran_d_flags "-fdefault-real-8")
 endif()
 
