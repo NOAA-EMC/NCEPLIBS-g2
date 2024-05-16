@@ -45,7 +45,7 @@ program test_getgb2rp2
 
      idxver = i
      lugi = 0
-     g2_log_level = 3
+     g2_log_level = 1
 
      !lugi = lugb   ! Force regeneration of index from GRIB2 file.
      call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
@@ -88,6 +88,9 @@ program test_getgb2rp2
 
   ! Deallocate the buffer that holds index.
   deallocate(cbuf)
+
+  ! Free library memory.
+  !  call gf_finalize()
 
   print *, 'SUCCESS!...'
 
