@@ -374,6 +374,17 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
   integer :: mypos
 
   interface
+     subroutine g2_gbytec1(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec1
+     subroutine g2_gbytec81(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer (kind = 8), intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+       integer (kind = 8) :: iout(1)
+     end subroutine g2_gbytec81
      subroutine gf_unpack2(cgrib, lcgrib, iofst, lencsec2, csec2, ierr)
        character(len = 1), intent(in) :: cgrib(lcgrib)
        integer, intent(in) :: lcgrib
@@ -383,6 +394,7 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
        character(len = 1), pointer, dimension(:) :: csec2
      end subroutine gf_unpack2
   end interface
+
 
 #ifdef LOGGING
   write(g2_log_msg, '(a, i2, a, i1)') 'getgb2l2: lugb ', lugb, ' idxver ', idxver
@@ -398,18 +410,18 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
   ! index version 2.
   if (idxver .eq. 1) then
      ! Read bytes to skip in file before message.
-     call g2_gbytec(cindex, lskip, mypos, INT4_BITS)
+     call g2_gbytec1(cindex, lskip, mypos, INT4_BITS)
      mypos = mypos + INT4_BITS
      lskip8 = lskip
      ! Read bytes to skip in msg before local use.
-     call g2_gbytec(cindex, skip2, mypos, INT4_BITS)
+     call g2_gbytec1(cindex, skip2, mypos, INT4_BITS)
      skip28 = skip2
   else
      ! Read bytes to skip in file before message.
-     call g2_gbytec8(cindex, lskip8, mypos, INT8_BITS)
+     call g2_gbytec81(cindex, lskip8, mypos, INT8_BITS)
      mypos = mypos + INT8_BITS
      ! Read bytes to skip in msg before local use.
-     call g2_gbytec8(cindex, skip28, mypos, INT8_BITS)
+     call g2_gbytec81(cindex, skip28, mypos, INT8_BITS)
      mypos = mypos + INT8_BITS
   endif
 
@@ -419,7 +431,7 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
 
      ! Get length of section.
      call bareadl(lugb, iskip8, 4_8, lread8, csize)    
-     call g2_gbytec(csize, ilen, 0, 32)
+     call g2_gbytec1(csize, ilen, 0, 32)
      allocate(ctemp(ilen))
      ilen8 = ilen
 

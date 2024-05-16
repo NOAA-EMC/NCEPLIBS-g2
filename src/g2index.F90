@@ -294,8 +294,6 @@ subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
        character(len=1), pointer, dimension(:) :: cbuf
        integer, intent(out) :: idxver, nlen, nnum, iret
      end subroutine getg2i2
-  end interface
-  interface
      subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
           nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb
@@ -942,11 +940,6 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
   integer :: i, icnd, inlen, iof, ipos, jpos, lsec1, lsec3, lsec4, lsec5, numgdt, numpdt, inc
 
   interface
-     subroutine g2_gbytec(in, iout, iskip, nbits)
-       character*1, intent(in) :: in(*)
-       integer, intent(inout) :: iout(*)
-       integer, intent(in) :: iskip, nbits
-     end subroutine g2_gbytec
      subroutine g2_gbytec1(in, siout, iskip, nbits)
        character*1, intent(in) :: in(*)
        integer, intent(inout) :: siout
@@ -1314,11 +1307,6 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
        integer, intent(inout) :: siout
        integer, intent(in) :: iskip, nbits
      end subroutine g2_gbytec1
-     subroutine g2_gbytec(in, iout, iskip, nbits)
-       character*1, intent(in) :: in(*)
-       integer, intent(inout) :: iout(*)
-       integer, intent(in) :: iskip, nbits
-     end subroutine g2_gbytec
   end interface
 
 #ifdef LOGGING
