@@ -4,6 +4,7 @@
 !
 ! Ed Hartnett 5/9/24
 program test_getg2ir2
+  use g2logging
   use bacio_module
   implicit none
 
@@ -12,7 +13,7 @@ program test_getg2ir2
   integer (kind = 8) :: msk1, msk2
   integer :: mnum
   integer :: nlen, nnum, nmess, iret
-  integer :: idxver
+  integer :: idxver, i
 
   interface
      subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, iret)
@@ -34,7 +35,8 @@ program test_getg2ir2
   call baopenr(lugb, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
   if (iret .ne. 0) stop 100
 
-  do idxver = 1, 1
+  do i = 1, 1
+     idxver = 1
      print *, '   testing with idxver', idxver
      msk1 = 1000
      msk2 = 1000
