@@ -523,7 +523,7 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
 
 #ifdef LOGGING
   ! Log results for debugging.
-  write(g2_log_msg, '(a, i2, a, i1)') 'getg2i2: lugi ', lugi, ' idxver ', idxver
+  write(g2_log_msg, *) 'getg2i2: lugi ', lugi
   call g2_log(1)
 #endif
 
