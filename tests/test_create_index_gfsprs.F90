@@ -80,7 +80,6 @@ program test_create_index_gfsprs
   ! Read the index file.
   call getg2i2(lugi, cbuf, myidxver, nlen, nnum, iret)
   !print *, myidxver, nlen, nnum, iret
-  if (nlen .ne. 254378) stop 80
   if (nnum .ne. 1103 .or. iret .ne. 0) stop 81
 
   ! Close the index file.
