@@ -76,8 +76,7 @@ PROGRAM test_getgb2p_2
 
      READ (12,GRIBIDS,iostat=ios)
      if (ios .ne. 0) then
-        write(6,fmt='(" Error reading PDS from input file. iostat = " &
-             ,i5)') ios
+        write(6,fmt='(" Error reading PDS from input file. iostat = ",i5)') ios
         cycle
      endif
      nrec = nrec + 1

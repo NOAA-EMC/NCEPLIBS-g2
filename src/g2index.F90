@@ -1445,6 +1445,10 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            call g2_sbytec(cindex, locgds, mypos, INT4_BITS)   ! location of gds
            !print '(i3, a8, i4)', mypos/8, ' locgds ', locgds
            mypos = mypos + INT4_BITS
+           ! different for index version 1 and 2.
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
+           !print '(i3, a8, i4)', mypos/8, ' locpds ', int(ibskip8 - lskip8, kind(4))
+           mypos = mypos + INT4_BITS
         else
            inc = 12
            call g2_sbytec8(cindex, lskip8, mypos, INT8_BITS)    ! bytes to skip
@@ -1456,14 +1460,14 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            call g2_sbytec8(cindex, locgds8, mypos, INT8_BITS)   ! location of gds
            !print '(i3, a8, i4)', mypos/8, ' locgds ', locgds
            mypos = mypos + INT8_BITS
+           ! different for index version 1 and 2.
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
+           !print '(i3, a8, i4)', mypos/8, ' locpds ', int(ibskip8 - lskip8, kind(4))
+           mypos = mypos + INT4_BITS
         endif
 
         ! These ints are the same size in index version 1 and 2. The
         ! mypos variable contains the proper offset, which is
-        ! different for index version 1 and 2.
-        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
-        !print '(i3, a8, i4)', mypos/8, ' locpds ', int(ibskip8 - lskip8, kind(4))
-        mypos = mypos + INT4_BITS
         mypos = mypos + INT4_BITS * 3 ! skip ahead in cbuf
         call g2_sbytec8(cindex, lgrib8, mypos, INT8_BITS)    ! len of grib2
         !print '(i3, a8, i4)', mypos/8, ' lgrib8 ', lgrib8
