@@ -1002,7 +1002,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
   else
      ! Add the extra 8 bytes in the version 2 index record, starting
      ! at byte 9.
-     inc = 12
+     inc = 16
   endif
 
   ! Search for request.
@@ -1311,8 +1311,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
 
 #ifdef LOGGING
   ! Log results for debugging.
-  write(g2_log_msg, *) 'ix2gb2: lugb ', lugb, ' lskip8 ', lskip8, &
-       ' idxver ', idxver
+  write(g2_log_msg, *) 'ix2gb2: lugb ', lugb, ' lskip8 ', lskip8, ' idxver ', idxver
   call g2_log(1)
 #endif
 
@@ -1326,7 +1325,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
      ! changed from 4-byte ints to 8-byte ints. This is the total
      ! extra bytes that were added to the beginning of the index
      ! record in version 2.
-     inc = 12
+     inc = 16
   endif
 
   ! Initialize values and allocate buffer (at the user-provided cbuf
@@ -1445,12 +1444,16 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            call g2_sbytec(cindex, locgds, mypos, INT4_BITS)   ! location of gds
            !print '(i3, a8, i4)', mypos/8, ' locgds ', locgds
            mypos = mypos + INT4_BITS
-           ! different for index version 1 and 2.
            call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
+#ifdef LOGGING
+           write(g2_log_msg, *) ' writing pds location to index: mypos/8 ', mypos/8, &
+                ' loc ', int(ibskip8 - lskip8, kind(4))
+           call g2_log(2)
+#endif
            !print '(i3, a8, i4)', mypos/8, ' locpds ', int(ibskip8 - lskip8, kind(4))
            mypos = mypos + INT4_BITS
         else
-           inc = 12
+           inc = 16
            call g2_sbytec8(cindex, lskip8, mypos, INT8_BITS)    ! bytes to skip
            !print '(i3, a7, i4)', mypos/8, ' lskip ', lskip
            mypos = mypos + INT8_BITS
@@ -1460,10 +1463,14 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            call g2_sbytec8(cindex, locgds8, mypos, INT8_BITS)   ! location of gds
            !print '(i3, a8, i4)', mypos/8, ' locgds ', locgds
            mypos = mypos + INT8_BITS
-           ! different for index version 1 and 2.
-           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)  ! location of pds
+           call g2_sbytec8(cindex, ibskip8 - lskip8, mypos, INT8_BITS)  ! location of pds
            !print '(i3, a8, i4)', mypos/8, ' locpds ', int(ibskip8 - lskip8, kind(4))
-           mypos = mypos + INT4_BITS
+#ifdef LOGGING
+           write(g2_log_msg, *) ' writing pds location to index: mypos/8 ', mypos/8, &
+                ' loc ', ibskip8 - lskip8
+           call g2_log(2)
+#endif
+           mypos = mypos + INT8_BITS
         endif
 
         ! These ints are the same size in index version 1 and 2. The

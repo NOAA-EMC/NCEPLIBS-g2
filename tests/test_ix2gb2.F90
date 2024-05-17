@@ -5,6 +5,7 @@
 !
 ! Ed Hartnett 5/9/24
 program test_ix2gb2
+  use g2logging
   use bacio_module
   implicit none
 
@@ -94,6 +95,7 @@ program test_ix2gb2
 
      ! Create an index record for the first message in the gdas test
      ! file.
+     g2_log_level = 5
      lskip8 = 0
      lgrib8 = 5000
      call ix2gb2(lugi, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
@@ -101,7 +103,7 @@ program test_ix2gb2
      if (idxver .eq. 1) then
         if (mlen .ne. 200) stop 11
      else
-        if (mlen .ne. 212) then
+        if (mlen .ne. 216) then
            print *, mlen
            stop 11
         endif
@@ -119,9 +121,9 @@ program test_ix2gb2
      print *, '    lengds, lenpds, lendrs', lengds, lenpds, lendrs
 
      if (idxver .eq. 1) then
-        if (index_rec_len .ne. 200) stop 105
+        if (index_rec_len .ne. 200) stop 104
      else
-        if (index_rec_len .ne. 212) then
+        if (index_rec_len .ne. 216) then
            print *, index_rec_len
            stop 105
         endif

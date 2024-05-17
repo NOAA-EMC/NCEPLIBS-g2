@@ -88,7 +88,7 @@ program test_create_index_gdas
      if (idxver .eq. 1) then
         if (nlen .ne. 452) stop 80
      else
-        if (nlen .ne. 476) then
+        if (nlen .ne. 484) then
            print *, nlen
            stop 80
         endif

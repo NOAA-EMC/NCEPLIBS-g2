@@ -198,19 +198,20 @@ subroutine read_index(cbuf, idxver, index_rec_len, b2s_message8, b2s_lus8, &
      !print '(i3, a8, z4)', mypos/8, ' b2s_gds', b2s_gds
      mypos = mypos + INT4_BITS
      b2s_gds8 = b2s_gds
+     call g2_gbytec1(cbuf, b2s_pds, mypos, INT4_BITS)
+     mypos = mypos + INT4_BITS
+     b2s_pds8 = b2s_pds
   else
-     inc = 12
+     inc = 16
      call g2_gbytec81(cbuf, b2s_message8, 8 * 4, INT8_BITS)
      mypos = mypos + INT8_BITS
      call g2_gbytec81(cbuf, b2s_lus8, 8 * 12, INT8_BITS)
      mypos = mypos + INT8_BITS
      call g2_gbytec81(cbuf, b2s_gds8, 8 * 20, INT8_BITS)
      mypos = mypos + INT8_BITS
-     ! call g2_gbytec(cbuf, b2s_pds, 8 * 16, INT8_BITS)
+     call g2_gbytec81(cbuf, b2s_pds8, mypos, INT8_BITS)
+     mypos = mypos + INT8_BITS
   endif
-  call g2_gbytec1(cbuf, b2s_pds, mypos, INT4_BITS)
-  mypos = mypos + INT4_BITS
-  b2s_pds8 = b2s_pds
   call g2_gbytec1(cbuf, b2s_drs, mypos, INT4_BITS)
   mypos = mypos + INT4_BITS  
   b2s_drs8 = b2s_drs
