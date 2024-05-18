@@ -1284,12 +1284,13 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   ! Number of bytes of the BMS section put into index record.
   integer :: MXBMS
   parameter(MXBMS = 6)
-  integer :: IXDS
+  integer :: IXDS1, IXDS2
+  parameter(IXDS1 = 28, IXDS2 = 44)
   ! Bytes to skip in (version 1) index record to get to section 0.  
   integer :: IXIDS
   parameter(IXIDS = 44) 
   integer :: IXSDR
-  parameter(IXSDR = 20, IXDS = 28)
+  parameter(IXSDR = 20)
   ! Bytes to skip in (version 1 and 2) index record to get to bms.    
   integer :: IXBMS1, IXBMS2, ixbms
   parameter(IXBMS1 = 24, IXBMS2 = 40)
@@ -1557,7 +1558,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         else
            ixbms = IXBMS2 * INT1_BITS
         endif
-        mypos = (IXBMS1 + inc) * INT1_BITS           
+        !mypos = (IXBMS1 + inc) * INT1_BITS           
         if (indbmp .lt. 254) then
            locbms = int(ibskip8 - lskip8, kind(4))
            call g2_sbytec(cindex, locbms, ixbms, INT4_BITS)  ! loc. of bms
@@ -1582,8 +1583,13 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         !print '(i3, a8, i5)', 0, ' lindex ', lindex
      elseif (numsec .eq. 7) then                 ! found data section
         ! Write the offset to the data section in the cindex buffer.
-        mypos = (IXDS + inc) * INT1_BITS
-        call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), mypos, INT4_BITS)   ! loc. of data sec.
+        !mypos = (IXDS + inc) * INT1_BITS
+        if (idxver .eq. 1) then
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDS1 * INT1_BITS, INT4_BITS)   ! loc. of data sec.
+        else
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDS2 * INT1_BITS, INT4_BITS)   ! loc. of data sec.
+        endif
+           
         !print '(i3, a8, i5)', mypos/8, ' locdata ', int(ibskip8 - lskip8, kind(4))
 
         ! Increment the field count.
