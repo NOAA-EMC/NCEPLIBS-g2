@@ -1549,16 +1549,17 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         endif
         !print *, 'drs:', lindex, lindex + ilndrs
         lindex = lindex + ilndrs
-     elseif (numsec .eq. 6) then    
-        ! Write the location of the BMS section in the message into
-        ! the cindex buffer.
-        indbmp = g2_mova2i(cbread(6))
+     elseif (numsec .eq. 6) then
+        ! Based on the index version, determine where the BMS offset
+        ! is in the index record.
         if (idxver .eq. 1) then
            ixbms = IXBMS1 * INT1_BITS
         else
            ixbms = IXBMS2 * INT1_BITS
         endif
-        !mypos = (IXBMS1 + inc) * INT1_BITS           
+        ! Write the location of the BMS section in the message into
+        ! the cindex buffer.
+        indbmp = g2_mova2i(cbread(6))
         if (indbmp .lt. 254) then
            locbms = int(ibskip8 - lskip8, kind(4))
            call g2_sbytec(cindex, locbms, ixbms, INT4_BITS)  ! loc. of bms
@@ -1583,7 +1584,6 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         !print '(i3, a8, i5)', 0, ' lindex ', lindex
      elseif (numsec .eq. 7) then                 ! found data section
         ! Write the offset to the data section in the cindex buffer.
-        !mypos = (IXDS + inc) * INT1_BITS
         if (idxver .eq. 1) then
            call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDS1 * INT1_BITS, INT4_BITS)   ! loc. of data sec.
         else
