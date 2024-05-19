@@ -21,7 +21,7 @@ program test_getidx
   integer :: lugb = 3
   integer :: nlen, nnum, iret
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8
+  integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8
   integer :: total_bytes, grib_version, discipline, field_number, i, idxver
   integer (kind = 8) :: b2s_message8
 
@@ -68,7 +68,7 @@ program test_getidx
      if (i .eq. 1) then
         if (nlen .ne. 137600) stop 22
      else
-        if (nlen .ne. 148608) then
+        if (nlen .ne. 151360) then
            print *, nlen
            stop 23
         endif
@@ -81,7 +81,7 @@ program test_getidx
      if (i .eq. 1) then
         if (index_rec_len .ne. 200) stop 30
      else
-        if (index_rec_len .ne. 216) then
+        if (index_rec_len .ne. 220) then
            print *, index_rec_len
            stop 30
         endif
@@ -98,6 +98,8 @@ program test_getidx
         mypos = mypos + INT4_BITS
         call g2_gbytec(cbuf, b2s_pds, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
+        call g2_gbytec(cbuf, b2s_drs, mypos, INT4_BITS)
+        mypos = mypos + INT4_BITS
      else
         call g2_gbytec8(cbuf, b2s_message8, mypos, INT8_BITS) ! msg length
         if (b2s_message8 .ne. 202) stop 32
@@ -112,12 +114,13 @@ program test_getidx
         call g2_gbytec8(cbuf, b2s_pds8, mypos, INT8_BITS)
         mypos = mypos + INT8_BITS
         b2s_pds = int(b2s_pds8, kind(4))
+        call g2_gbytec8(cbuf, b2s_drs8, mypos, INT8_BITS)
+        mypos = mypos + INT8_BITS
+        b2s_drs = int(b2s_drs8, kind(4))
      endif
      if (b2s_gds .ne. 37) stop 34
      if (b2s_pds .ne. 109) stop 35
-     call g2_gbytec(cbuf, b2s_drs, mypos, INT4_BITS)
      if (b2s_drs .ne. 143) stop 36
-     mypos = mypos + INT4_BITS
      call g2_gbytec(cbuf, b2s_bms, mypos, INT4_BITS)
      if (b2s_bms .ne. 166) stop 37
      mypos = mypos + INT4_BITS

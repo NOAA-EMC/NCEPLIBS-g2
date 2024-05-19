@@ -103,7 +103,7 @@ program test_ix2gb2
      if (idxver .eq. 1) then
         if (mlen .ne. 200) stop 11
      else
-        if (mlen .ne. 216) then
+        if (mlen .ne. 220) then
            print *, mlen
            stop 11
         endif
@@ -123,7 +123,7 @@ program test_ix2gb2
      if (idxver .eq. 1) then
         if (index_rec_len .ne. 200) stop 104
      else
-        if (index_rec_len .ne. 216) then
+        if (index_rec_len .ne. 220) then
            print *, index_rec_len
            stop 105
         endif

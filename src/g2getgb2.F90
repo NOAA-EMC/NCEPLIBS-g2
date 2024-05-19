@@ -852,7 +852,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
      call g2_gbytec(cindex, lskip, INT4_BITS, INT4_BITS)
      lskip8 = lskip
   else
-     inc = 16
+     inc = 20
      call g2_gbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)
      lskip = int(lskip8, kind(4))
   endif
@@ -1075,7 +1075,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         iskp2_8 = iskp2
         mypos = mypos + 32 * INT1_BITS ! skip ahead in the cindex
      else
-        inc = 16
+        inc = 20
         call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
         iskip = int(iskip8, kind(4))

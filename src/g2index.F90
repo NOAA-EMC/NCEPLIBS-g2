@@ -1002,7 +1002,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
   else
      ! Add the extra 8 bytes in the version 2 index record, starting
      ! at byte 9.
-     inc = 16
+     inc = 20
   endif
 
   ! Search for request.
@@ -1285,7 +1285,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   integer :: MXBMS
   parameter(MXBMS = 6)
   integer :: IXDS1, IXDS2
-  parameter(IXDS1 = 28, IXDS2 = 44)
+  parameter(IXDS1 = 28, IXDS2 = 48)
   ! Bytes to skip in (version 1) index record to get to section 0.  
   integer :: IXIDS
   parameter(IXIDS = 44) 
@@ -1293,7 +1293,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   parameter(IXSDR = 20)
   ! Bytes to skip in (version 1 and 2) index record to get to bms.    
   integer :: IXBMS1, IXBMS2, ixbms
-  parameter(IXBMS1 = 24, IXBMS2 = 40)
+  parameter(IXBMS1 = 24, IXBMS2 = 44)
   ! Sizes of integers in bits.
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
@@ -1329,7 +1329,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
      ! changed from 4-byte ints to 8-byte ints. This is the total
      ! extra bytes that were added to the beginning of the index
      ! record in version 2.
-     inc = 16
+     inc = 20
   endif
 
   ! Initialize values and allocate buffer (at the user-provided cbuf
@@ -1457,7 +1457,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            !print '(i3, a8, i4)', mypos/8, ' locpds ', int(ibskip8 - lskip8, kind(4))
            mypos = mypos + INT4_BITS
         else
-           inc = 16
+           inc = 20
            call g2_sbytec8(cindex, lskip8, mypos, INT8_BITS)    ! bytes to skip
            !print '(i3, a7, i4)', mypos/8, ' lskip ', lskip
            mypos = mypos + INT8_BITS
@@ -1469,17 +1469,16 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            mypos = mypos + INT8_BITS
            call g2_sbytec8(cindex, ibskip8 - lskip8, mypos, INT8_BITS)  ! location of pds
            !print '(i3, a8, i4)', mypos/8, ' locpds ', int(ibskip8 - lskip8, kind(4))
-#ifdef LOGGING
-           write(g2_log_msg, *) ' writing pds location to index: mypos/8 ', mypos/8, &
-                ' loc ', ibskip8 - lskip8
-           call g2_log(2)
-#endif
-           mypos = mypos + INT8_BITS
+           mypos = mypos + INT8_BITS + INT4_BITS
         endif
 
         ! These ints are the same size in index version 1 and 2. The
         ! mypos variable contains the proper offset, which is
         mypos = mypos + INT4_BITS * 3 ! skip ahead in cbuf
+#ifdef LOGGING
+           write(g2_log_msg, *) ' writing total len to index: mypos/8 ', mypos/8, lgrib8
+           call g2_log(2)
+#endif
         call g2_sbytec8(cindex, lgrib8, mypos, INT8_BITS)    ! len of grib2
         !print '(i3, a8, i4)', mypos/8, ' lgrib8 ', lgrib8
         mypos = mypos + INT8_BITS
@@ -1529,13 +1528,14 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         ! Write the byte offset to the DRS section into the cindex buffer.
         !mypos = (IXSDR + inc) * INT1_BITS
 #ifdef LOGGING
-        write(g2_log_msg, *) ' before writing drs to index: mypos/8 ', mypos/8
+        write(g2_log_msg, *) ' before writing drs to index: ibskip8 - lskip8 ', ibskip8 - lskip8, IXDRS2
         call g2_log(3)
 #endif
+        ! Write the bytes to skip to the drs section into the index record.
         if (idxver .eq. 1) then
-           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDRS1 * INT1_BITS, INT4_BITS)  ! location of drs
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDRS1 * INT1_BITS, INT4_BITS)
         else
-           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(8)), IXDRS2 * INT1_BITS, INT4_BITS)  ! location of drs
+           call g2_sbytec8(cindex, ibskip8 - lskip8, IXDRS2 * INT1_BITS, INT8_BITS)  ! location of drs
         endif
         !print '(i3, a8, i5)', mypos/8, ' locdrs ', int(ibskip8 - lskip8, kind(4))
 
@@ -1585,9 +1585,9 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
      elseif (numsec .eq. 7) then                 ! found data section
         ! Write the offset to the data section in the cindex buffer.
         if (idxver .eq. 1) then
-           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDS1 * INT1_BITS, INT4_BITS)   ! loc. of data sec.
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDS1 * INT1_BITS, INT4_BITS)
         else
-           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDS2 * INT1_BITS, INT4_BITS)   ! loc. of data sec.
+           call g2_sbytec(cindex, int(ibskip8 - lskip8, kind(4)), IXDS2 * INT1_BITS, INT4_BITS)
         endif
            
         !print '(i3, a8, i5)', mypos/8, ' locdata ', int(ibskip8 - lskip8, kind(4))

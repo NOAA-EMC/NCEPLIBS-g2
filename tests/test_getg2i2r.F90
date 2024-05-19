@@ -101,7 +101,7 @@ program test_getg2ir2
      if (idxver .eq. 1) then
         if (nlen .ne. 137600) stop 102
      else
-        if (nlen .ne. 148608) then
+        if (nlen .ne. 151360) then
            print *, nlen
            stop 103
         endif
@@ -121,7 +121,7 @@ program test_getg2ir2
      if (idxver .eq. 1) then
         if (index_rec_len .ne. 200) stop 105
      else
-        if (index_rec_len .ne. 216) then
+        if (index_rec_len .ne. 220) then
            print *, index_rec_len
            stop 105
         endif
