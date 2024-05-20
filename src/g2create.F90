@@ -65,6 +65,19 @@ subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   integer, parameter :: mapsec1(mapsec1len) = (/ 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1 /)
   integer lensec0, iofst, ibeg
     
+  interface
+     subroutine g2_sbytec(out, in, iskip, nbits)
+       character*1, intent(inout) :: out(*)
+       integer, intent(in) :: in(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_sbytec
+     subroutine g2_sbytec1(out, in, iskip, nbits)
+       character*1, intent(inout) :: out(*)
+       integer, intent(in) :: in
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_sbytec1
+  end interface
+
   ierr = 0
 
 #ifdef LOGGING
@@ -84,7 +97,7 @@ subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   cgrib(2) = grib(2:2)
   cgrib(3) = grib(3:3)
   cgrib(4) = grib(4:4)
-  call g2_sbytec(cgrib, ZERO, 32, 16)           ! reserved for future use
+  call g2_sbytec1(cgrib, ZERO, 32, 16)           ! reserved for future use
   call g2_sbytec(cgrib, listsec0(1), 48, 8)     ! Discipline
   call g2_sbytec(cgrib, listsec0(2), 56, 8)     ! GRIB edition number
   lensec0 = 16      ! bytes (octets)
@@ -92,7 +105,7 @@ subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   ! Pack Section 1 - Identification Section.
   ibeg = lensec0 * 8        !   Calculate offset for beginning of section 1
   iofst = ibeg + 32         !   leave space for length of section
-  call g2_sbytec(cgrib, ONE, iofst, 8)     ! Store section number ( 1 )
+  call g2_sbytec1(cgrib, ONE, iofst, 8)     ! Store section number ( 1 )
   iofst = iofst + 8
 
   ! Pack up each input value in array listsec1 into the the
@@ -107,11 +120,11 @@ subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   ! Calculate length of section 1 and store it in octets 1-4 of
   ! section 1.
   lensec1 = (iofst - ibeg) / 8
-  call g2_sbytec(cgrib, lensec1, ibeg, 32)
+  call g2_sbytec1(cgrib, lensec1, ibeg, 32)
 
   ! Put current byte total of message into Section 0.
-  call g2_sbytec(cgrib, ZERO, 64, 32)
-  call g2_sbytec(cgrib, lensec0 + lensec1, 96, 32)
+  call g2_sbytec1(cgrib, ZERO, 64, 32)
+  call g2_sbytec1(cgrib, lensec0 + lensec1, 96, 32)
 end subroutine gribcreate
 
 !> Pack up Sections 4 through 7 for a field and add them to a
