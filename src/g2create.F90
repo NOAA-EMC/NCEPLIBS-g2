@@ -674,6 +674,35 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   logical needext
   integer :: i, ilen, iret, isecnum, nbits
 
+  interface
+     subroutine g2_gbytec(in, iout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: iout(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec
+     subroutine g2_gbytec1(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec1
+     subroutine g2_gbytec81(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer (kind = 8), intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+       integer (kind = 8) :: iout(1)
+     end subroutine g2_gbytec81
+     subroutine g2_sbytec(out, in, iskip, nbits)
+       character*1, intent(inout) :: out(*)
+       integer, intent(in) :: in(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_sbytec
+     subroutine g2_sbytec1(out, in, iskip, nbits)
+       character*1, intent(inout) :: out(*)
+       integer, intent(in) :: in
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_sbytec1
+  end interface
+
   ierr = 0
 
 #ifdef LOGGING
@@ -694,7 +723,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   enddo
 
   ! Get current length of GRIB message.
-  call g2_gbytec(cgrib, lencurr, 96, 32)
+  call g2_gbytec1(cgrib, lencurr, 96, 32)
 
   ! Check to see if GRIB message is already complete.
   ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // cgrib(lencurr &
@@ -712,9 +741,9 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   do
      ! Get length and section number of next section.
      iofst = len * 8
-     call g2_gbytec(cgrib, ilen, iofst, 32)
+     call g2_gbytec1(cgrib, ilen, iofst, 32)
      iofst = iofst + 32
-     call g2_gbytec(cgrib, isecnum, iofst, 8)
+     call g2_gbytec1(cgrib, isecnum, iofst, 8)
      len = len + ilen
 
      ! Exit loop if last section reached.
@@ -745,7 +774,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   ! Add Section 3  - Grid Definition Section.
   ibeg = lencurr * 8        !   Calculate offset for beginning of section 3
   iofst = ibeg + 32         !   leave space for length of section
-  call g2_sbytec(cgrib, THREE, iofst, 8) ! Store section number (3)
+  call g2_sbytec1(cgrib, THREE, iofst, 8) ! Store section number (3)
   iofst = iofst + 8
   call g2_sbytec(cgrib, igds(1), iofst, 8) ! Store source of Grid def.
   iofst = iofst + 8
@@ -761,7 +790,7 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   if (igds(1) .eq. 0) then
      call g2_sbytec(cgrib, igds(5), iofst, 16) ! Store Grid Def Template num.
   else
-     call g2_sbytec(cgrib, 65535, iofst, 16) ! Store missing value as Grid Def Template num.
+     call g2_sbytec1(cgrib, 65535, iofst, 16) ! Store missing value as Grid Def Template num.
   endif
   iofst = iofst + 16
 
@@ -793,8 +822,8 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
      if ((mapgrid(i) .ge. 0) .or. (igdstmpl(i) .ge. 0)) then
         call g2_sbytec(cgrib, igdstmpl(i), iofst, nbits)
      else
-        call g2_sbytec(cgrib, ONE, iofst, 1)
-        call g2_sbytec(cgrib, iabs(igdstmpl(i)), iofst + 1, nbits &
+        call g2_sbytec1(cgrib, ONE, iofst, 1)
+        call g2_sbytec1(cgrib, iabs(igdstmpl(i)), iofst + 1, nbits &
              - 1)
      endif
      iofst = iofst + nbits
@@ -811,11 +840,11 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   ! Calculate length of section 3 and store it in octets 1-4 of
   ! section 3.
   lensec3 = (iofst - ibeg) / 8
-  call g2_sbytec(cgrib, lensec3, ibeg, 32)
+  call g2_sbytec1(cgrib, lensec3, ibeg, 32)
 
 
   ! Update current byte total of message in Section 0.
-  call g2_sbytec(cgrib, lencurr + lensec3, 96, 32)
+  call g2_sbytec1(cgrib, lencurr + lensec3, 96, 32)
 end subroutine addgrid
 
 !> Add a [Local Use Section (Section
@@ -869,7 +898,7 @@ subroutine addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   endif
 
   ! Get current length of GRIB message.
-  call g2_gbytec(cgrib, lencurr, 96, 32)
+  call g2_gbytec1(cgrib, lencurr, 96, 32)
 
   ! Check to see if GRIB message is already complete
   ctemp = cgrib(lencurr - 3) // cgrib(lencurr - 2) // cgrib(lencurr - 1) // cgrib(lencurr)
@@ -885,9 +914,9 @@ subroutine addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   do 
      ! Get section number and length of next section.
      iofst = len * 8
-     call g2_gbytec(cgrib, ilen, iofst, 32)
+     call g2_gbytec1(cgrib, ilen, iofst, 32)
      iofst = iofst + 32
-     call g2_gbytec(cgrib, isecnum, iofst, 8)
+     call g2_gbytec1(cgrib, isecnum, iofst, 8)
      len = len + ilen
      ! Exit loop if last section reached
      if (len .eq. lencurr) exit
@@ -914,17 +943,17 @@ subroutine addlocal(cgrib, lcgrib, csec2, lcsec2, ierr)
   ! Add Section 2  - Local Use Section.
   ibeg = lencurr * 8  !    Calculate offset for beginning of section 2
   iofst = ibeg + 32   !    leave space for length of section
-  call g2_sbytec(cgrib, two, iofst, 8)     ! Store section number (2)
+  call g2_sbytec1(cgrib, two, iofst, 8)     ! Store section number (2)
   istart = lencurr + 5
   cgrib(istart + 1:istart + lcsec2) = csec2(1:lcsec2)
 
   ! Calculate length of section 2 and store it in octets 1-4 of
   ! section 2.
   lensec2 = lcsec2 + 5 !  bytes
-  call g2_sbytec(cgrib, lensec2, ibeg, 32)
+  call g2_sbytec1(cgrib, lensec2, ibeg, 32)
 
   ! Update current byte total of message in Section 0.
-  call g2_sbytec(cgrib, lencurr+lensec2, 96, 32)
+  call g2_sbytec1(cgrib, lencurr + lensec2, 96, 32)
 
 end subroutine addlocal
 
@@ -972,7 +1001,7 @@ subroutine gribend(cgrib, lcgrib, lengrib, ierr)
   endif
 
   ! Get current length of GRIB message.
-  call g2_gbytec(cgrib, lencurr, 96, 32)
+  call g2_gbytec1(cgrib, lencurr, 96, 32)
 
   ! Loop through all current sections of the GRIB message to
   ! find the last section number.
@@ -980,9 +1009,9 @@ subroutine gribend(cgrib, lcgrib, lengrib, ierr)
   do
      ! Get number and length of next section.
      iofst = len * 8
-     call g2_gbytec(cgrib, ilen, iofst, 32)
+     call g2_gbytec1(cgrib, ilen, iofst, 32)
      iofst = iofst + 32
-     call g2_gbytec(cgrib, isecnum, iofst, 8)
+     call g2_gbytec1(cgrib, isecnum, iofst, 8)
      len = len + ilen
 
      ! Exit loop if last section reached.
@@ -1015,5 +1044,5 @@ subroutine gribend(cgrib, lcgrib, lengrib, ierr)
 
   ! Update current byte total of message in Section 0.
   lengrib = lencurr + 4
-  call g2_sbytec(cgrib, lengrib, 96, 32)
+  call g2_sbytec1(cgrib, lengrib, 96, 32)
 end subroutine gribend
