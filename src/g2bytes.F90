@@ -54,6 +54,7 @@ subroutine g2_gbytec1(in, siout, iskip, nbits)
   character*1, intent(in) :: in(*)
   integer, intent(inout) :: siout
   integer, intent(in) :: iskip, nbits
+
   integer (kind = 4) :: iout(1)
 
   interface
