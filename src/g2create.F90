@@ -64,7 +64,7 @@ subroutine gribcreate(cgrib, lcgrib, listsec0, listsec1, ierr)
   integer, parameter :: mapsec1len = 13
   integer, parameter :: mapsec1(mapsec1len) = (/ 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1 /)
   integer lensec0, iofst, ibeg
-
+    
   ierr = 0
 
 #ifdef LOGGING
@@ -218,6 +218,25 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   integer :: iret, istat
   real (kind = 4) :: tmpfld(1)
 
+  interface
+     subroutine g2_gbytec(in, iout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: iout(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec
+     subroutine g2_gbytec1(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec1
+     subroutine g2_gbytec81(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer (kind = 8), intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+       integer (kind = 8) :: iout(1)
+     end subroutine g2_gbytec81
+  end interface
+
   allones = int(Z'FFFFFFFF')
   ierr = 0
 
@@ -254,9 +273,9 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   do
      ! Get number and length of next section
      iofst = len * 8
-     call g2_gbytec(cgrib, ilen, iofst, 32)
+     call g2_gbytec1(cgrib, ilen, iofst, 32)
      iofst = iofst + 32
-     call g2_gbytec(cgrib, isecnum, iofst, 8)
+     call g2_gbytec1(cgrib, isecnum, iofst, 8)
      iofst = iofst + 8
      ! Check if previous Section 3 exists and save location of
      ! the section 3 in case needed later.
@@ -267,7 +286,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
      endif
      ! Check if a previous defined bitmap exists
      if (isecnum .eq. 6) then
-        call g2_gbytec(cgrib, ibmprev, iofst, 8)
+        call g2_gbytec1(cgrib, ibmprev, iofst, 8)
         iofst = iofst + 8
         if ((ibmprev .ge. 0) .and. (ibmprev .le. 253)) isprevbmap = .true.
      endif
