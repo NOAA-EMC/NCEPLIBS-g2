@@ -837,6 +837,17 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
        integer, intent(out) :: ierr
        real, pointer, dimension(:) :: fld
      end subroutine gf_unpack7
+     subroutine g2_gbytec(in, iout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: iout(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec
+     subroutine g2_gbytec1(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+       integer (kind = 4) :: iout(1)
+     end subroutine g2_gbytec1
   end interface
 
 #ifdef LOGGING
@@ -849,15 +860,15 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   iret = 0
   inc = 0
   if (idxver .eq. 1) then
-     call g2_gbytec(cindex, lskip, INT4_BITS, INT4_BITS)
+     call g2_gbytec1(cindex, lskip, INT4_BITS, INT4_BITS)
      lskip8 = lskip
   else
      inc = 20
      call g2_gbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)
      lskip = int(lskip8, kind(4))
   endif
-  call g2_gbytec(cindex, skip6, (24 + inc) * INT1_BITS, INT4_BITS)
-  call g2_gbytec(cindex, skip7, (28 + inc) * INT1_BITS, INT4_BITS)
+  call g2_gbytec1(cindex, skip6, (24 + inc) * INT1_BITS, INT4_BITS)
+  call g2_gbytec1(cindex, skip7, (28 + inc) * INT1_BITS, INT4_BITS)
 
   ! Read and unpack bit_map, if present.
   if (gfld%ibmap .eq. 0 .or. gfld%ibmap .eq. 254) then
@@ -866,7 +877,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
 
      ! get length of section.
      call bareadl(lugb, iskip8, 4_8, lread8, csize)
-     call g2_gbytec(csize, ilen, 0, 32)
+     call g2_gbytec1(csize, ilen, 0, 32)
      allocate(ctemp(ilen))
      ilen8 = ilen
      
@@ -893,7 +904,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   
   ! Get length of section.
   call bareadl(lugb, iskip8, 4_8, lread8, csize)    
-  call g2_gbytec(csize, ilen, 0, 32)
+  call g2_gbytec1(csize, ilen, 0, 32)
   if (ilen .lt. 6) ilen = 6
   allocate(ctemp(ilen))
   ilen8 = ilen
