@@ -814,8 +814,13 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   character(len=1), allocatable :: ctemp(:)
   real, pointer, dimension(:) :: newfld
   integer :: n, j, iskip, iofst, ilen, ierr, idum
-  integer :: inc
   integer (kind = 8) :: lskip8, lread8, ilen8, iskip8
+  ! Bytes to skip in (version 1 and 2) index record to get to bms.    
+  integer :: IXBMS1, IXBMS2
+  parameter(IXBMS1 = 24, IXBMS2 = 44)
+  ! Bytes to skip in (version 1 and 2) index record to get to data section.
+  integer :: IXDS1, IXDS2
+  parameter(IXDS1 = 28, IXDS2 = 48)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
 
@@ -848,6 +853,12 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
        integer, intent(in) :: iskip, nbits
        integer (kind = 4) :: iout(1)
      end subroutine g2_gbytec1
+     subroutine g2_gbytec81(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer (kind = 8), intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+       integer (kind = 8) :: iout(1)
+     end subroutine g2_gbytec81
   end interface
 
 #ifdef LOGGING
@@ -855,39 +866,57 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   call g2_log(1)
 #endif
   
-  ! Get info.
+  ! Initialize.
   nullify(gfld%bmap, gfld%fld)
   iret = 0
-  inc = 0
+
+  ! Get the bytes to skip to reach the local use section. In index
+  ! version 1 this is a 4-byte value, in index version 2 it is an
+  ! 8-byte value. (To reach the local use offset in the index record,
+  ! we skip the first 4 bytes, which is the length of the index
+  ! record.)
   if (idxver .eq. 1) then
      call g2_gbytec1(cindex, lskip, INT4_BITS, INT4_BITS)
      lskip8 = lskip
   else
-     inc = 20
-     call g2_gbytec8(cindex, lskip8, INT4_BITS, INT8_BITS)
+     call g2_gbytec81(cindex, lskip8, INT4_BITS, INT8_BITS)
      lskip = int(lskip8, kind(4))
   endif
-  call g2_gbytec1(cindex, skip6, (24 + inc) * INT1_BITS, INT4_BITS)
-  call g2_gbytec1(cindex, skip7, (28 + inc) * INT1_BITS, INT4_BITS)
+
+  ! Read the offset to section 6, the BMS section.
+  if (idxver .eq. 1) then
+     call g2_gbytec1(cindex, skip6, IXBMS1 * INT1_BITS, INT4_BITS)
+  else
+     call g2_gbytec1(cindex, skip6, IXBMS2 * INT1_BITS, INT4_BITS)
+  endif
+
+  ! Read the offset to section 7, the data section.
+  if (idxver .eq. 1) then
+     call g2_gbytec1(cindex, skip7, IXDS1 * INT1_BITS, INT4_BITS)
+  else
+     call g2_gbytec1(cindex, skip7, IXDS2 * INT1_BITS, INT4_BITS)
+  endif
 
   ! Read and unpack bit_map, if present.
   if (gfld%ibmap .eq. 0 .or. gfld%ibmap .eq. 254) then
      iskip = lskip + skip6
      iskip8 = lskip8 + skip6
 
-     ! get length of section.
+     ! Get length of bitmap section.
      call bareadl(lugb, iskip8, 4_8, lread8, csize)
-     call g2_gbytec1(csize, ilen, 0, 32)
+     call g2_gbytec1(csize, ilen, 0, INT4_BITS)
      allocate(ctemp(ilen))
      ilen8 = ilen
      
-     ! read in section.
+     ! Read in bitmap section.
      call bareadl(lugb, iskip8, ilen8, lread8, ctemp)  
      if (ilen8 .ne. lread8) then
         iret = 97
         deallocate(ctemp)
         return
      endif
+
+     ! Unpack bitmap section.
      iofst = 0
      call gf_unpack6(ctemp, ilen, iofst, gfld%ngrdpts, idum, gfld%bmap, ierr)
      if (ierr .ne. 0) then
@@ -902,20 +931,22 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   iskip = lskip + skip7
   iskip8 = lskip8 + skip7
   
-  ! Get length of section.
+  ! Get length of data section.
   call bareadl(lugb, iskip8, 4_8, lread8, csize)    
-  call g2_gbytec1(csize, ilen, 0, 32)
+  call g2_gbytec1(csize, ilen, 0, INT4_BITS)
   if (ilen .lt. 6) ilen = 6
   allocate(ctemp(ilen))
   ilen8 = ilen
 
-  ! Read in section.
+  ! Read in data section.
   call bareadl(lugb, iskip8, ilen8, lread8, ctemp)  
   if (ilen8 .ne. lread8) then
      iret = 97
      deallocate(ctemp)
      return
   endif
+
+  ! Unpack data section.
   iofst = 0
   call gf_unpack7(ctemp, ilen, iofst, gfld%igdtnum, gfld%igdtmpl, &
        gfld%idrtnum, gfld%idrtmpl, gfld%ndpts, gfld%fld, ierr)
@@ -1148,7 +1179,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      gribm(6) = char(0)
      gribm(7) = cindex(42 + inc) ! discipline
      gribm(8) = cindex(41 + inc) ! GRIB version
-     call g2_sbytec8(gribm, leng8, 8 * INT1_BITS, INT8_BITS)
+     call g2_sbytec8(gribm, leng8, INT8_BITS, INT8_BITS)
 
      ! Copy Section 1
      gribm(17:16 + len1) = cindex(45 + inc:44 + inc + len1)
