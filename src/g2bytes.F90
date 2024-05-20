@@ -54,6 +54,7 @@ subroutine g2_gbytec1(in, siout, iskip, nbits)
   character*1, intent(in) :: in(*)
   integer, intent(inout) :: siout
   integer, intent(in) :: iskip, nbits
+
   integer (kind = 4) :: iout(1)
 
   interface
@@ -485,6 +486,41 @@ subroutine g2_sbytec8(out, in, iskip, nbits)
   
   call g2_sbytesc8(out, in, iskip, nbits, 0, 1)
 end subroutine g2_sbytec8
+
+!> Put one arbitrary sized (up to 64 bits) scalar into a packed bit
+!> string, taking the low order bits from each value in the unpacked
+!> array.
+!>
+!> This should be used when input is a scalar. If the input is an
+!> array, use sbytec8() or g2_sbytesc8().
+!>
+!> @param[inout] out packed array output
+!> @param[in] sin unpacked scalar input
+!> @param[in] iskip initial number of bits to skip
+!> @param[in] nbits Number of bits of each integer in OUT to
+!> fill. Must be 64 or less.
+!>
+!> @author Edward Hartnett @date 2024
+subroutine g2_sbytec81(out, sin, iskip, nbits)
+  implicit none
+
+  character*1, intent(inout) :: out(*)
+  integer (kind = 8), intent(in) :: sin
+  integer, intent(in) :: iskip, nbits
+
+  integer (kind = 8) :: in(1)
+  
+  interface
+     subroutine g2_sbytesc8(out, in, iskip, nbits, nskip, n)
+       character*1, intent(out) :: out(*)
+       integer (kind = 8), intent(in) :: in(n)
+       integer, intent(in) :: iskip, nbits, nskip, n
+     end subroutine g2_sbytesc8
+  end interface
+  
+  in(1) = sin
+  call g2_sbytesc8(out, in, iskip, nbits, 0, 1)
+end subroutine g2_sbytec81
 
 !> Put arbitrary sized (up to 64 bits each) values into a packed bit
 !> string, taking the low order bits from each value in the unpacked
