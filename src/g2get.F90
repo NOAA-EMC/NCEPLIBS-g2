@@ -67,6 +67,25 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
   integer :: nbits, lensec1, lensec0, lensec, lenposs, lengrib, j
   integer :: i, ipos, isecnum
 
+  interface
+     subroutine g2_gbytec(in, iout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: iout(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec
+     subroutine g2_gbytec1(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer, intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_gbytec1
+     subroutine g2_gbytec81(in, siout, iskip, nbits)
+       character*1, intent(in) :: in(*)
+       integer (kind = 8), intent(inout) :: siout
+       integer, intent(in) :: iskip, nbits
+       integer (kind = 8) :: iout(1)
+     end subroutine g2_gbytec81
+  end interface
+
   ierr = 0
   numlocal = 0
   numfields = 0
@@ -94,7 +113,7 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
   call g2_gbytec(cgrib, listsec0(2), iofst, 8)     ! GRIB edition number
   iofst = iofst+8
   iofst = iofst + 32
-  call g2_gbytec(cgrib, lengrib, iofst, 32)        ! Length of GRIB message
+  call g2_gbytec1(cgrib, lengrib, iofst, 32)        ! Length of GRIB message
   iofst = iofst + 32
   listsec0(3) = lengrib
   lensec0 = 16
@@ -108,9 +127,9 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
   endif
 
   ! Unpack Section 1 - Identification Section.
-  call g2_gbytec(cgrib, lensec1, iofst, 32)        ! Length of Section 1
+  call g2_gbytec1(cgrib, lensec1, iofst, 32)        ! Length of Section 1
   iofst = iofst + 32
-  call g2_gbytec(cgrib, isecnum, iofst, 8)         ! Section number ( 1 )
+  call g2_gbytec1(cgrib, isecnum, iofst, 8)         ! Section number ( 1 )
   iofst = iofst + 8
   if (isecnum .ne. 1) then
      print *, 'gb_info: Could not find section 1.'
@@ -142,9 +161,9 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
         exit
      endif
      iofst = (ipos - 1) * 8
-     call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+     call g2_gbytec1(cgrib, lensec, iofst, 32) ! Get Length of Section
      iofst = iofst + 32
-     call g2_gbytec(cgrib, isecnum, iofst, 8)         ! Get Section number
+     call g2_gbytec1(cgrib, isecnum, iofst, 8)         ! Get Section number
      iofst = iofst + 8
      ipos = ipos+lensec                 ! Update beginning of section pointer
      if (ipos .gt. (istart + lengrib)) then
@@ -296,7 +315,7 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
   call g2_gbytec(cgrib, listsec0(2), iofst, 8) ! GRIB edition number
   iofst = iofst + 8
   iofst = iofst + 32
-  call g2_gbytec(cgrib, lengrib, iofst, 32) ! Length of GRIB message
+  call g2_gbytec1(cgrib, lengrib, iofst, 32) ! Length of GRIB message
   iofst = iofst + 32
   listsec0(3) = lengrib
   lensec0 = 16
@@ -310,9 +329,9 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
   endif
 
   ! Unpack Section 1 - Identification Section.
-  call g2_gbytec(cgrib, lensec1, iofst, 32) ! Length of Section 1
+  call g2_gbytec1(cgrib, lensec1, iofst, 32) ! Length of Section 1
   iofst = iofst + 32
-  call g2_gbytec(cgrib, isecnum, iofst, 8) ! Section number (1)
+  call g2_gbytec1(cgrib, isecnum, iofst, 8) ! Section number (1)
   iofst = iofst + 8
   if (isecnum .ne. 1) then
      print *, 'gribinfo: Could not find section 1.'
@@ -346,9 +365,9 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
         exit
      endif
      iofst = (ipos - 1) * 8
-     call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+     call g2_gbytec1(cgrib, lensec, iofst, 32) ! Get Length of Section
      iofst = iofst + 32
-     call g2_gbytec(cgrib, isecnum, iofst, 8) ! Get Section number
+     call g2_gbytec1(cgrib, isecnum, iofst, 8) ! Get Section number
      iofst = iofst + 8
      ipos = ipos + lensec      ! Update beginning of section pointer
      if (ipos .gt. (istart + lengrib)) then
@@ -364,9 +383,9 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
         if (lenposs .gt. maxsec2len) maxsec2len = lenposs
      elseif (isecnum .eq. 3) then
         iofst = iofst + 8     ! skip source of grid def.
-        call g2_gbytec(cgrib, ngdpts, iofst, 32) ! Get Num of Grid Points
+        call g2_gbytec1(cgrib, ngdpts, iofst, 32) ! Get Num of Grid Points
         iofst = iofst + 32
-        call g2_gbytec(cgrib, nbyte, iofst, 8) ! Get Num octets for opt. list
+        call g2_gbytec1(cgrib, nbyte, iofst, 8) ! Get Num octets for opt. list
         iofst = iofst + 8
         if (ngdpts .gt. maxgridpts) maxgridpts = ngdpts
         lenposs = lensec - 14
@@ -377,7 +396,7 @@ subroutine gribinfo(cgrib, lcgrib, listsec0, listsec1,  &
         endif
      elseif (isecnum .eq. 4) then
         numfields = numfields + 1
-        call g2_gbytec(cgrib, numcoord, iofst, 16) ! Get Num of Coord Values
+        call g2_gbytec1(cgrib, numcoord, iofst, 16) ! Get Num of Coord Values
         iofst = iofst + 16
         if (numcoord .ne. 0) then
            if (numcoord .gt. maxcoordlist) maxcoordlist = numcoord
@@ -567,7 +586,7 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
   call g2_gbytec(cgrib, listsec0(2), iofst, 8) ! GRIB edition number
   iofst = iofst + 8
   iofst = iofst + 32
-  call g2_gbytec(cgrib, lengrib, iofst, 32) ! Length of GRIB message
+  call g2_gbytec1(cgrib, lengrib, iofst, 32) ! Length of GRIB message
   iofst = iofst + 32
   lensec0 = 16
   ipos = istart + lensec0
@@ -599,9 +618,9 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
      endif
      !         Get length of Section and Section number
      iofst = (ipos - 1) * 8
-     call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+     call g2_gbytec1(cgrib, lensec, iofst, 32) ! Get Length of Section
      iofst = iofst + 32
-     call g2_gbytec(cgrib, isecnum, iofst, 8) ! Get Section number
+     call g2_gbytec1(cgrib, isecnum, iofst, 8) ! Get Section number
      iofst = iofst + 8
 
      !         If found Section 3, unpack the GDS info using the appropriate
@@ -788,7 +807,7 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
 
   ierr = 0
 
-  call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+  call g2_gbytec1(cgrib, lensec, iofst, 32) ! Get Length of Section
   iofst = iofst + 32
   iofst = iofst + 8             ! skip section number
 
@@ -827,7 +846,7 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
      if (mapgrid(i) .ge. 0) then
         call g2_gbytec(cgrib, igdstmpl(i), iofst, nbits)
      else
-        call g2_gbytec(cgrib, isign, iofst, 1)
+        call g2_gbytec1(cgrib, isign, iofst, 1)
         call g2_gbytec(cgrib, igdstmpl(i), iofst + 1, nbits-1)
         if (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)
      endif
@@ -847,7 +866,7 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
         if (mapgrid(i) .ge. 0) then
            call g2_gbytec(cgrib, igdstmpl(i), iofst, nbits)
         else
-           call g2_gbytec(cgrib, isign, iofst, 1)
+           call g2_gbytec1(cgrib, isign, iofst, 1)
            call g2_gbytec(cgrib, igdstmpl(i), iofst + 1, nbits - &
                 1)
            if (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)
@@ -920,14 +939,14 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
 
   ierr = 0
 
-  call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+  call g2_gbytec1(cgrib, lensec, iofst, 32) ! Get Length of Section
   iofst = iofst + 32
   iofst = iofst + 8             ! skip section number
   allocate(mappds(lensec))
 
-  call g2_gbytec(cgrib, numcoord, iofst, 16) ! Get num of coordinate values
+  call g2_gbytec1(cgrib, numcoord, iofst, 16) ! Get num of coordinate values
   iofst = iofst + 16
-  call g2_gbytec(cgrib, ipdsnum, iofst, 16) ! Get Prod. Def Template num.
+  call g2_gbytec1(cgrib, ipdsnum, iofst, 16) ! Get Prod. Def Template num.
   iofst = iofst + 16
   !     Get Product Definition Template.
   call getpdstemplate(ipdsnum, mappdslen, mappds, needext, iret)
@@ -944,7 +963,7 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
      if (mappds(i).ge.0) then
         call g2_gbytec(cgrib, ipdstmpl(i), iofst, nbits)
      else
-        call g2_gbytec(cgrib, isign, iofst, 1)
+        call g2_gbytec1(cgrib, isign, iofst, 1)
         call g2_gbytec(cgrib, ipdstmpl(i), iofst + 1, nbits-1)
         if (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)
      endif
@@ -963,7 +982,7 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
         if (mappds(i).ge.0) then
            call g2_gbytec(cgrib, ipdstmpl(i), iofst, nbits)
         else
-           call g2_gbytec(cgrib, isign, iofst, 1)
+           call g2_gbytec1(cgrib, isign, iofst, 1)
            call g2_gbytec(cgrib, ipdstmpl(i), iofst + 1, nbits-1)
            if (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)
         endif
@@ -1028,14 +1047,14 @@ subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
 
   ierr = 0
 
-  call g2_gbytec(cgrib, lensec, iofst, 32) ! Get Length of Section
+  call g2_gbytec1(cgrib, lensec, iofst, 32) ! Get Length of Section
   iofst = iofst + 32
   iofst = iofst + 8             ! skip section number
   allocate(mapdrs(lensec))
 
-  call g2_gbytec(cgrib, ndpts, iofst, 32) ! Get num of data points
+  call g2_gbytec1(cgrib, ndpts, iofst, 32) ! Get num of data points
   iofst = iofst + 32
-  call g2_gbytec(cgrib, idrsnum, iofst, 16) ! Get Data Rep Template Num.
+  call g2_gbytec1(cgrib, idrsnum, iofst, 16) ! Get Data Rep Template Num.
   iofst = iofst + 16
   !     Gen Data Representation Template
   call getdrstemplate(idrsnum, mapdrslen, mapdrs, needext, iret)
@@ -1052,7 +1071,7 @@ subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
      if (mapdrs(i).ge.0) then
         call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
      else
-        call g2_gbytec(cgrib, isign, iofst, 1)
+        call g2_gbytec1(cgrib, isign, iofst, 1)
         call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits-1)
         if (isign.eq.1) idrstmpl(i) = -idrstmpl(i)
      endif
@@ -1070,7 +1089,7 @@ subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
         if (mapdrs(i).ge.0) then
            call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
         else
-           call g2_gbytec(cgrib, isign, iofst, 1)
+           call g2_gbytec1(cgrib, isign, iofst, 1)
            call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits - 1)
            if (isign.eq.1) idrstmpl(i) = -idrstmpl(i)
         endif
@@ -1122,7 +1141,7 @@ subroutine unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
   iofst = iofst + 32            ! skip Length of Section
   iofst = iofst + 8             ! skip section number
 
-  call g2_gbytec(cgrib, ibmap, iofst, 8) ! Get bit-map indicator
+  call g2_gbytec1(cgrib, ibmap, iofst, 8) ! Get bit-map indicator
   iofst = iofst + 8
 
   if (ibmap.eq.0) then      ! Unpack bitmap
@@ -1305,7 +1324,7 @@ subroutine getlocal(cgrib, lcgrib, localnum, csec2, lcsec2, ierr)
   call g2_gbytec(cgrib, listsec0(2), iofst, 8)     ! GRIB edition number
   iofst = iofst + 8
   iofst = iofst + 32
-  call g2_gbytec(cgrib, lengrib, iofst, 32)        ! Length of GRIB message
+  call g2_gbytec1(cgrib, lengrib, iofst, 32)        ! Length of GRIB message
   iofst = iofst + 32
   lensec0 = 16
   ipos = istart + lensec0
@@ -1337,9 +1356,9 @@ subroutine getlocal(cgrib, lcgrib, localnum, csec2, lcsec2, ierr)
 
      ! Get length of Section and Section number
      iofst = (ipos - 1) * 8
-     call g2_gbytec(cgrib, lensec, iofst, 32)        ! Get Length of Section
+     call g2_gbytec1(cgrib, lensec, iofst, 32)        ! Get Length of Section
      iofst = iofst + 32
-     call g2_gbytec(cgrib, isecnum, iofst, 8)         ! Get Section number
+     call g2_gbytec1(cgrib, isecnum, iofst, 8)         ! Get Section number
      iofst = iofst + 8
      
      ! If found the requested occurrence of Section 2, 
@@ -1575,7 +1594,7 @@ subroutine gettemplates(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
      ! Check to see if we are at end of GRIB message.
      ctemp = cgrib(ipos) // cgrib(ipos + 1) // cgrib(ipos + 2) // cgrib(ipos + 3)
      if (ctemp .eq. c7777 ) then
-        ipos = ipos+4
+        ipos = ipos + 4
         ! If end of GRIB message not where expected, issue error
         if (ipos .ne. (istart + lengrib)) then
            print *, 'gettemplates: "7777" found, but not where expected.'
