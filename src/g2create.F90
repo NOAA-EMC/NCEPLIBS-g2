@@ -235,6 +235,16 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        integer, intent(in) :: iskip, nbits
        integer (kind = 8) :: iout(1)
      end subroutine g2_gbytec81
+     subroutine g2_sbytec(out, in, iskip, nbits)
+       character*1, intent(inout) :: out(*)
+       integer, intent(in) :: in(*)
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_sbytec
+     subroutine g2_sbytec1(out, in, iskip, nbits)
+       character*1, intent(inout) :: out(*)
+       integer, intent(in) :: in
+       integer, intent(in) :: iskip, nbits
+     end subroutine g2_sbytec1
   end interface
 
   allones = int(Z'FFFFFFFF')
@@ -277,6 +287,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
      iofst = iofst + 32
      call g2_gbytec1(cgrib, isecnum, iofst, 8)
      iofst = iofst + 8
+     
      ! Check if previous Section 3 exists and save location of
      ! the section 3 in case needed later.
      if (isecnum .eq. 3) then
@@ -284,6 +295,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
         lpos3 = len + 1
         lensec3 = ilen
      endif
+     
      ! Check if a previous defined bitmap exists
      if (isecnum .eq. 6) then
         call g2_gbytec1(cgrib, ibmprev, iofst, 8)
@@ -291,8 +303,10 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
         if ((ibmprev .ge. 0) .and. (ibmprev .le. 253)) isprevbmap = .true.
      endif
      len = len + ilen
+     
      ! Exit loop if last section reached
      if (len .eq. lencurr) exit
+     
      ! If byte count for each section does not match current
      ! total length, then there is a problem.
      if (len .gt. lencurr) then
@@ -306,8 +320,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
 
   ! Sections 4 through 7 can only be added after section 3 or 7.
   if ((isecnum .ne. 3) .and. (isecnum .ne. 7)) then
-     print *, 'addfield: Sections 4-7 can only be added after', &
-          ' Section 3 or 7.'
+     print *, 'addfield: Sections 4-7 can only be added after  Section 3 or 7.'
      print *, 'addfield: Section ', isecnum, ' was the last found in', &
           ' given GRIB message.'
      ierr = 4
@@ -327,12 +340,12 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   ! Add Section 4 - Product Definition Section.
   ibeg = lencurr * 8 ! Calculate offset for beginning of section 4
   iofst = ibeg + 32 ! leave space for length of section
-  call g2_sbytec(cgrib, four, iofst, 8) ! Store section number (4)
-  iofst = iofst+8
-  call g2_sbytec(cgrib, numcoord, iofst, 16) ! Store num of coordinate values
-  iofst = iofst+16
-  call g2_sbytec(cgrib, ipdsnum, iofst, 16) ! Store Prod Def Template num.
-  iofst = iofst+16
+  call g2_sbytec1(cgrib, four, iofst, 8) ! Store section number (4)
+  iofst = iofst + 8
+  call g2_sbytec1(cgrib, numcoord, iofst, 16) ! Store num of coordinate values
+  iofst = iofst + 16
+  call g2_sbytec1(cgrib, ipdsnum, iofst, 16) ! Store Prod Def Template num.
+  iofst = iofst + 16
 
   ! Get Product Definition Template.
   call getpdstemplate(ipdsnum, mappdslen, mappds, needext, iret)
@@ -357,8 +370,8 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
      if ((mappds(i) .ge. 0).or.(ipdstmpl(i) .ge. 0)) then
         call g2_sbytec(cgrib, ipdstmpl(i), iofst, nbits)
      else
-        call g2_sbytec(cgrib, one, iofst, 1)
-        call g2_sbytec(cgrib, iabs(ipdstmpl(i)), iofst + 1, nbits - 1)
+        call g2_sbytec1(cgrib, one, iofst, 1)
+        call g2_sbytec1(cgrib, iabs(ipdstmpl(i)), iofst + 1, nbits - 1)
      endif
      iofst = iofst+nbits
   enddo
@@ -500,40 +513,40 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
 
   !     Add Section 5 - Data Representation Section
   ibeg=iofst ! Calculate offset for beginning of section 5
-  iofst=ibeg+32 ! leave space for length of section
-  call g2_sbytec(cgrib, five, iofst, 8) ! Store section number (5)
-  iofst=iofst+8
-  call g2_sbytec(cgrib, ndpts, iofst, 32) ! Store num of actual data points
-  iofst=iofst+32
-  call g2_sbytec(cgrib, idrsnum, iofst, 16) ! Store Data Repr. Template num.
-  iofst=iofst+16
+  iofst=ibeg + 32 ! leave space for length of section
+  call g2_sbytec1(cgrib, five, iofst, 8) ! Store section number (5)
+  iofst=iofst + 8
+  call g2_sbytec1(cgrib, ndpts, iofst, 32) ! Store num of actual data points
+  iofst=iofst + 32
+  call g2_sbytec1(cgrib, idrsnum, iofst, 16) ! Store Data Repr. Template num.
+  iofst = iofst + 16
 
   ! Pack up each input value in array idrstmpl into the
   ! the appropriate number of octets, which are specified in
   ! corresponding entries in array mapdrs.
   do i=1, mapdrslen
-     nbits=iabs(mapdrs(i))*8
-     if ((mapdrs(i).ge.0).or.(idrstmpl(i).ge.0)) then
+     nbits =iabs(mapdrs(i)) * 8
+     if ((mapdrs(i) .ge. 0) .or. (idrstmpl(i) .ge. 0)) then
         call g2_sbytec(cgrib, idrstmpl(i), iofst, nbits)
      else
-        call g2_sbytec(cgrib, one, iofst, 1)
-        call g2_sbytec(cgrib, iabs(idrstmpl(i)), iofst+1, nbits-1)
+        call g2_sbytec1(cgrib, one, iofst, 1)
+        call g2_sbytec1(cgrib, iabs(idrstmpl(i)), iofst+1, nbits-1)
      endif
-     iofst=iofst+nbits
+     iofst = iofst + nbits
   enddo
 
   ! Calculate length of section 5 and store it in octets
   ! 1-4 of section 5.
-  lensec5=(iofst-ibeg)/8
-  call g2_sbytec(cgrib, lensec5, ibeg, 32)
+  lensec5 = (iofst - ibeg) / 8
+  call g2_sbytec1(cgrib, lensec5, ibeg, 32)
 
-  !     Add Section 6 - Bit-Map Section
-  ibeg=iofst ! Calculate offset for beginning of section 6
-  iofst=ibeg+32 ! leave space for length of section
-  call g2_sbytec(cgrib, six, iofst, 8) ! Store section number (6)
-  iofst=iofst+8
-  call g2_sbytec(cgrib, ibmap, iofst, 8) ! Store Bit Map indicator
-  iofst=iofst+8
+  ! Add Section 6 - Bit-Map Section.
+  ibeg = iofst ! Calculate offset for beginning of section 6
+  iofst = ibeg + 32 ! leave space for length of section
+  call g2_sbytec1(cgrib, six, iofst, 8) ! Store section number (6)
+  iofst=iofst + 8
+  call g2_sbytec1(cgrib, ibmap, iofst, 8) ! Store Bit Map indicator
+  iofst = iofst + 8
 
   ! Store bitmap, if supplied
   if (ibmap.eq.0) then
@@ -552,18 +565,18 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
 
   ! Calculate length of section 6 and store it in octets
   ! 1-4 of section 6. Pad to end of octect, if necessary.
-  left=8-mod(iofst, 8)
-  if (left.ne.8) then
-     call g2_sbytec(cgrib, zero, iofst, left) ! Pad with zeros to fill Octet
-     iofst=iofst+left
+  left = 8 - mod(iofst, 8)
+  if (left .ne. 8) then
+     call g2_sbytec1(cgrib, zero, iofst, left) ! Pad with zeros to fill Octet
+     iofst = iofst + left
   endif
-  lensec6=(iofst-ibeg)/8
-  call g2_sbytec(cgrib, lensec6, ibeg, 32)
+  lensec6 = (iofst - ibeg) / 8
+  call g2_sbytec1(cgrib, lensec6, ibeg, 32)
 
   ! Add Section 7 - Data Section.
   ibeg = iofst ! Calculate offset for beginning of section 7
   iofst = ibeg + 32 ! leave space for length of section
-  call g2_sbytec(cgrib, seven, iofst, 8) ! Store section number (7)
+  call g2_sbytec1(cgrib, seven, iofst, 8) ! Store section number (7)
   iofst = iofst + 8
   
   ! Store Packed Binary Data values, if non-constant field
@@ -576,13 +589,13 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   ! Calculate length of section 7 and store it in octets
   ! 1-4 of section 7.
   lensec7 = (iofst - ibeg) / 8
-  call g2_sbytec(cgrib, lensec7, ibeg, 32)
+  call g2_sbytec1(cgrib, lensec7, ibeg, 32)
 
   if (allocated(cpack)) deallocate(cpack)
 
   ! Update current byte total of message in Section 0.
   newlen = lencurr + lensec4 + lensec5 + lensec6 + lensec7
-  call g2_sbytec(cgrib, newlen, 96, 32)
+  call g2_sbytec1(cgrib, newlen, 96, 32)
 
   return
 end subroutine addfield
