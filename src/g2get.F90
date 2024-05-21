@@ -1113,27 +1113,27 @@ subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
   if (allocated(mapdrs)) deallocate(mapdrs)
 end subroutine unpack5
 
-!>    This subroutine unpacks Section 6 (Bit-Map Section) starting at
-!>    octet 6 of that Section.
+!> This subroutine unpacks Section 6 (Bit-Map Section) starting at
+!> octet 6 of that Section.
 !>
-!>    @param[in] cgrib Character array that contains the GRIB2 message.
-!>    @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
-!>    @param[inout] iofst Bit offset of the beginning (in) or the end
-!>    (out) of Section 6.
-!>    @param[in] ngpts Number of grid points specified in the bit-map.
-!>    @param[out] ibmap Bitmap indicator (see [Code Table 6.0]
-!>    (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
-!>    - 0 bitmap applies and is included in Section 6.
-!>    - 1-253 Predefined bitmap applies.
-!>    - 254 Previously defined bitmap applies to this field.
-!>    - 255 Bit map does not apply to this product.
-!>    @param[out] bmap Logical*1 array containing decoded bitmap (if
-!>    ibmap = 0).
-!>    @param[out] ierr Error return code.
-!>    - 0 no error.
-!>    - 4 Unrecognized pre-defined bit-map.
-!>
-!>    @author Stephen Gilbert @date 2000-05-26
+!> @param[in] cgrib Character array that contains the GRIB2 message.
+!> @param[in] lcgrib Length (in bytes) of GRIB message array cgrib.
+!> @param[inout] iofst Bit offset of the beginning (in) or the end
+!> (out) of Section 6.
+!> @param[in] ngpts Number of grid points specified in the bit-map.
+!> @param[out] ibmap Bitmap indicator (see [Code Table 6.0]
+!> (https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table6-0.shtml)).
+!> - 0 bitmap applies and is included in Section 6.
+!> - 1-253 Predefined bitmap applies.
+!> - 254 Previously defined bitmap applies to this field.
+!> - 255 Bit map does not apply to this product.
+!> @param[out] bmap Logical*1 array containing decoded bitmap (if
+!> ibmap = 0).
+!> @param[out] ierr Error return code.
+!> - 0 no error.
+!> - 4 Unrecognized pre-defined bit-map.
+!> 
+!> @author Stephen Gilbert @date 2000-05-26
 subroutine unpack6(cgrib, lcgrib, iofst, ngpts, ibmap, bmap, ierr)
   implicit none
 
@@ -1663,7 +1663,7 @@ subroutine gettemplates(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         return
      endif
 
-     if (have3.and.have4) return
+     if (have3 .and. have4) return
   enddo
 
   ! If exited from above loop, the end of the GRIB message was reached
