@@ -990,7 +990,7 @@ subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn
 
 #ifdef LOGGING
   ! Log results for debugging.
-  write(g2_log_msg, '(a, i1, a, i5, a, i7, a, i3, a, i3)') 'getgb2s2: idxver ', idxver, ' nlen ', nlen, &
+  write(g2_log_msg, *) 'getgb2s2: idxver ', idxver, ' nlen ', nlen, &
        ' nnum ', nnum, ' j ', j, ' jdisc ', jdisc
   call g2_log(1)
 #endif
