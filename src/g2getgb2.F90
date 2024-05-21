@@ -547,11 +547,16 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   use grib_mod
   implicit none
 
-  integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
-  integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
+  integer, intent(in) :: lugb, lugi, j, jdisc
+  integer, dimension(:) :: jids(*)
+  integer, intent(in) :: jpdtn
+  integer, dimension(:) :: jpdt(*)
+  integer, intent(in) :: jgdtn
+  integer, dimension(:) :: jgdt(*)
   logical, intent(in) :: extract
-  integer, intent(out) :: k, iret, leng
+  integer, intent(out) :: k
   character(len = 1), pointer, dimension(:) :: gribm
+  integer, intent(out) :: leng, iret
 
   type(gribfield) :: gfld
   integer :: msk1, irgi, irgs, jk, lpos, msk2, mskp, nlen, nmess, nnum
