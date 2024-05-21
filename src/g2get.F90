@@ -88,9 +88,7 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
   end interface
 
 #ifdef LOGGING
-  ! Log results for debugging.
-  write(g2_log_msg, '*') 'gb_info: lgrib ', lgrib, ' lugi ', lugi, &
-       ' idxver ', idxver
+  write(g2_log_msg, *) 'gb_info: lcgrib ', lcgrib
   call g2_log(1)
 #endif
 
@@ -124,9 +122,8 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
 
 #ifdef LOGGING
   ! Log results for debugging.
-  write(g2_log_msg, '*') 'gb_info: lugb ', lugb, ' lugi ', lugi, &
-       ' idxver ', idxver
-  call g2_log(1)
+  write(g2_log_msg, *) 'before getting len: iofst ', iofst
+  call g2_log(2)
 #endif
   call g2_gbytec1(cgrib, lengrib, iofst, 32)        ! Length of GRIB message
   iofst = iofst + 32
@@ -826,15 +823,15 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
   iofst = iofst + 32
   iofst = iofst + 8             ! skip section number
 
-  call g2_gbytec(cgrib, igds(1), iofst, 8) ! Get source of Grid def.
+  call g2_gbytec1(cgrib, igds(1), iofst, 8) ! Get source of Grid def.
   iofst = iofst + 8
-  call g2_gbytec(cgrib, igds(2), iofst, 32) ! Get number of grid pts.
+  call g2_gbytec1(cgrib, igds(2), iofst, 32) ! Get number of grid pts.
   iofst = iofst + 32
-  call g2_gbytec(cgrib, igds(3), iofst, 8) ! Get num octets for opt. list
+  call g2_gbytec1(cgrib, igds(3), iofst, 8) ! Get num octets for opt. list
   iofst = iofst + 8
-  call g2_gbytec(cgrib, igds(4), iofst, 8) ! Get interpret. for opt. list
+  call g2_gbytec1(cgrib, igds(4), iofst, 8) ! Get interpret. for opt. list
   iofst = iofst + 8
-  call g2_gbytec(cgrib, igds(5), iofst, 16) ! Get Grid Def Template num.
+  call g2_gbytec1(cgrib, igds(5), iofst, 16) ! Get Grid Def Template num.
   iofst = iofst + 16
   if (igds(1) .eq. 0) then
      !      if (igds(1).eq.0.OR.igds(1).eq.255) then  ! FOR ECMWF TEST ONLY
@@ -859,10 +856,10 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
   do i = 1, mapgridlen
      nbits = iabs(mapgrid(i)) * 8
      if (mapgrid(i) .ge. 0) then
-        call g2_gbytec(cgrib, igdstmpl(i), iofst, nbits)
+        call g2_gbytec1(cgrib, igdstmpl(i), iofst, nbits)
      else
         call g2_gbytec1(cgrib, isign, iofst, 1)
-        call g2_gbytec(cgrib, igdstmpl(i), iofst + 1, nbits-1)
+        call g2_gbytec1(cgrib, igdstmpl(i), iofst + 1, nbits-1)
         if (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)
      endif
      iofst = iofst + nbits
@@ -879,10 +876,10 @@ subroutine unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
      do i = mapgridlen + 1, newmapgridlen
         nbits = iabs(mapgrid(i)) * 8
         if (mapgrid(i) .ge. 0) then
-           call g2_gbytec(cgrib, igdstmpl(i), iofst, nbits)
+           call g2_gbytec1(cgrib, igdstmpl(i), iofst, nbits)
         else
            call g2_gbytec1(cgrib, isign, iofst, 1)
-           call g2_gbytec(cgrib, igdstmpl(i), iofst + 1, nbits - &
+           call g2_gbytec1(cgrib, igdstmpl(i), iofst + 1, nbits - &
                 1)
            if (isign .eq. 1) igdstmpl(i) = -igdstmpl(i)
         endif
@@ -963,51 +960,52 @@ subroutine unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, &
   iofst = iofst + 16
   call g2_gbytec1(cgrib, ipdsnum, iofst, 16) ! Get Prod. Def Template num.
   iofst = iofst + 16
-  !     Get Product Definition Template.
+  
+  ! Get Product Definition Template.
   call getpdstemplate(ipdsnum, mappdslen, mappds, needext, iret)
   if (iret.ne.0) then
      ierr = 5
      return
   endif
 
-  !     Unpack each value into array ipdstmpl from the the appropriate
-  !     number of octets, which are specified in corresponding entries in
-  !     array mappds.
+  ! Unpack each value into array ipdstmpl from the the appropriate
+  ! number of octets, which are specified in corresponding entries in
+  ! array mappds.
   do i = 1, mappdslen
-     nbits = iabs(mappds(i))*8
-     if (mappds(i).ge.0) then
-        call g2_gbytec(cgrib, ipdstmpl(i), iofst, nbits)
+     nbits = iabs(mappds(i)) * 8
+     if (mappds(i) .ge. 0) then
+        call g2_gbytec1(cgrib, ipdstmpl(i), iofst, nbits)
      else
         call g2_gbytec1(cgrib, isign, iofst, 1)
-        call g2_gbytec(cgrib, ipdstmpl(i), iofst + 1, nbits-1)
-        if (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)
+        call g2_gbytec1(cgrib, ipdstmpl(i), iofst + 1, nbits-1)
+        if (isign .eq. 1) ipdstmpl(i) = -ipdstmpl(i)
      endif
      iofst = iofst + nbits
   enddo
 
-  !     Check to see if the Product Definition Template needs to be
-  !     extended. The number of values in a specific template may vary
-  !     depending on data specified in the "static" part of the template.
+  ! Check to see if the Product Definition Template needs to be
+  ! extended. The number of values in a specific template may vary
+  ! depending on data specified in the "static" part of the template.
   if (needext) then
      call extpdstemplate(ipdsnum, ipdstmpl, newmappdslen, mappds)
 
-     !         Unpack the rest of the Product Definition Template
+     ! Unpack the rest of the Product Definition Template.
      do i = mappdslen + 1, newmappdslen
-        nbits = iabs(mappds(i))*8
-        if (mappds(i).ge.0) then
-           call g2_gbytec(cgrib, ipdstmpl(i), iofst, nbits)
+        nbits = iabs(mappds(i)) * 8
+        if (mappds(i) .ge. 0) then
+           call g2_gbytec1(cgrib, ipdstmpl(i), iofst, nbits)
         else
            call g2_gbytec1(cgrib, isign, iofst, 1)
-           call g2_gbytec(cgrib, ipdstmpl(i), iofst + 1, nbits-1)
-           if (isign.eq.1) ipdstmpl(i) = -ipdstmpl(i)
+           call g2_gbytec1(cgrib, ipdstmpl(i), iofst + 1, nbits-1)
+           if (isign .eq. 1) ipdstmpl(i) = -ipdstmpl(i)
         endif
         iofst = iofst + nbits
      enddo
      mappdslen = newmappdslen
   endif
 
-  !     Get Optional list of vertical coordinate values after the Product
-  !     Definition Template, if necessary.
+  ! Get Optional list of vertical coordinate values after the Product
+  ! Definition Template, if necessary.
   if (numcoord .ne. 0) then
      allocate (coordieee(numcoord))
      call g2_gbytescr(cgrib, coordieee, iofst, 32, 0, numcoord)
@@ -1084,29 +1082,29 @@ subroutine unpack5(cgrib, lcgrib, iofst, ndpts, idrsnum,  &
   do i = 1, mapdrslen
      nbits = iabs(mapdrs(i))*8
      if (mapdrs(i).ge.0) then
-        call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
+        call g2_gbytec1(cgrib, idrstmpl(i), iofst, nbits)
      else
         call g2_gbytec1(cgrib, isign, iofst, 1)
-        call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits-1)
+        call g2_gbytec1(cgrib, idrstmpl(i), iofst + 1, nbits-1)
         if (isign.eq.1) idrstmpl(i) = -idrstmpl(i)
      endif
      iofst = iofst + nbits
   enddo
 
-  !     Check to see if the Data Representation Template needs to be
-  !     extended. The number of values in a specific template may vary
-  !     depending on data specified in the "static" part of the template.
+  ! Check to see if the Data Representation Template needs to be
+  ! extended. The number of values in a specific template may vary
+  ! depending on data specified in the "static" part of the template.
   if (needext) then
      call extdrstemplate(idrsnum, idrstmpl, newmapdrslen, mapdrs)
-     !         Unpack the rest of the Data Representation Template
+     ! Unpack the rest of the Data Representation Template.
      do i = mapdrslen + 1, newmapdrslen
-        nbits = iabs(mapdrs(i))*8
-        if (mapdrs(i).ge.0) then
-           call g2_gbytec(cgrib, idrstmpl(i), iofst, nbits)
+        nbits = iabs(mapdrs(i)) * 8
+        if (mapdrs(i) .ge. 0) then
+           call g2_gbytec1(cgrib, idrstmpl(i), iofst, nbits)
         else
            call g2_gbytec1(cgrib, isign, iofst, 1)
-           call g2_gbytec(cgrib, idrstmpl(i), iofst + 1, nbits - 1)
-           if (isign.eq.1) idrstmpl(i) = -idrstmpl(i)
+           call g2_gbytec1(cgrib, idrstmpl(i), iofst + 1, nbits - 1)
+           if (isign .eq. 1) idrstmpl(i) = -idrstmpl(i)
         endif
         iofst = iofst + nbits
      enddo

@@ -3,6 +3,7 @@
 !
 ! Ed Hartnett 7/17/23
 program test_gb_info
+  use g2logging
   implicit none
 
   ! Length of our message.
@@ -120,6 +121,7 @@ program test_gb_info
   cgrib(42) = old_val  
 
   ! This will work.
+  g2_log_level = 3
   call gb_info(cgrib, lcgrib, listsec0, listsec1, numfields, numlocal, maxlocal, ierr)
   if (ierr .ne. 0) stop 10
   if (numfields .ne. 1 .or. numlocal .ne. 1 .or. maxlocal .ne. 3) stop 11
@@ -127,6 +129,7 @@ program test_gb_info
   do i = 1, sec1_len
      if (listsec1(i) .ne. expected_listsec1(i)) stop 13
   end do
+  g2_log_level = 0
 
   ! Test gribinfo() as well. This won't work because we change number of section 1.
   old_val = cgrib(21)
