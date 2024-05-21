@@ -842,7 +842,6 @@ subroutine addgrid(cgrib, lcgrib, igds, igdstmpl, igdstmplen, &
   lensec3 = (iofst - ibeg) / 8
   call g2_sbytec1(cgrib, lensec3, ibeg, 32)
 
-
   ! Update current byte total of message in Section 0.
   call g2_sbytec1(cgrib, lencurr + lensec3, 96, 32)
 end subroutine addgrid

@@ -1276,8 +1276,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      ! Get the length of the GRIB2 message from the index.
      call g2_gbytec8(cindex, leng8, mypos, INT8_BITS)
 #ifdef LOGGING
-     write(g2_log_msg, *) ' iskip8 ', iskip8, ' mypos/8 ', mypos/8, &
-          ' leng8 ', leng8
+     write(g2_log_msg, *) ' iskip8 ', iskip8, ' mypos/8 ', mypos/8, ' leng8 ', leng8
      call g2_log(2)
 #endif
 
