@@ -455,6 +455,113 @@ subroutine getgb2l2(lugb, idxver, cindex, gfld, iret)
   endif
 end subroutine getgb2l2
 
+!> Legacy subroutine to find and extract a GRIB2 message from a
+!> file. Use getgb2p2() for new code.
+!>
+!> This subroutine reads a GRIB index file (or optionally the GRIB
+!> file itself) to get the index buffer (i.e. table of contents) for
+!> the GRIB file. It finds in the index buffer a reference to the
+!> GRIB field requested.
+!>
+!> The GRIB field request specifies the number of fields to skip and
+!> the unpacked identification section, grid definition template and
+!> product defintion section parameters. (A requested parameter of
+!> -9999 means to allow any value of this parameter to be found.)
+!>
+!> If the requested GRIB field is found, then it is read from the GRIB
+!> file and unpacked. If the GRIB field is not found, then the return
+!> code will be nonzero.
+!>
+!> The derived type @ref grib_mod::gribfield contains allocated memory
+!> that must be freed by the caller with subroutine gf_free().
+!>
+!> @note Specifing an index file may increase speed.
+!> Do not engage the same logical unit from more than one processor.
+!>
+!> @param[in] lugb Unit of the unblocked GRIB data file. The
+!> file must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> routine.
+!> @param[in] lugi Unit of the unblocked GRIB index file. If
+!> nonzero, file must have been opened with [baopen() or baopenr()]
+!> (https://noaa-emc.github.io/NCEPLIBS-bacio/) before calling this
+!> subroutine. Set to 0 to get index buffer from the GRIB file.
+!> @param[in] j Number of fields to skip (set to 0 to search
+!> from beginning).
+!> @param[in] jdisc GRIB2 discipline number of requested field. See
+!> [GRIB2 - TABLE 0.0 -
+!> DISCIPLINE](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml).
+!> Use -1 to accept any discipline.
+!> @param[in] jids Array of values in the identification
+!> section. (Set to -9999 for wildcard.)
+!> @param[in] jpdtn Product Definition Template (PDT) number (n)
+!> (if = -1, don't bother matching PDT - accept any)
+!> @param[in] jpdt Array of values defining the Product Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] jgdtn Grid Definition Template (GDT) number (if = -1,
+!> don't bother matching GDT - accept any).
+!> @param[in] jgdt array of values defining the Grid Definition
+!> Template of the field for which to search (=-9999 for wildcard).
+!> @param[in] extract value indicating whether to return a
+!> GRIB2 message with just the requested field, or the entire
+!> GRIB2 message containing the requested field.
+!> - .true. return GRIB2 message containing only the requested field.
+!> - .false. return entire GRIB2 message containing the requested field.
+!> @param[out] k field number unpacked.
+!> @param[out] gribm returned GRIB message.
+!> @param[out] leng length of returned GRIB message in bytes.
+!> @param[out] iret integer return code
+!> - 0 No error.
+!> - 96 Error reading index.
+!> - 97 Error reading GRIB file.
+!> - 99 Request not found.
+!>
+!> @author Mark Iredell @date 1994-04-01
+subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+     extract, k, gribm, leng, iret)
+  use grib_mod
+  implicit none
+
+  integer, intent(in) :: lugb, lugi, j, jdisc
+  integer, dimension(:) :: jids(*)
+  integer, intent(in) :: jpdtn
+  integer, dimension(:) :: jpdt(*)
+  integer, intent(in) :: jgdtn
+  integer, dimension(:) :: jgdt(*)
+  logical, intent(in) :: extract
+  integer, intent(out) :: k
+  character(len = 1), pointer, dimension(:) :: gribm
+  integer, intent(out) :: leng, iret
+  integer :: idxver
+
+  integer (kind = 8) :: leng8
+
+  interface
+     subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+          extract, idxver, k, gribm, leng8, iret)
+       integer, intent(in) :: lugb, lugi, j, jdisc
+       integer, dimension(:) :: jids(*)
+       integer, intent(in) :: jpdtn
+       integer, dimension(:) :: jpdt(*)
+       integer, intent(in) :: jgdtn
+       integer, dimension(:) :: jgdt(*)
+       logical, intent(in) :: extract
+       integer, intent(inout) :: idxver
+       integer, intent(out) :: k
+       character(len = 1), pointer, dimension(:) :: gribm
+       integer (kind = 8), intent(out) :: leng8
+       integer, intent(out) :: iret
+     end subroutine getgb2p2
+  end interface
+
+  ! Call the new version of this subroutine, which handles messages > 2 GB.
+  idxver = 1
+  call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+       extract, idxver, k, gribm, leng8, iret)
+  leng = int(leng8, kind(4))
+
+end subroutine getgb2p
+
 !> Find and extract a GRIB2 message from a file.
 !>
 !> This subroutine reads a GRIB index file (or optionally the GRIB
@@ -532,18 +639,20 @@ end subroutine getgb2l2
 !> GRIB2 message containing the requested field.
 !> - .true. return GRIB2 message containing only the requested field.
 !> - .false. return entire GRIB2 message containing the requested field.
+!> @param[in] idxver The index version, use 2 for new code, 1 for
+!> legacy index files.
 !> @param[out] k field number unpacked.
 !> @param[out] gribm returned GRIB message.
-!> @param[out] leng length of returned GRIB message in bytes.
+!> @param[out] leng8 length of returned GRIB message in bytes.
 !> @param[out] iret integer return code
 !> - 0 No error.
 !> - 96 Error reading index.
 !> - 97 Error reading GRIB file.
 !> - 99 Request not found.
 !>
-!> @author Mark Iredell @date 1994-04-01
-subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-     extract, k, gribm, leng, iret)
+!> @author Alex Richert, Edward Hartnett @date 2024-05-21
+subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+     extract, idxver, k, gribm, leng8, iret)
   use grib_mod
   implicit none
 
@@ -554,17 +663,18 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   integer, intent(in) :: jgdtn
   integer, dimension(:) :: jgdt(*)
   logical, intent(in) :: extract
+  integer, intent(inout) :: idxver
   integer, intent(out) :: k
   character(len = 1), pointer, dimension(:) :: gribm
-  integer, intent(out) :: leng, iret
+  integer (kind = 8), intent(out) :: leng8
+  integer, intent(out) :: iret
 
   type(gribfield) :: gfld
-  integer :: msk1, irgi, irgs, jk, lpos, msk2, mskp, nlen, nmess, nnum
-
+  integer :: irgi, irgs, jk, lpos, mskp, nlen, nmess, nnum
   character(len = 1), pointer, dimension(:) :: cbuf
+  integer (kind = 8) :: msk1, msk2
   parameter(msk1 = 32000, msk2 = 4000)
 
-  ! Declare interfaces (required for cbuf pointer).
   interface
      subroutine getg2i(lugi, cbuf, nlen, nnum, iret)
        character(len = 1), pointer, dimension(:) :: cbuf
@@ -577,22 +687,51 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        integer, intent(in) :: lugb, msk1, msk2, mnum
        integer, intent(out) :: nlen, nnum, nmess, iret
      end subroutine getg2ir
-     subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
+     subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
+       integer, intent(in) :: lugi
+       character(len=1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: idxver, nlen, nnum, iret
+     end subroutine getg2i2
+     subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, &
+          nlen, nnum, nmess, iret)
        integer, intent(in) :: lugb
+       integer (kind = 8), intent(in) :: msk1, msk2
+       integer, intent(in) :: mnum, idxver
+       character(len = 1), pointer, dimension(:) :: cbuf
+       integer, intent(out) :: nlen, nnum, nmess, iret
+     end subroutine getg2i2r
+     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
+       integer, intent(in) :: lugb
+       integer, intent(inout) :: idxver
        character(len = 1), intent(in) :: cindex(*)
        logical, intent(in) :: extract
-       integer, intent(out) :: leng, iret
        character(len = 1), pointer, dimension(:) :: gribm
-     end subroutine getgb2rp
+       integer (kind = 8), intent(out) :: leng8
+       integer, intent(out) :: iret
+     end subroutine getgb2rp2
+     subroutine getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+          jgdt, k, gfld, lpos, iret)
+       import gribfield
+       character(len = 1), intent(in) :: cbuf(nlen)
+       integer, intent(in) :: idxver, nlen, nnum, j, jdisc
+       integer, dimension(:) :: jids(*)
+       integer, intent(in) :: jpdtn
+       integer, dimension(:) :: jpdt(*)
+       integer, intent(in) :: jgdtn
+       integer, dimension(:) :: jgdt(*)
+       integer, intent(out) :: k
+       type(gribfield), intent(out) :: gfld
+       integer, intent(out) :: lpos, iret
+     end subroutine getgb2s2
   end interface
 
   ! Initialize the index information in cbuf.
   irgi = 0
   if (lugi .gt. 0) then
-     call getg2i(lugi, cbuf, nlen, nnum, irgi)
+     call getg2i2(lugi, cbuf, idxver, nlen, nnum, irgi)
   elseif (lugi .le. 0) then
      mskp = 0
-     call getg2ir(lugb, msk1, msk2, mskp, cbuf, nlen, nnum, nmess, irgi)
+     call getg2i2r(lugb, msk1, msk2, mskp, idxver, cbuf, nlen, nnum, nmess, irgi)
   endif
   if (irgi .gt. 1) then
      iret = 96
@@ -600,7 +739,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   endif
 
   ! Find info from index and fill a grib_mod::gribfield variable.
-  call getgb2s(cbuf, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+  call getgb2s2(cbuf, idxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        jk, gfld, lpos, irgs)
   if (irgs .ne. 0) then
      iret = 99
@@ -610,7 +749,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 
   ! Extract grib message from file.
   nullify(gribm)
-  call getgb2rp(lugb, cbuf(lpos:), extract, gribm, leng, iret)
+  call getgb2rp2(lugb, idxver, cbuf(lpos:), extract, gribm, leng8, iret)
 
   k = jk
 
@@ -618,7 +757,7 @@ subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   if (associated(cbuf)) deallocate(cbuf)
   
   call gf_free(gfld)
-end subroutine getgb2p
+end subroutine getgb2p2
 
 ! subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
 !      extract, k, gribm, leng, iret)
@@ -1026,11 +1165,14 @@ subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
   logical, intent(in) :: extract
   character(len = 1), pointer, dimension(:) :: gribm
   integer, intent(out) :: leng, iret
+
   integer (kind = 8) :: leng8
+  integer :: idxver
 
   interface
      subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
-       integer, intent(in) :: lugb, idxver
+       integer, intent(in) :: lugb
+       integer, intent(inout) :: idxver
        character(len = 1), intent(in) :: cindex(*)
        logical, intent(in) :: extract
        character(len = 1), pointer, dimension(:) :: gribm
@@ -1041,7 +1183,8 @@ subroutine getgb2rp(lugb, cindex, extract, gribm, leng, iret)
 
   ! Call the legacy version of this function. It will only work with
   ! GRIB messages < 2 GB.
-  call getgb2rp2(lugb, 1, cindex, extract, gribm, leng8, iret)
+  idxver = 1
+  call getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
   leng = int(leng8, kind(4))
 
 end subroutine getgb2rp
@@ -1081,12 +1224,13 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
   use g2logging
   implicit none
 
-  integer, intent(in) :: lugb, idxver
+  integer, intent(in) :: lugb
+  integer, intent(inout) :: idxver
   character(len = 1), intent(in) :: cindex(*)
   logical, intent(in) :: extract
+  character(len = 1), pointer, dimension(:) :: gribm
   integer (kind = 8), intent(out) :: leng8
   integer, intent(out) :: iret
-  character(len = 1), pointer, dimension(:) :: gribm
 
   integer, parameter :: zero = 0
   character(len = 1), allocatable, dimension(:) :: csec2, csec6, csec7
@@ -1268,12 +1412,12 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      if (allocated(csec7)) deallocate(csec7)
   else  ! do not extract field from message : get entire message
      if (idxver .eq. 1) then
-        call g2_gbytec(cindex, iskip, mypos, INT4_BITS)    ! bytes to skip in file
+        call g2_gbytec1(cindex, iskip, mypos, INT4_BITS)    ! bytes to skip in file
         mypos = mypos + INT4_BITS
         mypos = mypos + 6 * INT4_BITS
         iskip8 = iskip
      else
-        call g2_gbytec8(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
+        call g2_gbytec81(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
         mypos = mypos + 2 * INT8_BITS + 4 * INT4_BITS
      endif
