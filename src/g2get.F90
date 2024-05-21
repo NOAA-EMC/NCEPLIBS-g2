@@ -51,6 +51,7 @@
 !> @author Stephen Gilbert @date 2000-05-25
 subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
      numfields, numlocal, maxlocal, ierr)
+  use g2logging
   implicit none
 
   character(len = 1), intent(in) :: cgrib(lcgrib)
@@ -86,6 +87,13 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
      end subroutine g2_gbytec81
   end interface
 
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '*') 'gb_info: lgrib ', lgrib, ' lugi ', lugi, &
+       ' idxver ', idxver
+  call g2_log(1)
+#endif
+
   ierr = 0
   numlocal = 0
   numfields = 0
@@ -111,8 +119,15 @@ subroutine gb_info(cgrib, lcgrib, listsec0, listsec1, &
   call g2_gbytec(cgrib, listsec0(1), iofst, 8)     ! Discipline
   iofst = iofst + 8
   call g2_gbytec(cgrib, listsec0(2), iofst, 8)     ! GRIB edition number
-  iofst = iofst+8
+  iofst = iofst + 8
   iofst = iofst + 32
+
+#ifdef LOGGING
+  ! Log results for debugging.
+  write(g2_log_msg, '*') 'gb_info: lugb ', lugb, ' lugi ', lugi, &
+       ' idxver ', idxver
+  call g2_log(1)
+#endif
   call g2_gbytec1(cgrib, lengrib, iofst, 32)        ! Length of GRIB message
   iofst = iofst + 32
   listsec0(3) = lengrib
@@ -1177,7 +1192,7 @@ end subroutine unpack6
 !> recognized.
 !>
 !> @author Stephen Gilbert @date 2002-12-11
-subroutine getdim(csec3,lcsec3,width,height,iscan)
+subroutine getdim(csec3, lcsec3, width, height, iscan)
   implicit none
 
   character(len=1),intent(in) :: csec3(*)
@@ -1186,63 +1201,63 @@ subroutine getdim(csec3,lcsec3,width,height,iscan)
 
   integer,pointer,dimension(:) :: igdstmpl,list_opt
   integer :: igds(5)
-  integer iofst,igdtlen,num_opt,jerr
+  integer iofst, igdtlen, num_opt, jerr
 
   interface
-     subroutine gf_unpack3(cgrib,lcgrib,iofst,igds,igdstmpl, &
-          mapgridlen,ideflist,idefnum,ierr)
-       character(len=1),intent(in) :: cgrib(lcgrib)
-       integer,intent(in) :: lcgrib
-       integer,intent(inout) :: iofst
-       integer,pointer,dimension(:) :: igdstmpl,ideflist
-       integer,intent(out) :: igds(5)
-       integer,intent(out) :: ierr,idefnum
+     subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl, &
+          mapgridlen, ideflist, idefnum, ierr)
+       character(len = 1), intent(in) :: cgrib(lcgrib)
+       integer, intent(in) :: lcgrib
+       integer, intent(inout) :: iofst
+       integer, pointer, dimension(:) :: igdstmpl, ideflist
+       integer, intent(out) :: igds(5)
+       integer, intent(out) :: ierr, idefnum
      end subroutine gf_unpack3
   end interface
 
-  nullify(igdstmpl,list_opt)
+  nullify(igdstmpl, list_opt)
 
-  iofst=0       ! set offset to beginning of section
-  call gf_unpack3(csec3,lcsec3,iofst,igds,igdstmpl, &
-       igdtlen,list_opt,num_opt,jerr)
+  iofst = 0       ! set offset to beginning of section
+  call gf_unpack3(csec3, lcsec3, iofst, igds, igdstmpl,  &
+       igdtlen, list_opt, num_opt, jerr)
   if (jerr.eq.0) then
      selectcase( igds(5) )     !  Template number
      case (0:3)   ! Lat/Lon
-        width=igdstmpl(8)
-        height=igdstmpl(9)
-        iscan=igdstmpl(19)
+        width = igdstmpl(8)
+        height = igdstmpl(9)
+        iscan = igdstmpl(19)
      case (10)   ! Mercator
-        width=igdstmpl(8)
-        height=igdstmpl(9)
-        iscan=igdstmpl(16)
+        width = igdstmpl(8)
+        height = igdstmpl(9)
+        iscan = igdstmpl(16)
      case (20)   ! Polar Stereographic
-        width=igdstmpl(8)
-        height=igdstmpl(9)
-        iscan=igdstmpl(18)
+        width = igdstmpl(8)
+        height = igdstmpl(9)
+        iscan = igdstmpl(18)
      case (30)   ! Lambert Conformal
-        width=igdstmpl(8)
-        height=igdstmpl(9)
-        iscan=igdstmpl(18)
+        width = igdstmpl(8)
+        height = igdstmpl(9)
+        iscan = igdstmpl(18)
      case (40:43)   ! Gaussian
-        width=igdstmpl(8)
-        height=igdstmpl(9)
-        iscan=igdstmpl(19)
+        width = igdstmpl(8)
+        height = igdstmpl(9)
+        iscan = igdstmpl(19)
      case (90)   ! Space View/Orthographic
-        width=igdstmpl(8)
-        height=igdstmpl(9)
-        iscan=igdstmpl(17)
+        width = igdstmpl(8)
+        height = igdstmpl(9)
+        iscan = igdstmpl(17)
      case (110)   ! Equatorial Azimuthal
-        width=igdstmpl(8)
-        height=igdstmpl(9)
-        iscan=igdstmpl(16)
+        width = igdstmpl(8)
+        height = igdstmpl(9)
+        iscan = igdstmpl(16)
      case default
-        width=0
-        height=0
-        iscan=0
+        width = 0
+        height = 0
+        iscan = 0
      end select
   else
-     width=0
-     height=0
+     width = 0
+     height = 0
   endif
 
   if (associated(igdstmpl)) deallocate(igdstmpl)
@@ -1404,49 +1419,49 @@ end subroutine getlocal
 !> recognized.
 !>
 !> @author Stephen Gilbert @date 2002-12-11
-subroutine getpoly(csec3,lcsec3,jj,kk,mm)
+subroutine getpoly(csec3, lcsec3, jj, kk, mm)
   implicit none
 
-  character(len=1),intent(in) :: csec3(*)
-  integer,intent(in) :: lcsec3
-  integer,intent(out) :: jj,kk,mm
+  character(len = 1), intent(in) :: csec3(*)
+  integer, intent(in) :: lcsec3
+  integer, intent(out) :: jj, kk, mm
 
-  integer,pointer,dimension(:) :: igdstmpl,list_opt
+  integer, pointer, dimension(:) :: igdstmpl, list_opt
   integer :: igds(5)
-  integer iofst,igdtlen,num_opt,jerr
+  integer iofst, igdtlen, num_opt, jerr
 
   interface
-     subroutine gf_unpack3(cgrib,lcgrib,iofst,igds,igdstmpl, &
-          mapgridlen,ideflist,idefnum,ierr)
-       character(len=1),intent(in) :: cgrib(lcgrib)
-       integer,intent(in) :: lcgrib
-       integer,intent(inout) :: iofst
-       integer,pointer,dimension(:) :: igdstmpl,ideflist
-       integer,intent(out) :: igds(5)
-       integer,intent(out) :: ierr,idefnum
+     subroutine gf_unpack3(cgrib, lcgrib, iofst, igds, igdstmpl,  &
+          mapgridlen, ideflist, idefnum, ierr)
+       character(len = 1), intent(in) :: cgrib(lcgrib)
+       integer, intent(in) :: lcgrib
+       integer, intent(inout) :: iofst
+       integer, pointer, dimension(:) :: igdstmpl, ideflist
+       integer, intent(out) :: igds(5)
+       integer, intent(out) :: ierr, idefnum
      end subroutine gf_unpack3
   end interface
 
-  nullify(igdstmpl,list_opt)
+  nullify(igdstmpl, list_opt)
 
-  iofst=0       ! set offset to beginning of section
-  call gf_unpack3(csec3,lcsec3,iofst,igds,igdstmpl, &
-       igdtlen,list_opt,num_opt,jerr)
+  iofst = 0       ! set offset to beginning of section
+  call gf_unpack3(csec3, lcsec3, iofst, igds, igdstmpl,  &
+       igdtlen, list_opt, num_opt, jerr)
   if (jerr.eq.0) then
      selectcase( igds(5) )     !  Template number
      case (50:53)   ! Spherical harmonic coefficients
-        jj=igdstmpl(1)
-        kk=igdstmpl(2)
-        mm=igdstmpl(3)
+        jj = igdstmpl(1)
+        kk = igdstmpl(2)
+        mm = igdstmpl(3)
      case default
-        jj=0
-        kk=0
-        mm=0
+        jj = 0
+        kk = 0
+        mm = 0
      end select
   else
-     jj=0
-     kk=0
-     mm=0
+     jj = 0
+     kk = 0
+     mm = 0
   endif
 
   if (associated(igdstmpl)) deallocate(igdstmpl)
