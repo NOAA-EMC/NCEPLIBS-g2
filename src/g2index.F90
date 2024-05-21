@@ -520,7 +520,6 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
   integer :: ios, istat, lbuf, lhead, nskp
 
 #ifdef LOGGING
-  ! Log results for debugging.
   write(g2_log_msg, *) 'getg2i2: lugi ', lugi
   call g2_log(1)
 #endif
@@ -530,9 +529,17 @@ subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
   nnum = 0
   iret = 4
   call baread(lugi, 0, 162, lhead, chead)
+#ifdef LOGGING
+     write(g2_log_msg, *) 'lhead', lhead
+     call g2_log(2)
+#endif
   if (lhead .eq. 162 .and. chead(42:47) .eq. 'GB2IX1') then
      read(chead(82:162), '(2x, i1, 5x, 3i10, 2x, a40)', iostat = ios) idxver, nskp, nlen, nnum
-     if (ios .eq. 0) then
+#ifdef LOGGING
+     write(g2_log_msg, *) 'ios', ios, 'idxver', idxver, 'nskp', nskp, 'nlen', nlen, 'nnum', nnum
+     call g2_log(2)
+#endif 
+    if (ios .eq. 0) then
         allocate(cbuf(nlen), stat = istat)    ! Allocate space for cbuf.
         if (istat .ne. 0) then
            iret = 2
@@ -668,8 +675,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
 
 #ifdef LOGGING
   ! Log results for debugging.
-  write(g2_log_msg, '(a, i2, a, i7, a, i7, a, i5, a, i1)') 'getg2i2r: lugb ', lugb, ' msk1 ', msk1, ' msk2 ', msk2, &
-       ' mnum ', mnum, ' idxver ', idxver
+  write(g2_log_msg, *) 'getg2i2r: lugb ', lugb, ' msk1 ', msk1, ' msk2 ', msk2
   call g2_log(1)
 #endif
 
