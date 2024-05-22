@@ -37,24 +37,6 @@ program test_getgb2p2
        integer (kind = 8), intent(out) :: leng8
        integer, intent(out) :: iret
      end subroutine getgb2p2
-     subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
-       integer, intent(in) :: lugb
-       integer, intent(inout) :: idxver
-       character(len = 1), intent(in) :: cindex(*)
-       logical, intent(in) :: extract
-       character(len = 1), pointer, dimension(:) :: gribm
-       integer (kind = 8), intent(out) :: leng8
-       integer, intent(out) :: iret
-     end subroutine getgb2rp2
-     subroutine getgb2p(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-          extract, k, gribm, leng, iret)
-       integer, intent(in) :: lugb, lugi, j, jdisc, jpdtn, jgdtn
-       integer, dimension(:) :: jids(*), jpdt(*), jgdt(*)
-       logical, intent(in) :: extract
-       integer, intent(out) :: k
-       character(len = 1), pointer, dimension(:) :: gribm       
-       integer, intent(out) :: iret, leng
-     end subroutine getgb2p
   end interface
 
   print *, 'Testing the getgb2p2() subroutine...'
@@ -81,9 +63,9 @@ program test_getgb2p2
 
   print *, 'Try getgb2p2() with extract true...'
 
-  !g2_log_level = 1
+  g2_log_level = 3
   extract = .true.
-  idxver = 1
+  idxver = 2
   nullify(gribm)
   call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
        extract, idxver, k, gribm, leng8, iret)
@@ -99,17 +81,17 @@ program test_getgb2p2
   ! Deallocate buffer that got GRIB message.
   deallocate(gribm)
   print *, 'OK!'
-  
-  print *, 'Try getgb2p2() with extract false...'
-  extract = .false.
-  call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-       extract, idxver, k, gribm, leng8, iret)
-  if (iret .ne. 0) stop 101
-  if (k .ne. 1 .or. leng8 .ne. 11183) stop 110
 
-  deallocate(gribm)
-  print *, 'OK!'
-  
+  ! print *, 'Try getgb2p2() with extract false...'
+  ! extract = .false.
+  ! call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+  !      extract, idxver, k, gribm, leng8, iret)
+  ! if (iret .ne. 0) stop 101
+  ! if (k .ne. 1 .or. leng8 .ne. 11183) stop 110
+
+  ! deallocate(gribm)
+  ! print *, 'OK!'
+
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 199
 

@@ -1458,7 +1458,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
 #ifdef LOGGING
            write(g2_log_msg, *) ' writing pds location to index: mypos/8 ', mypos/8, &
                 ' loc ', int(ibskip8 - lskip8, kind(4))
-           call g2_log(2)
+           call g2_log(4)
 #endif
            !print '(i3, a8, i4)', mypos/8, ' locpds ', int(ibskip8 - lskip8, kind(4))
            mypos = mypos + INT4_BITS
@@ -1483,7 +1483,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         mypos = mypos + INT4_BITS * 3 ! skip ahead in cbuf
 #ifdef LOGGING
            write(g2_log_msg, *) ' writing total len to index: mypos/8 ', mypos/8, lgrib8
-           call g2_log(2)
+           call g2_log(4)
 #endif
         call g2_sbytec8(cindex, lgrib8, mypos, INT8_BITS)    ! len of grib2
         !print '(i3, a8, i4)', mypos/8, ' lgrib8 ', lgrib8
@@ -1528,14 +1528,14 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         mypos = mypos + ilnpds
 #ifdef LOGGING
         write(g2_log_msg, *) ' after writing pds location to index: mypos/8 ', mypos/8
-        call g2_log(3)
+        call g2_log(4)
 #endif
      elseif (numsec .eq. 5) then
         ! Write the byte offset to the DRS section into the cindex buffer.
         !mypos = (IXSDR + inc) * INT1_BITS
 #ifdef LOGGING
         write(g2_log_msg, *) ' before writing drs to index: ibskip8 - lskip8 ', ibskip8 - lskip8, IXDRS2
-        call g2_log(3)
+        call g2_log(4)
 #endif
         ! Write the bytes to skip to the drs section into the index record.
         if (idxver .eq. 1) then
