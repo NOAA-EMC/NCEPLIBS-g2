@@ -1340,7 +1340,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      else
         call g2_gbytec81(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
-        mypos = mypos + 2 * INT8_BITS + 4 * INT4_BITS
+        mypos = mypos + 4 * INT8_BITS + 2 * INT4_BITS
      endif
 
      ! Get the length of the GRIB2 message from the index.
