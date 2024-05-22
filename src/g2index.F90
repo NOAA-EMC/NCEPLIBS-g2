@@ -675,7 +675,7 @@ subroutine getg2i2r(lugb, msk1, msk2, mnum, idxver, cbuf, nlen, nnum, nmess, ire
 
 #ifdef LOGGING
   ! Log results for debugging.
-  write(g2_log_msg, *) 'getg2i2r: lugb ', lugb, ' msk1 ', msk1, ' msk2 ', msk2
+  write(g2_log_msg, *) 'getg2i2r: lugb ', lugb, ' msk1 ', msk1, ' msk2 ', msk2, 'idxver', idxver
   call g2_log(1)
 #endif
 

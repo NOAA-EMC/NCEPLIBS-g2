@@ -725,6 +725,8 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
      end subroutine getgb2s2
   end interface
 
+  nullify(gribm)
+
   ! Initialize the index information in cbuf.
   irgi = 0
   if (lugi .gt. 0) then
@@ -748,7 +750,6 @@ subroutine getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
   endif
 
   ! Extract grib message from file.
-  nullify(gribm)
   call getgb2rp2(lugb, idxver, cbuf(lpos:), extract, gribm, leng8, iret)
 
   k = jk
