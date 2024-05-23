@@ -864,6 +864,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   integer, intent(out) :: iret
 
   integer :: lskip, skip6, skip7
+  integer (kind = 8) :: skip68
   character(len=1):: csize(4)
   character(len=1), allocatable :: ctemp(:)
   real, pointer, dimension(:) :: newfld
@@ -874,7 +875,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   parameter(IXBMS1 = 24, IXBMS2 = 44)
   ! Bytes to skip in (version 1 and 2) index record to get to data section.
   integer :: IXDS1, IXDS2
-  parameter(IXDS1 = 28, IXDS2 = 48)
+  parameter(IXDS1 = 28, IXDS2 = 52)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
 
@@ -940,8 +941,10 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   ! Read the offset to section 6, the BMS section.
   if (idxver .eq. 1) then
      call g2_gbytec1(cindex, skip6, IXBMS1 * INT1_BITS, INT4_BITS)
+     skip68 = skip6
   else
-     call g2_gbytec1(cindex, skip6, IXBMS2 * INT1_BITS, INT4_BITS)
+     call g2_gbytec81(cindex, skip68, IXBMS2 * INT1_BITS, INT8_BITS)
+     skip6 = int(skip68, kind(4))
   endif
 
   ! Read the offset to section 7, the data section.
@@ -1154,11 +1157,11 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
   parameter(IXBMS1 = 24, IXBMS2 = 44)
   ! Bytes to skip in (version 1 and 2) index record to get to data section.
   integer :: IXDS1, IXDS2
-  parameter(IXDS1 = 28, IXDS2 = 48)
+  parameter(IXDS1 = 28, IXDS2 = 52)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos, inc = 0
-  integer (kind = 8) :: lread8, iskip8, len2_8, len7_8, len6_8
+  integer (kind = 8) :: lread8, iskip8, len2_8, len7_8, len6_8, iskp68
 
   interface
      subroutine g2_sbytec81(out, sin, iskip, nbits)
@@ -1199,13 +1202,13 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         iskp2_8 = iskp2
         mypos = mypos + 32 * INT1_BITS ! skip ahead in the cindex
      else
-        inc = 20
+        inc = 24
         call g2_gbytec81(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
         iskip = int(iskip8, kind(4))
         call g2_gbytec81(cindex, iskp2_8, mypos, INT8_BITS)    ! bytes to skip for section 2
         mypos = mypos + INT8_BITS
-        mypos = mypos + 44 * INT1_BITS ! skip ahead in the cindex
+        mypos = mypos + 48 * INT1_BITS ! skip ahead in the cindex
      endif
 #ifdef LOGGING
      write(g2_log_msg, *) 'iskip8', iskip8, 'iskip', iskip, 'mypos/8', mypos/8
@@ -1223,7 +1226,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         len2 = 0
      endif
 #ifdef LOGGING
-     write(g2_log_msg, *) 'iskip8 ', iskip8, ' iskp2_8 ', iskp2_8, 'len2', len2
+     write(g2_log_msg, *) 'iskip8 ', iskip8, ' iskp2_8 ', iskp2_8, 'len2', len2, 'mypos/8', mypos/8
      call g2_log(2)
 #endif
 
@@ -1250,13 +1253,22 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         if (idxver .eq. 1) then
            call g2_gbytec1(cindex, iskp6, IXBMS1 * INT1_BITS, INT4_BITS)    
         else
-           call g2_gbytec1(cindex, iskp6, IXBMS2 * INT1_BITS, INT4_BITS)
+           call g2_gbytec81(cindex, iskp68, IXBMS2 * INT1_BITS, INT8_BITS)
+           iskp6 = int(iskp68, kind(4))
         endif
+#ifdef LOGGING
+     write(g2_log_msg, *) 'getgb2rp2: iskp6', iskp6
+     call g2_log(2)
+#endif
 
         ! Read the length of the bitmap section from the data file. (lu, byts to
         ! skip, bytes to read, bytes read, buffer for output)
         call bareadl(lugb, iskip8 + iskp6, 4_8, lread8, ctemp)
         call g2_gbytec1(ctemp, len6, 0, INT4_BITS)      ! length of section 6
+#ifdef LOGGING
+        write(g2_log_msg, *) 'getgb2rp2: len6', len6
+        call g2_log(2)
+#endif
      endif
 
      !  Read the location of section 7 from the index.
@@ -1265,6 +1277,10 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      else
         call g2_gbytec1(cindex, iskp7, IXDS2 * INT1_BITS, INT4_BITS)    ! bytes to skip for section 7
      endif
+#ifdef LOGGING
+     write(g2_log_msg, *) 'getgb2rp2: iskp7', iskp7
+     call g2_log(2)
+#endif
 
      ! Read in the length of section 7 from the data file.
      call bareadl(lugb, iskip8 + iskp7, 4_8, lread8, ctemp)
@@ -1358,7 +1374,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      else
         call g2_gbytec81(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
-        mypos = mypos + 4 * INT8_BITS + 2 * INT4_BITS
+        mypos = mypos + 5 * INT8_BITS + 1 * INT4_BITS
      endif
 
      ! Get the length of the GRIB2 message from the index.

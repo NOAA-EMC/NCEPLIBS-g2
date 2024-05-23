@@ -103,13 +103,14 @@ program test_ix2gb2
      if (idxver .eq. 1) then
         if (mlen .ne. 200) stop 11
      else
-        if (mlen .ne. 220) then
+        if (mlen .ne. 224) then
            print *, mlen
-           stop 11
+           stop 12
         endif
      endif
 
      ! Break out the index record into component values.
+     g2_log_level = 3
      call read_index(cbuf, idxver, index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, &
           b2s_bms, b2s_data, total_bytes, grib_version, discipline, field_number, sec1, lengds, gds, &
           lenpds, pds, lendrs, drs, bms, iret)
@@ -123,7 +124,7 @@ program test_ix2gb2
      if (idxver .eq. 1) then
         if (index_rec_len .ne. 200) stop 104
      else
-        if (index_rec_len .ne. 220) then
+        if (index_rec_len .ne. 224) then
            print *, index_rec_len
            stop 105
         endif

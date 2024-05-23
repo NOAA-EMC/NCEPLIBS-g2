@@ -88,12 +88,12 @@ program test_create_index_gdas
      if (idxver .eq. 1) then
         if (nlen .ne. 452) stop 80
      else
-        if (nlen .ne. 492) then
+        if (nlen .ne. 500) then
            print *, nlen
-           stop 80
+           stop 82
         endif
      endif
-     if (nnum .ne. 2 .or. iret .ne. 0) stop 81
+     if (nnum .ne. 2 .or. iret .ne. 0) stop 85
 
      ! Close the index file.
      call baclose(lugi, iret)

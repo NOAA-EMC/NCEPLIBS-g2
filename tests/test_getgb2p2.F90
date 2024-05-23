@@ -5,7 +5,7 @@
 ! Edward Hartnett 10/21/24
 program test_getgb2p2
   use bacio_module
-  !use g2logging
+  use g2logging
   implicit none
 
   integer :: lugi
@@ -64,7 +64,7 @@ program test_getgb2p2
      call baopenr(lugb, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
      if (iret .ne. 0) stop 100
 
-     !g2_log_level = 3
+     g2_log_level = 3
      extract = .true.
      idxver = test_idx
      print *, 'Try getgb2p2() with extract true, idxver:', idxver
