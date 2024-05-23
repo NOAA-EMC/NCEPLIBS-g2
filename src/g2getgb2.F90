@@ -1207,6 +1207,12 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         mypos = mypos + INT8_BITS
         mypos = mypos + 44 * INT1_BITS ! skip ahead in the cindex
      endif
+#ifdef LOGGING
+     write(g2_log_msg, *) 'iskip8', iskip8, 'iskip', iskip, 'mypos/8', mypos/8
+     call g2_log(2)
+#endif
+     
+     ! Determine length of local section (section 2).
      if (iskp2_8 .gt. 0) then
         call bareadl(lugb, iskip8 + iskp2_8, 4_8, lread8, ctemp)
         call g2_gbytec1(ctemp, len2, 0, INT4_BITS)      ! length of section 2
@@ -1216,6 +1222,12 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      else
         len2 = 0
      endif
+#ifdef LOGGING
+     write(g2_log_msg, *) 'iskip8 ', iskip8, ' iskp2_8 ', iskp2_8, 'len2', len2
+     call g2_log(2)
+#endif
+
+     ! Find the lengths of the sections 1, 3, 4, 5, and 6.
      call g2_gbytec1(cindex, len1, mypos, INT4_BITS)      ! length of section 1
      mypos = mypos + len1 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec1(cindex, len3, mypos, INT4_BITS)      ! length of section 3
@@ -1226,6 +1238,12 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      mypos = mypos + len5 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec1(cindex, len6, mypos, INT4_BITS)      ! length of section 6
      mypos = mypos + len6 * INT1_BITS ! skip ahead in the cindex
+#ifdef LOGGING
+     write(g2_log_msg, *) 'len1', len1, 'len3', len3, 'len4', len4, 'len5', len5, 'len6', len6
+     call g2_log(2)
+#endif
+
+     ! Handle the bitmap, if present.
      call g2_gbytec1(cindex, ibmap, mypos, INT1_BITS)      ! bitmap indicator
      if (ibmap .eq. 254) then
         ! Get the bytes to skip for section 6 from the index.
@@ -1235,7 +1253,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
            call g2_gbytec1(cindex, iskp6, IXBMS2 * INT1_BITS, INT4_BITS)
         endif
 
-        ! Read the length of the bitmat section from the data file. (lu, byts to
+        ! Read the length of the bitmap section from the data file. (lu, byts to
         ! skip, bytes to read, bytes read, buffer for output)
         call bareadl(lugb, iskip8 + iskp6, 4_8, lread8, ctemp)
         call g2_gbytec1(ctemp, len6, 0, INT4_BITS)      ! length of section 6
@@ -1361,5 +1379,10 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         iret = 97
         return
      endif
+#ifdef LOGGING
+     write(g2_log_msg, *) ' read message into gribm, lread8', lread8
+     call g2_log(3)
+#endif
+     
   endif
 end subroutine getgb2rp2
