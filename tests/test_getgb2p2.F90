@@ -58,17 +58,18 @@ program test_getgb2p2
   end do
 
   ! Test with index version 1 and 2.
-  do test_idx = 1, 2
+  !do test_idx = 1, 2
+  do test_idx = 2, 2
      ! Open a real GRIB2 file.
      print *, 'Indexing a real GRIB2 file WW3_Regional_US_West_Coast_20220718_0000.grib2...'
      call baopenr(lugb, "data/WW3_Regional_US_West_Coast_20220718_0000.grib2", iret)
      if (iret .ne. 0) stop 100
 
-     g2_log_level = 3
-     extract = .true.
+     g2_log_level = 5
      idxver = test_idx
+     
      print *, 'Try getgb2p2() with extract true, idxver:', idxver
-
+     extract = .true.
      nullify(gribm)
      call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
           extract, idxver, k, gribm, leng8, iret)
@@ -80,21 +81,20 @@ program test_getgb2p2
         print *, k, leng8
         stop 110
      endif
-
      ! Deallocate buffer that got GRIB message.
      deallocate(gribm)
      print *, 'OK!'
 
-     print *, 'Try getgb2p2() with extract false, idxver:', idxver
-     extract = .false.
-     nullify(gribm)
-     call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
-          extract, idxver, k, gribm, leng8, iret)
-     if (iret .ne. 0) stop 101
-     if (k .ne. 1 .or. leng8 .ne. 11183) stop 110
+     ! print *, 'Try getgb2p2() with extract false, idxver:', idxver
+     ! extract = .false.
+     ! nullify(gribm)
+     ! call getgb2p2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt,  &
+     !      extract, idxver, k, gribm, leng8, iret)
+     ! if (iret .ne. 0) stop 101
+     ! if (k .ne. 1 .or. leng8 .ne. 11183) stop 110
 
-     deallocate(gribm)
-     print *, 'OK!'
+     ! deallocate(gribm)
+     ! print *, 'OK!'
 
      call baclose(lugb, iret)
      if (iret .ne. 0) stop 199

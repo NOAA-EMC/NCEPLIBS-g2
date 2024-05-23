@@ -21,7 +21,7 @@ program test_getidx
   integer :: lugb = 3
   integer :: nlen, nnum, iret
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-  integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8
+  integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8, b2s_data8
   integer :: total_bytes, grib_version, discipline, field_number, i, idxver
   integer (kind = 8) :: b2s_message8
 
@@ -68,7 +68,7 @@ program test_getidx
      if (i .eq. 1) then
         if (nlen .ne. 137600) stop 22
      else
-        if (nlen .ne. 154112) then
+        if (nlen .ne. 156864) then
            print *, nlen
            stop 23
         endif
@@ -81,7 +81,7 @@ program test_getidx
      if (i .eq. 1) then
         if (index_rec_len .ne. 200) stop 29
      else
-        if (index_rec_len .ne. 224) then
+        if (index_rec_len .ne. 228) then
            print *, index_rec_len
            stop 30
         endif
@@ -101,6 +101,8 @@ program test_getidx
         call g2_gbytec(cbuf, b2s_drs, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
         call g2_gbytec(cbuf, b2s_bms, mypos, INT4_BITS)
+        mypos = mypos + INT4_BITS
+        call g2_gbytec(cbuf, b2s_data, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
      else
         call g2_gbytec8(cbuf, b2s_message8, mypos, INT8_BITS) ! msg length
@@ -122,15 +124,16 @@ program test_getidx
         call g2_gbytec8(cbuf, b2s_bms8, mypos, INT8_BITS)
         mypos = mypos + INT8_BITS
         b2s_bms = int(b2s_bms8, kind(4))
+        call g2_gbytec81(cbuf, b2s_data8, mypos, INT8_BITS)
+        mypos = mypos + INT8_BITS
+        b2s_data = int(b2s_data8, kind(4))
      endif
      if (b2s_gds .ne. 37) stop 34
      if (b2s_pds .ne. 109) stop 35
      if (b2s_drs .ne. 143) stop 36
      if (b2s_bms .ne. 166) stop 37
-     call g2_gbytec(cbuf, b2s_data, mypos, INT4_BITS)
      if (b2s_data .ne. 4721) stop 38
-     mypos = mypos + INT4_BITS
-     print *, 'total_bytes mypos ', mypos
+     print *, 'total_bytes mypos/8 ', mypos/8
      call g2_gbytec(cbuf, total_bytes, mypos, INT8_BITS)
      if (total_bytes .ne. 11183) stop 39
      mypos = mypos + INT8_BITS
