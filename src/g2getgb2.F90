@@ -864,7 +864,11 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   integer, intent(out) :: iret
 
   integer :: lskip, skip6, skip7
+<<<<<<< HEAD
   integer (kind = 8) :: skip68, skip78
+=======
+  integer (kind = 8) :: skip68
+>>>>>>> develop
   character(len=1):: csize(4)
   character(len=1), allocatable :: ctemp(:)
   real, pointer, dimension(:) :: newfld
@@ -1172,7 +1176,11 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
   integer :: mypos, inc = 0
+<<<<<<< HEAD
   integer (kind = 8) :: lread8, iskip8, len2_8, len7_8, len6_8, iskp68, iskp78
+=======
+  integer (kind = 8) :: lread8, iskip8, len2_8, len7_8, len6_8, iskp68
+>>>>>>> develop
 
   interface
      subroutine g2_sbytec81(out, sin, iskip, nbits)
@@ -1219,6 +1227,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         iskip = int(iskip8, kind(4))
         call g2_gbytec81(cindex, iskp2_8, mypos, INT8_BITS)    ! bytes to skip for section 2
         mypos = mypos + INT8_BITS
+
         mypos = mypos + 52 * INT1_BITS ! skip ahead in the cindex
      endif
 #ifdef LOGGING
