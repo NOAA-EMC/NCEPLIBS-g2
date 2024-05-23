@@ -1267,8 +1267,8 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
 
   character cver, cdisc
   character(len = 4) :: ctemp
-  integer (kind = 8) :: loclus8, locgds8
-  integer locgds, loclus
+  integer (kind = 8) :: loclus8, locgds8, locbms8
+  integer locgds, loclus, locbms
   integer :: indbmp, numsec, newsize, g2_mova2i, mbuf, lindex
   integer :: lskip
   integer :: ilndrs, ilnpds, istat
@@ -1569,25 +1569,26 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
         ! Write the location of the BMS section in the message into
         ! the cindex buffer.
         indbmp = g2_mova2i(cbread(6))
-        if (indbmp .lt. 254 .or. indbmp .eq. 255) then
+        if (indbmp .lt. 254) then
+           if (idxver .eq. 1) then
+              locbms = int(ibskip8 - lskip8, kind(4))
+              call g2_sbytec1(cindex, locbms, IXBMS1 * INT1_BITS, INT4_BITS)  ! loc. of bms
+           else
+              locbms8 = ibskip8 - lskip8
+              call g2_sbytec81(cindex, locbms8, IXBMS2 * INT1_BITS, INT8_BITS)  ! loc. of bms
+           endif
+        elseif (indbmp .eq. 254) then
+           if (idxver .eq. 1) then
+              call g2_sbytec1(cindex, locbms, IXBMS1 * INT1_BITS, INT4_BITS)  ! loc. of bms
+           else
+              call g2_sbytec81(cindex, locbms8, IXBMS2 * INT1_BITS, INT8_BITS)  ! loc. of bms
+           endif
+        elseif (indbmp .eq. 255) then
            if (idxver .eq. 1) then
               call g2_sbytec1(cindex, int(ibskip8 - lskip8, kind(4)), IXBMS1 * INT1_BITS, INT4_BITS)  ! loc. of bms
            else
               call g2_sbytec81(cindex, ibskip8 - lskip8, IXBMS2 * INT1_BITS, INT8_BITS)  ! loc. of bms
            endif
-!=======
-        if (indbmp .lt. 254) then
-           if (idxver .eq. 1) then
-              locbms = int(ibskip8 - lskip8, kind(4))
-              call g2_sbytec1(cindex, locbms, ixbms, INT4_BITS)  ! loc. of bms
-           else
-              call g2_sbytec81(cindex, ibskip8 - lskip8, ixbms, INT4_BITS)  ! loc. of bms
-           endif
-        elseif (indbmp .eq. 254) then
-           call g2_sbytec1(cindex, locbms, ixbms, INT4_BITS)  ! loc. of bms
-        elseif (indbmp .eq. 255) then
-           call g2_sbytec1(cindex, int(ibskip8 - lskip8, kind(4)), ixbms, INT4_BITS)  ! loc. of bms
-!>>>>>>> develop
         endif
         
         ! Copy 6 bytes of the BMS from data buffer to the cindex buffer.
