@@ -1374,7 +1374,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   endif
 
   ! Check GRIB version from section 0, must be 2.
-  if (cbread(8) .ne. char(2)) then          !  not grib edition 2
+  if (cbread(8) .ne. char(2)) then 
      iret = 3
      return
   endif
@@ -1384,7 +1384,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   cdisc = cbread(7)
 
   ! Read the length of section 1 from the file data buffer.
-  call g2_gbytec1(cbread, lensec1, 16 * 8, INT4_BITS)
+  call g2_gbytec1(cbread, lensec1, 16 * INT1_BITS, INT4_BITS)
   lensec1 = min(lensec1, int(ibread8, kind(lensec1)))
 
   ! Copy section 1 values into cids array.
