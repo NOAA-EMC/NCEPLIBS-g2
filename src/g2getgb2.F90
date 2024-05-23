@@ -947,6 +947,11 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
      skip6 = int(skip68, kind(4))
   endif
 
+#ifdef LOGGING
+  write(g2_log_msg, *) ' getgb2r2: skip6', skip6
+  call g2_log(1)
+#endif
+  
   ! Read the offset to section 7, the data section.
   if (idxver .eq. 1) then
      call g2_gbytec1(cindex, skip7, IXDS1 * INT1_BITS, INT4_BITS)
@@ -1364,19 +1369,32 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         gribm(lencur + 1:lencur + len6) = cindex(ipos + 1:ipos + len6)
         lencur = lencur + len6
      else
-        call g2_gbytec1(cindex, iskp6, (24 + inc) * 8, INT4_BITS)    ! bytes to skip for section 6
-        call bareadl(lugb, iskip8 + iskp6, 4_8, lread8, ctemp)
+        if (idxver .eq. 1) then
+           call g2_gbytec1(cindex, iskp6, IXBMS1 * INT1_BITS, INT4_BITS)    ! bytes to skip for section 6
+           iskp68 = iskp6
+        else
+           call g2_gbytec81(cindex, iskp68, IXBMS2 * INT1_BITS, INT8_BITS)    ! bytes to skip for section 6
+        endif
+#ifdef LOGGING
+        write(g2_log_msg, *) 'getgb2rp2: iskp68', iskp68
+        call g2_log(3)
+#endif
+        call bareadl(lugb, iskip8 + iskp68, 4_8, lread8, ctemp)
         call g2_gbytec1(ctemp, len6, 0, INT4_BITS)      ! length of section 6
+#ifdef LOGGING
+        write(g2_log_msg, *) 'getgb2rp2: len6', len6
+        call g2_log(3)
+#endif
         allocate(csec6(len6))
         len6_8 = len6
-        call bareadl(lugb, iskip8 + iskp6, len6_8, lread8, csec6)
+        call bareadl(lugb, iskip8 + iskp68, len6_8, lread8, csec6)
         gribm(lencur + 1:lencur + len6) = csec6(1:len6)
         lencur = lencur + len6
         if (allocated(csec6)) deallocate(csec6)
      endif
 
 #ifdef LOGGING
-     write(g2_log_msg, *) 'getgb2rp2: copied  6'
+     write(g2_log_msg, *) 'getgb2rp2: copied  6, len7', len7
      call g2_log(3)
 #endif
      

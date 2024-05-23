@@ -77,7 +77,7 @@ program test_create_index_fv3
   ! Read the index file.
   call getg2i2(lugi, cbuf, myidxver, nlen, nnum, iret)
   print *, myidxver, nlen, nnum, iret
-  if (nlen .ne. 281342) then
+  if (nlen .ne. 285666) then
      print *, nlen
      stop 80
   endif

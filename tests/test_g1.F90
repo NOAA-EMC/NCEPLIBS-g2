@@ -16,7 +16,7 @@ program test_g1
   integer :: lugb = 3
   integer :: nlen, nnum, iret
   integer :: index_rec_len, b2s_message, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data, b2s_lus
-  integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8
+  integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8, b2s_data8
   integer :: total_bytes, grib_version, discipline, field_number, i, idxver
   integer (kind = 8) :: b2s_message8
 
@@ -58,7 +58,7 @@ program test_g1
         if (nlen .ne. 200) stop 22
      else
         print *, nlen
-        if (nlen .ne. 224) stop 23
+        if (nlen .ne. 228) stop 23
      endif
      ! do j = 1, nlen
      !    print '(i3, x, z2.2)', j, cbuf(j)
@@ -71,7 +71,7 @@ program test_g1
      if (i .eq. 1) then
         if (index_rec_len .ne. 200) stop 29
      else
-        if (index_rec_len .ne. 224) then
+        if (index_rec_len .ne. 228) then
            print *, index_rec_len
            stop 30
         endif
@@ -96,6 +96,9 @@ program test_g1
         call g2_gbytec(cbuf, b2s_bms, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
         b2s_bms8 = b2s_bms
+        call g2_gbytec(cbuf, b2s_data, mypos, INT4_BITS)
+        mypos = mypos + INT4_BITS
+        b2s_data8 = b2s_data
      else
         call g2_gbytec8(cbuf, b2s_message8, mypos, INT8_BITS)
         if (b2s_message8 .ne. 0) stop 32
@@ -110,15 +113,15 @@ program test_g1
         mypos = mypos + INT8_BITS
         call g2_gbytec81(cbuf, b2s_bms8, mypos, INT8_BITS)
         mypos = mypos + INT8_BITS
+        call g2_gbytec81(cbuf, b2s_data8, mypos, INT8_BITS)
+        mypos = mypos + INT8_BITS
      endif
      if (b2s_lus8 .ne. 0) stop 33
      if (b2s_gds8 .ne. 37) stop 34
      if (b2s_pds8 .ne. 109) stop 35
      if (b2s_drs .ne. 143) stop 36
      if (b2s_bms .ne. 166) stop 37
-     call g2_gbytec(cbuf, b2s_data, mypos, INT4_BITS)
      if (b2s_data .ne. 4721) stop 38
-     mypos = mypos + INT4_BITS
      print *, 'total_bytes mypos ', mypos
      call g2_gbytec(cbuf, total_bytes, mypos, INT8_BITS)
      print *, 'total_bytes ', total_bytes
