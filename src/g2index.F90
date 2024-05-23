@@ -1575,6 +1575,19 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
            else
               call g2_sbytec81(cindex, ibskip8 - lskip8, IXBMS2 * INT1_BITS, INT8_BITS)  ! loc. of bms
            endif
+!=======
+        if (indbmp .lt. 254) then
+           if (idxver .eq. 1) then
+              locbms = int(ibskip8 - lskip8, kind(4))
+              call g2_sbytec1(cindex, locbms, ixbms, INT4_BITS)  ! loc. of bms
+           else
+              call g2_sbytec81(cindex, ibskip8 - lskip8, ixbms, INT4_BITS)  ! loc. of bms
+           endif
+        elseif (indbmp .eq. 254) then
+           call g2_sbytec1(cindex, locbms, ixbms, INT4_BITS)  ! loc. of bms
+        elseif (indbmp .eq. 255) then
+           call g2_sbytec1(cindex, int(ibskip8 - lskip8, kind(4)), ixbms, INT4_BITS)  ! loc. of bms
+!>>>>>>> develop
         endif
         
         ! Copy 6 bytes of the BMS from data buffer to the cindex buffer.
