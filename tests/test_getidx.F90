@@ -21,11 +21,7 @@ program test_getidx
   integer :: lugb = 3
   integer :: nlen, nnum, iret
   integer :: index_rec_len, b2s_message, b2s_lus, b2s_gds, b2s_pds, b2s_drs, b2s_bms, b2s_data
-<<<<<<< HEAD
   integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8, b2s_data8
-=======
-  integer (kind = 8) :: b2s_lus8, b2s_gds8, b2s_pds8, b2s_drs8, b2s_bms8
->>>>>>> develop
   integer :: total_bytes, grib_version, discipline, field_number, i, idxver
   integer (kind = 8) :: b2s_message8
 
@@ -72,11 +68,7 @@ program test_getidx
      if (i .eq. 1) then
         if (nlen .ne. 137600) stop 22
      else
-<<<<<<< HEAD
         if (nlen .ne. 156864) then
-=======
-        if (nlen .ne. 154112) then
->>>>>>> develop
            print *, nlen
            stop 23
         endif
@@ -89,11 +81,7 @@ program test_getidx
      if (i .eq. 1) then
         if (index_rec_len .ne. 200) stop 29
      else
-<<<<<<< HEAD
         if (index_rec_len .ne. 228) then
-=======
-        if (index_rec_len .ne. 224) then
->>>>>>> develop
            print *, index_rec_len
            stop 30
         endif
@@ -114,11 +102,8 @@ program test_getidx
         mypos = mypos + INT4_BITS
         call g2_gbytec(cbuf, b2s_bms, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
-<<<<<<< HEAD
         call g2_gbytec(cbuf, b2s_data, mypos, INT4_BITS)
         mypos = mypos + INT4_BITS
-=======
->>>>>>> develop
      else
         call g2_gbytec8(cbuf, b2s_message8, mypos, INT8_BITS) ! msg length
         if (b2s_message8 .ne. 202) stop 32
