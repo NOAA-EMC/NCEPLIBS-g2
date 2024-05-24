@@ -1268,7 +1268,7 @@ subroutine ix2gb2(lugb, lskip8, idxver, lgrib8, cbuf, numfld, mlen, iret)
   character cver, cdisc
   character(len = 4) :: ctemp
   integer (kind = 8) :: loclus8, locgds8, locbms8
-  integer loclus, locbms
+  integer locbms
   integer :: indbmp, numsec, newsize, g2_mova2i, mbuf, lindex
   integer :: lskip
   integer :: ilndrs, ilnpds, istat
