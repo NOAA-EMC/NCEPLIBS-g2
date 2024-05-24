@@ -868,7 +868,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   character(len=1):: csize(4)
   character(len=1), allocatable :: ctemp(:)
   real, pointer, dimension(:) :: newfld
-  integer :: n, j, iskip, iofst, ilen, ierr, idum
+  integer :: n, j, iofst, ilen, ierr, idum
   integer (kind = 8) :: lskip8, lread8, ilen8, iskip8
   ! Bytes to skip in (version 1 and 2) index record to get to bms.    
   integer :: IXBMS1, IXBMS2
@@ -944,11 +944,10 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
      skip68 = skip6
   else
      call g2_gbytec81(cindex, skip68, IXBMS2 * INT1_BITS, INT8_BITS)
-     skip6 = int(skip68, kind(4))
   endif
 
 #ifdef LOGGING
-  write(g2_log_msg, *) ' getgb2r2: skip6', skip6
+  write(g2_log_msg, *) ' getgb2r2: skip68', skip68
   call g2_log(1)
 #endif
   
@@ -967,8 +966,7 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   
   ! Read and unpack bit_map, if present.
   if (gfld%ibmap .eq. 0 .or. gfld%ibmap .eq. 254) then
-     iskip = lskip + skip6
-     iskip8 = lskip8 + skip6
+     iskip8 = lskip8 + skip68
 
      ! Get length of bitmap section.
      call bareadl(lugb, iskip8, 4_8, lread8, csize)
@@ -996,7 +994,6 @@ subroutine getgb2r2(lugb, idxver, cindex, gfld, iret)
   endif
 
   ! Read and unpack data field.
-  iskip = lskip + skip7
   iskip8 = lskip8 + skip7
   
   ! Get length of data section.
@@ -1216,7 +1213,6 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
         inc = 28
         call g2_gbytec81(cindex, iskip8, mypos, INT8_BITS)    ! bytes to skip in file
         mypos = mypos + INT8_BITS
-        iskip = int(iskip8, kind(4))
         call g2_gbytec81(cindex, iskp2_8, mypos, INT8_BITS)    ! bytes to skip for section 2
         mypos = mypos + INT8_BITS
 
