@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NCEPLIBS-g2
-   &#160;<span id="projectnumber">3.4.9</span>
+   &#160;<span id="projectnumber">3.5.0</span>
    </div>
   </td>
  </tr>
@@ -109,8 +109,11 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:a4244e0f687ba5bcb943f8c27b1ef711f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read and unpack a local use section from a GRIB2 index record (index format 1 or 2) and GRIB2 file.  <a href="g2getgb2_8F90.html#a4244e0f687ba5bcb943f8c27b1ef711f">More...</a><br /></td></tr>
 <tr class="separator:a4244e0f687ba5bcb943f8c27b1ef711f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1e5737ef8256ece2482ed5b386007d9"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="g2getgb2_8F90.html#ac1e5737ef8256ece2482ed5b386007d9">getgb2p</a> (lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, extract, k, gribm, leng, iret)</td></tr>
-<tr class="memdesc:ac1e5737ef8256ece2482ed5b386007d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find and extract a GRIB2 message from a file.  <a href="g2getgb2_8F90.html#ac1e5737ef8256ece2482ed5b386007d9">More...</a><br /></td></tr>
+<tr class="memdesc:ac1e5737ef8256ece2482ed5b386007d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Legacy subroutine to find and extract a GRIB2 message from a file.  <a href="g2getgb2_8F90.html#ac1e5737ef8256ece2482ed5b386007d9">More...</a><br /></td></tr>
 <tr class="separator:ac1e5737ef8256ece2482ed5b386007d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa2fb9df21057adf086daced457313e4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="g2getgb2_8F90.html#aaa2fb9df21057adf086daced457313e4">getgb2p2</a> (lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, extract, idxver, k, gribm, leng8, iret)</td></tr>
+<tr class="memdesc:aaa2fb9df21057adf086daced457313e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find and extract a GRIB2 message from a file.  <a href="g2getgb2_8F90.html#aaa2fb9df21057adf086daced457313e4">More...</a><br /></td></tr>
+<tr class="separator:aaa2fb9df21057adf086daced457313e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe34d74748d23424a5722cf7f133b9c7"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="g2getgb2_8F90.html#abe34d74748d23424a5722cf7f133b9c7">getgb2r</a> (lugb, cindex, gfld, iret)</td></tr>
 <tr class="memdesc:abe34d74748d23424a5722cf7f133b9c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read and unpack sections 6 and 7 from a GRIB2 message using a version 1 index record.  <a href="g2getgb2_8F90.html#abe34d74748d23424a5722cf7f133b9c7">More...</a><br /></td></tr>
 <tr class="separator:abe34d74748d23424a5722cf7f133b9c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,9 +123,9 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:a7a0a095859c3156b8da88b6fc197a303"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="g2getgb2_8F90.html#a7a0a095859c3156b8da88b6fc197a303">getgb2rp</a> (lugb, cindex, extract, gribm, leng, iret)</td></tr>
 <tr class="memdesc:a7a0a095859c3156b8da88b6fc197a303"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract a grib message from a file given the index (index format 1) of the requested field.  <a href="g2getgb2_8F90.html#a7a0a095859c3156b8da88b6fc197a303">More...</a><br /></td></tr>
 <tr class="separator:a7a0a095859c3156b8da88b6fc197a303"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf8c60ecfe8e6807ad3f0e9913d23dde"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="g2getgb2_8F90.html#aaf8c60ecfe8e6807ad3f0e9913d23dde">getgb2rp2</a> (lugb, idxver, cindex, extract, gribm, leng, iret)</td></tr>
-<tr class="memdesc:aaf8c60ecfe8e6807ad3f0e9913d23dde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract a grib message from a file given the version 1 or 2 index of the requested field.  <a href="g2getgb2_8F90.html#aaf8c60ecfe8e6807ad3f0e9913d23dde">More...</a><br /></td></tr>
-<tr class="separator:aaf8c60ecfe8e6807ad3f0e9913d23dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa275e841e6c6b370f1131dafdf3d74f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="g2getgb2_8F90.html#afa275e841e6c6b370f1131dafdf3d74f">getgb2rp2</a> (lugb, idxver, cindex, extract, gribm, leng8, iret)</td></tr>
+<tr class="memdesc:afa275e841e6c6b370f1131dafdf3d74f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract a grib message from a file given the version 1 or 2 index of the requested field.  <a href="g2getgb2_8F90.html#afa275e841e6c6b370f1131dafdf3d74f">More...</a><br /></td></tr>
+<tr class="separator:afa275e841e6c6b370f1131dafdf3d74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The getgb2 subroutines find and unpack a GRIB2 message in a file. </p>
@@ -451,7 +454,7 @@ Functions/Subroutines</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00191">191</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="g2getgb2_8F90_source.html#l00351">getgb2l2()</a>, <a class="el" href="g2getgb2_8F90_source.html#l00677">getgb2r2()</a>, <a class="el" href="g2index_8F90_source.html#l00899">getgb2s2()</a>, <a class="el" href="g2index_8F90_source.html#l00266">getidx2()</a>, and <a class="el" href="g2gf_8F90_source.html#l00585">gf_free()</a>.</p>
+<p class="reference">References <a class="el" href="g2logging_8F90_source.html#l00022">g2logging::g2_log()</a>, <a class="el" href="g2logging_8F90_source.html#l00012">g2logging::g2_log_msg</a>, <a class="el" href="g2getgb2_8F90_source.html#l00358">getgb2l2()</a>, <a class="el" href="g2getgb2_8F90_source.html#l00857">getgb2r2()</a>, <a class="el" href="g2index_8F90_source.html#l00929">getgb2s2()</a>, <a class="el" href="g2index_8F90_source.html#l00266">getidx2()</a>, and <a class="el" href="g2gf_8F90_source.html#l00585">gf_free()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00064">getgb2()</a>.</p>
 
@@ -502,7 +505,7 @@ Functions/Subroutines</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lugb</td><td>integer unit of the unblocked grib data file. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cindex</td><td>index record of the grib field (see <a class="el" href="g2index_8F90.html#a1b60285d6eae6ecb9cd4b887b70388c7" title="Generate a version 1 or 2 index record for each field in a GRIB2 message.">ix2gb2()</a> for description of an index record.) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cindex</td><td>index record of the grib field (see <a class="el" href="g2index_8F90.html#a4269b1d65baa63267a35f87716386a1b" title="Generate a version 1 or 2 index record for each field in a GRIB2 message.">ix2gb2()</a> for description of an index record.) </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">gfld</td><td>derived type gribfield <a class="el" href="namespacegrib__mod.html#structgrib__mod_1_1gribfield">grib_mod::gribfield</a>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">iret</td><td>integer return code<ul>
 <li>0 all ok</li>
@@ -516,9 +519,9 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2002-05-07 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00302">302</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00309">309</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="g2getgb2_8F90_source.html#l00351">getgb2l2()</a>.</p>
+<p class="reference">References <a class="el" href="g2getgb2_8F90_source.html#l00358">getgb2l2()</a>.</p>
 
 </div>
 </div>
@@ -574,7 +577,7 @@ Functions/Subroutines</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lugb</td><td>integer unit of the unblocked grib data file. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">idxver</td><td>Index version of the cindex buffer. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cindex</td><td>index record of the grib field (see <a class="el" href="g2index_8F90.html#a1b60285d6eae6ecb9cd4b887b70388c7" title="Generate a version 1 or 2 index record for each field in a GRIB2 message.">ix2gb2()</a> for description of an index record.) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cindex</td><td>index record of the grib field (see <a class="el" href="g2index_8F90.html#a4269b1d65baa63267a35f87716386a1b" title="Generate a version 1 or 2 index record for each field in a GRIB2 message.">ix2gb2()</a> for description of an index record.) </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">gfld</td><td>derived type gribfield <a class="el" href="namespacegrib__mod.html#structgrib__mod_1_1gribfield">grib_mod::gribfield</a>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">iret</td><td>integer return code<ul>
 <li>0 all ok</li>
@@ -588,11 +591,11 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2002-05-07 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00350">350</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00357">357</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="g2bytes_8F90_source.html#l00021">g2_gbytec()</a>, <a class="el" href="g2bytes_8F90_source.html#l00152">g2_gbytec8()</a>, and <a class="el" href="g2unpack_8F90_source.html#l00100">gf_unpack2()</a>.</p>
+<p class="reference">References <a class="el" href="g2bytes_8F90_source.html#l00052">g2_gbytec1()</a>, <a class="el" href="g2bytes_8F90_source.html#l00209">g2_gbytec81()</a>, <a class="el" href="g2logging_8F90_source.html#l00022">g2logging::g2_log()</a>, <a class="el" href="g2logging_8F90_source.html#l00012">g2logging::g2_log_msg</a>, and <a class="el" href="g2unpack_8F90_source.html#l00100">gf_unpack2()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00193">getgb2i2()</a>, and <a class="el" href="g2getgb2_8F90_source.html#l00303">getgb2l()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00193">getgb2i2()</a>, and <a class="el" href="g2getgb2_8F90_source.html#l00310">getgb2l()</a>.</p>
 
 </div>
 </div>
@@ -694,6 +697,155 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Legacy subroutine to find and extract a GRIB2 message from a file. </p>
+<p>Use <a class="el" href="g2getgb2_8F90.html#aaa2fb9df21057adf086daced457313e4" title="Find and extract a GRIB2 message from a file.">getgb2p2()</a> for new code.</p>
+<p>This subroutine reads a GRIB index file (or optionally the GRIB file itself) to get the index buffer (i.e. table of contents) for the GRIB file. It finds in the index buffer a reference to the GRIB field requested.</p>
+<p>The GRIB field request specifies the number of fields to skip and the unpacked identification section, grid definition template and product defintion section parameters. (A requested parameter of -9999 means to allow any value of this parameter to be found.)</p>
+<p>If the requested GRIB field is found, then it is read from the GRIB file and unpacked. If the GRIB field is not found, then the return code will be nonzero.</p>
+<p>The derived type <a class="el" href="namespacegrib__mod.html#structgrib__mod_1_1gribfield">grib_mod::gribfield</a> contains allocated memory that must be freed by the caller with subroutine <a class="el" href="g2gf_8F90.html#a027efd02c99c9464153fc76d9bb9627e" title="Free memory that was used to store array values in derived type grib_mod::gribfield.">gf_free()</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>Specifing an index file may increase speed. Do not engage the same logical unit from more than one processor.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lugb</td><td>Unit of the unblocked GRIB data file. The file must have been opened with <a href="https://noaa-emc.github.io/NCEPLIBS-bacio/">baopen() or baopenr()</a> before calling this routine. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lugi</td><td>Unit of the unblocked GRIB index file. If nonzero, file must have been opened with <a href="https://noaa-emc.github.io/NCEPLIBS-bacio/">baopen() or baopenr()</a> before calling this subroutine. Set to 0 to get index buffer from the GRIB file. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">j</td><td>Number of fields to skip (set to 0 to search from beginning). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">jdisc</td><td>GRIB2 discipline number of requested field. See <a href="https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_table0-0.shtml">GRIB2 - TABLE 0.0 - DISCIPLINE</a>. Use -1 to accept any discipline. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">jids</td><td>Array of values in the identification section. (Set to -9999 for wildcard.) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">jpdtn</td><td>Product Definition Template (PDT) number (n) (if = -1, don't bother matching PDT - accept any) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">jpdt</td><td>Array of values defining the Product Definition Template of the field for which to search (=-9999 for wildcard). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">jgdtn</td><td>Grid Definition Template (GDT) number (if = -1, don't bother matching GDT - accept any). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">jgdt</td><td>array of values defining the Grid Definition Template of the field for which to search (=-9999 for wildcard). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">extract</td><td>value indicating whether to return a GRIB2 message with just the requested field, or the entire GRIB2 message containing the requested field.<ul>
+<li>.true. return GRIB2 message containing only the requested field.</li>
+<li>.false. return entire GRIB2 message containing the requested field. </li>
+</ul>
+</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">k</td><td>field number unpacked. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">gribm</td><td>returned GRIB message. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">leng</td><td>length of returned GRIB message in bytes. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">iret</td><td>integer return code<ul>
+<li>0 No error.</li>
+<li>96 Error reading index.</li>
+<li>97 Error reading GRIB file.</li>
+<li>99 Request not found.</li>
+</ul>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section author"><dt>Author</dt><dd>Mark Iredell </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>1994-04-01 </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00520">520</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
+
+<p class="reference">References <a class="el" href="g2getgb2_8F90_source.html#l00656">getgb2p2()</a>.</p>
+
+</div>
+</div>
+<a id="aaa2fb9df21057adf086daced457313e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa2fb9df21057adf086daced457313e4">&#9670;&nbsp;</a></span>getgb2p2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine getgb2p2 </td>
+          <td>(</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>lugb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>lugi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>jdisc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, dimension(*)&#160;</td>
+          <td class="paramname"><em>jids</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>jpdtn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, dimension(*)&#160;</td>
+          <td class="paramname"><em>jpdt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>jgdtn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, dimension(*)&#160;</td>
+          <td class="paramname"><em>jgdt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical, intent(in)&#160;</td>
+          <td class="paramname"><em>extract</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(inout)&#160;</td>
+          <td class="paramname"><em>idxver</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(out)&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">character(len = 1), dimension(:), pointer&#160;</td>
+          <td class="paramname"><em>gribm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer (kind = 8), intent(out)&#160;</td>
+          <td class="paramname"><em>leng8</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(out)&#160;</td>
+          <td class="paramname"><em>iret</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 <p>Find and extract a GRIB2 message from a file. </p>
 <p>This subroutine reads a GRIB index file (or optionally the GRIB file itself) to get the index buffer (i.e. table of contents) for the GRIB file. It finds in the index buffer a reference to the GRIB field requested.</p>
 <p>The GRIB field request specifies the number of fields to skip and the unpacked identification section, grid definition template and product defintion section parameters. (A requested parameter of -9999 means to allow any value of this parameter to be found.)</p>
@@ -737,9 +889,10 @@ Functions/Subroutines</h2></td></tr>
 <li>.false. return entire GRIB2 message containing the requested field. </li>
 </ul>
 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">idxver</td><td>The index version, use 2 for new code, 1 for legacy index files. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">k</td><td>field number unpacked. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">gribm</td><td>returned GRIB message. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">leng</td><td>length of returned GRIB message in bytes. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">leng8</td><td>length of returned GRIB message in bytes. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">iret</td><td>integer return code<ul>
 <li>0 No error.</li>
 <li>96 Error reading index.</li>
@@ -750,12 +903,14 @@ Functions/Subroutines</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section author"><dt>Author</dt><dd>Mark Iredell </dd></dl>
-<dl class="section date"><dt>Date</dt><dd>1994-04-01 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Alex Richert, Edward Hartnett </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2024-05-21 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00510">510</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00654">654</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="g2index_8F90_source.html#l00422">getg2i()</a>, <a class="el" href="g2index_8F90_source.html#l00566">getg2ir()</a>, <a class="el" href="g2getgb2_8F90_source.html#l00843">getgb2rp()</a>, <a class="el" href="g2index_8F90_source.html#l00786">getgb2s()</a>, and <a class="el" href="g2gf_8F90_source.html#l00585">gf_free()</a>.</p>
+<p class="reference">References <a class="el" href="g2index_8F90_source.html#l00512">getg2i2()</a>, <a class="el" href="g2index_8F90_source.html#l00649">getg2i2r()</a>, <a class="el" href="g2getgb2_8F90_source.html#l01148">getgb2rp2()</a>, <a class="el" href="g2index_8F90_source.html#l00929">getgb2s2()</a>, and <a class="el" href="g2gf_8F90_source.html#l00585">gf_free()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00522">getgb2p()</a>.</p>
 
 </div>
 </div>
@@ -806,7 +961,7 @@ Functions/Subroutines</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lugb</td><td>integer unit of the unblocked grib data file. File must be opened with <a href="https://noaa-emc.github.io/NCEPLIBS-bacio/">baopen() or baopenr()</a> before calling this routine. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cindex</td><td>version 1 index record of the field (see subroutine <a class="el" href="g2index_8F90.html#a1b60285d6eae6ecb9cd4b887b70388c7" title="Generate a version 1 or 2 index record for each field in a GRIB2 message.">ix2gb2()</a> for description of an index record.) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cindex</td><td>version 1 index record of the field (see subroutine <a class="el" href="g2index_8F90.html#a4269b1d65baa63267a35f87716386a1b" title="Generate a version 1 or 2 index record for each field in a GRIB2 message.">ix2gb2()</a> for description of an index record.) </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">gfld</td><td>derived type <a class="el" href="namespacegrib__mod.html#structgrib__mod_1_1gribfield">grib_mod::gribfield</a>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">iret</td><td>Return code:<ul>
 <li>0 all ok</li>
@@ -820,9 +975,9 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert, Ed Hartnett </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2002-01-11 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00617">617</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00797">797</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="g2getgb2_8F90_source.html#l00677">getgb2r2()</a>.</p>
+<p class="reference">References <a class="el" href="g2getgb2_8F90_source.html#l00857">getgb2r2()</a>.</p>
 
 </div>
 </div>
@@ -894,11 +1049,11 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Ed Hartnett, Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Feb 14, 2024 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00676">676</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00856">856</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="g2bytes_8F90_source.html#l00021">g2_gbytec()</a>, <a class="el" href="g2bytes_8F90_source.html#l00152">g2_gbytec8()</a>, <a class="el" href="g2unpack_8F90_source.html#l00576">gf_unpack6()</a>, and <a class="el" href="g2unpack_8F90_source.html#l00650">gf_unpack7()</a>.</p>
+<p class="reference">References <a class="el" href="g2bytes_8F90_source.html#l00052">g2_gbytec1()</a>, <a class="el" href="g2bytes_8F90_source.html#l00209">g2_gbytec81()</a>, <a class="el" href="g2logging_8F90_source.html#l00022">g2logging::g2_log()</a>, <a class="el" href="g2logging_8F90_source.html#l00012">g2logging::g2_log_msg</a>, <a class="el" href="g2unpack_8F90_source.html#l00576">gf_unpack6()</a>, and <a class="el" href="g2unpack_8F90_source.html#l00650">gf_unpack7()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00193">getgb2i2()</a>, and <a class="el" href="g2getgb2_8F90_source.html#l00618">getgb2r()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00193">getgb2i2()</a>, and <a class="el" href="g2getgb2_8F90_source.html#l00798">getgb2r()</a>.</p>
 
 </div>
 </div>
@@ -953,14 +1108,14 @@ Functions/Subroutines</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Extract a grib message from a file given the index (index format 1) of the requested field. </p>
-<p>This subroutine is maintained for backward compatibility. New code should use <a class="el" href="g2getgb2_8F90.html#aaf8c60ecfe8e6807ad3f0e9913d23dde" title="Extract a grib message from a file given the version 1 or 2 index of the requested field.">getgb2rp2()</a>.</p>
+<p>This subroutine is maintained for backward compatibility. New code should use <a class="el" href="g2getgb2_8F90.html#afa275e841e6c6b370f1131dafdf3d74f" title="Extract a grib message from a file given the version 1 or 2 index of the requested field.">getgb2rp2()</a>.</p>
 <p>The GRIB message returned can contain only the requested field (extract=.true.), or the complete GRIB message originally containing the desired field can be returned (extract=.false.) even if other fields were included in the GRIB message.</p>
 <p>If the GRIB field is not found, then the return code will be nonzero.</p>
 <dl class="section note"><dt>Note</dt><dd>For files greater than 2 GB, this subroutine will only work if the message is within the first 2 GB of the file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">lugb</td><td>integer unit of the unblocked grib data file. file must be opened with <a href="https://noaa-emc.github.io/NCEPLIBS-bacio/">baopen() or baopenr()</a> before calling this routine. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cindex</td><td>Index record of the grib field (see docunentation of subroutine <a class="el" href="g2index_8F90.html#a1b60285d6eae6ecb9cd4b887b70388c7" title="Generate a version 1 or 2 index record for each field in a GRIB2 message.">ix2gb2()</a> for description of an index record.) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cindex</td><td>Index record of the grib field (see docunentation of subroutine <a class="el" href="g2index_8F90.html#a4269b1d65baa63267a35f87716386a1b" title="Generate a version 1 or 2 index record for each field in a GRIB2 message.">ix2gb2()</a> for description of an index record.) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">extract</td><td>Logical value indicating whether to return a GRIB2 message with just the requested field, or the entire GRIB2 message containing the requested field.<ul>
 <li>.true. = return grib2 message containing only the requested field.</li>
 <li>.false. = return entire grib2 message containing the requested field. </li>
@@ -979,16 +1134,14 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Stephen Gilbert, Ed Hartnett </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2003-12-31 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00842">842</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l01084">1084</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="g2getgb2_8F90_source.html#l00897">getgb2rp2()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00512">getgb2p()</a>.</p>
+<p class="reference">References <a class="el" href="g2getgb2_8F90_source.html#l01148">getgb2rp2()</a>.</p>
 
 </div>
 </div>
-<a id="aaf8c60ecfe8e6807ad3f0e9913d23dde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf8c60ecfe8e6807ad3f0e9913d23dde">&#9670;&nbsp;</a></span>getgb2rp2()</h2>
+<a id="afa275e841e6c6b370f1131dafdf3d74f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa275e841e6c6b370f1131dafdf3d74f">&#9670;&nbsp;</a></span>getgb2rp2()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1002,7 +1155,7 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramtype">integer, intent(inout)&#160;</td>
           <td class="paramname"><em>idxver</em>, </td>
         </tr>
         <tr>
@@ -1026,8 +1179,8 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">integer, intent(out)&#160;</td>
-          <td class="paramname"><em>leng</em>, </td>
+          <td class="paramtype">integer (kind = 8), intent(out)&#160;</td>
+          <td class="paramname"><em>leng8</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1057,7 +1210,7 @@ Functions/Subroutines</h2></td></tr>
 </ul>
 </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">gribm</td><td>Returned grib message. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">leng</td><td>Length of returned grib message in bytes. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">leng8</td><td>Length of returned grib message in bytes. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">iret</td><td>Return code:<ul>
 <li>0 No error.</li>
 <li>97 Error reading grib file.</li>
@@ -1069,11 +1222,11 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Edward Hartnett, Stephen Gilbert </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Feb 13, 2024 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l00896">896</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g2getgb2_8F90_source.html#l01147">1147</a> of file <a class="el" href="g2getgb2_8F90_source.html">g2getgb2.F90</a>.</p>
 
-<p class="reference">References <a class="el" href="g2bytes_8F90_source.html#l00021">g2_gbytec()</a>, <a class="el" href="g2bytes_8F90_source.html#l00152">g2_gbytec8()</a>, and <a class="el" href="g2bytes_8F90_source.html#l00238">g2_sbytec()</a>.</p>
+<p class="reference">References <a class="el" href="g2bytes_8F90_source.html#l00052">g2_gbytec1()</a>, <a class="el" href="g2bytes_8F90_source.html#l00178">g2_gbytec8()</a>, <a class="el" href="g2bytes_8F90_source.html#l00209">g2_gbytec81()</a>, <a class="el" href="g2logging_8F90_source.html#l00022">g2logging::g2_log()</a>, <a class="el" href="g2logging_8F90_source.html#l00012">g2logging::g2_log_msg</a>, and <a class="el" href="g2bytes_8F90_source.html#l00505">g2_sbytec81()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00843">getgb2rp()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="g2getgb2_8F90_source.html#l00656">getgb2p2()</a>, and <a class="el" href="g2getgb2_8F90_source.html#l01085">getgb2rp()</a>.</p>
 
 </div>
 </div>

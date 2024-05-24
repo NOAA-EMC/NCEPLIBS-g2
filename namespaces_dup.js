@@ -10,6 +10,11 @@ var namespaces_dup =
       [ "maxtemp", "namespaceg2grids.html#a3189c0bf23a43b2088d020cbdc78f15f", null ],
       [ "num_grids", "namespaceg2grids.html#a722699f566db5273fbab2ecf2cf937e9", null ]
     ] ],
+    [ "g2logging", "namespaceg2logging.html", [
+      [ "g2_log", "namespaceg2logging.html#ad42c175b1fc9ba86d44de0a198a3ec06", null ],
+      [ "g2_log_level", "namespaceg2logging.html#ae155e9db5ebc34f3fc2621573ed3128b", null ],
+      [ "g2_log_msg", "namespaceg2logging.html#a520b952ccbe37da0343d6f2feb8b7507", null ]
+    ] ],
     [ "grib_mod", "namespacegrib__mod.html", "namespacegrib__mod" ],
     [ "gridtemplates", "namespacegridtemplates.html", "namespacegridtemplates" ],
     [ "intmath", "namespaceintmath.html", "namespaceintmath" ],

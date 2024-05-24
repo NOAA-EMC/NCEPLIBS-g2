@@ -11,6 +11,6 @@ var g2index_8F90 =
     [ "getidx", "g2index_8F90.html#a681cc6ee1b2c79c57285604831ce95dd", null ],
     [ "getidx2", "g2index_8F90.html#ab9e12eb8b9f545025f0f0e26e63b7c84", null ],
     [ "gf_finalize", "g2index_8F90.html#ac02dafd6109baa69a66dc278d6b0c083", null ],
-    [ "ix2gb2", "g2index_8F90.html#a1b60285d6eae6ecb9cd4b887b70388c7", null ],
+    [ "ix2gb2", "g2index_8F90.html#a4269b1d65baa63267a35f87716386a1b", null ],
     [ "ixgb2", "g2index_8F90.html#aafeb30e8a8c7d03742f733a34846a6b1", null ]
 ];

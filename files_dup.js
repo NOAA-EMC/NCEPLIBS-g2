@@ -12,6 +12,7 @@ var files_dup =
     [ "g2grids.F90", "g2grids_8F90.html", "g2grids_8F90" ],
     [ "g2index.F90", "g2index_8F90.html", "g2index_8F90" ],
     [ "g2jpc.F90", "g2jpc_8F90.html", "g2jpc_8F90" ],
+    [ "g2logging.F90", "g2logging_8F90.html", "g2logging_8F90" ],
     [ "g2png.F90", "g2png_8F90.html", "g2png_8F90" ],
     [ "g2sim.F90", "g2sim_8F90.html", "g2sim_8F90" ],
     [ "g2spec.F90", "g2spec_8F90.html", "g2spec_8F90" ],
