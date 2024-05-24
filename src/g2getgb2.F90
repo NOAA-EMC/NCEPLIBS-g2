@@ -1282,23 +1282,23 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      !  Read the location of section 7 from the index.
      if (idxver .eq. 1) then
         call g2_gbytec1(cindex, iskp7, IXDS1 * INT1_BITS, INT4_BITS)    ! bytes to skip for section 7
+        iskp78 = iskp7
      else
         call g2_gbytec81(cindex, iskp78, IXDS2 * INT1_BITS, INT8_BITS)    ! bytes to skip for section 7
-        iskp7 = int(iskp78, kind(4))
      endif
 #ifdef LOGGING
-     write(g2_log_msg, *) 'getgb2rp2: iskp7', iskp7, 'IXDS2', IXDS2
+     write(g2_log_msg, *) 'getgb2rp2: iskp78', iskp78, 'IXDS2', IXDS2
      call g2_log(2)
 #endif
 
      ! Read in the length of section 7 from the data file.
-     call bareadl(lugb, iskip8 + iskp7, 4_8, lread8, ctemp)
+     call bareadl(lugb, iskip8 + iskp78, 4_8, lread8, ctemp)
      call g2_gbytec1(ctemp, len7, 0, INT4_BITS)      ! length of section 7
 
      ! Now read in section 7.
      allocate(csec7(len7))
      len7_8 = len7
-     call bareadl(lugb, iskip8 + iskp7, len7_8, lread8, csec7)
+     call bareadl(lugb, iskip8 + iskp78, len7_8, lread8, csec7)
 
 #ifdef LOGGING
      write(g2_log_msg, *) 'getgb2rp2: len0 ', len0, 'len1', len1, 'len2', len2 , 'len3', len3
