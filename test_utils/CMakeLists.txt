@@ -3,11 +3,13 @@
 #
 # Ed Hartnett
 
-# This fortran test is for the internals of degrib2.
-add_executable(test_degrib2_int test_degrib2_int.F90 ${CMAKE_SOURCE_DIR}/utils/prlevel.F90
-  ${CMAKE_SOURCE_DIR}/utils/prvtime.F90)
-target_link_libraries(test_degrib2_int PUBLIC ${PROJECT_NAME}_4)
-add_test(NAME test_degrib2_int COMMAND test_degrib2_int)
+if(BUILD_4)
+  # This fortran test is for the internals of degrib2.
+  add_executable(test_degrib2_int test_degrib2_int.F90 ${CMAKE_SOURCE_DIR}/utils/prlevel.F90
+    ${CMAKE_SOURCE_DIR}/utils/prvtime.F90)
+  target_link_libraries(test_degrib2_int PUBLIC ${PROJECT_NAME}_4)
+  add_test(NAME test_degrib2_int COMMAND test_degrib2_int)
+endif()
 
 # Run each shell test.
 function(gu_test name)
@@ -77,12 +79,16 @@ if(FTP_TEST_FILES)
 endif()
 
 # Run these shell tests.
-gu_test(run_cnvgrib_tests)
-gu_test(run_copygb2_tests2)
-gu_test(run_degrib2_tests)
-gu_test(run_grb2index_tests)
-gu_test(run_tocgrib2_tests)
-gu_test(run_tocgrib2super_tests)
+if(BUILD_4)
+  if(BUILD_D)
+    gu_test(run_copygb2_tests2)
+  endif()
+  gu_test(run_cnvgrib_tests)
+  gu_test(run_degrib2_tests)
+  gu_test(run_grb2index_tests)
+  gu_test(run_tocgrib2_tests)
+  gu_test(run_tocgrib2super_tests)
+endif()
 gu_test(run_copygb_tests)
 gu_test(run_grbindex_tests)
 
