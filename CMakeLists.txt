@@ -85,7 +85,11 @@ endif()
 
 # NCEPLIBS-w3emc may be required.
 if (BUILD_WITH_W3EMC)
-  find_package(w3emc 2.10.0 REQUIRED)
+  if (BUILD_UTILS)
+    find_package(w3emc 2.10.0 REQUIRED)
+  else()
+    find_package(w3emc 2.9.0 REQUIRED)
+  endif()
 endif()
 
 # Figure whether user wants a _4, a _d, or both libraries.
