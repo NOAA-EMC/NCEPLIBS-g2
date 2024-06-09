@@ -943,10 +943,10 @@ module params
   data paramlist(898) /gribparam(255, 255, 2, 3, 21, 'SOILICE')/
   data paramlist(899) /gribparam(255, 255, 2, 3, 22, 'CISICE')/
   data paramlist(900) /gribparam(255, 255, 2, 3, 23, 'LWSNWP')/
-  data paramlist(901) /gribparam(255, 255, 2, 3, 23, 'FRSTINX')/
-  data paramlist(902) /gribparam(255, 255, 2, 3, 23, 'SNWDEB')/
-  data paramlist(903) /gribparam(255, 255, 2, 3, 23, 'SHFLX')/
-  data paramlist(904) /gribparam(255, 255, 2, 3, 23, 'SOILDEP')/
+  data paramlist(901) /gribparam(255, 255, 2, 3, 24, 'FRSTINX')/
+  data paramlist(902) /gribparam(255, 255, 2, 3, 25, 'SNWDEB')/
+  data paramlist(903) /gribparam(255, 255, 2, 3, 26, 'SHFLX')/
+  data paramlist(904) /gribparam(255, 255, 2, 3, 27, 'SOILDEP')/
   data paramlist(905) /gribparam(255, 255, 2, 4, 0, 'FIREOLK')/
   data paramlist(906) /gribparam(255, 255, 2, 4, 1, 'FIREODT')/
   data paramlist(907) /gribparam(255, 255, 2, 4, 3, 'FBAREA')/
