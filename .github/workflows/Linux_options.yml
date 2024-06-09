@@ -88,7 +88,7 @@ jobs:
       with:
         repository: NOAA-EMC/NCEPLIBS-w3emc
         path: w3emc
-        ref: v${{ matrix.w3emc-version }}
+        ref: v${{ matrix.w3emc-version }}-1
 
     - name: build-w3emc
       if: steps.cache-w3emc.outputs.cache-hit != 'true'
