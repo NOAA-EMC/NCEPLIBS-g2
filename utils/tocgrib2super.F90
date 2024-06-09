@@ -3,14 +3,15 @@
 !> with WMO super header.
 !> @author Gilbert @date 2004-05-17
 
-!> This program reads selected GRIB2 fields from a file, adds a flag Field
-!> separator block and the size in bytes of the grib file, and the WMO
-!> super header and the time stamp, adds a TOC Flag Field separator
-!> block and WMO Header in front of each GRIB2 field, and writes them
-!> out to a new file. The output file is in the format required for
-!> TOC's FTP Input Service, which can be used to disseminate the GRIB2
-!> bulletins. This service is described at
-!> http://weather.gov/tg/ftpingest.html.
+!> This program reads selected GRIB2 fields from a file, adds a flag
+!> Field separator block and the size in bytes of the grib file, and
+!> the WMO super header and the time stamp, adds a TOC Flag Field
+!> separator block and WMO Header in front of each GRIB2 field, and
+!> writes them out to a new file. The output file is in the format
+!> required for TOC's FTP Input Service, which can be used to
+!> disseminate the GRIB2 bulletins. See [File Transfer Input Service
+!> Guide - Input examples and how to FTP files to the Gateway]
+!> (https://www.weather.gov/tg/ftpingest).
 !>
 !> @note The "EXTRACT" variable in the namelist allows users to choose
 !> whether they want the entire GRIB2 message containing the requested
