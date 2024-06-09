@@ -40,7 +40,7 @@ jobs:
             options: "-DBUILD_WITH_W3EMC=OFF"
           }
         - { 
-            options: "-DBUILD_UTILS=ON"
+            options: "-DBUILD_UTILS=ON -DBUILD_WITH_W3EMC=OFF"
           }
 
     steps:
