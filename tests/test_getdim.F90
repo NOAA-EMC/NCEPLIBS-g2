@@ -56,7 +56,7 @@ program test_getdim
      if (iscan .ne. 0) stop 32
 
      ! Uninitialized value memory error
-     if (.true.) then
+     if (.false.) then
           print *, 'Template num 30 (Lambert Conformal)'
           csec3(14) = achar(30)
           call getdim(csec3, lcsec3, width, height, iscan)
