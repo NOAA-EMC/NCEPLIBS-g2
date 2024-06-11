@@ -56,7 +56,7 @@ program test_getdim
      if (iscan .ne. 0) stop 32
 
      ! Uninitialized value memory error
-     if (.false.) then
+     if (.true.) then
           print *, 'Template num 30 (Lambert Conformal)'
           csec3(14) = achar(30)
           call getdim(csec3, lcsec3, width, height, iscan)
@@ -72,7 +72,7 @@ program test_getdim
      if (height .ne. 8) stop 24
      if (iscan .ne. 18) stop 34
 
-     if (.false.) then
+     if (.true.) then
           print *, 'Template num 90 (Space View/Orthographic)'
           csec3(14) = achar(90)
           call getdim(csec3, lcsec3, width, height, iscan)
@@ -89,7 +89,7 @@ program test_getdim
      if (iscan .ne. 0) stop 36
 
      ! Uninitialized value memory error
-     if (.false.) then
+     if (.true.) then
           print *, 'Template num 5 (Default case)'
           csec3(14) = achar(5)
           call getdim(csec3, lcsec3, width, height, iscan)
