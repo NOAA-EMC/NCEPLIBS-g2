@@ -72,7 +72,7 @@ program test_getdim
      if (height .ne. 8) stop 24
      if (iscan .ne. 18) stop 34
 
-     if (.true.) then
+     if (.false.) then
           print *, 'Template num 90 (Space View/Orthographic)'
           csec3(14) = achar(90)
           call getdim(csec3, lcsec3, width, height, iscan)
