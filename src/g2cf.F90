@@ -6,6 +6,7 @@
 !>
 !> @author Edward Hartnett @date 2020-16-12
 module g2cf
+  use g2c_interface
 
 contains
   !> Add a C_NULL_CHAR to a string to create a C compatible
@@ -47,7 +48,6 @@ contains
        cstring = string(1:nlen)//C_NULL_CHAR
        nlen = nlen + 1
     endif
-
   end function addcnullchar
 
   !> Open a GRIB2 file.
@@ -60,28 +60,28 @@ contains
   !>
   !> @author Edward Hartnett @date 2024-06-12
   function g2cf_open(path, mode, g2id) result (status)
+    use iso_c_binding    
     implicit none
-    character(len=*), intent(in)    :: path
-    integer,          intent(in)    :: mode
-    integer,          intent(inout) :: g2id
- 
-    integer                         :: status
+    character(len = *), intent(in) :: path
+    integer, intent(in) :: mode
+    integer, intent(inout) :: g2id
+    integer :: status
 
-    ! Integer(C_INT)               :: cmode, cncid, cstatus
-    ! Character(LEN=(LEN(path)+1)) :: cpath
-    ! Integer                      :: ie
+    integer(c_int) :: cmode, cg2id, cstatus
+    character(len = (len(path) + 1)) :: cpath
+    integer :: ie
     
-    ! cmode = mode
-    ! cncid = 0
+    cmode = mode
+    cg2id = 0
     
-    ! ! Check for C null character on path and add one if not present.
-    ! cpath = addCNullChar(path, ie) 
+    ! Check for C null character on path and add one if not present.
+    cpath = addCNullChar(path, ie) 
     
-    ! ! Call nc_create to create file
-    ! cstatus = nc_open(cpath(1:ie), cmode, cncid)
+    ! Call g2c_open to open GRIB2 file.
+    ! cstatus = g2c_open(cpath(1:ie), cmode, cg2id)
     
     ! If (cstatus == NC_NOERR) Then
-    !    ncid   = cncid
+    !    g2id   = cg2id
     ! EndIf
     ! status = cstatus
 
