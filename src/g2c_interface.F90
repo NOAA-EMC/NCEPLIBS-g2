@@ -8,11 +8,18 @@
 module g2c_interface
   interface
      function g2c_open(path, mode, g2idp) bind(c)
-       use iso_c_binding, only: c_char, c_int
+       use iso_c_binding
        character(kind = c_char), intent(in)  :: path(*)
-       integer(c_int), value       :: mode
+       integer(c_int), value :: mode
        integer(c_int), intent(out) :: g2idp
        integer(c_int) :: g2c_open
      end function g2c_open
+
+     function g2c_close(g2id) result(status)
+       use iso_c_binding
+       integer(c_int), intent(in) :: g2id
+       integer(c_int) :: status
+     end function g2c_close
+     
   end interface
 end module g2c_interface

@@ -60,8 +60,10 @@ contains
   !>
   !> @author Edward Hartnett @date 2024-06-12
   function g2cf_open(path, mode, g2id) result (status)
-    use iso_c_binding    
+    use iso_c_binding
+    use g2c_interface
     implicit none
+    
     character(len = *), intent(in) :: path
     integer, intent(in) :: mode
     integer, intent(inout) :: g2id
@@ -78,13 +80,36 @@ contains
     cpath = addCNullChar(path, ie) 
     
     ! Call g2c_open to open GRIB2 file.
-    ! cstatus = g2c_open(cpath(1:ie), cmode, cg2id)
-    
-    ! If (cstatus == NC_NOERR) Then
-    !    g2id   = cg2id
-    ! EndIf
-    ! status = cstatus
+    cstatus = g2c_open(cpath(1:ie), cmode, cg2id)
+
+    ! Return results to caller.
+    if (cstatus .eq. 0) then
+       g2id = cg2id
+    endif
+    status = cstatus
 
   end function g2cf_open
+
+  !> Close a GRIB2 file.
+  !>
+  !> @param g2id the ID of the open file
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-06-12
+  function g2cf_close(g2id) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
+    
+    integer, intent(in) :: g2id
+    integer :: status
+    
+    integer(c_int) :: cg2id, cstatus
+
+    cg2id = g2id
+    cstatus = g2c_close(cg2id)
+    status = cstatus
+  end function g2cf_close
 
 end module g2cf
