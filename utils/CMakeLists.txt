@@ -36,7 +36,7 @@ if (BUILD_4)
   target_link_libraries(cnvgrib PRIVATE bacio::bacio w3emc::w3emc_4
     ${JASPER_LIBRARIES} PNG::PNG ${ZLIB_LIBRARY})
 
-  add_executable(degrib2 degrib2.F90)
+  add_executable(degrib2 prgrib2.F90 degrib2.F90)
   target_link_libraries(degrib2 PUBLIC ${PROJECT_NAME}_4)
   target_link_libraries(degrib2 PRIVATE bacio::bacio w3emc::w3emc_4
     ${JASPER_LIBRARIES} PNG::PNG ${ZLIB_LIBRARY})
