@@ -82,7 +82,7 @@ target_link_libraries(copygb PRIVATE bacio::bacio w3emc::w3emc_d ip::ip_d)
 add_executable(grbindex grbindex.f)
 target_link_libraries(grbindex PRIVATE bacio::bacio w3emc::w3emc_4)
 
-add_executable(tocgrib makwmo.F90 mkfldsep.F90 tocgrib.F90)
+add_executable(tocgrib makwmo.F90 tocgrib.F90)
 target_link_libraries(tocgrib PRIVATE bacio::bacio w3emc::w3emc_4)
 
 if(ip_VERSION LESS 5.0)
