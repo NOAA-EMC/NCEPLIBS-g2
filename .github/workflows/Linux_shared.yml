@@ -47,120 +47,27 @@ jobs:
         sudo apt-get update
         sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev
 
-    - name: cache-bacio
-      id: cache-bacio
-      uses: actions/cache@v3
+    - name: "Build dependencies"
+      uses: NOAA-EMC/ci-build-nceplibs@develop
       with:
-        path: ~/bacio
-        key: bacio-${{ runner.os }}-${{ matrix.bacio-version }}-shared
-        
-    - name: checkout-bacio
-      if: steps.cache-bacio.outputs.cache-hit != 'true'
-      uses: actions/checkout@v3
-      with:
-        repository: NOAA-EMC/NCEPLIBS-bacio
-        path: bacio
-        ref: v${{ matrix.bacio-version }}
+        bacio-version: v${{ matrix.bacio-version }}
+        bacio-cmake-args: -DBUILD_SHARED_LIBS=ON
+        g2c-version: develop
+        g2c-cmake-args: -DENABLE_SHARED=ON
+        jasper-version: version-4.0.0
+        jasper-cmake-args: -DENABLE_SHARED=ON
+        w3emc-version: v${{ matrix.w3emc-version }}
+        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF -DENABLE_SHARED=ON -DBUILD_WITH_EXTRA_DEPS=OFF
+        ip-version: develop
 
-    - name: build-bacio
-      if: steps.cache-bacio.outputs.cache-hit != 'true'
-      run: |
-        cd bacio
-        mkdir build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX=~/bacio -DBUILD_SHARED_LIBS=ON ..
-        make -j2
-        make install
-        
-    - name: cache-w3emc
-      id: cache-w3emc
-      uses: actions/cache@v3
-      with:
-        path: ~/w3emc
-        key: w3emc-${{ runner.os }}-${{ matrix.w3emc-version }}-${{ matrix.bacio-version }}-shared
-        
-    - name: checkout-w3emc
-      if: steps.cache-w3emc.outputs.cache-hit != 'true'
-      uses: actions/checkout@v3
-      with:
-        repository: NOAA-EMC/NCEPLIBS-w3emc
-        path: w3emc
-        ref: v${{ matrix.w3emc-version }}
-
-    - name: build-w3emc
-      if: steps.cache-w3emc.outputs.cache-hit != 'true'
-      run: |
-        cd w3emc
-        mkdir build
-        cd build
-        cmake -DCMAKE_PREFIX_PATH=~/bacio -DCMAKE_INSTALL_PREFIX=~/w3emc -DBUILD_WITH_BUFR=OFF -DENABLE_SHARED=ON -DBUILD_WITH_EXTRA_DEPS=OFF ..
-        make -j2
-        make install
-        
-    - name: cache-jasper
-      id: cache-jasper
-      uses: actions/cache@v3
-      with:
-        path: ~/jasper
-        key: jasper-${{ runner.os }}-4.0.0-shared
-
-    - name: checkout-jasper
-      if: steps.cache-jasper.outputs.cache-hit != 'true'
-      uses: actions/checkout@v3
-      with:
-        repository: jasper-software/jasper
-        path: jasper
-        ref: version-4.0.0
-
-    - name: build-jasper
-      if: steps.cache-jasper.outputs.cache-hit != 'true'
-      run: |
-        cd jasper
-        mkdir build-jasper && cd build-jasper
-        cmake -DCMAKE_INSTALL_PREFIX=~/jasper -DENABLE_SHARED=ON ..
-        make -j2
-        make install
-
-    - name: checkout-g2c
-      uses: actions/checkout@v3
-      with:
-        repository: NOAA-EMC/NCEPLIBS-g2c
-        path: g2c
-        ref: develop
-
-    - name: checkout-ip
-      uses: actions/checkout@v3
-      with:
-        repository: NOAA-EMC/NCEPLIBS-ip
-        path: ip
-        ref: develop
-    
-    - name: build-ip
-      run: |
-        cd ip
-        mkdir build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX=~/ip ..
-        make -j2
-        make install
-
-    - name: build-g2c
-      run: |
-        cd g2c
-        mkdir build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX=~/g2c -DJasper_ROOT=~/jasper -DENABLE_SHARED=ON ..
-        make -j2
-        make install
-        
     - name: checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: g2
 
     - name: cache-data
       id: cache-data
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/data
         key: data-5
@@ -171,7 +78,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake ${{ matrix.config.options }} -DCMAKE_PREFIX_PATH="~/jasper;~/g2c;~/bacio;~/w3emc;~/ip" -DCMAKE_INSTALL_PREFIX="~/g2/install" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DBUILD_SHARED_LIBS=ON ..
+        cmake ${{ matrix.config.options }} -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip" -DCMAKE_INSTALL_PREFIX="~/g2/install" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DBUILD_SHARED_LIBS=ON ..
         make -j2 VERBOSE=1
 
     - name: cache-data
@@ -179,7 +86,7 @@ jobs:
       run: |
         mkdir ~/data
         cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
-        
+
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build
@@ -190,7 +97,3 @@ jobs:
         cd $GITHUB_WORKSPACE/g2/build
         make install
         ls -l ~/g2/install/lib/lib*.so || exit 1
-        
-        
-
-

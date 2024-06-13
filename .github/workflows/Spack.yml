@@ -26,42 +26,20 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest"]
-        pic: ["+pic", "~pic"]
-        precision: ["precision=d", "precision=4"]
-        w3emc: ["+w3emc", "~w3emc"]
-        utils: ["+utils", "~utils"]
+        variants: ["+shared +pic precision=d +w3emc +utils", "~shared ~pic precision=4 ~w3emc ~utils"]
     runs-on: ${{ matrix.os }}
 
     steps:
 
-    - name: checkout-g2
-      uses: actions/checkout@v4
+    - name: "Build Spack package"
+      uses: NOAA-EMC/ci-test-spack-package@develop
       with:
-        path: g2
-
-    - name: spack-build-and-test
-      run: |
-        git clone -c feature.manyFiles=true https://github.com/spack/spack
-        . spack/share/spack/setup-env.sh
-        spack env create g2-env
-        spack env activate g2-env
-        cp $GITHUB_WORKSPACE/g2/spack/package.py $SPACK_ROOT/var/spack/repos/builtin/packages/g2/package.py
-        spack develop --no-clone --path $GITHUB_WORKSPACE/g2 g2@develop
-        spack add g2@develop%gcc@11 ${{ matrix.pic }} ${{ matrix.precision }} ${{ matrix.w3emc }} ${{ matrix.utils }}
-        spack external find cmake gmake
-        spack concretize
-        # Run installation and run CTest suite
-        spack install --verbose --fail-fast --test root
-        # Run 'spack load' to check for obvious errors in setup_run_environment
-        spack load g2
-
-    - name: Upload test results
-      uses: actions/upload-artifact@v3
-      if: ${{ failure() }}
-      with:
-        name: spackci-ctest-output-${{ matrix.os }}-${{ matrix.pic }}-${{ matrix.precision }}-${{ matrix.w3emc }}-${{ matrix.utils }}
-        path: ${{ github.workspace }}/g2/spack-build-*/Testing/Temporary/LastTest.log
-
+        package-name: g2
+        package-variants: ${{ matrix.variants }}
+        custom-recipe: spack/package.py
+        use-repo-cache: true
+        spack-compiler: gcc
+        repo-cache-key-suffix: ${{ matrix.os }}-${{ matrix.variants }}-1
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
@@ -69,15 +47,9 @@ jobs:
 
     steps:
 
-    - name: checkout-g2
-      uses: actions/checkout@v4
-      with:
-        path: g2
-
     - name: recipe-check
-      run: |
-        echo "If this jobs fails, look at the most recently output CMake option below and make sure that option appears in spack/package.py"
-        for opt in $(grep -ioP '^option\(\K(?!(ENABLE_DOCS|FTP_TEST_FILES|FTP_LARGE_TEST_FILES|FTP_EXTRA_TEST_FILES|LOGGING|BUILD_SHARED_LIBS))[^ ]+' $GITHUB_WORKSPACE/g2/CMakeLists.txt) ; do
-          echo "Checking for presence of '$opt' CMake option in package.py"
-          grep -cP "define.+\b${opt}\b" $GITHUB_WORKSPACE/g2/spack/package.py
-        done
+      uses: NOAA-EMC/ci-check-spack-recipe@develop
+      with:
+        recipe-file: package/spack/package.py
+        cmakelists-txt: package/CMakeLists.txt
+        ignore-list: ENABLE_DOCS,FTP_TEST_FILES,FTP_LARGE_TEST_FILES,FTP_EXTRA_TEST_FILES,LOGGING
