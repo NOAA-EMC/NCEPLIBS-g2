@@ -32,31 +32,31 @@ of the experimental GRIB Edition 2 form.
 # Building NCEPLIBS-g2
 
 The NCEPLIBS-g2 library is built with CMake. Starting with
-NCEPLIBS-g2-4.0.0, the NCEPLIBS-g2c library is required for the build.
+NCEPLIBS-g2-4.0.0, the
+[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) library is
+required for the build.
 
-The NCEPLIBS-w3emc library provides GRIB1 support. It's required for
-some NCEPLIBS-g2 subroutines and some utilities. If built without
-NCEPLIBS-w3emc, then NCEPLIBS-g2 will not contain any GRIB1
-functionality and utilities which need GRIB1 subroutines will not be
-built.
+The [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc)
+library provides GRIB1 support. It's required for some NCEPLIBS-g2
+subroutines and some utilities. If built without NCEPLIBS-w3emc, then
+NCEPLIBS-g2 will not contain any GRIB1 functionality and utilities
+which need GRIB1 subroutines will not be built.
 
 # Utilities
 
-The NCEPLIBS-grib_util project contains a collection of NCEP grib
-related utilities. This is part of the
-[NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
+The NCEPLIBS-g2 project contains a collection of NCEP grib
+related utilities.
 
 The utilities:
-- <a href="cnvgrib/index.html">cnvgrib</a> - Convert between GRIB1 and GRIB2.
-- <a href="copygb/index.html">copygb</a> - Copy all or part of a GRIB1 file.
-- <a href="copygb2/index.html">copygb2</a> - Copy all or part of a GRIB2 file.
-- <a href="degrib2/index.html">degrib2</a> - Inventory a GRIB2 file.
-- <a href="grbindex/index.html">grbindex</a> - Create an index from a GRIB1 file.
-- <a href="grb2index/index.html">grb2index</a> - Create an index from a GRIB2 file.
-- <a href="tocgrib/index.html">tocgrib</a> - Copy some GRIB2 fields to a new GRIB1 file.
-- <a href="tocgrib2/index.html">tocgrib2</a> - Copy some GRIB2 fields to a new GRIB2 file.
-- <a href="tocgrib2super/index.html">tocgrib2super</a> - Copy some GRIB2 fields to a new GRIB2 file with super WMO header.
-- <a href="wgrib/index.html">wgrib</a> - Manipulate GRIB1 files.
+- cnvgrib.F90 - Convert between GRIB1 and GRIB2.
+- copygb.F90 - Copy all or part of a GRIB1 file.
+- copygb2.F90 - Copy all or part of a GRIB2 file.
+- degrib2.F90 - Inventory a GRIB2 file.
+- grbindex.F90 - Create an index from a GRIB1 file.
+- grb2index.F90 - Create an index from a GRIB2 file.
+- tocgrib.F90 - Copy some GRIB2 fields to a new GRIB1 file.
+- tocgrib2.F90 - Copy some GRIB2 fields to a new GRIB2 file.
+- tocgrib2super.F90 - Copy some GRIB2 fields to a new GRIB2 file with super WMO header.
 
 # File-Based API
 
