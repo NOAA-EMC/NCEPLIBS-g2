@@ -23,6 +23,10 @@ module g2c_interface
        integer(c_int) :: g2c_open_index
      end function g2c_open_index
 
+     ! int g2c_inq(int g2cid, int *num_msg);
+     ! int g2c_inq_msg(int g2cid, int msg_num, unsigned char *discipline, int *num_fields,
+     !    int *num_local, short *center, short *subcenter, unsigned char *master_version,
+     !    unsigned char *local_version);
      function g2c_close(g2id) result(status)
        use iso_c_binding
        integer(c_int), intent(in) :: g2id
