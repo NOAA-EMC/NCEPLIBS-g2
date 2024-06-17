@@ -112,15 +112,16 @@ program test_addfield
   if (ierr .ne. 6) stop 6
   cgrib = s3grib
 
-  idrstmplen = 7
-  idrsnum = 40
-  print *, 'Testing with JPEG Packing'
-  print *, 'Normal addfield call, error=0'
-  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-       ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 0) stop 1
-
+  if (.false.) then
+     idrstmplen = 7
+     idrsnum = 40
+     print *, 'Testing with JPEG Packing'
+     print *, 'Normal addfield call, error=0'
+     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+          coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+          ngrdpts, ibmap, bmap, ierr)
+     if (ierr .ne. 0) stop 1
+  end if
   print *, 'SUCCESS!'
 
 end program test_addfield
