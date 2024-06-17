@@ -32,9 +32,9 @@ program test_addfield
   integer, parameter :: ipdstmplen = 15, numcoord = 0
   integer :: ipdstmpl(ipdstmplen) = (/ 0, 0, 0, 0, 0, 12, 59, 0, 0, 1, 1, 1, 2, 1, 1 /)
   integer :: coordlist(1)
-  integer :: idrsnum = 0
-  integer, parameter :: idrstmplen = 5, ngrdpts = 4
-  integer :: idrstmpl(idrstmplen) = (/ 0, 1, 1, 8, 0 /)
+  integer :: idrsnum = 0, idrstmplen = 5
+  integer, parameter :: ngrdpts = 4
+  integer :: idrstmpl(7) = (/ 0, 1, 1, 8, 0, 0, 1 /)
   integer :: ibmap = 255
   logical :: bmap(1) = .false.
   real :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
@@ -111,6 +111,15 @@ program test_addfield
        ngrdpts, ibmap, bmap, ierr)
   if (ierr .ne. 6) stop 6
   cgrib = s3grib
+
+  idrstmplen = 7
+  idrsnum = 40
+  print *, 'Testing with JPEG Packing'
+  print *, 'Normal addfield call, error=0'
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 1
 
   print *, 'SUCCESS!'
 
