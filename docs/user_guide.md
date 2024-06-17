@@ -77,6 +77,21 @@ Subroutines in the new API include:
 
 Release all resources for the file by calling g2cf_close().
 
+# Index Files
+
+The NCEPLIBS-g2 library uses index files to help quickly navigate a
+GRIB2 file. These index files can result in significant performance
+improvement for large GRIB2 files.
+
+There are two versions of the index file. The original version
+(version 1) was used until NCEPLIBS-g2-4.0.0. This version of the
+index file does not handle files larger than 2 GB.
+
+The second version of the index file (version 2) handles GRIB2 files
+which are larger than 2 GB.
+
+Create an index file with the grb2index utility.
+
 # GRIB2 Encoding Routines
 
 To start a new GRIB2 message, call subroutine gribcreate(). It
@@ -190,23 +205,9 @@ and MSWord formats are available)
 MDL has made an HTML version of the document available at
 http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm.
 
-# Index Files
-
-The NCEPLIBS-g2 library uses index files to help quickly navigate a
-GRIB2 file. These index files can result in significant performance
-improvement for large GRIB2 files.
-
-There are two versions of the index file. The original version
-(version 1) was used until NCEPLIBS-g2-4.0.0. This version of the
-index file does not handle files larger than 2 GB.
-
-The second version of the index file (version 2) handles GRIB2 files
-which are larger than 2 GB.
-
-Create an index file with the grb2index utility.
-
 ## Documentation for Previous Versions of NCEPLIBS-g2
 
+* [NCEPLIBS-g2 Version 3.5.0](ver-3.5.0/index.html)
 * [NCEPLIBS-g2 Version 3.4.9](ver-3.4.9/index.html)
 * [NCEPLIBS-g2 Version 3.4.8](ver-3.4.8/index.html)
 * [NCEPLIBS-g2 Version 3.4.7](ver-3.4.7/index.html)
