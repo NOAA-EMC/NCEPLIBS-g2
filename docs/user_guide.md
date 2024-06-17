@@ -29,6 +29,54 @@ Unrepeated sections remain in effect until redefined.
 The above overview was taken from WMO's FM 92-XII GRIB description
 of the experimental GRIB Edition 2 form.
 
+# Building NCEPLIBS-g2
+
+The NCEPLIBS-g2 library is built with CMake. Starting with
+NCEPLIBS-g2-4.0.0, the NCEPLIBS-g2c library is required for the build.
+
+The NCEPLIBS-w3emc library provides GRIB1 support. It's required for
+some NCEPLIBS-g2 subroutines and some utilities. If built without
+NCEPLIBS-w3emc, then NCEPLIBS-g2 will not contain any GRIB1
+functionality and utilities which need GRIB1 subroutines will not be
+built.
+
+# Utilities
+
+The NCEPLIBS-grib_util project contains a collection of NCEP grib
+related utilities. This is part of the
+[NCEPLIBS](https://github.com/NOAA-EMC/NCEPLIBS) project.
+
+The utilities:
+- <a href="cnvgrib/index.html">cnvgrib</a> - Convert between GRIB1 and GRIB2.
+- <a href="copygb/index.html">copygb</a> - Copy all or part of a GRIB1 file.
+- <a href="copygb2/index.html">copygb2</a> - Copy all or part of a GRIB2 file.
+- <a href="degrib2/index.html">degrib2</a> - Inventory a GRIB2 file.
+- <a href="grbindex/index.html">grbindex</a> - Create an index from a GRIB1 file.
+- <a href="grb2index/index.html">grb2index</a> - Create an index from a GRIB2 file.
+- <a href="tocgrib/index.html">tocgrib</a> - Copy some GRIB2 fields to a new GRIB1 file.
+- <a href="tocgrib2/index.html">tocgrib2</a> - Copy some GRIB2 fields to a new GRIB2 file.
+- <a href="tocgrib2super/index.html">tocgrib2super</a> - Copy some GRIB2 fields to a new GRIB2 file with super WMO header.
+- <a href="wgrib/index.html">wgrib</a> - Manipulate GRIB1 files.
+
+# File-Based API
+
+NCEPLIBS-g2-4.0.0 introduces a new file-based API. This API adds the
+capability of handling GRIB2 files, keeping track of the locations of
+messages for the user.
+
+To open a file with the new API, call g2cf_open(). This will return a
+file ID which can be used in other subroutines.
+
+Subroutines in the new API include:
+
+* g2cf_open() - Open a GRIB2 file.
+* g2cf_open_index() - Open a file using an index file for better performance.
+* g2cf_inq() - Learn about a GRIB2 file.
+* g2cf_inq_msg() - Learn about a GRIB2 message in the file.
+* g2cf_close() - Close an opened GRIB2 file.
+
+Release all resources for the file by calling g2cf_close().
+
 # GRIB2 Encoding Routines
 
 To start a new GRIB2 message, call subroutine gribcreate(). It
@@ -141,6 +189,21 @@ and MSWord formats are available)
 
 MDL has made an HTML version of the document available at
 http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm.
+
+# Index Files
+
+The NCEPLIBS-g2 library uses index files to help quickly navigate a
+GRIB2 file. These index files can result in significant performance
+improvement for large GRIB2 files.
+
+There are two versions of the index file. The original version
+(version 1) was used until NCEPLIBS-g2-4.0.0. This version of the
+index file does not handle files larger than 2 GB.
+
+The second version of the index file (version 2) handles GRIB2 files
+which are larger than 2 GB.
+
+Create an index file with the grb2index utility.
 
 ## Documentation for Previous Versions of NCEPLIBS-g2
 
