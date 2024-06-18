@@ -5,8 +5,7 @@
 
 if(BUILD_4)
   # This fortran test is for the internals of degrib2.
-  add_executable(test_degrib2_int test_degrib2_int.F90 ${CMAKE_SOURCE_DIR}/utils/prlevel.F90
-    ${CMAKE_SOURCE_DIR}/utils/prvtime.F90)
+  add_executable(test_degrib2_int test_degrib2_int.F90 ${CMAKE_SOURCE_DIR}/utils/prgrib2.F90)
   target_link_libraries(test_degrib2_int PUBLIC ${PROJECT_NAME}_4)
   add_test(NAME test_degrib2_int COMMAND test_degrib2_int)
 endif()
