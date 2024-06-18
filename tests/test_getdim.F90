@@ -87,15 +87,12 @@ program test_getdim
      if (height .ne. 8) stop 26
      if (iscan .ne. 0) stop 36
 
-     ! Uninitialized value memory error
-     if (.true.) then
-          print *, 'Template num 5 (Default case)'
-          csec3(14) = achar(5)
-          call getdim(csec3, lcsec3, width, height, iscan)
-          if (width .ne. 0) stop 17
-          if (height .ne. 0) stop 27
-          if (iscan .ne. 0) stop 37
-     end if
+     print *, 'Template num 5 (Default case)'
+     csec3(14) = achar(5)
+     call getdim(csec3, lcsec3, width, height, iscan)
+     if (width .ne. 0) stop 17
+     if (height .ne. 0) stop 27
+     if (iscan .ne. 0) stop 37
 
      print *, 'Error in gf_unpack3 call'
      csec3(14) = achar(99)
