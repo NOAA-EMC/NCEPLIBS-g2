@@ -6,7 +6,7 @@
 program test_getdim
      implicit none
 
-     integer, parameter :: lcsec3 = 81
+     integer, parameter :: lcsec3 = 120
      character(len=1) :: csec3(lcsec3)
      integer :: width, height, iscan
 
@@ -29,7 +29,11 @@ program test_getdim
      achar(8), achar(0), achar(0), achar(0), achar(9), achar(0), achar(0), achar(0), achar(10), achar(0), achar(0), &
      achar(0), achar(11), achar(0), achar(0), achar(0), achar(12), achar(13), achar(0), achar(0), achar(0), achar(14), &
      achar(0), achar(0), achar(0), achar(15), achar(0), achar(0), achar(0), achar(16), achar(0), achar(0), achar(0), &
-     achar(17), achar(18), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0) /)
+     achar(17), achar(18), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), &
+     achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), &
+     achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), &
+     achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), achar(0), &
+     achar(0), achar(0), achar(0), achar(0), achar(0), achar(0) /)
 
      ! Template num at pos 14 of section 3 = igds(5)
 
@@ -55,7 +59,6 @@ program test_getdim
      if (height .ne. 8) stop 22
      if (iscan .ne. 0) stop 32
 
-     ! Uninitialized value memory error
      print *, 'Template num 30 (Lambert Conformal)'
      csec3(14) = achar(30)
      call getdim(csec3, lcsec3, width, height, iscan)
@@ -85,7 +88,7 @@ program test_getdim
      if (iscan .ne. 0) stop 36
 
      ! Uninitialized value memory error
-     if (.false.) then
+     if (.true.) then
           print *, 'Template num 5 (Default case)'
           csec3(14) = achar(5)
           call getdim(csec3, lcsec3, width, height, iscan)
