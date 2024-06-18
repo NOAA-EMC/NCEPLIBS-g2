@@ -8,7 +8,7 @@ program test_addfield
   ! Using GRIB message data from util.F90
 
   ! Storage for the GRIB2 message we are constructing.
-  integer, parameter :: lcgrib = 191
+  integer, parameter :: lcgrib = 350
   character, dimension(lcgrib) :: cgrib, s2grib, s3grib, s7grib
 
   ! Section 0 and 1.
@@ -66,7 +66,7 @@ program test_addfield
   if (ierr .ne. 0) stop 1
   s7grib = cgrib
   cgrib = s3grib
-  
+
   print *, 'No beggining GRIB, error=1'
   cgrib(1) = char(0)
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
@@ -112,24 +112,26 @@ program test_addfield
   if (ierr .ne. 6) stop 6
   cgrib = s3grib
 
-  idrsnum = 41
   print *, 'Testing with PNG Packing'
   print *, 'Normal addfield call, error=0'
+  idrsnum = 41
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-       ngrdpts, ibmap, bmap, ierr)
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
   if (ierr .ne. 0) stop 1
+  cgrib = s3grib
 
-  if (.false.) then
-     idrstmplen = 7
-     idrsnum = 40
-     print *, 'Testing with JPEG Packing'
-     print *, 'Normal addfield call, error=0'
-     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
-          coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
-          ngrdpts, ibmap, bmap, ierr)
-     if (ierr .ne. 0) stop 1
-  end if
+  print *, 'Testing with JPEG Packing'
+  print *, 'Normal addfield call, error=0'
+  idrstmplen = 7
+  idrsnum = 40
+  idrstmpl(4) = 32
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 1
+  cgrib = s3grib
+
   print *, 'SUCCESS!'
 
 end program test_addfield
