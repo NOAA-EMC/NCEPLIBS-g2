@@ -163,22 +163,25 @@ program test_addfield
   if (ierr .ne. 0) stop 1
   cgrib = s3grib
   
+  print *, 'Spherical Harmonic Complex Packing where J, K, and M  & 
+      pentagonal resolution parameters = 0, error=9'
+  idrstmplen = 10
+  idrsnum = 51
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 9) stop 9
+  cgrib = s3grib
+
   if (.false.) then
     print *, 'Testing normal addfield call with Spherical Harmonic Complex Packing, error=0'
-    idrstmplen = 10
-    idrsnum = 51
-    idrstmpl(5) = 1
-    idrstmpl(7) = 0
-    idrstmpl(10) = 1
     call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
         coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
         ngrdpts, ibmap, bmap, ierr)
     if (ierr .ne. 0) stop 1
     cgrib = s3grib
   endif
-
-
-
+  
   print *, 'SUCCESS!'
 
 end program test_addfield
