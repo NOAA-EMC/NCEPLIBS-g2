@@ -34,13 +34,19 @@ program test_addfield
   integer :: coordlist(1)
   integer :: idrsnum = 0, idrstmplen = 5
   integer, parameter :: ngrdpts = 4
-  integer :: idrstmpl(7) = (/ 0, 1, 1, 8, 0, 0, 1 /)
+  integer :: idrstmpl(18)
   integer :: ibmap = 255
   logical :: bmap(1) = .false.
   real :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   ! Section 8
   integer :: ierr, lengrib
+
+  idrstmpl = 0
+  idrstmpl(2) = 1
+  idrstmpl(3) = 1
+  idrstmpl(4) = 8
+  
 
   print *, 'Constructing GRIB message...'
   ! Create the GRIB2 message, with sections 0 and 1.
@@ -112,8 +118,22 @@ program test_addfield
   if (ierr .ne. 6) stop 6
   cgrib = s3grib
 
-  print *, 'Testing with PNG Packing'
-  print *, 'Normal addfield call, error=0'
+  print *, 'Data Representation Template not yet implemented, error=7'
+  idrsnum = 5
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 7) stop 7
+
+  print *, 'Testing normal addfield call with Spherical Harmonic Simple Packing, error=0'
+  idrsnum = 50
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 1
+  cgrib = s3grib
+
+  print *, 'Testing normal addfield call with PNG encoding, error=0'
   idrsnum = 41
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
@@ -121,17 +141,18 @@ program test_addfield
   if (ierr .ne. 0) stop 1
   cgrib = s3grib
 
-  print *, 'Testing with JPEG Packing'
-  print *, 'Normal addfield call, error=0'
+  print *, 'Testing normal addfield call with JPEG encoding, error=0'
   idrstmplen = 7
   idrsnum = 40
   idrstmpl(4) = 32
+  idrstmpl(7) = 1
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
       ngrdpts, ibmap, bmap, ierr)
   if (ierr .ne. 0) stop 1
   cgrib = s3grib
 
+  
   print *, 'SUCCESS!'
 
 end program test_addfield
