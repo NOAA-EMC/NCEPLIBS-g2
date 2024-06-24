@@ -153,6 +153,17 @@ program test_addfield
   if (ierr .ne. 0) stop 1
   cgrib = s3grib
 
+  print *, 'Testing normal addfield call with Spherical Harmonic Complex Packing, error=0'
+  idrstmplen = 10
+  idrsnum = 51
+  idrstmpl(4) = 32
+  idrstmpl(7) = 0
+  idrstmpl(10) = 1
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 1
+  cgrib = s3grib
   
   print *, 'SUCCESS!'
 
