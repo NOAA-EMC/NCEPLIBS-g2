@@ -118,12 +118,13 @@ program test_addfield
   if (ierr .ne. 6) stop 6
   cgrib = s3grib
 
-  print *, 'Data Representation Template not yet implemented, error=7'
+  print *, 'Data Representation Template not yet implemented, error=5'
   idrsnum = 5
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
        ngrdpts, ibmap, bmap, ierr)
-  if (ierr .ne. 7) stop 7
+  if (ierr .ne. 5) stop 7
+  cgrib = s3grib
 
   print *, 'Testing normal addfield call with Spherical Harmonic Simple Packing, error=0'
   idrsnum = 50
