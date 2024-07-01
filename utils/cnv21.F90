@@ -30,7 +30,6 @@ subroutine cnv21(ifl1,ifl2)
   integer :: currlen=0
   integer :: igds(5)=(/0,0,0,0,0/)
   real :: xprob(2)
-  logical*1,target,dimension(1) :: dummy
   logical :: unpack=.true.
   !
   !
