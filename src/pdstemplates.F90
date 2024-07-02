@@ -297,7 +297,7 @@ module pdstemplates
   data templates(37)%template_num /49/     ! Individual Ensemble Forecast, Control and Perturbed, 
   data templates(37)%mappdslen /29/        ! at a horizontal level or in a horizontal layer at a
   data templates(37)%needext /.false./     ! point in time for Optical Properties of Aerosol for 
-  data (templates(37)%mappds(j), j = 1, 26) &  ! Optical Properties of Aerosol
+  data (templates(37)%mappds(j), j = 1, 29) &  ! Optical Properties of Aerosol
        /1, 1, 2, 1, -1, -4, -1, -4, 1, -1, -4, -1, -4, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4,  &
        1, -1, -4, 1, -1, 1/
   !
