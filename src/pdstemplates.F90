@@ -292,6 +292,15 @@ module pdstemplates
        /1, 1, 2, 1, -1, -4, -1, -4, 1, -1, -4, -1, -4, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4,  &
        1, -1, -4/
   !
+  !    PDT 4.49
+  !
+  data templates(37)%template_num /49/     ! Individual Ensemble Forecast, Control and Perturbed, 
+  data templates(37)%mappdslen /29/        ! at a horizontal level or in a horizontal layer at a
+  data templates(37)%needext /.false./     ! point in time for Optical Properties of Aerosol for 
+  data (templates(37)%mappds(j), j = 1, 26) &  ! Optical Properties of Aerosol
+       /1, 1, 2, 1, -1, -4, -1, -4, 1, -1, -4, -1, -4, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4,  &
+       1, -1, -4, 1, -1, 1/
+  !
   !    PDT 4.50   VALIDATION
   !
   data templates(38)%template_num /50/     !  Analysis or Forecast of a multi component
