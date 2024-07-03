@@ -349,7 +349,7 @@ module pdstemplates
   data templates(44)%needext /.false./     ! point in time for Optical Properties of Aerosol for 
   data (templates(44)%mappds(j), j = 1, 29) &  ! Optical Properties of Aerosol
        /1, 1, 2, 1, -1, -4, -1, -4, 1, -1, -4, -1, -4, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4,  &
-       1, -1, -4, 1, -1, 1/
+       1, -1, -4, 1, 1, 1/
 contains
 
   !> This function returns the index of specified Product
