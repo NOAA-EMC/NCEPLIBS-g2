@@ -39,7 +39,7 @@
 module pdstemplates
 
   integer, parameter :: MAXLEN = 200 !< MAXLEN max length of entries
-  integer, parameter :: MAXTEMP = 43 !< MAXTEMP maximum number of templates
+  integer, parameter :: MAXTEMP = 44 !< MAXTEMP maximum number of templates
 
   !> This is the defined type for a Product Definition Section (PDS)
   !> template.
@@ -341,6 +341,15 @@ module pdstemplates
   data (templates(43)%mappds(j), j = 1, 22) &
        /1, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1/
 
+  !
+  !    PDT 4.49
+  !
+  data templates(44)%template_num /49/     ! Individual Ensemble Forecast, Control and Perturbed, 
+  data templates(44)%mappdslen /29/        ! at a horizontal level or in a horizontal layer at a
+  data templates(44)%needext /.false./     ! point in time for Optical Properties of Aerosol for 
+  data (templates(44)%mappds(j), j = 1, 29) &  ! Optical Properties of Aerosol
+       /1, 1, 2, 1, -1, -4, -1, -4, 1, -1, -4, -1, -4, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4,  &
+       1, -1, -4, 1, 1, 1/
 contains
 
   !> This function returns the index of specified Product
