@@ -14,9 +14,9 @@ unset FORT51
 ../utils/tocgrib2 && exit 1
 
 #echo "*** Running tocgrib2 with input/output defined, but one missing field. It will fail."
-# export FORT11="data/rrfs.t12z.prslevfaa.f010.na3km.grib2"
-# export FORT51=out.grib2
-# ../src/tocgrib2/tocgrib2 < data/tocgrib2_bad.nml && exit 1
+export FORT11="data/rrfs.t12z.prslevfaa.f010.na3km.grib2"
+export FORT51=out.grib2
+../src/tocgrib2/tocgrib2 < data/tocgrib2_bad.nml && exit 1
 
 # echo "*** Running tocgrib2 with input/output defined. It will succeed."
 # export FORT11="data/rrfs.t12z.prslevfaa.f010.na3km.grib2"
