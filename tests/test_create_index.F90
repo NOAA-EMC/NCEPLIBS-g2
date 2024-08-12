@@ -9,7 +9,7 @@ program test_create_index
 
   ! These are the test files we will use.
   character(*) :: TEST_FILE_GDAS
-  parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
+  parameter (TEST_FILE_GDAS = 'data/gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: TEST_FILE_GDAS_INDEX
   parameter (TEST_FILE_GDAS_INDEX = 'test_create_index_gdaswave.grb2index')
   character(len=1), pointer, dimension(:) :: cbuf(:)

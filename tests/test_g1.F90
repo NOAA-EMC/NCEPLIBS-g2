@@ -10,7 +10,7 @@ program test_g1
   implicit none
 
   character(*) :: TEST_FILE_G1
-  parameter (TEST_FILE_G1 = 'g1.grib2')
+  parameter (TEST_FILE_G1 = 'data/g1.grib2')
   integer :: lugi
   character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: lugb = 3
