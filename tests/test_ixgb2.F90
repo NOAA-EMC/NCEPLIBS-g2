@@ -8,7 +8,7 @@ program test_ixgb2
   implicit none
 
   character(*) :: TEST_FILE_WW3_WEST
-  parameter (TEST_FILE_WW3_WEST = 'WW3_Regional_US_West_Coast_20220718_0000.grib2')
+  parameter (TEST_FILE_WW3_WEST = 'data/WW3_Regional_US_West_Coast_20220718_0000.grib2')
   integer :: lugi = 3
   character(len=1), pointer, dimension(:) :: cbuf(:)
   character :: expected_cbuf(200)
