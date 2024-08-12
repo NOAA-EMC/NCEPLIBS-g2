@@ -21,7 +21,7 @@ option(LOGGING "Turn on internal logging messages. Only useful to g2 developers.
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
 option(BUILD_WITH_W3EMC "Build with NCEPLIBS-w3emc, enabling some GRIB1 functionality" ON)
-option(USE_AEC "Build with AEC (CCSDS) compression support")
+option(USE_AEC "Build with AEC (CCSDS) compression support" ON)
 
 # Developers can use this option to specify a local directory which
 # holds the test files. They will be copied instead of fetching the
