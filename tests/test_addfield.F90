@@ -8,7 +8,7 @@ program test_addfield
   ! Using GRIB message data from util.F90
 
   ! Storage for the GRIB2 message we are constructing.
-  integer, parameter :: lcgrib = 191
+  integer, parameter :: lcgrib = 350
   character, dimension(lcgrib) :: cgrib, s2grib, s3grib, s7grib
 
   ! Section 0 and 1.
@@ -32,15 +32,21 @@ program test_addfield
   integer, parameter :: ipdstmplen = 15, numcoord = 0
   integer :: ipdstmpl(ipdstmplen) = (/ 0, 0, 0, 0, 0, 12, 59, 0, 0, 1, 1, 1, 2, 1, 1 /)
   integer :: coordlist(1)
-  integer :: idrsnum = 0
-  integer, parameter :: idrstmplen = 5, ngrdpts = 4
-  integer :: idrstmpl(idrstmplen) = (/ 0, 1, 1, 8, 0 /)
+  integer :: idrsnum = 0, idrstmplen = 5
+  integer, parameter :: ngrdpts = 4
+  integer :: idrstmpl(18)
   integer :: ibmap = 255
   logical :: bmap(1) = .false.
   real :: fld(ngrdpts) = (/ 1.1, 1.2, 1.3, 1.4 /)
 
   ! Section 8
   integer :: ierr, lengrib
+
+  idrstmpl = 0
+  idrstmpl(2) = 1
+  idrstmpl(3) = 1
+  idrstmpl(4) = 8
+  
 
   print *, 'Constructing GRIB message...'
   ! Create the GRIB2 message, with sections 0 and 1.
@@ -66,7 +72,7 @@ program test_addfield
   if (ierr .ne. 0) stop 1
   s7grib = cgrib
   cgrib = s3grib
-  
+
   print *, 'No beggining GRIB, error=1'
   cgrib(1) = char(0)
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
@@ -112,6 +118,70 @@ program test_addfield
   if (ierr .ne. 6) stop 6
   cgrib = s3grib
 
+  print *, 'Data Representation Template not yet implemented, error=5'
+  idrsnum = 5
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+       coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+       ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 5) stop 7
+  cgrib = s3grib
+
+  print *, 'Testing normal addfield call with Spherical Harmonic Simple Packing, error=0'
+  idrsnum = 50
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 1
+  cgrib = s3grib
+
+  print *, 'Testing normal addfield call with PNG encoding, error=0'
+  idrsnum = 41
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 1
+  cgrib = s3grib
+
+  print *, 'Testing normal addfield call with JPEG encoding, error=0'
+  idrstmplen = 7
+  idrsnum = 40
+  idrstmpl(4) = 32
+  idrstmpl(7) = 1
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 1
+  cgrib = s3grib
+
+  print *, 'Testing normal addfield call with Complex Packing, error=0'
+  idrstmplen = 16
+  idrsnum = 2
+  idrstmpl(7) = 0
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 0) stop 1
+  cgrib = s3grib
+  
+  print *, 'Spherical Harmonic Complex Packing where J, K, and M  & 
+      pentagonal resolution parameters = 0, error=9'
+  idrstmplen = 10
+  idrsnum = 51
+  call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+      coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+      ngrdpts, ibmap, bmap, ierr)
+  if (ierr .ne. 9) stop 9
+  cgrib = s3grib
+
+  if (.false.) then
+    print *, 'Testing normal addfield call with Spherical Harmonic Complex Packing, error=0'
+    call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
+        coordlist, numcoord, idrsnum, idrstmpl, idrstmplen, fld, &
+        ngrdpts, ibmap, bmap, ierr)
+    if (ierr .ne. 0) stop 1
+    cgrib = s3grib
+  endif
+  
   print *, 'SUCCESS!'
 
 end program test_addfield

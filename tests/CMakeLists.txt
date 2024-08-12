@@ -83,11 +83,25 @@ if(FTP_TEST_FILES)
   # These are the test data files.
   set(FTP_FILES WW3_Regional_US_West_Coast_20220718_0000.grib2
     WW3_Regional_US_East_Coast_20220717_0600.grib2
-    gep19.t00z.pgrb2a.0p50_bcf144 geavg.t00z.pgrb2a.0p50_mecomf144
-    gec00.t00z.pgrb2a.0p50.f144 gegfs.t00z.pgrb2a.0p50.f144
-    gegfs.t00z.pgrb2a.0p50_mef144 gep19.t00z.pgrb2a.0p50.f144
-    gdas.t12z.pgrb2.1p00.anl.grib2 blend.t19z.core.f001.co.grib2
-    aqm.t12z.max_8hr_o3.227.grib2 seaice.t00z.grb.grib2)
+    gep19.t00z.pgrb2a.0p50_bcf144 
+    geavg.t00z.pgrb2a.0p50_mecomf144
+    gec00.t00z.pgrb2a.0p50.f144 
+    gegfs.t00z.pgrb2a.0p50.f144
+    gegfs.t00z.pgrb2a.0p50_mef144 
+    gep19.t00z.pgrb2a.0p50.f144
+    gdas.t12z.pgrb2.1p00.anl.grib2 
+    blend.t19z.core.f001.co.grib2
+    aqm.t12z.max_8hr_o3.227.grib2 
+    seaice.t00z.grb.grib2
+    cmc_geavg.t12z.pgrb2a.0p50.f000
+    flxf2022111712.01.2022111712.grb2
+    GLOBAL.grib2.2022103000.0000
+    hiresw.t00z.arw_5km.f00.hi.grib2
+    naefs_ge10pt.t12z.pgrb2a.0p50_bcf003
+    rap.t00z.awp130pgrbf00.grib2
+    sgx_nwps_CG3_20221117_1200.grib2
+    )
+
 
   # User may also ask for large test file.
   if(FTP_LARGE_TEST_FILES)

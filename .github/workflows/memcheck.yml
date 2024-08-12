@@ -36,9 +36,9 @@ jobs:
       with:
         bacio-version: develop
         w3emc-version: develop
-        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
         jasper-version: version-4.0.0
-        g2c-version: develop
+        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
+        ip-version: develop
 
     - name: checkout
       uses: actions/checkout@v4
@@ -57,12 +57,12 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
 
     - name: test_memcheck
       run: |
-        cd $GITHUB_WORKSPACE/g2/build        
+        cd $GITHUB_WORKSPACE/g2/build
         ctest -LE "^noMemcheck$" -T memcheck
 
     - name: cache-data
@@ -70,5 +70,3 @@ jobs:
       run: |
         mkdir ~/data
         cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
-
-

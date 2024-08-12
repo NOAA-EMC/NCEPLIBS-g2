@@ -269,6 +269,13 @@ module params
   data paramlist(235) /gribparam(2, 189, 0, 0, 15, 'VPTMP')/
   data paramlist(236) /gribparam(2, 198, 0, 1, 207, 'NCIP')/
   data paramlist(237) /gribparam(2, 239, 0, 1, 208, 'SNOT')/
+  ! The following param shares the same GRIB2 discipline, category,
+  ! and number as PRMSL. Since the parameter lookup subroutine starts
+  ! at the beginning of the list, and returns the first abbreviation
+  ! with matching G2 numbers, the MSLSA abbreviation can never be
+  ! returned. According to Boi: In the past, some user used PRMSL or
+  ! MSLSA in grib1. Then, they converted to grib2 and these parameters
+  ! were in same "0,3,1".
   data paramlist(238) /gribparam(2, 128, 0, 3, 1, 'MSLSA')/
   data paramlist(239) /gribparam(2, 137, 0, 3, 199, 'TSLSA')/
   data paramlist(240) /gribparam(129, 141, 0, 3, 200, 'PLPL')/
@@ -936,10 +943,10 @@ module params
   data paramlist(898) /gribparam(255, 255, 2, 3, 21, 'SOILICE')/
   data paramlist(899) /gribparam(255, 255, 2, 3, 22, 'CISICE')/
   data paramlist(900) /gribparam(255, 255, 2, 3, 23, 'LWSNWP')/
-  data paramlist(901) /gribparam(255, 255, 2, 3, 23, 'FRSTINX')/
-  data paramlist(902) /gribparam(255, 255, 2, 3, 23, 'SNWDEB')/
-  data paramlist(903) /gribparam(255, 255, 2, 3, 23, 'SHFLX')/
-  data paramlist(904) /gribparam(255, 255, 2, 3, 23, 'SOILDEP')/
+  data paramlist(901) /gribparam(255, 255, 2, 3, 24, 'FRSTINX')/
+  data paramlist(902) /gribparam(255, 255, 2, 3, 25, 'SNWDEB')/
+  data paramlist(903) /gribparam(255, 255, 2, 3, 26, 'SHFLX')/
+  data paramlist(904) /gribparam(255, 255, 2, 3, 27, 'SOILDEP')/
   data paramlist(905) /gribparam(255, 255, 2, 4, 0, 'FIREOLK')/
   data paramlist(906) /gribparam(255, 255, 2, 4, 1, 'FIREODT')/
   data paramlist(907) /gribparam(255, 255, 2, 4, 3, 'FBAREA')/

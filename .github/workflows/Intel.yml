@@ -17,57 +17,45 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# Use custom shell with -l so .bash_profile is sourced which loads intel/oneapi/setvars.sh
-# without having to do it in manually every step
-defaults:
-  run:
-    shell: bash -leo pipefail {0}
-
 jobs:
   Intel:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-        compilers: ["CC=icc FC=ifort CXX=icpc", "CC=icx FC=ifx CXX=icpx"]
+        compilers: ["oneapi", "classic"]
 
     steps:
 
-    # See https://software.intel.com/content/www/us/en/develop/articles/oneapi-repo-instructions.html
-    - name: install-intel
-      run: |
-        set -x
-        cd /tmp
-        wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-        sudo apt-get update
-        sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-compiler-fortran-2023.2.1 intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2023.2.1 intel-oneapi-openmp
-        echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
-      
+    - name: "Install Intel"
+      uses: NOAA-EMC/ci-install-intel-toolkit@develop
+      with:
+        compiler-setup: ${{ matrix.compilers }}
+
     - name: "Build dependencies"
       uses: NOAA-EMC/ci-build-nceplibs@develop
       with:
         bacio-version: develop
+        jasper-version: version-4.0.0
         w3emc-version: develop
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
-        jasper-version: version-4.0.0
+        ip-version: develop
         g2c-version: develop
+        key-prefix: Intel-
 
     - name: checkout
-      uses: actions/checkout@v3
-      with: 
+      uses: actions/checkout@v4
+      with:
         path: g2
 
     - name: build
       run: |
         cd g2
-        mkdir build 
+        mkdir build
         cd build
-        ${{ matrix.compilers }} cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" ..
+        ${{ matrix.compilers }} cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DBUILD_UTILS=ON ..
         make -j2
-    
+
     - name: test
       run: |
         cd $GITHUB_WORKSPACE/g2/build

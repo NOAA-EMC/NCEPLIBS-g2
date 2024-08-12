@@ -43,12 +43,14 @@ jobs:
       uses: NOAA-EMC/ci-build-nceplibs@develop
       with:
         bacio-version: v${{ matrix.bacio-version }}
-        w3emc-version: v2.9.2
-        jasper-version: version-${{ matrix.jasper-version }}
         g2c-version: develop
+        jasper-version: version-${{ matrix.jasper-version }}
+        w3emc-version: v2.10.0
+        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
+        ip-version: develop
 
     - name: checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: g2
 
@@ -57,7 +59,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip" -DCMAKE_BUILD_TYPE=Debug -DBUILD_UTILS=ON ..
         make -j2 VERBOSE=1
 
     - name: test
