@@ -306,7 +306,7 @@ module pdstemplates
   data templates(39)%mappdslen /15/        !  at the Sea surface at a point in time
   data templates(39)%needext /.false./     !
   data (templates(39)%mappds(j), j = 1, 15) &
-       /1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4/
+       /1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4/
   !
   !    PDT 4.33  (07/29/2013)
   !
