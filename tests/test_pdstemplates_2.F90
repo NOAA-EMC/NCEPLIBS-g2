@@ -34,7 +34,7 @@ program test_pdstemplates
        1, -4, -4, 4, 4, 1, -1, 4, -1, 4, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
   integer, dimension(44) :: expected_map_14 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, 1, 1, 1, &
        1, -4, 4, 4, 1, -1, 4, -1, 4, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
-  integer, dimension(19) :: expected_map_20 = (/ 1, 1, 1, 1, 1, -4, 4, 2, -4, 2, 1, 1, 1, 1, 1, 2, 1, 3, 2 /)
+  integer, dimension(19) :: expected_map_20 = (/ 1, 1, 1, 1, 1, -4, 4, 2, 4, 2, 1, 1, 1, 1, 1, 2, 1, 3, 2 /)
   integer, dimension(5) :: expected_map_30 = (/ 1, 1, 1, 1, 1 /)
   integer, dimension(3) :: expected_map_254 = (/ 1, 1, 4 /)
   integer, dimension(9) :: expected_map_1000 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4 /)
