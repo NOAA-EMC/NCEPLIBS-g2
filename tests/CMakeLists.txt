@@ -40,8 +40,8 @@ endfunction()
 # function copies such a data file to the build directory.
 function(copy_test_data name)
   message(STATUS "Copying test file ${name}")
-  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${name}"
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/data/${name}"
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 endfunction()
 
