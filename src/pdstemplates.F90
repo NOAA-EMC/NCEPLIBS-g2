@@ -298,7 +298,7 @@ module pdstemplates
   data templates(38)%mappdslen /21/        !  parameter or matrix element at a point in time
   data templates(38)%needext /.false./     !
   data (templates(38)%mappds(j), j = 1, 21) &
-       /1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4, 1, 1, 4, 4, 4, 4/
+       /1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 4, 4, 4, 4/
   !
   !    PDT 4.52   VALIDATION
   !
