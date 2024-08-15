@@ -133,8 +133,8 @@ module pdstemplates
   data templates(13)%mappdslen /31/
   data templates(13)%needext /.true./
   data (templates(13)%mappds(j), j = 1, 31) &
-       /1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4, 1, 1,  &
-       2, 1, 1, 1, 1, 1, 1, -4, 1, 1, 1, 4, 1, 4/
+       /1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1,  &
+       2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4/
 
   data templates(14)%template_num /13/     !  Ens cluster fcst rect. area
   data templates(14)%mappdslen /45/
