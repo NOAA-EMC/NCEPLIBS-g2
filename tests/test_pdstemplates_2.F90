@@ -34,7 +34,7 @@ program test_pdstemplates
        1, -4, -4, 4, 4, 1, -1, 4, -1, 4, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
   integer, dimension(44) :: expected_map_14 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, 1, 1, 1, &
        1, -4, 4, 4, 1, -1, 4, -1, 4, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
-  integer, dimension(19) :: expected_map_20 = (/ 1, 1, 1, 1, 1, -4, 4, 2, -4, 2, 1, 1, 1, 1, 1, 2, 1, 3, 2 /)
+  integer, dimension(19) :: expected_map_20 = (/ 1, 1, 1, 1, 1, -4, 4, 2, 4, 2, 1, 1, 1, 1, 1, 2, 1, 3, 2 /)
   integer, dimension(5) :: expected_map_30 = (/ 1, 1, 1, 1, 1 /)
   integer, dimension(3) :: expected_map_254 = (/ 1, 1, 4 /)
   integer, dimension(9) :: expected_map_1000 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4 /)
@@ -57,7 +57,7 @@ program test_pdstemplates
        2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
   integer, dimension(38) :: expected_map_47 = (/ 1, 1, 1, 2, 1, -1, -4, -1, -4, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, &
        1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
-  integer, dimension(21) :: expected_map_50 = (/ 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4, 1, 1, 4, 4, 4, 4 /)
+  integer, dimension(21) :: expected_map_50 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 4, 4, 4, 4 /)
   integer, dimension(16) :: expected_map_51 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1 /)
   integer, dimension(36) :: expected_map_91 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, -1, -4, -1, &
        -4, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4 /)
@@ -67,7 +67,7 @@ program test_pdstemplates
   integer, dimension(29) :: expected_map_49 = (/ 1, 1, 2, 1, -1, -4, -1, -4, 1, -1, -4, -1, -4, 1, 1, 1, 2, 1, 1, -4, 1, &
        -1, -4, 1, -1, -4, 1, 1, 1 /)
 !  integer, dimension(21) :: expected_map_40 = (/ 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4, 1, 1, 4, 4, 4, 4 /)
-  integer, dimension(15) :: expected_map_52 = (/ 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4 /)
+  integer, dimension(15) :: expected_map_52 = (/ 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4 /)
   integer, dimension(18) :: expected_map_33 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, 2, 2, 2, -1, -4, 1, 1, 1 /)
   integer, dimension(32) :: expected_map_34 = (/ 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, 2, 2, 2, -1, -4, 1, 1, 1, 2, 1, 1, 1, 1, 1, &
        1, 4, 1, 1, 1, 4, 1, 4 /)
