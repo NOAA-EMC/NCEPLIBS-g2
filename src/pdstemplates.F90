@@ -154,7 +154,7 @@ module pdstemplates
   data templates(16)%mappdslen /19/
   data templates(16)%needext /.false./
   data (templates(16)%mappds(j), j = 1, 19) &
-       /1, 1, 1, 1, 1, -4, 4, 2, -4, 2, 1, 1, 1, 1, 1, 2, 1, 3, 2/
+       /1, 1, 1, 1, 1, -4, 4, 2, 4, 2, 1, 1, 1, 1, 1, 2, 1, 3, 2/
 
   data templates(17)%template_num /30/     !  Satellite Product
   data templates(17)%mappdslen /5/
@@ -306,7 +306,7 @@ module pdstemplates
   data templates(39)%mappdslen /15/        !  at the Sea surface at a point in time
   data templates(39)%needext /.false./     !
   data (templates(39)%mappds(j), j = 1, 15) &
-       /1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4/
+       /1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4/
   !
   !    PDT 4.33  (07/29/2013)
   !
