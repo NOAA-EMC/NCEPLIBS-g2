@@ -49,7 +49,7 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   integer :: imax, imin, j, maxdif, nbytes, ndpts
 
   interface
-     function enc_png(data, width, height, nbits, pngbuf) bind(c, name="enc_png")
+     function enc_png(data, width, height, nbits, pngbuf) bind(c)
        use, intrinsic :: iso_c_binding
        character(kind = c_char) :: data(*)
        integer(c_int), value :: width, height
@@ -180,8 +180,8 @@ subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
   integer :: iret, itype, j, nbits
 
   interface
-     function dec_png(pngbuf, width, height, cout) bind(c, name="dec_png")
-       use iso_c_binding
+     function dec_png(pngbuf, width, height, cout) bind(c)
+       use, intrinsic :: iso_c_binding
        character(kind = c_char) :: pngbuf(*)
        integer(c_int) :: width, height
        character(kind = c_char) :: cout(*)
