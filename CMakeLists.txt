@@ -72,6 +72,7 @@ endif()
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
 find_package(Jasper 2.0.25 REQUIRED)
+find_package(g2c REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
 if(bacio_VERSION LESS 2.5.0)
