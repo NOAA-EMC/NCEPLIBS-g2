@@ -53,7 +53,7 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
        use, intrinsic :: iso_c_binding
        character(kind = c_char), intent(in) :: data(*)
        integer(c_int), value, intent(in) :: width, height
-       integer(c_int), value, intent(inout) :: nbits
+       integer(c_int), intent(inout) :: nbits
        character(kind = c_char), intent(out) :: pngbuf(*)
        integer(c_int) :: enc_png
      end function enc_png
