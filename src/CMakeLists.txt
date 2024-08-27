@@ -31,8 +31,6 @@ foreach(kind ${kinds})
 
   # Build the fortran code.
   add_library(${lib_name}_f OBJECT ${fortran_src})
-  target_include_directories(${lib_name}_f PRIVATE ${JASPER_INCLUDE_DIR})
-  target_link_libraries(${lib_name}_f PRIVATE PNG::PNG g2c::g2c)
   set_target_properties(${lib_name}_f PROPERTIES COMPILE_FLAGS
     "${fortran_${kind}_flags}")
   set_target_properties(${lib_name}_f PROPERTIES Fortran_MODULE_DIRECTORY
