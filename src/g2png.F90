@@ -49,7 +49,7 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
   integer :: imax, imin, j, maxdif, nbytes, ndpts
 
   interface
-     function enc_png(data, width, height, nbits, pngbuf) bind(c)
+     function enc_png(data, width, height, nbits, pngbuf) bind(c, name="enc_png")
        use, intrinsic :: iso_c_binding
        character(kind = c_char) :: data(*)
        integer(c_int), value :: width, height
