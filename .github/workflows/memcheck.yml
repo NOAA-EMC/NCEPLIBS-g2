@@ -38,6 +38,8 @@ jobs:
         w3emc-version: develop
         jasper-version: version-4.0.0
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
+        g2c-version: develop
+        g2c-cmake-args: -DENABLE_SHARED=ON
 
     - name: checkout-ip
       uses: actions/checkout@v3
