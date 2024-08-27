@@ -31,6 +31,8 @@ foreach(kind ${kinds})
 
   # Build the fortran code.
   add_library(${lib_name}_f OBJECT ${fortran_src})
+  target_include_directories(${lib_name}_f PRIVATE ${JASPER_INCLUDE_DIR})
+  target_link_libraries(${lib_name}_f PRIVATE PNG::PNG g2c::g2c)
   set_target_properties(${lib_name}_f PROPERTIES COMPILE_FLAGS
     "${fortran_${kind}_flags}")
   set_target_properties(${lib_name}_f PROPERTIES Fortran_MODULE_DIRECTORY
@@ -46,8 +48,8 @@ foreach(kind ${kinds})
   # Build the C code.
   add_library(${lib_name}_c OBJECT ${c_src})
   target_include_directories(${lib_name}_c PRIVATE ${JASPER_INCLUDE_DIR})
-  target_link_libraries(${lib_name}_c PRIVATE PNG::PNG)
-  target_link_libraries(${lib_name}_c PRIVATE g2c::g2c)
+  target_link_libraries(${lib_name}_c PRIVATE PNG::PNG g2c::g2c)
+
  if(BUILD_SHARED_LIBS)
     set_property(TARGET ${lib_name}_c PROPERTY POSITION_INDEPENDENT_CODE 1)
   endif()
