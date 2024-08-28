@@ -56,7 +56,7 @@ subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
       ! integer(c_int), value :: nbits
       ! character(kind = c_char) :: pngbuf(*)
       ! integer(c_int) :: enc_png
-      use iso_c_binding
+      use, intrinsic :: iso_c_binding
       character(kind = c_char), intent(in) :: data(*)
       integer(c_int), intent(in) :: width, height
       integer(c_int), intent(inout) :: nbits
@@ -187,7 +187,7 @@ subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
 
   interface
      function dec_png(pngbuf, width, height, cout) bind(c)
-       use iso_c_binding
+       use, intrinsic :: iso_c_binding
        character(kind = c_char), intent(in) :: pngbuf(*)
        integer(c_int), intent(in) :: width, height
        character(kind = c_char), intent(out) :: cout(*)
