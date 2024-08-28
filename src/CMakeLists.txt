@@ -16,8 +16,8 @@ if (BUILD_WITH_W3EMC)
 endif()
 
 # These are the C source files.
-#set(c_src g2cpng.c mova2i.c)
-set(c_src mova2i.c)
+set(c_src g2cpng.c mova2i.c)
+#set(c_src mova2i.c)
 
 # Create this fortran file, which has the contents of the VERSION file
 # substituted in.
@@ -46,7 +46,7 @@ foreach(kind ${kinds})
   # Build the C code.
   add_library(${lib_name}_c OBJECT ${c_src})
   target_include_directories(${lib_name}_c PRIVATE ${JASPER_INCLUDE_DIR})
-  target_link_libraries(${lib_name}_c PRIVATE PNG::PNG g2c::g2c)
+  target_link_libraries(${lib_name}_c PRIVATE PNG::PNG) # g2c::g2c)
 
  if(BUILD_SHARED_LIBS)
     set_property(TARGET ${lib_name}_c PROPERTY POSITION_INDEPENDENT_CODE 1)
