@@ -181,10 +181,10 @@ subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
 
   interface
      function dec_png(pngbuf, width, height, cout) bind(c)
-       use, intrinsic :: iso_c_binding
-       character(kind = c_char) :: pngbuf(*)
-       integer(c_int) :: width, height
-       character(kind = c_char) :: cout(*)
+       use iso_c_binding
+       character(kind = c_char), intent(in) :: pngbuf(*)
+       integer(c_int), intent(in) :: width(*), height(*)
+       character(kind = c_char), intent(out) :: cout(*)
        integer(c_int) :: dec_png
      end function dec_png
   end interface
