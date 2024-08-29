@@ -20,6 +20,8 @@ concurrency:
 jobs:
   Intel:
     runs-on: ubuntu-latest
+    env:
+      LD_LIBRARY_PATH: /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/nceplibs/jasper/lib/
     strategy:
       fail-fast: true
       matrix:
