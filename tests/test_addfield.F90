@@ -8,7 +8,7 @@ program test_addfield
   ! Using GRIB message data from util.F90
 
   ! Storage for the GRIB2 message we are constructing.
-  integer, parameter :: lcgrib = 350
+  integer, parameter :: lcgrib = 400
   character, dimension(lcgrib) :: cgrib, s2grib, s3grib, s7grib
 
   ! Section 0 and 1.
