@@ -32,7 +32,7 @@
 !> @author Stephen Gilbert @date 2002-12-21
 subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
 
-  use, intrinsic :: iso_c_binding, only: c_size_t, c_int
+  use, intrinsic :: iso_c_binding, only: c_size_t
   implicit none
    
   integer, intent(in) :: width, height
