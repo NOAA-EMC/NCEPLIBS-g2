@@ -485,7 +485,8 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
         height=1
      endif
      lcpack=nsize
-     !print *, 'w, h=', width, height
+     print *, lcpack
+     print *, 'w, h=', width, height
      call jpcpack(pfld, width, height, idrstmpl, cpack, lcpack)
 
   elseif (idrsnum.eq.41 .OR. idrsnum.eq.40010) then ! PNG encoding
@@ -591,7 +592,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   iofst = ibeg + 32 ! leave space for length of section
   call g2_sbytec1(cgrib, seven, iofst, 8) ! Store section number (7)
   iofst = iofst + 8
-  
+  print *, lcpack
   ! Store Packed Binary Data values, if non-constant field
   if (lcpack .ne. 0) then
      ioctet = iofst / 8
