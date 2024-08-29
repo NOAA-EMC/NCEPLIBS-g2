@@ -23,7 +23,7 @@ jobs:
     env:
       FC: gfortran
       CC: gcc
-      LD_LIBRARY_PATH: /home/runner/jasper/lib
+      LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/
     strategy:
       fail-fast: true
       matrix:
