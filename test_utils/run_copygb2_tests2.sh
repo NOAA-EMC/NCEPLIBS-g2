@@ -11,9 +11,11 @@ set -e
 echo ""
 echo "*** Running copygb2 test"
 
+echo "copygb2"
 # Copy GRIB2 file.
 ../utils/copygb2 -x data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave_2.grib2
 
+echo "degrib2"
 # Make degrib2 output for the copied file.
 ../utils/degrib2 test_gdaswave_2.grib2 > test_gdaswave_2.grib2.degrib2
 
