@@ -41,7 +41,6 @@ jobs:
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
         ip-version: develop
         g2c-version: develop
-        g2c-cmake-args: -DJASPER_MAX_MEM=1073741824
         key-prefix: Intel-
 
     - name: checkout
@@ -54,7 +53,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DBUILD_UTILS=ON -DJASPER_MAX_MEM=1073741824 ..
+        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DBUILD_UTILS=OFF ..
         make -j2
 
     - name: test
