@@ -41,6 +41,7 @@ jobs:
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
         ip-version: develop
         g2c-version: develop
+        g2c-cmake-args: -DJASPER_MAX_MEM=1073741824
         key-prefix: Intel-
 
     - name: checkout
