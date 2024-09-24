@@ -37,7 +37,7 @@ class G2(CMakePackage):
         when="@3.4.6:",
     )
     variant("w3emc", default=True, description="Enable GRIB1 through w3emc", when="@3.4.6:")
-    variant("aec", default=False, description="Use AEC library", when="@develop")
+    variant("aec", default=True, description="Use AEC library", when="@develop")
     variant("shared", default="False", when="@3.4.7:")
     variant("openmp", default=False, description="Use OpenMP multithreading")
     variant("utils", default=False, description="Build grib utilities")
