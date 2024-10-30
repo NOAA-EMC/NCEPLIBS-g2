@@ -25,7 +25,7 @@ jobs:
     - name: install-dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev doxygen gcovr valgrind
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libaec-dev doxygen gcovr valgrind
 
     - name: "Build dependencies"
       uses: NOAA-EMC/ci-build-nceplibs@develop
@@ -36,7 +36,7 @@ jobs:
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
         ip-version: develop
         g2c-version: develop
-        g2c-cmake-args: -DBUILD_G2C=ON
+        g2c-cmake-args: -DBUILD_G2C=ON -DUSE_AEC=ON
 
     - name: checkout
       uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        cmake -DBUILD_UTILS=OFF -DG2C_COMPARE=ON -DFTP_LARGE_TEST_FILES=ON -DENABLE_DOCS=ON -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DBUILD_UTILS=OFF -DG2C_COMPARE=ON -DUSE_AEC=ON -DFTP_LARGE_TEST_FILES=ON -DENABLE_DOCS=ON -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
 
     - name: test_asan

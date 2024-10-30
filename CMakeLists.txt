@@ -22,6 +22,7 @@ option(LOGGING "Turn on internal logging messages. Only useful to g2 developers.
 option(BUILD_4 "Build libg2_4.a" ON)
 option(BUILD_D "Build libg2_d.a" ON)
 option(BUILD_WITH_W3EMC "Build with NCEPLIBS-w3emc, enabling some GRIB1 functionality" ON)
+option(USE_AEC "Build with AEC (CCSDS) compression support" OFF)
 option(BUILD_UTILS "Build grib utilities" OFF)
 option(G2C_COMPARE "Enable copygb2 tests using g2c_compare" OFF)
 
@@ -72,6 +73,7 @@ endif()
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
 find_package(Jasper 2.0.25 REQUIRED)
+find_package(g2c REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
 if(bacio_VERSION LESS 2.5.0)

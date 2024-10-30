@@ -23,7 +23,7 @@ jobs:
     env:
       FC: gfortran
       CC: gcc
-      LD_LIBRARY_PATH: /home/runner/jasper/lib
+      LD_LIBRARY_PATH: /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/nceplibs/jasper/lib/
     strategy:
 #      fail-fast: true
       matrix:
@@ -55,10 +55,12 @@ jobs:
       with:
         bacio-version: v${{ matrix.bacio-version }}
         g2c-version: develop
+        g2c-cmake-args: -DBUILD_G2C=ON
         jasper-version: version-4.0.0
         w3emc-version: v${{ matrix.w3emc-version }}
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF -DBUILD_WITH_EXTRA_DEPS=ON
         ip-version: develop
+
 
     - name: checkout
       uses: actions/checkout@v4

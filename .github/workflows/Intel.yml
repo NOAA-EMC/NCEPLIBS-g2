@@ -40,6 +40,7 @@ jobs:
         w3emc-version: develop
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
         ip-version: develop
+        g2c-version: develop
         key-prefix: Intel-
 
     - name: checkout
@@ -52,7 +53,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip" -DBUILD_UTILS=ON ..
+        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DBUILD_UTILS=OFF ..
         make -j2
 
     - name: test

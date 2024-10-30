@@ -23,7 +23,7 @@ jobs:
     env:
       FC: gfortran
       CC: gcc
-
+      LD_LIBRARY_PATH: /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/nceplibs/jasper/lib/
     steps:
 
     - name: install-dependencies
@@ -38,22 +38,8 @@ jobs:
         w3emc-version: develop
         jasper-version: version-4.0.0
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
-
-    - name: checkout-ip
-      uses: actions/checkout@v3
-      with:
-        repository: NOAA-EMC/NCEPLIBS-ip
-        path: ip
-        ref: develop
-
-    - name: build-ip
-      run: |
-        cd ip
-        mkdir build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX=~/ip ..
-        make -j2
-        make install
+        ip-version: develop
+        g2c-version: develop
 
     - name: checkout
       uses: actions/checkout@v4
@@ -72,7 +58,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DJasper_ROOT=~/Jasper -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DCMAKE_Fortran_FLAGS="-g -O0" -DCMAKE_C_FLAGS="-g -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
 
     - name: test_memcheck
