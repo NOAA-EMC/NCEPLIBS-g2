@@ -53,6 +53,10 @@ subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
        nlen, nnum, nmess, irgi)
   if (irgi .gt. 1 .or. nnum .eq. 0 .or. nlen .eq. 0) then
      iret = 92
+     if (associated(cbuf)) then
+      deallocate(cbuf)
+      nullify(cbuf)
+     endif
      return
   endif
   numtot = numtot + nnum
