@@ -8,7 +8,7 @@ echo ""
 echo "*** Running degrib2 tests"
 
 # Confirm that degrib2 fails without any arguments.
-degrib2 && exit 1
+../utils/degrib2 && exit 1
 
 # Degrib2 a GRIB2 file.
 ../utils/degrib2 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 &> test_gdaswave.degrib2.txt
