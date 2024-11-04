@@ -55,7 +55,7 @@ jobs:
 
     - name: cache-data-extra
       if: matrix.config == 'extra'
-      id: cache-data
+      id: cache-data-extra
       uses: actions/cache@v4
       with:
         path: ~/data
