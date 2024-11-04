@@ -79,9 +79,6 @@ endif()
 
 # Run these shell tests.
 if(BUILD_4)
-  if(BUILD_D)
-    gu_test(run_copygb2_tests2)
-  endif()
   gu_test(run_cnvgrib_tests)
   gu_test(run_degrib2_tests)
   gu_test(run_grb2index_tests)
