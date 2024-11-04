@@ -53,7 +53,7 @@ jobs:
       with:
         path: g2
 
-    - name: cache-data
+    - name: cache-data-extra
       if: matrix.config == 'extra'
       id: cache-data
       uses: actions/cache@v4
@@ -107,6 +107,12 @@ jobs:
 
     - name: cache-data
       if: steps.cache-data.outputs.cache-hit != 'true'
+      run: |
+        mkdir ~/data
+        cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
+
+    - name: cache-data-extra
+      if: steps.cache-data-extra.outputs.cache-hit != 'true'
       run: |
         mkdir ~/data
         cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
