@@ -54,6 +54,15 @@ jobs:
         path: g2
 
     - name: cache-data
+      if: matrix.config == 'extra'
+      id: cache-data
+      uses: actions/cache@v4
+      with:
+        path: ~/data
+        key: data-developer-7
+
+    - name: cache-data
+      if: matrix.config == 'asan/warning check' || matrix.config == 'docs/code coverage'
       id: cache-data
       uses: actions/cache@v4
       with:
