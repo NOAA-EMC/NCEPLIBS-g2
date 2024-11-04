@@ -91,7 +91,7 @@ gu_test(run_copygb_tests)
 gu_test(run_grbindex_tests)
 
 if(G2C_COMPARE)
-  find_program(G2C_COMPARE g2c_compare)
+  find_program(G2C_COMPARE g2c_compare REQUIRED)
   gu_test(run_copygb2_tests)
 else()
   message(STATUS "g2c_compare not found.")
