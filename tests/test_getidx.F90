@@ -11,9 +11,9 @@ program test_getidx
   character(*) :: TEST_FILE_WW3_WEST
   parameter (TEST_FILE_WW3_WEST = 'data/WW3_Regional_US_West_Coast_20220718_0000.grib2')
   character(*) :: TEST_FILE_GDAS
-  parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
+  parameter (TEST_FILE_GDAS = 'data/gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: TEST_FILE_GDAS_INDEX
-  parameter (TEST_FILE_GDAS_INDEX = 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
+  parameter (TEST_FILE_GDAS_INDEX = 'data/ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
 
   ! These are for the fist test file, WW3_WEST.
   integer :: lugi

@@ -10,7 +10,7 @@ program test_ix2gb2
   implicit none
 
   character(*) :: TEST_FILE_GDAS
-  parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
+  parameter (TEST_FILE_GDAS = 'data/gdaswave.t00z.wcoast.0p16.f000.grib2')
   integer :: lugi = 3
   character(len=1), pointer, dimension(:) :: cbuf(:)
   integer :: numfld, mlen, iret

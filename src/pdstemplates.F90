@@ -39,7 +39,7 @@
 module pdstemplates
 
   integer, parameter :: MAXLEN = 200 !< MAXLEN max length of entries
-  integer, parameter :: MAXTEMP = 43 !< MAXTEMP maximum number of templates
+  integer, parameter :: MAXTEMP = 48 !< MAXTEMP maximum number of templates
 
   !> This is the defined type for a Product Definition Section (PDS)
   !> template.
@@ -133,8 +133,8 @@ module pdstemplates
   data templates(13)%mappdslen /31/
   data templates(13)%needext /.true./
   data (templates(13)%mappds(j), j = 1, 31) &
-       /1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4, 1, 1,  &
-       2, 1, 1, 1, 1, 1, 1, -4, 1, 1, 1, 4, 1, 4/
+       /1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1,  &
+       2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4/
 
   data templates(14)%template_num /13/     !  Ens cluster fcst rect. area
   data templates(14)%mappdslen /45/
@@ -154,7 +154,7 @@ module pdstemplates
   data templates(16)%mappdslen /19/
   data templates(16)%needext /.false./
   data (templates(16)%mappds(j), j = 1, 19) &
-       /1, 1, 1, 1, 1, -4, 4, 2, -4, 2, 1, 1, 1, 1, 1, 2, 1, 3, 2/
+       /1, 1, 1, 1, 1, -4, 4, 2, 4, 2, 1, 1, 1, 1, 1, 2, 1, 3, 2/
 
   data templates(17)%template_num /30/     !  Satellite Product
   data templates(17)%mappdslen /5/
@@ -298,7 +298,7 @@ module pdstemplates
   data templates(38)%mappdslen /21/        !  parameter or matrix element at a point in time
   data templates(38)%needext /.false./     !
   data (templates(38)%mappds(j), j = 1, 21) &
-       /1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4, 1, -1, -4, 1, 1, 4, 4, 4, 4/
+       /1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 4, 4, 4, 4/
   !
   !    PDT 4.52   VALIDATION
   !
@@ -306,7 +306,7 @@ module pdstemplates
   data templates(39)%mappdslen /15/        !  at the Sea surface at a point in time
   data templates(39)%needext /.false./     !
   data (templates(39)%mappds(j), j = 1, 15) &
-       /1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, -1, -4/
+       /1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4/
   !
   !    PDT 4.33  (07/29/2013)
   !
@@ -340,6 +340,49 @@ module pdstemplates
   data templates(43)%needext /.true./      !  at a point in time for partitioned parameters
   data (templates(43)%mappds(j), j = 1, 22) &
        /1, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1/
+
+  !
+  !    PDT 4.49
+  !
+  data templates(44)%template_num /49/     ! Individual Ensemble Forecast, Control and Perturbed, 
+  data templates(44)%mappdslen /29/        ! at a horizontal level or in a horizontal layer at a
+  data templates(44)%needext /.false./     ! point in time for Optical Properties of Aerosol for 
+  data (templates(44)%mappds(j), j = 1, 29) &  ! Optical Properties of Aerosol
+       /1, 1, 2, 1, -1, -4, -1, -4, 1, -1, -4, -1, -4, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4,  &
+       1, -1, -4, 1, 1, 1/
+  !
+  !   PDT 4.57 (10/07/2015)
+  !
+  data templates(45)%template_num /57/     !  Analysis or Forecast at a horizontal level or in a
+  data templates(45)%mappdslen /7/         !  horizontal layer at a point in time for
+  data templates(45)%needext /.true./      !  atmospheric chemical constituents based on
+  data (templates(45)%mappds(j), j = 1, 7) & !  a distribution function.
+       /1, 1, 2, 2, 2, 2, 1/
+  !
+  !   PDT 4.60  (10/07/2015)
+  !
+  data templates(46)%template_num /60/      !  Individual ensemble reforecast, control and perturbed,
+  data templates(46)%mappdslen /24/         !  at a horizontal level or in a horizontal layer
+  data templates(46)%needext /.false./      !  at a point in time.
+  data (templates(46)%mappds(j), j = 1, 24) & 
+       /1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, 2, 1, 1, 1, 1, 1/
+  !
+  !   PDT 4.61  (10/07/2015)
+  !
+  data templates(47)%template_num /61/      !  Individual ensemble reforecast, control and perturbed,
+  data templates(47)%mappdslen /38/         !  at a horizontal level or in a  horizontal layer
+  data templates(47)%needext /.true./       !  in a continuous or non-continuous time interval.
+  data (templates(47)%mappds(j), j = 1, 38) & 
+        /1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, 2, 1, 1, 1, 1, & 
+        1, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4/
+  !
+  !   VALIDATION --- PDT 4.35  (10/07/2015)
+  !
+  data templates(48)%template_num /35/      !  Satellite product with or without associated 
+  data templates(48)%mappdslen /6/          !  quality values
+  data templates(48)%needext /.true./       
+  data (templates(48)%mappds(j), j = 1, 6) & 
+       /1, 1, 1, 1, 1, 1/
 
 contains
 
@@ -573,6 +616,15 @@ contains
           map(nummap + i) = 1
        enddo
        nummap = nummap + N
+    elseif (number .eq. 35) then
+      do j = 1, list(6)
+          map(nummap + 1) = 2
+          map(nummap + 2) = 2
+          map(nummap + 3) = 2
+          map(nummap + 4) = 1
+          map(nummap + 5) = 4
+          nummap = nummap + 5
+      enddo
     elseif (number .eq. 42) then
        if (list(23).gt.1) then
           do j = 2, list(23)
@@ -631,6 +683,34 @@ contains
           map(nummap + i) = 1
        enddo
        nummap = nummap + N
+    elseif (number .eq. 57) then 
+       do j = 1, list(7)
+        map(nummap + 1) = 1
+        map(nummap + 2) = -4
+        map(nummap + 3) = 1
+        map(nummap + 4) = 1
+        map(nummap + 5) = 1
+        map(nummap + 6) = 2
+        map(nummap + 7) = 1
+        map(nummap + 8) = 1
+        map(nummap + 9) = -4
+        map(nummap + 10) = 1
+        map(nummap + 11) = -1
+        map(nummap + 12) = -4
+        map(nummap + 13) = 1
+        map(nummap + 14) = -1
+        map(nummap + 15) = -4
+        nummap = nummap + 15
+       enddo
+    elseif (number .eq. 61) then 
+       if (list(31) .gt. 1) then 
+          do j = 2, list(31)
+             do k = 1, 6
+                map(nummap + k) = map(32 +k)
+             end do
+             nummap = nummap + 6
+          enddo
+       endif
     elseif (number .eq. 91) then
        if (list(29).gt.1 ) then
           do j = 2, list(29)

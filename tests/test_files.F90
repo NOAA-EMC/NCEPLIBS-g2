@@ -39,15 +39,15 @@ program test_files
            print *, '      testing with idxver', idxver
 
            ! Open the GRIB2 file.
-           call baopenr(lugb, 'gdaswave.t00z.wcoast.0p16.f000.grib2', iret)
+           call baopenr(lugb, 'data/gdaswave.t00z.wcoast.0p16.f000.grib2', iret)
            if (iret .ne. 0) stop 2
 
            ! Open the index file.
            if (ifile .eq. 1) then
-              call baopenr(lugi, 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index', iret)
+              call baopenr(lugi, 'data/ref_gdaswave.t00z.wcoast.0p16.f000.grb2index', iret)
               if (iret .ne. 0) stop 2
            else
-              call baopenr(lugi, 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index2', iret)
+              call baopenr(lugi, 'data/ref_gdaswave.t00z.wcoast.0p16.f000.grb2index2', iret)
               if (iret .ne. 0) stop 2
            endif
 

@@ -6,7 +6,7 @@
 program test_g2cf
   use g2cf
   implicit none
-  character (len = *), parameter :: fileName = "gdaswave.t00z.wcoast.0p16.f000.grib2"
+  character (len = *), parameter :: fileName = "data/gdaswave.t00z.wcoast.0p16.f000.grib2"
   integer :: g2cid, num_msg
   integer(kind = 1) :: discipline
   integer(kind = 4) :: num_fields, num_local

@@ -12,9 +12,9 @@ program test_index_gdas
 
   ! These are the test files we will use.
   character(*) :: TEST_FILE_GDAS
-  parameter (TEST_FILE_GDAS = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
+  parameter (TEST_FILE_GDAS = 'data/gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: TEST_FILE_GDAS_INDEX
-  parameter (TEST_FILE_GDAS_INDEX = 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
+  parameter (TEST_FILE_GDAS_INDEX = 'data/ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
 
   integer :: LUGB, LUGI
   parameter(LUGB = 3, LUGI = 4)

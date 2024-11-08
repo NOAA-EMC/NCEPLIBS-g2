@@ -736,6 +736,12 @@ subroutine getfield(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
            call pngunpack(cgrib(ipos + 5), lensec - 5, idrstmpl, &
                 ndpts, fld)
            have7 = .true.
+#ifdef USE_AEC
+        elseif (idrsnum .eq. 42) then
+           call aecunpack(cgrib(ipos + 5), lensec - 5, idrstmpl, &
+                ndpts, fld)
+            have7 = .true.
+#endif /* USE_AEC */
         else
            print *, 'getfield: Data Representation Template ', &
                 idrsnum, ' not yet implemented.'

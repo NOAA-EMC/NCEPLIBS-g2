@@ -17,9 +17,9 @@ program test_getgb2p_gdas
   integer :: k
   integer :: i
   character(*) :: GDAS_FILE
-  parameter(GDAS_FILE = 'gdaswave.t00z.wcoast.0p16.f000.grib2')
+  parameter(GDAS_FILE = 'data/gdaswave.t00z.wcoast.0p16.f000.grib2')
   character(*) :: GDAS_INDEX_FILE
-  parameter(GDAS_INDEX_FILE = 'ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
+  parameter(GDAS_INDEX_FILE = 'data/ref_gdaswave.t00z.wcoast.0p16.f000.grb2index')
   integer :: e, iret = 0
   
   ! Interfaces are needed due to pointers in the parameter lists.

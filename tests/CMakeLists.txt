@@ -40,8 +40,8 @@ endfunction()
 # function copies such a data file to the build directory.
 function(copy_test_data name)
   message(STATUS "Copying test file ${name}")
-  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${name}"
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/data/${name}"
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/data
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 endfunction()
 
@@ -51,7 +51,7 @@ function(create_test name kind)
     set(extra_files ${ARGN})
   endif()
   add_executable(${name}_${kind} ${name}.F90 g2_test_util.F90 ${extra_files})
-  target_link_libraries(${name}_${kind} PRIVATE g2_${kind} PNG::PNG)
+  target_link_libraries(${name}_${kind} PRIVATE g2_${kind} PNG::PNG ${JASPER_LIBRARIES} g2c::g2c)
   set_target_properties(${name}_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   set_target_properties(${name}_${kind} PROPERTIES Fortran_MODULE_DIRECTORY
     ${CMAKE_CURRENT_BINARY_DIR}/include_${kind})
@@ -213,6 +213,10 @@ foreach(kind ${kinds})
   # library is not also included in the build.
   if (BUILD_WITH_W3EMC)
     create_test(test_gdt2gds ${kind})
+  endif()
+
+  if (USE_AEC)
+    create_test(test_aecpack ${kind})
   endif()
 
   if (${kind} EQUAL "4")

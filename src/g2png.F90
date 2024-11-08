@@ -31,120 +31,47 @@
 !>
 !> @author Stephen Gilbert @date 2002-12-21
 subroutine pngpack(fld, width, height, idrstmpl, cpack, lcpack)
-  implicit none
 
+  use, intrinsic :: iso_c_binding, only: c_size_t
+  implicit none
+   
   integer, intent(in) :: width, height
   real, intent(in) :: fld(width * height)
   character(len = 1), intent(out) :: cpack(*)
   integer, intent(inout) :: idrstmpl(*)
   integer, intent(out) :: lcpack
-
-  real(4) :: ref, rmin4
-  real(8) :: rmin, rmax
-  integer(4) :: iref
-  integer :: ifld(width * height), nbits
-  integer, parameter :: zero = 0
-  character(len = 1), allocatable :: ctemp(:)
-  real :: bscale, dscale, temp
-  integer :: imax, imin, j, maxdif, nbytes, ndpts
+  integer(c_size_t) :: width_c, height_c
+  integer :: ret
 
   interface
-     function enc_png(data, width, height, nbits, pngbuf) bind(c, name="enc_png")
-       use iso_c_binding
-       character(kind = c_char), intent(in) :: data(*)
-       integer(c_int), intent(in) :: width, height
-       integer(c_int), intent(inout) :: nbits
-       character(kind = c_char), intent(out) :: pngbuf(*)
-       integer(c_int) :: enc_png
-     end function enc_png
+     function g2c_pngpackd(fld, width, height, idrstmpl, cpack, lcpack) bind(c)
+      use, intrinsic :: iso_c_binding
+      real(kind=c_double), intent(in):: fld(*)
+      integer(c_size_t), value, intent(in) :: width, height
+      integer(c_int), intent(inout) :: idrstmpl(*)
+      character(kind=c_char), intent(out) :: cpack(*)
+      integer(c_int), intent(out) :: lcpack
+      integer(c_int) :: g2c_pngpackd
+     end function g2c_pngpackd
+     function g2c_pngpackf(fld, width, height, idrstmpl, cpack, lcpack) bind(c)
+      use, intrinsic :: iso_c_binding
+      real(kind=c_float), intent(in):: fld(*)
+      integer(c_size_t), value, intent(in) :: width, height
+      integer(c_int), intent(inout) :: idrstmpl(*)
+      character(kind=c_char), intent(out) :: cpack(*)
+      integer(c_int), intent(out) :: lcpack
+      integer(c_int) :: g2c_pngpackf
+     end function g2c_pngpackf
   end interface
 
-  ndpts = width * height
-  bscale = 2.0**real(-idrstmpl(2))
-  dscale = 10.0**real(idrstmpl(3))
+  width_c = width
+  height_c = height
 
-  ! Find max and min values in the data
-  if(ndpts > 0) then
-     rmax = fld(1)
-     rmin = fld(1)
-  else
-     rmax = 1.0
-     rmin = 1.0
-  endif
-  do j = 2, ndpts
-     if (fld(j) .gt. rmax) rmax = fld(j)
-     if (fld(j) .lt. rmin) rmin = fld(j)
-  enddo
-  maxdif = nint((rmax - rmin) * dscale * bscale)
-
-  ! If max and min values are not equal, pack up field.  If they are
-  ! equal, we have a constant field, and the reference value (rmin) is
-  ! the value for each point in the field and set nbits to 0.
-  if (rmin .ne. rmax .AND. maxdif .ne. 0) then
-
-     ! Determine which algorithm to use based on user-supplied binary
-     ! scale factor and number of bits.
-     if (idrstmpl(2) .eq. 0) then
-        ! No binary scaling and calculate minimum number of bits in
-        ! which the data will fit.
-        imin = nint(rmin * dscale)
-        imax = nint(rmax * dscale)
-        maxdif = imax - imin
-        temp = alog(real(maxdif + 1)) / alog(2.0)
-        nbits = ceiling(temp)
-        rmin = real(imin)
-        ! scale data
-        do j = 1, ndpts
-           ifld(j) = nint(fld(j) * dscale) - imin
-        enddo
-     else
-        ! Use binary scaling factor and calculate minimum number of
-        ! bits in which the data will fit.
-        rmin = rmin * dscale
-        rmax = rmax * dscale
-        maxdif = nint((rmax - rmin) * bscale)
-        temp = alog(real(maxdif + 1)) / alog(2.0)
-        nbits = ceiling(temp)
-        ! scale data
-        do j = 1, ndpts
-           ifld(j) = max(0, nint(((fld(j) * dscale) - rmin) * bscale))
-        enddo
-     endif
-
-     ! Pack data into full octets, then do PNG encode.  and calculate
-     ! the length of the packed data in bytes.
-     if (nbits .le. 8) then
-        nbits = 8
-     elseif (nbits .le. 16) then
-        nbits = 16
-     elseif (nbits .le. 24) then
-        nbits = 24
-     else
-        nbits = 32
-     endif
-     nbytes = (nbits / 8) * ndpts
-     allocate(ctemp(nbytes))
-     call g2_sbytesc(ctemp, ifld, 0, nbits, 0, ndpts)
-
-     ! Encode data into PNG Format.
-     lcpack = enc_png(ctemp, width, height, nbits, cpack)
-     if (lcpack .le. 0) then
-        print *, 'pngpack: ERROR Encoding PNG = ', lcpack
-     endif
-     deallocate(ctemp)
-
-  else
-     nbits = 0
-     lcpack = 0
-  endif
-
-  ! Fill in ref value and number of bits in Template 5.0.
-  rmin4 = real(rmin, 4)
-  call mkieee(rmin4, ref, 1) ! ensure reference value is IEEE format
-  iref = transfer(ref, iref)
-  idrstmpl(1) = iref
-  idrstmpl(4) = nbits
-  idrstmpl(5) = 0 ! original data were reals
+#if KIND==4
+  ret = g2c_pngpackf(fld, width_c, height_c, idrstmpl, cpack, lcpack)
+#else
+  ret = g2c_pngpackd(fld, width_c, height_c, idrstmpl, cpack, lcpack)
+#endif
 
 end subroutine pngpack
 
@@ -165,50 +92,46 @@ end subroutine pngpack
 !>
 !> @author Stephen Gilbert @date 2000-06-21
 subroutine pngunpack(cpack, len, idrstmpl, ndpts, fld)
+
+  use, intrinsic :: iso_c_binding, only: c_size_t
   implicit none
   
   character(len = 1), intent(in) :: cpack(len)
   integer, intent(in) :: ndpts, len
   integer, intent(in) :: idrstmpl(*)
   real, intent(out) :: fld(ndpts)
-
-  integer :: ifld(ndpts)
-  character(len = 1), allocatable :: ctemp(:)
-  integer(4) :: ieee
-  real :: ref, bscale, dscale
-  integer :: width, height
-  integer :: iret, itype, j, nbits
+  integer(c_size_t) :: ndpts_c, len_c
+  integer :: ret
 
   interface
-     function dec_png(pngbuf, width, height, cout) bind(c, name="dec_png")
-       use iso_c_binding
-       character(kind = c_char), intent(in) :: pngbuf(*)
-       integer(c_int), intent(in) :: width, height
-       character(kind = c_char), intent(out) :: cout(*)
-       integer(c_int) :: dec_png
-     end function dec_png
+   function g2c_pngunpackd(cpack, len, idrstmpl, ndpts, fld) bind(c)
+    use, intrinsic :: iso_c_binding
+    implicit none 
+    integer(c_size_t), value, intent(in) :: len
+    integer(c_size_t), value, intent(in) :: ndpts 
+    character(kind=c_char), intent(in) :: cpack(*)
+    integer(c_int), intent(in) :: idrstmpl(*)
+    real(kind=c_double), intent(out) :: fld(*)
+    integer(c_int) :: g2c_pngunpackd
+   end function g2c_pngunpackd
+   function g2c_pngunpackf(cpack, len, idrstmpl, ndpts, fld) bind(c)
+      use, intrinsic :: iso_c_binding
+      implicit none 
+      integer(c_size_t), value, intent(in) :: len
+      integer(c_size_t), value, intent(in) :: ndpts 
+      character(kind=c_char), intent(in) :: cpack(*)
+      integer(c_int), intent(in) :: idrstmpl(*)
+      real(kind=c_float), intent(out) :: fld(*)
+      integer(c_int) :: g2c_pngunpackf
+   end function g2c_pngunpackf
   end interface
 
-  ieee = idrstmpl(1)
-  call rdieee(ieee, ref, 1)
-  bscale = 2.0**real(idrstmpl(2))
-  dscale = 10.0**real(-idrstmpl(3))
-  nbits = idrstmpl(4)
-  itype = idrstmpl(5)
+  len_c = len
+  ndpts_c = ndpts
+#if KIND==4
+  ret = g2c_pngunpackf(cpack, len_c, idrstmpl, ndpts_c, fld)
+#else
+  ret = g2c_pngunpackd(cpack, len_c, idrstmpl, ndpts_c, fld)
+#endif
 
-  ! If nbits equals 0, we have a constant field where the reference value
-  ! is the data value at each gridpoint.
-  if (nbits .ne. 0) then
-     allocate(ctemp(ndpts * 4))
-     iret = dec_png(cpack, width, height, ctemp)
-     call g2_gbytesc(ctemp, ifld, 0, nbits, 0, ndpts)
-     deallocate(ctemp)
-     do j = 1, ndpts
-        fld(j) = ((real(ifld(j)) * bscale) + ref) * dscale
-     enddo
-  else
-     do j = 1, ndpts
-        fld(j) = ref
-     enddo
-  endif
 end subroutine pngunpack

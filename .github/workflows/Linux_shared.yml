@@ -23,7 +23,7 @@ jobs:
     env:
       FC: gfortran
       CC: gcc
-      LD_LIBRARY_PATH: /home/runner/jasper/lib
+      LD_LIBRARY_PATH: /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/nceplibs/jasper/lib/
     strategy:
       fail-fast: true
       matrix:
@@ -53,11 +53,11 @@ jobs:
         bacio-version: v${{ matrix.bacio-version }}
         bacio-cmake-args: -DBUILD_SHARED_LIBS=ON
         g2c-version: develop
-        g2c-cmake-args: -DENABLE_SHARED=ON
+        g2c-cmake-args: -DBUILD_SHARED_LIBS=ON
         jasper-version: version-4.0.0
         jasper-cmake-args: -DENABLE_SHARED=ON
         w3emc-version: v${{ matrix.w3emc-version }}
-        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF -DENABLE_SHARED=ON -DBUILD_WITH_EXTRA_DEPS=OFF
+        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF -DBUILD_SHARED_LIBS=ON -DBUILD_WITH_EXTRA_DEPS=OFF
         ip-version: develop
 
     - name: checkout
@@ -78,7 +78,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake ${{ matrix.config.options }} -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip" -DCMAKE_INSTALL_PREFIX="~/g2/install" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DBUILD_SHARED_LIBS=ON ..
+        cmake ${{ matrix.config.options }} -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip" -DCMAKE_INSTALL_PREFIX="~/g2/install" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DBUILD_SHARED_LIBS=ON -DBUILD_UTILS=OFF ..
         make -j2 VERBOSE=1
 
     - name: cache-data

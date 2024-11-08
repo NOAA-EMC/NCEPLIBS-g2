@@ -45,11 +45,9 @@ PROGRAM tocgrib2
   integer   ::    nbul, nrec, mbul, dayofmonth, hourofday
   integer, parameter :: lenhead=21, jrew=0
 
-  CHARACTER * 6   BULHED
   CHARACTER * 80  DESC, WMOHEAD
   CHARACTER * 200  fileb, filei, fileo
   CHARACTER * 6   envvar
-  CHARACTER * 4   KWBX
   CHARACTER * 1   CSEP(80)
   CHARACTER * 1   WMOHDR(lenhead)
   character(len=1), pointer, dimension(:) :: gribm

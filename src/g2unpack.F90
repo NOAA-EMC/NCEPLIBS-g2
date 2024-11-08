@@ -701,6 +701,10 @@ subroutine gf_unpack7(cgrib, lcgrib, iofst, igdsnum, igdstmpl,  &
      call jpcunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts, fld)
   elseif (idrsnum .eq. 41 .OR. idrsnum .eq. 40010) then
      call pngunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts, fld)
+#ifdef USE_AEC
+  elseif (idrsnum .eq. 42) then
+     call aecunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts, fld)
+#endif /* USE_AEC */
   else
      print *, 'gf_unpack7: Data Representation Template ', idrsnum, ' not yet implemented.'
      ierr = 4
