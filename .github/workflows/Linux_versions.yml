@@ -48,10 +48,10 @@ jobs:
 
     - name: install-dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libopenblas-serial-dev
+        sudo apt-get update &> /dev/null
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libopenblas-serial-dev &> /dev/null
         if [ -z $(type -P gcc-${{ matrix.gcc-version }}) ]; then
-          sudo apt install gcc-${{ matrix.gcc-version }}
+          sudo apt install gcc-${{ matrix.gcc-version }} &> /dev/null
         fi
         echo "CC=gcc-${{ matrix.gcc-version }}" >> $GITHUB_ENV
         echo "FC=gfortran-${{ matrix.gcc-version }}" >> $GITHUB_ENV
