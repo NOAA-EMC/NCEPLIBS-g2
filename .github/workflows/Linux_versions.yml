@@ -29,7 +29,7 @@ jobs:
         jasper-version: [2.0.33, 3.0.5, 4.0.0]
         bacio-version: [2.4.1, 2.5.0, 2.6.0]
         w3emc-version: [2.9.2, 2.9.3, 2.10.0]
-        g2c-version: [develop]
+        g2c-version: [develop, v4.0.0]
         build-utils: [ON, OFF]
         exclude:
           # utils require w3emc version >= 2.10.0
