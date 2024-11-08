@@ -49,9 +49,9 @@ jobs:
     - name: install-dependencies
       run: |
         sudo apt-get update &> /dev/null
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libopenblas-serial-dev &> /dev/null
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libopenblas-serial-dev
         if [ -z $(type -P gcc-${{ matrix.gcc-version }}) ]; then
-          sudo apt install gcc-${{ matrix.gcc-version }} &> /dev/null
+          sudo apt install gcc-${{ matrix.gcc-version }}
         fi
         echo "CC=gcc-${{ matrix.gcc-version }}" >> $GITHUB_ENV
         echo "FC=gfortran-${{ matrix.gcc-version }}" >> $GITHUB_ENV
@@ -60,7 +60,7 @@ jobs:
       uses: NOAA-EMC/ci-build-nceplibs@develop
       with:
         bacio-version: v${{ matrix.bacio-version }}
-        g2c-version: ${{ matrix.g2c-version }}
+        g2c-version: develop
         g2c-cmake-args: -DENABLE_SHARED=ON
         jasper-version: version-${{ matrix.jasper-version }}
         w3emc-version: v${{ matrix.w3emc-version }}
