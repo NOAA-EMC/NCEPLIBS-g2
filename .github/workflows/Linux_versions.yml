@@ -60,7 +60,7 @@ jobs:
       uses: NOAA-EMC/ci-build-nceplibs@develop
       with:
         bacio-version: v${{ matrix.bacio-version }}
-        g2c-version: develop
+        g2c-version: ${{ matrix.g2c-version }}
         g2c-cmake-args: -DENABLE_SHARED=ON
         jasper-version: version-${{ matrix.jasper-version }}
         w3emc-version: v${{ matrix.w3emc-version }}
