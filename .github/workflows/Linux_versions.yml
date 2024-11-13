@@ -26,15 +26,14 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        jasper-version: [2.0.33, 3.0.5, 4.0.0]
-        bacio-version: [2.4.1, 2.5.0, 2.6.0]
-        w3emc-version: [2.9.2, 2.9.3, 2.10.0]
+        jasper-version: [2.0.33, 4.0.0]
+        bacio-version: [2.4.1, 2.6.0]
+        w3emc-version: [2.9.2, 2.10.0]
+        g2c-version: [develop, v2.0.0]
         build-utils: [ON, OFF]
         exclude:
           # utils require w3emc version >= 2.10.0
           - w3emc-version: 2.9.2
-            build-utils: ON
-          - w3emc-version: 2.9.3
             build-utils: ON
         gcc-version: [12]
         include:
@@ -42,6 +41,7 @@ jobs:
           jasper-version: 4.0.0
           bacio-version: 2.6.0
           w3emc-version: 2.10.0
+          g2c-version: develop
 
     steps:
 
@@ -59,9 +59,9 @@ jobs:
       uses: NOAA-EMC/ci-build-nceplibs@develop
       with:
         bacio-version: v${{ matrix.bacio-version }}
-        g2c-version: develop
-        g2c-cmake-args: -DENABLE_SHARED=ON
         jasper-version: version-${{ matrix.jasper-version }}
+        g2c-version: ${{ matrix.g2c-version }}
+        g2c-cmake-args: -DENABLE_SHARED=ON
         w3emc-version: v${{ matrix.w3emc-version }}
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
         ip-version: develop
