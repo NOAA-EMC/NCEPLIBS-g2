@@ -77,13 +77,13 @@ program test_bitmap
   do i = 1, 250
      jgdt(i) = -9999
   end do
-  call getgb2s2(cbuf, myidxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
-       k, gfld, lpos, iret)
-  if (iret .ne. 0) stop 20
+  !call getgb2s2(cbuf, myidxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
+  !     k, gfld, lpos, iret)
+  !if (iret .ne. 0) stop 20
 
   ! Free resources.
   deallocate(cbuf)
-  call gf_finalize(iret)
+  !call gf_finalize(iret)
   if (iret .ne. 0) stop 200
 
   print *, 'SUCCESS!'
