@@ -45,8 +45,8 @@ program test_bitmap
   call baopen(lugi, BITMAP_FILE_INDEX, iret)
   if (iret .ne. 0) stop 3
 
-  !call g2_create_index(lugb, lugi, idxver, BITMAP_FILE, iret)
-  !if (iret .ne. 0) stop 4
+  call g2_create_index(lugb, lugi, idxver, BITMAP_FILE, iret)
+  if (iret .ne. 0) stop 4
 
   !jids = -9999
   !jpdt = -9999
