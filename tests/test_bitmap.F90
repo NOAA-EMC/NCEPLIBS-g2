@@ -82,9 +82,9 @@ program test_bitmap
   if (iret .ne. 0) stop 101
 
   ! Free resources.
-  !call gf_free(gfld)
-  !call gf_finalize(iret)
-  !if (iret .ne. 0) stop 102
+  call gf_free(gfld)
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 102
 
   print *, 'SUCCESS!'
 end program test_bitmap
