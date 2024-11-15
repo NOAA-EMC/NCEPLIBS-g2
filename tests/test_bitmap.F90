@@ -16,20 +16,19 @@ program test_bitmap
   integer :: lugi, lugb
   parameter(lugi = 31, lugb = 11)
 
-  character(len=1), pointer, dimension(:) :: cbuf(:)
-  integer :: idxver = 2
-  integer :: myidxver, nlen, nnum, ifldnum, iret, i
-  integer :: j = 0, jdisc = -1, jpdtn = -1, jgdtn = -1
+  integer :: idxver = 2, j = 0, jdisc = 0, jpdtn = 0, jgdtn = 0
+  integer :: myidxver, nlen, nnum, ifldnum, iret, k, i
   integer :: jids(13), jpdt(100), jgdt(250)
-  integer :: k, lpos
+  logical :: unpack = .true.
+
+  integer :: expected_idsect(13) = (/ 57, 90, 2, 0, 0, 2021, 4, 25, 0, 0, 0, 0, 1/)
+  integer :: expected_ipdtmpl(15) = (/ 19, 10, 0, 0, 92, 0, 0, 1, 0, 105, 0, 10, 255, 0, 255 /)
+  integer :: expected_igdtmpl(19) = (/ 6, 0, 0, 0, 0, 0, 0, 5760, 2882, 0, 0, -90000000, &
+      180000000, 48, 90000000, 179937500, 62500, 62500, 64/)
+  integer :: expected_idrtmpl(5) = (/ 0, 0, 0, 3, 0 /)
   type(gribfield) :: gfld
 
   interface
-    subroutine getg2i2(lugi, cbuf, idxver, nlen, nnum, iret)
-      integer, intent(in) :: lugi
-      character(len=1), pointer, dimension(:) :: cbuf
-      integer, intent(out) :: idxver, nlen, nnum, iret
-    end subroutine getg2i2
     subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
       integer, intent(in) :: lugb, lugi, idxver
       character*(*) :: filename
@@ -48,43 +47,45 @@ program test_bitmap
   call g2_create_index(lugb, lugi, idxver, BITMAP_FILE, iret)
   if (iret .ne. 0) stop 4
 
+  jids = -9999
+  jpdt = -9999
+  jgdt = -9999
+
+  call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, unpack, myidxver, k, gfld, iret)
+  if (iret .ne. 0) stop 10
+  if (k .ne. 1) stop 11
+  if (gfld%version .ne. 2 .or. gfld%discipline .ne. 0 .or. gfld%idsectlen .ne. 13 .or. &
+       gfld%locallen .ne. 0 .or. gfld%ifldnum .ne. 1 .or. gfld%griddef .ne. 0 .or. &
+       gfld%ngrdpts .ne. 16600320 .or. gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. &
+       gfld%num_opt .ne. 0 .or. gfld%igdtnum .ne. 0 .or. gfld%igdtlen .ne. 19 .or. &
+       gfld%ipdtnum .ne. 0 .or. gfld%ipdtlen .ne. 15 .or. gfld%ndpts .ne. 16600303 .or. &
+       gfld%idrtnum .ne. 0 .or. gfld%idrtlen .ne. 5 .or. gfld%unpacked .neqv. .false. .or. &
+       gfld%expanded .neqv. .true. .or. gfld%ibmap .ne. 0) stop 12
+
+  do i=1,13
+    if (gfld%idsect(i) .ne. expected_idsect(i)) stop 20
+  enddo
+  do i=1,15
+    if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i)) stop 21
+  enddo
+  do i=1,19
+    if (gfld%igdtmpl(i) .ne. expected_igdtmpl(i)) stop 22
+  enddo
+  do i=1,5
+    if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 23
+  enddo
+
   call baclose(lugb, iret)
-  if (iret .ne. 0) stop 5
+  if (iret .ne. 0) stop 100
   call baclose(lugi, iret)
-  if (iret .ne. 0) stop 6
-
-  call baopen(lugi, BITMAP_FILE_INDEX, iret)
-  if (iret .ne. 0) stop 7
-
-  ! Read the index file.
-  call getg2i2(lugi, cbuf, myidxver, nlen, nnum, iret)
-  if (iret .ne. 0) stop 8
-
-  call baclose(lugi, iret)
-  if (iret .ne. 0) stop 9
-  if (myidxver .ne. idxver) stop 10
-  !if (nlen .ne. 198) stop 11
-  if (nlen .ne. 226) stop 11
-  if (nnum .ne. 1) stop 12
-
-  do i = 1, 13
-    jids(i) = -9999
-  end do
-  jpdtn = -1
-  do i = 1, 100
-     jpdt(i) = -9999
-  end do
-  do i = 1, 250
-     jgdt(i) = -9999
-  end do
-  !call getgb2s2(cbuf, myidxver, nlen, nnum, j, jdisc, jids, jpdtn, jpdt, jgdtn, jgdt, &
-  !     k, gfld, lpos, iret)
-  !if (iret .ne. 0) stop 20
+  if (iret .ne. 0) stop 101
 
   ! Free resources.
-  deallocate(cbuf)
-  !call gf_finalize(iret)
-  if (iret .ne. 0) stop 200
+  !deallocate(cbuf)
+  call gf_free(gfld)
+  call gf_finalize(iret)
+  if (iret .ne. 0) stop 102
 
   print *, 'SUCCESS!'
 end program test_bitmap
