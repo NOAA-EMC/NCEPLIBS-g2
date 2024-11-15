@@ -19,7 +19,7 @@ program test_bitmap
   integer :: idxver = 2, j = 0, jdisc = 0, jpdtn = 0, jgdtn = 0
   integer :: iret, k, i
   integer :: jids(13), jpdt(100), jgdt(250)
-  logical :: unpack = .false.
+  logical :: unpack = .true.
 
   integer :: expected_idsect(13) = (/ 57, 90, 2, 0, 0, 2021, 4, 25, 0, 0, 0, 0, 1/)
   integer :: expected_ipdtmpl(15) = (/ 19, 10, 0, 0, 92, 0, 0, 1, 0, 105, 0, 10, 255, 0, 255 /)
