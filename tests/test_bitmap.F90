@@ -48,14 +48,14 @@ program test_bitmap
   call g2_create_index(lugb, lugi, idxver, BITMAP_FILE, iret)
   if (iret .ne. 0) stop 4
 
-  !jids = -9999
-  !jpdt = -9999
-  !jgdt = -9999
+  jids = -9999
+  jpdt = -9999
+  jgdt = -9999
 
-  !call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
-  !     jgdt, unpack, myidxver, k, gfld, iret)
-  !if (iret .ne. 0) stop 10
-  !if (k .ne. 1) stop 11
+  call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, unpack, myidxver, k, gfld, iret)
+  if (iret .ne. 0) stop 10
+  if (k .ne. 1) stop 11
   !if (gfld%version .ne. 2 .or. gfld%discipline .ne. 0 .or. gfld%idsectlen .ne. 13 .or. &
   !     gfld%locallen .ne. 0 .or. gfld%ifldnum .ne. 1 .or. gfld%griddef .ne. 0 .or. &
   !     gfld%ngrdpts .ne. 16600320 .or. gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. &
