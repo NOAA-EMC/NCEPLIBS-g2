@@ -17,8 +17,9 @@ program test_bitmap
   parameter(lugi = 31, lugb = 11)
 
   integer :: idxver = 2, j = 0, jdisc = 0, jpdtn = 0, jgdtn = 0
-  integer :: myidxver, nlen, nnum, ifldnum, iret, k, i
-  integer :: jids(13), jpdt(100), jgdt(250)
+  integer :: myidxver, iret, k, i
+  !integer :: jids(13), jpdt(100), jgdt(250)
+  integer, dimension(200) :: jids, jpdt, jgdt
   logical :: unpack = .true.
 
   integer :: expected_idsect(13) = (/ 57, 90, 2, 0, 0, 2021, 4, 25, 0, 0, 0, 0, 1/)
