@@ -17,7 +17,7 @@ program test_bitmap
   parameter(lugi = 31, lugb = 11)
 
   integer :: idxver = 2, j = 0, jdisc = 0, jpdtn = 0, jgdtn = 0
-  integer :: myidxver, iret, k, i
+  integer :: iret, k, i
   integer :: jids(13), jpdt(100), jgdt(250)
   logical :: unpack = .true.
 
@@ -51,10 +51,10 @@ program test_bitmap
   jpdt = -9999
   jgdt = -9999
 
-  !call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
-  !     jgdt, unpack, myidxver, k, gfld, iret)
-  !if (iret .ne. 0) stop 10
-  !if (k .ne. 1) stop 11
+  call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+       jgdt, unpack, idxver, k, gfld, iret)
+  if (iret .ne. 0) stop 10
+  if (k .ne. 1) stop 11
   !if (gfld%version .ne. 2 .or. gfld%discipline .ne. 0 .or. gfld%idsectlen .ne. 13 .or. &
   !     gfld%locallen .ne. 0 .or. gfld%ifldnum .ne. 1 .or. gfld%griddef .ne. 0 .or. &
   !     gfld%ngrdpts .ne. 16600320 .or. gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. &
