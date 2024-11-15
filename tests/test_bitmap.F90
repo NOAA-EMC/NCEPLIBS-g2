@@ -42,17 +42,17 @@ program test_bitmap
   if (iret .ne. 0) stop 2
 
   ! Open output file where index will be written.
-  !call baopen(lugi, BITMAP_FILE_INDEX, iret)
-  !if (iret .ne. 0) stop 3
+  call baopen(lugi, BITMAP_FILE_INDEX, iret)
+  if (iret .ne. 0) stop 3
 
-  !call g2_create_index(lugb, lugi, idxver, BITMAP_FILE, iret)
-  !if (iret .ne. 0) stop 4
+  call g2_create_index(lugb, lugi, idxver, BITMAP_FILE, iret)
+  if (iret .ne. 0) stop 4
 
   jids = -9999
   jpdt = -9999
   jgdt = -9999
 
-  call getgb2i2(lugb, 0, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
+  call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
        jgdt, unpack, myidxver, k, gfld, iret)
   if (iret .ne. 0) stop 10
   if (k .ne. 1) stop 11
@@ -79,8 +79,8 @@ program test_bitmap
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 100
-  !call baclose(lugi, iret)
-  !if (iret .ne. 0) stop 101
+  call baclose(lugi, iret)
+  if (iret .ne. 0) stop 101
 
   ! Free resources.
   call gf_free(gfld)
