@@ -13,6 +13,9 @@ unset FORT11
 unset FORT51
 ../utils/tocgrib2super && exit 1
 
+# According to George V.: "if fortran unit 11 is, 40999888 bytes long,
+# then fortran unit 12 should be a single 8 character text string
+# containing this integer value."
 echo "*** Running tocgrib2super with input/output defined, but one missing field. It will fail."
 export FORT11="../tests/data/rrfs.t12z.prslevfaa.f010.na3km.grib2"
 export FORT51=out.grib2
