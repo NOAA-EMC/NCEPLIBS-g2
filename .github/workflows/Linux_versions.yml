@@ -29,7 +29,7 @@ jobs:
         jasper-version: [2.0.33, 4.0.0]
         bacio-version: [2.4.1, 2.6.0]
         w3emc-version: [2.9.2, 2.10.0]
-        ip-version: [5.0.0]
+        ip-version: [develop, v5.0.0]
         g2c-version: [develop, v2.0.0]
         build-utils: [ON, OFF]
         exclude:
@@ -65,7 +65,7 @@ jobs:
         g2c-cmake-args: -DENABLE_SHARED=ON
         w3emc-version: v${{ matrix.w3emc-version }}
         w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
-        ip-version: v${{ matrix.ip-version }}
+        ip-version: ${{ matrix.ip-version }}
         key-suffix: -gcc${{ matrix.gcc-version }}
 
     - name: checkout
