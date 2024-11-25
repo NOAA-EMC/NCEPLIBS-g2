@@ -27,10 +27,10 @@ module g2c_interface
      ! int g2c_inq_msg(int g2cid, int msg_num, unsigned char *discipline, int *num_fields,
      !    int *num_local, short *center, short *subcenter, unsigned char *master_version,
      !    unsigned char *local_version);
-     function g2c_close(g2id) result(status)
+     function g2c_close(g2id) bind(c)
        use iso_c_binding
        integer(c_int), intent(in) :: g2id
-       integer(c_int) :: status
+       integer(c_int) :: g2c_close
      end function g2c_close
   end interface
 end module g2c_interface
