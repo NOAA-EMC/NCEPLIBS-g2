@@ -93,7 +93,7 @@ endif()
 if (G2C_COMPARE)
   find_package(g2c 1.7.0 REQUIRED)
 endif()
-  
+
 # Figure whether user wants a _4, a _d, or both libraries.
 if(BUILD_4 AND BUILD_D)
   set(kinds "4" "d")
