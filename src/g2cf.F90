@@ -139,19 +139,19 @@ contains
   !> @return 0 for success, error code otherwise.
   !>
   !> @author Edward Hartnett @date 2024-06-12
-  function g2cf_close(g2id) result(status)
-    use iso_c_binding    
-    use g2c_interface
-    implicit none
+  ! function g2cf_close(g2id) result(status)
+  !   use iso_c_binding    
+  !   use g2c_interface
+  !   implicit none
     
-    integer, intent(in) :: g2id
-    integer :: status
+  !   integer, intent(in) :: g2id
+  !   integer :: status
     
-    integer(c_int) :: cg2id, cstatus
+  !   integer(c_int) :: cg2id, cstatus
 
-    cg2id = g2id
-    cstatus = g2c_close(cg2id)
-    status = cstatus
-  end function g2cf_close
+  !   cg2id = g2id
+  !   cstatus = g2c_close(cg2id)
+  !   status = cstatus
+  ! end function g2cf_close
 
 end module g2cf
