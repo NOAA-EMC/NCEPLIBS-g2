@@ -17,7 +17,7 @@ program test_bitmap
   parameter(lugi = 31, lugb = 11)
   integer, parameter :: idxver = 2, ndpts = 16600303
 
-  character(len=1), dimension(:), pointer :: cbuf
+  character(len=1), dimension(:) :: cbuf
   integer :: iret, nnum, nlen
   integer :: idrstmpl(5) = (/ 0, 0, 0, 3, 0 /)
   real :: fld(ndpts)
@@ -51,7 +51,7 @@ program test_bitmap
   if (nnum .ne. 1) stop 6
   if (nlen .ne. 226) stop 7
 
-  call pngunpack(cbuf, nnum, idrstmpl, ndpts, fld)
+  call pngunpack(cbuf, nlen, idrstmpl, ndpts, fld)
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 100
@@ -59,6 +59,7 @@ program test_bitmap
   if (iret .ne. 0) stop 101
 
   ! Free resources.
+  call gf_free(gfld)
   call gf_finalize(iret)
   if (iret .ne. 0) stop 102
 
