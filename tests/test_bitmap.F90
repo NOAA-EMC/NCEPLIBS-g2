@@ -17,9 +17,10 @@ program test_bitmap
   parameter(lugi = 31, lugb = 11)
 
   character(len=1), dimension(:), pointer :: cbuf
-  integer :: idxver = 2
+  integer :: idxver = 2, ndpts = 16600303
   integer :: iret, nnum, nlen
-
+  integer :: idrstmpl(5) = (/ 0, 0, 0, 3, 0 /)
+  real, dimension(ndpts) :: fld
 
   interface
     subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
@@ -47,8 +48,10 @@ program test_bitmap
 
   call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
   if (iret .ne. 0) stop 5
-  print *, nnum
-  print *, nlen
+  if (nnum .ne. 1) stop 6
+  if (nlen .ne. 226) stop 7
+
+  call pngunpack(cbuf, nlen, idrstmpl, ndpts, fld)
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 100
