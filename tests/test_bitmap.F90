@@ -20,7 +20,7 @@ program test_bitmap
   integer :: idxver = 2, ndpts = 16600303
   integer :: iret, nnum, nlen
   integer :: idrstmpl(5) = (/ 0, 0, 0, 3, 0 /)
-  real, dimension(ndpts) :: fld
+  real :: fld(ndpts)
 
   interface
     subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
