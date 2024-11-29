@@ -51,7 +51,7 @@ program test_bitmap
   if (nnum .ne. 1) stop 6
   if (nlen .ne. 226) stop 7
 
-  call pngunpack(cbuf, nlen, idrstmpl, ndpts, fld)
+  call pngunpack(cbuf, nnum, idrstmpl, ndpts, fld)
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 100
