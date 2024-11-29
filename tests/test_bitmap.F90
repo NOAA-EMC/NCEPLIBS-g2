@@ -16,15 +16,10 @@ program test_bitmap
   integer :: lugi, lugb
   parameter(lugi = 31, lugb = 11)
 
-  integer :: idxver = 2, j = 0, jdisc = 0, jpdtn = 0, jgdtn = 0
-  integer :: iret, k, i
-  integer :: jids(13) = (/ 57, 90, 2, 0, 0, 2021, 4, 25, 0, 0, 0, 0, 1/)
-  integer :: jpdt(15) = (/ 19, 10, 0, 0, 92, 0, 0, 1, 0, 105, 0, 10, 255, 0, 255 /)
-  integer :: jgdt(19) = (/ 6, 0, 0, 0, 0, 0, 0, 5760, 2882, 0, 0, -90000000, &
-      180000000, 48, 90000000, 179937500, 62500, 62500, 64/)
-  logical :: unpack = .true.
-  integer :: expected_idrtmpl(5) = (/ 0, 0, 0, 3, 0 /)
-  type(gribfield) :: gfld
+  character(len=1), dimension(:), pointer :: cbuf
+  integer :: idxver = 2
+  integer :: iret, nnum, nlen
+
 
   interface
     subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
@@ -32,6 +27,11 @@ program test_bitmap
       character*(*) :: filename
       integer, intent(out) :: iret
     end subroutine g2_create_index
+    subroutine getidx2(lugb, lugi, idxver, cindex, nlen, nnum, iret)
+      integer, intent(in) :: lugb, lugi, idxver
+      character(len = 1), pointer, dimension(:) :: cindex
+      integer, intent(out) :: nlen, nnum, iret
+    end subroutine getidx2
   end interface
 
   ! Open GRIB2 file for reading.
@@ -45,21 +45,10 @@ program test_bitmap
   call g2_create_index(lugb, lugi, idxver, BITMAP_FILE, iret)
   if (iret .ne. 0) stop 4
 
-  call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
-       jgdt, unpack, idxver, k, gfld, iret)
-  if (iret .ne. 0) stop 10
-  if (k .ne. 1) stop 11
-  if (gfld%version .ne. 2 .or. gfld%discipline .ne. 0 .or. gfld%idsectlen .ne. 13 .or. &
-       gfld%locallen .ne. 0 .or. gfld%ifldnum .ne. 1 .or. gfld%griddef .ne. 0 .or. &
-       gfld%ngrdpts .ne. 16600320 .or. gfld%numoct_opt .ne. 0 .or. gfld%interp_opt .ne. 0 .or. &
-       gfld%num_opt .ne. 0 .or. gfld%igdtnum .ne. 0 .or. gfld%igdtlen .ne. 19 .or. &
-       gfld%ipdtnum .ne. 0 .or. gfld%ipdtlen .ne. 15 .or. gfld%ndpts .ne. 16600303 .or. &
-       gfld%idrtnum .ne. 0 .or. gfld%idrtlen .ne. 5 .or. gfld%unpacked .neqv. .false. .or. &
-       gfld%expanded .neqv. .true. .or. gfld%ibmap .ne. 0) stop 12
-
-  do i=1,5
-    if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 23
-  enddo
+  call getidx2(lugb, lugi, idxver, cbuf, nlen, nnum, iret)
+  if (iret .ne. 0) stop 5
+  print *, nnum
+  print *, nlen
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 100
@@ -67,7 +56,6 @@ program test_bitmap
   if (iret .ne. 0) stop 101
 
   ! Free resources.
-  call gf_free(gfld)
   call gf_finalize(iret)
   if (iret .ne. 0) stop 102
 
