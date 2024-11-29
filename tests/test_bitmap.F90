@@ -15,9 +15,9 @@ program test_bitmap
 
   integer :: lugi, lugb
   parameter(lugi = 31, lugb = 11)
+  integer, parameter :: idxver = 2, ndpts = 16600303
 
   character(len=1), dimension(:), pointer :: cbuf
-  integer :: idxver = 2, ndpts = 16600303
   integer :: iret, nnum, nlen
   integer :: idrstmpl(5) = (/ 0, 0, 0, 3, 0 /)
   real :: fld(ndpts)
