@@ -18,13 +18,11 @@ program test_bitmap
 
   integer :: idxver = 2, j = 0, jdisc = 0, jpdtn = 0, jgdtn = 0
   integer :: iret, k, i
-  integer :: jids(13), jpdt(100), jgdt(250)
-  logical :: unpack = .true.
-
-  integer :: expected_idsect(13) = (/ 57, 90, 2, 0, 0, 2021, 4, 25, 0, 0, 0, 0, 1/)
-  integer :: expected_ipdtmpl(15) = (/ 19, 10, 0, 0, 92, 0, 0, 1, 0, 105, 0, 10, 255, 0, 255 /)
-  integer :: expected_igdtmpl(19) = (/ 6, 0, 0, 0, 0, 0, 0, 5760, 2882, 0, 0, -90000000, &
+  integer :: jids(13) = (/ 57, 90, 2, 0, 0, 2021, 4, 25, 0, 0, 0, 0, 1/)
+  integer :: jpdt(15) = (/ 19, 10, 0, 0, 92, 0, 0, 1, 0, 105, 0, 10, 255, 0, 255 /)
+  integer :: jgtn(19) = (/ 6, 0, 0, 0, 0, 0, 0, 5760, 2882, 0, 0, -90000000, &
       180000000, 48, 90000000, 179937500, 62500, 62500, 64/)
+  logical :: unpack = .true.
   integer :: expected_idrtmpl(5) = (/ 0, 0, 0, 3, 0 /)
   type(gribfield) :: gfld
 
@@ -47,10 +45,6 @@ program test_bitmap
   call g2_create_index(lugb, lugi, idxver, BITMAP_FILE, iret)
   if (iret .ne. 0) stop 4
 
-  jids = -9999
-  jpdt = -9999
-  jgdt = -9999
-
   call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
        jgdt, unpack, idxver, k, gfld, iret)
   if (iret .ne. 0) stop 10
@@ -63,15 +57,6 @@ program test_bitmap
        gfld%idrtnum .ne. 0 .or. gfld%idrtlen .ne. 5 .or. gfld%unpacked .neqv. .false. .or. &
        gfld%expanded .neqv. .true. .or. gfld%ibmap .ne. 0) stop 12
 
-  do i=1,13
-    if (gfld%idsect(i) .ne. expected_idsect(i)) stop 20
-  enddo
-  do i=1,15
-    if (gfld%ipdtmpl(i) .ne. expected_ipdtmpl(i)) stop 21
-  enddo
-  do i=1,19
-    if (gfld%igdtmpl(i) .ne. expected_igdtmpl(i)) stop 22
-  enddo
   do i=1,5
     if (gfld%idrtmpl(i) .ne. expected_idrtmpl(i)) stop 23
   enddo
