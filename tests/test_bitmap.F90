@@ -15,12 +15,13 @@ program test_bitmap
 
   integer :: lugi, lugb
   parameter(lugi = 31, lugb = 11)
-  integer, parameter :: idxver = 2, ndpts = 16600303
 
-  character(len=1), dimension(:) :: cbuf
+  character(len=1), dimension(:), pointer :: cbuf
   integer :: iret, nnum, nlen
-  integer :: idrstmpl(5) = (/ 0, 0, 0, 3, 0 /)
-  real :: fld(ndpts)
+  integer, dimension(*):: igds, igdstmpl, ideflist, ipdstmpl, coordlist, &
+      idrstmpl, bmap, fld
+  integer :: igdslen, idefnum, ipdsnum, ipdslen, numcoord, ndpts, idrsnum, &
+      idrslen, ibmap
 
   interface
     subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
@@ -51,7 +52,10 @@ program test_bitmap
   if (nnum .ne. 1) stop 6
   if (nlen .ne. 226) stop 7
 
-  call pngunpack(cbuf, nlen, idrstmpl, ndpts, fld)
+  call getfield(cbuf, nnum, 6, igds, igdstmpl, igdslen, ideflist, idefnum, &
+       ipdsnum, ipdstmpl, ipdslen, coordlist, numcoord, ndpts, idrsnum, &
+       idrstmpl, idrslen, ibmap, bmap, fld, iret)
+  if (iret .ne. 0) stop 8
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 100
@@ -59,7 +63,6 @@ program test_bitmap
   if (iret .ne. 0) stop 101
 
   ! Free resources.
-  call gf_free(gfld)
   call gf_finalize(iret)
   if (iret .ne. 0) stop 102
 
