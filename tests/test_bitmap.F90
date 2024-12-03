@@ -15,6 +15,7 @@ program test_bitmap
 
   integer :: lugi, lugb
   parameter(lugi = 31, lugb = 11)
+  integer, parameter :: idxver = 2
 
   character(len=1), dimension(:), pointer :: cbuf
   integer :: iret, nnum, nlen
