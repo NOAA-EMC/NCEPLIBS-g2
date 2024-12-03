@@ -9,7 +9,7 @@ program test_bitmap
   implicit none
 
   character(*) :: BITMAP_FILE
-  parameter(BITMAP_FILE = 'data/ref_png_bitmap.png')
+  parameter(BITMAP_FILE = 'data/ref_png_bitmap.grib2')
   character(*) :: BITMAP_FILE_INDEX
   parameter(BITMAP_FILE_INDEX = 'test_bitmap_index.grb2index')
 
