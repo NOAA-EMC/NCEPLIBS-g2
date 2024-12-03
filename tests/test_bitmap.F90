@@ -19,12 +19,12 @@ program test_bitmap
   integer :: idxver = 2, j = 0, jdisc = 0, jpdtn = 0, jgdtn = 0
   integer :: iret, k, i
   integer :: jids(13), jpdt(15), jgdt(19)
-  !integer :: jids(13) = (/ 7, 0, 2, 1, 1, 2021, 11, 30, 0, 0, 0, 0, 1/)
-  !integer :: jpdt(15) = (/ 2, 1, 2, 0, 92, 0, 0, 1, 0, 105, 0, 10, 255, 0, 255 /)
-  !integer :: jgdt(19) = (/ 6, 0, 0, 0, 0, 0, 0, 5760, 2882, 0, 0, -90000000, &
-  !    180000000, 48, 90000000, 179937500, 62500, 62500, 64/)
   logical :: unpack = .true.
-  integer :: expected_idrtmpl(5) = (/ 0, 0, 0, 3, 0 /)
+  integer :: expected_idsect(13) = (/ 7, 0, 2, 1, 1, 2021, 11, 30, 0, 0, 0, 0, 1/)
+  integer :: expected_ipdtmpl(15) = (/ 2, 1, 2, 0, 11, 0, 0, 1, 0, 1, 0, 1, 255, 0, 0 /)
+  integer :: expected_igdtmpl(19) = (/ 6, 0, 0, 0, 0, 0, 0, 241, 151, 0, 0, 50000000, &
+      210000000, 48, 25000000, 250000000, 166667, 166667, 0/)
+  integer :: expected_idrtmpl(7) = (/ 1092616192, 0, 2, 11, 0, 0, 255 /)
   type(gribfield) :: gfld
 
   interface
@@ -61,21 +61,16 @@ program test_bitmap
   !     gfld%idrtnum .ne. 0 .or. gfld%idrtlen .ne. 5 .or. gfld%unpacked .neqv. .false. .or. &
   !     gfld%expanded .neqv. .true. .or. gfld%ibmap .ne. 0) stop 12
 
-  do i=1,13
-    print *, gfld%idsect(i)
-  enddo
-  print *, "pdt"
-  do i=1,gfld%ipdtlen
-    print *, gfld%ipdtmpl(i)
-  enddo
-  print *, "gdt"
-  do i=1,gfld%igdtlen
-    print *, gfld%igdtmpl(i)
-  enddo
-  print *, "drt"
-  do i=1,gfld%idrtlen
-    print *, gfld%idrtmpl(i)
-  enddo
+  print *, "version ", gfld%version
+  print *, "locallen ", gfld%locallen
+  print *, "ifldnum ", gfld%ifldnum
+  print *, "griddef ", gfld%griddef
+  print *, "ngrdpts ", gfld%ngrdpts
+  print *, "numoct_opt ", gfld%numoct_opt
+  print *, "interp_opt ", gfld%interp_opt
+  print *, "num_opt ", gfld%num_opt
+  print *, "ibmap ", gfld%ibmap
+  print *, "unpacked ", gfld%unpacked
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 100
   call baclose(lugi, iret)
