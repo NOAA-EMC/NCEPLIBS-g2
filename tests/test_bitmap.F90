@@ -18,11 +18,12 @@ program test_bitmap
   integer, parameter :: idxver = 2
 
   character(len=1), dimension(:), pointer :: cbuf
-  integer :: iret, nnum, nlen
-  integer, dimension(*):: igds, igdstmpl, ideflist, ipdstmpl, coordlist, &
-      idrstmpl, bmap, fld
-  integer :: igdslen, idefnum, ipdsnum, ipdslen, numcoord, ndpts, idrsnum, &
-      idrslen, ibmap
+  integer :: iret, nnum, nlen, numlocal, numfields
+  integer :: listsec0(3), listsec1(13) maxvals(7)
+  !integer, dimension(*):: igds, igdstmpl, ideflist, ipdstmpl, coordlist, &
+  !    idrstmpl, bmap, fld
+  !integer :: igdslen, idefnum, ipdsnum, ipdslen, numcoord, ndpts, idrsnum, &
+  !    idrslen, ibmap
 
   interface
     subroutine g2_create_index(lugb, lugi, idxver, filename, iret)
@@ -53,10 +54,19 @@ program test_bitmap
   if (nnum .ne. 1) stop 6
   if (nlen .ne. 226) stop 7
 
-  call getfield(cbuf, nnum, 6, igds, igdstmpl, igdslen, ideflist, idefnum, &
-       ipdsnum, ipdstmpl, ipdslen, coordlist, numcoord, ndpts, idrsnum, &
-       idrstmpl, idrslen, ibmap, bmap, fld, iret)
+  call gribinfo(cbuf, nlen, listsec0, listsec1, numlocal, numfields, maxvals, iret)
+  !call getfield(cbuf, nnum, 6, igds, igdstmpl, igdslen, ideflist, idefnum, &
+  !     ipdsnum, ipdstmpl, ipdslen, coordlist, numcoord, ndpts, idrsnum, &
+  !     idrstmpl, idrslen, ibmap, bmap, fld, iret)
   if (iret .ne. 0) stop 8
+
+  print *, maxvals(1)
+  print *, maxvals(2)
+  print *, maxvals(3)
+  print *, maxvals(4)
+  print *, maxvals(5)
+  print *, maxvals(6)
+  print *, maxvals(7)
 
   call baclose(lugb, iret)
   if (iret .ne. 0) stop 100
