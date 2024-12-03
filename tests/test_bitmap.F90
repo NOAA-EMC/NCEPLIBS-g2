@@ -47,7 +47,7 @@ program test_bitmap
   if (iret .ne. 0) stop 4
 
   jids = -9999
-  jpdt = -9999,
+  jpdt = -9999
   jgdt = -9999
   call getgb2i2(lugb, lugi, j, jdisc, jids, jpdtn, jpdt, jgdtn, &
        jgdt, unpack, idxver, k, gfld, iret)
