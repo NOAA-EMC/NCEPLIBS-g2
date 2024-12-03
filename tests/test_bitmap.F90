@@ -54,7 +54,7 @@ program test_bitmap
   if (nnum .ne. 1) stop 6
   if (nlen .ne. 226) stop 7
 
-  call gribinfo(cbuf, nlen, listsec0, listsec1, numlocal, numfields, maxvals, iret)
+  call gribinfo(cbuf, nnum, listsec0, listsec1, numlocal, numfields, maxvals, iret)
   !call getfield(cbuf, nnum, 6, igds, igdstmpl, igdslen, ideflist, idefnum, &
   !     ipdsnum, ipdstmpl, ipdslen, coordlist, numcoord, ndpts, idrsnum, &
   !     idrstmpl, idrslen, ibmap, bmap, fld, iret)
