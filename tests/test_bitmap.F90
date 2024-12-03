@@ -19,7 +19,7 @@ program test_bitmap
 
   character(len=1), dimension(:), pointer :: cbuf
   integer :: iret, nnum, nlen, numlocal, numfields
-  integer :: listsec0(3), listsec1(13) maxvals(7)
+  integer :: listsec0(3), listsec1(13), maxvals(7)
   !integer, dimension(*):: igds, igdstmpl, ideflist, ipdstmpl, coordlist, &
   !    idrstmpl, bmap, fld
   !integer :: igdslen, idefnum, ipdsnum, ipdslen, numcoord, ndpts, idrsnum, &
