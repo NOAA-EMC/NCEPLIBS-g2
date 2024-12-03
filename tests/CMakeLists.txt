@@ -166,7 +166,7 @@ copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.grb2index2)
 copy_test_data(g1.grib2)
 copy_test_data(gdaswave.t00z.wcoast.0p16.f000.grib2)
 copy_test_data(ref_test_jpcpack_4_output.txt)
-copy_test_data(ref_png_bitmap.grib2)
+copy_test_data(ref_jpeg_bitmap.grib2)
 
 # Build a _4 and _d version of each test and link them to the _4 and
 # _d builds of the library, for 4-byte real, and 8-byte real.
