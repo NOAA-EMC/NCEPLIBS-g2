@@ -4,7 +4,7 @@
 # and address sanitizer.
 #
 # Ed Hartnett, 12/22/22
-name: developer
+name: developer_slow
 on:
   push:
     branches:
@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  developer:
+  developer_slow:
     runs-on: ubuntu-latest
     env:
       FC: gfortran
