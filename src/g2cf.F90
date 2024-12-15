@@ -14,8 +14,8 @@ contains
   !> LEN(string)+1. Trailing blanks will be stripped from string and
   !> length of trimmed string will be returned in nlen.
   !>
-  !> @param string the string to trimmed and null-terminated
-  !> @param nlen the length of the returned string, including
+  !> @param string The string to trimmed and null-terminated
+  !> @param nlen The length of the returned string, including
   !> null-terminator.
   !>
   !> @return the trimmed, null-terminated string
@@ -52,9 +52,9 @@ contains
 
   !> Open a GRIB2 file.
   !>
-  !> @param path the path to the file
-  !> @param mode flag with open mode information
-  !> @param g2id the ID of the open file
+  !> @param path The path to the file
+  !> @param mode Flag with open mode information
+  !> @param g2id The ID of the open file
   !>
   !> @return 0 for success, error code otherwise.
   !>
@@ -119,11 +119,11 @@ contains
     cmode = mode
     cg2cid = 0
     
-    ! check for c null character on path and add one if not present.
+    ! Check for c null character on path and add one if not present.
     cdata_file = addcnullchar(data_file, ie1)
     cindex_file = addcnullchar(index_file, ie2)
     
-    ! call nc_create to create file
+    ! Call g2c_open_index to open the file.
     cstatus = g2c_open_index(cdata_file(1:ie1), cindex_file(1:ie2), cmode, cg2cid)
     
     if (cstatus == 0) then
@@ -134,7 +134,7 @@ contains
 
   !> Close a GRIB2 file.
   !>
-  !> @param g2id the ID of the open file
+  !> @param g2id The ID of the open file
   !>
   !> @return 0 for success, error code otherwise.
   !>
