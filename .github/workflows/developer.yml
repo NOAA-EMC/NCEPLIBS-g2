@@ -101,6 +101,9 @@ jobs:
         mkdir ~/data
         cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
 
+    - name: Setup Pages
+      if: matrix.config == 'code_coverage'
+      uses: actions/configure-pages@v2
     - name: upload-test-coverage
       if: matrix.config == 'code coverage'
       uses: actions/upload-artifact@v4
@@ -109,3 +112,15 @@ jobs:
         path: |
           g2/build/*.html
           g2/build/*.css
+      uses: actions/upload-pages-artifact@v1
+      with:
+        # Upload the coverage directory from the repository
+        path: |
+        path: |
+          g2/build/*.html
+          g2/build/*.css
+    - name: Deploy to GitHub Pages
+      if: matrix.config == 'docs'
+      id: deployment
+      uses: actions/deploy-pages@v1      
+          
