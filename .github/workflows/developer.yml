@@ -110,7 +110,6 @@ jobs:
       with:
         # Upload the coverage directory from the repository
         path: |
-        path: |
           g2/build/*.html
           g2/build/*.css
     - name: Deploy to GitHub Pages
