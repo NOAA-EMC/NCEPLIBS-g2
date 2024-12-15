@@ -106,12 +106,6 @@ jobs:
       uses: actions/configure-pages@v2
     - name: upload-test-coverage
       if: matrix.config == 'code coverage'
-      uses: actions/upload-artifact@v4
-      with:
-        name: g2-test-coverage
-        path: |
-          g2/build/*.html
-          g2/build/*.css
       uses: actions/upload-pages-artifact@v1
       with:
         # Upload the coverage directory from the repository
