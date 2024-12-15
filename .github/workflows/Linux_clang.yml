@@ -48,7 +48,7 @@ jobs:
     - name: install-dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev clang
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev clang  libblas-dev liblapack-dev
 
     - name: "Build dependencies"
       uses: NOAA-EMC/ci-build-nceplibs@develop
