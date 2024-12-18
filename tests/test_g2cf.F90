@@ -33,8 +33,8 @@ program test_g2cf
   !      subcenter .ne. 0 .or. master_version .ne. 2 .or. local_version .ne. 1) stop 12
 
   ! Close the file.
-  !ierr = g2cf_close(g2cid)
-  !if (ierr .ne. 0) stop 20
+  ierr = g2cf_close(g2cid)
+  if (ierr .ne. 0) stop 20
 
   print *, 'SUCCESS!'
 end program test_g2cf

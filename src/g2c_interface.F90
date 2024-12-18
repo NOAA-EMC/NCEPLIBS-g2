@@ -29,7 +29,7 @@ module g2c_interface
      !    unsigned char *local_version);
      function g2c_close(g2id) bind(c)
        use iso_c_binding
-       integer(c_int), intent(in) :: g2id
+       integer(c_int), value :: g2id
        integer(c_int) :: g2c_close
      end function g2c_close
      function g2c_set_log_level(log_level) bind(c)
