@@ -154,4 +154,26 @@ contains
     status = cstatus
   end function g2cf_close
 
+  !> Turn internal logging on.
+  !>
+  !> @param log_level 0 for no logging, 5 for maximum logging.
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-12-16
+  function g2cf_set_log_level(log_level) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
+    
+    integer, intent(in) :: log_level
+    integer :: status
+    
+    integer(c_int) :: clog_level, cstatus
+
+    clog_level = log_level
+    cstatus = g2c_set_log_level(clog_level)
+    status = cstatus
+  end function g2cf_set_log_level
+  
 end module g2cf
