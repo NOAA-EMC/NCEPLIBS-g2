@@ -163,8 +163,8 @@ program test_addfield
   if (ierr .ne. 0) stop 1
   cgrib = s3grib
   
-  print *, 'Spherical Harmonic Complex Packing where J, K, and M  & 
-      pentagonal resolution parameters = 0, error=9'
+  print *, 'Spherical Harmonic Complex Packing where J, K, and M',  & 
+       ' pentagonal resolution parameters = 0, error=9'
   idrstmplen = 10
   idrsnum = 51
   call addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
