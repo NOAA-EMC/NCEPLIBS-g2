@@ -157,6 +157,43 @@ contains
     status = cstatus
   end function g2cf_inq
 
+  !> Learn about a message are in a GRIB2 file.
+  !>
+  !> @param[in] g2id The ID of the open file
+  !> @param[in] msg_num The number of message to learn about.
+  !> @param[out] discipline The discipline of the message.
+  !> @param[out] num_fields Number of fields in the message.
+  !> @param[out] num_local Number of local sections in the message.
+  !> @param[out] center Originating center.
+  !> @param[out] subcenter Originating sub-center.
+  !> @param[out] master_version Master version.
+  !> @param[out] local_version Local version.
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-12-21
+  function g2cf_inq_msg(g2id, msg_num, discipline, num_fields, &
+          num_local, center, subcenter, master_version, local_version) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
+    
+    integer, intent(in) :: g2id
+    integer(c_int), intent(in) :: msg_num
+    integer(c_signed_char), intent(out) :: discipline
+    integer(c_int), intent(out) :: num_fields, num_local
+    integer(c_short), intent(out) :: center, subcenter
+    integer(c_signed_char), intent(out) :: master_version, local_version
+    integer :: status
+    
+    integer(c_int) :: cg2id, cnum_msg, cstatus
+
+    cg2id = g2id
+    cstatus = g2c_inq(cg2id, cnum_msg)
+    !num_msg = cnum_msg
+    status = cstatus
+  end function g2cf_inq_msg
+
   !> Close a GRIB2 file.
   !>
   !> @param g2id The ID of the open file
