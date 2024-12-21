@@ -132,13 +132,14 @@ contains
     status = cstatus
   end function g2cf_open_index
 
-  !> Close a GRIB2 file.
+  !> Learn how many messages are in a GRIB2 file.
   !>
   !> @param g2id The ID of the open file
+  !> @param num_msg The number of messages in the file.
   !>
   !> @return 0 for success, error code otherwise.
   !>
-  !> @author Edward Hartnett @date 2024-06-12
+  !> @author Edward Hartnett @date 2024-12-21
   function g2cf_inq(g2id, num_msg) result(status)
     use iso_c_binding    
     use g2c_interface
