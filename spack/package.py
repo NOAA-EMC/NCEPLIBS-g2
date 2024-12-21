@@ -43,9 +43,9 @@ class G2(CMakePackage):
     )
     variant("w3emc", default=True, description="Enable GRIB1 through w3emc", when="@3.4.6:")
     variant("aec", default=True, description="Use AEC library", when="@develop")
-    variant("shared", default="False", when="@3.4.7:")
-    variant("openmp", default=False, description="Use OpenMP multithreading")
-    variant("utils", default=False, description="Build grib utilities")
+    variant("shared", default="False", description="Build shared library", when="@3.4.7:")
+    variant("openmp", default=False, description="Use OpenMP multithreading", when="@develop")
+    variant("utils", default=False, description="Build grib utilities", when="@develop")
     variant("g2c_compare", default=False, description="Enable copygb2 tests using g2c_compare")
 
     depends_on("jasper@:2.0.32", when="@:3.4.7")
