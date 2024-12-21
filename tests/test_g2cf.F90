@@ -15,7 +15,7 @@ program test_g2cf
   integer :: ierr
 
   print *, 'Testing g2cf API...'
-  ierr = g2cf_set_log_level(1)
+  !ierr = g2cf_set_log_level(1)
 
   ! Open the test file.
   ierr = g2cf_open(fileName, 0, g2cid)
@@ -29,6 +29,8 @@ program test_g2cf
   ! Check the last message.
   ierr = g2cf_inq_msg(g2cid, 19, discipline, num_fields, num_local, center, subcenter, &
        master_version, local_version)
+  if (ierr .ne. 0) stop 100
+  !print *, discipline, num_fields, num_local, center, subcenter, master_version, local_version
   if (discipline .ne. 10 .or. num_fields .ne. 1 .or. num_local .ne. 0 .or. center .ne. 7 .or. &
        subcenter .ne. 0 .or. master_version .ne. 2 .or. local_version .ne. 1) stop 12
 

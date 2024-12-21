@@ -34,7 +34,7 @@ module g2c_interface
           num_local, center, subcenter, master_version, local_version) bind(c)
        use iso_c_binding
        integer(c_int), value :: g2id
-       integer(c_int), intent(in) :: msg_num
+       integer(c_int), value :: msg_num
        integer(c_signed_char), intent(out) :: discipline
        integer(c_int), intent(out) :: num_fields, num_local
        integer(c_short), intent(out) :: center, subcenter

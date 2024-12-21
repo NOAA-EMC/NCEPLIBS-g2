@@ -160,7 +160,8 @@ contains
   !> Learn about a message are in a GRIB2 file.
   !>
   !> @param[in] g2id The ID of the open file
-  !> @param[in] msg_num The number of message to learn about.
+  !> @param[in] msg_num The number of message to learn about. The
+  !> first message in the file is number 1.
   !> @param[out] discipline The discipline of the message.
   !> @param[out] num_fields Number of fields in the message.
   !> @param[out] num_local Number of local sections in the message.
@@ -179,10 +180,10 @@ contains
     implicit none
     
     integer, intent(in) :: g2id, msg_num
-    integer, intent(out) :: discipline
+    integer(kind = 1), intent(out) :: discipline
     integer, intent(out) :: num_fields, num_local
     integer(kind = 2), intent(out) :: center, subcenter
-    integer(kind = 2), intent(out) :: master_version, local_version
+    integer(kind = 1), intent(out) :: master_version, local_version
     integer :: status
 
     integer(c_int) :: cg2id, cmsg_num, cstatus
@@ -192,7 +193,8 @@ contains
     integer(c_signed_char) :: cmaster_version, clocal_version
 
     cg2id = g2id
-    cmsg_num = msg_num
+    ! Subtract 1 because C is zero-based.
+    cmsg_num = msg_num - 1 
     cstatus = g2c_inq_msg(cg2id, cmsg_num, cdiscipline, cnum_fields, &
          cnum_local, ccenter, csubcenter, cmaster_version, clocal_version)
     discipline = cdiscipline
