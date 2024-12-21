@@ -26,11 +26,11 @@ program test_g2cf
   if (ierr .ne. 0) stop 10
   if (num_msg .ne. 19) stop 11
 
-  ! ! Check the last message.
-  ! ierr = g2cf_inq_msg(g2cid, 19, discipline, num_fields, num_local, center, subcenter, &
-  !      master_version, local_version)
-  ! if (discipline .ne. 10 .or. num_fields .ne. 1 .or. num_local .ne. 0 .or. center .ne. 7 .or. &
-  !      subcenter .ne. 0 .or. master_version .ne. 2 .or. local_version .ne. 1) stop 12
+  ! Check the last message.
+  ierr = g2cf_inq_msg(g2cid, 19, discipline, num_fields, num_local, center, subcenter, &
+       master_version, local_version)
+  if (discipline .ne. 10 .or. num_fields .ne. 1 .or. num_local .ne. 0 .or. center .ne. 7 .or. &
+       subcenter .ne. 0 .or. master_version .ne. 2 .or. local_version .ne. 1) stop 12
 
   ! Close the file.
   ierr = g2cf_close(g2cid)

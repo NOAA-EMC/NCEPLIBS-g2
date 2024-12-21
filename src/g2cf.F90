@@ -146,7 +146,7 @@ contains
     implicit none
     
     integer, intent(in) :: g2id
-    integer(c_int), intent(out) :: num_msg    
+    integer, intent(out) :: num_msg    
     integer :: status
     
     integer(c_int) :: cg2id, cnum_msg, cstatus
@@ -178,19 +178,30 @@ contains
     use g2c_interface
     implicit none
     
-    integer, intent(in) :: g2id
-    integer(c_int), intent(in) :: msg_num
-    integer(c_signed_char), intent(out) :: discipline
-    integer(c_int), intent(out) :: num_fields, num_local
-    integer(c_short), intent(out) :: center, subcenter
-    integer(c_signed_char), intent(out) :: master_version, local_version
+    integer, intent(in) :: g2id, msg_num
+    integer, intent(out) :: discipline
+    integer, intent(out) :: num_fields, num_local
+    integer(kind = 2), intent(out) :: center, subcenter
+    integer(kind = 2), intent(out) :: master_version, local_version
     integer :: status
-    
-    integer(c_int) :: cg2id, cnum_msg, cstatus
+
+    integer(c_int) :: cg2id, cmsg_num, cstatus
+    integer(c_signed_char) :: cdiscipline
+    integer(c_int) :: cnum_fields, cnum_local
+    integer(c_short) :: ccenter, csubcenter
+    integer(c_signed_char) :: cmaster_version, clocal_version
 
     cg2id = g2id
-    cstatus = g2c_inq(cg2id, cnum_msg)
-    !num_msg = cnum_msg
+    cmsg_num = msg_num
+    cstatus = g2c_inq_msg(cg2id, cmsg_num, cdiscipline, cnum_fields, &
+         cnum_local, ccenter, csubcenter, cmaster_version, clocal_version)
+    discipline = cdiscipline
+    num_fields = cnum_fields
+    num_local = cnum_local
+    center = ccenter
+    subcenter = csubcenter
+    master_version = cmaster_version
+    local_version = clocal_version
     status = cstatus
   end function g2cf_inq_msg
 
