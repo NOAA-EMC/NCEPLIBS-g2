@@ -139,6 +139,30 @@ contains
   !> @return 0 for success, error code otherwise.
   !>
   !> @author Edward Hartnett @date 2024-06-12
+  function g2cf_inq(g2id, num_msg) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
+    
+    integer, intent(in) :: g2id
+    integer(c_int), intent(out) :: num_msg    
+    integer :: status
+    
+    integer(c_int) :: cg2id, cnum_msg, cstatus
+
+    cg2id = g2id
+    cstatus = g2c_inq(cg2id, cnum_msg)
+    num_msg = cnum_msg
+    status = cstatus
+  end function g2cf_inq
+
+  !> Close a GRIB2 file.
+  !>
+  !> @param g2id The ID of the open file
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-06-12
   function g2cf_close(g2id) result(status)
     use iso_c_binding    
     use g2c_interface

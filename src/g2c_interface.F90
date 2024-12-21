@@ -23,6 +23,13 @@ module g2c_interface
        integer(c_int) :: g2c_open_index
      end function g2c_open_index
 
+     function g2c_inq(g2id, num_msg) bind(c)
+       use iso_c_binding
+       integer(c_int), value :: g2id
+       integer(c_int), intent(out) :: num_msg
+       integer(c_int) :: g2c_inq
+     end function g2c_inq
+
      ! int g2c_inq(int g2cid, int *num_msg);
      ! int g2c_inq_msg(int g2cid, int msg_num, unsigned char *discipline, int *num_fields,
      !    int *num_local, short *center, short *subcenter, unsigned char *master_version,
@@ -32,6 +39,7 @@ module g2c_interface
        integer(c_int), value :: g2id
        integer(c_int) :: g2c_close
      end function g2c_close
+     
      function g2c_set_log_level(log_level) bind(c)
        use iso_c_binding
        integer(c_int), intent(in) :: log_level

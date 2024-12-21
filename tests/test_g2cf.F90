@@ -21,10 +21,10 @@ program test_g2cf
   ierr = g2cf_open(fileName, 0, g2cid)
   if (ierr .ne. 0) stop 2
 
-  ! ! Check number of messages.
-  ! ierr = g2cf_inq(g2cid, num_msg)
-  ! if (ierr .ne. 0) stop 10
-  ! if (num_msg .ne. 19) stop 11
+  ! Check number of messages.
+  ierr = g2cf_inq(g2cid, num_msg)
+  if (ierr .ne. 0) stop 10
+  if (num_msg .ne. 19) stop 11
 
   ! ! Check the last message.
   ! ierr = g2cf_inq_msg(g2cid, 19, discipline, num_fields, num_local, center, subcenter, &
