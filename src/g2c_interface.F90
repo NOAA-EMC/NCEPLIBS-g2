@@ -45,7 +45,7 @@ module g2c_interface
      ! int g2c_inq_msg_time(int g2cid, int msg_num, unsigned char *sig_ref_time, short *year,
      !                      unsigned char *month, unsigned char *day, unsigned char *hour,
      !                      unsigned char *minute, unsigned char *second);
-     function g2c_inq_msg_time(g2cid, msg_num, sig_ref_time, year, &
+     function g2c_inq_msg_time(g2id, msg_num, sig_ref_time, year, &
           month, day, hour, minute, second) bind(c)
        use iso_c_binding
        integer(c_int), value :: g2id
@@ -53,12 +53,13 @@ module g2c_interface
        integer(c_signed_char), intent(out) :: sig_ref_time
        integer(c_short), intent(out) :: year
        integer(c_signed_char), intent(out) :: month, day, hour, minute, second
+       integer(c_int) :: g2c_inq_msg_time
      end function g2c_inq_msg_time
-     
+
      ! int g2c_inq_prod(int g2cid, int msg_num, int prod_num, int *pds_template_len,
      !                  long long int *pds_template, int *gds_template_len, long long int *gds_template,
      !                  int *drs_template_len, long long int *drs_template);
-     function g2c_inq_prod(g2cid, msg_num, prod_num, pds_template_len, pds_template, gds_template_len, &
+     function g2c_inq_prod(g2id, msg_num, prod_num, pds_template_len, pds_template, gds_template_len, &
           gds_template, drs_template_len, drs_template) bind(c)
        use iso_c_binding
        integer(c_int), value :: g2id
@@ -69,26 +70,37 @@ module g2c_interface
        integer(c_long_long), intent(out) :: gds_template
        integer(c_int), intent(out) :: drs_template_len
        integer(c_long_long), intent(out) :: drs_template
+       integer(c_int) :: g2c_inq_prod
      end function g2c_inq_prod
-     
+
      ! int g2c_inq_dim(int g2cid, int msg_num, int prod_num, int dim_num, size_t *len,
      !                 char *name, float *val);
-     
+     function g2c_inq_dim(g2id, msg_num, prod_num, dim_num, len, name, val) bind(c)
+       use iso_c_binding
+       integer(c_int), value :: g2id
+       integer(c_int), value :: msg_num
+       integer(c_int), intent(out) :: prod_num, dim_num
+       integer(c_size_t), intent(out) :: len
+       character(c_char), intent(in)  :: name(*)
+       real(c_float), intent(out) :: val
+       integer(c_int) :: g2c_inq_dim
+     end function g2c_inq_dim
+
      ! /* Getting data. */
      ! int g2c_get_prod(int g2cid, int msg_num, int prod_num, int *num_data_points,
      !                  float *data);
-     
+
      function g2c_close(g2id) bind(c)
        use iso_c_binding
        integer(c_int), value :: g2id
        integer(c_int) :: g2c_close
      end function g2c_close
-     
+
      function g2c_set_log_level(log_level) bind(c)
        use iso_c_binding
        integer(c_int), intent(in) :: log_level
        integer(c_int) :: g2c_set_log_level
      end function g2c_set_log_level
-     
+
   end interface
 end module g2c_interface
