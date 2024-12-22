@@ -89,6 +89,14 @@ module g2c_interface
      ! /* Getting data. */
      ! int g2c_get_prod(int g2cid, int msg_num, int prod_num, int *num_data_points,
      !                  float *data);
+     function g2c_get_prod(g2id, msg_num, prod_num, num_data_points, data) bind(c)
+       integer(c_int), value :: g2id
+       integer(c_int), value :: msg_num
+       integer(c_int), value :: prod_num
+       integer(c_int), intent(out) :: num_data_points
+       real(c_float), intent(out) :: data
+       integer(c_int) :: g2c_get_prod
+     end function g2c_get_prod
 
      function g2c_close(g2id) bind(c)
        use iso_c_binding
