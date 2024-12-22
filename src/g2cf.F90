@@ -268,15 +268,15 @@ contains
 
   !> Learn about a product.
   !>
-  !> @param g2id The ID of the open file
-  !> @param msg_num The message number in the file (first message is 1).
-  !> @param sig_ref_time The significant reference time.
-  !> @param pds_template_len Length of the PDS template.
-  !> @param pds_template The PDS template values.
-  !> @param gds_template_len Length of the GDS template.
-  !> @param gds_template The GDS template values.
-  !> @param drs_template_len Length of the DRS template.
-  !> @param drs_template The DRS template values.
+  !> @param[in] g2id The ID of the open file
+  !> @param[in] msg_num The message number in the file (first message is 1).
+  !> @param[in] prod_num The product number in the message (first product is 1).
+  !> @param[out] pds_template_len Length of the PDS template.
+  !> @param[out] pds_template The PDS template values.
+  !> @param[out] gds_template_len Length of the GDS template.
+  !> @param[out] gds_template The GDS template values.
+  !> @param[out] drs_template_len Length of the DRS template.
+  !> @param[out] drs_template The DRS template values.
   !>
   !> @return 0 for success, error code otherwise.
   !>
