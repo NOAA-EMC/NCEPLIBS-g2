@@ -348,42 +348,42 @@ contains
   !> @return 0 for success, error code otherwise.
   !>
   !> @author Edward Hartnett @date 2024-12-22
-  ! function g2cf_inq_dim(g2id, msg_num, prod_num, dim_num, len, name, val) result(status)
-  !   use iso_c_binding    
-  !   use g2c_interface
-  !   implicit none
+  function g2cf_inq_dim(g2id, msg_num, prod_num, dim_num, len, name, val) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
 
-  !   integer, intent(in) :: g2id, msg_num, prod_num, dim_num
-  !   integer(kind = 8), intent(out) :: len
-  !   character, intent(out)  :: name(*)
-  !   real, intent(out) :: val(*)
+    integer, intent(in) :: g2id, msg_num, prod_num, dim_num
+    integer(kind = 8), intent(out) :: len
+    character, intent(out)  :: name(*)
+    real, intent(out) :: val(*)
        
-  !   integer(c_int) :: g2cid, cmsg_num, cprod_num, cdim_num
-  !   integer(c_size_t) :: clen
-  !   character(c_char)  :: cname(G2_MAX_NAME)
-  !   real(c_float) :: cval(*)
+    integer(c_int) :: g2cid, cmsg_num, cprod_num, cdim_num
+    integer(c_size_t) :: clen
+    character(c_char)  :: cname(G2_MAX_NAME)
+    real(c_float) :: cval(*)
 
-  !   integer(c_int) :: cstatus
-  !   integer :: status
+    integer(c_int) :: cstatus
+    integer :: status
 
-  !   ! Copy input params to C types.
-  !   g2cid = g2id
-  !   cmsg_num = msg_num - 1 ! C is 0-based.
-  !   cprod_num = prod_num - 1 ! C is 0-based.
-  !   cdim_num = dim_num - 1 ! C is 0-based.
+    ! Copy input params to C types.
+    g2cid = g2id
+    cmsg_num = msg_num - 1 ! C is 0-based.
+    cprod_num = prod_num - 1 ! C is 0-based.
+    cdim_num = dim_num - 1 ! C is 0-based.
 
-  !   ! Call the C function.
-  !   cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, clen, cname, cval)
+    ! Call the C function.
+    cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, clen, cname, cval)
     
-  !   ! Copy output params to Fortran types.
-  !   len = clen
-  !   name = cname
-  !   do i = 1, len
-  !      val(i) = cval(i)
-  !   end do
-  !   status = cstatus
+    ! Copy output params to Fortran types.
+    len = clen
+    name = cname
+    do i = 1, len
+       val(i) = cval(i)
+    end do
+    status = cstatus
     
-  ! end function g2cf_inq_dim
+  end function g2cf_inq_dim
 
      ! /* Getting data. */
      ! int g2c_get_prod(int g2cid, int msg_num, int prod_num, int *num_data_points,
