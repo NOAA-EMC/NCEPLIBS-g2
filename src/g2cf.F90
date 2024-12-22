@@ -207,6 +207,56 @@ contains
     status = cstatus
   end function g2cf_inq_msg
 
+  !> Learn about message date/time.
+  !>
+  !> @param g2id The ID of the open file
+  !> @param msg_num The message number in the file (first message is 1).
+  !> @param sig_ref_time The significant reference time.
+  !> @param year Year
+  !> @param month Mongh
+  !> @param day Day
+  !> @param hour Hour
+  !> @param minute Minute
+  !> @param second Second
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-12-22
+  function g2cf_inq_msg_time(g2id, msg_num, sig_ref_time, year, &
+       month, day, hour, minute, second) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
+
+    integer, intent(in) :: g2id
+    integer, intent(in) :: msg_num
+    integer(kind = 1), intent(out) :: sig_ref_time
+    integer(kind = 2), intent(out) :: year
+    integer(kind = 1), intent(out) :: month, day, hour, minute, second
+
+    integer(c_int) :: g2cid, cmsg_num
+    integer(c_signed_char) :: csig_ref_time
+    integer(c_short) :: cyear
+    integer(c_signed_char) :: cmonth, cday, chour, cminute, csecond
+
+    integer(c_int) :: cstatus
+    integer :: status
+
+    g2cid = g2id
+    cmsg_num = msg_num - 1 ! C is 0-based.
+    cstatus = g2c_inq_msg_time(g2id, cmsg_num, csig_ref_time, cyear, &
+         cmonth, cday, chour, cminute, csecond)
+    sig_ref_time = csig_ref_time
+    year = cyear
+    month = cmonth
+    day = cday
+    hour = chour
+    minute = cminute
+    second = csecond
+    status = cstatus    
+    
+  end function g2cf_inq_msg_time
+
   !> Close a GRIB2 file.
   !>
   !> @param g2id The ID of the open file
