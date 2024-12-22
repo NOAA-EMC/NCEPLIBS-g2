@@ -8,6 +8,15 @@
 module g2cf
   use g2c_interface
 
+  !> Maximum number of entries in a PDS template.
+  integer, parameter :: MAX_PDS_TEMPLATE_LEN = 55
+
+  !> Maximum number of entries in a GDS template.
+  integer, parameter :: MAX_GDS_TEMPLATE_LEN = 55
+
+  !> Maximum number of entries in a DRS template.
+  integer, parameter :: MAX_DRS_TEMPLATE_LEN = 55
+
 contains
   !> Add a C_NULL_CHAR to a string to create a C compatible
   !> string. Assumes target variable will be of length
@@ -256,6 +265,73 @@ contains
     status = cstatus    
     
   end function g2cf_inq_msg_time
+
+  !> Learn about a product.
+  !>
+  !> @param g2id The ID of the open file
+  !> @param msg_num The message number in the file (first message is 1).
+  !> @param sig_ref_time The significant reference time.
+  !> @param pds_template_len Length of the PDS template.
+  !> @param pds_template The PDS template values.
+  !> @param gds_template_len Length of the GDS template.
+  !> @param gds_template The GDS template values.
+  !> @param drs_template_len Length of the DRS template.
+  !> @param drs_template The DRS template values.
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-12-22
+  function g2cf_inq_prod(g2id, msg_num, prod_num, pds_template_len, pds_template, gds_template_len, &
+       gds_template, drs_template_len, drs_template) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
+
+    integer, intent(in) :: g2id
+    integer, intent(in) :: msg_num
+    integer, intent(out) :: prod_num, pds_template_len
+    integer(kind = 8), intent(out) :: pds_template(MAX_PDS_TEMPLATE_LEN)
+    integer, intent(out) :: gds_template_len
+    integer(kind = 8), intent(out) :: gds_template(MAX_GDS_TEMPLATE_LEN)
+    integer, intent(out) :: drs_template_len
+    integer(kind = 8), intent(out) :: drs_template(MAX_DRS_TEMPLATE_LEN)
+
+    integer(c_int) :: g2cid, cmsg_num
+    integer(c_int) :: cprod_num, cpds_template_len
+    integer(c_long_long) :: cpds_template(MAX_PDS_TEMPLATE_LEN)
+    integer(c_int) :: cgds_template_len
+    integer(c_long_long) :: cgds_template(MAX_GDS_TEMPLATE_LEN)
+    integer(c_int) :: cdrs_template_len
+    integer(c_long_long) :: cdrs_template(MAX_DRS_TEMPLATE_LEN)
+
+    integer(c_int) :: cstatus
+    integer :: status, i
+
+    ! Copy input params to C types.
+    g2cid = g2id
+    cmsg_num = msg_num - 1 ! C is 0-based.
+    cprod_num = prod_num - 1 ! C is 0-based.
+
+    ! Call the C function.
+    cstatus = g2c_inq_prod(g2cid, cmsg_num, cprod_num, cpds_template_len, cpds_template, &
+         cgds_template_len, cgds_template, cdrs_template_len, cdrs_template)
+
+    ! Copy output params to Fortran types.
+    pds_template_len = cpds_template_len
+    do i = 1, pds_template_len
+       pds_template(i) = cpds_template(i)
+    end do
+    gds_template_len = cgds_template_len
+    do i = 1, gds_template_len
+       gds_template(i) = cgds_template(i)
+    end do
+    drs_template_len = cdrs_template_len
+    do i = 1, drs_template_len
+       drs_template(i) = cdrs_template(i)
+    end do
+    status = cstatus
+    
+  end function g2cf_inq_prod
 
   !> Close a GRIB2 file.
   !>

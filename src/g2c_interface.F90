@@ -65,11 +65,11 @@ module g2c_interface
        integer(c_int), value :: g2id
        integer(c_int), value :: msg_num
        integer(c_int), intent(out) :: prod_num, pds_template_len
-       integer(c_long_long), intent(out) :: pds_template
+       integer(c_long_long), intent(out) :: pds_template(*)
        integer(c_int), intent(out) :: gds_template_len
-       integer(c_long_long), intent(out) :: gds_template
+       integer(c_long_long), intent(out) :: gds_template(*)
        integer(c_int), intent(out) :: drs_template_len
-       integer(c_long_long), intent(out) :: drs_template
+       integer(c_long_long), intent(out) :: drs_template(*)
        integer(c_int) :: g2c_inq_prod
      end function g2c_inq_prod
 
