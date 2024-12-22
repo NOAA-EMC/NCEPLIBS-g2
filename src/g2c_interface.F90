@@ -42,6 +42,29 @@ module g2c_interface
        integer(c_int) :: g2c_inq_msg
      end function g2c_inq_msg
 
+     function g2c_inq_msg_time(g2cid, msg_num, sig_ref_time, year, &
+          month, day, hour, minute, second) bind(c)
+       use iso_c_binding
+       integer(c_int), value :: g2id
+       integer(c_int), value :: msg_num
+       integer(c_signed_char), intent(out) :: sig_ref_time
+       integer(c_short), intent(out) :: year
+       integer(c_signed_char), intent(out) :: month, day, hour, minute, second
+     end function g2c_inq_msg_time
+     
+     ! int g2c_inq_msg_time(int g2cid, int msg_num, unsigned char *sig_ref_time, short *year,
+     !                      unsigned char *month, unsigned char *day, unsigned char *hour,
+     !                      unsigned char *minute, unsigned char *second);
+     ! int g2c_inq_prod(int g2cid, int msg_num, int prod_num, int *pds_template_len,
+     !                  long long int *pds_template, int *gds_template_len, long long int *gds_template,
+     !                  int *drs_template_len, long long int *drs_template);
+     ! int g2c_inq_dim(int g2cid, int msg_num, int prod_num, int dim_num, size_t *len,
+     !                 char *name, float *val);
+     
+     ! /* Getting data. */
+     ! int g2c_get_prod(int g2cid, int msg_num, int prod_num, int *num_data_points,
+     !                  float *data);
+     
      function g2c_close(g2id) bind(c)
        use iso_c_binding
        integer(c_int), value :: g2id
