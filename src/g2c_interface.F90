@@ -90,6 +90,7 @@ module g2c_interface
      ! int g2c_get_prod(int g2cid, int msg_num, int prod_num, int *num_data_points,
      !                  float *data);
      function g2c_get_prod(g2id, msg_num, prod_num, num_data_points, data) bind(c)
+       use iso_c_binding
        integer(c_int), value :: g2id
        integer(c_int), value :: msg_num
        integer(c_int), value :: prod_num
