@@ -361,10 +361,11 @@ contains
     integer(c_int) :: g2cid, cmsg_num, cprod_num, cdim_num
     integer(c_size_t) :: clen
     character(c_char)  :: cname(G2_MAX_NAME)
-    real(c_float) :: cval(*)
+    real(c_float) :: cval(10)
 
     integer(c_int) :: cstatus
     integer :: status
+    integer(kind = 8) :: i
 
     ! Copy input params to C types.
     g2cid = g2id
@@ -377,7 +378,8 @@ contains
     
     ! Copy output params to Fortran types.
     len = clen
-    name = cname
+    name(1) = ''
+    !name = cname
     do i = 1, len
        val(i) = cval(i)
     end do

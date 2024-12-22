@@ -82,7 +82,7 @@ module g2c_interface
        integer(c_int), intent(out) :: prod_num, dim_num
        integer(c_size_t), intent(out) :: len
        character(c_char), intent(in)  :: name(*)
-       real(c_float), intent(out) :: val
+       real(c_float), intent(out) :: val(*)
        integer(c_int) :: g2c_inq_dim
      end function g2c_inq_dim
 
