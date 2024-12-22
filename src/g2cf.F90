@@ -8,14 +8,17 @@
 module g2cf
   use g2c_interface
 
+  !> Maximum name length.
+  integer, parameter :: G2_MAX_NAME = 1024
+
   !> Maximum number of entries in a PDS template.
-  integer, parameter :: MAX_PDS_TEMPLATE_LEN = 55
+  integer, parameter :: G2_MAX_PDS_TEMPLATE_LEN = 50
 
   !> Maximum number of entries in a GDS template.
-  integer, parameter :: MAX_GDS_TEMPLATE_LEN = 55
+  integer, parameter :: G2_MAX_GDS_TEMPLATE_LEN = 50
 
   !> Maximum number of entries in a DRS template.
-  integer, parameter :: MAX_DRS_TEMPLATE_LEN = 55
+  integer, parameter :: G2_MAX_DRS_TEMPLATE_LEN = 55
 
 contains
   !> Add a C_NULL_CHAR to a string to create a C compatible
@@ -287,22 +290,21 @@ contains
     use g2c_interface
     implicit none
 
-    integer, intent(in) :: g2id
-    integer, intent(in) :: msg_num
-    integer, intent(out) :: prod_num, pds_template_len
-    integer(kind = 8), intent(out) :: pds_template(MAX_PDS_TEMPLATE_LEN)
+    integer, intent(in) :: g2id, msg_num, prod_num
+    integer, intent(out) :: pds_template_len
+    integer(kind = 8), intent(out) :: pds_template(*)
     integer, intent(out) :: gds_template_len
-    integer(kind = 8), intent(out) :: gds_template(MAX_GDS_TEMPLATE_LEN)
+    integer(kind = 8), intent(out) :: gds_template(*)
     integer, intent(out) :: drs_template_len
-    integer(kind = 8), intent(out) :: drs_template(MAX_DRS_TEMPLATE_LEN)
+    integer(kind = 8), intent(out) :: drs_template(*)
 
     integer(c_int) :: g2cid, cmsg_num
     integer(c_int) :: cprod_num, cpds_template_len
-    integer(c_long_long) :: cpds_template(MAX_PDS_TEMPLATE_LEN)
+    integer(c_long_long) :: cpds_template(G2_MAX_PDS_TEMPLATE_LEN)
     integer(c_int) :: cgds_template_len
-    integer(c_long_long) :: cgds_template(MAX_GDS_TEMPLATE_LEN)
+    integer(c_long_long) :: cgds_template(G2_MAX_GDS_TEMPLATE_LEN)
     integer(c_int) :: cdrs_template_len
-    integer(c_long_long) :: cdrs_template(MAX_DRS_TEMPLATE_LEN)
+    integer(c_long_long) :: cdrs_template(G2_MAX_DRS_TEMPLATE_LEN)
 
     integer(c_int) :: cstatus
     integer :: status, i
@@ -333,6 +335,68 @@ contains
     
   end function g2cf_inq_prod
 
+  !> Learn about a dimension.
+  !>
+  !> @param[in] g2id The ID of the open file
+  !> @param[in] msg_num The message number in the file (first message is 1).
+  !> @param[in] prod_num The product number in the message (first product is 1).
+  !> @param[in] dim_num The dimension number in the product (first dimension is 1).
+  !> @param[out] len Length of dimension.
+  !> @param[out] name Name of dimension.
+  !> @param[out] val Array of values along the dimension.
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-12-22
+  ! function g2cf_inq_dim(g2id, msg_num, prod_num, dim_num, len, name, val) result(status)
+  !   use iso_c_binding    
+  !   use g2c_interface
+  !   implicit none
+
+  !   integer, intent(in) :: g2id, msg_num, prod_num, dim_num
+  !   integer(kind = 8), intent(out) :: len
+  !   character, intent(out)  :: name(*)
+  !   real, intent(out) :: val(*)
+       
+  !   integer(c_int) :: g2cid, cmsg_num, cprod_num, cdim_num
+  !   integer(c_size_t) :: clen
+  !   character(c_char)  :: cname(G2_MAX_NAME)
+  !   real(c_float) :: cval(*)
+
+  !   integer(c_int) :: cstatus
+  !   integer :: status
+
+  !   ! Copy input params to C types.
+  !   g2cid = g2id
+  !   cmsg_num = msg_num - 1 ! C is 0-based.
+  !   cprod_num = prod_num - 1 ! C is 0-based.
+  !   cdim_num = dim_num - 1 ! C is 0-based.
+
+  !   ! Call the C function.
+  !   cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, clen, cname, cval)
+    
+  !   ! Copy output params to Fortran types.
+  !   len = clen
+  !   name = cname
+  !   do i = 1, len
+  !      val(i) = cval(i)
+  !   end do
+  !   status = cstatus
+    
+  ! end function g2cf_inq_dim
+
+     ! /* Getting data. */
+     ! int g2c_get_prod(int g2cid, int msg_num, int prod_num, int *num_data_points,
+     !                  float *data);
+     ! function g2c_get_prod(g2id, msg_num, prod_num, num_data_points, data) bind(c)
+     !   use iso_c_binding
+     !   integer(c_int), value :: g2id
+     !   integer(c_int), value :: msg_num
+     !   integer(c_int), value :: prod_num
+     !   integer(c_int), intent(out) :: num_data_points
+     !   real(c_float), intent(out) :: data
+     !   integer(c_int) :: g2c_get_prod
+     ! end function g2c_get_prod
   !> Close a GRIB2 file.
   !>
   !> @param g2id The ID of the open file
