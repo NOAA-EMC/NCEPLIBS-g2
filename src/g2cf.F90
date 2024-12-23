@@ -355,17 +355,23 @@ contains
 
     ! Copy output params to Fortran types.
     pds_template_len = cpds_template_len
-    do i = 1, pds_template_len
-       pds_template(i) = cpds_template(i)
-    end do
+    if (pds_template_len .gt. 0) then
+       do i = 1, pds_template_len
+          pds_template(i) = cpds_template(i)
+       end do
+    endif
     gds_template_len = cgds_template_len
-    do i = 1, gds_template_len
-       gds_template(i) = cgds_template(i)
-    end do
+    if (gds_template_len .gt. 0) then
+       do i = 1, gds_template_len
+          gds_template(i) = cgds_template(i)
+       end do
+    endif
     drs_template_len = cdrs_template_len
-    do i = 1, drs_template_len
-       drs_template(i) = cdrs_template(i)
-    end do
+    if (drs_template_len .gt. 0) then
+       do i = 1, drs_template_len
+          drs_template(i) = cdrs_template(i)
+       end do
+    endif
     status = cstatus
     
   end function g2cf_inq_prod

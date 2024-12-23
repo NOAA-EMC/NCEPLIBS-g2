@@ -62,9 +62,8 @@ module g2c_interface
      function g2c_inq_prod(g2id, msg_num, prod_num, pds_template_len, pds_template, gds_template_len, &
           gds_template, drs_template_len, drs_template) bind(c)
        use iso_c_binding
-       integer(c_int), value :: g2id
-       integer(c_int), value :: msg_num
-       integer(c_int), intent(out) :: prod_num, pds_template_len
+       integer(c_int), value :: g2id, msg_num, prod_num
+       integer(c_int), intent(out) :: pds_template_len
        integer(c_long_long), intent(out) :: pds_template(*)
        integer(c_int), intent(out) :: gds_template_len
        integer(c_long_long), intent(out) :: gds_template(*)
