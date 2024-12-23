@@ -8,6 +8,9 @@
 module g2cf
   use g2c_interface
 
+  !> Return value from functions when there is no error.
+  integer, parameter :: G2_NOERR = 0
+
   !> Maximum name length.
   integer, parameter :: G2_MAX_NAME = 1024
 
@@ -62,6 +65,38 @@ contains
     endif
   end function addcnullchar
 
+  !> Check cstring for a c null char, strip it off and
+  !> return regular string. Limit length of cstring loaded
+  !> into string to nlen.
+  !>
+  !> @param[in] cstring String which may have null char.
+  !> @param[in] nlen Length of string.
+  !>
+  !> @return String with NULL removed.
+  !>
+  !> This function was originally written by, Richard Weed, Ph.D., as part of
+  !> netcdf-fortran.
+  !>
+  !> @author Edward Hartnett @date 2024-12-23
+  function stripcnullchar(cstring, nlen) result(string)
+    use iso_c_binding    
+    implicit none
+
+    character(len=*), intent(in) :: cstring
+    integer,          intent(in) :: nlen
+    character(len=nlen)          :: string
+    integer :: ie, inull
+
+    ie = len_trim(cstring)
+    inull = scan(cstring, c_null_char)
+
+    if (inull > 1) ie = inull-1
+    ie = max(1, min(ie, nlen)) ! limit ie to 1 or nlen
+    string       = repeat(" ", nlen)
+    string(1:ie) = cstring(1:ie)
+
+  end function stripcnullchar
+  
   !> Open a GRIB2 file.
   !>
   !> @param path The path to the file
@@ -348,39 +383,45 @@ contains
   !> @return 0 for success, error code otherwise.
   !>
   !> @author Edward Hartnett @date 2024-12-22
-  function g2cf_inq_dim(g2id, msg_num, prod_num, dim_num, len, name, val) result(status)
+  function g2cf_inq_dim(g2id, msg_num, prod_num, dim_num, dimlen, name, val) result(status)
     use iso_c_binding    
     use g2c_interface
     implicit none
 
     integer, intent(in) :: g2id, msg_num, prod_num, dim_num
-    integer(kind = 8), intent(out) :: len
+    integer(kind = 8), intent(out) :: dimlen
     character, intent(out)  :: name(*)
     real, intent(out) :: val(*)
        
     integer(c_int) :: g2cid, cmsg_num, cprod_num, cdim_num
-    integer(c_size_t) :: clen
-    character(c_char)  :: cname(G2_MAX_NAME)
+    integer(c_size_t) :: cdimlen
     real(c_float) :: cval(10)
 
+    character(len = G2_MAX_NAME) :: tmpname 
+    integer(kind = 8) :: i
+    integer :: nlen
     integer(c_int) :: cstatus
     integer :: status
-    integer(kind = 8) :: i
 
     ! Copy input params to C types.
     g2cid = g2id
     cmsg_num = msg_num - 1 ! C is 0-based.
     cprod_num = prod_num - 1 ! C is 0-based.
     cdim_num = dim_num - 1 ! C is 0-based.
+    nlen = len(name)
 
     ! Call the C function.
-    cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, clen, cname, cval)
+    cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, cdimlen, tmpname, cval)
     
     ! Copy output params to Fortran types.
-    len = clen
-    name(1) = ''
-    !name = cname
-    do i = 1, len
+    dimlen = cdimlen
+    if (cstatus == G2_NOERR) then
+       ! Strip c null char from tmpname if present and set end of string.
+       name(:nlen) = stripcnullchar(tmpname, nlen)
+    endif
+
+    ! Copy values.
+    do i = 1, dimlen
        val(i) = cval(i)
     end do
     status = cstatus
