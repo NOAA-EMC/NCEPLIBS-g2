@@ -1,4 +1,4 @@
-# Copyright 2013-2023 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2024 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -29,6 +29,9 @@ class G2(CMakePackage):
     version("3.4.5", sha256="c18e991c56964953d778632e2d74da13c4e78da35e8d04cb742a2ca4f52737b6")
     version("3.4.3", sha256="679ea99b225f08b168cbf10f4b29f529b5b011232f298a5442ce037ea84de17c")
 
+    depends_on("c", type="build")
+    depends_on("fortran", type="build")
+
     variant("pic", default=True, description="Build with position-independent-code")
     variant(
         "precision",
@@ -40,20 +43,25 @@ class G2(CMakePackage):
     )
     variant("w3emc", default=True, description="Enable GRIB1 through w3emc", when="@3.4.6:")
     variant("aec", default=True, description="Use AEC library", when="@develop")
-    variant("shared", default="False", when="@3.4.7:")
-    variant("openmp", default=False, description="Use OpenMP multithreading")
-    variant("utils", default=False, description="Build grib utilities")
-    variant("g2c_compare", default=False, description="Enable copygb2 tests using g2c_compare")
+    variant("shared", default="False", description="Build shared library", when="@3.4.7:")
+    variant("openmp", default=False, description="Use OpenMP multithreading", when="@develop")
+    variant("utils", default=False, description="Build grib utilities", when="@develop")
+    variant(
+        "g2c_compare",
+        default=False,
+        description="Enable copygb2 tests using g2c_compare",
+        when="@2.0.0:",
+    )
 
     depends_on("jasper@:2.0.32", when="@:3.4.7")
     depends_on("jasper")
     depends_on("g2c@2.0.0:", when="@develop")
     depends_on("g2c@2.0.0 +aec", when="+aec")
     depends_on("libpng")
-    depends_on("zlib-api")
+    depends_on("zlib-api", when="@develop")
     depends_on("bacio", when="@3.4.6:")
-    depends_on("ip")
-    depends_on("ip precision=d", when="^ip@4.1:")
+    depends_on("ip", when="@develop")
+    requires("^ip precision=d", when="^ip@4.1:")
     depends_on("sp", when="^ip@:4")
     depends_on("sp precision=d", when="^ip@:4 ^sp@2.4:")
     depends_on("g2c@2.0: +utils", when="+g2c_compare")
@@ -84,7 +92,12 @@ class G2(CMakePackage):
             self.spec.variants["precision"].value if self.spec.satisfies("@3.4.6:") else ("4", "d")
         )
         for suffix in precisions:
-            lib = find_libraries("libg2_" + suffix, root=self.prefix, shared=self.spec.satisfies("+shared"), recursive=True)
+            lib = find_libraries(
+                "libg2_" + suffix,
+                root=self.prefix,
+                shared=self.spec.satisfies("+shared"),
+                recursive=True,
+            )
             env.set("G2_LIB" + suffix, lib[0])
             env.set("G2_INC" + suffix, join_path(self.prefix, "include_" + suffix))
 
