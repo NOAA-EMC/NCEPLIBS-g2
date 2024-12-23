@@ -73,7 +73,7 @@ program test_g2cf
      if (drs_template(i) .ne. expected_drs_template(i)) stop 302
   end do
 
-  ! Close the file.
+! Close the file.
   ierr = g2cf_close(g2id)
   if (ierr .ne. 0) stop 20
 
