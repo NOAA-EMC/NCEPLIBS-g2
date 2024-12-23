@@ -132,6 +132,81 @@ contains
     status = cstatus
   end function g2cf_open_index
 
+  !> Learn how many messages are in a GRIB2 file.
+  !>
+  !> @param g2id The ID of the open file
+  !> @param num_msg The number of messages in the file.
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-12-21
+  function g2cf_inq(g2id, num_msg) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
+    
+    integer, intent(in) :: g2id
+    integer, intent(out) :: num_msg    
+    integer :: status
+    
+    integer(c_int) :: cg2id, cnum_msg, cstatus
+
+    cg2id = g2id
+    cstatus = g2c_inq(cg2id, cnum_msg)
+    num_msg = cnum_msg
+    status = cstatus
+  end function g2cf_inq
+
+  !> Learn about a message are in a GRIB2 file.
+  !>
+  !> @param[in] g2id The ID of the open file
+  !> @param[in] msg_num The number of message to learn about. The
+  !> first message in the file is number 1.
+  !> @param[out] discipline The discipline of the message.
+  !> @param[out] num_fields Number of fields in the message.
+  !> @param[out] num_local Number of local sections in the message.
+  !> @param[out] center Originating center.
+  !> @param[out] subcenter Originating sub-center.
+  !> @param[out] master_version Master version.
+  !> @param[out] local_version Local version.
+  !>
+  !> @return 0 for success, error code otherwise.
+  !>
+  !> @author Edward Hartnett @date 2024-12-21
+  function g2cf_inq_msg(g2id, msg_num, discipline, num_fields, &
+          num_local, center, subcenter, master_version, local_version) result(status)
+    use iso_c_binding    
+    use g2c_interface
+    implicit none
+    
+    integer, intent(in) :: g2id, msg_num
+    integer(kind = 1), intent(out) :: discipline
+    integer, intent(out) :: num_fields, num_local
+    integer(kind = 2), intent(out) :: center, subcenter
+    integer(kind = 1), intent(out) :: master_version, local_version
+    integer :: status
+
+    integer(c_int) :: cg2id, cmsg_num, cstatus
+    integer(c_signed_char) :: cdiscipline
+    integer(c_int) :: cnum_fields, cnum_local
+    integer(c_short) :: ccenter, csubcenter
+    integer(c_signed_char) :: cmaster_version, clocal_version
+
+    cg2id = g2id
+    ! Subtract 1 because C is zero-based.
+    cmsg_num = msg_num - 1 
+    cstatus = g2c_inq_msg(cg2id, cmsg_num, cdiscipline, cnum_fields, &
+         cnum_local, ccenter, csubcenter, cmaster_version, clocal_version)
+    discipline = cdiscipline
+    num_fields = cnum_fields
+    num_local = cnum_local
+    center = ccenter
+    subcenter = csubcenter
+    master_version = cmaster_version
+    local_version = clocal_version
+    status = cstatus
+  end function g2cf_inq_msg
+
   !> Close a GRIB2 file.
   !>
   !> @param g2id The ID of the open file
