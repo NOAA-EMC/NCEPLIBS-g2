@@ -376,7 +376,7 @@ contains
   !> @param[in] msg_num The message number in the file (first message is 1).
   !> @param[in] prod_num The product number in the message (first product is 1).
   !> @param[in] dim_num The dimension number in the product (first dimension is 1).
-  !> @param[out] len Length of dimension.
+  !> @param[out] dimlen Length of dimension.
   !> @param[out] name Name of dimension.
   !> @param[out] val Array of values along the dimension.
   !>
