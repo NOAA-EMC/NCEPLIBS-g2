@@ -88,7 +88,7 @@ contains
     integer :: ie, inull
 
     ie = len_trim(cstring)
-    inull = scan(cstring, c_null_char)
+    inull = scan(cstring, C_NULL_CHAR)
 
     if (inull > 1) ie = inull-1
     ie = max(1, min(ie, nlen)) ! limit ie to 1 or nlen
@@ -397,7 +397,7 @@ contains
     integer, intent(in) :: g2id, msg_num, prod_num, dim_num
     integer(kind = 8), intent(out) :: dimlen
     character, intent(out)  :: name(*)
-    real, intent(out) :: val(*)
+    real, intent(out), optional :: val(*)
        
     integer(c_int) :: g2cid, cmsg_num, cprod_num, cdim_num
     integer(c_size_t) :: cdimlen
@@ -417,8 +417,14 @@ contains
     nlen = len(name)
 
     ! Call the C function.
-    cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, cdimlen, tmpname, cval)
-    
+    if (present(val)) then
+       cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, cdimlen, &
+            tmpname, cval)
+    else
+       cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, cdimlen, &
+            tmpname, C_NULL_CHAR)
+    endif
+
     ! Copy output params to Fortran types.
     dimlen = cdimlen
     if (cstatus == G2_NOERR) then
