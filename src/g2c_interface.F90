@@ -85,6 +85,16 @@ module g2c_interface
        integer(c_int) :: g2c_inq_dim
      end function g2c_inq_dim
 
+     function g2c_inq_dim_info(g2id, msg_num, prod_num, dim_num, len, name) bind(c)
+       use iso_c_binding
+       integer(c_int), value :: g2id
+       integer(c_int), value :: msg_num
+       integer(c_int), intent(out) :: prod_num, dim_num
+       integer(c_size_t), intent(out) :: len
+       character(c_char), intent(in)  :: name(*)
+       integer(c_int) :: g2c_inq_dim_info
+     end function g2c_inq_dim_info
+
      ! /* Getting data. */
      ! int g2c_get_prod(int g2cid, int msg_num, int prod_num, int *num_data_points,
      !                  float *data);

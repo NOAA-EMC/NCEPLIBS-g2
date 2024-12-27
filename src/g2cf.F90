@@ -421,21 +421,25 @@ contains
        cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, cdimlen, &
             tmpname, cval)
     else
-       cstatus = g2c_inq_dim(g2cid, cmsg_num, cprod_num, cdim_num, cdimlen, &
-            tmpname, C_NULL_CHAR)
+       cstatus = g2c_inq_dim_info(g2cid, cmsg_num, cprod_num, cdim_num, cdimlen, &
+            tmpname)
     endif
 
     ! Copy output params to Fortran types.
-    dimlen = cdimlen
     if (cstatus == G2_NOERR) then
+       dimlen = cdimlen
        ! Strip c null char from tmpname if present and set end of string.
        name(:nlen) = stripcnullchar(tmpname, nlen)
+
+       ! Copy values.
+       if (present(val)) then
+          do i = 1, dimlen
+             val(i) = cval(i)
+          end do
+       endif
     endif
 
-    ! Copy values.
-    do i = 1, dimlen
-       val(i) = cval(i)
-    end do
+    ! Copy exit status.
     status = cstatus
     
   end function g2cf_inq_dim
