@@ -25,6 +25,7 @@ option(BUILD_WITH_W3EMC "Build with NCEPLIBS-w3emc, enabling some GRIB1 function
 option(BUILD_UTILS "Build grib utilities" ON)
 option(USE_AEC "Build with AEC (CCSDS) compression support" OFF)
 option(G2C_COMPARE "Enable copygb2 tests using g2c_compare" OFF)
+option(USE_G2C_API "Enable new file-based API from NCEPLIBS-g2c" OFF)
 
 # Developers can use this option to specify a local directory which
 # holds the test files. They will be copied instead of fetching the
