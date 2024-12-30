@@ -73,6 +73,7 @@ endif()
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
 find_package(Jasper 2.0.25 REQUIRED)
+message(STATUS "Looking for NCEPLIBS-g2c...")
 find_package(g2c 2.1.0 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
