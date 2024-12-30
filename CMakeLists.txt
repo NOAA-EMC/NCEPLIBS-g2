@@ -25,6 +25,7 @@ option(BUILD_WITH_W3EMC "Build with NCEPLIBS-w3emc, enabling some GRIB1 function
 option(BUILD_UTILS "Build grib utilities" ON)
 option(USE_AEC "Build with AEC (CCSDS) compression support" OFF)
 option(G2C_COMPARE "Enable copygb2 tests using g2c_compare" OFF)
+option(USE_G2C_API "Support new file-based API from NCEPLIBS-g2c" OFF)
 
 # Developers can use this option to specify a local directory which
 # holds the test files. They will be copied instead of fetching the
@@ -70,10 +71,17 @@ if(OPENMP)
   find_package(OpenMP REQUIRED COMPONENTS Fortran)
 endif()
 
+# We need g2c if G2C_COMPARE or USE_G2C_API are specified.
+if (G2C_COMPARE or USE_G2C_API)
+  find_package(g2c 2.1.0 REQUIRED)
+  add_definitions(-DG2C)  
+else()
+  find_package(g2c REQUIRED)
+endif()
+
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
 find_package(Jasper 2.0.25 REQUIRED)
-find_package(g2c REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
 if(bacio_VERSION LESS 2.5.0)
@@ -87,11 +95,6 @@ if (BUILD_WITH_W3EMC)
   else()
     find_package(w3emc 2.9.0 REQUIRED)
   endif()
-endif()
-
-# We need g2c if G2C_COMPARE is chosen.
-if (G2C_COMPARE)
-  find_package(g2c 1.7.0 REQUIRED)
 endif()
 
 # Figure whether user wants a _4, a _d, or both libraries.

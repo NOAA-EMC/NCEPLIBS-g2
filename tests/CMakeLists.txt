@@ -171,7 +171,9 @@ copy_test_data(ref_jpeg_bitmap.grib2)
 # Build a _4 and _d version of each test and link them to the _4 and
 # _d builds of the library, for 4-byte real, and 8-byte real.
 foreach(kind ${kinds})
-  create_test(test_g2cf ${kind})
+  if (USE_G2C_API)             
+    create_test(test_g2cf ${kind})
+  endif()
   create_test(test_misc ${kind})
   create_test(test_g2 ${kind})
   create_test(test_g1 ${kind})
