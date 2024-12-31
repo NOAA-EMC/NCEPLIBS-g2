@@ -88,6 +88,7 @@ class G2(CMakePackage):
             self.define("BUILD_4", self.spec.satisfies("precision=4")),
             self.define("BUILD_D", self.spec.satisfies("precision=d")),
             self.define_from_variant("G2C_COMPARE", "g2c_compare"),
+            self.define_from_variant("USE_G2C_API", "use_g2c_api"),
             self.define_from_variant("BUILD_UTILS", "utils"),
         ]
 
