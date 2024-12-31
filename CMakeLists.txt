@@ -74,7 +74,6 @@ endif()
 # There was a bug in jasper for the intel compiler that was fixed in
 # 2.0.25.
 find_package(Jasper 2.0.25 REQUIRED)
-find_package(g2c REQUIRED)
 find_package(PNG REQUIRED)
 find_package(bacio REQUIRED)
 if(bacio_VERSION LESS 2.5.0)
@@ -91,8 +90,10 @@ if (BUILD_WITH_W3EMC)
 endif()
 
 # We need g2c if G2C_COMPARE is chosen.
-if (G2C_COMPARE)
-  find_package(g2c 1.7.0 REQUIRED)
+if (G2C_COMPARE or USE_G2C_API)
+  find_package(g2c 2.1.0 REQUIRED)
+else()
+  find_package(g2c REQUIRED)
 endif()
 
 # Figure whether user wants a _4, a _d, or both libraries.
