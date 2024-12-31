@@ -96,6 +96,11 @@ else()
   find_package(g2c REQUIRED)
 endif()
 
+# Set a pre-processor symbol if we are using g2c API.
+if (USE_G2C_API)
+  add_definitions(-DG2C_API)
+endif()
+
 # Figure whether user wants a _4, a _d, or both libraries.
 if(BUILD_4 AND BUILD_D)
   set(kinds "4" "d")
