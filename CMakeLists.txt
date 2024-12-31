@@ -90,7 +90,7 @@ if (BUILD_WITH_W3EMC)
 endif()
 
 # We need g2c if G2C_COMPARE is chosen.
-if (G2C_COMPARE or USE_G2C_API)
+if (G2C_COMPARE OR USE_G2C_API)
   find_package(g2c 2.1.0 REQUIRED)
 else()
   find_package(g2c REQUIRED)
