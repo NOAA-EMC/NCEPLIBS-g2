@@ -52,6 +52,12 @@ class G2(CMakePackage):
         description="Enable copygb2 tests using g2c_compare",
         when="@2.0.0:",
     )
+    variant(
+        "use_g2c_api",
+        default=False,
+        description="Use new file-based API",
+        when="@2.0.0:",
+    )
 
     depends_on("jasper@:2.0.32", when="@:3.4.7")
     depends_on("jasper")
