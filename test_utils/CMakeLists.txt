@@ -94,10 +94,9 @@ gu_test(run_copygb_tests)
 gu_test(run_grbindex_tests)
 
 if(G2C_COMPARE)
-  find_program(G2C_COMPARE g2c_compare)
   gu_test(run_copygb2_tests)
 else()
-  message(STATUS "g2c_compare not found.")
+  message(STATUS "g2c_compare not used.")
 endif()
 
 if(FTP_TEST_FILES)
