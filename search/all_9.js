@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['list_5fopt_169',['list_opt',['../namespacegrib__mod.html#a011889e72231119ee21d012d7d81a41d',1,'grib_mod::gribfield']]],
-  ['local_170',['local',['../namespacegrib__mod.html#aaef64bb35f041fa62c1936ea3d3d62ce',1,'grib_mod::gribfield']]],
-  ['locallen_171',['locallen',['../namespacegrib__mod.html#a8b0fd057c75b18274da1922fc4f6ef38',1,'grib_mod::gribfield']]]
+  ['j_0',['j',['../namespacedrstemplates.html#a87cca61b7a6c9caaf531713823b6ecef',1,'drstemplates']]],
+  ['jpcpack_1',['jpcpack',['../g2jpc_8F90.html#a3078f3d9c5b2ada44eb5e50c3a8c772c',1,'g2jpc.F90']]],
+  ['jpcunpack_2',['jpcunpack',['../g2jpc_8F90.html#a19586f31dfd8afd977d8d62ed37a48a5',1,'g2jpc.F90']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['drstemplates_246',['drstemplates',['../namespacedrstemplates.html',1,'']]]
+  ['drstemplates_0',['drstemplates',['../namespacedrstemplates.html',1,'']]]
 ];

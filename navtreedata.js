@@ -26,11 +26,15 @@ var NAVTREE =
 [
   [ "NCEPLIBS-g2", "index.html", [
     [ "Introduction", "index.html#autotoc_md0", null ],
-    [ "GRIB2 Encoding Routines", "index.html#autotoc_md1", null ],
-    [ "GRIB2 Decoding Routines", "index.html#autotoc_md2", null ],
-    [ "Extracting GRIB2 Fields from a GRIB2 file", "index.html#autotoc_md3", null ],
-    [ "GRIB2 Tables/Templates", "index.html#autotoc_md4", [
-      [ "Documentation for Previous Versions of NCEPLIBS-g2", "index.html#autotoc_md5", null ]
+    [ "Building NCEPLIBS-g2", "index.html#autotoc_md1", null ],
+    [ "Utilities", "index.html#autotoc_md2", null ],
+    [ "File-Based API", "index.html#autotoc_md3", null ],
+    [ "Index Files", "index.html#autotoc_md4", null ],
+    [ "GRIB2 Encoding Routines", "index.html#autotoc_md5", null ],
+    [ "GRIB2 Decoding Routines", "index.html#autotoc_md6", null ],
+    [ "Extracting GRIB2 Fields from a GRIB2 file", "index.html#autotoc_md7", null ],
+    [ "GRIB2 Tables/Templates", "index.html#autotoc_md8", [
+      [ "Documentation for Previous Versions of NCEPLIBS-g2", "index.html#autotoc_md9", null ]
     ] ],
     [ "Modules", "namespaces.html", [
       [ "Modules List", "namespaces.html", "namespaces_dup" ],
@@ -40,7 +44,7 @@ var NAVTREE =
         [ "Variables", "namespacemembers_vars.html", null ]
       ] ]
     ] ],
-    [ "Data Types List", "annotated.html", [
+    [ "Data Types", "annotated.html", [
       [ "Data Types List", "annotated.html", "annotated_dup" ],
       [ "Data Fields", "functions.html", [
         [ "All", "functions.html", null ],
@@ -52,9 +56,7 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
-        [ "Functions/Subroutines", "globals_func.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Macros", "globals_defs.html", null ]
+        [ "Functions/Subroutines", "globals_func.html", null ]
       ] ]
     ] ]
   ] ]
@@ -63,7 +65,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"namespacegrib__mod.html#a56b58071f01381949a9ce935b2496377"
+"interfacere__alloc_1_1realloc.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,15 @@
 var searchData=
 [
-  ['template_5fnum_227',['template_num',['../namespacedrstemplates.html#a742a75f1b65ce691788848db25d5b196',1,'drstemplates::drstemplate::template_num()'],['../namespacepdstemplates.html#a4a5fa123b3e4ab6a61d0a14f6fe33832',1,'pdstemplates::pdstemplate::template_num()']]],
-  ['templates_228',['templates',['../namespacedrstemplates.html#afb21387dbb4d639b2ec28aff5d59a7bd',1,'drstemplates::templates()'],['../namespacegridtemplates.html#afc7e1b4eee02ca455f36cc91000d040b',1,'gridtemplates::templates()'],['../namespacepdstemplates.html#ab5a525c00633f0f7f1ee845bebcd4986',1,'pdstemplates::templates()']]]
+  ['rdieee_0',['rdieee',['../g2bytes_8F90.html#a291f738ad3d63df5491d5ba7357050c4',1,'g2bytes.F90']]],
+  ['rdieeec_1',['rdieeec',['../g2bytes_8F90.html#aca4596fe92bcfe25854260eec69d404b',1,'g2bytes.F90']]],
+  ['re_5falloc_2',['re_alloc',['../namespacere__alloc.html',1,'']]],
+  ['readgrids_3',['readgrids',['../namespaceg2grids.html#a56a2c4fcd16e58123d22462da272f67e',1,'g2grids']]],
+  ['realloc_4',['realloc',['../interfacere__alloc_1_1realloc.html',1,'re_alloc']]],
+  ['realloc_2ef90_5',['realloc.F90',['../realloc_8F90.html',1,'']]],
+  ['realloc_5fc1_6',['realloc_c1',['../interfacere__alloc_1_1realloc.html#a44232167301171dc055a61663f383034',1,'re_alloc::realloc::realloc_c1()'],['../namespacere__alloc.html#ab3dc5cdb5a5e8468aff46e582d19eb71',1,'re_alloc::realloc_c1()']]],
+  ['realloc_5fi_7',['realloc_i',['../interfacere__alloc_1_1realloc.html#a70808277979ee031cdf8e1653af2c4b0',1,'re_alloc::realloc::realloc_i()'],['../namespacere__alloc.html#aeb77f273ac94f2b319238e10a9369653',1,'re_alloc::realloc_i()']]],
+  ['realloc_5fr_8',['realloc_r',['../interfacere__alloc_1_1realloc.html#a3f5b60af2f8d423b72050e28d5383a32',1,'re_alloc::realloc::realloc_r()'],['../namespacere__alloc.html#a9e8746c3bfb9226f51446ef2b95f1c44',1,'re_alloc::realloc_r()']]],
+  ['reduce_9',['reduce',['../reduce_8f.html#af2b3b35ec55bb19acf4aff34e289fd77',1,'reduce.f']]],
+  ['reduce_2ef_10',['reduce.f',['../reduce_8f.html',1,'']]],
+  ['routines_11',['routines',['../index.html#autotoc_md6',1,'GRIB2 Decoding Routines'],['../index.html#autotoc_md5',1,'GRIB2 Encoding Routines']]]
 ];

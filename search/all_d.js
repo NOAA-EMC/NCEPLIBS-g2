@@ -1,14 +1,8 @@
 var searchData=
 [
-  ['rdieee_209',['rdieee',['../g2bytes_8F90.html#a291f738ad3d63df5491d5ba7357050c4',1,'g2bytes.F90']]],
-  ['rdieeec_210',['rdieeec',['../g2bytes_8F90.html#aca4596fe92bcfe25854260eec69d404b',1,'g2bytes.F90']]],
-  ['re_5falloc_211',['re_alloc',['../namespacere__alloc.html',1,'']]],
-  ['readgrids_212',['readgrids',['../namespaceg2grids.html#a56a2c4fcd16e58123d22462da272f67e',1,'g2grids']]],
-  ['realloc_213',['realloc',['../interfacere__alloc_1_1realloc.html',1,'re_alloc']]],
-  ['realloc_2ef90_214',['realloc.F90',['../realloc_8F90.html',1,'']]],
-  ['realloc_5fc1_215',['realloc_c1',['../interfacere__alloc_1_1realloc.html#a44232167301171dc055a61663f383034',1,'re_alloc::realloc::realloc_c1()'],['../namespacere__alloc.html#ab3dc5cdb5a5e8468aff46e582d19eb71',1,'re_alloc::realloc_c1()']]],
-  ['realloc_5fi_216',['realloc_i',['../interfacere__alloc_1_1realloc.html#a70808277979ee031cdf8e1653af2c4b0',1,'re_alloc::realloc::realloc_i()'],['../namespacere__alloc.html#aeb77f273ac94f2b319238e10a9369653',1,'re_alloc::realloc_i()']]],
-  ['realloc_5fr_217',['realloc_r',['../interfacere__alloc_1_1realloc.html#a3f5b60af2f8d423b72050e28d5383a32',1,'re_alloc::realloc::realloc_r()'],['../namespacere__alloc.html#a9e8746c3bfb9226f51446ef2b95f1c44',1,'re_alloc::realloc_r()']]],
-  ['reduce_218',['reduce',['../reduce_8f.html#a374b2f5706f31b5e2033580bef6c4375',1,'reduce.f']]],
-  ['reduce_2ef_219',['reduce.f',['../reduce_8f.html',1,'']]]
+  ['of_20nceplibs_20g2_0',['Documentation for Previous Versions of NCEPLIBS-g2',['../index.html#autotoc_md9',1,'']]],
+  ['options_1',['Command Line Options',['../copygb_8F90.html#autotoc_md23',1,'']]],
+  ['options_3a_2',['COMMAND LINE OPTIONS:',['../copygb2_8F90.html#autotoc_md26',1,'']]],
+  ['output_20files_3',['output files',['../copygb_8F90.html#autotoc_md25',1,'output files'],['../copygb2_8F90.html#autotoc_md29',1,'Output Files']]],
+  ['output_20files_20including_20scratch_20files_4',['output files including scratch files',['../tocgrib2super_8F90.html#autotoc_md38',1,'Output Files  (Including Scratch Files)'],['../tocgrib_8F90.html#autotoc_md34',1,'Output Files (Including Scratch Files)'],['../tocgrib2_8F90.html#autotoc_md36',1,'Output Files (Including Scratch Files)']]]
 ];

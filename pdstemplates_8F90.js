@@ -1,6 +1,6 @@
 var pdstemplates_8F90 =
 [
-    [ "pdstemplate", "namespacepdstemplates.html#structpdstemplates_1_1pdstemplate", [
+    [ "pdstemplates::pdstemplate", "namespacepdstemplates.html#structpdstemplates_1_1pdstemplate", [
       [ "mappds", "namespacepdstemplates.html#a068ebc8929912bca29be70d855aedf20", null ],
       [ "mappdslen", "namespacepdstemplates.html#a94c8327655901ddff66b8a6bea308783", null ],
       [ "needext", "namespacepdstemplates.html#a8fb6f0bec8baa091466fa6c341f020f4", null ],

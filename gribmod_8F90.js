@@ -1,6 +1,6 @@
 var gribmod_8F90 =
 [
-    [ "gribfield", "namespacegrib__mod.html#structgrib__mod_1_1gribfield", [
+    [ "grib_mod::gribfield", "namespacegrib__mod.html#structgrib__mod_1_1gribfield", [
       [ "bmap", "namespacegrib__mod.html#a8b1c1925d42d5d44dd5c312f1804683c", null ],
       [ "coord_list", "namespacegrib__mod.html#ae6626a63b0e9480ae35027854fbe832f", null ],
       [ "discipline", "namespacegrib__mod.html#a7764268e560163f975be2be2f65ee847", null ],

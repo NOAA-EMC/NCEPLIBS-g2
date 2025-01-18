@@ -1,6 +1,6 @@
 var params_8F90 =
 [
-    [ "gribparam", "namespaceparams.html#structparams_1_1gribparam", [
+    [ "params::gribparam", "namespaceparams.html#structparams_1_1gribparam", [
       [ "abbrev", "namespaceparams.html#a980b74ae249be7c3e19719dc4c15b9a4", null ],
       [ "g1tblver", "namespaceparams.html#a52962d5493282d56cb20444578ca5e47", null ],
       [ "grib1val", "namespaceparams.html#ad0a3dfbc479b54851d889f6c4182f0e4", null ],

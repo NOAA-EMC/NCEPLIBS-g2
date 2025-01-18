@@ -7,7 +7,7 @@ var annotated_dup =
       [ "gribfield", "namespacegrib__mod.html#structgrib__mod_1_1gribfield", "namespacegrib__mod_structgrib__mod_1_1gribfield_dup" ]
     ] ],
     [ "gridtemplates", "namespacegridtemplates.html", [
-      [ "gridtemplate", "namespacegridtemplates.html#structgridtemplates_1_1gridtemplate", "namespacegridtemplates_structgridtemplates_1_1gridtemplate_dup" ]
+      [ "gridtemplate", "namespacegridtemplates.html#structgridtemplates_1_1gridtemplate", null ]
     ] ],
     [ "intmath", "namespaceintmath.html", [
       [ "i1log2", "interfaceintmath_1_1i1log2.html", "interfaceintmath_1_1i1log2" ],
@@ -17,7 +17,7 @@ var annotated_dup =
       [ "gribparam", "namespaceparams.html#structparams_1_1gribparam", "namespaceparams_structparams_1_1gribparam_dup" ]
     ] ],
     [ "params_ecmwf", "namespaceparams__ecmwf.html", [
-      [ "gribparam", "namespaceparams__ecmwf.html#structparams__ecmwf_1_1gribparam", "namespaceparams__ecmwf_structparams__ecmwf_1_1gribparam_dup" ]
+      [ "gribparam", "namespaceparams__ecmwf.html#structparams__ecmwf_1_1gribparam", null ]
     ] ],
     [ "pdstemplates", "namespacepdstemplates.html", [
       [ "pdstemplate", "namespacepdstemplates.html#structpdstemplates_1_1pdstemplate", "namespacepdstemplates_structpdstemplates_1_1pdstemplate_dup" ]
