@@ -1,0 +1,12 @@
+var jpeg_8h =
+[
+    [ "G2_JASPER_DECODE", "jpeg_8h.html#a9d842d23dc3c41db9237ba890a255776", null ],
+    [ "G2_JASPER_DECODE_COLOR", "jpeg_8h.html#ad18c15e7859be9a08cbd4a42283fed36", null ],
+    [ "G2_JASPER_ENCODE", "jpeg_8h.html#a5c647eb48e460797f21e6d90960203f1", null ],
+    [ "G2_JASPER_INIT", "jpeg_8h.html#a2cb509d4701384beb0cce5644abae4fb", null ],
+    [ "G2C_JASPER_JPEG_FORMAT_NAME", "jpeg_8h.html#a05f66c598caeaf6ef1b9e25c15dc053b", null ],
+    [ "G2C_JASPER_MAX_MEMORY", "jpeg_8h.html#a9ce33c115d04ce317478ae17aab2f7e0", null ],
+    [ "g2float", "jpeg_8h.html#a2e615ee29fc8d17a681017e4384847c2", null ],
+    [ "g2int", "jpeg_8h.html#af0b63b0e0f41f07f562a4367e2a60838", null ],
+    [ "g2intu", "jpeg_8h.html#a95bb698b6bd148aae1b3b841fb0da83b", null ]
+];
