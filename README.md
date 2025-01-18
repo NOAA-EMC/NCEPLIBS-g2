@@ -92,9 +92,10 @@ make install
 
 ## References
 
-```
-Hartnett, E., Lei, H., Richert, A., Stahl, A., [A New API for NOAA's GRIB2 Libraries](https://www.researchgate.net/publication/386906653_A_New_API_for_NOAA's_GRIB2_Libraries),
-American Geophysical Union (AGU) 2024. 
+``` Hartnett, E., Lei, H., Richert, A., Stahl, A., [A New API for
+NOAA's GRIB2
+Libraries](https://www.researchgate.net/publication/386906653_A_New_API_for_NOAA's_GRIB2_Libraries),
+American Geophysical Union (AGU) 2024.
 
 Hartnett, E., Ator, J, Lei, H., Richert, A., Woollen, J., King, A.,
 Hartnett, A., [NCEPLIBS GRIB and BUFR Libraries: Maintaining and
