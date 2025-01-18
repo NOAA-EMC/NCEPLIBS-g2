@@ -59,10 +59,10 @@ Repository | Notes
 ## Authors
 
 Harry Glahn, Kyle Gerheiser, Stephen Gilbert, Brent Gordon, Edward
-Hartnett, Mark Iredell, Hang Lei, Boi Vuong, and other NOAA scientists
-and developers.
+Hartnett, Mark Iredell, Hang Lei, Alyson Stahl, Boi Vuong, and other
+NOAA scientists and developers.
 
-Code Manager: [Hang Lei](mailto:hang.lei@noaa.gov), [Ed
+Code Manager: [Hang Lei](mailto:hang.lei@noaa.gov), [Edward
 Hartnett](mailto:edward.hartnett@noaa.gov)
 
 ## Prerequisites
