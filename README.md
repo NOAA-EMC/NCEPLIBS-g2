@@ -33,10 +33,25 @@ NCEPLIBS inquiries, contact [Edward
 Hartnett](mailto:edward.hartnett@noaa.gov) (secondary point of contact
 [Alex Richert](mailto:alexander.richert@noaa.gov)).
 
+## The Utilities
+
+Utility | Purpose
+--------|--------
+cnvgrib | Convert between GRIB1 and GRIB2.
+copygb | Copy all or part of a GRIB1 file.
+copygb2 | Copy all or part of a GRIB2 file.
+degrib2 | Inventory a GRIB2 file.
+grb2index | Create an index from a GRIB1 file.
+grbindex | Create an index from a GRIB2 file.
+tocgrib | Copy some GRIB2 fields to a new GRIB1 file.
+tocgrib2 | Copy some GRIB2 fields to a new GRIB2 file.
+tocgrib2super | Copy some GRIB2 fields to a new GRIB2 file with super WMO header.
+
 ## Related NCEPLIBS Projects
 
 Repository | Notes
 -----------|------
+[NCEPLIBS-ip](https://github.com/NOAA-EMC/NCEPLIBS-ip) | Interpolation.
 [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc) | Coders/decoders for GRIB1
 [NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) | C implementation of the GRIB 2 functions
 [NCEPLIBS-g2tmpl](https://github.com/NOAA-EMC/NCEPLIBS-g2tmpl) | Utilities for GRIB2 templates
