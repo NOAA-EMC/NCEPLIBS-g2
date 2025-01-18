@@ -113,8 +113,7 @@ NCAR Improving Scientific Software, April 2022.  .
 Kumar, V. Krishna, Gilbert, Stephen A., [GRIB2 conversion and its
 usage at NCEP](docs/GRIB2_conversion_and_its_usage_at_NCEP.pdf), 14-18
 November 2005, 10th Workshop on Meteorological Operational Systems
-ECMWF User Orientation, retrieved on July 27, 2021 from
-https://www.yumpu.com/en/document/view/11925806/grib2-conversion-and-its-usage-at-ncep.
+ECMWF User Orientation.
 
 ## Disclaimer
 
