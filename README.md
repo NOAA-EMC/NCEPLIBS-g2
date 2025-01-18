@@ -92,7 +92,7 @@ make install
 
 ## References
 
-``` Hartnett, E., Lei, H., Richert, A., Stahl, A., [A New API for
+Hartnett, E., Lei, H., Richert, A., Stahl, A., [A New API for
 NOAA's GRIB2
 Libraries](https://www.researchgate.net/publication/386906653_A_New_API_for_NOAA's_GRIB2_Libraries),
 American Geophysical Union (AGU) 2024.
@@ -116,7 +116,6 @@ November 2005, 10th Workshop on Meteorological Operational Systems
 ECMWF User Orientation, retrieved on July 27, 2021 from
 https://www.yumpu.com/en/document/view/11925806/grib2-conversion-and-its-usage-at-ncep.
 
-```
 ## Disclaimer
 
 ```
