@@ -438,127 +438,126 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   nsize = ndpts*4
   if (nsize .lt. minsize) nsize = minsize
   allocate(cpack(nsize), stat = istat)
-  if (idrsnum.eq.0) then ! Simple Packing
+  if (idrsnum .eq. 0) then ! Simple Packing
      call simpack(pfld, ndpts, idrstmpl, cpack, lcpack)
-  elseif (idrsnum.eq.2.or.idrsnum.eq.3) then ! Complex Packing
+  elseif (idrsnum .eq. 2 .or. idrsnum .eq. 3) then ! Complex Packing
      call cmplxpack(pfld, ndpts, idrsnum, idrstmpl, cpack, lcpack)
-  elseif (idrsnum.eq.50) then ! Sperical Harmonic Simple Packing
+  elseif (idrsnum .eq. 50) then ! Sperical Harmonic Simple Packing
      call simpack(pfld(2:), ndpts-1, idrstmpl, cpack, lcpack)
      tmpfld(1) = real(pfld(1), 4)
      call mkieee(tmpfld, tmpre00, 1) ! ensure RE(0,0) value is IEEE format
      re00 = tmpre00(1)
      ire00 = transfer(re00, ire00)
      idrstmpl(5) = ire00
-  elseif (idrsnum.eq.51) then ! Sperical Harmonic Complex Packing
+  elseif (idrsnum .eq. 51) then ! Sperical Harmonic Complex Packing
      call getpoly(cgrib(lpos3), lensec3, jj, kk, mm)
-     if (jj.ne.0 .AND. kk.ne.0 .AND. mm.ne.0) then
+     if (jj .ne. 0 .AND. kk .ne. 0 .AND. mm .ne. 0) then
         call specpack(pfld, ndpts, jj, kk, mm, idrstmpl, cpack, lcpack)
      else
         print *, 'addfield: Cannot pack DRT 5.51.'
-        ierr=9
+        ierr = 9
         return
      endif
-
-  elseif (idrsnum.eq.40 .OR. idrsnum.eq.40000) then ! JPEG2000 encoding
-     if (ibmap.eq.255) then
+  elseif (idrsnum .eq. 40 .OR. idrsnum .eq. 40000) then ! JPEG2000 encoding
+     if (ibmap .eq. 255) then
         call getdim(cgrib(lpos3), lensec3, width, height, iscan)
-        if (width.eq.0 .OR. height.eq.0) then
-           width=ndpts
-           height=1
-        elseif (width.eq.allones .OR. height.eq.allones) then
-           width=ndpts
-           height=1
+        if (width .eq. 0 .OR. height .eq. 0) then
+           width = ndpts
+           height = 1
+        elseif (width .eq. allones .OR. height .eq. allones) then
+           width = ndpts
+           height = 1
         elseif (ibits(iscan, 5, 1) .eq. 1) then ! Scanning mode: bit 3
-           itemp=width
-           width=height
-           height=itemp
+           itemp = width
+           width = height
+           height = itemp
         endif
      else
-        width=ndpts
-        height=1
+        width = ndpts
+        height = 1
      endif
-     if (width<1 .or. height<1) then
+     if (width < 1 .or. height < 1) then
         ! Special case: bitmask off everywhere.
         write(0, *) 'Warning: bitmask off everywhere.'
         write(0, *) '   Pretend one point in jpcpack to avoid crash.'
-        width=1
-        height=1
+        width = 1
+        height = 1
      endif
-     lcpack=nsize
+     lcpack = nsize
      ! print *, 'w, h=', width, height
      call jpcpack(pfld, width, height, idrstmpl, cpack, lcpack)
 
-  elseif (idrsnum.eq.41 .OR. idrsnum.eq.40010) then ! PNG encoding
-     if (ibmap.eq.255) then
+  elseif (idrsnum .eq. 41 .OR. idrsnum .eq. 40010) then ! PNG encoding
+     if (ibmap .eq. 255) then
         call getdim(cgrib(lpos3), lensec3, width, height, iscan)
-        if (width.eq.0 .OR. height.eq.0) then
-           width=ndpts
-           height=1
-        elseif (width.eq.allones .OR. height.eq.allones) then
-           width=ndpts
-           height=1
+        if (width .eq. 0 .OR. height .eq. 0) then
+           width = ndpts
+           height = 1
+        elseif (width .eq. allones .OR. height .eq. allones) then
+           width = ndpts
+           height = 1
         elseif (ibits(iscan, 5, 1) .eq. 1) then ! Scanning mode: bit 3
-           itemp=width
-           width=height
-           height=itemp
+           itemp = width
+           width = height
+           height = itemp
         endif
      else
-        width=ndpts
-        height=1
+        width = ndpts
+        height = 1
      endif
      !print *, 'png size ', width, height
      call pngpack(pfld, width, height, idrstmpl, cpack, lcpack)
      !print *, 'png packed'
 #ifdef USE_AEC
-  elseif (idrsnum.eq.42) then ! AEC compression
-    if (ibmap.eq.255) then
+  elseif (idrsnum .eq. 42) then ! AEC compression
+    if (ibmap .eq. 255) then
       call getdim(cgrib(lpos3), lensec3, width, height, iscan)
-      if (width.eq.0 .OR. height.eq.0) then
-          width=ndpts
-          height=1
-      elseif (width.eq.allones .OR. height.eq.allones) then
-          width=ndpts
-          height=1
+      if (width .eq. 0 .OR. height .eq. 0) then
+          width = ndpts
+          height = 1
+      elseif (width .eq. allones .OR. height .eq. allones) then
+          width = ndpts
+          height = 1
       elseif (ibits(iscan, 5, 1) .eq. 1) then ! Scanning mode: bit 3
-          itemp=width
-          width=height
-          height=itemp
+          itemp = width
+          width = height
+          height = itemp
       endif
     else
-      width=ndpts
-      height=1
+      width = ndpts
+      height = 1
     endif
     call aecpack(pfld, width, height, idrstmpl, cpack, lcpack);
 #endif /* USE_AEC */
   else
      print *, 'addfield: Data Representation Template 5.', idrsnum, &
           ' not yet implemented.'
-     ierr=7
+     ierr = 7
      return
   endif
-  if (ibmap.eq.0 .OR. ibmap.eq.254) then
+  if (ibmap .eq. 0 .OR. ibmap .eq. 254) then
      deallocate(pfld)
   endif
   if (lcpack .lt. 0) then
-     if (allocated(cpack))deallocate(cpack)
-     ierr=10
+     if (allocated(cpack)) deallocate(cpack)
+     ierr = 10
      return
   endif
 
   !     Add Section 5 - Data Representation Section
-  ibeg=iofst ! Calculate offset for beginning of section 5
-  iofst=ibeg + 32 ! leave space for length of section
+  ibeg = iofst ! Calculate offset for beginning of section 5
+  iofst = ibeg + 32 ! leave space for length of section
   call g2_sbytec1(cgrib, five, iofst, 8) ! Store section number (5)
-  iofst=iofst + 8
+  iofst = iofst + 8
   call g2_sbytec1(cgrib, ndpts, iofst, 32) ! Store num of actual data points
-  iofst=iofst + 32
+  iofst = iofst + 32
   call g2_sbytec1(cgrib, idrsnum, iofst, 16) ! Store Data Repr. Template num.
   iofst = iofst + 16
 
   ! Pack up each input value in array idrstmpl into the
   ! the appropriate number of octets, which are specified in
   ! corresponding entries in array mapdrs.
-  do i=1, mapdrslen
+  do i = 1, mapdrslen
      nbits =iabs(mapdrs(i)) * 8
      if ((mapdrs(i) .ge. 0) .or. (idrstmpl(i) .ge. 0)) then
         call g2_sbytec(cgrib, idrstmpl(i), iofst, nbits)
@@ -578,14 +577,14 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   ibeg = iofst ! Calculate offset for beginning of section 6
   iofst = ibeg + 32 ! leave space for length of section
   call g2_sbytec1(cgrib, six, iofst, 8) ! Store section number (6)
-  iofst=iofst + 8
+  iofst = iofst + 8
   call g2_sbytec1(cgrib, ibmap, iofst, 8) ! Store Bit Map indicator
   iofst = iofst + 8
 
   ! Store bitmap, if supplied
-  if (ibmap.eq.0) then
+  if (ibmap .eq. 0) then
      call g2_sbytesc(cgrib, intbmap, iofst, 1, 0, ngrdpts) ! Store BitMap
-     iofst=iofst+ngrdpts
+     iofst = iofst+ngrdpts
   endif
 
   ! If specifying a previously defined bit-map, make sure
@@ -593,7 +592,7 @@ subroutine addfield(cgrib, lcgrib, ipdsnum, ipdstmpl, ipdstmplen, &
   if ((ibmap.eq.254).and.(.not.isprevbmap)) then
      print *, 'addfield: Requested previously defined bitmap, ', &
           ' but one does not exist in the current GRIB message.'
-     ierr=8
+     ierr = 8
      return
   endif
 
