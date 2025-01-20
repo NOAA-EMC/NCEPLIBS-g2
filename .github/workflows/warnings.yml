@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  developer:
+  warning:
     runs-on: ubuntu-latest
     env:
       FC: gfortran
