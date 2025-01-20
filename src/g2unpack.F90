@@ -683,7 +683,7 @@ subroutine gf_unpack7(cgrib, lcgrib, iofst, igdsnum, igdstmpl,  &
         return
      endif
   elseif (idrsnum .eq. 50) then ! Spectral simple
-     call simunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts-1, fld(2))
+     call simunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts-1, fld(2:))
      ieee = transfer(idrstmpl(5), ieee, 1)
      call rdieee(ieee, tmpfld, 1)
      fld(1) = tmpfld(1)
