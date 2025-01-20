@@ -41,7 +41,7 @@
 subroutine gf_unpack1(cgrib, lcgrib, iofst, ids, idslen, ierr)
   implicit none
 
-  character(len=1), intent(in) :: cgrib(lcgrib)
+  character(len = 1), intent(in) :: cgrib(lcgrib)
   integer, intent(in) :: lcgrib
   integer, intent(inout) :: iofst
   integer, pointer, dimension(:) :: ids
