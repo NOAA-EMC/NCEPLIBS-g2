@@ -44,6 +44,30 @@
 !> @author Stephen Gilbert @date 2000-05-11
 module pdstemplates
 
+  interface
+     function g2c_get_pds_template(number, nummap, map, needext) bind(c)
+      use, intrinsic :: iso_c_binding
+      integer(c_int), value, intent(in) :: number
+      integer(c_int), intent(out) :: nummap
+      integer(c_int), intent(out) :: map(*)
+      integer(c_int), intent(out) :: needext
+      integer(c_int) :: g2c_get_pds_template
+     end function g2c_get_pds_template
+     function g2c_get_pds_template_extension(number, list, extlen, ext) bind(c)
+      use, intrinsic :: iso_c_binding
+      integer(c_int), value, intent(in) :: number
+      integer(c_int), intent(in) :: list(*)
+      integer(c_int), intent(out) :: extlen
+      integer(c_int), intent(out) :: ext(*)
+      integer(c_int) :: g2c_get_pds_template_extension
+     end function g2c_get_pds_template_extension
+     function g2c_get_pdt_len(number, nummap) bind(c)
+      use, intrinsic :: iso_c_binding
+      integer(c_int), value, intent(in) :: number
+      integer(c_int), intent(out) :: nummap
+     end function g2c_get_pdt_len
+  end interface
+
 contains
 
   !> This subroutine returns PDS template information for a specified
@@ -74,20 +98,10 @@ contains
     logical, intent(out) :: needext
     integer :: needext_int
 
-    interface
-       function g2c_get_pds_template(number, nummap, map, needext) bind(c)
-        use, intrinsic :: iso_c_binding
-        integer(c_int), value, intent(in) :: number
-        integer(c_int), intent(out) :: nummap
-        integer(c_int), intent(out) :: map(*)
-        integer(c_int), intent(out) :: needext
-        integer(c_int) :: g2c_get_pds_template
-       end function g2c_get_pds_template
-    end interface
-
     iret = g2c_get_pds_template(number, nummap, map, needext_int)
 
     needext = needext_int
+
   end subroutine getpdstemplate
 
   !> This subroutine generates the remaining octet map for a given
@@ -111,21 +125,11 @@ contains
 
     integer, intent(in) :: number, list(*)
     integer, intent(out) :: nummap, map(*)
-    integer :: iret, i, extlen, ext(*)
+    integer :: iret, i, extlen, ext(200)
     logical :: needext
 
-    interface
-       function g2c_get_pds_template_extension(number, list, extlen, ext) bind(c)
-        use, intrinsic :: iso_c_binding
-        integer(c_int), value, intent(in) :: number
-        integer(c_int), intent(in) :: list(*)
-        integer(c_int), intent(out) :: extlen
-        integer(c_int), intent(out) :: ext(*)
-        integer(c_int) :: g2c_get_pds_template_extension
-       end function g2c_get_pds_template_extension
-    end interface
-
-    call getpdstemplate(number, nummap, NULL(), needext, iret)
+    g2c_get_pds_template(number, nummap, 0, needext)
 
   end subroutine extpdstemplate
+
 end module pdstemplates
