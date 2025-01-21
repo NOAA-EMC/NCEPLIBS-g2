@@ -140,26 +140,4 @@ contains
     enddo
 
   end subroutine extpdstemplate
-
-  !> This function returns the initial length (number of entries) in
-  !> the static part of specified Product Definition Template.
-  !>
-  !> @param[in] number the Product Definition Template number.
-  !> @return
-  !> - Number of entries in the static part of PDT.
-  !> - 0,  if requested template is not found.
-  !>
-  !> @author Stephen Gilbert @date 2004-05-11
-  integer function getpdtlen(number)
-    implicit none
-
-    integer, intent(in) :: number
-    integer :: nummap, map(:), iret
-    logical :: needext
-
-    getpdtlen = 0
-    call getpdstemplate(number, nummap, map, needext, iret)
-    getpdtlen = nummap
-
-  end function getpdtlen
 end module pdstemplates
