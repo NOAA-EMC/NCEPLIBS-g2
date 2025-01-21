@@ -120,7 +120,7 @@ contains
         integer(c_int), value, intent(in) :: number
         integer(c_int), intent(in) :: list(*)
         integer(c_int), intent(out) :: extlen
-        integer(c_int), intent(out) :: ext
+        integer(c_int), intent(out) :: ext(*)
         integer(c_int) :: g2c_get_pds_template_extension
        end function g2c_get_pds_template_extension
     end interface
