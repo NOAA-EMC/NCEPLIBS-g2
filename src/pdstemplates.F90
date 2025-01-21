@@ -111,7 +111,7 @@ contains
 
     integer, intent(in) :: number, list(*)
     integer, intent(out) :: nummap, map(*)
-    integer :: iret, i, extlen, ext(*), temp_map(*)
+    integer :: iret, i, extlen, ext(*)
     logical :: needext
 
     interface
@@ -125,19 +125,7 @@ contains
        end function g2c_get_pds_template_extension
     end interface
 
-    call getpdstemplate(number, nummap, temp_map, needext, iret)
-
-    if (iret .gt. 0) return
-    
-    if (.not. needext) return
-
-    iret = g2c_get_pds_template_extension(number, list, extlen, ext)
-    map(1:nummap) = temp_map(1:nummap)
-    nummap = nummap + extlen
-
-    do i=1,extlen
-      map(nummap+i) = ext(i)
-    enddo
+    call getpdstemplate(number, nummap, NULL(), needext, iret)
 
   end subroutine extpdstemplate
 end module pdstemplates
