@@ -154,11 +154,11 @@ contains
     implicit none
 
     integer, intent(in) :: number
-    integer :: nummap, map(*), iret
+    integer :: nummap, iret
     logical :: needext
 
     getpdtlen = 0
-    call getpdstemplate(number, nummap, map, needext, iret)
+    call getpdstemplate(number, nummap, 0, needext, iret)
     getpdtlen = nummap
 
   end function getpdtlen
