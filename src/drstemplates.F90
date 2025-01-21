@@ -62,7 +62,7 @@ contains
     integer, intent(in) :: number
     integer, intent(out) :: nummap, map(*), iret
     logical, intent(out) :: needext
-    integer(c_int) :: needext_int
+    integer :: needext_int
 
     interface
        function g2c_get_drs_template(number, nummap, map, needext) bind(c)
@@ -76,11 +76,7 @@ contains
 
     iret = g2c_get_drs_template(number, nummap, map, needext_int)
 
-    if (needext_int .not. 0) then
-      needext = .true.
-    else
-      needext = .false.
-    endif
+    needext = needext_int
 
   end subroutine getdrstemplate
 
