@@ -17,7 +17,8 @@ program test_drstemplates
   
   print *, 'Testing getdrstemplate...'
   call getdrstemplate(0, nummap, map, needext, iret)
-  if (iret .ne. 0 .or. nummap .ne. 5 .or. needext) stop 4
+  if (iret .ne. 0 .or. nummap .ne. 5) stop 4
+  if (needext) stop 6
   if (map(1) .ne. 4 .or. map(2) .ne. -2 .or. map(3) .ne. -2 .or. &
        map(4) .ne. 1 .or. map(5) .ne. 1) stop 5
   
