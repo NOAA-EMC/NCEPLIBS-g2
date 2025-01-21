@@ -1,0 +1,61 @@
+# This is a GitHub actions workflow for NCEPLIBS-g2.
+#
+# This builds the develop branch with documentation.
+#
+# Ed Hartnett, 1/21/25
+name: docs
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    env:
+      FC: gfortran
+      CC: gcc
+      LD_LIBRARY_PATH: /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/nceplibs/jasper/lib/
+      
+    strategy:
+      fail-fast: true
+
+    steps:
+
+    - name: install-dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libaec-dev libblas-dev liblapack-dev
+
+    - name: "Build dependencies"
+      uses: NOAA-EMC/ci-build-nceplibs@develop
+      with:
+        bacio-version: develop
+        w3emc-version: develop
+        jasper-version: version-4.0.0
+        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
+        ip-version: develop
+        g2c-version: develop
+        g2c-cmake-args: -DBUILD_G2C=ON -DUSE_AEC=ON
+
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+        path: g2
+
+    - name: docs
+      run: |
+        set -x
+        cd g2
+        mkdir build
+        cd build
+        cmake -DENABLE_DOCS=ON -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" ..
+        make -j2 VERBOSE=1
+        ctest --verbose --output-on-failure --rerun-failed
