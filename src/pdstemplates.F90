@@ -111,7 +111,7 @@ contains
 
     integer, intent(in) :: number, list(*)
     integer, intent(out) :: nummap, map(*)
-    integer :: iret, i, extlen, ext(*), temp_map(*)
+    integer :: iret, i, extlen, ext(:), temp_map(:)
     logical :: needext
 
     interface
@@ -154,11 +154,11 @@ contains
     implicit none
 
     integer, intent(in) :: number
-    integer :: nummap, iret
+    integer :: nummap, map(:), iret
     logical :: needext
 
     getpdtlen = 0
-    call getpdstemplate(number, nummap, 0, needext, iret)
+    call getpdstemplate(number, nummap, map, needext, iret)
     getpdtlen = nummap
 
   end function getpdtlen
