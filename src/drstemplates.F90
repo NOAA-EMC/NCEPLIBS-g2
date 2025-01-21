@@ -71,6 +71,7 @@ contains
         integer(c_int), intent(out) :: nummap
         integer(c_int), intent(out) :: map(*)
         integer(c_int), intent(out) :: needext
+        integer(c_int) :: g2c_get_drs_template
        end function g2c_get_drs_template
     end interface
 
