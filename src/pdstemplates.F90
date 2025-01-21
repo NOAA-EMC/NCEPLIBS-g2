@@ -111,7 +111,7 @@ contains
 
     integer, intent(in) :: number, list(*)
     integer, intent(out) :: nummap, map(*)
-    integer :: iret, i, extlen, ext(:), temp_map(:)
+    integer :: iret, i, extlen, ext(*), temp_map(*)
     logical :: needext
 
     interface
