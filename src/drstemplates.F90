@@ -29,6 +29,12 @@
 !> store the data value in this case would be the absolute value of
 !> the negative value in mapdrs.
 !>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2003-04-03 | Gilbert | Initial
+!> 2025-01-21 | Stahl | Replaced subroutines w/ call to g2c, removed template array
+!>
 !> @author Stephen Gilbert @date 2001-04-03
 module drstemplates
   implicit none
