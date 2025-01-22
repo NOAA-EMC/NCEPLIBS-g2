@@ -128,7 +128,7 @@ contains
     integer :: iret, i, extlen, ext(200)
     logical :: needext
 
-    iret = g2c_get_pds_template(number, nummap, 0, needext)
+    iret = g2c_get_pds_template(number, nummap, NULL(), needext)
 
   end subroutine extpdstemplate
 
