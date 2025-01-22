@@ -40,6 +40,7 @@
 module gridtemplates
 
   integer, parameter :: MAXLEN = 200 !< maximum number of octets in mapgrid
+  integer, parameter :: MAXTEMP = 31 !< maximum number of entries in the template
 
   interface
      function g2c_get_grid_template(number, nummap, map, needext) bind(c)
