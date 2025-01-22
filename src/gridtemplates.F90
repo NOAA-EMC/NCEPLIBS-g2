@@ -129,6 +129,7 @@ contains
     integer, intent(in) :: number, list(*)
     integer, intent(out) :: nummap, map(*)
     integer :: iret, i, extlen, ext(MAXLEN)
+    logical :: needext
 
     iret = g2c_get_gdt_len(number, nummap)
 
