@@ -41,7 +41,7 @@
 subroutine gf_unpack1(cgrib, lcgrib, iofst, ids, idslen, ierr)
   implicit none
 
-  character(len=1), intent(in) :: cgrib(lcgrib)
+  character(len = 1), intent(in) :: cgrib(lcgrib)
   integer, intent(in) :: lcgrib
   integer, intent(inout) :: iofst
   integer, pointer, dimension(:) :: ids
@@ -669,26 +669,26 @@ subroutine gf_unpack7(cgrib, lcgrib, iofst, igdsnum, igdstmpl,  &
   ipos = (iofst/8) + 1
   istat = 0
   allocate(fld(ndpts), stat = istat)
-  if (istat.ne.0) then
+  if (istat .ne. 0) then
      ierr = 6
      return
   endif
 
   if (idrsnum .eq. 0) then
      call simunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts, fld)
-  elseif (idrsnum.eq.2.or.idrsnum.eq.3) then
+  elseif (idrsnum .eq. 2 .or. idrsnum .eq. 3) then
      call comunpack(cgrib(ipos), lensec-5, lensec, idrsnum, idrstmpl, ndpts, fld, ier)
      if (ier .ne. 0) then
         ierr = 7
         return
      endif
   elseif (idrsnum .eq. 50) then ! Spectral simple
-     call simunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts-1, fld(2))
+     call simunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts-1, fld(2:))
      ieee = transfer(idrstmpl(5), ieee, 1)
      call rdieee(ieee, tmpfld, 1)
      fld(1) = tmpfld(1)
   elseif (idrsnum .eq. 51) then ! Spectral complex
-     if (igdsnum.ge.50.AND.igdsnum.le.53) then
+     if (igdsnum .ge. 50 .AND. igdsnum .le. 53) then
         call specunpack(cgrib(ipos), lensec-5, idrstmpl, ndpts,  &
              igdstmpl(1), igdstmpl(2), igdstmpl(3), fld)
      else
