@@ -44,6 +44,8 @@
 !> @author Stephen Gilbert @date 2000-05-11
 module pdstemplates
 
+contains
+
   interface
      function g2c_get_pds_template(number, nummap, map, needext) bind(c)
       use, intrinsic :: iso_c_binding
@@ -67,8 +69,6 @@ module pdstemplates
       integer(c_int), intent(out) :: nummap
      end function g2c_get_pdt_len
   end interface
-
-contains
 
   !> This subroutine returns PDS template information for a specified
   !> Product Definition Template. The number of entries in the
