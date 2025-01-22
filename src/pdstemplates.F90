@@ -137,13 +137,12 @@ contains
     if (iret .ne. 0) return
     if (.not. needext) return
 
-    iret = g2c_get_pds_template_extension(number, list, extlen, map(nummap+1:))
-    !map(1:nummap) = temp_map(1:nummap)
+    iret = g2c_get_pds_template_extension(number, list, extlen, ext)
     nummap = nummap + extlen
 
-    !do i=1,extlen
-    !  map(nummap+i) = ext(i)
-    !enddo
+    do i=1,extlen
+      map(nummap+i) = ext(i)
+    enddo
 
   end subroutine extpdstemplate
 
