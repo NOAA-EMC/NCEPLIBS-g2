@@ -146,12 +146,10 @@ contains
     if (.not. needext) return
 
     iret = g2c_get_pds_template_extension(number, list, extlen, ext)
-    nummap = nummap + extlen
-
     do i=1,extlen
       map(nummap+i) = ext(i)
     enddo
-
+    nummap = nummap + extlen
   end subroutine extpdstemplate
 
   !> This function returns the initial length (number of entries) in
