@@ -143,7 +143,7 @@ contains
 
     iret = g2c_get_grid_template_extension(number, list, extlen, ext)
     do i=1,extlen
-      map(nummap+1) = ext(i)
+      map(nummap+i) = ext(i)
     enddo
     nummap = nummap + extlen
   end subroutine extgridtemplate
