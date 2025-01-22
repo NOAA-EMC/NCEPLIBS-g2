@@ -67,6 +67,7 @@ module pdstemplates
       use, intrinsic :: iso_c_binding
       integer(c_int), value, intent(in) :: number
       integer(c_int), intent(out) :: nummap
+      integer(c_int) :: g2c_get_pdt_len
      end function g2c_get_pdt_len
   end interface
 
