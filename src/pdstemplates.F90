@@ -101,6 +101,8 @@ contains
     logical, intent(out) :: needext
     integer :: needext_int
 
+    nummap = 0
+
     iret = g2c_get_pds_template(number, nummap, map, needext_int)
 
     needext = needext_int
