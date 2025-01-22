@@ -69,6 +69,7 @@ contains
   !>
   !> @author Stephen Gilbert @date 2001-06-05
   subroutine param_g1_to_g2(g1val, g1ver, g2disc, g2cat, g2num)
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: g1val, g1ver
@@ -99,6 +100,7 @@ contains
   !>
   !> @author Stephen Gilbert @date 2002-01-04
   character(len = 8) function param_get_abbrev(g2disc, g2cat, g2num)
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
@@ -124,6 +126,7 @@ contains
   !>
   !> @author Stephen Gilbert @date 2002-01-04
   subroutine param_g2_to_g1(g2disc, g2cat, g2num, g1val, g1ver)
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
