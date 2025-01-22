@@ -102,11 +102,11 @@ contains
     integer :: needext_int
 
     nummap = 0
-    needext = .false.
+    needext_int = 0
 
     iret = g2c_get_pds_template(number, nummap, map, needext)
 
-    !needext = needext_int
+    needext = needext_int
 
   end subroutine getpdstemplate
 
