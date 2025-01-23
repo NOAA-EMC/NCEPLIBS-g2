@@ -19,10 +19,13 @@ program test_params
   
   print *, 'Testing param_get_abbrev...'
   abbrev = param_get_abbrev(0, 3, 999)
+  print * "abbrev " abbrev
   if (abbrev .ne. 'UNKNOWN') stop 4
   abbrev = param_get_abbrev(0, 999, 8)
+  print * "abbrev " abbrev
   if (abbrev .ne. 'UNKNOWN') stop 4
   abbrev = param_get_abbrev(999, 3, 8)
+  print * "abbrev " abbrev
   if (abbrev .ne. 'UNKNOWN') stop 4
   
   print *, 'Testing param_g2_to_g1...'
