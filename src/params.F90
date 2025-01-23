@@ -97,9 +97,10 @@ contains
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer :: iret
+    character(len = 8) :: abbrev
 
-    iret = g2c_param_abbrev(g2disc, g2cat, g2num, param_get_abbrev)
-
+    iret = g2c_param_abbrev(g2disc, g2cat, g2num, abbrev)
+    param_get_abbrev = trim(abbrev)
   end function param_get_abbrev
 
   !> This subroutine returns the GRIB 1 parameter number for
