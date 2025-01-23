@@ -62,7 +62,7 @@ contains
   !> @author Stephen Gilbert @date 2001-06-05
   subroutine param_g1_to_g2(g1val, g1ver, g2disc, g2cat, g2num)
     use, intrinsic :: iso_c_binding
-    implicit none
+    !implicit none
 
     integer, intent(in) :: g1val, g1ver
     integer, intent(out) :: g2disc, g2cat, g2num
