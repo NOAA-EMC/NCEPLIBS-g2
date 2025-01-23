@@ -2078,7 +2078,7 @@ program test_params
   ! These don't exist.
   call param_g1_to_g2(2000, 2, g2disc, g2cat, g2num)
   print *, g2disc
-  print *, g2cat,
+  print *, g2cat
   print *, g2num
   if (g2disc .ne. 255 .or. g2cat .ne. 255 .or. g2num .ne. 255) stop 21
   call param_g1_to_g2(1, 999, g2disc, g2cat, g2num)
