@@ -96,10 +96,7 @@ contains
     integer :: iret
 
     iret = g2c_param_abbrev(g2disc, g2cat, g2num, param_get_abbrev)
-    
-    if (iret .ne. 0) then
-      param_get_abbrev = 'UNKNOWN '
-    endif
+
   end function param_get_abbrev
 
   !> This subroutine returns the GRIB 1 parameter number for
