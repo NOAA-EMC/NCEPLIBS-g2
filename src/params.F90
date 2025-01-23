@@ -74,10 +74,10 @@ contains
 
     iret = g2c_param_g1tog2(g1val, g1ver, g2disc, g2cat, g2num)
 
-    if (iret .ne. 0) then
-      print *, 'param_g1_to_g2:GRIB1 param ', g1val, ' not found.', &
-          ' for table version ', g1ver
-    end if
+    !if (iret .ne. 0) then
+    !  print *, 'param_g1_to_g2:GRIB1 param ', g1val, ' not found.', &
+    !      ' for table version ', g1ver
+    !end if
 
   end subroutine param_g1_to_g2
 
