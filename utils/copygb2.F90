@@ -159,24 +159,26 @@
 !> @return 0 for success.
 !> @author Iredell @date 1998-10-22
 PROGRAM COPYGB2
-  CHARACTER*256 CARG,CG1,CX1,CGB,CXB,CGM,CXM,CG2,CNL
+  CHARACTER*256 CARG, CG1, CX1, CGB, CXB, CGM, CXM, CG2, CNL
   INTEGER KARG(100)
-  INTEGER KGDTI(200),IPOPT(20),JPDT(200),JPDSB(200),IUV(100)
-  DATA IGDTN/-1/,KGDTI/200*0/
-  DATA IP/0/,IPOPT/20*-1/
-  DATA JPDTN/-1/,JPDT/200*-9999/,JPDSB/200*-1/
-  DATA IUV/514,99*0/,NUV/1/
-  DATA LWG/0/,LAPP/0/,LXX/0/,LX/1/,KZ1/-1/,KZ2/-2/
-  DATA JB/0/,JBK/0/,LAB/1/,AB/-1.E30/,LAM/0/,AM/0./
-  DATA CGB/' '/,CXB/' '/,CGM/' '/,CXM/' '/,CNL/' '/
-  INTEGER IDS(255),IBS(255),NBS(255)
-  NAMELIST/NLCOPYGB/ IDS,IBS,NBS
-  DATA IDS/255*-9999/,IBS/255*-9999/,NBS/255*-9999/
+  INTEGER KGDTI(200), IPOPT(20), JPDT(200), JPDSB(200), IUV(100)
+  DATA IGDTN/-1/, KGDTI/200*0/
+  DATA IP/0/, IPOPT/20*-1/
+  DATA JPDTN/-1/, JPDT/200*-9999/, JPDSB/200*-1/
+  DATA IUV/514, 99*0/, NUV/1/
+  DATA LWG/0/, LAPP/0/, LXX/0/, LX/1/, KZ1/-1/, KZ2/-2/
+  DATA JB/0/, JBK/0/, LAB/1/, AB/-1.E30/, LAM/0/, AM/0./
+  DATA CGB/' '/, CXB/' '/, CGM/' '/, CXM/' '/, CNL/' '/
+  INTEGER IDS(255), IBS(255), NBS(255)
+  NAMELIST/NLCOPYGB/ IDS, IBS, NBS
+  DATA IDS/255*-9999/, IBS/255*-9999/, NBS/255*-9999/
 
-  !  PARSE COMMAND LINE OPTIONS
+  ! How many command line options?
   NARG = IARGC()
   IARG = 1
   LSTOPT = 0
+
+  ! Process each command line option.
   DO WHILE(IARG .LE. NARG .AND. LSTOPT .EQ. 0)
      CALL GETARG(IARG, CARG)
      LARG = LEN_TRIM(CARG)
@@ -306,103 +308,103 @@ PROGRAM COPYGB2
               call errmsg('Option -K Ignored...Not yet implemented.')
               JBK = 0     ! default value, since -K option not yet implemented.
               JPDSB = -1  ! default value, since -K option not yet implemented.
-           ELSEIF(CARG(L:L).EQ.'k') THEN
-              IF(L.EQ.LARG) THEN
-                 L=0
-                 CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+           ELSEIF(CARG(L:L) .EQ. 'k') THEN
+              IF(L .EQ. LARG) THEN
+                 L = 0
+                 CALL GETARG(IARG, CARG)
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG+1
               ENDIF
-              KARG(1)=JPDTN
-              KARG(2:100)=JPDT(1:99)
-              CALL FPARSEI(CARG(L+1:LARG),100,KARG)
-              JPDTN=KARG(1)
-              JPDT(1:99)=KARG(2:100)
+              KARG(1) = JPDTN
+              KARG(2:100) = JPDT(1:99)
+              CALL FPARSEI(CARG(L+1:LARG), 100, KARG)
+              JPDTN = KARG(1)
+              JPDT(1:99) = KARG(2:100)
               IF(JPDTN.LT.-1 .OR. JPDTN.GE.65535) THEN
                  CALL ERRMSG('copygb2: invalid PDT parms '// &
                       CARG(L+1:LARG))
                  CALL EUSAGE
                  CALL ERREXIT(1)
               ENDIF
-              L=LARG
+              L = LARG
            ELSEIF(CARG(L:L).EQ.'M') THEN
               IF(L.EQ.LARG) THEN
-                 L=0
+                 L = 0
                  CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG+1
               ENDIF
               IF(CARG(L+1:L+1).EQ.'#') THEN
-                 L=L+1
+                 L = L+1
                  CALL FPARSER(CARG(L+1:LARG),1,AM)
-                 LAM=1
+                 LAM = 1
               ELSE
-                 LCGM=LARG-L
-                 CGM=CARG(L+1:LARG)
-                 LAM=5
+                 LCGM = LARG-L
+                 CGM = CARG(L+1:LARG)
+                 LAM = 5
               ENDIF
-              L=LARG
+              L = LARG
            ELSEIF(CARG(L:L).EQ.'m') THEN
               IF(L.EQ.LARG) THEN
-                 L=0
+                 L = 0
                  CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG+1
               ENDIF
-              LCXM=LARG-L
-              CXM=CARG(L+1:LARG)
-              L=LARG
+              LCXM = LARG-L
+              CXM = CARG(L+1:LARG)
+              L = LARG
            ELSEIF(CARG(L:L).EQ.'N') THEN
               IF(L.EQ.LARG) THEN
-                 L=0
+                 L = 0
                  CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG+1
               ENDIF
-              LCNL=LARG-L
-              CNL=CARG(L+1:LARG)
-              L=LARG
+              LCNL = LARG-L
+              CNL = CARG(L+1:LARG)
+              L = LARG
               call errmsg('Option -N Ignored...Not yet implemented.')
-              LCNL=1     ! default value, since -N option not yet implemented.
-              CNL=' '    ! default value, since -N option not yet implemented.
+              LCNL = 1     ! default value, since -N option not yet implemented.
+              CNL = ' '    ! default value, since -N option not yet implemented.
            ELSEIF(CARG(L:L).EQ.'v') THEN
               IF(L.EQ.LARG) THEN
-                 L=0
+                 L = 0
                  CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG+1
               ENDIF
               CALL FPARSEI(CARG(L+1:LARG),100,IUV)
-              NUV=1
-              DO JUV=2,100
-                 IF(IUV(JUV).NE.0) NUV=JUV
+              NUV = 1
+              DO JUV = 2,100
+                 IF(IUV(JUV).NE.0) NUV = JUV
               ENDDO
-              L=LARG
+              L = LARG
            ELSEIF(CARG(L:L).EQ.'x') THEN
-              LX=0
+              LX = 0
            ELSEIF(CARG(L:L).EQ.'X') THEN
-              LXX=1
+              LXX = 1
            ELSE
               CALL ERRMSG('copygb2: invalid option '//CARG(L:L))
               CALL EUSAGE
               CALL ERREXIT(1)
            ENDIF
-           L=L+1
+           L = L+1
         ENDDO
      ENDIF
   ENDDO
 
   !  PARSE COMMAND LINE POSITIONAL ARGUMENTS
-  NXARG=LX+2
+  NXARG = LX+2
   IF(NARG-IARG+1.NE.NXARG) THEN
      CALL ERRMSG('copygb2: incorrect number of arguments')
      CALL EUSAGE
      CALL ERREXIT(NXARG)
   ENDIF
   CALL GETARG(IARG,CG1)
-  LCG1=LEN_TRIM(CG1)
-  IARG=IARG+1
-  LG1=11
+  LCG1 = LEN_TRIM(CG1)
+  IARG = IARG+1
+  LG1 = 11
   CALL BAOPENR(LG1,CG1(1:LCG1),IRETBA)
   IF(IRETBA.NE.0) THEN
      CALL ERRMSG('copygb2:  error accessing file '//CG1(1:LCG1))
@@ -410,28 +412,28 @@ PROGRAM COPYGB2
   ENDIF
   IF(LX.GT.0) THEN
      CALL GETARG(IARG,CX1)
-     LCX1=LEN_TRIM(CX1)
-     IARG=IARG+1
-     LX1=31
+     LCX1 = LEN_TRIM(CX1)
+     IARG = IARG+1
+     LX1 = 31
      CALL BAOPENR(LX1,CX1(1:LCX1),IRETBA)
      IF(IRETBA.NE.0) THEN
         CALL ERRMSG('copygb2:  error accessing file '//CX1(1:LCX1))
         CALL ERREXIT(8)
      ENDIF
   ELSE
-     LX1=0
+     LX1 = 0
   ENDIF
   CALL GETARG(IARG,CG2)
-  LCG2=LEN_TRIM(CG2)
-  IARG=IARG+1
+  LCG2 = LEN_TRIM(CG2)
+  IARG = IARG+1
   IF(CG2(1:LCG2).EQ.'-') THEN
      IF(LXX.GT.0) THEN
         CALL ERRMSG('copygb2:  piping incompatible with the X option')
         CALL ERREXIT(1)
      ENDIF
-     LG2=6
+     LG2 = 6
   ELSE
-     LG2=51
+     LG2 = 51
      IF(LAPP.EQ.0) THEN
         CALL BAOPENWT(LG2,CG2(1:LCG2),IRETBA)
      ELSE
@@ -447,63 +449,63 @@ PROGRAM COPYGB2
   IF(CGB.NE.' ') THEN
      IF(CGB(1:2).EQ.'-1') THEN
         IF(JPDSB(5).EQ.-1) THEN
-           JB=1
+           JB = 1
         ELSE
-           JB=4
-           LGB=LG1
-           LXB=LX1
+           JB = 4
+           LGB = LG1
+           LXB = LX1
         ENDIF
      ELSE
-        JB=4
-        LGB=14
+        JB = 4
+        LGB = 14
         CALL BAOPENR(LGB,CGB(1:LCGB),IRETBA)
         IF(IRETBA.NE.0) THEN
            CALL ERRMSG('copygb2:  error accessing file '//CGB(1:LCGB))
            CALL ERREXIT(8)
         ENDIF
         IF(CXB(1:1).NE.' ') THEN
-           LXB=34
+           LXB = 34
            CALL BAOPENR(LXB,CXB(1:LCXB),IRETBA)
            IF(IRETBA.NE.0) THEN
               CALL ERRMSG('copygb2: error accessing file '//CXB(1:LCXB))
               CALL ERREXIT(8)
            ENDIF
         ELSE
-           LXB=0
+           LXB = 0
         ENDIF
      ENDIF
   ENDIF
 
   !  OPEN MERGE FILE
   IF(CGM.NE.' ') THEN
-     LAM=5
-     LGM=15
+     LAM = 5
+     LGM = 15
      CALL BAOPENR(LGM,CGM(1:LCGM),IRETBA)
      IF(IRETBA.NE.0) THEN
         CALL ERRMSG('copygb2:  error accessing file '//CGM(1:LCGM))
         CALL ERREXIT(8)
      ENDIF
      IF(CXM(1:1).NE.' ') THEN
-        LXM=35
+        LXM = 35
         CALL BAOPENR(LXM,CXM(1:LCXM),IRETBA)
         IF(IRETBA.NE.0) THEN
            CALL ERRMSG('copygb2:  error accessing file '//CXM(1:LCXM))
            CALL ERREXIT(8)
         ENDIF
      ELSE
-        LXM=0
+        LXM = 0
      ENDIF
   ENDIF
 
   !  OPEN AND READ NAMELIST FILE
   IF(CNL.NE.' ') THEN
-     LNL=2
-     OPEN(LNL,FILE=CNL(1:LCNL),STATUS='OLD',IOSTAT=IRET)
+     LNL = 2
+     OPEN(LNL,FILE = CNL(1:LCNL),STATUS = 'OLD',IOSTAT = IRET)
      IF(IRET.NE.0) THEN
         CALL ERRMSG('copygb2:  error accessing file '//CNL(1:LCNL))
         CALL ERREXIT(8)
      ENDIF
-     READ(LNL,NLCOPYGB,IOSTAT=IRET)
+     READ(LNL,NLCOPYGB,IOSTAT = IRET)
      IF(IRET.NE.0) THEN
         CALL ERRMSG('copygb2:  error reading namelist from file '// &
              CNL(1:LCNL))
@@ -585,7 +587,7 @@ CONTAINS
        IDS,IBS,NBS)
     USE GRIB_MOD
 
-    PARAMETER(MBUF=256*1024)
+    PARAMETER(MBUF = 256*1024)
     CHARACTER CBUFB(MBUF)
     INTEGER JIDS(200),JPDT(200),JGDT(200)
     INTEGER JJPDT(200)
@@ -605,15 +607,15 @@ CONTAINS
     !  READ GRIB HEADERS
     IF(LXX.GT.0) CALL INSTRUMENT(6,KALL0,TTOT0,TMIN0,TMAX0)
     IF(JB.EQ.4) THEN
-       JGDS=-1
-       JENS=-1
-       KRB=-1
-       KPDSB=0
-       KGDSB=0
+       JGDS = -1
+       JENS = -1
+       KRB = -1
+       KPDSB = 0
+       KGDSB = 0
        CALL GETGBEMH(LGB,LXB,KRB,JPDSB,JGDS,JENS, &
             MBUF,CBUFB,NLENB,NNUMB,MNUMB, &
             KB,MB,KRBX,KPDSB,KGDSB,KENSB,IRET)
-       IF(IRET.EQ.0.AND.MB.LE.0) IRET=255
+       IF(IRET.EQ.0.AND.MB.LE.0) IRET = 255
        IF(LXX.GT.0) THEN
           IF(IRET.EQ.99) THEN
              PRINT *,'copygb2 map field not found'
@@ -622,34 +624,22 @@ CONTAINS
           ENDIF
        ENDIF
     ELSE
-       MB=1
-       IRET=0
+       MB = 1
+       IRET = 0
     ENDIF
     IF(IRET.EQ.0) THEN
-       KR1=0
-       !IF(LWG.EQ.1) THEN
-       !  READ (*,*,IOSTAT=IRET) CIN
-       !  IF(IRET.EQ.0) THEN
-       !    NDEL=SCAN(CIN,":")
-       !    IF(NDEL.GT.0) CIN=CIN(:NDEL-1)
-       !    READ(CIN,*) KR1
-       !    KR1=-KR1
-       !  ENDIF
-       !ENDIF
+       KR1 = 0
        IF(IRET.EQ.0) THEN
-          JDISC=-1
-          JIDS=-9999
-          JGDTN=-1
-          JGDT=-9999
-          UNPACK=.FALSE.
+          JDISC = -1
+          JIDS = -9999
+          JGDTN = -1
+          JGDT = -9999
+          UNPACK = .FALSE.
           CALL GETGB2(LG1,LX1,KR1,JDISC,JIDS,JPDTN,JPDT,JGDTN, &
                JGDT,UNPACK,KR1X,GFLD1,IRET)
-          !          CALL GETGBEMH(LG1,LX1,KR1,JPDS1,JGDS,JENS, &
-          !                       MBUF,CBUF1,NLEN1,NNUM1,MNUM1, &
-          !                       K1,M1,KR1X,KPDS1,KGDS1,KENS1,IRET)
-          IF(IRET.EQ.0.AND.GFLD1%NDPTS.LE.0) IRET=255
-          M1=GFLD1%NGRDPTS
-          KR1=KR1X
+          IF(IRET.EQ.0.AND.GFLD1%NDPTS.LE.0) IRET = 255
+          M1 = GFLD1%NGRDPTS
+          KR1 = KR1X
           IF(LXX.GT.0) THEN
              IF(IRET.EQ.99) THEN
                 PRINT *,'copygb2 field not found'
@@ -661,52 +651,46 @@ CONTAINS
     ENDIF
 
     !  LOOP UNTIL DONE
-    NO=0
+    NO = 0
     DO WHILE(IRET.EQ.0)
        IF(LAM.EQ.5) THEN
-          JDISC=GFLD1%DISCIPLINE
-          JIDS=-9999
-          JJPDTN=GFLD1%IPDTNUM
-          JJPDT=-9999
-          JJPDT(1:2)=GFLD1%IPDTMPL(1:2)
-          JJPDT(10:15)=GFLD1%IPDTMPL(10:15)
-          JGDTN=-1
-          JGDT=-9999
-          UNPACK=.FALSE.
-          KRM=0
+          JDISC = GFLD1%DISCIPLINE
+          JIDS = -9999
+          JJPDTN = GFLD1%IPDTNUM
+          JJPDT = -9999
+          JJPDT(1:2) = GFLD1%IPDTMPL(1:2)
+          JJPDT(10:15) = GFLD1%IPDTMPL(10:15)
+          JGDTN = -1
+          JGDT = -9999
+          UNPACK = .FALSE.
+          KRM = 0
           CALL GETGB2(LGM,LXM,KRM,JDISC,JIDS,JJPDTN,JJPDT, &
                JGDTN,JGDT,UNPACK,KRMX,GFLDM,IRET)
-          !          CALL GETGBEMH(LGM,LXM,KRM,JPDS,JGDS,JENS, &
-          !                       MBUF,CBUFM,NLENM,NNUMM,MNUMM, &
-          !                       KM,MM,KRMX,KPDSM,KGDSM,KENSM,IRET)
-          MM=GFLDM%NGRDPTS
-          IF(IRET.EQ.0.AND.MM.LE.0) IRET=255
+          MM = GFLDM%NGRDPTS
+          IF(IRET.EQ.0.AND.MM.LE.0) IRET = 255
           IF(IRET.NE.0) THEN
-             MM=0
-             GFLDM%IGDTNUM=-1
-             IRET=0
+             MM = 0
+             GFLDM%IGDTNUM = -1
+             IRET = 0
           ENDIF
        ENDIF
        IF(IGDTN.EQ.-1) THEN
-          IGDTN=GFLD1%IGDTNUM
-          KGDTI(1:GFLD1%IGDTLEN) = GFLD1%IGDTMPL(1:GFLD1%IGDTLEN)
-          MI=M1
+          IGDTN = GFLD1%IGDTNUM
+          KGDTI(1:GFLD1%IGDTLEN)  =  GFLD1%IGDTMPL(1:GFLD1%IGDTLEN)
+          MI = M1
        ELSEIF(IGDTN.EQ.-4.AND.JB.EQ.4) THEN
-          IGI=KPDSB(3)
-          !IGDTN=
-          !KGDSI=KGDSB
-          !KGDTI=
-          MI=MB
+          IGI = KPDSB(3)
+          MI = MB
        ELSEIF(IGDTN.EQ.-5.AND.LAM.EQ.5) THEN
-          IGDTN=GFLDM%IGDTNUM
-          KGDTI(1:GFLDM%IGDTLEN) = GFLDM%IGDTMPL(1:GFLDM%IGDTLEN)
-          MI=MM
+          IGDTN = GFLDM%IGDTNUM
+          KGDTI(1:GFLDM%IGDTLEN)  =  GFLDM%IGDTMPL(1:GFLDM%IGDTLEN)
+          MI = MM
        ELSE
-          MI=NUMPTS(IGDTN,KGDTI)
+          MI = NUMPTS(IGDTN,KGDTI)
        ENDIF
        IF(LXX.GT.0) CALL INSTRUMENT(1,KALL1,TTOT1,TMIN1,TMAX1)
        IF(IGDTN.GE.0.AND.IGDTN.LE.65534) THEN
-          MF=MAX(M1,MB,MM)
+          MF = MAX(M1,MB,MM)
           CALL CPGB1(LG1,LX1,M1, &
                MBUF,MF,MI, &
                IGDTN,KGDTI,IP,IPOPT,JPDTN,JPDT,NUV,IUV, &
@@ -719,30 +703,19 @@ CONTAINS
        IF(LAM.EQ.5) THEN       ! clean-up
           CALL GF_FREE(GFLDM)
        ENDIF
-       !IF(LWG.EQ.1) THEN
-       !  READ (*,*,IOSTAT=IRET) CIN
-       !  IF(IRET.EQ.0) THEN
-       !    NDEL=SCAN(CIN,":")
-       !    IF(NDEL.GT.0) CIN=CIN(:NDEL-1)
-       !    READ(CIN,*) KR1
-       !    KR1=KR1-1
-       !  ENDIF
-       !ENDIF
+
        IF(IRET.EQ.0) THEN
           CALL GF_FREE(GFLD1)
-          JDISC=-1
-          JIDS=-9999
-          JGDTN=-1
-          JGDT=-9999
-          UNPACK=.FALSE.
+          JDISC = -1
+          JIDS = -9999
+          JGDTN = -1
+          JGDT = -9999
+          UNPACK = .FALSE.
           CALL GETGB2(LG1,LX1,KR1,JDISC,JIDS,JPDTN,JPDT,JGDTN, &
                JGDT,UNPACK,KR1X,GFLD1,IRET)
-          !          CALL GETGBEMH(LG1,LX1,KR1,JPDS1,JGDS,JENS, &
-          !                       MBUF,CBUF1,NLEN1,NNUM1,MNUM1, &
-          !                       K1,M1,KR1X,KPDS1,KGDS1,KENS1,IRET)
-          IF(IRET.EQ.0.AND.GFLD1%NDPTS.LE.0) IRET=255
-          M1=GFLD1%NGRDPTS
-          KR1=KR1X
+          IF(IRET.EQ.0.AND.GFLD1%NDPTS.LE.0) IRET = 255
+          M1 = GFLD1%NGRDPTS
+          KR1 = KR1X
           IF(LXX.GT.0) THEN
              IF(IRET.NE.0.AND.IRET.NE.99) THEN
                 PRINT *,'copygb2 header retrieval error code ',IRET
@@ -766,7 +739,7 @@ CONTAINS
        PRINT '(F10.3," seconds spent merging")',TTOT5
        CALL INSTRUMENT(-6,KALL6,TTOT6,TMIN6,TMAX6)
        PRINT '(F10.3," seconds spent packing and writing")',TTOT6
-       TTOTT=TTOT1+TTOT2+TTOT3+TTOT4+TTOT5+TTOT6
+       TTOTT = TTOT1+TTOT2+TTOT3+TTOT4+TTOT5+TTOT6
        PRINT '(F10.3," total seconds spent in copygb2")',TTOTT
     ENDIF
 
@@ -852,40 +825,34 @@ CONTAINS
     INTEGER ISDUMMY,IADUMMY(200)
 
     !  GET FIELD FROM FILE 1
-    JDISC=-1
-    JIDS=-9999
-    JGDTN=-1
-    JGDT=-9999
-    UNPACK=.TRUE.
+    JDISC = -1
+    JIDS = -9999
+    JGDTN = -1
+    JGDT = -9999
+    UNPACK = .TRUE.
     CALL GETGB2(LG1,LX1,KS1,JDISC,JIDS,JPDTN,JPDT,JGDTN, &
          JGDT,UNPACK,KR1,GFLD1,IRET)
-    K1=GFLD1%NGRDPTS
-    !      CALL GETGBEM(LG1,LX1,M1,KS1,JPDS1,JGDS,JENS, &
-    !                  MBUF,CBUF1,NLEN1,NNUM1,MNUM1, &
-    !                  K1,KR1,KPDS1,KGDS1,KENS1,LR,FR,IRET)
-    IV=0
-    KRV=0
+    K1 = GFLD1%NGRDPTS
+    IV = 0
+    KRV = 0
     IF(IRET.EQ.0) THEN
-       JUV=1
-       NPARM=(65536*GFLD1%DISCIPLINE) + (256*GFLD1%IPDTMPL(1)) + &
+       JUV = 1
+       NPARM = (65536*GFLD1%DISCIPLINE) + (256*GFLD1%IPDTMPL(1)) + &
             GFLD1%IPDTMPL(2)
        DO WHILE(JUV.LE.NUV.AND.NPARM.NE.IUV(JUV).AND. &
             NPARM.NE.IUV(JUV)+1)
-          JUV=JUV+1
+          JUV = JUV+1
        ENDDO
        IF(JUV.LE.NUV.AND.NPARM.EQ.IUV(JUV)) THEN
-          IV=1
-          GFLD1%IPDTMPL(2)=GFLD1%IPDTMPL(2)+1
+          IV = 1
+          GFLD1%IPDTMPL(2) = GFLD1%IPDTMPL(2)+1
           CALL GETGB2(LG1,LX1,KRV,GFLD1%DISCIPLINE,GFLD1%IDSECT, &
                GFLD1%IPDTNUM,GFLD1%IPDTMPL,GFLD1%IGDTNUM, &
                GFLD1%IGDTMPL,UNPACK,KRVX,GFLDV,IRET)
-          !          CALL GETGBEM(LG1,LX1,M1,KRV,JPDS,JGDS,JENS, &
-          !                     MBUF,CBUF1,NLEN1,NNUM1,MNUM1, &
-          !                     K1,KRVX,KPDS1,KGDS1,KENS1,LR,GR,IRET)
-          KRV=KRVX
-          GFLD1%IPDTMPL(2)=GFLD1%IPDTMPL(2)-1
+          KRV = KRVX
+          GFLD1%IPDTMPL(2) = GFLD1%IPDTMPL(2)-1
        ELSEIF(JUV.LE.NUV.AND.NPARM.EQ.IUV(JUV)+1) THEN
-          IRET=-1
+          IRET = -1
        ENDIF
     ENDIF
     IF(LXX.GT.0) THEN
@@ -896,25 +863,25 @@ CONTAINS
        ELSEIF(KRV.EQ.0) THEN
           PRINT *,'copygb2 read scalar field from record ',KR1
           PRINT *,'       ...PDT 4.',GFLD1%IPDTNUM,'=', &
-               (GFLD1%IPDTMPL(I),I=1,GFLD1%IPDTLEN)
+               (GFLD1%IPDTMPL(I),I = 1,GFLD1%IPDTLEN)
        ELSE
           PRINT *,'copygb2 read vector field from records ',KR1,KRV
           PRINT *,'       ...PDT 4.',GFLD1%IPDTNUM,'=', &
-               (GFLD1%IPDTMPL(I),I=1,GFLD1%IPDTLEN)
+               (GFLD1%IPDTMPL(I),I = 1,GFLD1%IPDTLEN)
           PRINT *,'       ...PDT 4.',GFLDV%IPDTNUM,'=', &
-               (GFLDV%IPDTMPL(I),I=1,GFLDV%IPDTLEN)
+               (GFLDV%IPDTMPL(I),I = 1,GFLDV%IPDTLEN)
        ENDIF
        CALL INSTRUMENT(2,KALL2,TTOT2,TMIN2,TMAX2)
     ENDIF
 
     !  INVOKE MAP MASK BEFORE INTERPOLATION
     IF(IRET.EQ.0.AND.JBK.EQ.1.AND.JB.EQ.1) THEN
-       DO I=1,K1
+       DO I = 1,K1
           IF(LR(I)) THEN
              IF((LAB.EQ.1.AND.FR(I).LE.AB).OR. &
                   (LAB.EQ.-1.AND.FR(I).GE.AB)) THEN
-                IB1=1
-                LR(I)=.FALSE.
+                IB1 = 1
+                LR(I) = .FALSE.
              ENDIF
           ENDIF
        ENDDO
@@ -930,9 +897,9 @@ CONTAINS
        ALLOCATE(F1I(MI))
        ALLOCATE(G1I(MI))
        IF ( GFLD1%IBMAP.EQ.0 .OR. GFLD1%IBMAP.EQ.254 ) THEN
-          IB1=1
+          IB1 = 1
        ELSE
-          IB1=0
+          IB1 = 0
           ALLOCATE( GFLD1%BMAP(K1) )   ! dummy array
        ENDIF
        IF ( .NOT. ASSOCIATED(GFLD1%LIST_OPT))  &
@@ -1054,18 +1021,12 @@ CONTAINS
           KRM=0
           CALL GETGB2(LGM,LXM,KRM,JDISC,JIDS,JJPDTN,JJPDT, &
                JGDTN,JGDT,UNPACK,KRMX,GFLDM,IRET)
-          !          CALL GETGBEM(LGM,LXM,MM,KRM,JPDS,JGDS,JENS, &
-          !                      MBUF,CBUFM,NLENM,NNUMM,MNUMM, &
-          !                      KM,KRMX,KPDSM,KGDSM,KENSM,LR,FR,IRET)
           KM=GFLDM%NGRDPTS
           IF(IRET.EQ.0.AND.KRV.GT.0) THEN
              GFLDM%IPDTMPL(2)=GFLDM%IPDTMPL(2)+1
              CALL GETGB2(LGM,LXM,KRM,GFLDM%DISCIPLINE,GFLDM%IDSECT, &
                   GFLDM%IPDTNUM,GFLDM%IPDTMPL,GFLDM%IGDTNUM, &
                   GFLDM%IGDTMPL,UNPACK,KRMX,GFLDMV,IRET)
-             !            CALL GETGBEM(LGM,LXM,MM,KRM,JPDS,JGDS,JENS, &
-             !                        MBUF,CBUFM,NLENM,NNUMM,MNUMM, &
-             !                        KM,KRMX,KPDSM,KGDSM,KENSM,LR,GR,IRET)
              GFLDM%IPDTMPL(2)=GFLDM%IPDTMPL(2)-1
           ENDIF
           IF(LXX.GT.0) THEN
@@ -1132,16 +1093,6 @@ CONTAINS
        GFLD1%IBMAP=255
        IF ( IB1I .EQ. 1 ) GFLD1%IBMAP=0
        GFLD1%IDRTMPL(4)=0
-       !K5=KPDS1(5)
-       !IDS1=KPDS1(22)
-       !IBS1=0
-       !NBS1=0
-       !IF(K5.GT.0.AND.K5.LT.256) THEN
-       !  IF(IDS(K5).GE.-128.AND.IDS(K5).LT.128) IDS1=IDS(K5)
-       !  IF(IBS(K5).GE.-128.AND.IBS(K5).LT.128) IBS1=IBS(K5)
-       !  IF(NBS(K5).GE.0.AND.NBS(K5).LT.256) NBS1=NBS(K5)
-       !ENDIF
-       !KPDS1(22)=IDS1
        !  Assign new GDS/GDT info to GFLD1
        GFLD1%IGDTNUM=IGDTN
        DEALLOCATE(GFLD1%IGDTMPL)
@@ -1154,7 +1105,6 @@ CONTAINS
        IF ( ASSOCIATED(GFLD1%FLD) ) DEALLOCATE(GFLD1%FLD)
        GFLD1%FLD => F1I
        CALL PUTGB2(LG2,GFLD1,IRET)
-       !        CALL PUTGBEN(LG2,MI,KPDS1,KGDSI,KENS1,IBS1,NBS1,L1I,F1I,IRET)
        IF(IRET.EQ.0) NO=NO+1
        IF(IRET.EQ.0.AND.KRV.GT.0) THEN
           IF ( ASSOCIATED(GFLD1%FLD) ) DEALLOCATE(GFLD1%FLD)
@@ -1165,7 +1115,6 @@ CONTAINS
           GFLD1%IPDTMPL => GFLDV%IPDTMPL
           GFLD1%IDRTMPL(4)=0
           CALL PUTGB2(LG2,GFLD1,IRET)
-          !          CALL PUTGBEN(LG2,MI,KPDS1,KGDSI,KENS1,IBS1,NBS1,L1I,G1I,IRET)
           IF(IRET.EQ.0) NO=NO+1
           GFLD1%IPDTMPL => TMPPTR
        ENDIF
@@ -1199,9 +1148,6 @@ CONTAINS
     CALL GF_FREE(GFLDV)
     CALL GF_FREE(GFLDM)
     CALL GF_FREE(GFLD1)
-    !     IF (ASSOCIATED(L1I)) DEALLOCATE(L1I)
-    !     IF (ASSOCIATED(F1I)) DEALLOCATE(F1I)
-    !     IF (ASSOCIATED(G1I)) DEALLOCATE(G1I)
 
   END SUBROUTINE CPGB1
 
