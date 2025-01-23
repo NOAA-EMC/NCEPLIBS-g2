@@ -11,6 +11,7 @@
 !> @author Brent Gordon, Boi Vuong
 module params
 
+  implicit none
   integer, parameter :: MAXPARAM = 2000 !< maximum number of GRIB parameters.
 
   interface
