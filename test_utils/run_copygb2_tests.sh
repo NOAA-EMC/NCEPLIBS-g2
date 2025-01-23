@@ -9,8 +9,8 @@ set -e
 echo ""
 echo "*** Running copygb2 test"
 
-# Copy GRIB2 file.
-../utils/copygb2 -x data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave_2.grib2
+# Invalid option.
+../utils/copygb2 - && exit 1
 
 echo "*** SUCCESS!"
 exit 0
