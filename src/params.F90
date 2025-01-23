@@ -16,7 +16,6 @@ module params
   interface
    function g2c_param_g1tog2(g1num, g1ver, g2disc, g2cat, g2num) bind(c)
     use, intrinsic :: iso_c_binding
-    implicit none
     integer(c_int), value, intent(in) :: g1num
     integer(c_int), value, intent(in) :: g1ver
     integer(c_int), intent(out) :: g2disc
@@ -26,7 +25,6 @@ module params
    end function g2c_param_g1tog2
    function g2c_param_abbrev(g2disc, g2cat, g2num, abbrev) bind(c)
     use, intrinsic :: iso_c_binding
-    implicit none
     integer(c_int), value, intent(in) :: g2disc
     integer(c_int), value, intent(in) :: g2cat
     integer(c_int), value, intent(in) :: g2num
@@ -35,7 +33,6 @@ module params
    end function g2c_param_abbrev
    function g2c_param_g2tog1(g2disc, g2cat, g2num, g1num, g1ver) bind(c)
     use, intrinsic :: iso_c_binding
-    implicit none
     integer(c_int), value, intent(in) :: g2disc
     integer(c_int), value, intent(in) :: g2cat
     integer(c_int), value, intent(in) :: g2num
@@ -62,7 +59,7 @@ contains
   !> @author Stephen Gilbert @date 2001-06-05
   subroutine param_g1_to_g2(g1val, g1ver, g2disc, g2cat, g2num)
     use, intrinsic :: iso_c_binding
-    !implicit none
+    implicit none
 
     integer, intent(in) :: g1val, g1ver
     integer, intent(out) :: g2disc, g2cat, g2num
