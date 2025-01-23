@@ -88,7 +88,7 @@ contains
   !>
   !> @author Stephen Gilbert @date 2002-01-04
   character(len = 8) function param_get_abbrev(g2disc, g2cat, g2num)
-    use, intrinsic :: iso_c_binding, only : c_char
+    use, intrinsic :: iso_c_binding, only : c_char, c_null_char
     implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
