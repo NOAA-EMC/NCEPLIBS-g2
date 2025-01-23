@@ -91,6 +91,7 @@ if(BUILD_4)
   endif()
 endif()
 gu_test(run_copygb_tests)
+gu_test(run_copygb2_tests)
 gu_test(run_grbindex_tests)
 
 if(G2C_COMPARE)
