@@ -88,7 +88,7 @@ contains
   !> @return parameter abbreviation for GRIB2 info.
   !>
   !> @author Stephen Gilbert @date 2002-01-04
-  character(len = *) function param_get_abbrev(g2disc, g2cat, g2num)
+  character(len = 8) function param_get_abbrev(g2disc, g2cat, g2num)
     use, intrinsic :: iso_c_binding
     implicit none
 
