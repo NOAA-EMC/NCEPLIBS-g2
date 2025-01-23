@@ -174,95 +174,93 @@ PROGRAM COPYGB2
   DATA IDS/255*-9999/,IBS/255*-9999/,NBS/255*-9999/
 
   !  PARSE COMMAND LINE OPTIONS
-  NARG=IARGC()
-  IARG=1
-  LSTOPT=0
-  DO WHILE(IARG.LE.NARG.AND.LSTOPT.EQ.0)
-     CALL GETARG(IARG,CARG)
-     LARG=LEN_TRIM(CARG)
-     IARG=IARG+1
-     IF(CARG(1:1).NE.'-') THEN
-        LSTOPT=1
-        IARG=IARG-1
-     ELSEIF(LARG.EQ.1) THEN
+  NARG = IARGC()
+  IARG = 1
+  LSTOPT = 0
+  DO WHILE(IARG .LE. NARG .AND. LSTOPT .EQ. 0)
+     CALL GETARG(IARG, CARG)
+     LARG = LEN_TRIM(CARG)
+     IARG = IARG + 1
+     IF(CARG(1:1) .NE. '-') THEN
+        LSTOPT = 1
+        IARG = IARG - 1
+     ELSEIF(LARG .EQ. 1) THEN
         CALL ERRMSG('copygb2: invalid option -')
         CALL EUSAGE
         CALL ERREXIT(1)
      ELSE
-        L=2
-        DO WHILE(L.LE.LARG)
-           IF(CARG(L:L).EQ.'-') THEN
-              LSTOPT=1
-           ELSEIF(CARG(L:L).EQ.'a') THEN
-              LAPP=1
-           ELSEIF(CARG(L:L).EQ.'A') THEN
-              IF(L.EQ.LARG) THEN
-                 L=0
-                 CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+        L = 2
+        DO WHILE(L .LE. LARG)
+           IF(CARG(L:L) .EQ. '-') THEN
+              LSTOPT = 1
+           ELSEIF(CARG(L:L) .EQ. 'a') THEN
+              LAPP = 1
+           ELSEIF(CARG(L:L) .EQ. 'A') THEN
+              IF(L .EQ. LARG) THEN
+                 L = 0
+                 CALL GETARG(IARG, CARG)
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG + 1
               ENDIF
-              IF(CARG(L+1:L+1).EQ.'>') THEN
-                 LAB=1
-                 L=L+1
-              ELSEIF(CARG(L+1:L+1).EQ.'<') THEN
-                 LAB=-1
-                 L=L+1
+              IF(CARG(L+1:L+1) .EQ. '>') THEN
+                 LAB = 1
+                 L = L + 1
+              ELSEIF(CARG(L+1:L+1) .EQ. '<') THEN
+                 LAB = -1
+                 L = L + 1
               ELSE
-                 CALL ERRMSG('copygb2: invalid threshold '// &
-                      CARG(L+1:LARG))
+                 CALL ERRMSG('copygb2: invalid threshold '// CARG(L + 1:LARG))
                  CALL EUSAGE
                  CALL ERREXIT(1)
               ENDIF
-              CALL FPARSER(CARG(L+1:LARG),1,AB)
-              L=LARG
+              CALL FPARSER(CARG(L + 1:LARG), 1, AB)
+              L = LARG
               call errmsg('Option -A Ignored...Not yet implemented.')
-              LAB=1      ! default value, since -A option not yet implemented.
-              AB=-1.E30  ! default value, since -A option not yet implemented.
-           ELSEIF(CARG(L:L).EQ.'B') THEN
-              IF(L.EQ.LARG) THEN
-                 L=0
-                 CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+              LAB = 1      ! default value, since -A option not yet implemented.
+              AB = -1.E30  ! default value, since -A option not yet implemented.
+           ELSEIF(CARG(L:L) .EQ. 'B') THEN
+              IF(L .EQ. LARG) THEN
+                 L = 0
+                 CALL GETARG(IARG, CARG)
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG + 1
               ENDIF
-              LCGB=LARG-L
-              CGB=CARG(L+1:LARG)
+              LCGB = LARG - L
+              CGB = CARG(L + 1:LARG)
               L=LARG
               call errmsg('Option -B Ignored...Not yet implemented.')
-              LCGB=1     ! default value, since -B option not yet implemented.
-              CGB=' '    ! default value, since -B option not yet implemented.
-           ELSEIF(CARG(L:L).EQ.'b') THEN
-              IF(L.EQ.LARG) THEN
-                 L=0
-                 CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+              LCGB = 1     ! default value, since -B option not yet implemented.
+              CGB = ' '    ! default value, since -B option not yet implemented.
+           ELSEIF(CARG(L:L) .EQ. 'b') THEN
+              IF(L .EQ. LARG) THEN
+                 L = 0
+                 CALL GETARG(IARG, CARG)
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG + 1
               ENDIF
-              LCXB=LARG-L
-              CXB=CARG(L+1:LARG)
-              L=LARG
+              LCXB = LARG - L
+              CXB = CARG(L + 1:LARG)
+              L = LARG
               call errmsg('Option -b Ignored...Not yet implemented.')
-              LCXB=1     ! default value, since -B option not yet implemented.
-              CXB=' '    ! default value, since -B option not yet implemented.
-           ELSEIF(CARG(L:L).EQ.'g') THEN
-              IF(L.EQ.LARG) THEN
-                 L=0
-                 CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+              LCXB = 1     ! default value, since -B option not yet implemented.
+              CXB = ' '    ! default value, since -B option not yet implemented.
+           ELSEIF(CARG(L:L) .EQ. 'g') THEN
+              IF(L .EQ. LARG) THEN
+                 L = 0
+                 CALL GETARG(IARG, CARG)
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG + 1
               ENDIF
-              KARG(1)=IGDTN
-              KARG(2:100)=0
-              CALL FPARSEI(CARG(L+1:LARG),100,KARG)
-              IGDTN=KARG(1)
-              IF(IGDTN.GE.0.AND.IGDTN.LE.65534) THEN
-                 KGDTI(1:99)=KARG(2:100)
+              KARG(1) = IGDTN
+              KARG(2:100) = 0
+              CALL FPARSEI(CARG(L + 1:LARG), 100, KARG)
+              IGDTN = KARG(1)
+              IF(IGDTN .GE. 0 .AND. IGDTN .LE. 65534) THEN
+                 KGDTI(1:99) = KARG(2:100)
               ENDIF
-              IF(IGDTN.LT.-5.OR.IGDTN.EQ.-2.OR. &
-                   IGDTN.EQ.-3.OR.IGDTN.GT.65534) THEN
-                 CALL ERRMSG('copygb2: invalid output grid '// &
-                      CARG(L+1:LARG))
+              IF(IGDTN .LT. -5 .OR. IGDTN .EQ. -2 .OR. &
+                   IGDTN .EQ. -3 .OR. IGDTN .GT. 65534) THEN
+                 CALL ERRMSG('copygb2: invalid output grid '// CARG(L+1:LARG))
                  CALL EUSAGE
                  CALL ERREXIT(1)
               ENDIF
@@ -275,39 +273,39 @@ PROGRAM COPYGB2
                     CALL ERREXIT(1)
                  ENDIF
               ENDIF
-              L=LARG
-           ELSEIF(CARG(L:L).EQ.'i') THEN
-              IF(L.EQ.LARG) THEN
-                 L=0
-                 CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+              L = LARG
+           ELSEIF(CARG(L:L) .EQ. 'i') THEN
+              IF(L .EQ. LARG) THEN
+                 L = 0
+                 CALL GETARG(IARG, CARG)
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG + 1
               ENDIF
-              KARG(1)=IP
-              KARG(2:21)=IPOPT
-              CALL FPARSEI(CARG(L+1:LARG),21,KARG)
-              IP=KARG(1)
-              IPOPT=KARG(2:21)
-              L=LARG
-           ELSEIF(CARG(L:L).EQ.'K') THEN
-              IF(L.EQ.LARG) THEN
-                 L=0
-                 CALL GETARG(IARG,CARG)
-                 LARG=LEN_TRIM(CARG)
-                 IARG=IARG+1
+              KARG(1) = IP
+              KARG(2:21) = IPOPT
+              CALL FPARSEI(CARG(L + 1:LARG), 21, KARG)
+              IP = KARG(1)
+              IPOPT = KARG(2:21)
+              L = LARG
+           ELSEIF(CARG(L:L) .EQ. 'K') THEN
+              IF(L .EQ. LARG) THEN
+                 L = 0
+                 CALL GETARG(IARG, CARG)
+                 LARG = LEN_TRIM(CARG)
+                 IARG = IARG + 1
               ENDIF
-              JBK=1
-              CALL FPARSEI(CARG(L+1:LARG),100,JPDSB)
-              IF(JPDSB(5).EQ.0) THEN
+              JBK = 1
+              CALL FPARSEI(CARG(L + 1:LARG), 100, JPDSB)
+              IF(JPDSB(5) .EQ. 0) THEN
                  CALL ERRMSG('copygb2: invalid PDS parms '// &
                       CARG(L+1:LARG))
                  CALL EUSAGE
                  CALL ERREXIT(1)
               ENDIF
-              L=LARG
+              L = LARG
               call errmsg('Option -K Ignored...Not yet implemented.')
-              JBK=0     ! default value, since -K option not yet implemented.
-              JPDSB=-1  ! default value, since -K option not yet implemented.
+              JBK = 0     ! default value, since -K option not yet implemented.
+              JPDSB = -1  ! default value, since -K option not yet implemented.
            ELSEIF(CARG(L:L).EQ.'k') THEN
               IF(L.EQ.LARG) THEN
                  L=0
