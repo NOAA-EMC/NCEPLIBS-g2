@@ -28,7 +28,7 @@ module params
     integer(c_int), value, intent(in) :: g2disc
     integer(c_int), value, intent(in) :: g2cat
     integer(c_int), value, intent(in) :: g2num
-    character(kind=c_char), intent(out) :: abbrev(*)
+    type(c_ptr), intent(out) :: abbrev
     integer(c_int) :: g2c_param_abbrev
    end function g2c_param_abbrev
    function g2c_param_g2tog1(g2disc, g2cat, g2num, g1num, g1ver) bind(c)
@@ -40,17 +40,6 @@ module params
     integer(c_int), intent(out) :: g1ver
     integer(c_int) :: g2c_param_g2tog1
    end function g2c_param_g2tog1
-   function g2c_param_all(param_idx, g1num, g1ver, g2disc, g2cat, g2num, abbrev) bind(c)
-    use, intrinsic :: iso_c_binding
-    integer(c_int), value, intent(in) :: param_idx
-    integer(c_int), intent(out) :: g1num
-    integer(c_int), intent(out) :: g1ver
-    integer(c_int), intent(out) :: g2disc
-    integer(c_int), intent(out) :: g2cat
-    integer(c_int), intent(out) :: g2num
-    character(kind=c_char), intent(out) :: abbrev(*)
-    integer(c_int) :: g2c_param_all
-   end function g2c_param_all
   end interface
 
 contains
