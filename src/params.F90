@@ -95,7 +95,8 @@ contains
     integer, intent(in) :: g2disc, g2cat, g2num
     integer :: iret
 
-    iret = g2c_param_abbrev(g2disc, g2cat, g2num, param_get_abbrev)
+    param_get_abbrev = "UNKNOWN"
+    !iret = g2c_param_abbrev(g2disc, g2cat, g2num, param_get_abbrev)
 
   end function param_get_abbrev
 
