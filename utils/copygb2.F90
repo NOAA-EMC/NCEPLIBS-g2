@@ -5,6 +5,8 @@
 !> The command copygb2 copies all or part of one GRIB2 file to another
 !> GRIB2 file, interpolating if necessary.
 !>
+!> @note This utility is only built with the _d build of NCEPLIBS-g2.
+!>
 !> Unless otherwise directed (-x option), the GRIB2 index file is also
 !> used to speed the reading.
 !>
@@ -65,7 +67,7 @@
 !>      then the output grid is the same as the input grid.
 !>      If kgdtn=-4, then the grid is that of the map field.
 !>      If kgdtn=-5, then the grid is that of the merge field.
-!>      If 0<=kgdtn<65535, then grid designates a specific
+!>      If 0 <= kgdtn < 65535, then grid designates a specific
 !>      GRIB2 Grid Definition Template (GDT) Number. In this
 !>      case, kgdt is the list of the full set of Grid
 !>      Definition Template values for the GDT 3.kgdtn,

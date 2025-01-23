@@ -80,7 +80,7 @@ endif()
 # Run these shell tests.
 if(BUILD_4)
   if(BUILD_D)
-#    gu_test(run_copygb2_tests2)
+     gu_test(run_copygb2_tests)
   endif()
   gu_test(run_cnvgrib_tests)
   gu_test(run_degrib2_tests)
@@ -91,16 +91,11 @@ if(BUILD_4)
   endif()
 endif()
 gu_test(run_copygb_tests)
-gu_test(run_copygb2_tests)
 gu_test(run_grbindex_tests)
 
 if(G2C_COMPARE)
   configure_file("run_copygb2_tests2.sh.in"
     "run_copygb2_tests2.sh" @ONLY NEWLINE_STYLE LF)
-  # file(COPY "${CMAKE_BISOURCE_DIR}/test_utils/run_copygb2_tests2.sh"
-  #   DESTINATION ${CMAKE_BINARY_DIR}/test_utils
-  #   FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-  # Add the shell script as a test.
   add_test(NAME run_copygb2_tests2.sh COMMAND bash run_copygb2_tests2.sh)
 else()
   message(STATUS "g2c_compare not used.")
