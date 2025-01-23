@@ -79,8 +79,6 @@ contains
           ' for table version ', g1ver
     end if
 
-    print *, "g2num", g2num
-
   end subroutine param_g1_to_g2
 
   !> This function returns the parameter abbreviation for
