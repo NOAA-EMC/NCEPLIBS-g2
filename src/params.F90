@@ -97,7 +97,7 @@ contains
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer :: iret, i
-    character(c_char) :: abbrev
+    character(c_char), pointer :: abbrev
 
     iret = g2c_param_abbrev(g2disc, g2cat, g2num, abbrev)
     param_get_abbrev = ""
