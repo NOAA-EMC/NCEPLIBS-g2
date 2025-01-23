@@ -28,7 +28,7 @@ module params
     integer(c_int), value, intent(in) :: g2disc
     integer(c_int), value, intent(in) :: g2cat
     integer(c_int), value, intent(in) :: g2num
-    character(kind=c_char), intent(out) :: abbrev(8)
+    character(kind=c_char), intent(out) :: abbrev(*)
     integer(c_int) :: g2c_param_abbrev
    end function g2c_param_abbrev
    function g2c_param_g2tog1(g2disc, g2cat, g2num, g1num, g1ver) bind(c)
@@ -88,15 +88,14 @@ contains
   !> @return parameter abbreviation for GRIB2 info.
   !>
   !> @author Stephen Gilbert @date 2002-01-04
-  character(len = 8) function param_get_abbrev(g2disc, g2cat, g2num)
+  character(len = *) function param_get_abbrev(g2disc, g2cat, g2num)
     use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer :: iret
 
-    param_get_abbrev = "UNKNOWN"
-    !iret = g2c_param_abbrev(g2disc, g2cat, g2num, param_get_abbrev)
+    iret = g2c_param_abbrev(g2disc, g2cat, g2num, param_get_abbrev)
 
   end function param_get_abbrev
 
