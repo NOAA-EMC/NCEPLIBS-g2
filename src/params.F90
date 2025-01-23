@@ -28,7 +28,7 @@ module params
     integer(c_int), value, intent(in) :: g2disc
     integer(c_int), value, intent(in) :: g2cat
     integer(c_int), value, intent(in) :: g2num
-    character(kind=c_char, len=8), pointer, intent(out) :: abbrev
+    character(kind=c_char, len=*), intent(out) :: abbrev
     integer(c_int) :: g2c_param_abbrev
    end function g2c_param_abbrev
    function g2c_param_g2tog1(g2disc, g2cat, g2num, g1num, g1ver) bind(c)
