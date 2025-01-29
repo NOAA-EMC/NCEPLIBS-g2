@@ -17,6 +17,9 @@ echo "*** Running cnvgrib test"
 # Invalid input file
 ../utils/cnvgrib -g21 - test_gdaswave.t00z.wcoast.0p16.f000.grib1 && exit 3
 
+# Invalid conversion option
+../utils/cnvgrib -g11 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.grib1 && exit 5
+
 # Convert test file to GRIB1.
 ../utils/cnvgrib -g21 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.grib1
 
