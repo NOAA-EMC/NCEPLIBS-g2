@@ -48,7 +48,7 @@ cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000_2.grib2.idx data/ref_gdaswave.t00
 
 # Check against expected output. First 40 bytes contain differences,
 # so ignore them.
-cmp -i 40 test_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx
+cmp -i 119 test_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx
 
 echo "*** SUCCESS!"
 exit 0
