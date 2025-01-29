@@ -17,6 +17,9 @@ echo "*** Running cnvgrib test"
 # Invalid input file
 ../utils/cnvgrib -g21 - test_gdaswave.t00z.wcoast.0p16.f000.grib1 && exit 3
 
+# Invalid conversion option
+../utils/cnvgrib -g11 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.grib1 && exit 5
+
 # Convert test file to GRIB1.
 ../utils/cnvgrib -g21 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.grib1
 
@@ -46,8 +49,9 @@ cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000_2.grib2.idx data/ref_gdaswave.t00
 # Create an index of the new GRIB2 file.
 ../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000_simple.grib2 test_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx
 
-# Check against expected output. 
-cmp test_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx
+# Check against expected output. First 120 bytes contain differences,
+# so ignore them.
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx
 
 echo "*** SUCCESS!"
 exit 0
