@@ -48,6 +48,7 @@ gu_copy_test_data(ref_grid_172.landmask.grib1)
 gu_copy_test_data(ref_grid_220.landmask.grib1)
 gu_copy_test_data(tocgrib2.nml)
 gu_copy_test_data(tocgrib2_bad.nml)
+gu_copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000_simple.grib2.idx)
 
 if(FTP_TEST_FILES)
   message(STATUS "Getting FTP test files...")  
