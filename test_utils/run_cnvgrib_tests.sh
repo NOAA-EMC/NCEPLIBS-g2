@@ -8,11 +8,17 @@ set -e
 echo ""
 echo "*** Running cnvgrib test"
 
+# Show all options
+../utils/cnvgrib -h
+
 # Run with zero arguments
 ../utils/cnvgrib && exit 2
 
 # Run with incorrect number of arguments
 ../utils/cnvgrib -g21 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 && exit 2
+
+# Invalid master table version
+../utils/cnvgrib -g21 -mastertable_ver_0 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.grib1 && exit 2
 
 # Invalid input file
 ../utils/cnvgrib -g21 - test_gdaswave.t00z.wcoast.0p16.f000.grib1 && exit 3
