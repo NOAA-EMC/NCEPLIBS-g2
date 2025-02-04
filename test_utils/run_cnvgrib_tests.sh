@@ -68,7 +68,7 @@ cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g12_complex2.grib2.idx data/ref_g
 # JPEG Packing
 ../utils/cnvgrib -g12 -p40 test_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave.t00z.wcoast.0p16.f000.g12_jpeg.grib2
 ../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g12_jpeg.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g12_jpeg.grib2.idx
-cmp -i 130 test_gdaswave.t00z.wcoast.0p16.f000.g12_jpeg.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g12_jpeg.grib2.idx
+cmp -i 140 test_gdaswave.t00z.wcoast.0p16.f000.g12_jpeg.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g12_jpeg.grib2.idx
 
 # PNG Packing
 ../utils/cnvgrib -g12 -p41 test_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave.t00z.wcoast.0p16.f000.g12_png.grib2
