@@ -35,10 +35,16 @@ echo "*** Running cnvgrib test"
 # Convert GRIB1 output back to GRIB2, create index, and compare to expected output
 # First 120 bytes contain differences, so ignore them.
 
+# Then convert GRIB2 back to GRIB1 and compare expected output
+
 # Simple packing
 ../utils/cnvgrib -g12 -p0 test_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2
 ../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2.idx
 cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2.idx
+
+../utils/cnvgrib -g21 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib1
+../utils/grbindex test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib1 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib1.idx
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib1.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib1.idx
 
 # Complex Packing
 ../utils/cnvgrib -g12 -p2 test_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave.t00z.wcoast.0p16.f000.g12_complex.grib2
