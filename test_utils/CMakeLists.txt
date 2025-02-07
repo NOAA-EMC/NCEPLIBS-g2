@@ -55,7 +55,6 @@ gu_copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.g12_complex_m0.grib2.idx)
 gu_copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.g12_complex1.grib2.idx)
 gu_copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.g12_complex2.grib2.idx)
 gu_copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.g12_png.grib2.idx)
-gu_copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib1.idx)
 
 if(FTP_TEST_FILES)
   message(STATUS "Getting FTP test files...")  
