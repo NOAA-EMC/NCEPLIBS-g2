@@ -35,8 +35,6 @@ echo "*** Running cnvgrib test"
 # Convert GRIB1 output back to GRIB2, create index, and compare to expected output
 # First 120 bytes contain differences, so ignore them.
 
-# Then convert GRIB2 back to GRIB1 and compare expected output
-
 # Simple packing
 ../utils/cnvgrib -g12 -p0 test_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2
 ../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g12_simple.grib2.idx
@@ -76,6 +74,44 @@ cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g12_complex2.grib2.idx data/ref_g
 ../utils/cnvgrib -g12 -p41 test_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave.t00z.wcoast.0p16.f000.g12_png.grib2
 ../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g12_png.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g12_png.grib2.idx
 cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g12_png.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g12_png.grib2.idx
+
+# Convert GRIB2 to GRIB2, create index, and compare to expected output
+# First 120 bytes contain differences, so ignore them.
+
+# Simple packing
+../utils/cnvgrib -g22 -p0 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_simple.grib2
+../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g22_simple.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_simple.grib2.idx
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g22_simple.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g22_simple.grib2.idx
+
+# Complex Packing
+../utils/cnvgrib -g22 -p2 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex.grib2
+../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex.grib2.idx
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g22_complex.grib2.idx
+
+# Complex Packing w/ primary missing values
+../utils/cnvgrib -g22 -p2 -m data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m.grib2
+../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m.grib2.idx
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m.grib2.idx
+
+# Complex Packing w/ no explicit missing values included
+../utils/cnvgrib -g22 -p2 -m0 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m0.grib2
+../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m0.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m0.grib2.idx
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m0.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g22_complex_m0.grib2.idx
+
+# Complex Packing w/ 1st order diffs
+../utils/cnvgrib -g22 -p31 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex1.grib2
+../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex1.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex1.grib2.idx
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex1.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g22_complex1.grib2.idx
+
+# Complex Packing w/ 2nd order diffs
+../utils/cnvgrib -g22 -p32 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex2.grib2
+../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex2.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex2.grib2.idx
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g22_complex2.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g22_complex2.grib2.idx
+
+# PNG Packing
+../utils/cnvgrib -g22 -p41 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_png.grib2
+../utils/grb2index 1 test_gdaswave.t00z.wcoast.0p16.f000.g22_png.grib2 test_gdaswave.t00z.wcoast.0p16.f000.g22_png.grib2.idx
+cmp -i 120 test_gdaswave.t00z.wcoast.0p16.f000.g22_png.grib2.idx data/ref_gdaswave.t00z.wcoast.0p16.f000.g22_png.grib2.idx
 
 echo "*** SUCCESS!"
 exit 0
