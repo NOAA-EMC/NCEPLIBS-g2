@@ -213,8 +213,8 @@ PROGRAM tocgrib2
      call baclose (LUGI, iret)
      call baclose (LUGO, iret)
      WRITE (6, FMT='(//, '' ******** RECAP OF THIS EXECUTION '', &
-          ''********'', /, 5X, ''READ  '', I6, '' INDIVIDUAL IDS'', &
-          /, 5X, ''WROTE '', I6, '' BULLETINS OUT FOR TRANSMISSION'', &
+          &''********'', /, 5X, ''READ  '', I6, '' INDIVIDUAL IDS'', &
+          &/, 5X, ''WROTE '', I6, '' BULLETINS OUT FOR TRANSMISSION'', &
           &//)') nrec, NBUL
   endif
   ! TEST TO SEE IF ANY BULLETINS MISSING
