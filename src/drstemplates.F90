@@ -112,7 +112,7 @@ contains
 
     integer, intent(in) :: number, list(*)
     integer, intent(out) :: nummap, map(*)
-    integer :: index, N, i, iret
+    integer :: iret
     logical :: needext
 
     call getdrstemplate(number, nummap, map, needext, iret)
