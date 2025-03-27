@@ -96,7 +96,7 @@ if (G2C_COMPARE OR USE_G2C_API)
     find_program(G2C_COMPARE_PROG g2c_compare REQUIRED)
   endif()
 else()
-  find_package(g2c 2.1.0 REQUIRED)
+  find_package(g2c REQUIRED)
 endif()
 
 # Set a pre-processor symbol if we are using g2c API.
