@@ -79,7 +79,7 @@ contains
     integer, intent(in) :: number
     integer, intent(out) :: nummap, map(*), iret
     logical, intent(out) :: needext
-    !integer :: needext_int
+    integer :: needext_int
 
     iret = g2c_get_drs_template(number, nummap, map, needext_int)
 
