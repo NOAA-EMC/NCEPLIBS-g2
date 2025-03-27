@@ -1649,7 +1649,7 @@ subroutine gettemplates(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         if (numfld .eq. ifldnum) then
            iofst = iofst - 40       ! reset offset to beginning of section
            call unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, ipdslen, coordlist, numcoord, jerr)
-           if (jerr .eq. 0) then
+           if (jerr .eq. 1) then
               have4 = .true.
            else
               ierr = 11
