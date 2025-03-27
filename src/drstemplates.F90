@@ -45,7 +45,7 @@ module drstemplates
       integer(c_int), value, intent(in) :: number
       integer(c_int), intent(out) :: nummap
       integer(c_int), intent(out) :: map(*)
-      integer(c_int), intent(out) :: needext
+      logical(c_bool), intent(out) :: needext
       integer(c_int) :: g2c_get_drs_template
      end function g2c_get_drs_template
   end interface
@@ -79,11 +79,11 @@ contains
     integer, intent(in) :: number
     integer, intent(out) :: nummap, map(*), iret
     logical, intent(out) :: needext
-    integer :: needext_int
+    !integer :: needext_int
 
-    iret = g2c_get_drs_template(number, nummap, map, needext_int)
+    iret = g2c_get_drs_template(number, nummap, map, needext)
 
-    needext = needext_int
+    !needext = needext_int
 
   end subroutine getdrstemplate
 
