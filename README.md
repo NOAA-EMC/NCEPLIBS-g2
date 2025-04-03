@@ -82,13 +82,16 @@ This package requires the following NCEPLIBS libraries:
 
 ## Building
 
-```
-cmake .. -DCMAKE_INSTALL_PREFIX=myg2 -DCMAKE_PREFIX_PATH="${PNG_LIBDIR};${PNG_INC};${JASPER_LIBDIR};${JASPER_INC}"
-
-make
-make install
+Download release tarball and go to root directory, or `git clone https://github.com/NOAA-EMC/NCEPLIBS-g2c`.
 
 ```
+cmake -S NCEPLIBS-g2c -B NCEPLIBS-g2c/build -DCMAKE_INSTALL_PREFIX=myg2 -DCMAKE_PREFIX_PATH="${PNG_LIBDIR};${PNG_INC};${JASPER_LIBDIR};${JASPER_INC}"
+cmake --build NCEPLIBS-g2c/build
+ctest --test-dir NCEPLIBS-g2c/build # run unit tests
+cmake --install NCEPLIBS-g2c/build
+```
+
+See [documentation](https://noaa-emc.github.io/NCEPLIBS-g2c) for a list of CMake options.
 
 ## References
 
