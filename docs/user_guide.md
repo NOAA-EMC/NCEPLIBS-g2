@@ -29,12 +29,42 @@ Unrepeated sections remain in effect until redefined.
 The above overview was taken from WMO's FM 92-XII GRIB description
 of the experimental GRIB Edition 2 form.
 
-# Building NCEPLIBS-g2
+## Building NCEPLIBS-g2
 
-The NCEPLIBS-g2 library is built with CMake. Starting with
-NCEPLIBS-g2-4.0.0, the
-[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) library is
-required for the build.
+```
+git clone https://github.com/NOAA-EMC/NCEPLIBS-g2 # or download release tarball
+# Set CMAKE_PREFIX_PATH as environment variable, or use -DCMAKE_PREFIX_PATH to point to dependencies:
+cmake -S NCEPLIBS-g2 -B NCEPLIBS-g2/build # <add'l CMake options>
+cmake --build NCEPLIBS-g2/build
+ctest --test-dir NCEPLIBS-g2/build # <add'l CTest options>
+# Install to CMAKE_INSTALL_PREFIX (/usr/local by default):
+cmake --install NCEPLIBS-g2/build
+```
+
+The following CMake build options can be used to configure the build by setting them with `-D<OPTION>=<VALUE>`.
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| CMAKE_INSTALL_PREFIX | Installation path | /usr/local |
+| CMAKE_POSITION_INDEPENDENT_CODE | Enable position-independent code (PIC) for static build | OFF |
+| OPENMP | Use OpenMP threading | OFF |
+| ENABLE_DOCS | Enable generation of doxygen-based documentation. | OFF |
+| BUILD_SHARED_LIBS | Build shared libraries | OFF |
+| FTP_TEST_FILES | Fetch and test with files on FTP site. | OFF |
+| FTP_LARGE_TEST_FILES | Fetch and test with very large files on FTP site. | OFF |
+| FTP_EXTRA_TEST_FILES | Fetch even more large files from FTP and test them. | OFF |
+| LOGGING | Turn on internal logging messages. Only useful to g2 developers. | OFF |
+| BUILD_4 | Build libg2_4.a | ON |
+| BUILD_D | Build libg2_d.a | ON |
+| BUILD_WITH_W3EMC | Build with NCEPLIBS-w3emc, enabling some GRIB1 functionality | ON |
+| BUILD_UTILS | Build grib utilities | ON |
+| USE_AEC | Build with AEC (CCSDS) compression support | OFF |
+| G2C_COMPARE | Enable copygb2 tests using g2c_compare | OFF |
+| USE_G2C_API | Enable new file-based API from NCEPLIBS-g2c | OFF |
+
+Starting with NCEPLIBS-g2-4.0.0, the
+[NCEPLIBS-g2c](https://github.com/NOAA-EMC/NCEPLIBS-g2c) library is required
+for the build.
 
 The [NCEPLIBS-w3emc](https://github.com/NOAA-EMC/NCEPLIBS-w3emc)
 library provides GRIB1 support. It's required for some NCEPLIBS-g2
@@ -205,7 +235,7 @@ and MSWord formats are available)
 MDL has made an HTML version of the document available at
 http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm.
 
-## Documentation for Previous Versions of NCEPLIBS-g2
+# Documentation for Previous Versions of NCEPLIBS-g2
 
 * [NCEPLIBS-g2 Version 3.5.1](ver-3.5.1/index.html)
 * [NCEPLIBS-g2 Version 3.5.0](ver-3.5.0/index.html)
@@ -214,4 +244,3 @@ http://www.nws.noaa.gov/tdl/iwt/grib2/frameset_grib2.htm.
 * [NCEPLIBS-g2 Version 3.4.7](ver-3.4.7/index.html)
 * [NCEPLIBS-g2 Version 3.4.6](ver-3.4.6/index.html)
 * [NCEPLIBS-g2 Version 3.4.5](ver-3.4.5/index.html)
-
