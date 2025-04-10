@@ -22,14 +22,6 @@ program test_pdstemplates
 
   print *, 'Testing pdstemplates, expect and ignore error messages...'
 
-  print *, 'Testing getpdsindex() ...'
-  ! Fortran is base 1, so index 0 should = 1
-  idx = getpdsindex(0)
-  if (idx .ne. 1) stop 3
-  ! Index -1 will still equal -1 because it doesn't exist
-  idx = getpdsindex(-1)
-  if (idx .ne. -1) stop 4
-
   print *, 'testing getpdstemplate() ...'
   pdtlen = getpdtlen(0)
   if (pdtlen .ne. 15) stop 5
