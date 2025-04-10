@@ -7,7 +7,6 @@ program test_pdstemplates
   use pdstemplates
   implicit none
 
-  integer :: idx
   integer :: nummap
   integer :: iret, i
   logical :: needext
