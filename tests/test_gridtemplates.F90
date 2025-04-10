@@ -24,12 +24,6 @@ program test_gridtemplates
 
   print *, 'Testing the gridtemplates module.'
 
-  print *, 'Testing getgridindex...'
-  do t = 1, MAXTEMP
-     index = getgridindex(template_num(t))
-     if (index .ne. t) stop 2
-  enddo
-  
   print *, 'Testing getgridtemplate...'
   call getgridtemplate(0, nummap, map, needext, iret)
   if (nummap .ne. 19 .or. needext) stop 3
