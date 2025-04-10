@@ -112,7 +112,7 @@ contains
 
     integer, intent(in) :: number, list(*)
     integer, intent(out) :: nummap, map(*)
-    integer :: iret
+    integer :: iret, N, i
     logical :: needext
 
     call getdrstemplate(number, nummap, map, needext, iret)
@@ -122,5 +122,13 @@ contains
     ! No implemented DRS templates need extensions.
     if (.not. needext) return
 
+    if (number .eq. 1) then
+       N = list(11) + list(13)
+       do i = 1, N
+          map(nummap + i)=4
+       enddo
+       nummap = nummap + N
+    endif
+    
   end subroutine extdrstemplate
 end module drstemplates
