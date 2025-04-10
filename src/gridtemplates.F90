@@ -102,8 +102,10 @@ contains
     if (iret .ne. 0) then
       nummap = 0
       needext = .false.
+    else if (needext_int .eq. 1) then
+      needext = .true.
     else
-      needext = needext_int
+      needext = .false.
     endif
   end subroutine getgridtemplate
 
