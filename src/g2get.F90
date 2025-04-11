@@ -1662,7 +1662,10 @@ subroutine gettemplates(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
      ! missed the terminator string '7777'.
      ipos = ipos + lensec                 ! Update beginning of section pointer
      if (ipos .gt. (istart + lengrib)) then
-        print *, 'gettemplates: "7777"  not found at end of GRIB message.'
+        !print *, 'gettemplates: "7777"  not found at end of GRIB message.'
+        print *, "ipos = ", ipos
+        print *, "istart = ", istart
+        print *, "lengrib = ", lengrib
         ierr = 7
         return
      endif
