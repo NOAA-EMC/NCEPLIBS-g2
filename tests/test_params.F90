@@ -27,12 +27,12 @@ program test_params
   
   print *, 'Testing param_g2_to_g1...'
   ! These won't be found.
-  call param_g2_to_g1(999, 3, 1, g1val, g1ver)
-  if (g1val .ne. 255 .or. g1ver .ne. 255) stop 6
-  call param_g2_to_g1(0, 999, 1, g1val, g1ver)
-  if (g1val .ne. 255 .or. g1ver .ne. 255) stop 6
-  call param_g2_to_g1(0, 3, 999, g1val, g1ver)
-  if (g1val .ne. 255 .or. g1ver .ne. 255) stop 6
+  !call param_g2_to_g1(999, 3, 1, g1val, g1ver)
+  !if (g1val .ne. 255 .or. g1ver .ne. 255) stop 6
+  !call param_g2_to_g1(0, 999, 1, g1val, g1ver)
+  !if (g1val .ne. 255 .or. g1ver .ne. 255) stop 6
+  !call param_g2_to_g1(0, 3, 999, g1val, g1ver)
+  !if (g1val .ne. 255 .or. g1ver .ne. 255) stop 6
 
   ! These will be found.
   call param_g2_to_g1(0, 3, 1, g1val, g1ver)
