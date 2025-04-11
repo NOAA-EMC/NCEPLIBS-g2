@@ -1649,6 +1649,7 @@ subroutine gettemplates(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         if (numfld .eq. ifldnum) then
            iofst = iofst - 40       ! reset offset to beginning of section
            call unpack4(cgrib, lcgrib, iofst, ipdsnum, ipdstmpl, ipdslen, coordlist, numcoord, jerr)
+           print *, "jerr = ", jerr
            if (jerr .eq. 0) then
               have4 = .true.
            else
@@ -1658,9 +1659,6 @@ subroutine gettemplates(cgrib, lcgrib, ifldnum, igds, igdstmpl, &
         endif
      endif
 
-      print *, "ipos = ", ipos
-      print *, "istart = ", istart
-      print *, "lengrib = ", lengrib
      ! Check to see if we read pass the end of the GRIB message and
      ! missed the terminator string '7777'.
      ipos = ipos + lensec                 ! Update beginning of section pointer
