@@ -123,9 +123,6 @@ contains
     integer, intent(out) :: g1val, g1ver
     integer :: iret
 
-    g1val = 255
-    g1ver = 255
-
     iret = g2c_param_g2tog1(g2disc, g2cat, g2num, g1val, g1ver)
 
     if (iret .ne. 0) then
