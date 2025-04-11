@@ -16,9 +16,9 @@ module params
     use, intrinsic :: iso_c_binding
     integer(c_int), value, intent(in) :: g1num
     integer(c_int), value, intent(in) :: g1ver
-    integer(c_int), intent(out) :: g2disc
-    integer(c_int), intent(out) :: g2cat
-    integer(c_int), intent(out) :: g2num
+    type(c_ptr), intent(out) :: g2disc
+    type(c_ptr), intent(out) :: g2cat
+    type(c_ptr), intent(out) :: g2num
     integer(c_int) :: g2c_param_g1tog2
    end function g2c_param_g1tog2
    function g2c_param_abbrev(g2disc, g2cat, g2num, abbrev) bind(c)
@@ -60,17 +60,23 @@ contains
 
     integer, intent(in) :: g1val, g1ver
     integer, intent(out) :: g2disc, g2cat, g2num
+    type(c_ptr) :: g2disc_ptr, g2cat_ptr, g2num_ptr
     integer :: iret
 
     g2disc = 255
     g2cat = 255
     g2num = 255
 
-    iret = g2c_param_g1tog2(g1val, g1ver, g2disc, g2cat, g2num)
+    iret = g2c_param_g1tog2(g1val, g1ver, g2disc_ptr, g2cat_ptr, g2num_ptr)
 
     if (iret .ne. 0) then
       print *, 'param_g1_to_g2:GRIB1 param ', g1val, ' not found.', &
           ' for table version ', g1ver
+    else
+      ! Use transfer to assign the value from C_PTR to Fortran integer
+      g2num = transfer(g2num_ptr, g2num)
+      g2cat = transfer(g2cat_ptr, g2cat)
+      g2disc = transfer(g2disc_ptr, g2disc)
     end if
 
   end subroutine param_g1_to_g2
@@ -119,19 +125,19 @@ contains
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer, intent(out) :: g1val, g1ver
-    type(c_ptr) :: g1num_ptr, g1ver_ptr
+    type(c_ptr) :: g1val_ptr, g1ver_ptr
     integer :: iret
 
     g1val = 255
     g1ver = 255
 
-    iret = g2c_param_g2tog1(g2disc, g2cat, g2num, g1num_ptr, g1ver_ptr)
+    iret = g2c_param_g2tog1(g2disc, g2cat, g2num, g1val_ptr, g1ver_ptr)
 
     if (iret .ne. 0) then
       print *, 'param_g2_to_g1: GRIB2 param ', g2disc, g2cat, g2num, ' not found.'
     else
       ! Use transfer to assign the value from C_PTR to Fortran integer
-      g1val = transfer(g1num_ptr, g1val)
+      g1val = transfer(g1val_ptr, g1val)
       g1ver = transfer(g1ver_ptr, g1ver)
     end if
 
