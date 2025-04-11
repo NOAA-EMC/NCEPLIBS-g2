@@ -34,8 +34,8 @@ module params
     integer(c_int), value, intent(in) :: g2disc
     integer(c_int), value, intent(in) :: g2cat
     integer(c_int), value, intent(in) :: g2num
-    integer(c_int), pointer, intent(out) :: g1num
-    integer(c_int), pointer, intent(out) :: g1ver
+    type(c_ptr), intent(out) :: g1num
+    type(c_ptr), intent(out) :: g1ver
     integer(c_int) :: g2c_param_g2tog1
    end function g2c_param_g2tog1
   end interface
@@ -114,20 +114,24 @@ contains
   !>
   !> @author Stephen Gilbert @date 2002-01-04
   subroutine param_g2_to_g1(g2disc, g2cat, g2num, g1val, g1ver)
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_f_pointer, c_int
     implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer, intent(out) :: g1val, g1ver
+    type(c_ptr) :: g1num_ptr, g1ver_ptr
     integer :: iret
 
     g1val = 255
     g1ver = 255
 
-    iret = g2c_param_g2tog1(g2disc, g2cat, g2num, g1val, g1ver)
+    iret = g2c_param_g2tog1(g2disc, g2cat, g2num, g1num_ptr, g1ver_ptr)
 
     if (iret .ne. 0) then
-      print *, 'param_g2_to_g1:GRIB2 param ', g2disc, g2cat, &
-          g2num, ' not found.'
+      print *, 'param_g2_to_g1: GRIB2 param ', g2disc, g2cat, g2num, ' not found.'
+    else
+      call c_f_pointer(g1num_ptr, g1val)
+      call c_f_pointer(g1ver_ptr, g1ver)
     end if
 
   end subroutine param_g2_to_g1
