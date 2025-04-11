@@ -442,7 +442,9 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map91(i)) stop 82
   end do
+  list(16) = 2
   list(29) = 2
+  list(30) = 2
   call extpdstemplate(91, list, nummap, map)
   if (nummap .ne. 44) stop 142
   do i = 1, nummap
