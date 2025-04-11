@@ -114,7 +114,7 @@ contains
   !>
   !> @author Stephen Gilbert @date 2002-01-04
   subroutine param_g2_to_g1(g2disc, g2cat, g2num, g1val, g1ver)
-    use, intrinsic :: iso_c_binding, only: c_ptr, c_f_pointer, c_int
+    use, intrinsic :: iso_c_binding, only: c_ptr, c_int
     implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
@@ -130,8 +130,9 @@ contains
     if (iret .ne. 0) then
       print *, 'param_g2_to_g1: GRIB2 param ', g2disc, g2cat, g2num, ' not found.'
     else
-      call c_f_pointer(g1num_ptr, g1val)
-      call c_f_pointer(g1ver_ptr, g1ver)
+      ! Use transfer to assign the value from C_PTR to Fortran integer
+      g1val = transfer(g1num_ptr, g1val)
+      g1ver = transfer(g1ver_ptr, g1ver)
     end if
 
   end subroutine param_g2_to_g1
