@@ -106,6 +106,7 @@ contains
       if (abbrev(i) == C_NULL_CHAR) exit
       param_get_abbrev(i:i) = abbrev(i)
     end do
+    print *, param_get_abbrev
   end function param_get_abbrev
 
   !> This subroutine returns the GRIB 1 parameter number for
