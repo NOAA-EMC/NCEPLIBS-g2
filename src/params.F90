@@ -11,9 +11,6 @@
 !> @author Brent Gordon, Boi Vuong
 module params
 
-  implicit none
-  integer, parameter :: MAXPARAM = 2000 !< maximum number of GRIB parameters.
-
   interface
    function g2c_param_g1tog2(g1num, g1ver, g2disc, g2cat, g2num) bind(c)
     use, intrinsic :: iso_c_binding
@@ -122,6 +119,9 @@ contains
     integer, intent(in) :: g2disc, g2cat, g2num
     integer, intent(out) :: g1val, g1ver
     integer :: iret
+
+    g1val = 255
+    g1ver = 255
 
     iret = g2c_param_g2tog1(g2disc, g2cat, g2num, g1val, g1ver)
 
