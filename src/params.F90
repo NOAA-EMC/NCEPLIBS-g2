@@ -34,8 +34,8 @@ module params
     integer(c_int), value, intent(in) :: g2disc
     integer(c_int), value, intent(in) :: g2cat
     integer(c_int), value, intent(in) :: g2num
-    integer(c_int), intent(out) :: g1num
-    integer(c_int), intent(out) :: g1ver
+    integer(c_int), pointer, intent(out) :: g1num
+    integer(c_int), pointer, intent(out) :: g1ver
     integer(c_int) :: g2c_param_g2tog1
    end function g2c_param_g2tog1
   end interface
