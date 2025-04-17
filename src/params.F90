@@ -101,15 +101,20 @@ contains
     character(kind=c_char, len=8) :: abbrev
 
     iret = g2c_param_abbrev(g2disc, g2cat, g2num, abbrev)
-    param_get_abbrev = ""
-    do i=1,8
-      if (abbrev(i:i) == c_null_char) then
-        exit
-      else
-        param_get_abbrev(i:i) = abbrev(i:i)
-      end if
-    end do
 
+    if (iret .ne. 0) then
+      print *, 'param_get_abbrev disc ', g2disc, ' g2cat ', g2cat, &
+          ' g2num ', g2num, ' not found'
+    else
+      param_get_abbrev = ""
+      do i=1,8
+        if (abbrev(i:i) == c_null_char) then
+          exit
+        else
+          param_get_abbrev(i:i) = abbrev(i:i)
+        end if
+      end do
+    end if
     ! Explicitly null-terminate the result to avoid undefined behavior
     if (i <= 8) param_get_abbrev(i:) = ' '
   end function param_get_abbrev
