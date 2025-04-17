@@ -41,9 +41,9 @@ program test_params
   if (abbrev .ne. 'UNKNOWN') stop 4
 
   ! Check all abb
+  abbrev = param_get_abbrev(0, 3, 0)
+  if (abbrev .ne. 'PRES') stop 5
   if (.false.) then
-    abbrev = param_get_abbrev(0, 3, 0)
-    if (abbrev .ne. 'PRES') stop 5
     abbrev = param_get_abbrev(0, 3, 1)
     if (abbrev .ne. 'PRMSL') stop 5
     abbrev = param_get_abbrev(0, 3, 2)
