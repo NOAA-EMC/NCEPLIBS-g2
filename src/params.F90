@@ -98,13 +98,13 @@ contains
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer :: iret, i
-    character(c_char) :: abbrev(8)
+    character(kind=c_char, len=8) :: abbrev
 
     iret = g2c_param_abbrev(g2disc, g2cat, g2num, abbrev)
     param_get_abbrev = ""
     do i=1,8
-      if (abbrev(i) == C_NULL_CHAR) exit
-      param_get_abbrev(i:i) = abbrev(i)
+      if (abbrev(i:i) == c_null_char) exit
+      param_get_abbrev(i:i) = abbrev(i:i)
     end do
   end function param_get_abbrev
 
