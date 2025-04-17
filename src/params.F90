@@ -103,8 +103,8 @@ contains
     iret = g2c_param_abbrev(g2disc, g2cat, g2num, abbrev)
     param_get_abbrev = ""
     do i=1,8
-      if (abbrev(i) == c_null_char) exit
-      param_get_abbrev(i) = abbrev(i)
+      if (abbrev(i:i) == c_null_char) exit
+      param_get_abbrev(i:i) = abbrev(i:i)
     end do
   end function param_get_abbrev
 
