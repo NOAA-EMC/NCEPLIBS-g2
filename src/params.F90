@@ -103,9 +103,15 @@ contains
     iret = g2c_param_abbrev(g2disc, g2cat, g2num, abbrev)
     param_get_abbrev = ""
     do i=1,8
-      if (abbrev(i:i) == c_null_char) exit
-      param_get_abbrev(i:i) = abbrev(i:i)
+      if (abbrev(i:i) == c_null_char) then
+        exit
+      else
+        param_get_abbrev(i:i) = abbrev(i:i)
+      end if
     end do
+
+    ! Explicitly null-terminate the result to avoid undefined behavior
+    if (i <= 8) param_get_abbrev(i:) = ' '
   end function param_get_abbrev
 
   !> This subroutine returns the GRIB 1 parameter number for
