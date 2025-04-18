@@ -45,35 +45,35 @@ program test_params
   if (abbrev .ne. 'PRES') stop 5
   abbrev = param_get_abbrev(0, 3, 1)
   if (abbrev .ne. 'PRMSL') stop 5
+  abbrev = param_get_abbrev(0, 3, 2)
+  if (abbrev .ne. 'PTEND') stop 5
+  abbrev = param_get_abbrev(0, 2, 14)
+  if (abbrev .ne. 'PVORT') stop 5
+  abbrev = param_get_abbrev(0, 3, 3)
+  if (abbrev .ne. 'ICAHT') stop 5
+  abbrev = param_get_abbrev(0, 3, 4)
+  if (abbrev .ne. 'GP') stop 5
+  abbrev = param_get_abbrev(0, 3, 5)
+  if (abbrev .ne. 'HGT') stop 5
+  abbrev = param_get_abbrev(0, 3, 6)
+  if (abbrev .ne. 'DIST') stop 5
+  abbrev = param_get_abbrev(0, 3, 7)
+  if (abbrev .ne. 'HSTDV') stop 5
+  abbrev = param_get_abbrev(0, 14, 0)
+  if (abbrev .ne. 'TOZNE') stop 5
+  abbrev = param_get_abbrev(0, 0, 0)
+  if (abbrev .ne. 'TMP') stop 5
+  abbrev = param_get_abbrev(0, 0, 1)
+  if (abbrev .ne. 'VTMP') stop 5
+  abbrev = param_get_abbrev(0, 0, 2)
+  if (abbrev .ne. 'POT') stop 5
+  abbrev = param_get_abbrev(0, 0, 3)
+  if (abbrev .ne. 'EPOT') stop 5
+  abbrev = param_get_abbrev(0, 0, 4)
+  if (abbrev .ne. 'TMAX') stop 5
+  abbrev = param_get_abbrev(0, 0, 5)
+  if (abbrev .ne. 'TMIN') stop 5
   if (.false.) then
-    abbrev = param_get_abbrev(0, 3, 2)
-    if (abbrev .ne. 'PTEND') stop 5
-    abbrev = param_get_abbrev(0, 2, 14)
-    if (abbrev .ne. 'PVORT') stop 5
-    abbrev = param_get_abbrev(0, 3, 3)
-    if (abbrev .ne. 'ICAHT') stop 5
-    abbrev = param_get_abbrev(0, 3, 4)
-    if (abbrev .ne. 'GP') stop 5
-    abbrev = param_get_abbrev(0, 3, 5)
-    if (abbrev .ne. 'HGT') stop 5
-    abbrev = param_get_abbrev(0, 3, 6)
-    if (abbrev .ne. 'DIST') stop 5
-    abbrev = param_get_abbrev(0, 3, 7)
-    if (abbrev .ne. 'HSTDV') stop 5
-    abbrev = param_get_abbrev(0, 14, 0)
-    if (abbrev .ne. 'TOZNE') stop 5
-    abbrev = param_get_abbrev(0, 0, 0)
-    if (abbrev .ne. 'TMP') stop 5
-    abbrev = param_get_abbrev(0, 0, 1)
-    if (abbrev .ne. 'VTMP') stop 5
-    abbrev = param_get_abbrev(0, 0, 2)
-    if (abbrev .ne. 'POT') stop 5
-    abbrev = param_get_abbrev(0, 0, 3)
-    if (abbrev .ne. 'EPOT') stop 5
-    abbrev = param_get_abbrev(0, 0, 4)
-    if (abbrev .ne. 'TMAX') stop 5
-    abbrev = param_get_abbrev(0, 0, 5)
-    if (abbrev .ne. 'TMIN') stop 5
     abbrev = param_get_abbrev(0, 0, 6)
     if (abbrev .ne. 'DPT') stop 5
     abbrev = param_get_abbrev(0, 0, 7)
