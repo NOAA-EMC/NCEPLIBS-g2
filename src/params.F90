@@ -100,23 +100,20 @@ contains
     integer :: iret, i
     character(kind=c_char, len=8) :: abbrev
 
+    ! Initialize the output string to avoid undefined behavior
+    param_get_abbrev = "        "
+
+    ! Call the C function to get the abbreviation
     iret = g2c_param_abbrev(g2disc, g2cat, g2num, abbrev)
 
-    if (iret .ne. 0) then
-      print *, 'param_get_abbrev disc ', g2disc, ' g2cat ', g2cat, &
-          ' g2num ', g2num, ' not found'
-    else
-      param_get_abbrev = ""
-      do i=1,8
-        if (abbrev(i:i) == c_null_char) then
-          exit
-        else
-          param_get_abbrev(i:i) = abbrev(i:i)
-        end if
-      end do
-    end if
-    ! Explicitly null-terminate the result to avoid undefined behavior
-    if (i <= 8) param_get_abbrev(i:) = ' '
+    ! Copy characters from the C string to the Fortran string
+    do i = 1, len(abbrev)
+      if (abbrev(i:i) == c_null_char) exit
+      param_get_abbrev(i:i) = abbrev(i:i)
+    end do
+
+    ! Ensure the rest of the string is padded with spaces
+    if (i <= len(param_get_abbrev)) param_get_abbrev(i:) = ' '
   end function param_get_abbrev
 
   !> This subroutine returns the GRIB 1 parameter number for
