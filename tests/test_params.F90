@@ -73,71 +73,72 @@ program test_params
   if (abbrev .ne. 'TMAX') stop 5
   abbrev = param_get_abbrev(0, 0, 5)
   if (abbrev .ne. 'TMIN') stop 5
+  !if (.false.) then
+  abbrev = param_get_abbrev(0, 0, 6)
+  if (abbrev .ne. 'DPT') stop 5
+  abbrev = param_get_abbrev(0, 0, 7)
+  if (abbrev .ne. 'DEPR') stop 5
+  abbrev = param_get_abbrev(0, 0, 8)
+  if (abbrev .ne. 'LAPR') stop 5
+  abbrev = param_get_abbrev(0, 19, 0)
+  if (abbrev .ne. 'VIS') stop 5
+  abbrev = param_get_abbrev(0, 15, 6)
+  if (abbrev .ne. 'RDSP1') stop 5
+  abbrev = param_get_abbrev(0, 15, 7)
+  if (abbrev .ne. 'RDSP2') stop 5
+  abbrev = param_get_abbrev(0, 15, 8)
+  if (abbrev .ne. 'RDSP3') stop 5
+  abbrev = param_get_abbrev(0, 7, 0)
+  if (abbrev .ne. 'PLI') stop 5
+  abbrev = param_get_abbrev(0, 0, 9)
+  if (abbrev .ne. 'TMPA') stop 5
+  abbrev = param_get_abbrev(0, 3, 8)
+  if (abbrev .ne. 'PRESA') stop 5
+  abbrev = param_get_abbrev(0, 3, 9)
+  if (abbrev .ne. 'GPA') stop 5
+  abbrev = param_get_abbrev(10, 0, 0)
+  if (abbrev .ne. 'WVSP1') stop 5
+  abbrev = param_get_abbrev(10, 0, 1)
+  if (abbrev .ne. 'WVSP2') stop 5
+  abbrev = param_get_abbrev(10, 0, 2)
+  if (abbrev .ne. 'WVSP3') stop 5
+  abbrev = param_get_abbrev(0, 2, 0)
+  if (abbrev .ne. 'WDIR') stop 5
+  abbrev = param_get_abbrev(0, 2, 1)
+  if (abbrev .ne. 'WIND') stop 5
+  abbrev = param_get_abbrev(0, 2, 2)
+  if (abbrev .ne. 'UGRD') stop 5
+  abbrev = param_get_abbrev(0, 2, 3)
+  if (abbrev .ne. 'VGRD') stop 5
+  abbrev = param_get_abbrev(0, 2, 4)
+  if (abbrev .ne. 'STRM') stop 5
+  abbrev = param_get_abbrev(0, 2, 5)
+  if (abbrev .ne. 'VPOT') stop 5
+  abbrev = param_get_abbrev(0, 2, 6)
+  if (abbrev .ne. 'MNTSF') stop 5
+  abbrev = param_get_abbrev(0, 2, 7)
+  if (abbrev .ne. 'SGCVV') stop 5
+  abbrev = param_get_abbrev(0, 2, 8)
+  if (abbrev .ne. 'VVEL') stop 5
+  abbrev = param_get_abbrev(0, 2, 9)
+  if (abbrev .ne. 'DZDT') stop 5
+  abbrev = param_get_abbrev(0, 2, 10)
+  if (abbrev .ne. 'ABSV') stop 5
+  abbrev = param_get_abbrev(0, 2, 11)
+  if (abbrev .ne. 'ABSD') stop 5
+  abbrev = param_get_abbrev(0, 2, 12)
+  if (abbrev .ne. 'RELV') stop 5
+  abbrev = param_get_abbrev(0, 2, 13)
+  if (abbrev .ne. 'RELD') stop 5
+  abbrev = param_get_abbrev(0, 2, 15)
+  if (abbrev .ne. 'VUCSH') stop 5
+  abbrev = param_get_abbrev(0, 2, 16)
+  if (abbrev .ne. 'VVCSH') stop 5
+  abbrev = param_get_abbrev(10, 1, 0)
+  if (abbrev .ne. 'DIRC') stop 5
+  abbrev = param_get_abbrev(10, 1, 1)
+  if (abbrev .ne. 'SPC') stop 5
   if (.false.) then
-    abbrev = param_get_abbrev(0, 0, 6)
-    if (abbrev .ne. 'DPT') stop 5
-    abbrev = param_get_abbrev(0, 0, 7)
-    if (abbrev .ne. 'DEPR') stop 5
-    abbrev = param_get_abbrev(0, 0, 8)
-    if (abbrev .ne. 'LAPR') stop 5
-    abbrev = param_get_abbrev(0, 19, 0)
-    if (abbrev .ne. 'VIS') stop 5
-    abbrev = param_get_abbrev(0, 15, 6)
-    if (abbrev .ne. 'RDSP1') stop 5
-    abbrev = param_get_abbrev(0, 15, 7)
-    if (abbrev .ne. 'RDSP2') stop 5
-    abbrev = param_get_abbrev(0, 15, 8)
-    if (abbrev .ne. 'RDSP3') stop 5
-    abbrev = param_get_abbrev(0, 7, 0)
-    if (abbrev .ne. 'PLI') stop 5
-    abbrev = param_get_abbrev(0, 0, 9)
-    if (abbrev .ne. 'TMPA') stop 5
-    abbrev = param_get_abbrev(0, 3, 8)
-    if (abbrev .ne. 'PRESA') stop 5
-    abbrev = param_get_abbrev(0, 3, 9)
-    if (abbrev .ne. 'GPA') stop 5
-    abbrev = param_get_abbrev(10, 0, 0)
-    if (abbrev .ne. 'WVSP1') stop 5
-    abbrev = param_get_abbrev(10, 0, 1)
-    if (abbrev .ne. 'WVSP2') stop 5
-    abbrev = param_get_abbrev(10, 0, 2)
-    if (abbrev .ne. 'WVSP3') stop 5
-    abbrev = param_get_abbrev(0, 2, 0)
-    if (abbrev .ne. 'WDIR') stop 5
-    abbrev = param_get_abbrev(0, 2, 1)
-    if (abbrev .ne. 'WIND') stop 5
-    abbrev = param_get_abbrev(0, 2, 2)
-    if (abbrev .ne. 'UGRD') stop 5
-    abbrev = param_get_abbrev(0, 2, 3)
-    if (abbrev .ne. 'VGRD') stop 5
-    abbrev = param_get_abbrev(0, 2, 4)
-    if (abbrev .ne. 'STRM') stop 5
-    abbrev = param_get_abbrev(0, 2, 5)
-    if (abbrev .ne. 'VPOT') stop 5
-    abbrev = param_get_abbrev(0, 2, 6)
-    if (abbrev .ne. 'MNTSF') stop 5
-    abbrev = param_get_abbrev(0, 2, 7)
-    if (abbrev .ne. 'SGCVV') stop 5
-    abbrev = param_get_abbrev(0, 2, 8)
-    if (abbrev .ne. 'VVEL') stop 5
-    abbrev = param_get_abbrev(0, 2, 9)
-    if (abbrev .ne. 'DZDT') stop 5
-    abbrev = param_get_abbrev(0, 2, 10)
-    if (abbrev .ne. 'ABSV') stop 5
-    abbrev = param_get_abbrev(0, 2, 11)
-    if (abbrev .ne. 'ABSD') stop 5
-    abbrev = param_get_abbrev(0, 2, 12)
-    if (abbrev .ne. 'RELV') stop 5
-    abbrev = param_get_abbrev(0, 2, 13)
-    if (abbrev .ne. 'RELD') stop 5
-    abbrev = param_get_abbrev(0, 2, 15)
-    if (abbrev .ne. 'VUCSH') stop 5
-    abbrev = param_get_abbrev(0, 2, 16)
-    if (abbrev .ne. 'VVCSH') stop 5
-    abbrev = param_get_abbrev(10, 1, 0)
-    if (abbrev .ne. 'DIRC') stop 5
-    abbrev = param_get_abbrev(10, 1, 1)
-    if (abbrev .ne. 'SPC') stop 5
     abbrev = param_get_abbrev(10, 1, 2)
     if (abbrev .ne. 'UOGRD') stop 5
     abbrev = param_get_abbrev(10, 1, 3)
