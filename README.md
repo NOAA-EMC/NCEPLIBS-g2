@@ -93,6 +93,8 @@ cmake --install NCEPLIBS-g2c/build
 
 See [documentation](https://noaa-emc.github.io/NCEPLIBS-g2c) for a list of CMake options.
 
+NCEPLIBS-g2 is also available through Spack as '[g2](https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/g2)'.
+
 ## References
 
 Hartnett, E., Lei, H., Richert, A., Stahl, A., [A New API for
