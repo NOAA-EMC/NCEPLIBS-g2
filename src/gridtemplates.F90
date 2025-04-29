@@ -66,6 +66,8 @@ contains
   !>
   !> @author Stephen Gilbert @date 2000-05-09
   subroutine getgridtemplate(number, nummap, map, needext, iret)
+
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number
@@ -114,6 +116,8 @@ contains
   !>
   !>    @author Stephen Gilbert @date 2000-05-09
   subroutine extgridtemplate(number, list, nummap, map)
+
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number, list(*)
@@ -159,6 +163,8 @@ contains
   !>
   !> @author Stephen Gilbert @date 2004-05-11
   integer function getgdtlen(number)
+
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number

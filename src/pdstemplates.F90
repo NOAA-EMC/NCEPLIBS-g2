@@ -161,6 +161,8 @@ contains
   !>
   !> @author Stephen Gilbert @date 2004-05-11
   integer function getpdtlen(number)
+
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number
