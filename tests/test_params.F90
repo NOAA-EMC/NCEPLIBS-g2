@@ -7,7 +7,7 @@ program test_params
   implicit none
 
   integer :: g2disc, g2cat, g2num, g1val, g1ver
-  character(len=8) :: abbrev
+  character(len=MAX_ABBREV_LEN) :: abbrev
 
   print *, 'Testing the params module, ignore error messages.'
 

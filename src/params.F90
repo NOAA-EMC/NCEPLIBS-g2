@@ -11,6 +11,8 @@
 !> @author Brent Gordon, Boi Vuong
 module params
 
+  integer, parameter :: MAX_ABBREV_LEN = 11
+
   interface
    function g2c_param_g1tog2(g1num, g1ver, g2disc, g2cat, g2num) bind(c)
     use, intrinsic :: iso_c_binding
@@ -92,16 +94,16 @@ contains
   !> @return parameter abbreviation for GRIB2 info.
   !>
   !> @author Stephen Gilbert @date 2002-01-04
-  character(len = 8) function param_get_abbrev(g2disc, g2cat, g2num)
+  character(len = MAX_ABBREV_LEN) function param_get_abbrev(g2disc, g2cat, g2num)
     use, intrinsic :: iso_c_binding, only : c_char, c_null_char
     implicit none
 
     integer, intent(in) :: g2disc, g2cat, g2num
     integer :: iret, i
-    character(kind=c_char, len=8) :: abbrev
+    character(kind=c_char, len=MAX_ABBREV_LEN) :: abbrev
 
     ! Initialize the output string to avoid undefined behavior
-    param_get_abbrev = "        "
+    param_get_abbrev = REPEAT(' ',MAX_ABBREV_LEN)
 
     ! Call the C function to get the abbreviation
     iret = g2c_param_abbrev(g2disc, g2cat, g2num, abbrev)
