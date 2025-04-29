@@ -11,7 +11,7 @@
 !> @author Brent Gordon, Boi Vuong
 module params
 
-  integer, parameter :: MAX_ABBREV_LEN = 11
+  integer, parameter :: MAX_ABBREV_LEN = 11 !< maximum number of characters in parameter abbreviation
 
   interface
    function g2c_param_g1tog2(g1num, g1ver, g2disc, g2cat, g2num) bind(c)
