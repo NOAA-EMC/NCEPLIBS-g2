@@ -45,32 +45,7 @@
 module pdstemplates
 
   integer, parameter :: MAXLEN = 200 !< MAXLEN max length of entries
-
-  interface
-     function g2c_get_pds_template(number, nummap, map, needext) bind(c)
-      use, intrinsic :: iso_c_binding
-      integer(c_int), value, intent(in) :: number
-      integer(c_int), intent(out) :: nummap
-      integer(c_int), intent(out) :: map(*)
-      integer(c_int), intent(out) :: needext
-      integer(c_int) :: g2c_get_pds_template
-     end function g2c_get_pds_template
-     function g2c_get_pds_template_extension(number, list, extlen, ext) bind(c)
-      use, intrinsic :: iso_c_binding
-      integer(c_int), value, intent(in) :: number
-      integer(c_int), intent(in) :: list(*)
-      integer(c_int), intent(out) :: extlen
-      integer(c_int), intent(out) :: ext(*)
-      integer(c_int) :: g2c_get_pds_template_extension
-     end function g2c_get_pds_template_extension
-     function g2c_get_pdt_len(number, nummap) bind(c)
-      use, intrinsic :: iso_c_binding
-      integer(c_int), value, intent(in) :: number
-      integer(c_int), intent(out) :: nummap
-      integer(c_int) :: g2c_get_pdt_len
-     end function g2c_get_pdt_len
-  end interface
-
+  
 contains
 
   !> This subroutine returns PDS template information for a specified
@@ -101,6 +76,17 @@ contains
     logical, intent(out) :: needext
     integer :: needext_int
 
+    interface
+      function g2c_get_pds_template(number, nummap, map, needext) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: number
+        integer(c_int), intent(out) :: nummap
+        integer(c_int), intent(out) :: map(*)
+        integer(c_int), intent(out) :: needext
+        integer(c_int) :: g2c_get_pds_template
+      end function g2c_get_pds_template
+    end interface
+  
     iret = g2c_get_pds_template(number, nummap, map, needext_int)
 
     if (iret .ne. 0) then
@@ -138,7 +124,18 @@ contains
     integer :: iret, i, extlen, ext(MAXLEN)
     logical :: needext
 
-    iret = g2c_get_pdt_len(number, nummap)
+    interface
+      function g2c_get_pds_template_extension(number, list, extlen, ext) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: number
+        integer(c_int), intent(in) :: list(*)
+        integer(c_int), intent(out) :: extlen
+        integer(c_int), intent(out) :: ext(*)
+        integer(c_int) :: g2c_get_pds_template_extension
+      end function g2c_get_pds_template_extension
+    end interface
+
+    iret = getpdtlen(number)
 
     if (iret .ne. 0) return
     
@@ -169,7 +166,17 @@ contains
     integer, intent(in) :: number
     integer :: iret, nummap
 
+    interface
+      function g2c_get_pdt_len(number, nummap) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: number
+        integer(c_int), intent(out) :: nummap
+        integer(c_int) :: g2c_get_pdt_len
+      end function g2c_get_pdt_len
+    end interface
+
     getpdtlen = 0
+    
     iret = g2c_get_pdt_len(number, nummap)
     if (iret .ne. 0) return
 

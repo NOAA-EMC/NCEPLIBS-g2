@@ -39,17 +39,6 @@
 module drstemplates
   implicit none
 
-  interface
-     function g2c_get_drs_template(number, nummap, map, needext) bind(c)
-      use, intrinsic :: iso_c_binding
-      integer(c_int), value, intent(in) :: number
-      integer(c_int), intent(out) :: nummap
-      integer(c_int), intent(out) :: map(*)
-      integer(c_int), intent(out) :: needext
-      integer(c_int) :: g2c_get_drs_template
-     end function g2c_get_drs_template
-  end interface
-
 contains
 
   !> Return DRS template information for a specified Data
@@ -80,6 +69,17 @@ contains
     integer, intent(out) :: nummap, map(*), iret
     logical, intent(out) :: needext
     integer :: needext_int
+
+    interface
+      function g2c_get_drs_template(number, nummap, map, needext) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: number
+        integer(c_int), intent(out) :: nummap
+        integer(c_int), intent(out) :: map(*)
+        integer(c_int), intent(out) :: needext
+        integer(c_int) :: g2c_get_drs_template
+      end function g2c_get_drs_template
+    end interface
 
     iret = g2c_get_drs_template(number, nummap, map, needext_int)
 
