@@ -40,9 +40,8 @@ module drstemplates
   implicit none
 
   interface
-    !>
      function g2c_get_drs_template(number, nummap, map, needext) bind(c)
-      use, intrinsic :: iso_c_binding
+      use iso_c_binding
       integer(c_int), value, intent(in) :: number
       integer(c_int), intent(out) :: nummap
       integer(c_int), intent(out) :: map(*)
