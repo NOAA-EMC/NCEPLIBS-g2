@@ -92,6 +92,7 @@ contains
   !>
   !> @author  Stephen Gilbert  @date 2000-05-11
   subroutine getpdstemplate(number, nummap, map, needext, iret)
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number
@@ -127,6 +128,7 @@ contains
   !>
   !> @author Stephen Gilbert @date 2000-05-11
   subroutine extpdstemplate(number, list, nummap, map)
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number, list(*)
@@ -160,6 +162,7 @@ contains
   !>
   !> @author Stephen Gilbert @date 2004-05-11
   integer function getpdtlen(number)
+    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number
