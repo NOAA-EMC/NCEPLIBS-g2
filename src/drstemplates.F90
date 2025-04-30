@@ -40,6 +40,7 @@ module drstemplates
   implicit none
 
   interface
+    !>
      function g2c_get_drs_template(number, nummap, map, needext) bind(c)
       use, intrinsic :: iso_c_binding
       integer(c_int), value, intent(in) :: number
@@ -72,7 +73,6 @@ contains
   !>
   !> @author Stephen Gilbert @date 2000-05-11
   subroutine getdrstemplate(number, nummap, map, needext, iret)
-    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number
