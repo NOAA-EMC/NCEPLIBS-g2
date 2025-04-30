@@ -135,9 +135,9 @@ contains
     integer :: iret, i, extlen, ext(MAXLEN)
     logical :: needext
 
-    iret = getgdtlen(number)
+    nummap = getgdtlen(number)
 
-    if (iret .ne. 0) return
+    if (nummap .eq. 0) return
 
     call getgridtemplate(number, nummap, map(1:nummap), needext, iret)
 

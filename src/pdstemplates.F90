@@ -136,9 +136,9 @@ contains
     integer :: iret, i, extlen, ext(MAXLEN)
     logical :: needext
 
-    iret = getpdtlen(number)
+    nummap = getpdtlen(number)
 
-    if (iret .ne. 0) return
+    if (nummap .eq. 0) return
     
     call getpdstemplate(number, nummap, map(1:nummap), needext, iret)
 
@@ -162,7 +162,6 @@ contains
   !>
   !> @author Stephen Gilbert @date 2004-05-11
   integer function getpdtlen(number)
-    use, intrinsic :: iso_c_binding
     implicit none
 
     integer, intent(in) :: number
