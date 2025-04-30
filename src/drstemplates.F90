@@ -37,8 +37,6 @@
 !>
 !> @author Stephen Gilbert @date 2001-04-03
 module drstemplates
-  implicit none
-
   interface
      function g2c_get_drs_template(number, nummap, map, needext) bind(c)
       use, intrinsic :: iso_c_binding
