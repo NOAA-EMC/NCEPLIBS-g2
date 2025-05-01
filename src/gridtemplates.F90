@@ -43,31 +43,6 @@ module gridtemplates
   integer, parameter :: MAXLEN = 200 !< maximum number of octets in mapgrid
   integer, parameter :: MAXTEMP = 31 !< maximum number of entries in the template
 
-  interface
-     function g2c_get_grid_template(number, nummap, map, needext) bind(c)
-      use, intrinsic :: iso_c_binding
-      integer(c_int), value, intent(in) :: number
-      integer(c_int), intent(out) :: nummap
-      integer(c_int), intent(out) :: map(*)
-      integer(c_int), intent(out) :: needext
-      integer(c_int) :: g2c_get_grid_template
-     end function g2c_get_grid_template
-     function g2c_get_grid_template_extension(number, list, extlen, ext) bind(c)
-      use, intrinsic :: iso_c_binding
-      integer(c_int), value, intent(in) :: number
-      integer(c_int), intent(in) :: list(*)
-      integer(c_int), intent(out) :: extlen
-      integer(c_int), intent(out) :: ext(*)
-      integer(c_int) :: g2c_get_grid_template_extension
-     end function g2c_get_grid_template_extension
-     function g2c_get_gdt_len(number, nummap) bind(c)
-      use, intrinsic :: iso_c_binding
-      integer(c_int), value, intent(in) :: number
-      integer(c_int), intent(out) :: nummap
-      integer(c_int) :: g2c_get_gdt_len
-     end function g2c_get_gdt_len
-  end interface
-
 contains
 
   !> Get the grid template information for a specified Grid Definition
@@ -97,6 +72,17 @@ contains
     integer, intent(out) :: nummap, map(*), iret
     logical, intent(out) :: needext
     integer :: needext_int
+
+    interface
+      function g2c_get_grid_template(number, nummap, map, needext) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: number
+        integer(c_int), intent(out) :: nummap
+        integer(c_int), intent(out) :: map(*)
+        integer(c_int), intent(out) :: needext
+        integer(c_int) :: g2c_get_grid_template
+      end function g2c_get_grid_template
+    end interface
 
     iret = g2c_get_grid_template(number, nummap, map, needext_int)
 
@@ -135,6 +121,17 @@ contains
     integer :: iret, i, extlen, ext(MAXLEN)
     logical :: needext
 
+    interface
+      function g2c_get_grid_template_extension(number, list, extlen, ext) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: number
+        integer(c_int), intent(in) :: list(*)
+        integer(c_int), intent(out) :: extlen
+        integer(c_int), intent(out) :: ext(*)
+        integer(c_int) :: g2c_get_grid_template_extension
+      end function g2c_get_grid_template_extension
+    end interface
+
     nummap = getgdtlen(number)
 
     if (nummap .eq. 0) return
@@ -166,6 +163,15 @@ contains
 
     integer, intent(in) :: number
     integer :: iret, nummap
+
+    interface
+      function g2c_get_gdt_len(number, nummap) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: number
+        integer(c_int), intent(out) :: nummap
+        integer(c_int) :: g2c_get_gdt_len
+      end function g2c_get_gdt_len
+    end interface
 
     getgdtlen = 0
     iret = g2c_get_gdt_len(number, nummap)

@@ -13,35 +13,6 @@ module params
 
   integer, parameter :: MAX_ABBREV_LEN = 11 !< maximum number of characters in parameter abbreviation
 
-  interface
-   function g2c_param_g1tog2(g1num, g1ver, g2disc, g2cat, g2num) bind(c)
-    use, intrinsic :: iso_c_binding
-    integer(c_int), value, intent(in) :: g1num
-    integer(c_int), value, intent(in) :: g1ver
-    type(c_ptr), intent(out) :: g2disc
-    type(c_ptr), intent(out) :: g2cat
-    type(c_ptr), intent(out) :: g2num
-    integer(c_int) :: g2c_param_g1tog2
-   end function g2c_param_g1tog2
-   function g2c_param_abbrev(g2disc, g2cat, g2num, abbrev) bind(c)
-    use, intrinsic :: iso_c_binding
-    integer(c_int), value, intent(in) :: g2disc
-    integer(c_int), value, intent(in) :: g2cat
-    integer(c_int), value, intent(in) :: g2num
-    character(kind=c_char), intent(out) :: abbrev(*)
-    integer(c_int) :: g2c_param_abbrev
-   end function g2c_param_abbrev
-   function g2c_param_g2tog1(g2disc, g2cat, g2num, g1num, g1ver) bind(c)
-    use, intrinsic :: iso_c_binding
-    integer(c_int), value, intent(in) :: g2disc
-    integer(c_int), value, intent(in) :: g2cat
-    integer(c_int), value, intent(in) :: g2num
-    type(c_ptr), intent(out) :: g1num
-    type(c_ptr), intent(out) :: g1ver
-    integer(c_int) :: g2c_param_g2tog1
-   end function g2c_param_g2tog1
-  end interface
-
 contains
 
   !> This subroutine returns the corresponding GRIB2 Discipline
@@ -65,6 +36,18 @@ contains
     integer, intent(out) :: g2disc, g2cat, g2num
     type(c_ptr) :: g2disc_ptr, g2cat_ptr, g2num_ptr
     integer :: iret
+
+    interface
+      function g2c_param_g1tog2(g1num, g1ver, g2disc, g2cat, g2num) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: g1num
+        integer(c_int), value, intent(in) :: g1ver
+        type(c_ptr), intent(out) :: g2disc
+        type(c_ptr), intent(out) :: g2cat
+        type(c_ptr), intent(out) :: g2num
+        integer(c_int) :: g2c_param_g1tog2
+      end function g2c_param_g1tog2
+    end interface
 
     g2disc = 255
     g2cat = 255
@@ -102,6 +85,17 @@ contains
     integer :: iret, i
     character(kind=c_char, len=MAX_ABBREV_LEN) :: abbrev
 
+    interface
+      function g2c_param_abbrev(g2disc, g2cat, g2num, abbrev) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: g2disc
+        integer(c_int), value, intent(in) :: g2cat
+        integer(c_int), value, intent(in) :: g2num
+        character(kind=c_char), intent(out) :: abbrev(*)
+        integer(c_int) :: g2c_param_abbrev
+      end function g2c_param_abbrev
+    end interface
+    
     ! Initialize the output string to avoid undefined behavior
     param_get_abbrev = REPEAT(' ',MAX_ABBREV_LEN)
 
@@ -138,6 +132,18 @@ contains
     integer, intent(out) :: g1val, g1ver
     type(c_ptr) :: g1val_ptr, g1ver_ptr
     integer :: iret
+
+    interface
+      function g2c_param_g2tog1(g2disc, g2cat, g2num, g1num, g1ver) bind(c)
+        use, intrinsic :: iso_c_binding
+        integer(c_int), value, intent(in) :: g2disc
+        integer(c_int), value, intent(in) :: g2cat
+        integer(c_int), value, intent(in) :: g2num
+        type(c_ptr), intent(out) :: g1num
+        type(c_ptr), intent(out) :: g1ver
+        integer(c_int) :: g2c_param_g2tog1
+      end function g2c_param_g2tog1
+    end interface
 
     g1val = 255
     g1ver = 255
