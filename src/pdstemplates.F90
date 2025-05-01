@@ -38,8 +38,8 @@
 !> ### Program History Log
 !> Date | Programmer | Comments
 !> -----|------------|---------
-!> 2003-05-11 | Gilbert | Initial
-!> 2025-01-21 | Stahl | Replaced subroutines w/ call to g2c, removed template array
+!> 2000-05-11 | Gilbert | Initial
+!> 2025-04-10 | Stahl | Replaced subroutines w/ call to g2c, removed template array
 !>
 !> @author Stephen Gilbert @date 2000-05-11
 module pdstemplates

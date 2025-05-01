@@ -36,6 +36,12 @@
 !> store the data value in this case would be the absolute value of the
 !> negative value in mapgrid.
 !>
+!> ### Program History Log
+!> Date | Programmer | Comments
+!> -----|------------|---------
+!> 2000-05-09 | Gilbert | Initial
+!> 2025-04-10 | Stahl | Replaced subroutines w/ call to g2c, removed template array
+!>
 !> @author Stephen Gilbert @date 2000-05-09
 module gridtemplates
   implicit none
