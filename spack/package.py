@@ -62,7 +62,7 @@ class G2(CMakePackage):
     depends_on("jasper@:2.0.32", when="@:3.4.7")
     depends_on("jasper")
     depends_on("g2c@2.2.0:", when="@develop")
-    depends_on("g2c@2.0.0 +aec", when="+aec")
+    depends_on("g2c@2.0.0: +aec", when="+aec")
     depends_on("libpng")
     depends_on("zlib-api", when="@develop")
     depends_on("bacio", when="@3.4.6:")
