@@ -5,10 +5,13 @@ program test_makwmo
     character(len = 6) :: BULHED = "YAAK37"
     character(len = 4) :: KWBX = "KWBB"
     integer :: IDAY = 28, IHOUR = 0, IMIN = 0
-    character(21) :: HEADER
+    character(*) :: HEADER, EXP_HEADER = "YAAK37 KWBB 280000"
     
     call makwmo(BULHED, IDAY, IHOUR, IMIN, KWBX, HEADER)
 
-    print *, HEADER
-    
+    if (trim(HEADER) .ne. EXP_HEADER) stop 10
+
+  print *, 'OK!'
+  print *, 'SUCCESS!'
+
 end program test_makwmo
