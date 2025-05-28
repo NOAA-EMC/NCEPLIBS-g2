@@ -5,7 +5,7 @@ program test_makwmo
     character(len = 6) :: BULHED = "YAAK37"
     character(len = 4) :: KWBX = "KWBB"
     integer :: IDAY = 28, IHOUR = 0, IMIN = 0
-    character(*21) :: HEADER
+    character(21) :: HEADER
     
     call makwmo(BULHED, IDAY, IHOUR, IMIN, KWBX, HEADER)
 
