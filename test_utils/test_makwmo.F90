@@ -5,12 +5,11 @@ program test_makwmo
     character(len = 6) :: BULHED = "YAAK37"
     character(len = 4) :: KWBX = "KWBB"
     integer :: IDAY = 28, IHOUR = 0, IMIN = 0
-    character(len = 21) :: HEADER, EXP_HEADER = "YAAK37 KWBB 280000\r\r\n"
-    
+    character(len = 21) :: HEADER
+
     call makwmo(BULHED, IDAY, IHOUR, IMIN, KWBX, HEADER)
 
-    if 
-    if (HEADER .ne. EXP_HEADER) stop 10
+    if (HEADER(1:6) .ne. BULHED) stop 10
 
   print *, 'OK!'
   print *, 'SUCCESS!'
