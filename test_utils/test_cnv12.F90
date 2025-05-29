@@ -14,6 +14,7 @@ program test_cnv12
    integer :: i, iret
 
    print *, 'testing with Lat/lon grid...'
+   igdstmpl = 0
    call gds2gdt(kgds, igds, igdstmpl, idefnum, ideflist, iret)
 
    if (iret .ne. 0) stop 11
