@@ -20,7 +20,12 @@ program test_cnv12
    if (igds(2) .ne. exp_ngrd) stop 21
    if (igds(5) .ne. 0) stop 31
    do i = 1, MAXIGDS
-      if (igdstmpl(i) .ne. exp_gds_latlon(i)) stop 41
+      if (igdstmpl(i) .ne. exp_gds_latlon(i)) then
+         print *, i
+         print *, igdstmpl(i)
+         print *, exp_gds_latlon(i)
+         stop 41
+      endif
    end do
 
    print *, 'SUCCESS!'
