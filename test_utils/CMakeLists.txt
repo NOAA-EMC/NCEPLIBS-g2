@@ -10,6 +10,9 @@ if(BUILD_4)
   add_test(NAME test_degrib2_int COMMAND test_degrib2_int)
 endif()
 
+add_executable(test_cnv12 test_cnv12.F90 ${CMAKE_SOURCE_DIR}/utils/cnv12.F90)
+add_test(NAME test_cnv12 COMMAND test_cnv12)
+
 # Run each shell test.
 function(gu_test name)
   # Copy the test scripts.
