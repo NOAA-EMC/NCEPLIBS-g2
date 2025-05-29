@@ -10,6 +10,8 @@ program test_makwmo
     call makwmo(BULHED, IDAY, IHOUR, IMIN, KWBX, HEADER)
 
     if (HEADER(1:6) .ne. BULHED) stop 10
+    if (HEADER(8:11) .ne. KWBX) stop 11
+    if (HEADER(13:18) .ne. "280000") stop 12
 
   print *, 'OK!'
   print *, 'SUCCESS!'
