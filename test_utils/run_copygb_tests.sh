@@ -7,6 +7,24 @@ set -e
 echo ""
 echo "*** Running copygb test"
 
+# Invalid option error.
+../utils/copygb - && exit 1
+
+# Invalid threshold 
+../utils/copygb -A data/ref_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave_2.grib1 && exit 1
+
+# Invalid output grid
+../utils/copygb -g256 data/ref_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave_2.grib1 && exit 1
+
+# Another invalid option
+../utils/copygb -z data/ref_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave_2.grib1 && exit 1
+
+# Incorrect number of arguments
+../utils/copygb -g data/ref_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave_2.grib1 && exit 1
+
+# Error accessing file
+../utils/copygb -x data/missing.grib1 && exit 1
+
 # Copy GRIB1 file.
 ../utils/copygb -x data/ref_gdaswave.t00z.wcoast.0p16.f000.grib1 test_gdaswave_2.grib1
 
