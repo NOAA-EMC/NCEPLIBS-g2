@@ -8,8 +8,13 @@ program test_cnv12
    integer :: kgds(MAXKGDS) = (/ 0, 1000, 1000, 1, 1, 136, 1, 1, 1, 1, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0 /)
    integer :: exp_gds_latlon(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 0, 0, 1000, 1000, 56, 1000, 1000, 1000, &
       1000, 1000, 0, 0, 0 /)
-   integer :: exp_gds_mercator(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 0, 0, 56, 1000, 1000, 1000, 1000, 0, &
-      1000, 1000, 0, 0, 0 /)
+   integer :: exp_gds_mercator(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 1000, 1000, 56, 1000, 1000, 1000, 1000, 0, 1000, 1000, 0, 0, 0 /)
+   integer :: exp_gds_lambert(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 1000, 1000, 56, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 /)
+   integer :: exp_gds_gaussian(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 0, 0, 1000, 1000, 56, 1000, 1000, 1000, 1000, 1000, 0, 0, 0/)
+   integer :: exp_gds_polar(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 1000, 1000, 56, -60000000, 1000, 1000, 1000, 1000, 1000, 0, 0, 0, 0/)
+   integer :: exp_gds_curvilinear(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 0, 0, 0, 0, 56, 0, 0, 0, 0, 1000, 0, 0, 0 /)
+   integer :: exp_gds_rotlatlon(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 0, 0, 1000, 1000, 56, 1000, 1000, 1000, 1000, 1000, 0, 0, 0/)
+   integer :: exp_gds_rotlatlon2(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 0, 0, 1000, 1000, 56, 1000, 1000, 1000, 1000, 1000, 1000, 0/)
    integer :: exp_ngrd = 1000000, exp_ngrdi = 65535
    integer :: exp_gdt_latlon = 0, exp_gdt_merc = 10, exp_gdt_lamb = 30, exp_gdt_gauss = 40, exp_gdt_polar = 20, &
       exp_gdt_curv = 204, exp_gdt_rot = 32768, exp_gdt_rot2 = 32769 
@@ -39,7 +44,7 @@ program test_cnv12
    if (igds(2) .ne. exp_ngrd) stop 22
    if (igds(5) .ne. exp_gdt_merc) stop 32
    do i = 1, MAXIGDS
-      print *, igdstmpl(i)
+      if (igdstmpl(i) .ne. exp_gds_mercator(i)) stop 42
    end do
 
    print *, 'testing with Lambert conformal grid...'
@@ -54,7 +59,7 @@ program test_cnv12
    if (igds(2) .ne. exp_ngrd) stop 23
    if (igds(5) .ne. exp_gdt_lamb) stop 33
    do i = 1, MAXIGDS
-      print *, igdstmpl(i)
+      if (igdstmpl(i) .ne. exp_gds_lambert(i)) stop 43
    end do
 
    print *, 'testing with Gaussian grid...'
@@ -71,7 +76,7 @@ program test_cnv12
    if (igds(2) .ne. exp_ngrd) stop 24
    if (igds(5) .ne. exp_gdt_gauss) stop 34
    do i = 1, MAXIGDS
-      print *, igdstmpl(i)
+      if (igdstmpl(i) .ne. exp_gds_gaussian(i)) stop 44
    end do
 
    print *, 'testing with polar stereographic grid...'
@@ -83,7 +88,7 @@ program test_cnv12
    if (igds(2) .ne. exp_ngrd) stop 24
    if (igds(5) .ne. exp_gdt_polar) stop 34
    do i = 1, MAXIGDS
-      print *, igdstmpl(i)
+      if (igdstmpl(i) .ne. exp_gds_polar(i)) stop 44
    end do
 
    print *, 'testing with curvilinear orthogonal grid...'
@@ -101,7 +106,7 @@ program test_cnv12
    if (igds(2) .ne. exp_ngrd) stop 25
    if (igds(5) .ne. exp_gdt_curv) stop 35
    do i = 1, MAXIGDS
-      print *, igdstmpl(i)
+      if (igdstmpl(i) .ne. exp_gds_curvilinear(i)) stop 45
    end do
 
    print *, 'testing with rotate lat/lon grid...'
@@ -119,7 +124,7 @@ program test_cnv12
    if (igds(2) .ne. exp_ngrd) stop 26
    if (igds(5) .ne. exp_gdt_rot) stop 36
    do i = 1, MAXIGDS
-      print *, igdstmpl(i)
+      if (igdstmpl(i) .ne. exp_gds_rotlatlon(i)) stop 46
    end do
 
    print *, 'testing with second rotate lat/lon grid...'
@@ -133,7 +138,7 @@ program test_cnv12
    if (igds(2) .ne. exp_ngrd) stop 27
    if (igds(5) .ne. exp_gdt_rot2) stop 37
    do i = 1, MAXIGDS
-      print *, igdstmpl(i)
+      if (igdstmpl(i) .ne. exp_gds_rotlatlon2(i)) stop 47
    end do
 
    print *, 'testing with incorrect grid number...'
