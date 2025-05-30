@@ -9,10 +9,14 @@ if(BUILD_4)
   target_link_libraries(test_degrib2_int PUBLIC ${PROJECT_NAME}_4)
   add_test(NAME test_degrib2_int COMMAND test_degrib2_int)
 
-  # This fortran test is for the internals of cnvgrib.
+  # These fortran tests are for the internals of cnvgrib.
   add_executable(test_cnv12 test_cnv12.F90 ${CMAKE_SOURCE_DIR}/utils/cnv12.F90)
   target_link_libraries(test_cnv12 PUBLIC ${PROJECT_NAME}_4)
   add_test(NAME test_cnv12 COMMAND test_cnv12)
+
+  add_executable(test_gds2gdt test_gds2gdt.F90 ${CMAKE_SOURCE_DIR}/utils/cnv12.F90)
+  target_link_libraries(test_gds2gdt PUBLIC ${PROJECT_NAME}_4)
+  add_test(NAME test_gds2gdt COMMAND test_gds2gdt)
 endif()
 
 # Run each shell test.
