@@ -3,7 +3,7 @@
 ! This program tests the gds2gdt subroutine in cnv12.F90.
 !
 ! Alyson Stahl, 5/29/25
-program test_cnv12
+program test_gds2gdt
    implicit none
    integer, parameter :: MAXKGDS = 22, MAXIGDS = 22, MAXLEN = 200
    integer :: igds(5), igdstmpl(MAXIGDS), ideflist(1), idefnum
@@ -157,4 +157,4 @@ program test_cnv12
    if (iret .ne. 1) stop 4
 
    print *, 'SUCCESS!'
-end program test_cnv12
+end program test_gds2gdt
