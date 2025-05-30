@@ -21,7 +21,7 @@ program test_cnv12
    integer :: exp_gds_rotlatlon(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 0, 0, 1000, 1000, 56, 1000, 1000, 1000, &
       1000, 1000, 0, 0, 0/)
    integer :: exp_gds_rotlatlon2(MAXIGDS) = (/ 0, 0, 0, 0, 0, 0, 0, 1000, 1000, 0, 0, 1000, 1000, 56, 1000, 1000, 1000, &
-      1000, 1000, 1000, 0/)
+      1000, 1000, 1000, 1000, 0/)
    integer :: exp_ngrd = 1000000, exp_ngrdi = 65535
    integer :: exp_gdt_latlon = 0, exp_gdt_merc = 10, exp_gdt_lamb = 30, exp_gdt_gauss = 40, exp_gdt_polar = 20, &
       exp_gdt_curv = 204, exp_gdt_rot = 32768, exp_gdt_rot2 = 32769 
