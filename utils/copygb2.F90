@@ -174,11 +174,11 @@ PROGRAM COPYGB2
   DATA IDS/255*-9999/,IBS/255*-9999/,NBS/255*-9999/
 
   !  PARSE COMMAND LINE OPTIONS
-  NARG=IARGC()
+  NARG=command_argument_count()
   IARG=1
   LSTOPT=0
   DO WHILE(IARG.LE.NARG.AND.LSTOPT.EQ.0)
-     CALL GETARG(IARG,CARG)
+     CALL get_command_argument(IARG,CARG)
      LARG=LEN_TRIM(CARG)
      IARG=IARG+1
      IF(CARG(1:1).NE.'-') THEN
@@ -198,7 +198,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'A') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -222,7 +222,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'B') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -235,7 +235,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'b') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -248,7 +248,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'g') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -279,7 +279,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'i') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -292,7 +292,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'K') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -311,7 +311,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'k') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -330,7 +330,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'M') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -347,7 +347,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'m') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -357,7 +357,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'N') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -370,7 +370,7 @@ PROGRAM COPYGB2
            ELSEIF(CARG(L:L).EQ.'v') THEN
               IF(L.EQ.LARG) THEN
                  L=0
-                 CALL GETARG(IARG,CARG)
+                 CALL get_command_argument(IARG,CARG)
                  LARG=LEN_TRIM(CARG)
                  IARG=IARG+1
               ENDIF
@@ -401,7 +401,7 @@ PROGRAM COPYGB2
      CALL EUSAGE
      CALL ERREXIT(NXARG)
   ENDIF
-  CALL GETARG(IARG,CG1)
+  CALL get_command_argument(IARG,CG1)
   LCG1=LEN_TRIM(CG1)
   IARG=IARG+1
   LG1=11
@@ -411,7 +411,7 @@ PROGRAM COPYGB2
      CALL ERREXIT(8)
   ENDIF
   IF(LX.GT.0) THEN
-     CALL GETARG(IARG,CX1)
+     CALL get_command_argument(IARG,CX1)
      LCX1=LEN_TRIM(CX1)
      IARG=IARG+1
      LX1=31
@@ -423,7 +423,7 @@ PROGRAM COPYGB2
   ELSE
      LX1=0
   ENDIF
-  CALL GETARG(IARG,CG2)
+  CALL get_command_argument(IARG,CG2)
   LCG2=LEN_TRIM(CG2)
   IARG=IARG+1
   IF(CG2(1:LCG2).EQ.'-') THEN

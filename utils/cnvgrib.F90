@@ -34,7 +34,7 @@ program cnvgrib
   integer :: inver = 0, outver = 0, ipack = -1
   character(len = 500) :: gfilein, gfileout, copt
   character(len = 2) :: master_table_ver, curmastertab_ver
-  INTEGER(4) NARG, IARGC, table_ver, mastertab
+  INTEGER(4) NARG, table_ver, mastertab
   logical :: usemiss = .false., uvvect = .true.
   !
   !     Set current Master table version 2
@@ -44,7 +44,7 @@ program cnvgrib
   mastertab = 21    ! WMO GRIB2 version 21 (released in May 2, 2018)
 
   !  GET ARGUMENTS
-  NARG = IARGC()
+  NARG = command_argument_count()
   IF (NARG .lt. 3) THEN       ! may be a problem with args
      IF (NARG .eq. 0) THEN
         !CALL ERRMSG('cnvgrib:  Incorrect usage')
@@ -52,7 +52,7 @@ program cnvgrib
         CALL ERREXIT(2)
      ELSE                !  look for -h "help" option
         do j = 1, NARG
-           call getarg(j, copt)
+           call get_command_argument(j, copt)
            if (copt .eq. '-h' .or. copt .eq. '-help') then
               call usage(1)
               CALL ERREXIT(0)
@@ -64,7 +64,7 @@ program cnvgrib
   ELSE
      j = 1
      do while (j.le.NARG-2)        ! parse first narg-2 args
-        call getarg(j, copt)
+        call get_command_argument(j, copt)
         j = j+1
         selectcase(copt)
         case('-g12')
@@ -187,8 +187,8 @@ program cnvgrib
      !
      !   get filenames from last two arguments
      !
-     CALL GETARG(NARG-1, gfilein)
-     CALL GETARG(NARG, gfileout)
+     CALL get_command_argument(NARG-1, gfilein)
+     CALL get_command_argument(NARG, gfileout)
      !
      !   If -p option specified, must be writing out grib2
      !

@@ -14,7 +14,7 @@
 !> @author Iredell @date 1992-11-22
 program grb2index
   implicit none
-  integer narg, iargc
+  integer narg
   character cgb * 256, cgi * 256
   character cidxver * 1
   integer :: idxver = 2
@@ -32,7 +32,7 @@ program grb2index
   end interface
   
   ! Get arguments.
-  narg = iargc()
+  narg = command_argument_count()
   if (narg .ne. 2 .and. narg .ne. 3) then
      call errmsg('grb2index:  Incorrect usage')
      call errmsg('Usage: grb2index gribfile indexfile')
@@ -40,12 +40,12 @@ program grb2index
      call exit(2)
   endif
   if (narg .eq. 3) then
-     call getarg(1, cidxver)
+     call get_command_argument(1, cidxver)
      read(cidxver, '(i1)') idxver
      argnum = 1
   end if
-  call getarg(argnum + 1, cgb)
-  call getarg(argnum + 2, cgi)
+  call get_command_argument(argnum + 1, cgb)
+  call get_command_argument(argnum + 2, cgi)
 
   ! Open binary GRIB2 file for input.
   call baopenr(lugb, trim(cgb), ios)
