@@ -34,6 +34,7 @@ jobs:
     - name: "Install Intel"
       uses: NOAA-EMC/ci-install-intel-toolkit@develop
       with:
+        oneapi-version: 2023.2.1
         compiler-setup: ${{ matrix.compilers }}
 
     - name: install-dependencies
