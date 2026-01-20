@@ -180,7 +180,7 @@ program test_gettemplates
 
   ! Bad section 4, ierr should be 11
   old_val = fgrib(138)
-  fgrib(138) = char(99)
+  fgrib(138) = char(64)
   call gettemplates(fgrib, lengrib, 1, igds, igdstmpl, &
   idgslen, ideflist, idefnum, ipdsnum, ipdstmpl, &
   ipdslen, coordlist, numcoord, ierr)

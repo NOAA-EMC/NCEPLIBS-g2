@@ -7,7 +7,6 @@ program test_pdstemplates
   use pdstemplates
   implicit none
 
-  integer :: idx
   integer :: nummap
   integer :: iret, i
   logical :: needext
@@ -21,14 +20,6 @@ program test_pdstemplates
   exp_extmap53, exp_extmap54, exp_extmap57, exp_extmap61, exp_extmap91
 
   print *, 'Testing pdstemplates, expect and ignore error messages...'
-
-  print *, 'Testing getpdsindex() ...'
-  ! Fortran is base 1, so index 0 should = 1
-  idx = getpdsindex(0)
-  if (idx .ne. 1) stop 3
-  ! Index -1 will still equal -1 because it doesn't exist
-  idx = getpdsindex(-1)
-  if (idx .ne. -1) stop 4
 
   print *, 'testing getpdstemplate() ...'
   pdtlen = getpdtlen(0)
@@ -183,8 +174,8 @@ program test_pdstemplates
   exp_extmap51(1:22) = (/1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, -1, -4, -1, -4/)
   exp_extmap53(1:20) = (/1, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1/)
   exp_extmap54(1:23) = (/1, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, 1/)
-  exp_extmap91(1:43) = (/1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, -1, -4, -1, -4, 2, 1, 1, 1, 1, 1, 1, 4, &
-      1, 1, 1, 4, 1, 4, 1, 1, 1, 4, 1, 4, 1/)
+  exp_extmap91(1:44) = (/1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, -1, -4, -1, -4, 2, 1, 1, 1, 1, 1, 1, 4, &
+      1, 1, 1, 4, 1, 4, 1, 1, 1, 4, 1, 4, 1, 1/)
   exp_extmap57(1:22) = (/1, 1, 2, 2, 2, 2, 1, 1, -4, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4/)
   exp_extmap61(1:44) = (/1, 1, 1, 1, 1, 2, 1, 1, -4, 1, -1, -4, 1, -1, -4, 1, 1, 1, 2, 1, 1, 1, 1, &
       1, 2, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 4, 1, 1, 1, 4, 1, 4/)
@@ -451,9 +442,11 @@ program test_pdstemplates
   do i = 1, nummap
     if (list(i) .ne. exp_map91(i)) stop 82
   end do
+  list(16) = 2
   list(29) = 2
+  list(30) = 2
   call extpdstemplate(91, list, nummap, map)
-  if (nummap .ne. 43) stop 142
+  if (nummap .ne. 44) stop 142
   do i = 1, nummap
     if (map(i) .ne. exp_extmap91(i)) stop 143
   end do

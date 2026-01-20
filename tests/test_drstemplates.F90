@@ -6,7 +6,7 @@ program test_drstemplates
   use drstemplates
   implicit none
 
-  integer :: index, nummap, iret
+  integer :: nummap, iret
   logical :: needext
   integer, parameter :: max_map = 5
   integer :: map(max_map)
@@ -14,12 +14,6 @@ program test_drstemplates
   integer :: map1(max_map)
 
   print *, 'Testing the drstemplates module.'
-
-  print *, 'Testing getdrsindex...'
-  index = getdrsindex(0)
-  if (index .ne. 1) stop 2
-  index = getdrsindex(41)
-  if (index .ne. 9) stop 3
   
   print *, 'Testing getdrstemplate...'
   call getdrstemplate(0, nummap, map, needext, iret)

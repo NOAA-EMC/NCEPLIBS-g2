@@ -34,7 +34,7 @@ jobs:
         bacio-version: [2.4.1, 2.6.0]
         w3emc-version: [2.9.2, 2.10.0]
         ip-version: [develop, v5.0.0]
-        g2c-version: [develop, v2.0.0]
+        g2c-version: [develop, v2.2.0]
         build-utils: [ON, OFF]
         exclude:
           # utils require w3emc version >= 2.10.0
