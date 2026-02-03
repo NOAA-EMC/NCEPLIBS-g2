@@ -1,17 +1,20 @@
-# Copyright 2013-2024 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
+# Copyright Spack Project Developers. See COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
+
+from spack_repo.builtin.build_systems.cmake import CMakePackage
 
 from spack.package import *
 
 
 class G2(CMakePackage):
-    """Utilities for coding/decoding GRIB2 messages. This library contains
-    Fortran 90 decoder/encoder routines for GRIB edition 2, as well as
-    indexing/searching utility routines.
+    """Utilities for coding/decoding GRIB2 messages.
 
-    This is part of the NCEPLIBS project."""
+    This library contains Fortran 90 decoder/encoder routines for GRIB edition 2,
+    as well as indexing/searching utility routines.
+
+    This is part of the NCEPLIBS project.
+    """
 
     homepage = "https://noaa-emc.github.io/NCEPLIBS-g2"
     url = "https://github.com/NOAA-EMC/NCEPLIBS-g2/archive/refs/tags/v3.4.3.tar.gz"
@@ -19,7 +22,10 @@ class G2(CMakePackage):
 
     maintainers("AlexanderRichert-NOAA", "Hang-Lei-NOAA", "edwardhartnett")
 
+    license("LGPL-3.0")
+
     version("develop", branch="develop")
+    version("4.0.0", sha256="9559590b021ac0be462d975dddb92b0a1e368071aa6b13d59ce35dad8a4649fd")
     version("3.5.1", sha256="a9acdb5d23eca532838f21c4a917727ac85851fc9e1f100d65a6f27c1a563998")
     version("3.5.0", sha256="3ff59a705bedf56061bba2d667a04391d82701847f93ea5fa1c1d3bd335d07da")
     version("3.4.9", sha256="6edc33091f6bd2acb191182831499c226a1c3992c3acc104d6363528b12dfbae")
@@ -28,9 +34,6 @@ class G2(CMakePackage):
     version("3.4.6", sha256="c4b03946365ce0bacf1e10e8412a5debd72d8671d1696aa4fb3f3adb119175fe")
     version("3.4.5", sha256="c18e991c56964953d778632e2d74da13c4e78da35e8d04cb742a2ca4f52737b6")
     version("3.4.3", sha256="679ea99b225f08b168cbf10f4b29f529b5b011232f298a5442ce037ea84de17c")
-
-    depends_on("c", type="build")
-    depends_on("fortran", type="build")
 
     variant("pic", default=True, description="Build with position-independent-code")
     variant(
@@ -42,41 +45,40 @@ class G2(CMakePackage):
         when="@3.4.6:",
     )
     variant("w3emc", default=True, description="Enable GRIB1 through w3emc", when="@3.4.6:")
-    variant("aec", default=True, description="Use AEC library", when="@develop")
-    variant("shared", default="False", description="Build shared library", when="@3.4.7:")
-    variant("openmp", default=False, description="Use OpenMP multithreading", when="@develop")
-    variant("utils", default=False, description="Build grib utilities", when="@develop")
+    variant("shared", default=False, description="Build shared library", when="@3.4.7:")
+    variant("aec", default=True, description="Use AEC library", when="@4:")
+    variant("openmp", default=False, description="Use OpenMP multithreading", when="@4:")
+    variant("utils", default=False, description="Build grib utilities", when="@4:")
     variant(
         "g2c_compare",
         default=False,
         description="Enable copygb2 tests using g2c_compare",
-        when="@2.0.0:",
+        when="@4:",
     )
-    variant(
-        "use_g2c_api",
-        default=False,
-        description="Use new file-based API",
-        when="@2.0.0:",
-    )
+    variant("use_g2c_api", default=False, description="Use new file-based API", when="@4:")
 
+    # Build dependencies
+    depends_on("c", type="build")
+    depends_on("fortran", type="build")
+
+    # Required dependencies
     depends_on("jasper@:2.0.32", when="@:3.4.7")
     depends_on("jasper")
-    depends_on("g2c@2.0.0:", when="@develop")
-    depends_on("g2c@2.0.0 +aec", when="+aec")
+    depends_on("g2c@2.1:", when="@4:")
+    depends_on("g2c +aec", when="+aec")
+    depends_on("g2c +utils", type="test")
     depends_on("libpng")
-    depends_on("zlib-api", when="@develop")
+    depends_on("zlib-api", when="+utils +w3emc")
     depends_on("bacio", when="@3.4.6:")
-    depends_on("ip", when="@develop")
+    depends_on("ip@3.3.3:", when="+utils +w3emc")
     requires("^ip precision=d", when="^ip@4.1:")
-    depends_on("sp", when="^ip@:4")
-    depends_on("sp precision=d", when="^ip@:4 ^sp@2.4:")
-    depends_on("g2c@2.0: +utils", when="+g2c_compare")
+    depends_on("sp", when="+utils +w3emc ^ip@:4")
+    requires("^sp precision=d", when="^sp@2.4:")
     with when("+w3emc"):
         depends_on("w3emc")
         depends_on("w3emc precision=4", when="precision=4")
         depends_on("w3emc precision=d", when="precision=d")
-        depends_on("w3emc +extradeps", when="+utils")
-        depends_on("w3emc precision=4,d", when="+utils")
+        depends_on("w3emc +extradeps precision=4,d", when="+utils")
 
     def cmake_args(self):
         args = [
@@ -94,20 +96,20 @@ class G2(CMakePackage):
 
         return args
 
-    def setup_run_environment(self, env):
+    def setup_run_environment(self, env: EnvironmentModifications) -> None:
         precisions = (
             self.spec.variants["precision"].value if self.spec.satisfies("@3.4.6:") else ("4", "d")
         )
         for suffix in precisions:
             lib = find_libraries(
-                "libg2_" + suffix,
+                f"libg2_{suffix}",
                 root=self.prefix,
                 shared=self.spec.satisfies("+shared"),
                 recursive=True,
             )
-            env.set("G2_LIB" + suffix, lib[0])
-            env.set("G2_INC" + suffix, join_path(self.prefix, "include_" + suffix))
+            env.set(f"G2_LIB{suffix}", lib[0])
+            env.set(f"G2_INC{suffix}", join_path(self.prefix, f"include_{suffix}"))
 
     def check(self):
         with working_dir(self.build_directory):
-            make("test")
+            ctest()
