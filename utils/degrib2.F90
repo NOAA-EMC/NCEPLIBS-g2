@@ -16,7 +16,7 @@ program degrib2
   use params
   implicit none
 
-  integer :: msk2, icount, ifl1, itot, j, lengrib, lgrib
+  integer :: msk2, icount, ifl1, itot, j, lengrib
   integer*8 :: iseek8, msk18, lskip8, lgrib8, lengrib8
   integer :: maxlocal, n, ncgb, numfields, numlocal
   real :: fldmax, fldmin, sum
@@ -29,7 +29,8 @@ program degrib2
   character(len = 40) :: labbrev
   character(len = 110) :: tabbrev
   integer(4) narg, iargc, temparg
-  integer :: currlen = 0,  numpts = 0
+  integer :: numpts = 0
+  integer*8 :: currlen = 0
   logical :: unpack, expand
   type(gribfield) :: gfld
   integer :: ierr, ios, is
@@ -59,7 +60,6 @@ program degrib2
   do
      ! Find a GRIB2 message in the file.
      call skgb8(ifl1, iseek8, msk18, lskip8, lgrib8)
-     lgrib = lgrib8
      if (lgrib8 .eq. 0) exit    ! end loop at EOF or problem
 
      ! Read the GRIB2 message from the file.
@@ -70,7 +70,7 @@ program degrib2
      endif
      call bareadl(ifl1, lskip8, lgrib8, lengrib8, cgrib)
      lengrib = lengrib8
-     if (lgrib8 .ne. lengrib) then
+     if (lgrib8 .ne. lengrib8) then
         write(6, *)' degrib2: IO Error.'
         call errexit(9)
      endif
