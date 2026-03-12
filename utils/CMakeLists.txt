@@ -8,7 +8,7 @@ if (BUILD_D)
   add_executable(copygb2 copygb2.F90)
   target_link_libraries(copygb2 PUBLIC ${PROJECT_NAME}_d)
   target_link_libraries(copygb2 PRIVATE PNG::PNG ${JASPER_LIBRARIES}
-    bacio::bacio ip::ip_d w3emc::w3emc_d)
+    bacio::bacio ip::ip_d)
 
   if(ip_VERSION LESS 5.0)
     target_link_libraries(copygb2 PRIVATE sp::sp_d)
