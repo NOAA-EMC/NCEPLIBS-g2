@@ -1168,7 +1168,7 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
   parameter(IXDS1 = 28, IXDS2 = 52)
   integer :: INT1_BITS, INT2_BITS, INT4_BITS, INT8_BITS
   parameter(INT1_BITS = 8, INT2_BITS = 16, INT4_BITS = 32, INT8_BITS = 64)
-  integer :: mypos, inc = 0
+  integer :: mypos, sec6_pos, inc = 0
   integer (kind = 8) :: lread8, iskip8, len2_8, len7_8, len6_8, iskp68, iskp78
 
   interface
@@ -1248,14 +1248,16 @@ subroutine getgb2rp2(lugb, idxver, cindex, extract, gribm, leng8, iret)
      call g2_gbytec1(cindex, len5, mypos, INT4_BITS)      ! length of section 5
      mypos = mypos + len5 * INT1_BITS ! skip ahead in the cindex
      call g2_gbytec1(cindex, len6, mypos, INT4_BITS)      ! length of section 6
-     mypos = mypos + len6 * INT1_BITS ! skip ahead in the cindex
+     sec6_pos = mypos
+     ! Only the first 6 bytes of section 6 are stored in cindex.
+     mypos = mypos + 6 * INT1_BITS
 #ifdef LOGGING
      write(g2_log_msg, *) 'len1', len1, 'len3', len3, 'len4', len4, 'len5', len5, 'len6', len6
      call g2_log(2)
 #endif
 
      ! Handle the bitmap, if present.
-     call g2_gbytec1(cindex, ibmap, mypos, INT1_BITS)      ! bitmap indicator
+     call g2_gbytec1(cindex, ibmap, sec6_pos + 5 * INT1_BITS, INT1_BITS)      ! bitmap indicator
      if (ibmap .eq. 254) then
         ! Get the bytes to skip for section 6 from the index.
         if (idxver .eq. 1) then
