@@ -9,8 +9,7 @@ on:
     branches:
     - develop
   pull_request:
-    branches:
-    - develop
+  workflow_dispatch:
 
 # Cancel in-progress workflows when pushing to a branch
 concurrency:
@@ -21,7 +20,7 @@ jobs:
   MacOS:
     runs-on: macos-latest
     env:
-      FC: gfortran-12
+      FC: gfortran-13
       CC: gcc
 
     strategy:
