@@ -20,7 +20,7 @@ jobs:
   MacOS:
     runs-on: macos-latest
     env:
-      FC: gfortran-12
+      FC: gfortran-13
       CC: gcc
 
     strategy:
