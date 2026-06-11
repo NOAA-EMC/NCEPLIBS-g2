@@ -159,6 +159,7 @@ if(FTP_TEST_FILES)
   endforeach()  
 endif()
 
+
 # Copy test data files that are in the repo to the build directory.
 copy_test_data(testdata_g2grids)
 copy_test_data(ref_gdaswave.t00z.wcoast.0p16.f000.grb2index)
