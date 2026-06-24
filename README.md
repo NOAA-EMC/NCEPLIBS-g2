@@ -93,7 +93,7 @@ cmake --install NCEPLIBS-g2c/build
 
 See [documentation](https://noaa-emc.github.io/NCEPLIBS-g2c) for a list of CMake options.
 
-NCEPLIBS-g2 is also available through Spack as '[g2](https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/g2)'.
+NCEPLIBS-g2 is also available through Spack as '[g2](https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/g2)'.
 
 ## References
 
@@ -122,7 +122,6 @@ ECMWF User Orientation.
 
 ## Disclaimer
 
-```
 The United States Department of Commerce (DOC) GitHub project code is
 provided on an "as is" basis and the user assumes responsibility for
 its use. DOC has relinquished control of the information and no longer
@@ -138,3 +137,5 @@ logo of a DOC bureau, shall not be used in any manner to imply
 endorsement of any commercial product or activity by DOC or the United
 States Government.
 
+Generative AI tools are used to assist with developing this code.
+The code has been reviewed, edited, and validated by NWS staff.

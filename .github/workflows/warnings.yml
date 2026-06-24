@@ -11,6 +11,10 @@ on:
   pull_request:
     branches:
     - develop
+  schedule:
+    # Run monthly
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
