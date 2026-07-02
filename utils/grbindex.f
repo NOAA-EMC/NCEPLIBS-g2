@@ -20,16 +20,16 @@
       PARAMETER(MBUF=256*1024)
       CHARACTER CBUF(MBUF)
       CHARACTER CARG*300
-      INTEGER NARG,IARGC
+      INTEGER NARG
 
 !  GET ARGUMENTS
-      NARG=IARGC()
+      NARG=command_argument_count()
       IF(NARG.NE.2) THEN
         CALL ERRMSG('grbindex:  Incorrect usage')
         CALL ERRMSG('Usage: grbindex gribfile indexfile')
         CALL ERREXIT(2)
       ENDIF
-      CALL GETARG(1,CGB)
+      CALL get_command_argument(1,CGB)
       NCGB=LEN_TRIM(CGB)
       CALL BAOPENR(11,CGB(1:NCGB),IOS)
       CALL BASETO(1,1)
@@ -39,7 +39,7 @@
         CALL ERRMSG(CARG(1:LCARG))
         CALL ERREXIT(8)
       ENDIF
-      CALL GETARG(2,CGI)
+      CALL get_command_argument(2,CGI)
       NCGI=LEN_TRIM(CGI)
       CALL BAOPEN(31,CGI(1:NCGI),IOS)
       IF(IOS.NE.0) THEN

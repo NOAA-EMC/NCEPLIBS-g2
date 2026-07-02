@@ -28,7 +28,7 @@ program degrib2
   character(len = 8) :: pabbrev
   character(len = 40) :: labbrev
   character(len = 110) :: tabbrev
-  integer(4) narg, iargc, temparg
+  integer(4) narg, temparg
   integer :: currlen = 0,  numpts = 0
   logical :: unpack, expand
   type(gribfield) :: gfld
@@ -39,7 +39,7 @@ program degrib2
   expand = .false.
 
   ! Get arguments.
-  narg = iargc()
+  narg = command_argument_count()
   if (narg .ne. 1) then
      call errmsg('degrib2:  incorrect usage')
      call errmsg('usage: degrib2 grib2file')
@@ -49,7 +49,7 @@ program degrib2
   ! Open the input file with the bacio library.
   ifl1 = 10
   temparg = 1
-  call getarg(temparg, gfile1)
+  call get_command_argument(temparg, gfile1)
   ncgb = len_trim(gfile1)
   call baopenr(ifl1, gfile1(1:ncgb), ios)
 
