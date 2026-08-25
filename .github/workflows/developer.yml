@@ -24,11 +24,11 @@ concurrency:
 
 jobs:
   developer:
-    runs-on: ubuntu-latest
-    env:
-      FC: gfortran
-      CC: gcc
-      LD_LIBRARY_PATH: /home/runner/work/NCEPLIBS-g2/NCEPLIBS-g2/nceplibs/jasper/lib/
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/noaa-emc/ci-common-build-cache/nceplibs-develop-ubuntu-24.04-gcc-13-mpich-x:latest
+      volumes:
+        - /home/runner:/root
       
     strategy:
       fail-fast: true
@@ -39,19 +39,18 @@ jobs:
 
     - name: install-dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libaec-dev doxygen gcovr valgrind  libblas-dev liblapack-dev
+        apt-get update
+        apt-get install -y gcc
+        apt-get install -y doxygen gcovr valgrind
+        #sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libaec-dev doxygen gcovr valgrind  libblas-dev liblapack-dev
 
-    - name: "Build dependencies"
-      uses: NOAA-EMC/ci-build-nceplibs@develop
-      with:
-        bacio-version: develop
-        w3emc-version: develop
-        jasper-version: version-4.0.0
-        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
-        ip-version: develop
-        g2c-version: develop
-        g2c-cmake-args: -DBUILD_G2C=ON -DUSE_AEC=ON
+    - name: load-env
+      shell: bash
+      run: |
+        set -a
+        source /entrypoint.sh
+        set +a
+        printenv | grep -E '^[a-zA-Z_][a-zA-Z0-9_]*=' >> $GITHUB_ENV
 
     - name: checkout
       uses: actions/checkout@v4
@@ -62,7 +61,7 @@ jobs:
       id: cache-data
       uses: actions/cache@v4
       with:
-        path: ~/data
+        path: /root/data
         key: data-developer-5
 
     - name: asan
@@ -72,7 +71,7 @@ jobs:
         cd g2
         mkdir build
         cd build
-        cmake -DUSE_G2C_API=ON -DBUILD_UTILS=OFF -DUSE_AEC=ON -DFTP_LARGE_TEST_FILES=ON -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DCMAKE_Fortran_FLAGS="-g -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DUSE_G2C_API=ON -DBUILD_UTILS=OFF -DUSE_AEC=ON -DFTP_LARGE_TEST_FILES=ON -DCMAKE_Fortran_FLAGS="-g -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_C_FLAGS="-g -O0 -Wall -fno-omit-frame-pointer -fsanitize=address" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/root/data -DCMAKE_BUILD_TYPE=Debug ..
         make -j2 VERBOSE=1
         ctest --verbose --output-on-failure --rerun-failed
 
@@ -84,7 +83,7 @@ jobs:
         mkdir build
         doxygen --version
         cd build
-        cmake -DUSE_G2C_API=ON -DG2C_COMPARE=ON -DBUILD_UTILS=ON -DUSE_AEC=ON -DFTP_LARGE_TEST_FILES=ON -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/home/runner/data ..
+        cmake -DUSE_G2C_API=ON -DG2C_COMPARE=ON -DBUILD_UTILS=ON -DUSE_AEC=ON -DFTP_LARGE_TEST_FILES=ON -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0" -DFTP_TEST_FILES=ON -DTEST_FILE_DIR=/root/data ..
         make -j2 VERBOSE=1
         ctest --verbose --output-on-failure --rerun-failed
         gcovr --root .. -v  --html-details --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html &> /dev/null
@@ -92,8 +91,8 @@ jobs:
     - name: cache-data
       if: steps.cache-data.outputs.cache-hit != 'true'
       run: |
-        mkdir ~/data
-        cp $GITHUB_WORKSPACE/g2/build/tests/data/* ~/data
+        mkdir /root/data
+        cp $GITHUB_WORKSPACE/g2/build/tests/data/* /root/data
 
     - name: upload-test-coverage
       if: matrix.config == 'code coverage'
