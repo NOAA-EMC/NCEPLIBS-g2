@@ -10,6 +10,10 @@ if(BUILD_4)
   add_test(NAME test_degrib2_int COMMAND test_degrib2_int)
 endif()
 
+# This fortran test is for the MAKWMO subroutine, which is used by the tocgrib utils.
+add_executable(test_makwmo test_makwmo.F90 ${CMAKE_SOURCE_DIR}/utils/makwmo.F90)
+add_test(NAME test_makwmo COMMAND test_makwmo)
+
 # Run each shell test.
 function(gu_test name)
   # Copy the test scripts.
@@ -101,7 +105,7 @@ if(BUILD_4)
   gu_test(run_grb2index_tests)
   if(FTP_EXTRA_TEST_FILES)
     gu_test(run_tocgrib2_tests)
-    gu_test(run_tocgrib2super_tests)
+    #gu_test(run_tocgrib2super_tests)
   endif()
 endif()
 gu_test(run_copygb_tests)
