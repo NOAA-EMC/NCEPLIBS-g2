@@ -137,7 +137,8 @@ subroutine g2_write_index_headers(lugi, nlen, nnum, idxver, filename)
      chead(1)(56:70) = '0001'
   endif
 #else
-  chead(1)(56:70) = hostnam(hostname)
+  call get_environment_variable("HOSTNAME", hostname)
+  chead(1)(56:70) = hostname  
 #endif
   chead(1)(72:80) = 'grb2index'
   chead(1)(81:81) = char(10)
