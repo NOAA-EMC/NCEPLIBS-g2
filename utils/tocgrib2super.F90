@@ -139,7 +139,7 @@ PROGRAM tocgrib2super
   call baopenw(lugo,fileo,iret1)
   if (iret1  .ne. 0) then
      write(6,fmt='(" Error opening output transmission file: ", &
-          A200)') fileo
+          &A200)') fileo
      write(6,fmt='(" baopenw error = ",I5)') iret1
      stop 20
   endif
@@ -207,14 +207,14 @@ PROGRAM tocgrib2super
      nrec = nrec + 1
      if (ios .ne. 0) then
         write(6,fmt='(" Error reading PDS from input file. iostat = " &
-             ,i5)') ios
+             &,i5)') ios
         cycle
      endif
      !
      !  Echo input record
      !
      WRITE(6,FMT='(/,''***********************************'', &
-          ''********************************************'')')
+          &''********************************************'')')
      write(6,'(A,I0)') ' Start new record no. =  ',nrec
      write(6,'(73A)') ' DESC=',DESC(1:73)
      write(6,'(11A)') ' WMOHEAD=',WMOHEAD(1:11)
@@ -279,7 +279,7 @@ PROGRAM tocgrib2super
   !
 999 if (nbul .EQ. 0) then
      WRITE (6,FMT='('' SOMETHING WRONG WITH DATA CARDS...'', &
-          ''NOTHING WAS PROCESSED'')')
+          &''NOTHING WAS PROCESSED'')')
      !        CALL W3TAGE('tocgrib2super')
      stop 19
   else
@@ -287,9 +287,9 @@ PROGRAM tocgrib2super
      call baclose (LUGI,iret)
      call baclose (LUGO,iret)
      WRITE (6,FMT='(//,'' ******** RECAP OF THIS EXECUTION '', &
-          ''********'',/,5X,''READ  '',I6,'' INDIVIDUAL IDS'', &
-          /,5X,''WROTE '',I6,'' BULLETINS OUT FOR TRANSMISSION'', &
-          //)') nrec, NBUL
+          &''********'',/,5X,''READ  '',I6,'' INDIVIDUAL IDS'', &
+          &/,5X,''WROTE '',I6,'' BULLETINS OUT FOR TRANSMISSION'', &
+          &//)') nrec, NBUL
   endif
   !
   !         TEST TO SEE IF ANY BULLETINS MISSING
