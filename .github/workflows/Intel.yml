@@ -27,31 +27,44 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        compilers: ["oneapi", "classic"]
+        include:
+          - compiler: "oneapi"
+            image: nceplibs-develop-ubuntu-24.04-oneapi-2025.3-intel-oneapi-mpi-2021.17
+          - compiler: "classic"
+            image: nceplibs-develop-ubuntu-24.04-classic-2023.2.1-intel-oneapi-mpi-2021.17
+    name: "(${{ matrix.compiler }})"
+    container:
+      image: ghcr.io/noaa-emc/ci-common-build-cache/${{ matrix.image }}
+      volumes:
+        - /home/runner:/root
 
     steps:
 
-    - name: "Install Intel"
+    - name: "Install Intel Classic"
+      if: matrix.compiler == 'classic'
+      shell: bash
+      run: |
+        cd /opt/
+        ./install-intel.sh
+        set -a
+        source /opt/intel/oneapi/setvars.sh
+        set +a
+        printenv | grep -E '^[a-zA-Z_][a-zA-Z0-9_]*=' >> $GITHUB_ENV
+
+    - name: "Install Intel OneAPI"
+      if: matrix.compiler == 'oneapi'
       uses: NOAA-EMC/ci-install-intel-toolkit@develop
       with:
         oneapi-version: 2023.2.1
-        compiler-setup: ${{ matrix.compilers }}
-
-    - name: install-dependencies
+        compiler-setup: oneapi
+        
+    - name: load-env
+      shell: bash
       run: |
-        sudo apt-get update
-        sudo apt-get install libpng-dev zlib1g-dev libjpeg-dev libblas-dev liblapack-dev
-
-    - name: "Build dependencies"
-      uses: NOAA-EMC/ci-build-nceplibs@develop
-      with:
-        bacio-version: develop
-        jasper-version: version-4.0.0
-        w3emc-version: develop
-        w3emc-cmake-args: -DBUILD_WITH_BUFR=OFF
-        ip-version: develop
-        g2c-version: develop
-        key-prefix: Intel-
+        set -a
+        source /entrypoint.sh
+        set +a
+        printenv | grep -E '^[a-zA-Z_][a-zA-Z0-9_]*=' >> $GITHUB_ENV
 
     - name: checkout
       uses: actions/checkout@v4
@@ -60,13 +73,22 @@ jobs:
 
     - name: build
       run: |
+        if [ "${{ matrix.compiler }}" = "oneapi" ]; then
+          export CC=icx
+          export CXX=icpx
+          export FC=ifx
+        else
+          export CC=icc
+          export CXX=icpc
+          export FC=ifort
+        fi
         cd g2
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/nceplibs/jasper;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-bacio;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-w3emc;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-ip;$GITHUB_WORKSPACE/nceplibs/NCEPLIBS-g2c" -DBUILD_UTILS=OFF ..
+        cmake .. -DBUILD_UTILS=OFF
         make -j2
 
     - name: test
       run: |
-        cd $GITHUB_WORKSPACE/g2/build
+        cd g2/build
         ctest --verbose
