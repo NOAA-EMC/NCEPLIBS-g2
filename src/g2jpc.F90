@@ -41,7 +41,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
   character(len=1),intent(out) :: cpack(*)
   integer,intent(inout) :: idrstmpl(*)
   integer,intent(inout) :: lcpack
-  integer(c_size_t) :: width_c, height_c
+  integer(c_size_t) :: width_c, height_c, lcpack_c
   integer :: ret
 
   interface
@@ -51,7 +51,7 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
       integer(c_size_t), value, intent(in) :: width, height
       integer(c_int), intent(inout) :: idrstmpl(*)
       character(kind=c_char), intent(out) :: cpack(*)
-      integer(c_int), intent(out) :: lcpack
+      integer(c_size_t), intent(inout) :: lcpack
       integer(c_int) :: g2c_jpcpackd
      end function g2c_jpcpackd
      function g2c_jpcpackf(fld, width, height, idrstmpl, cpack, lcpack) bind(c)
@@ -60,20 +60,22 @@ subroutine jpcpack(fld,width,height,idrstmpl,cpack,lcpack)
       integer(c_size_t), value, intent(in) :: width, height
       integer(c_int), intent(inout) :: idrstmpl(*)
       character(kind=c_char), intent(out) :: cpack(*)
-      integer(c_int), intent(out) :: lcpack
+      integer(c_size_t), intent(inout) :: lcpack
       integer(c_int) :: g2c_jpcpackf
      end function g2c_jpcpackf
   end interface
 
-  width_c = width
-  height_c = height
+  width_c = int(width, c_size_t)
+  height_c = int(height, c_size_t)
+  lcpack_c = int(lcpack, c_size_t)
 
 #if KIND==4
-  ret = g2c_jpcpackf(fld, width_c, height_c, idrstmpl, cpack, lcpack)
+  ret = g2c_jpcpackf(fld, width_c, height_c, idrstmpl, cpack, lcpack_c)
 #else
-  ret = g2c_jpcpackd(fld, width_c, height_c, idrstmpl, cpack, lcpack)
+  ret = g2c_jpcpackd(fld, width_c, height_c, idrstmpl, cpack, lcpack_c)
 #endif
 
+lcpack = int(lcpack_c, kind(lcpack))
 end subroutine
 
 !> Unpack a data field from a JPEG2000 code stream as defined in
